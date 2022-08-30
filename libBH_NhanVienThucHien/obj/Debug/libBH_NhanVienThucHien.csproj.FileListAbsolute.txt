@@ -1,0 +1,17 @@
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\libBH_NhanVienThucHien.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\libBH_NhanVienThucHien.pdb
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\EntityFramework.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\Model.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\Model_banhang24vn.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\Model.pdb
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\Model.dll.config
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\EntityFramework.xml
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\Model_banhang24vn.pdb
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\bin\Debug\Model_banhang24vn.dll.config
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\obj\Debug\libBH_NhanVienThucHien.csproj.CoreCompileInputs.cache
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\obj\Debug\libBH_NhanVienThucHien.csproj.CopyComplete
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\obj\Debug\libBH_NhanVienThucHien.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\obj\Debug\libBH_NhanVienThucHien.pdb
+C:\Users\PhuongND\Source\Workspaces\banhang24\libBH_NhanVienThucHien\obj\Debug\libBH_NhanVienThucHien.csproj.AssemblyReference.cache

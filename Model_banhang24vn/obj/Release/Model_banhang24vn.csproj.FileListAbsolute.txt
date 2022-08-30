@@ -1,0 +1,12 @@
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\bin\Release\Model_banhang24vn.dll.config
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\bin\Release\Model_banhang24vn.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\bin\Release\Model_banhang24vn.pdb
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\bin\Release\EntityFramework.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\bin\Release\EntityFramework.xml
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\obj\Release\Model_banhang24vn.csproj.CoreCompileInputs.cache
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\obj\Release\Model_banhang24vn.csproj.CopyComplete
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\obj\Release\Model_banhang24vn.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\obj\Release\Model_banhang24vn.pdb
+C:\Users\PhuongND\Source\Workspaces\banhang24\Model_banhang24vn\obj\Release\Model_banhang24vn.csproj.AssemblyReference.cache

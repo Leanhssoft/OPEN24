@@ -1,0 +1,898 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="BANHANG24ModelStoreContainer" CdmEntityContainer="BanHang24vnContext">
+    <EntitySetMapping Name="CuaHangDangKies">
+      <EntityTypeMapping TypeName="BANHANG24Model.CuaHangDangKy">
+        <MappingFragment StoreEntitySet="CuaHangDangKy">
+          <ScalarProperty Name="IsCreateDatabase" ColumnName="IsCreateDatabase" />
+          <ScalarProperty Name="Domain" ColumnName="Domain" />
+          <ScalarProperty Name="SubDomainWeb" ColumnName="SubDomainWeb" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="ID_GoiDichVu" ColumnName="ID_GoiDichVu" />
+          <ScalarProperty Name="TrinhDuyet_DK" ColumnName="TrinhDuyet_DK" />
+          <ScalarProperty Name="DiaChiIP_DK" ColumnName="DiaChiIP_DK" />
+          <ScalarProperty Name="KhuVuc_DK" ColumnName="KhuVuc_DK" />
+          <ScalarProperty Name="HeDieuHanh_DK" ColumnName="HeDieuHanh_DK" />
+          <ScalarProperty Name="ThietBi_DK" ColumnName="ThietBi_DK" />
+          <ScalarProperty Name="ID_TinhThanh_QuanHuyen" ColumnName="ID_TinhThanh_QuanHuyen" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="SoLanKichHoat" ColumnName="SoLanKichHoat" />
+          <ScalarProperty Name="HanSuDung" ColumnName="HanSuDung" />
+          <ScalarProperty Name="MaKichHoat" ColumnName="MaKichHoat" />
+          <ScalarProperty Name="MatKhauKT" ColumnName="MatKhauKT" />
+          <ScalarProperty Name="UserKT" ColumnName="UserKT" />
+          <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+          <ScalarProperty Name="HoTen" ColumnName="HoTen" />
+          <ScalarProperty Name="ID_NganhKinhDoanh" ColumnName="ID_NganhKinhDoanh" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="DiaChi" ColumnName="DiaChi" />
+          <ScalarProperty Name="TenCuaHang" ColumnName="TenCuaHang" />
+          <ScalarProperty Name="SubDomain" ColumnName="SubDomain" />
+          <ScalarProperty Name="SoDienThoai" ColumnName="SoDienThoai" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_HangHoa">
+      <EntityTypeMapping TypeName="BANHANG24Model.DM_HangHoa">
+        <MappingFragment StoreEntitySet="DM_HangHoa">
+          <ScalarProperty Name="MauSac" ColumnName="MauSac" />
+          <ScalarProperty Name="KichCo" ColumnName="KichCo" />
+          <ScalarProperty Name="ChatLieu" ColumnName="ChatLieu" />
+          <ScalarProperty Name="TenKhac" ColumnName="TenKhac" />
+          <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
+          <ScalarProperty Name="NguoiSua" ColumnName="NguoiSua" />
+          <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+          <ScalarProperty Name="NguoiTao" ColumnName="NguoiTao" />
+          <ScalarProperty Name="TheoDoi" ColumnName="TheoDoi" />
+          <ScalarProperty Name="TinhGiaVon" ColumnName="TinhGiaVon" />
+          <ScalarProperty Name="ChietKhauMD_NVTheoPT" ColumnName="ChietKhauMD_NVTheoPT" />
+          <ScalarProperty Name="ChietKhauMD_NV" ColumnName="ChietKhauMD_NV" />
+          <ScalarProperty Name="SoPhutThucHien" ColumnName="SoPhutThucHien" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="TinhCPSauChietKhau" ColumnName="TinhCPSauChietKhau" />
+          <ScalarProperty Name="ChiPhiTinhTheoPT" ColumnName="ChiPhiTinhTheoPT" />
+          <ScalarProperty Name="ChiPhiThucHien" ColumnName="ChiPhiThucHien" />
+          <ScalarProperty Name="TenTGBaoHanh" ColumnName="TenTGBaoHanh" />
+          <ScalarProperty Name="ThoiGianBaoHanh" ColumnName="ThoiGianBaoHanh" />
+          <ScalarProperty Name="LoaiBaoHanh" ColumnName="LoaiBaoHanh" />
+          <ScalarProperty Name="ID_DVTQuyCach" ColumnName="ID_DVTQuyCach" />
+          <ScalarProperty Name="QuyCach" ColumnName="QuyCach" />
+          <ScalarProperty Name="ID_DoiTuong" ColumnName="ID_DoiTuong" />
+          <ScalarProperty Name="ID_QuocGia" ColumnName="ID_QuocGia" />
+          <ScalarProperty Name="ID_PhanLoai" ColumnName="ID_PhanLoai" />
+          <ScalarProperty Name="ID_NhomHang" ColumnName="ID_NhomHang" />
+          <ScalarProperty Name="LaHangHoa" ColumnName="LaHangHoa" />
+          <ScalarProperty Name="TenHangHoa" ColumnName="TenHangHoa" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_NhomHangHoa">
+      <EntityTypeMapping TypeName="BANHANG24Model.DM_NhomHangHoa">
+        <MappingFragment StoreEntitySet="DM_NhomHangHoa">
+          <ScalarProperty Name="MauHienThi" ColumnName="MauHienThi" />
+          <ScalarProperty Name="HienThi_BanThe" ColumnName="HienThi_BanThe" />
+          <ScalarProperty Name="ID_Kho" ColumnName="ID_Kho" />
+          <ScalarProperty Name="MayIn" ColumnName="MayIn" />
+          <ScalarProperty Name="HienThi_Phu" ColumnName="HienThi_Phu" />
+          <ScalarProperty Name="HienThi_Chinh" ColumnName="HienThi_Chinh" />
+          <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
+          <ScalarProperty Name="NguoiSua" ColumnName="NguoiSua" />
+          <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+          <ScalarProperty Name="NguoiTao" ColumnName="NguoiTao" />
+          <ScalarProperty Name="LaNhomHangHoa" ColumnName="LaNhomHangHoa" />
+          <ScalarProperty Name="ID_Parent" ColumnName="ID_Parent" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="TenNhomHangHoa" ColumnName="TenNhomHangHoa" />
+          <ScalarProperty Name="MaNhomHangHoa" ColumnName="MaNhomHangHoa" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_PhanLoaiHangHoaDichVu">
+      <EntityTypeMapping TypeName="BANHANG24Model.DM_PhanLoaiHangHoaDichVu">
+        <MappingFragment StoreEntitySet="DM_PhanLoaiHangHoaDichVu">
+          <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
+          <ScalarProperty Name="NguoiSua" ColumnName="NguoiSua" />
+          <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+          <ScalarProperty Name="NguoiTao" ColumnName="NguoiTao" />
+          <ScalarProperty Name="ThoiGianBaoHanh" ColumnName="ThoiGianBaoHanh" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="TenPhanLoai" ColumnName="TenPhanLoai" />
+          <ScalarProperty Name="MaPhanLoai" ColumnName="MaPhanLoai" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_QuanHuyen">
+      <EntityTypeMapping TypeName="BANHANG24Model.DM_QuanHuyen">
+        <MappingFragment StoreEntitySet="DM_QuanHuyen">
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="ID_TinhThanh" ColumnName="ID_TinhThanh" />
+          <ScalarProperty Name="TenQuanHuyen" ColumnName="TenQuanHuyen" />
+          <ScalarProperty Name="MaQuanHuyen" ColumnName="MaQuanHuyen" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_QuocGia">
+      <EntityTypeMapping TypeName="BANHANG24Model.DM_QuocGia">
+        <MappingFragment StoreEntitySet="DM_QuocGia">
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="TenQuocGia" ColumnName="TenQuocGia" />
+          <ScalarProperty Name="MaQuocGia" ColumnName="MaQuocGia" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_TinhThanh">
+      <EntityTypeMapping TypeName="BANHANG24Model.DM_TinhThanh">
+        <MappingFragment StoreEntitySet="DM_TinhThanh">
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="ID_VungMien" ColumnName="ID_VungMien" />
+          <ScalarProperty Name="ID_QuocGia" ColumnName="ID_QuocGia" />
+          <ScalarProperty Name="TenTinhThanh" ColumnName="TenTinhThanh" />
+          <ScalarProperty Name="MaTinhThanh" ColumnName="MaTinhThanh" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_VungMien">
+      <EntityTypeMapping TypeName="BANHANG24Model.DM_VungMien">
+        <MappingFragment StoreEntitySet="DM_VungMien">
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="TenVung" ColumnName="TenVung" />
+          <ScalarProperty Name="MaVung" ColumnName="MaVung" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DonViQuiDois">
+      <EntityTypeMapping TypeName="BANHANG24Model.DonViQuiDoi">
+        <MappingFragment StoreEntitySet="DonViQuiDoi">
+          <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
+          <ScalarProperty Name="NguoiSua" ColumnName="NguoiSua" />
+          <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+          <ScalarProperty Name="NguoiTao" ColumnName="NguoiTao" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="GiaBan" ColumnName="GiaBan" />
+          <ScalarProperty Name="GiaNhap" ColumnName="GiaNhap" />
+          <ScalarProperty Name="LaDonViChuan" ColumnName="LaDonViChuan" />
+          <ScalarProperty Name="TyLeChuyenDoi" ColumnName="TyLeChuyenDoi" />
+          <ScalarProperty Name="TenDonViTinh" ColumnName="TenDonViTinh" />
+          <ScalarProperty Name="ID_HangHoa" ColumnName="ID_HangHoa" />
+          <ScalarProperty Name="MaHangHoa" ColumnName="MaHangHoa" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HT_Quyen">
+      <EntityTypeMapping TypeName="BANHANG24Model.HT_Quyen">
+        <MappingFragment StoreEntitySet="HT_Quyen">
+          <ScalarProperty Name="DuocSuDung" ColumnName="DuocSuDung" />
+          <ScalarProperty Name="QuyenCha" ColumnName="QuyenCha" />
+          <ScalarProperty Name="MoTa" ColumnName="MoTa" />
+          <ScalarProperty Name="TenQuyen" ColumnName="TenQuyen" />
+          <ScalarProperty Name="MaQuyen" ColumnName="MaQuyen" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HT_Quyen_NganhNgheKinhDoanh">
+      <EntityTypeMapping TypeName="BANHANG24Model.HT_Quyen_NganhNgheKinhDoanh">
+        <MappingFragment StoreEntitySet="HT_Quyen_NganhNgheKinhDoanh">
+          <ScalarProperty Name="MaQuyen" ColumnName="MaQuyen" />
+          <ScalarProperty Name="ID_NganhKinhDoanh" ColumnName="ID_NganhKinhDoanh" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_CategoriesType">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_CategoriesType">
+        <MappingFragment StoreEntitySet="News_CategoriesType">
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_EmployeeList">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_EmployeeList">
+        <MappingFragment StoreEntitySet="News_EmployeeList">
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_FunctionList">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_FunctionList">
+        <MappingFragment StoreEntitySet="News_FunctionList">
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="FunctionName" ColumnName="FunctionName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_Functions">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_Functions">
+        <MappingFragment StoreEntitySet="News_Functions">
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="FunctionID" ColumnName="FunctionID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_Menu">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_Menu">
+        <MappingFragment StoreEntitySet="News_Menu">
+          <ScalarProperty Name="ParenID" ColumnName="ParenID" />
+          <ScalarProperty Name="Link" ColumnName="Link" />
+          <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_Order">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_Order">
+        <MappingFragment StoreEntitySet="News_Order">
+          <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_Post">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_Post">
+        <MappingFragment StoreEntitySet="News_Post">
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+          <ScalarProperty Name="Trades" ColumnName="Trades" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="NumberOfRecruits" ColumnName="NumberOfRecruits" />
+          <ScalarProperty Name="WorkingForm" ColumnName="WorkingForm" />
+          <ScalarProperty Name="Degree" ColumnName="Degree" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="Experience" ColumnName="Experience" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Salary" ColumnName="Salary" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="KeywordPost" ColumnName="KeywordPost" />
+          <ScalarProperty Name="Video" ColumnName="Video" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="TitleID" ColumnName="TitleID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_Title">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_Title">
+        <MappingFragment StoreEntitySet="News_Title">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UpdateBy" ColumnName="UpdateBy" />
+          <ScalarProperty Name="CrreateBy" ColumnName="CrreateBy" />
+          <ScalarProperty Name="UpdatedDate" ColumnName="UpdatedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="KeywordTitle" ColumnName="KeywordTitle" />
+          <ScalarProperty Name="UrlTitle" ColumnName="UrlTitle" />
+          <ScalarProperty Name="Avatar" ColumnName="Avatar" />
+          <ScalarProperty Name="NumberOfPosts" ColumnName="NumberOfPosts" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="PostGroupID" ColumnName="PostGroupID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NganhNgheKinhDoanhs">
+      <EntityTypeMapping TypeName="BANHANG24Model.NganhNgheKinhDoanh">
+        <MappingFragment StoreEntitySet="NganhNgheKinhDoanh">
+          <ScalarProperty Name="ImageMobile" ColumnName="ImageMobile" />
+          <ScalarProperty Name="Image" ColumnName="Image" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatDate" ColumnName="CreatDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="TenNganhNghe" ColumnName="TenNganhNghe" />
+          <ScalarProperty Name="MaNganhNghe" ColumnName="MaNganhNghe" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NhomHangHoa_NganhNgheKinhDoanh">
+      <EntityTypeMapping TypeName="BANHANG24Model.NhomHangHoa_NganhNgheKinhDoanh">
+        <MappingFragment StoreEntitySet="NhomHangHoa_NganhNgheKinhDoanh">
+          <ScalarProperty Name="ID_NganhNgheKinhDoanh" ColumnName="ID_NganhNgheKinhDoanh" />
+          <ScalarProperty Name="ID_NhomHangHoa" ColumnName="ID_NhomHangHoa" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_Categories">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_Categories">
+        <MappingFragment StoreEntitySet="News_Categories">
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreateBy" ColumnName="CreateBy" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="CategoryTypeID" ColumnName="CategoryTypeID" />
+          <ScalarProperty Name="ValidFlag" ColumnName="ValidFlag" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="BANHANG24Model.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="name" ColumnName="name" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_User">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_User">
+        <MappingFragment StoreEntitySet="News_User">
+          <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+          <ScalarProperty Name="BirthDay" ColumnName="BirthDay" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatDate" ColumnName="CreatDate" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_UserGroup">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_UserGroup">
+        <MappingFragment StoreEntitySet="News_UserGroup">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreatDate" ColumnName="CreatDate" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Roles">
+      <EntityTypeMapping TypeName="BANHANG24Model.Role">
+        <MappingFragment StoreEntitySet="Role">
+          <ScalarProperty Name="RoleParent" ColumnName="RoleParent" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="RoleKey" ColumnName="RoleKey" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserGroupRoles">
+      <EntityTypeMapping TypeName="BANHANG24Model.UserGroupRole">
+        <MappingFragment StoreEntitySet="UserGroupRole">
+          <ScalarProperty Name="RoleKey" ColumnName="RoleKey" />
+          <ScalarProperty Name="UserGroupId" ColumnName="UserGroupId" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TinhThanh_QuanHuyen">
+      <EntityTypeMapping TypeName="BANHANG24Model.TinhThanh_QuanHuyen">
+        <MappingFragment StoreEntitySet="TinhThanh_QuanHuyen">
+          <ScalarProperty Name="QuanHuyen" ColumnName="QuanHuyen" />
+          <ScalarProperty Name="TinhThanh" ColumnName="TinhThanh" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="BANHANG24Model.Customer">
+        <MappingFragment StoreEntitySet="Customer">
+          <ScalarProperty Name="prioritize" ColumnName="prioritize" />
+          <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Images" ColumnName="Images" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="TypeBusiness" ColumnName="TypeBusiness" />
+          <ScalarProperty Name="DistrictCity" ColumnName="DistrictCity" />
+          <ScalarProperty Name="Adress" ColumnName="Adress" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NumberUserAccesses">
+      <EntityTypeMapping TypeName="BANHANG24Model.NumberUserAccess">
+        <MappingFragment StoreEntitySet="NumberUserAccess">
+          <ScalarProperty Name="Device_Desktop" ColumnName="Device_Desktop" />
+          <ScalarProperty Name="Device_Mobile" ColumnName="Device_Mobile" />
+          <ScalarProperty Name="Device_Tablet" ColumnName="Device_Tablet" />
+          <ScalarProperty Name="Device_TV" ColumnName="Device_TV" />
+          <ScalarProperty Name="Sys_Other" ColumnName="Sys_Other" />
+          <ScalarProperty Name="Sys_Windows" ColumnName="Sys_Windows" />
+          <ScalarProperty Name="Sys_Linux" ColumnName="Sys_Linux" />
+          <ScalarProperty Name="Sys_MAC_OS" ColumnName="Sys_MAC_OS" />
+          <ScalarProperty Name="Sys_Android" ColumnName="Sys_Android" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Number" ColumnName="Number" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PageViews">
+      <EntityTypeMapping TypeName="BANHANG24Model.PageView">
+        <MappingFragment StoreEntitySet="PageView">
+          <ScalarProperty Name="MonthDate" ColumnName="MonthDate" />
+          <ScalarProperty Name="Count" ColumnName="Count" />
+          <ScalarProperty Name="PageName" ColumnName="PageName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="UserVisits">
+      <EntityTypeMapping TypeName="BANHANG24Model.UserVisit">
+        <MappingFragment StoreEntitySet="UserVisit">
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="System" ColumnName="System" />
+          <ScalarProperty Name="Country" ColumnName="Country" />
+          <ScalarProperty Name="Device" ColumnName="Device" />
+          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="Browser" ColumnName="Browser" />
+          <ScalarProperty Name="Ip" ColumnName="Ip" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ArticleTags">
+      <EntityTypeMapping TypeName="BANHANG24Model.ArticleTag">
+        <MappingFragment StoreEntitySet="ArticleTags">
+          <ScalarProperty Name="TagIID" ColumnName="TagIID" />
+          <ScalarProperty Name="ArticleID" ColumnName="ArticleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Tags">
+      <EntityTypeMapping TypeName="BANHANG24Model.Tag">
+        <MappingFragment StoreEntitySet="Tags">
+          <ScalarProperty Name="KeyWords" ColumnName="KeyWords" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MenuTags">
+      <EntityTypeMapping TypeName="BANHANG24Model.MenuTag">
+        <MappingFragment StoreEntitySet="MenuTags">
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Link" ColumnName="Link" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Actions" ColumnName="Actions" />
+          <ScalarProperty Name="Controller" ColumnName="Controller" />
+          <ScalarProperty Name="Tags" ColumnName="Tags" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="News_Articles">
+      <EntityTypeMapping TypeName="BANHANG24Model.News_Articles">
+        <MappingFragment StoreEntitySet="News_Articles">
+          <ScalarProperty Name="DatePost" ColumnName="DatePost" />
+          <ScalarProperty Name="ViewCount" ColumnName="ViewCount" />
+          <ScalarProperty Name="UpdatedBy" ColumnName="UpdatedBy" />
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="ExpirationDate" ColumnName="ExpirationDate" />
+          <ScalarProperty Name="Trades" ColumnName="Trades" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+          <ScalarProperty Name="NumberOfRecruits" ColumnName="NumberOfRecruits" />
+          <ScalarProperty Name="WorkingForm" ColumnName="WorkingForm" />
+          <ScalarProperty Name="Degree" ColumnName="Degree" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="Experience" ColumnName="Experience" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Salary" ColumnName="Salary" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
+          <ScalarProperty Name="Tag" ColumnName="Tag" />
+          <ScalarProperty Name="Content" ColumnName="Content" />
+          <ScalarProperty Name="UrlImage" ColumnName="UrlImage" />
+          <ScalarProperty Name="Summary" ColumnName="Summary" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AnhTinhNangNghanhNghes">
+      <EntityTypeMapping TypeName="BANHANG24Model.AnhTinhNangNghanhNghe">
+        <MappingFragment StoreEntitySet="AnhTinhNangNghanhNghe">
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="SrcImage" ColumnName="SrcImage" />
+          <ScalarProperty Name="Id_NganhNgheTinhNang" ColumnName="Id_NganhNgheTinhNang" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TinhNangNghanhNghes">
+      <EntityTypeMapping TypeName="BANHANG24Model.TinhNangNghanhNghe">
+        <MappingFragment StoreEntitySet="TinhNangNghanhNghe">
+          <ScalarProperty Name="STT" ColumnName="STT" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UserEdit" ColumnName="UserEdit" />
+          <ScalarProperty Name="DateEdit" ColumnName="DateEdit" />
+          <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+          <ScalarProperty Name="TieuDe" ColumnName="TieuDe" />
+          <ScalarProperty Name="TenTinhNang" ColumnName="TenTinhNang" />
+          <ScalarProperty Name="Id_NganhNghe" ColumnName="Id_NganhNghe" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SalesDevices">
+      <EntityTypeMapping TypeName="BANHANG24Model.SalesDevice">
+        <MappingFragment StoreEntitySet="SalesDevice">
+          <ScalarProperty Name="Encoder" ColumnName="Encoder" />
+          <ScalarProperty Name="Url" ColumnName="Url" />
+          <ScalarProperty Name="IsSalePrice" ColumnName="IsSalePrice" />
+          <ScalarProperty Name="PriceSale" ColumnName="PriceSale" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="DigitalInformation" ColumnName="DigitalInformation" />
+          <ScalarProperty Name="ApplicationReal" ColumnName="ApplicationReal" />
+          <ScalarProperty Name="SpecialPoint" ColumnName="SpecialPoint" />
+          <ScalarProperty Name="EditUser" ColumnName="EditUser" />
+          <ScalarProperty Name="EditDate" ColumnName="EditDate" />
+          <ScalarProperty Name="GroupDeviceId" ColumnName="GroupDeviceId" />
+          <ScalarProperty Name="TimeGuarantee" ColumnName="TimeGuarantee" />
+          <ScalarProperty Name="ViewBuy" ColumnName="ViewBuy" />
+          <ScalarProperty Name="Trademark" ColumnName="Trademark" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SalesGroupDevices">
+      <EntityTypeMapping TypeName="BANHANG24Model.SalesGroupDevice">
+        <MappingFragment StoreEntitySet="SalesGroupDevice">
+          <ScalarProperty Name="Encoder" ColumnName="Encoder" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SalesImgDevices">
+      <EntityTypeMapping TypeName="BANHANG24Model.SalesImgDevice">
+        <MappingFragment StoreEntitySet="SalesImgDevice">
+          <ScalarProperty Name="SrcImage" ColumnName="SrcImage" />
+          <ScalarProperty Name="SalesDeviceID" ColumnName="SalesDeviceID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Orders">
+      <EntityTypeMapping TypeName="BANHANG24Model.Order">
+        <MappingFragment StoreEntitySet="Order">
+          <ScalarProperty Name="Sale" ColumnName="Sale" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="payment" ColumnName="payment" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="PhoneReceived" ColumnName="PhoneReceived" />
+          <ScalarProperty Name="AdressReceived" ColumnName="AdressReceived" />
+          <ScalarProperty Name="UserReceived" ColumnName="UserReceived" />
+          <ScalarProperty Name="EmailOrder" ColumnName="EmailOrder" />
+          <ScalarProperty Name="PhoneOrder" ColumnName="PhoneOrder" />
+          <ScalarProperty Name="AdressOrder" ColumnName="AdressOrder" />
+          <ScalarProperty Name="UserOrder" ColumnName="UserOrder" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="OrderDetails">
+      <EntityTypeMapping TypeName="BANHANG24Model.OrderDetail">
+        <MappingFragment StoreEntitySet="OrderDetail">
+          <ScalarProperty Name="SalesDevice_ID" ColumnName="SalesDevice_ID" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="Order_ID" ColumnName="Order_ID" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Contracts">
+      <EntityTypeMapping TypeName="BANHANG24Model.Contract">
+        <MappingFragment StoreEntitySet="Contract">
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+          <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+          <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="StoreOpen" ColumnName="StoreOpen" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Advertisements">
+      <EntityTypeMapping TypeName="BANHANG24Model.Advertisement">
+        <MappingFragment StoreEntitySet="Advertisement">
+          <ScalarProperty Name="Link" ColumnName="Link" />
+          <ScalarProperty Name="Position" ColumnName="Position" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="EditUser" ColumnName="EditUser" />
+          <ScalarProperty Name="EditDate" ColumnName="EditDate" />
+          <ScalarProperty Name="ToDate" ColumnName="ToDate" />
+          <ScalarProperty Name="FromDate" ColumnName="FromDate" />
+          <ScalarProperty Name="UrlImage" ColumnName="UrlImage" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NotificationSoftwares">
+      <EntityTypeMapping TypeName="BANHANG24Model.NotificationSoftware">
+        <MappingFragment StoreEntitySet="NotificationSoftware">
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Subdomain" ColumnName="Subdomain" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="ApplyDate" ColumnName="ApplyDate" />
+          <ScalarProperty Name="EditUser" ColumnName="EditUser" />
+          <ScalarProperty Name="EditDate" ColumnName="EditDate" />
+          <ScalarProperty Name="BodyContent" ColumnName="BodyContent" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_XaPhuong">
+      <EntityTypeMapping TypeName="BANHANG24Model.DM_XaPhuong">
+        <MappingFragment StoreEntitySet="DM_XaPhuong">
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="ID_QuanHuyen" ColumnName="ID_QuanHuyen" />
+          <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="Ma" ColumnName="Ma" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Contacts">
+      <EntityTypeMapping TypeName="BANHANG24Model.Contact">
+        <MappingFragment StoreEntitySet="Contact">
+          <ScalarProperty Name="Software" ColumnName="Software" />
+          <ScalarProperty Name="System" ColumnName="System" />
+          <ScalarProperty Name="Browser" ColumnName="Browser" />
+          <ScalarProperty Name="Devicess" ColumnName="Devicess" />
+          <ScalarProperty Name="IpAdress" ColumnName="IpAdress" />
+          <ScalarProperty Name="Ipv4" ColumnName="Ipv4" />
+          <ScalarProperty Name="TypeSoftWare" ColumnName="TypeSoftWare" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="FullName" ColumnName="FullName" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DM_GoiDichVu">
+      <EntityTypeMapping TypeName="BANHANG24Model.DM_GoiDichVu">
+        <MappingFragment StoreEntitySet="DM_GoiDichVu">
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="Gia" ColumnName="Gia" />
+          <ScalarProperty Name="SLNguoiDung" ColumnName="SLNguoiDung" />
+          <ScalarProperty Name="SLChiNhanh" ColumnName="SLChiNhanh" />
+          <ScalarProperty Name="SLMatHang" ColumnName="SLMatHang" />
+          <ScalarProperty Name="TenGoi" ColumnName="TenGoi" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LichSuGiaHanCuaHangs">
+      <EntityTypeMapping TypeName="BANHANG24Model.LichSuGiaHanCuaHang">
+        <MappingFragment StoreEntitySet="LichSuGiaHanCuaHang">
+          <ScalarProperty Name="ThoiGianGiaHan" ColumnName="ThoiGianGiaHan" />
+          <ScalarProperty Name="GiaGoiHienTai" ColumnName="GiaGoiHienTai" />
+          <ScalarProperty Name="LoaiGiaHan" ColumnName="LoaiGiaHan" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="NguoiTao" ColumnName="NguoiTao" />
+          <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+          <ScalarProperty Name="ID_GoiDichVu" ColumnName="ID_GoiDichVu" />
+          <ScalarProperty Name="SubDomain" ColumnName="SubDomain" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RegisterServiceSms">
+      <EntityTypeMapping TypeName="BANHANG24Model.RegisterServiceSm">
+        <MappingFragment StoreEntitySet="RegisterServiceSms">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="DateActivated" ColumnName="DateActivated" />
+          <ScalarProperty Name="UserActivated" ColumnName="UserActivated" />
+          <ScalarProperty Name="Note" ColumnName="Note" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="SoDienThoaiCuaHang" ColumnName="SoDienThoaiCuaHang" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="ID_SupplierSms" ColumnName="ID_SupplierSms" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SupplierSms">
+      <EntityTypeMapping TypeName="BANHANG24Model.SupplierSm">
+        <MappingFragment StoreEntitySet="SupplierSms">
+          <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="ApiSecret" ColumnName="ApiSecret" />
+          <ScalarProperty Name="ApiKey" ColumnName="ApiKey" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CuaHangNapTienDichVus">
+      <EntityTypeMapping TypeName="BANHANG24Model.CuaHangNapTienDichVu">
+        <MappingFragment StoreEntitySet="CuaHangNapTienDichVu">
+          <ScalarProperty Name="ID_PhieuNhan" ColumnName="ID_PhieuNhan" />
+          <ScalarProperty Name="NgayXacNhan" ColumnName="NgayXacNhan" />
+          <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="SoTien" ColumnName="SoTien" />
+          <ScalarProperty Name="SoDienThoaiCuaHang" ColumnName="SoDienThoaiCuaHang" />
+          <ScalarProperty Name="TenKhachHang" ColumnName="TenKhachHang" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LH_HoiDap">
+      <EntityTypeMapping TypeName="BANHANG24Model.LH_HoiDap">
+        <MappingFragment StoreEntitySet="LH_HoiDap">
+          <ScalarProperty Name="ViTri" ColumnName="ViTri" />
+          <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
+          <ScalarProperty Name="List_TinhNang" ColumnName="List_TinhNang" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+          <ScalarProperty Name="CauTraLoi" ColumnName="CauTraLoi" />
+          <ScalarProperty Name="CauHoi" ColumnName="CauHoi" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LH_NhomNganh">
+      <EntityTypeMapping TypeName="BANHANG24Model.LH_NhomNganh">
+        <MappingFragment StoreEntitySet="LH_NhomNganh">
+          <ScalarProperty Name="ViTri" ColumnName="ViTri" />
+          <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="Icon" ColumnName="Icon" />
+          <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LH_NhomNganh_TinhNang">
+      <EntityTypeMapping TypeName="BANHANG24Model.LH_NhomNganh_TinhNang">
+        <MappingFragment StoreEntitySet="LH_NhomNganh_TinhNang">
+          <ScalarProperty Name="ID_NhomNganh" ColumnName="ID_NhomNganh" />
+          <ScalarProperty Name="ID_TinhNang" ColumnName="ID_TinhNang" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LH_TinhNang">
+      <EntityTypeMapping TypeName="BANHANG24Model.LH_TinhNang">
+        <MappingFragment StoreEntitySet="LH_TinhNang">
+          <ScalarProperty Name="TenTiengViet" ColumnName="TenTiengViet" />
+          <ScalarProperty Name="ViTri" ColumnName="ViTri" />
+          <ScalarProperty Name="NgaySua" ColumnName="NgaySua" />
+          <ScalarProperty Name="GhiChu" ColumnName="GhiChu" />
+          <ScalarProperty Name="Video" ColumnName="Video" />
+          <ScalarProperty Name="NoiDung" ColumnName="NoiDung" />
+          <ScalarProperty Name="ID_Cha" ColumnName="ID_Cha" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="Icon" ColumnName="Icon" />
+          <ScalarProperty Name="NgayTao" ColumnName="NgayTao" />
+          <ScalarProperty Name="Ten" ColumnName="Ten" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SeoRedirectUrls">
+      <EntityTypeMapping TypeName="BANHANG24Model.SeoRedirectUrl">
+        <MappingFragment StoreEntitySet="SeoRedirectUrl">
+          <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UrlOld" ColumnName="UrlOld" />
+          <ScalarProperty Name="UrlNew" ColumnName="UrlNew" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DanhMucThuocQuocGias">
+      <EntityTypeMapping TypeName="BANHANG24Model.DanhMucThuocQuocGia">
+        <MappingFragment StoreEntitySet="DanhMucThuocQuocGia">
+          <ScalarProperty Name="DonViTinh" ColumnName="DonViTinh" />
+          <ScalarProperty Name="NuocSanXuat" ColumnName="NuocSanXuat" />
+          <ScalarProperty Name="HangSanXuat" ColumnName="HangSanXuat" />
+          <ScalarProperty Name="QuyCachDongGoi" ColumnName="QuyCachDongGoi" />
+          <ScalarProperty Name="HamLuong" ColumnName="HamLuong" />
+          <ScalarProperty Name="HoatChatChinh" ColumnName="HoatChatChinh" />
+          <ScalarProperty Name="SoDangKy" ColumnName="SoDangKy" />
+          <ScalarProperty Name="TenThuoc" ColumnName="TenThuoc" />
+          <ScalarProperty Name="MaThuoc" ColumnName="MaThuoc" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QueueJobs">
+      <EntityTypeMapping TypeName="BANHANG24Model.QueueJob">
+        <MappingFragment StoreEntitySet="QueueJob">
+          <ScalarProperty Name="SoLanDaChay" ColumnName="SoLanDaChay" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="ThoiGianTao" ColumnName="ThoiGianTao" />
+          <ScalarProperty Name="Subdomain" ColumnName="Subdomain" />
+          <ScalarProperty Name="IDNhatKySuDung" ColumnName="IDNhatKySuDung" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="QueueJobDones">
+      <EntityTypeMapping TypeName="BANHANG24Model.QueueJobDone">
+        <MappingFragment StoreEntitySet="QueueJobDone">
+          <ScalarProperty Name="ThoiGianHoanThanh" ColumnName="ThoiGianHoanThanh" />
+          <ScalarProperty Name="SoLanDaChay" ColumnName="SoLanDaChay" />
+          <ScalarProperty Name="TrangThai" ColumnName="TrangThai" />
+          <ScalarProperty Name="ThoiGianTao" ColumnName="ThoiGianTao" />
+          <ScalarProperty Name="Subdomain" ColumnName="Subdomain" />
+          <ScalarProperty Name="IDNhatKySuDung" ColumnName="IDNhatKySuDung" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,10 @@
+  var arr = '57t58888888888888888888888888888888888888888888888888888888888888888888888888888888884tb 45th 5ht5bh54t tyttttttttttttttttttttttttttttttttttt';
+    function ff() {
+        for (var i = 0; i < arr.length; i++) {
+
+        }
+    }
+
+    console.time('ff');
+    ff();
+    console.timeEnd('ff');

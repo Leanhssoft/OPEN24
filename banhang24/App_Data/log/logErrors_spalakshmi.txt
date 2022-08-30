@@ -1,0 +1,2 @@
+19/09/2019 5:05:42 CH Migrationdatabase: No connection string named 'spalakshmi' could be found in the application config file.
+19/09/2019 5:06:58 PM Hoàn thành update kiểm kê, tồn kho, giá vốn

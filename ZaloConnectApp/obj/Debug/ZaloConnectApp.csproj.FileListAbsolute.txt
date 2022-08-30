@@ -1,0 +1,13 @@
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\bin\Debug\ZaloConnectApp.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\bin\Debug\ZaloConnectApp.pdb
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\obj\Debug\ZaloConnectApp.csproj.AssemblyReference.cache
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\obj\Debug\ZaloConnectApp.csproj.CoreCompileInputs.cache
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\obj\Debug\ZaloConnectApp.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\obj\Debug\ZaloConnectApp.pdb
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\bin\Debug\ZaloConnectApp.dll.config
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\bin\Debug\Newtonsoft.Json.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\bin\Debug\Newtonsoft.Json.xml
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\bin\Debug\System.Net.Http.Formatting.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\bin\Debug\ZaloDotNetSDK.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\bin\Debug\System.Net.Http.Formatting.xml
+C:\Users\PhuongND\Source\Workspaces\banhang24\ZaloConnectApp\obj\Debug\ZaloConnectApp.csproj.CopyComplete

@@ -1,0 +1,2 @@
+ERROR 2021-12-11 16:06:14,993 97944ms ApiHomeController      tificationSoftware - The method 'Skip' is only supported for sorted input in LINQ to Entities. The method 'OrderBy' must be called before the method 'Skip'.
+ERROR 2021-12-11 16:06:28,211 111162ms ApiHomeController      tificationSoftware - The method 'Skip' is only supported for sorted input in LINQ to Entities. The method 'OrderBy' must be called before the method 'Skip'.

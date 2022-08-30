@@ -1,0 +1,1 @@
+05/05/2022 9:32:29 SA Migrationdatabase: No connection string named 'mandacons' could be found in the application config file.

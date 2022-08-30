@@ -1,0 +1,12 @@
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\bin\Release\Ssoft.Common.dll.config
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\bin\Release\Ssoft.Common.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\bin\Release\Ssoft.Common.pdb
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\bin\Release\EntityFramework.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\bin\Release\EntityFramework.xml
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\obj\Release\Ssoft.Common.csproj.CoreCompileInputs.cache
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\obj\Release\Ssoft.Common.csproj.CopyComplete
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\obj\Release\Ssoft.Common.dll
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\obj\Release\Ssoft.Common.pdb
+C:\Users\PhuongND\Source\Workspaces\banhang24\Ssoft.Common\obj\Release\Ssoft.Common.csproj.AssemblyReference.cache

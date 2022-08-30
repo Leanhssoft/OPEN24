@@ -1,0 +1,1 @@
+26/09/2019 9:19:13 SA Migrationdatabase: No connection string named 'manhhungdesign' could be found in the application config file.

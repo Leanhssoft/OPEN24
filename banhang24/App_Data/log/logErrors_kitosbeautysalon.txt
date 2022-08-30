@@ -1,0 +1,1 @@
+01/04/2021 9:01:11 SA Migrationdatabase: No connection string named 'kitosbeautysalon' could be found in the application config file.

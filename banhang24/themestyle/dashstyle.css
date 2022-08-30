@@ -1,0 +1,155 @@
+﻿body {
+    display:block;
+
+}
+
+#waitLoading {
+    display: block;
+    width: 130px;
+    height: 100px;
+    position: absolute;
+    top: 22%;
+    left: 51%;
+    text-align: center;
+    padding: 2px;
+    z-index: 999;
+}
+
+.load-full-loading {
+    position: fixed;
+    top: 47px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+}
+.seach-nhomhang{
+    width:calc(100% - 50px)
+}
+
+.happy-wait-loading {
+    border: 1px solid #ccc;
+    z-index: 10002;
+    color: white;
+    font-size: 14px;
+    margin-top: 10px;
+    background: #32b7b3;
+}
+
+.load-full-loading #waitLoading {
+    /*top: 34%;
+        left: 47%;
+        z-index: 30001;*/
+    top: 0%;
+    left: 47%;
+    z-index: 30007;
+}
+
+.tiny-green {
+    position: fixed;
+    margin-top: 47px;
+    width: 100%;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    z-index: 99;
+}
+
+    .tiny-green div {
+        font-family: arial;
+        font-size: 3px;
+        color: white;
+        text-align: right;
+        text-shadow: 0px 0px 2px #000;
+        text-indent: 9999px;
+        overflow: hidden;
+        background-image: -webkit-gradient(linear,71% 25%,71% 69%,color-stop(0, var(--load-progress)),color-stop(0.47, var(--load-progress)),color-stop(0.48, var(--load-progress)),color-stop(1, var(--load-progress)));
+        background-image: -webkit-linear-gradient(-90deg,var(--load-progress) 0%,var(--load-progress) 47%,var(--load-progress) 48%,var(--load-progress) 100%);
+        background-image: -moz-linear-gradient(71% 25% -180deg,var(--load-progress) 0%,var(--load-progress) 47%,var(--load-progress) 48%,var(--load-progress) 100%);
+        background-image: linear-gradient(-180deg,var(--load-progress) 0%,var(--load-progress) 47%,var(--load-progress) 48%,var(--load-progress) 100%);
+        -moz-border-radius: 10px; /* Firefox */
+        -webkit-border-radius: 10px; /* Webkit */
+        border-radius: 10px;
+    }
+
+.dropdown-backdrop {
+    position: static;
+}
+.overviewbyday {
+    position: inherit;
+    display: block;
+    width:inherit;
+    top: 10px;
+    
+}
+.graph{
+      margin-top:5px;
+}
+/* thuộc tính của dash-sumary  dòng 1*/
+.dash-sum {
+    display:inline;
+    border-radius: 5px;
+
+ }
+.calendar {
+    margin-top: 5px;
+    border-radius: 5px;
+}
+@media (min-width: 1024px)
+{
+    .overviewbyday {
+        top: 15px;
+        margin: 10px;
+        padding: 5px;
+    }
+   .dash-sum{
+        width:73.5%;
+       }
+    .calendar{
+        position:relative;
+        left:15px;
+        margin-top:10px;
+        width:25%;
+        height:100%;
+        
+    }
+
+}
+
+
+ 
+
+.dropdown-backdrop {
+    position: static;
+}
+
+.khach-hang-dashboard {
+    padding-left: 30px;
+}
+
+.calendar-wrapper {
+    width: 100%;
+}
+
+.calendar-grid .calendar-date-holder {
+    width: 100%;
+}
+
+.calendar-container {
+    margin-top:5px;
+    border-radius: 5px;
+     padding: 5px;
+     height:280px;
+     margin-bottom:10px;
+   }
+
+.left {
+    float: left;
+    padding-top: 3px;
+}
+
+    .left span {
+        line-height: 18px;
+        margin-right: 5px;
+    }
+   
