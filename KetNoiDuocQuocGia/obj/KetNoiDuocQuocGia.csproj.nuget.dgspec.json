@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj": {}
+    "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
         "projectName": "KetNoiDuocQuocGia",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
         "packagesPath": "C:\\Users\\PhuongND\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\KetNoiDuocQuocGia\\obj\\",
+        "outputPath": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\DevExpress 22.1\\Components\\Offline Packages",
@@ -39,14 +39,14 @@
           "net5.0": {
             "targetAlias": "net5.0",
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
               }
             }
           }
@@ -72,7 +72,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -81,35 +82,35 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.411\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DoiTuong\\libDM_DoiTuong.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\libDM_DoiTuong\\libDM_DoiTuong.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DoiTuong\\libDM_DoiTuong.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\libDM_DoiTuong\\libDM_DoiTuong.csproj",
         "projectName": "libDM_DoiTuong",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DoiTuong\\libDM_DoiTuong.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_DoiTuong\\libDM_DoiTuong.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_Kho\\libDM_Kho.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_Kho\\libDM_Kho.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDM_Kho\\libDM_Kho.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_Kho\\libDM_Kho.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libNS_NhanVien\\libNS_NhanVien.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libNS_NhanVien\\libNS_NhanVien.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libNS_NhanVien\\libNS_NhanVien.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libNS_NhanVien\\libNS_NhanVien.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model.Web\\Model.Web.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model.Web\\Model.Web.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model.Web\\Model.Web.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model.Web\\Model.Web.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               }
             }
           }
@@ -119,19 +120,19 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj",
         "projectName": "libDM_DonVi",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               }
             }
           }
@@ -141,40 +142,40 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj",
         "projectName": "libDM_HangHoa",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DoiTuong\\libDM_DoiTuong.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DoiTuong\\libDM_DoiTuong.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDM_DoiTuong\\libDM_DoiTuong.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_DoiTuong\\libDM_DoiTuong.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_Kho\\libDM_Kho.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_Kho\\libDM_Kho.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDM_Kho\\libDM_Kho.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_Kho\\libDM_Kho.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_NhomHangHoa\\libDM_NhomHangHoa.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_NhomHangHoa\\libDM_NhomHangHoa.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDM_NhomHangHoa\\libDM_NhomHangHoa.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_NhomHangHoa\\libDM_NhomHangHoa.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\lib_ChamSocKhachHang\\lib_ChamSocKhachHang.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\lib_ChamSocKhachHang\\lib_ChamSocKhachHang.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\lib_ChamSocKhachHang\\lib_ChamSocKhachHang.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\lib_ChamSocKhachHang\\lib_ChamSocKhachHang.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model.Service\\Model.Service.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model.Service\\Model.Service.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model.Service\\Model.Service.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model.Service\\Model.Service.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               }
             }
           }
@@ -184,22 +185,22 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_Kho\\libDM_Kho.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\libDM_Kho\\libDM_Kho.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_Kho\\libDM_Kho.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\libDM_Kho\\libDM_Kho.csproj",
         "projectName": "libDM_Kho",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_Kho\\libDM_Kho.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_Kho\\libDM_Kho.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               }
             }
           }
@@ -209,16 +210,16 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_NhomHangHoa\\libDM_NhomHangHoa.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\libDM_NhomHangHoa\\libDM_NhomHangHoa.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_NhomHangHoa\\libDM_NhomHangHoa.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\libDM_NhomHangHoa\\libDM_NhomHangHoa.csproj",
         "projectName": "libDM_NhomHangHoa",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_NhomHangHoa\\libDM_NhomHangHoa.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_NhomHangHoa\\libDM_NhomHangHoa.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               }
             }
           }
@@ -228,19 +229,19 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj",
         "projectName": "libDonViQuiDoi",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDonViQuiDoi\\libDonViQuiDoi.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               }
             }
           }
@@ -250,19 +251,19 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj",
         "projectName": "libHT_NguoiDung",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libHT_NguoiDung\\libHT_NguoiDung.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
               }
             }
           }
@@ -272,16 +273,16 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libNS_NhanVien\\libNS_NhanVien.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\libNS_NhanVien\\libNS_NhanVien.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libNS_NhanVien\\libNS_NhanVien.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\libNS_NhanVien\\libNS_NhanVien.csproj",
         "projectName": "libNS_NhanVien",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libNS_NhanVien\\libNS_NhanVien.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libNS_NhanVien\\libNS_NhanVien.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               }
             }
           }
@@ -291,16 +292,16 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\lib_ChamSocKhachHang\\lib_ChamSocKhachHang.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\lib_ChamSocKhachHang\\lib_ChamSocKhachHang.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\lib_ChamSocKhachHang\\lib_ChamSocKhachHang.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\lib_ChamSocKhachHang\\lib_ChamSocKhachHang.csproj",
         "projectName": "lib_ChamSocKhachHang",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\lib_ChamSocKhachHang\\lib_ChamSocKhachHang.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\lib_ChamSocKhachHang\\lib_ChamSocKhachHang.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               }
             }
           }
@@ -310,22 +311,22 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model.Service\\Model.Service.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\Model.Service\\Model.Service.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model.Service\\Model.Service.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\Model.Service\\Model.Service.csproj",
         "projectName": "Model.Service",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model.Service\\Model.Service.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model.Service\\Model.Service.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_DonVi\\libDM_DonVi.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
               }
             }
           }
@@ -335,19 +336,19 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model.Web\\Model.Web.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\Model.Web\\Model.Web.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model.Web\\Model.Web.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\Model.Web\\Model.Web.csproj",
         "projectName": "Model.Web",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model.Web\\Model.Web.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model.Web\\Model.Web.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
               },
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Ssoft.Common\\Ssoft.Common.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Ssoft.Common\\Ssoft.Common.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Ssoft.Common\\Ssoft.Common.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Ssoft.Common\\Ssoft.Common.csproj"
               }
             }
           }
@@ -357,16 +358,16 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj",
         "projectName": "Model",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {
-              "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
-                "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
+              "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
+                "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
               }
             }
           }
@@ -376,11 +377,11 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj",
         "projectName": "Model_banhang24vn",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {}
@@ -391,11 +392,11 @@
         "net46": {}
       }
     },
-    "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Ssoft.Common\\Ssoft.Common.csproj": {
+    "D:\\Workspace\\GitHub\\banhang24\\Ssoft.Common\\Ssoft.Common.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Ssoft.Common\\Ssoft.Common.csproj",
+        "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\Ssoft.Common\\Ssoft.Common.csproj",
         "projectName": "Ssoft.Common",
-        "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Ssoft.Common\\Ssoft.Common.csproj",
+        "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Ssoft.Common\\Ssoft.Common.csproj",
         "frameworks": {
           "net46": {
             "projectReferences": {}

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EOs2Emiv5+kIo2kOhNI9bP3oo0x3iK2eqEkkfNrOt1A4Bv+GOZWMcsdLfY0rU+eStBCsZv361/lrZcVH5NupLQ==",
+  "dgSpecHash": "HoIWsMwoM1yHHVspxZ47Va+RZGRJwvjsgVahvAnBSVQQ+ZnyxUceu/2fVLV50YTucGk8TiDto3XkDpw7KTiaYg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
+  "projectFilePath": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\PhuongND\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512"
   ],

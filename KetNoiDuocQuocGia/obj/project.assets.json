@@ -5,10 +5,14 @@
       "Newtonsoft.Json/11.0.2": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
         },
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
+            "related": ".xml"
+          }
         }
       },
       "libDM_DoiTuong/1.0.0": {
@@ -315,11 +319,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
+      "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
       "projectName": "KetNoiDuocQuocGia",
-      "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
+      "projectPath": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
       "packagesPath": "C:\\Users\\PhuongND\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\KetNoiDuocQuocGia\\obj\\",
+      "outputPath": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\DevExpress 22.1\\Components\\Offline Packages",
@@ -347,14 +351,14 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj": {
-              "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj"
+            "D:\\Workspace\\GitHub\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj": {
+              "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj"
             },
-            "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj": {
-              "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model\\Model.csproj"
+            "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
+              "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
             },
-            "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
-              "projectPath": "C:\\Users\\PhuongND\\Source\\Workspaces\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
+            "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
+              "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
             }
           }
         }
@@ -380,7 +384,8 @@
           "net47",
           "net471",
           "net472",
-          "net48"
+          "net48",
+          "net481"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -389,7 +394,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.411\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
