@@ -5,14 +5,10 @@
       "Newtonsoft.Json/11.0.2": {
         "type": "package",
         "compile": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         },
         "runtime": {
-          "lib/netstandard2.0/Newtonsoft.Json.dll": {
-            "related": ".xml"
-          }
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
       "libDM_DoiTuong/1.0.0": {
@@ -311,54 +307,45 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\PhuongND\\.nuget\\packages\\": {},
-    "C:\\Program Files\\DevExpress 22.1\\Components\\Offline Packages": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Windows 10 TIMT\\.nuget\\packages\\": {},
+    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
+      "projectUniqueName": "D:\\SSOFT\\BanHang24\\Source code\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
       "projectName": "KetNoiDuocQuocGia",
-      "projectPath": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
-      "packagesPath": "C:\\Users\\PhuongND\\.nuget\\packages\\",
-      "outputPath": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\obj\\",
+      "projectPath": "D:\\SSOFT\\BanHang24\\Source code\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
+      "packagesPath": "C:\\Users\\Windows 10 TIMT\\.nuget\\packages\\",
+      "outputPath": "D:\\SSOFT\\BanHang24\\Source code\\banhang24\\KetNoiDuocQuocGia\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files\\DevExpress 22.1\\Components\\Offline Packages",
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\PhuongND\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.2.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 22.1.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\Windows 10 TIMT\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\DevExpress 19.2\\Components\\System\\Components\\Packages": {},
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\DevExpress 22.1\\Components\\System\\Components\\Packages": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net5.0": {
           "targetAlias": "net5.0",
           "projectReferences": {
-            "D:\\Workspace\\GitHub\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj": {
-              "projectPath": "D:\\Workspace\\GitHub\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj"
+            "D:\\SSOFT\\BanHang24\\Source code\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj": {
+              "projectPath": "D:\\SSOFT\\BanHang24\\Source code\\banhang24\\libDM_HangHoa\\libDM_HangHoa.csproj"
             },
-            "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj": {
-              "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model\\Model.csproj"
+            "D:\\SSOFT\\BanHang24\\Source code\\banhang24\\Model\\Model.csproj": {
+              "projectPath": "D:\\SSOFT\\BanHang24\\Source code\\banhang24\\Model\\Model.csproj"
             },
-            "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
-              "projectPath": "D:\\Workspace\\GitHub\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
+            "D:\\SSOFT\\BanHang24\\Source code\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj": {
+              "projectPath": "D:\\SSOFT\\BanHang24\\Source code\\banhang24\\Model_banhang24vn\\Model_banhang24vn.csproj"
             }
           }
         }
@@ -384,8 +371,7 @@
           "net47",
           "net471",
           "net472",
-          "net48",
-          "net481"
+          "net48"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -394,7 +380,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

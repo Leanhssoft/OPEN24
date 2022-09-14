@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "HoIWsMwoM1yHHVspxZ47Va+RZGRJwvjsgVahvAnBSVQQ+ZnyxUceu/2fVLV50YTucGk8TiDto3XkDpw7KTiaYg==",
+  "dgSpecHash": "HvGCmbtzOtzv1Oz0lpyo4v+3j6QCFtJ3qHrw+nPBtxgvRGTgwGFKX0n8FBbU1NAgbZ8IfUEIB2E5kc+lRxPHxg==",
   "success": true,
-  "projectFilePath": "D:\\Workspace\\GitHub\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
+  "projectFilePath": "D:\\SSOFT\\BanHang24\\Source code\\banhang24\\KetNoiDuocQuocGia\\KetNoiDuocQuocGia.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\PhuongND\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512"
+    "C:\\Users\\Windows 10 TIMT\\.nuget\\packages\\newtonsoft.json\\11.0.2\\newtonsoft.json.11.0.2.nupkg.sha512"
   ],
   "logs": []
 }

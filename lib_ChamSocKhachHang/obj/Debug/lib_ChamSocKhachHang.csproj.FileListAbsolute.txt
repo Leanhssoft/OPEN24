@@ -16,3 +16,21 @@ C:\Users\PhuongND\Source\Workspaces\banhang24\lib_ChamSocKhachHang\obj\Debug\lib
 C:\Users\PhuongND\Source\Workspaces\banhang24\lib_ChamSocKhachHang\obj\Debug\lib_ChamSocKhachHang.dll
 C:\Users\PhuongND\Source\Workspaces\banhang24\lib_ChamSocKhachHang\obj\Debug\lib_ChamSocKhachHang.pdb
 C:\Users\PhuongND\Source\Workspaces\banhang24\lib_ChamSocKhachHang\obj\Debug\lib_ChamSocKhachHang.csproj.AssemblyReference.cache
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\lib_ChamSocKhachHang.dll.config
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\lib_ChamSocKhachHang.dll
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\lib_ChamSocKhachHang.pdb
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\EntityFramework.dll
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\EntityFramework.SqlServer.dll
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\Model.dll
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\Model_banhang24vn.dll
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\Model.pdb
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\Model.dll.config
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\EntityFramework.xml
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\EntityFramework.SqlServer.xml
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\Model_banhang24vn.pdb
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\bin\Debug\Model_banhang24vn.dll.config
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\obj\Debug\lib_ChamSocKhachHang.csprojAssemblyReference.cache
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\obj\Debug\lib_ChamSocKhachHang.csproj.CoreCompileInputs.cache
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\obj\Debug\lib_ChamSocKhachHang.csproj.CopyComplete
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\obj\Debug\lib_ChamSocKhachHang.dll
+D:\SSOFT\BanHang24\Source code\banhang24\lib_ChamSocKhachHang\obj\Debug\lib_ChamSocKhachHang.pdb

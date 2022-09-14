@@ -1,8 +1,0 @@
-C:\Users\PhuongND\Source\Workspaces\banhang24\AsposeCellsDocument\bin\Debug\AsposeCellsDocument.dll
-C:\Users\PhuongND\Source\Workspaces\banhang24\AsposeCellsDocument\bin\Debug\AsposeCellsDocument.pdb
-C:\Users\PhuongND\Source\Workspaces\banhang24\AsposeCellsDocument\bin\Debug\Aspose.Cells.dll
-C:\Users\PhuongND\Source\Workspaces\banhang24\AsposeCellsDocument\obj\Debug\AsposeCellsDocument.csproj.CoreCompileInputs.cache
-C:\Users\PhuongND\Source\Workspaces\banhang24\AsposeCellsDocument\obj\Debug\AsposeCellsDocument.csproj.CopyComplete
-C:\Users\PhuongND\Source\Workspaces\banhang24\AsposeCellsDocument\obj\Debug\AsposeCellsDocument.dll
-C:\Users\PhuongND\Source\Workspaces\banhang24\AsposeCellsDocument\obj\Debug\AsposeCellsDocument.pdb
-C:\Users\PhuongND\Source\Workspaces\banhang24\AsposeCellsDocument\obj\Debug\AsposeCellsDocument.csproj.AssemblyReference.cache
