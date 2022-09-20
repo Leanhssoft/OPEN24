@@ -42,7 +42,7 @@
                 <li><a href="#info" data-toggle="tab" data-bind="click :GetThietLapHeThong">Thiết lập tính năng</a></li>
                 <li><a href="#sms" data-toggle="tab" data-bind="click: LoadThongTinKichHoat">Dịch vụ SMS</a></li>
                 @*<li><a href="#zaloConnect" data-bind="click: GetStatusZaloConnection" data-toggle="tab">Zalo</a></li>
-                <li><a href="#TemplateDatLich" data-toggle="tab">Mẫu đặt lịch</a></li>*@
+                    <li><a href="#TemplateDatLich" data-toggle="tab">Mẫu đặt lịch</a></li>*@
             </ul>
         </div>
         <div class="col-lg-10 col-md-9 col-xs-12 nopadding">
@@ -120,7 +120,7 @@
                     <div class="information-es floatleft ">
                         <div class="col-xs-12 col-ms-6 col-md-6 col-lg-4">
                             <ul>
-                                <li>
+                                <li style="display:none">
                                     <div class="item-es">
                                         <div class="icon-es">
                                             <span class="icon-IconSVG-27" data-bind="css: {'cl': ThietLap().GiaVonTrungBinh}"></span>
@@ -158,6 +158,7 @@
                                         </div>
                                     </div>
                                 </li>
+                                <!-- ko if: !$root.IsGara()-->
                                 <li>
                                     <div class="item-es">
                                         <div class="icon-es">
@@ -178,7 +179,8 @@
                                     </div>
                                     <a href="#" class="datail-TH tichdiem" data-bind="click: $root.clickShowTichDiem">Chi tiết</a>
                                 </li>
-                                <li>
+                                <!--/ko-->
+                                <li style="display:none">
                                     <div class="item-es">
                                         <div class="icon-es">
                                             <span class="icon-IconSVG-39" data-bind="css: {'cl': ThietLap().CoDonViTinh}"></span>
@@ -217,6 +219,7 @@
                                     </div>
                                     <a href="#" class="datail-TH gioihanthoitrahang" data-toggle="modal" data-bind="click: clickShowGioiHanTH" data-target="#datail-TH">Chi tiết</a>
                                 </li>
+                                <!-- ko if: !$root.IsGara()-->
                                 <li>
                                     <div class="item-es">
                                         <div class="icon-es">
@@ -237,48 +240,8 @@
                                     </div>
                                     <a href="#" class="datail-TH khuyenmai" data-toggle="modal" data-target="#datail-TH5">Chi tiết</a>
                                 </li>
-                            </ul>
-                        </div>
-                        <div class="col-xs-12 col-ms-6 col-md-6 col-lg-4">
-                            <ul>
-                                <li>
-                                    <div class="item-es">
-                                        <div class="icon-es">
-                                            <span class="icon-IconSVG-33" data-bind="css: {'cl': ThietLap().SanPhamCoThuocTinh}"></span>
-                                        </div>
-                                        <div class="checkbox-es ">
-                                            <div class="setup-right">
-                                                Sản phẩm có thuộc tính
-                                            </div>
-                                            <div class="setup-left">
-                                                <a href="javascript:void(0)" class="setup-cheack" data-bind="css: {'cl': ThietLap().SanPhamCoThuocTinh}" id="cbSanPhamCoThuocTinh"></a>
-                                                <input type="checkbox" data-bind="checked: ThietLap().SanPhamCoThuocTinh, checkedValue:true" />
-                                            </div>
-                                        </div>
-                                        <div class="infor">
-                                            <i class="fa fa-info-circle"></i>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="item-es">
-                                        <div class="icon-es">
-                                            <span data-bind="css: {'cl': ThietLap().BanHangOffline}"><i class="fa fa-wifi"></i></span>
-                                        </div>
-                                        <div class="checkbox-es ">
-                                            <div class="setup-right">
-                                                Cho phép bán hàng khi mất kết nối Internet
-                                            </div>
-                                            <div class="setup-left">
-                                                <a href="javascript:void(0)" class="setup-cheack" data-bind="css: {'cl': ThietLap().BanHangOffline}" id="cbBanHangOffline"></a>
-                                                <input type="checkbox" data-bind="checked: ThietLap().BanHangOffline, checkedValue:true" />
-                                            </div>
-                                        </div>
-                                        <div class="infor">
-                                            <i class="fa fa-info-circle"></i>
-                                        </div>
-                                    </div>
-                                </li>
+                                <!--/ko-->
+                                <!-- ko if: $root.IsGara()-->
                                 <li>
                                     <div class="item-es">
                                         <div class="icon-es">
@@ -298,6 +261,70 @@
                                         </div>
                                     </div>
                                 </li>
+                                <!--/ko-->
+                            </ul>
+                        </div>
+                        <div class="col-xs-12 col-ms-6 col-md-6 col-lg-4">
+                            <ul>
+                                <li style="display:none">
+                                    <div class="item-es">
+                                        <div class="icon-es">
+                                            <span class="icon-IconSVG-33" data-bind="css: {'cl': ThietLap().SanPhamCoThuocTinh}"></span>
+                                        </div>
+                                        <div class="checkbox-es ">
+                                            <div class="setup-right">
+                                                Sản phẩm có thuộc tính
+                                            </div>
+                                            <div class="setup-left">
+                                                <a href="javascript:void(0)" class="setup-cheack" data-bind="css: {'cl': ThietLap().SanPhamCoThuocTinh}" id="cbSanPhamCoThuocTinh"></a>
+                                                <input type="checkbox" data-bind="checked: ThietLap().SanPhamCoThuocTinh, checkedValue:true" />
+                                            </div>
+                                        </div>
+                                        <div class="infor">
+                                            <i class="fa fa-info-circle"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li style="display:none">
+                                    <div class="item-es">
+                                        <div class="icon-es">
+                                            <span data-bind="css: {'cl': ThietLap().BanHangOffline}"><i class="fa fa-wifi"></i></span>
+                                        </div>
+                                        <div class="checkbox-es ">
+                                            <div class="setup-right">
+                                                Cho phép bán hàng khi mất kết nối Internet
+                                            </div>
+                                            <div class="setup-left">
+                                                <a href="javascript:void(0)" class="setup-cheack" data-bind="css: {'cl': ThietLap().BanHangOffline}" id="cbBanHangOffline"></a>
+                                                <input type="checkbox" data-bind="checked: ThietLap().BanHangOffline, checkedValue:true" />
+                                            </div>
+                                        </div>
+                                        <div class="infor">
+                                            <i class="fa fa-info-circle"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- ko if: !$root.IsGara()-->
+                                <li>
+                                    <div class="item-es">
+                                        <div class="icon-es">
+                                            <span class="icon-IconSVG-36" data-bind="css: {'cl': ThietLap().DatHangXuatAm}"></span>
+                                        </div>
+                                        <div class="checkbox-es ">
+                                            <div class="setup-right">
+                                                Cho phép đặt hàng khi hết tồn kho
+                                            </div>
+                                            <div class="setup-left">
+                                                <a href="javascript:void(0)" class="setup-cheack" data-bind="css: {'cl': ThietLap().DatHangXuatAm}" id="cbDatHangXuatAm"></a>
+                                                <input type="checkbox" data-bind="checked: ThietLap().DatHangXuatAm, checkedValue:true" />
+                                            </div>
+                                        </div>
+                                        <div class="infor">
+                                            <i class="fa fa-info-circle"></i>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!--/ko-->
                                 <li>
                                     <div class="item-es">
                                         <div class="icon-es">
@@ -357,6 +384,11 @@
                                     </div>
                                     <a href="javascript:void(0)" class="datail-TH machungtu" data-bind="click: showThietLapMaChungTu">Chi tiết</a>
                                 </li>
+                                <!-- ko if: $root.IsGara()-->
+                                <li class="height-30" data-toggle="modal" data-target="#modalSetupBaoDuong" style="text-align: left; padding-left: 13px;">
+                                    Cài đặt lịch nhắc bảo dưỡng
+                                </li>
+                                <!--/ko-->
                             </ul>
                         </div>
                         <div class="col-xs-12 col-ms-6 col-md-6 col-lg-4">
@@ -401,6 +433,7 @@
                                         </div>
                                     </div>
                                 </li>
+                                <!-- ko if: !$root.IsGara()-->
                                 <li>
                                     <div class="item-es" data-bind="click:$root.ShowThongBaoLoHang">
                                         <div class="icon-es">
@@ -421,6 +454,7 @@
                                     </div>
                                     <a href="#" class="datail-TH lohang" data-toggle="modal" data-target="#modalPopup_lohanghoa">Chi tiết</a>
                                 </li>
+                                <!--/ko-->
                                 <li>
                                     <div class="item-es">
                                         <div class="icon-es">
@@ -459,7 +493,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="height-30" data-toggle="modal" data-target="#modalSetupBaoDuong" style="text-align: left; padding-left: 13px;">Cài đặt lịch nhắc bảo dưỡng</li>
+                              
                             </ul>
                             <div style="" class="text-right">
                                 <button type="button" class="btn btn-save" data-bind="click: LuuThietLap"> <i class="fa fa-save"></i> Lưu</button>
@@ -1683,8 +1717,8 @@
     // Adjusting the iframe height onload event
     frame.onload = function () {
         /*frame.contentWindow.document.documentElement.style.setProperty('--color-main', '#c97d39');*/
-        
-     }
+
+    }
 
     frame.onload = setInterval(function ()
     // function execute while load the iframe
@@ -1703,33 +1737,33 @@
     }, 500)
 </script>
 @*<script>
-        (function (global) {
-            (function (w) {
-                function l() {
-                    var files = [
-                        'https://temp.open24.vn/contents/lib/vue.min.js',
-                        'https://temp.open24.vn/contents/lib/moment.js',
-                        'https://temp.open24.vn/Contents/js/public.js'
-                    ];
+            (function (global) {
+                (function (w) {
+                    function l() {
+                        var files = [
+                            'https://temp.open24.vn/contents/lib/vue.min.js',
+                            'https://temp.open24.vn/contents/lib/moment.js',
+                            'https://temp.open24.vn/Contents/js/public.js'
+                        ];
 
-                    var s0 = document.getElementsByTagName('script')[0];
+                        var s0 = document.getElementsByTagName('script')[0];
 
-                    for (var i = 0; i < files.length; i++) {
-                        var s1 = document.createElement('script');
-                        s1.src = files[i];
-                        s1.charset = 'UTF-8';
-                        s1.setAttribute('crossorigin', '*');
-                        s0.parentNode.insertBefore(s1, s0);
+                        for (var i = 0; i < files.length; i++) {
+                            var s1 = document.createElement('script');
+                            s1.src = files[i];
+                            s1.charset = 'UTF-8';
+                            s1.setAttribute('crossorigin', '*');
+                            s0.parentNode.insertBefore(s1, s0);
+                        }
                     }
-                }
-                if (document.readyState === 'complete') {
-                    l();
-                } else if (w.attachEvent) {
-                    w.attachEvent('onload', l);
-                } else {
-                    w.addEventListener('load', l, false);
-                }
-            })(window);
+                    if (document.readyState === 'complete') {
+                        l();
+                    } else if (w.attachEvent) {
+                        w.attachEvent('onload', l);
+                    } else {
+                        w.addEventListener('load', l, false);
+                    }
+                })(window);
 
-        })(window);
-</script>*@
+            })(window);
+    </script>*@

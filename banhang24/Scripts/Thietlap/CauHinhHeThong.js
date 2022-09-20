@@ -2,7 +2,7 @@
     var self = this;
     self.ID = ko.observable();
     self.ID_DonVi = ko.observable();
-    self.GiaVonTrungBinh = ko.observable(false);
+    self.GiaVonTrungBinh = ko.observable(true);
     self.CoDonViTinh = ko.observable(false);
     self.DatHang = ko.observable(false);
     self.XuatAm = ko.observable(false);
