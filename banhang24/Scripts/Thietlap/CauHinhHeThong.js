@@ -592,7 +592,6 @@ var ViewModel = function () {
     self.LuuThietLap = function (formElement) {
         //giá vốn trung bình
         var cbGiaVonTrungBinhClass = document.getElementById("cbGiaVonTrungBinh").getAttribute("class");
-        //console.log(cbGiaVonTrungBinhClass.indexOf("cl"));
         if (cbGiaVonTrungBinhClass.indexOf("cl") > 0) {
             self.ThietLap().GiaVonTrungBinh(true);
         }
@@ -624,17 +623,16 @@ var ViewModel = function () {
             self.ThietLap().DatHangXuatAm(false);
         }
         //lô hàng
-        var cbLoHangClass = document.getElementById("cbLoHang").getAttribute("class");
-        if (cbLoHangClass.indexOf("cl") > 0) {
+        var cbLoHangClass = $("#cbLoHang").attr("class");
+        if (!commonStatisJs.CheckNull(cbLoHangClass) && cbLoHangClass.indexOf("cl") > 0) {
             self.ThietLap().LoHang(true);
         }
         else {
             self.ThietLap().LoHang(false);
         }
         //tích điểm
-
-        var cbTichDiemClass = document.getElementById("cbTichDiem").getAttribute("class");
-        if (cbTichDiemClass.indexOf("cl") > 0) {
+        var cbTichDiemClass = $("#cbTichDiem").attr("class");
+        if (!commonStatisJs.CheckNull(cbTichDiemClass) && cbTichDiemClass.indexOf("cl") > 0) {
             self.ThietLap().TinhNangTichDiem(true);
         }
         else {
@@ -738,8 +736,8 @@ var ViewModel = function () {
         //    self.ThietLap().SoLuongTrenChungTu(false);
         //}
 
-        var cbKhuyenMai = document.getElementById("cbKhuyenMai").getAttribute("class");
-        if (cbKhuyenMai.indexOf("cl") > 0) {
+        var cbKhuyenMai = $("#cbKhuyenMai").attr("class");
+        if (!commonStatisJs.CheckNull(cbKhuyenMai) && cbKhuyenMai.indexOf("cl") > 0) {
             self.ThietLap().KhuyenMai(true);
         }
         else {
