@@ -21,4 +21,11 @@ namespace Model
         public static string username = "sa";
         public static string password = "123asd!@#123";
     }
+
+    public class SqlConnection1
+    {
+        public static string servername = "103.124.93.230";
+        public static string username = "sa";
+        public static string password = "123asd!@#123";
+    }
 }

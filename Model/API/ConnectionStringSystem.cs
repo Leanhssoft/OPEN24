@@ -52,10 +52,18 @@ namespace Model
             return strInitialCatalog;
         }
 
-        public static string CreateConnectionString(string ConnectionName)
+        public static string CreateConnectionString(string ConnectionName, int server = 0)
         {
             string databaseName = "SSOFT_" + ConnectionName.ToUpper();
-            string strConn = "data source=" + SqlConnection.servername + ";initial catalog=" + databaseName + ";persist security info=True;user id=" + SqlConnection.username + ";password=" + SqlConnection.password + ";MultipleActiveResultSets=True;App=EntityFramework";
+            string strConn = "";
+            if (server == 0)
+            {
+                strConn = "data source=" + SqlConnection.servername + ";initial catalog=" + databaseName + ";persist security info=True;user id=" + SqlConnection.username + ";password=" + SqlConnection.password + ";MultipleActiveResultSets=True;App=EntityFramework";
+            }
+            else
+            {
+                strConn = "data source=" + SqlConnection1.servername + ";initial catalog=" + databaseName + ";persist security info=True;user id=" + SqlConnection1.username + ";password=" + SqlConnection1.password + ";MultipleActiveResultSets=True;App=EntityFramework";
+            }    
             string strProviderName = "System.Data.SqlClient";
             try
             {

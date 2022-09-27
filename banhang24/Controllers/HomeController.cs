@@ -189,8 +189,14 @@ namespace banhang24.Controllers
                 try
                 {
                     //
-
-                    string strCnn = ConnectionStringSystem.CreateConnectionString(subdomain);
+                    Guid? IdNganhKinhDoanh = Guid.Empty;
+                    IdNganhKinhDoanh = CuaHangDangKyService.Get(subdomain).ID_NganhKinhDoanh;
+                    int server = 0;
+                    if (IdNganhKinhDoanh == new Guid("C16EDDA0-F6D0-43E1-A469-844FAB143014"))
+                    {
+                        server = 1;
+                    }
+                    string strCnn = ConnectionStringSystem.CreateConnectionString(subdomain, server);
                     //banhang24.App_Start.App_API.VMGsms.SendMsg(M_DangKySuDung.Get(p => p.SubDomain == subdomain).SoDienThoai, id);
                     if (strCnn == "")
                     {
@@ -218,10 +224,17 @@ namespace banhang24.Controllers
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 //db.HT_CongTy.FirstOrDefault();
+                Guid? IdNganhKinhDoanh = Guid.Empty;
+                IdNganhKinhDoanh = CuaHangDangKyService.Get(subdomain).ID_NganhKinhDoanh;
+                int server = 0;
+                if(IdNganhKinhDoanh == new Guid("C16EDDA0-F6D0-43E1-A469-844FAB143014"))
+                {
+                    server = 1;
+                }
                 classHT_NguoiDung classHTNguoiDung = new classHT_NguoiDung(db);
                 if (subdomain != null && subdomain.Trim() != "")
                 {
-                    if (ConnectionStringSystem.CreateConnectionString(subdomain) == "")
+                    if (ConnectionStringSystem.CreateConnectionString(subdomain, server) == "")
                     {
                         SystemDBContext.MigrationDatabase(subdomain);
 
