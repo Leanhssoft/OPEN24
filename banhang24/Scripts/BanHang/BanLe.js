@@ -8554,14 +8554,16 @@ var NewModel_BanHangLe = function () {
                 }
                 // update status for HDDatHang
                 UpdateStatus_HDDatHang();
-                Call_6Func();
+             
                 ShowMessage_Success('Thanh toán hóa đơn thành công');
 
                 vmThemMoiKhach.NangNhomKhachHang(objHDAdd.ID_DoiTuong);
 
                 vmUpAnhHoaDon.InvoiceChosing = objHDAdd;
                 vmUpAnhHoaDon.SaveImage();
+
                 BindHD_CTHDafterSave();
+                Call_6Func();
             }
             else {
                 SaveDiary_WhenTimeOut(myData.objHoaDon, 'network limit');
