@@ -3091,7 +3091,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 if (db != null)
                 {
                     var data = from hd in db.BH_HoaDon
-                               where hd.ID_HoaDon == id && hd.ChoThanhToan ==false
+                               where hd.ID_HoaDon == id && hd.ChoThanhToan == false
                                select hd;
 
                     if (data != null && data.Count() > 0)
@@ -7301,6 +7301,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     }
                     itemBH_HoaDon.MaHoaDon = sMaHoaDon;
                     itemBH_HoaDon.ID_DonVi = objHoaDon.ID_DonVi;
+                    itemBH_HoaDon.ID_NhanVien = objHoaDon.ID_NhanVien;
                     itemBH_HoaDon.ID_CheckIn = objHoaDon.ID_CheckIn;
                     itemBH_HoaDon.LoaiHoaDon = objHoaDon.LoaiHoaDon;
                     itemBH_HoaDon.TongTienHang = objHoaDon.TongTienHang;
@@ -7322,6 +7323,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     if (err == string.Empty)
                     {
                         Guid? idHoaDon = null;
+                        string chinhanhnhan = _classDMDV.Get(p => p.ID == objHoaDon.ID_CheckIn).TenDonVi;
                         if (yeucau == 1)
                         {
                             idHoaDon = itemBH_HoaDon.ID;// used to save diary (update TonKho)
@@ -7342,7 +7344,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             tblCNChuyen.ID_DonVi = objHoaDon.ID_DonVi;
                             tblCNChuyen.LoaiThongBao = 1;
                             tblCNChuyen.NoiDungThongBao = "<p onclick=\"loaddadoc('" + tblCNChuyen.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('2', '" + sMaHoaDon + "','" + tblCNChuyen.ID + "')\">" + "<span class=\"blue\">" + sMaHoaDon
-                                + " </span>" + " </a> đã được chuyển đến chi nhánh </p>";
+                                + " </span>" + " </a> đã được chuyển đến chi nhánh " + chinhanhnhan + "  </p>";
                             tblCNChuyen.NgayTao = DateTime.Now;
                             tblCNChuyen.NguoiDungDaDoc = "";
                             db.HT_ThongBao.Add(tblCNChuyen);
@@ -7389,11 +7391,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         }
                         listND = string.Concat(", Tổng giá trị chuyển: ", string.Format("{0:n0}", itemBH_HoaDon.TongTienHang).Replace(".", ","));
 
-                        //classhoadonchitiet.UpdateTonKhoGiaVon_whenUpdateCTHD(itemBH_HoaDon.ID, objHoaDon.ID_DonVi, itemBH_HoaDon.NgayLapHoaDon);
                         #endregion
 
                         string fromto = string.Concat(", từ chi nhánh:", _classDMDV.Get(p => p.ID == objHoaDon.ID_DonVi).TenDonVi,
-                            ", tới chi nhánh: ", _classDMDV.Get(p => p.ID == objHoaDon.ID_CheckIn).TenDonVi,
+                            ", tới chi nhánh: ", chinhanhnhan,
                             ", thời gian: ", itemBH_HoaDon.NgayLapHoaDon.ToString("dd/MM/yyyy HH:mm:ss"));
                         HT_NhatKySuDung hT_NhatKySuDung = new HT_NhatKySuDung();
                         hT_NhatKySuDung.ID = Guid.NewGuid();
@@ -7615,6 +7616,18 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 httbCH.NgayTao = DateTime.Now;
                                 httbCH.NguoiDungDaDoc = "";
                                 db.HT_ThongBao.Add(httbCH);
+
+
+                                HT_ThongBao tbCNNhan = new HT_ThongBao();
+                                tbCNNhan.ID = Guid.NewGuid();
+                                tbCNNhan.ID_DonVi = itemBH_HoaDon.ID_CheckIn ?? itemBH_HoaDon.ID_DonVi;
+                                tbCNNhan.LoaiThongBao = 1; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật
+                                tbCNNhan.NoiDungThongBao = "<p onclick=\"loaddadoc('" + tbCNNhan.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('2', '" + mahoadon + "','" + tbCNNhan.ID + "')\">" + " <span class=\"blue\">" + mahoadon
+                                    + " </span>" + " </a> đã được nhận thành công </p>";
+                                tbCNNhan.NgayTao = DateTime.Now;
+                                tbCNNhan.NguoiDungDaDoc = "";
+                                db.HT_ThongBao.Add(tbCNNhan);
+
                                 db.SaveChanges();
                                 break;
                         }
@@ -7636,19 +7649,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         db.SaveChanges();
                         new SaveDiary().AddQueueJob(nhatky);
 
-                        //if (yeucau != 2)
-                        //{
-                        //    if (yeucau == 1)
-                        //    {
-                        //        classhoadonchitiet.UpdateTonKhoGiaVon_whenUpdateCTHD(itemBH_HoaDon.ID, nhatky.ID_DonVi, itemBH_HoaDon.NgayLapHoaDon);
-                        //    }
-                        //    else
-                        //    {
-                        //        // nhanhang: run douple: update chinhanhnhan --> chinhanhchuyen
-                        //        classhoadonchitiet.UpdateTonKhoGiaVon_whenUpdateCTHD(itemBH_HoaDon.ID, nhatky.ID_DonVi, itemBH_HoaDon.NgaySua ?? DateTime.Now);
-                        //        classhoadonchitiet.UpdateTonKhoGiaVon_whenUpdateCTHD(itemBH_HoaDon.ID, itemBH_HoaDon.ID_DonVi, itemBH_HoaDon.NgayLapHoaDon);
-                        //    }
-                        //}
                         #endregion
 
                         return Json(new
@@ -7694,6 +7694,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     BH_HoaDon objHoaDon = data["objHoaDon"].ToObject<BH_HoaDon>();
                     List<BH_HoaDon_ChiTiet> objCTHoaDon = data["objCTHoaDon"].ToObject<List<BH_HoaDon_ChiTiet>>();
+                    Guid idnhanvien = data["idnhanvien"].ToObject<Guid>();
 
                     if (!string.IsNullOrEmpty(objHoaDon.MaHoaDon))
                     {
@@ -7854,7 +7855,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         hT_NhatKySuDung.LoaiNhatKy = 2;
                         hT_NhatKySuDung.ChucNang = "Chuyển hàng";
                         hT_NhatKySuDung.ThoiGian = DateTime.Now;
-                        hT_NhatKySuDung.ID_NhanVien = itemBH_HoaDon.ID_NhanVien;
+                        hT_NhatKySuDung.ID_NhanVien = idnhanvien;
                         hT_NhatKySuDung.ID_HoaDon = itemBH_HoaDon.ID;
                         hT_NhatKySuDung.LoaiHoaDon = 10;
                         hT_NhatKySuDung.ThoiGianUpdateGV = dateOld;
