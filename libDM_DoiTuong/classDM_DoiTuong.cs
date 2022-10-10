@@ -2167,6 +2167,9 @@ namespace libDM_DoiTuong
                     break;
                 case 3:
                     autoCode = "BH";
+                    break; 
+                case 4:
+                    autoCode = "GT";
                     break;
                 default:
                     autoCode = "TD";
