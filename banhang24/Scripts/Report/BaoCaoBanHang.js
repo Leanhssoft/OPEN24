@@ -1062,10 +1062,9 @@
     self.LoadReport = function () {
         LoadingForm(true);
         self.BaoCaoBanHangTitle();
-        //$('.table-reponsive').css('display', 'none');
+
         $('.showNhomHang, .showLoaiHang, .showTrangThaiHang').hide();
         $('.cutomer_DoanhThu, .cutomer_SoLanDen, .cutomer_TrangThai, .customer_NgayGiaoDichMax,.customer_NgayTaoKH').hide();
-        $("#iconSort").remove();
         self.clearTabalePrint();
         _pageNumber_CT = 1;
         self.pageNumber_CTNV(_pageNumber_CT);
@@ -1113,6 +1112,8 @@
             TodayBC: null,
             TenChiNhanh: null,
             lstIDChiNhanh: self.LstIDDonVi(),
+            ColumnSort: self.ColumnSort(),
+            TypeSort: self.TypeSort() === 2 ? 'DESC' : 'ASC',
         }
 
         var arr = self.ChungTus().filter(x => x.ID !== 22);
@@ -1610,40 +1611,27 @@
             Export_Time: self.TodayBC(),
             Export_ChiNhanh: self.TenChiNhanh(),
             ColumnSort: self.ColumnSort(),
-            TypeSort: self.TypeSort() === 1 ? 'desc' : 'asc',
+            TypeSort: self.TypeSort() === 2 ? 'DESC' : 'ASC',
         }
     }
 
-    $('#kh_tonghop thead tr').on('click', 'th', function () {
-        var id = $(this).attr('id');
-        if (id !== undefined) {
-            switch (id) {
-                case "Customer_solanden":
-                    self.ColumnSort("SoLanDen");
-                    break;
-                case "Customer_doanhthu":
-                    self.ColumnSort("DoanhThu");
-                    break;
-                case "Customer_ngaygiaodichgannhat":
-                    self.ColumnSort("NgayGiaoDichGanNhat");
-                    break;
-            }
-            SortGrid(id);
-        }
-    });
-
-    function SortGrid(item) {
-        $("#iconSort").remove();
-        self.LoadReport();
-        if (self.TypeSort() === 1) {
-            self.TypeSort(2);
-            $('#' + item).append(' ' + "<i id='iconSort' class='fa fa-caret-down' aria-hidden='true'></i>");
-        }
-        else {
-            self.TypeSort(1);
-            $('#' + item).append(' ' + "<i id='iconSort' class='fa fa-caret-up' aria-hidden='true'></i>");
-        }
-    };
+    //$('#kh_tonghop thead tr').on('click', 'th', function () {
+    //    var id = $(this).attr('id');
+    //    if (id !== undefined) {
+    //        switch (id) {
+    //            case "Customer_solanden":
+    //                self.ColumnSort("SoLanDen");
+    //                break;
+    //            case "Customer_doanhthu":
+    //                self.ColumnSort("DoanhThu");
+    //                break;
+    //            case "Customer_ngaygiaodichgannhat":
+    //                self.ColumnSort("NgayGiaoDichGanNhat");
+    //                break;
+    //        }
+    //        SortGrid(id);
+    //    }
+    //});
 
     self.BaoCaoBanHangChiTiet_TheoNhanVien = ko.observableArray();
     self.BaoCaoBanHangChiTiet_TheoKhachHang = ko.observableArray();
@@ -2307,83 +2295,54 @@
     // sắp xếp bảng
     function sortByKeyTangDan(array, key) {
         return array.sort(function (a, b) {
-            var x = a[key]; var y = b[key];
+            let x = a[key]; let y = b[key];
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         });
     }
     function sortByKeyGiamGian(array, key) {
         return array.sort(function (a, b) {
-            var x = a[key]; var y = b[key];
+            let x = a[key]; let y = b[key];
             return ((x > y) ? -1 : ((x < y) ? 1 : 0));
         });
     }
     self.sort = ko.observable(0);
-    self.sortTable = function (array, key, item) {
-        $("#iconSort").remove();
+    self.sortTable = function (array) {
+        let key = self.ColumnSort();
         if (self.sort() === 0) {
             array = sortByKeyTangDan(array, key);
-            self.BaoCaoBanHang_TheoNhomHang(array);
-            self.sort(1);
-            $('#' + item).append(' ' + "<i id='iconSort' class='fa fa-caret-down' aria-hidden='true'></i>");
-            switch (self.check_MoiQuanTam()) {
-                case 1:
-                    self.BaoCaoBanHang_TongHop(array);
-                    break;
-                case 2:
-                    self.BaoCaoBanHang_ChiTiet(array);
-                    break;
-                case 3:
-                    self.BaoCaoBanHang_TheoNhomHang(array);
-                    break;
-                case 4:
-                    self.BaoCaoBanHang_TheoKhachHang(array);
-                    break;
-                case 6:
-                    self.BaoCaoBanHang_TheoNhanVien(array);
-                    break;
-                case 7:
-                    self.BaoCaoBanHang_HangTraLai(array);
-                    break;
-                case 8:
-                    self.BaoCaoBanHang_LoiNhuan(array);
-                    break;
-                case 9:
-                    self.BaoCaoHangKhuyenMai(array);
-                    break;
-            }
         }
         else {
             array = sortByKeyGiamGian(array, key);
-            self.BaoCaoBanHang_TheoNhomHang(array);
-            self.sort(0);
-            $('#' + item).append(' ' + "<i id='iconSort' class='fa fa-caret-up' aria-hidden='true'></i>");
-            switch (self.check_MoiQuanTam()) {
-                case 1:
-                    self.BaoCaoBanHang_TongHop(array);
-                    break;
-                case 2:
-                    self.BaoCaoBanHang_ChiTiet(array);
-                    break;
-                case 3:
-                    self.BaoCaoBanHang_TheoNhomHang(array);
-                    break;
-                case 4:
-                    self.BaoCaoBanHang_TheoKhachHang(array);
-                    break;
-                case 6:
-                    self.BaoCaoBanHang_TheoNhanVien(array);
-                    break;
-                case 7:
-                    self.BaoCaoBanHang_HangTraLai(array);
-                    break;
-                case 8:
-                    self.BaoCaoBanHang_LoiNhuan(array);
-                    break;
-                case 9:
-                    self.BaoCaoHangKhuyenMai(array);
-                    break;
-            }
         }
+
+        let loaiBC = parseInt(self.check_MoiQuanTam());
+        switch (loaiBC) {
+            case 1:
+                self.BaoCaoBanHang_TongHop(array);
+                break;
+            case 2:
+                self.BaoCaoBanHang_ChiTiet(array);
+                break;
+            case 3:
+                self.BaoCaoBanHang_TheoNhomHang(array);
+                break;
+            case 4:
+                self.BaoCaoBanHang_TheoKhachHang(array);
+                break;
+            case 6:
+                self.BaoCaoBanHang_TheoNhanVien(array);
+                break;
+            case 7:
+                self.BaoCaoBanHang_HangTraLai(array);
+                break;
+            case 8:
+                self.BaoCaoBanHang_LoiNhuan(array);
+                break;
+            case 9:
+                self.BaoCaoHangKhuyenMai(array);
+                break;
+        }
+        loadHtmlGrid();
     }
 
     //Phân trang
@@ -2879,6 +2838,272 @@
             self.ReserPage();
         }
     };
+
+    $('table thead tr').on('click', 'th', function () {
+        let id = $(this).attr('id');
+        if (id !== undefined) {
+            let $tbl = $(this).closest('table');
+            let $this = $($tbl).find('#' + id);
+
+            $("#iconSort").remove();
+            if (self.sort() === 0) {
+                self.sort(1);
+                self.TypeSort(2);
+                $($this).append(' ' + "<i id='iconSort' class='fa fa-caret-down' aria-hidden='true'></i>");
+            }
+            else {
+                self.sort(0);
+                self.TypeSort(1);
+                $($this).append(' ' + "<i id='iconSort' class='fa fa-caret-up' aria-hidden='true'></i>");
+            }
+
+            switch (parseInt(self.check_MoiQuanTam())) {
+                case 1:// tonghop (get from DB when paging)
+                    switch (id) {
+                        case "Total_nhomhang":
+                            self.ColumnSort("TenNhomHangHoa");
+                            break;
+                        case "Total_mahang":
+                            self.ColumnSort("MaHangHoa");
+                            break;
+                        case "Total_tenhang":
+                            self.ColumnSort("TenHangHoa");
+                            break;
+                        case "Total_donvitinh":
+                            self.ColumnSort("TenDonViTinh");
+                            break;
+                        case "Total_lohang":
+                            self.ColumnSort("TenLoHang");
+                            break;
+                        case "Total_soluong":
+                            self.ColumnSort("SoLuong");
+                            break;
+                        case "Total_thanhtien":
+                            self.ColumnSort("ThanhTien");
+                            break;
+                        case "Total_doanhthuthuan":
+                            self.ColumnSort("DoanhThuThuan");
+                            break;
+                        case "Total_tienvon":
+                            self.ColumnSort("TienVon");
+                            break;
+                        case "Detail_chiphi":
+                            self.ColumnSort("ChiPhi");
+                            break;
+                        case "Total_lailo":
+                            self.ColumnSort("LaiLo");
+                            break;
+                        case "Total_giamgia":
+                            self.ColumnSort("GiamGiaHD");
+                            break;
+                        case "Total_tienthue":
+                            self.ColumnSort("TongTienThue");
+                            break;
+                    }
+                    self.LoadReport();
+                    break;
+                case 3:// bc nhomhang: paging at view
+                    switch (id) {
+                        case "nhomhang":
+                            self.ColumnSort("TenNhomHangHoa");
+                            break;
+                        case "soluong":
+                            self.ColumnSort("SoLuong");
+                            break;
+                        case "thanhtien":
+                            self.ColumnSort("ThanhTien");
+                            break;
+                        case "giamgia":
+                            self.ColumnSort("GiamGiaHD");
+                            break;
+                        case "doanhthuthuan":
+                            self.ColumnSort("DoanhThu");
+                            break;
+                        case "tienthue":
+                            self.ColumnSort("TienThue");
+                            break;
+                        case "tienvon":
+                            self.ColumnSort("TienVon");
+                            break;
+                        case "Detail_chiphi":
+                            self.ColumnSort("ChiPhi");
+                            break;
+                        case "lailo":
+                            self.ColumnSort("LaiLo");
+                            break;
+                    }
+                    self.sortTable(self.BaoCaoBanHang_TheoNhomHang());
+                    break;
+                case 4:// bc khachhang chitiet: paging at view
+                    switch (id) {
+                        case "Customer_nhomkhach":
+                            self.ColumnSort("NhomKhachHang");
+                            break;
+                        case "Customer_makhac":
+                            self.ColumnSort("MaKhachHang");
+                            break;
+                        case "Customer_tenkhach":
+                            self.ColumnSort("TenKhachHang");
+                            break;
+                        case "Customer_dienthoai":
+                            self.ColumnSort("DienThoai");
+                            break;
+                        case "Customer_soluongban":
+                            self.ColumnSort("SoLuongMua");
+                            break;
+                        case "Customer_gtmua":
+                            self.ColumnSort("GiaTriMua");
+                            break;
+                        case "Customer_soluongtra":
+                            self.ColumnSort("SoLuongTra");
+                            break;
+                        case "Customer_gttra":
+                            self.ColumnSort("GiaTriTra");
+                            break;
+                        case "Customer_soluong":
+                            self.ColumnSort("SoLuong");
+                            break;
+                        case "doanhthuthuan":
+                            self.ColumnSort("DoanhThu");
+                            break;
+                        case "tienthue":
+                            self.ColumnSort("TongTienThue");
+                            break;
+                        case "Customer_tienvon":
+                            self.ColumnSort("TienVon");
+                            break;
+                        case "Customer_lailo":
+                            self.ColumnSort("LaiLo");
+                            break;
+                        case "Customer_ngquanlyCustomer_ngquanly":
+                            self.ColumnSort("NguoiQuanLy");
+                            break;
+                    }
+                    self.sortTable(self.BaoCaoBanHang_TheoKhachHang());
+                    break;
+                case 6:// bc theo nhanvien
+                    switch (id) {
+                        case "MaNhanVien":
+                            self.ColumnSort("MaNhanVien");
+                            break;
+                        case "User_nhanvien":
+                            self.ColumnSort("TenNhanVien");
+                            break;
+                        case "User_soluong":
+                            self.ColumnSort("SoLuongBan");
+                            break;
+                        case "User_thanhtien":
+                            self.ColumnSort("ThanhTien");
+                            break;
+                        case "User_soluongtra":
+                            self.ColumnSort("SoLuongTra");
+                            break;
+                        case "User_giatritra":
+                            self.ColumnSort("GiaTriTra");
+                            break;
+                        case "User_giamgia":
+                            self.ColumnSort("GiamGiaHD");
+                            break;
+                        case "doanhthuthuan":
+                            self.ColumnSort("DoanhThu");
+                            break;
+                        case "tienthue":
+                            self.ColumnSort("TienThue");
+                            break;
+                        case "User_tienvon":
+                            self.ColumnSort("TienVon");
+                            break;
+                        case "Detail_chiphi":
+                            self.ColumnSort("ChiPhi");
+                            break;
+                        case "User_lailo":
+                            self.ColumnSort("LaiLo");
+                            break;
+                    }
+                    self.sortTable(self.BaoCaoBanHang_TheoNhanVien());
+                    break;
+                case 8:// bc loinhuan: paging at view
+                    switch (id) {
+                        case "profit_mahang":
+                            self.ColumnSort("MaHangHoa");
+                            break;
+                        case "profit_tenhang":
+                            self.ColumnSort("TenHangHoa");
+                            break;
+                        case "profit_donvitinh":
+                            self.ColumnSort("TenDonViTinh");
+                            break;
+                        case "profit_lohang":
+                            self.ColumnSort("TenLoHang");
+                            break;
+                        case "profit_soluongb":
+                            self.ColumnSort("SoLuongBan");
+                            break;
+                        case "profit_thanhtien":
+                            self.ColumnSort("ThanhTien");
+                            break;
+                        case "profit_soluongtra":
+                            self.ColumnSort("SoLuongTra");
+                            break;
+                        case "profit_giatritra":
+                            self.ColumnSort("GiaTriTra");
+                            break;
+                        case "profit_giangiahd":
+                            self.ColumnSort("GiamGiaHD");
+                            break;
+                        case "profit_doanhthu":
+                            self.ColumnSort("DoanhThuThuan");
+                            break;
+                        case "tienthue":
+                            self.ColumnSort("TienThue");
+                            break;
+                        case "profit_tongtienvon":
+                            self.ColumnSort("TienVon");
+                            break;
+                        case "profit_loinhuan":
+                            self.ColumnSort("LaiLo");
+                            break;
+                    }
+                    self.sortTable(self.BaoCaoBanHang_LoiNhuan());
+                    break;
+                case 52:// tansuat khachhang
+                    switch (id) {
+                        case "Customer_nhomkhach":
+                            self.ColumnSort("TenNhomDoiTuongs");
+                            break;
+                        case "Customer_makhac":
+                            self.ColumnSort("MaKhachHang");
+                            break;
+                        case "Customer_tenkhach":
+                            self.ColumnSort("TenKhachHang");
+                            break;
+                        case "Customer_diachi":
+                            self.ColumnSort("DiaChi");
+                            break;
+                        case "Customer_dienthoai":
+                            self.ColumnSort("DienThoai");
+                            break;
+                        case "Customer_solanden":
+                            self.ColumnSort("SoLanDen");
+                            break;
+                        case "Customer_gtmua":
+                            self.ColumnSort("GiaTriMua");
+                            break;
+                        case "Customer_gttra":
+                            self.ColumnSort("GiaTriTra");
+                            break;
+                        case "Customer_doanhthu":
+                            self.ColumnSort("DoanhThu");
+                            break;
+                        case "Customer_ngaygiaodichgannhat":
+                            self.ColumnSort("NgayGiaoDichGanNhat");
+                            break;
+                    }
+                    self.LoadReport();
+                    break;
+            }
+        }
+    });
 }
 var reportSale = new ViewModal();
 ko.applyBindings(reportSale, document.getElementById('divPage'));
