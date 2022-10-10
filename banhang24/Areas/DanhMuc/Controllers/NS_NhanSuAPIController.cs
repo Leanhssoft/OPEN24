@@ -3768,7 +3768,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 using (var _dbcontext = SystemDBContext.GetDBContext())
                 {
                     var _NhanSuService = new NhanSuService(_dbcontext);
-                    var diary = GetHistory();
                     List<QuyChiTietPhieuLuong> data = _NhanSuService.GetListDebitSalaryDetail(idBangLuong, textSearch, currentPage, pageSize);
                     return ActionTrueData(data);
                 }
