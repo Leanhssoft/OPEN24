@@ -167,14 +167,12 @@
     Page_Load();
 
     function GetCauHinhHeThong() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + VHeader.IdDonVi, 'GET').done(function (data) {
-                if (data !== null) {
-                    vmThemMoiKhach.QuanLyKhachHangTheoDonVi = data.QuanLyKhachHangTheoDonVi;
-                }
-                getListNhomDT();
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + VHeader.IdDonVi, 'GET').done(function (data) {
+            if (data !== null) {
+                vmThemMoiKhach.QuanLyKhachHangTheoDonVi = data.QuanLyKhachHangTheoDonVi;
+            }
+            getListNhomDT();
+        });
     }
 
     function LoadColumnCheck() {
@@ -523,11 +521,9 @@
     }
 
     function GetDM_NguonKHang() {
-        if (navigator.onLine) {
-            ajaxHelper(DMNguonKhachUri + 'GetDM_NguonKhach', 'GET').done(function (data) {
-                vmThemMoiKhach.listData.NguonKhachs = data;
-            });
-        }
+        ajaxHelper(DMNguonKhachUri + 'GetDM_NguonKhach', 'GET').done(function (data) {
+            vmThemMoiKhach.listData.NguonKhachs = data;
+        });
     }
 
     function getListNhanVien() {
@@ -677,7 +673,6 @@
         var dateChose = '';
 
         if (self.filterNgayLapHD() === '0') {
-
             switch (self.filterNgayLapHD_Quy()) {
                 case 0:
                     // all
@@ -695,38 +690,37 @@
                     // hom qua
                     self.TodayBC('Hôm qua');
                     dayEnd = moment(_now).format('YYYY-MM-DD');
-                    dayStart = moment(new Date(_now.setDate(_now.getDate() - 1))).format('YYYY-MM-DD');
+                    dayStart = moment(_now).subtract('days', 1).format('YYYY-MM-DD');
                     break;
                 case 3:
                     // tuan nay
                     self.TodayBC('Tuần này');
-                    dayStart = moment(new Date(_now.setDate(_now.getDate() - lessDays - 1))).format('YYYY-MM-DD'); // start of wwek
-                    dayEnd = moment(new Date(_now.setDate(_now.getDate() + 6))).add('days', 1).format('YYYY-MM-DD'); // end of week
+                    dayStart = moment().startOf('week').add('days', 1).format('YYYY-MM-DD');
+                    dayEnd = moment().endOf('week').add('days', 2).format('YYYY-MM-DD');
                     break;
                 case 4:
                     // tuan truoc
                     self.TodayBC('Tuần trước');
-                    dayStart = moment().weekday(-6).format('YYYY-MM-DD');
-                    dayEnd = moment(dayStart, 'YYYY-MM-DD').add(6, 'days').add('days', 1).format('YYYY-MM-DD'); // add day in moment.js
+                    dayStart = moment().startOf('week').subtract('days', 6).format('YYYY-MM-DD');
+                    dayEnd = moment().startOf('week').add('days', 1).format('YYYY-MM-DD');
                     break;
                 case 5:
                     // 7 ngay qua
                     self.TodayBC('7 ngày qua');
                     dayEnd = moment(_now).add('days', 1).format('YYYY-MM-DD');
-                    dayStart = moment(new Date(_now.setDate(_now.getDate() - 7))).format('YYYY-MM-DD');
+                    dayStart = moment(_now).add('days', -7).format('YYYY-MM-DD');
                     break;
                 case 6:
                     // thang nay
                     self.TodayBC('Tháng này');
-                    dayStart = moment(new Date(_now.getFullYear(), _now.getMonth(), 1)).format('YYYY-MM-DD');
-                    dayEnd = moment(new Date(_now.getFullYear(), _now.getMonth() + 1, 0)).add('days', 1).format('YYYY-MM-DD');
+                    dayStart = moment().startOf('month').format('YYYY-MM-DD');
+                    dayEnd = moment().endOf('month').add('days', 1).format('YYYY-MM-DD');
                     break;
                 case 7:
                     // thang truoc
-
                     self.TodayBC('Tháng trước');
-                    dayStart = moment(new Date(_now.getFullYear(), _now.getMonth() - 1, 1)).format('YYYY-MM-DD');
-                    dayEnd = moment(new Date(_now.getFullYear(), _now.getMonth(), 0)).add('days', 1).format('YYYY-MM-DD');
+                    dayStart = moment().subtract('months', 1).startOf('month').format('YYYY-MM-DD');
+                    dayEnd = moment().subtract('months', 1).endOf('month').add('days', 1).format('YYYY-MM-DD');
                     break;
                 case 10:
                     // quy nay
@@ -1136,23 +1130,21 @@
     self.selectID_KhoanThu = ko.observableArray();
 
     function GetDM_TaiKhoanNganHang() {
-        if (navigator.onLine) {
-            ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + idDonVi, 'GET').done(function (x) {
-                if (x.res === true) {
-                    let data = x.data;
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].TaiKhoanPOS === true) {
-                            self.ListAccountPOS.push(data[i]);
-                        }
-                        else {
-                            self.ListAccountChuyenKhoan.push(data[i]);
-                        }
+        ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + idDonVi, 'GET').done(function (x) {
+            if (x.res === true) {
+                let data = x.data;
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].TaiKhoanPOS === true) {
+                        self.ListAccountPOS.push(data[i]);
                     }
-                    vmThanhToanGara.listData.AccountBanks = data; // use at form new TheGiaTri
-                    vmThanhToan.listData.AccountBanks = data;// use at btnThanhToan
+                    else {
+                        self.ListAccountChuyenKhoan.push(data[i]);
+                    }
                 }
-            })
-        }
+                vmThanhToanGara.listData.AccountBanks = data; // use at form new TheGiaTri
+                vmThanhToan.listData.AccountBanks = data;// use at btnThanhToan
+            }
+        })
     }
 
     function GetAllQuy_KhoanThuChi() {
