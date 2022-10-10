@@ -335,8 +335,13 @@
                                                     }
                                                     @if (Model.Update)
                                                     {
-                                                        <a href="javascript:void(0)" class="btn btn-main " v-if="item.TrangThai === 2" v-on:click="TinhLaiBangLuong(item)">
+                                                        <a href="javascript:void(0)" class="btn btn-main " v-if="item.TrangThai === 2 && loadding == false" 
+                                                           v-on:click="TinhLaiBangLuong(item)">
                                                             <i class="fa fa-calculator" aria-hidden="true"></i>Tính lại bảng lương
+                                                        </a>
+                                                        <a href="javascript:void(0)" class="btn btn-main "
+                                                           v-if="item.TrangThai === 2 && loadding">
+                                                            <i class="fa fa-calculator" aria-hidden="true"></i> Đang tính lại
                                                         </a>
                                                     }
                                                     @if (Model.Update)
@@ -348,7 +353,7 @@
                                                     @if (Model.ThanhToan)
                                                     {
                                                         <a href="javascript:void(0)" class="btn btn-main "
-                                                           v-on:click="showmodalThanhToan(item)" v-if="item.TrangThai > 2 && item.ConLai != 0">
+                                                           v-on:click="showmodalThanhToan(item)" v-if="item.TrangThai > 2 && item.ConLai > 1">
                                                             <i aria-hidden="true" class="fa fa-file-excel-o"></i> Thanh toán
                                                         </a>
                                                     }
