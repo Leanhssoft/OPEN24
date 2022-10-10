@@ -780,13 +780,13 @@
                 <div class="tab-content tab-show nopadding">
                     <div class="tab-pane active" data-id="@((int)commonEnum.TypeReport.tonghop)" id="home">
                         <div class="col-md-12 content-report">
-                            <div class="table-reponsive table-frame" id="table-reponsive">
+                            <div class="table-reponsive table-frame" id="tblBCTongHop">
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             @foreach (var item in commonEnum.listNameReportTotal)
                                             {
-                                                <th class="@item.Key text-center">
+                                                <th class="@item.Key text-center" id="@item.Key">
                                                     <a class="black" href="javascript:void(0)">@item.Value</a>
                                                 </th>
                                             }
@@ -972,7 +972,7 @@
                                         <tr>
                                             @foreach (var item in commonEnum.listNameReportGroupProduct)
                                             {
-                                                <th class="@item.Key text-center">
+                                                <th class="@item.Key text-center" id="@item.Key">
                                                     <a class="black" href="javascript:void(0)">@item.Value</a>
                                                 </th>
                                             }
@@ -1046,7 +1046,7 @@
                                                     <th style="width:30px"></th>
                                                     @foreach (var item in commonEnum.listNameReportCustomer)
                                                     {
-                                                        <th class="@item.Key text-center">
+                                                        <th class="@item.Key text-center" id="@item.Key">
                                                             <a class="black" href="javascript:void(0)">@item.Value</a>
                                                         </th>
                                                     }
@@ -1202,7 +1202,7 @@
                                             <th style="width:30px"></th>
                                             @foreach (var item in commonEnum.listNameReportUser)
                                             {
-                                                <th class="@item.Key text-center">
+                                                <th class="@item.Key text-center" id="@item.Key">
                                                     <a class="black" href="javascript:void(0)">@item.Value</a>
                                                 </th>
                                             }
@@ -1423,7 +1423,7 @@
                                         <tr>
                                             @foreach (var item in commonEnum.DictionaryReportPromotion)
                                             {
-                                                <th class="@item.Key">
+                                                <th class="@item.Key" >
                                                     <a href="javascript:void(0)">@item.Value</a>
                                                 </th>
                                             }
@@ -1491,7 +1491,7 @@
                                         <tr>
                                             @foreach (var item in commonEnum.listNameReportprofit)
                                             {
-                                                <th class="@item.Key text-center">
+                                                <th class="@item.Key text-center" id="@item.Key">
                                                     <a class="black" href="javascript:void(0)">@item.Value</a>
                                                 </th>
                                             }

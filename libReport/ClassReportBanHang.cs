@@ -141,8 +141,11 @@ namespace libReport
                 sql.Add(new SqlParameter("ID_NhomHang", param.ID_NhomHang ?? (object)DBNull.Value));
                 sql.Add(new SqlParameter("LoaiChungTu", param.LoaiChungTu));
                 sql.Add(new SqlParameter("ID_NguoiDung", param.ID_NguoiDung));
+                sql.Add(new SqlParameter("ColumnSort", param.ColumnSort ?? (object)DBNull.Value));
+                sql.Add(new SqlParameter("TypeSort", param.TypeSort ?? (object)DBNull.Value));
                 return _db.Database.SqlQuery<BaoCaoBanHang_TongHopPRC>("exec BaoCaoBanHang_TongHop_Page @pageNumber,@pageSize, @SearchString, @timeStart, @timeEnd," +
-                    " @ID_ChiNhanh, @LoaiHangHoa, @TheoDoi, @TrangThai, @ID_NhomHang,@LoaiChungTu, @ID_NguoiDung" +
+                    " @ID_ChiNhanh, @LoaiHangHoa, @TheoDoi, @TrangThai, @ID_NhomHang,@LoaiChungTu, @ID_NguoiDung," +
+                    " @ColumnSort, @TypeSort" +
                     "", sql.ToArray()).ToList();
             }
             catch (Exception ex)
@@ -215,7 +218,7 @@ namespace libReport
                 string ID_NhomKhachHang_search = "%%";
                 if (!string.IsNullOrEmpty(param.ID_NhomKhachHang) && param.ID_NhomKhachHang != "null" && param.ID_NhomKhachHang != "undefined")
                     ID_NhomKhachHang_search = param.ID_NhomKhachHang.Trim().Replace(",null", "");
-              
+
                 List<SqlParameter> sql = new List<SqlParameter>();
                 sql.Add(new SqlParameter("SearchString", param.MaHangHoa));
                 sql.Add(new SqlParameter("timeStart", param.timeStart));
@@ -251,7 +254,7 @@ namespace libReport
             sql.Add(new SqlParameter("FromDate", lstParam.FromDate));
             sql.Add(new SqlParameter("ToDate", lstParam.ToDate));
             sql.Add(new SqlParameter("NgayGiaoDichFrom", lstParam.NgayGiaoDichFrom));
-            sql.Add(new SqlParameter("NgayGiaoDichTo", lstParam.NgayGiaoDichTo));  
+            sql.Add(new SqlParameter("NgayGiaoDichTo", lstParam.NgayGiaoDichTo));
             sql.Add(new SqlParameter("NgayTaoKHFrom", lstParam.NgayTaoKHFrom));
             sql.Add(new SqlParameter("NgayTaoKHTo", lstParam.NgayTaoKHTo));
             sql.Add(new SqlParameter("DoanhThuTu", lstParam.DoanhThuTu == null ? (object)DBNull.Value : lstParam.DoanhThuTu.Value));
@@ -361,7 +364,7 @@ namespace libReport
                 sql.Add(new SqlParameter("LoaiHangHoa", obj.LoaiHangHoa));
                 sql.Add(new SqlParameter("TheoDoi", obj.TheoDoi));
                 sql.Add(new SqlParameter("TrangThai", obj.TrangThai));
-                sql.Add(new SqlParameter("ID_NhomHang", param.ID_NhomHang?? (object)DBNull.Value ));
+                sql.Add(new SqlParameter("ID_NhomHang", param.ID_NhomHang ?? (object)DBNull.Value));
                 sql.Add(new SqlParameter("LoaiChungTu", param.LoaiChungTu));
                 sql.Add(new SqlParameter("ID_NguoiDung", param.ID_NguoiDung));
                 return _db.Database.SqlQuery<BaoCaoBanHangChiTiet_TheoNhanVienPRC>("exec BaoCaoBanHangChiTiet_TheoNhanVien @ID_NhanVien, @timeStart, @timeEnd, " +
@@ -478,6 +481,8 @@ namespace libReport
         public List<string> lstIDChiNhanh { get; set; }
         public List<string> lstPhongBan { get; set; }
         public List<string> lstNhomKhach { get; set; }
+        public string ColumnSort { get; set; }
+        public string TypeSort { get; set; }// asc, desc
     }
 
     public class ReportSale_ParamCommon
