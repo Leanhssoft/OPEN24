@@ -475,7 +475,6 @@
                 dataType: 'json',
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 success: function (data) {
-                    console.log(data);
                     if (data.res === true) {
                         commonStatisJs.ShowMessageSuccess(data.mess);
 
@@ -497,7 +496,6 @@
                     self.loadding = false;
                 },
                 error: function (result) {
-                    console.log(result);
                     self.loadding = false;
                 }
             });
@@ -570,7 +568,6 @@
             var toDate = self.objectAddBangLuong.DenNgay;
             if (fromDate === '' || toDate === '') {
                 commonStatisJs.ShowMessageDanger("Vui lòng nhập thời gian tính lương");
-                self.loadding = false;
                 return;
             }
             fromDate = moment(fromDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
