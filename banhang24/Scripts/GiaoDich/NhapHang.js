@@ -746,10 +746,10 @@
                             UpdateStatudHD(item.ID_HoaDon);
                         }
                         else {
-                            ShowMessage_Success('Hủy hóa đơn thất bại');
+                            ShowMessage_Danger('Hủy hóa đơn thất bại');
                         }
                     }).fail(function () {
-                        ShowMessage_Success('Hủy hóa đơn thất bại');
+                        ShowMessage_Danger('Hủy hóa đơn thất bại');
                     });
                 });
             }
