@@ -1697,7 +1697,8 @@ namespace libNS_NhanVien
                                     + "<br/> Mã: " + bl.MaBangLuong
                                     + "<br/> Tên: " + bl.TenBangLuong
                                     + "<br/> Nhân viên hủy: " + _dbcontext.NS_NhanVien.Where(x => x.ID == diary.ID_NhanVien).FirstOrDefault().TenNhanVien;
-            diary.LoaiNhatKy = (int)commonEnumHellper.TypeHoatDong.update;
+            diary.LoaiNhatKy = (int)commonEnumHellper.TypeHoatDong.delete;
+            _dbcontext.HT_NhatKySuDung.Add(diary);
             _dbcontext.SaveChanges();
             UpdateStatusCongBoSung_WhenCreatBangLuong(idBangLuong, bl.TuNgay ?? DateTime.Now, bl.DenNgay ?? DateTime.Now);
             result.ErrorCode = false;
@@ -1718,16 +1719,19 @@ namespace libNS_NhanVien
         {
             try
             {
-                var idQuyCT = string.Join(",", lstQuyCT);
-                List<SqlParameter> lstParam = new List<SqlParameter>();
-                lstParam.Add(new SqlParameter("ID_ChiNhanh", idChiNhanh));
-                lstParam.Add(new SqlParameter("IDQuyChiTiets", idQuyCT));
-                lstParam.Add(new SqlParameter("LaPhieuTamUng", laPhieuTamUng));
-                _dbcontext.Database.ExecuteSqlCommand("EXEC UpdateCongNo_TamUngLuong @ID_ChiNhanh, @IDQuyChiTiets, @LaPhieuTamUng", lstParam.ToArray());
+                if (lstQuyCT != null && lstQuyCT.Count > 0)
+                {
+                    var idQuyCT = string.Join(",", lstQuyCT);
+                    List<SqlParameter> lstParam = new List<SqlParameter>();
+                    lstParam.Add(new SqlParameter("ID_ChiNhanh", idChiNhanh));
+                    lstParam.Add(new SqlParameter("IDQuyChiTiets", idQuyCT));
+                    lstParam.Add(new SqlParameter("LaPhieuTamUng", laPhieuTamUng));
+                    _dbcontext.Database.ExecuteSqlCommand("EXEC UpdateCongNo_TamUngLuong @ID_ChiNhanh, @IDQuyChiTiets, @LaPhieuTamUng", lstParam.ToArray());
+                }
             }
             catch (Exception e)
             {
-                CookieStore.WriteLog("UpdateCongNo_TamUngLuong " + e);
+                CookieStore.WriteLog("UpdateCongNo_TamUngLuong " + e.InnerException + e.Message);
             }
         }
 
@@ -1735,16 +1739,19 @@ namespace libNS_NhanVien
         {
             try
             {
-                var idQuyCT = string.Join(",", lstQuyCT);
-                List<SqlParameter> lstParam = new List<SqlParameter>();
-                lstParam.Add(new SqlParameter("ID_ChiNhanh", idChiNhanh));
-                lstParam.Add(new SqlParameter("IDQuyChiTiets", idQuyCT));
-                lstParam.Add(new SqlParameter("LaPhieuTamUng", laPhieuTamUng));
-                _dbcontext.Database.ExecuteSqlCommand("EXEC HuyPhieuThu_UpdateCongNoTamUngLuong @ID_ChiNhanh, @IDQuyChiTiets, @LaPhieuTamUng", lstParam.ToArray());
+                if (lstQuyCT != null && lstQuyCT.Count > 0)
+                {
+                    var idQuyCT = string.Join(",", lstQuyCT);
+                    List<SqlParameter> lstParam = new List<SqlParameter>();
+                    lstParam.Add(new SqlParameter("ID_ChiNhanh", idChiNhanh));
+                    lstParam.Add(new SqlParameter("IDQuyChiTiets", idQuyCT));
+                    lstParam.Add(new SqlParameter("LaPhieuTamUng", laPhieuTamUng));
+                    _dbcontext.Database.ExecuteSqlCommand("EXEC HuyPhieuThu_UpdateCongNoTamUngLuong @ID_ChiNhanh, @IDQuyChiTiets, @LaPhieuTamUng", lstParam.ToArray());
+                }
             }
             catch (Exception e)
             {
-                CookieStore.WriteLog("HuyPhieuThu_UpdateCongNoTamUngLuong " + e);
+                CookieStore.WriteLog("HuyPhieuThu_UpdateCongNoTamUngLuong " + e.InnerException + e.Message);
             }
         }
         public void HuyPhieuThu_UpdateTrangThaiCong(Guid idQuyCT)
