@@ -1107,10 +1107,6 @@
             arrIDBangGia.push(self.GiaBanChosed()[i].ID);
         }
         var ptThanhToan = $.map(self.PThucChosed(), function (x) { return x.ID });
-        if (ptThanhToan.length === 0) {
-            ptThanhToan = $.map(self.PTThanhToan(), function (x) { return x.ID });
-            ptThanhToan.push("5");// if tienmat=pos=ck=the=0
-        }
 
         if (txtMaHDon === undefined) {
             txtMaHDon = "";
@@ -3219,7 +3215,8 @@
         objPrint.NoSau = formatNumber(nosau);
         objPrint.ChiPhiNhap = objPrint.TongChiPhi;
         objPrint.GhiChu = objPrint.DienGiai;
-        objPrint.TienBangChu = DocSo(formatNumberToFloat(objPrint.TongCong));
+        let tc = RoundDecimal(formatNumberToFloat(objPrint.TongCong), 0);
+        objPrint.TienBangChu = DocSo(tc);
         objPrint.TenChiNhanh = objPrint.TenDonVi; // chi nhanh ban hang
         // logo cong ty
         if (self.CongTy().length > 0) {
@@ -3299,7 +3296,7 @@
         objPrint.KhauTruTheoVu = formatNumber(objHD.KhauTruTheoVu);
         objPrint.GiamTruBoiThuong = formatNumber(objHD.GiamTruBoiThuong);
         objPrint.BHThanhToanTruocThue = formatNumber(objHD.BHThanhToanTruocThue);
-        objPrint.TongTienThueBaoHiem = formatNumber3Digit(objHD.TongTienThueBaoHiem,0);
+        objPrint.TongTienThueBaoHiem = formatNumber3Digit(objHD.TongTienThueBaoHiem, 0);
         objPrint.BH_TienBangChu = DocSo(objHD.PhaiThanhToanBaoHiem);
         objPrint.KH_TienBangChu = DocSo(objHD.PhaiThanhToan);
         objPrint.BH_ConThieu = formatNumber3Digit(objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra);
@@ -5259,7 +5256,7 @@
                 newHD.DiemGiaoDichDB = 0;
                 newHD.DiemGiaoDich = item.DiemGiaoDich;
                 newHD.TrangThaiHD = 1;
-                newHD.TienGui = newHD.ChuyenKhoan;
+                newHD.TienMat = self.IsGara() ? 0 : newHD.PhaiThanhToan;
                 SetCache_ifGara('TN_copyHD');
                 SetCache_ifNotGara(3);
 
@@ -5271,7 +5268,7 @@
                 newHD.DiemQuyDoi = 0;
                 newHD.DiemGiaoDichDB = 0;
                 newHD.DaThanhToan = self.IsGara() ? 0 : phaiTT - khachdatra; // số tiền còn lại phaiTT --> bind at BanHang
-                newHD.TienMat = newHD.DaThanhToan;
+                newHD.TienMat = self.IsGara() ? 0 : newHD.DaThanhToan;
                 newHD.ID_TaiKhoanPos = null;
                 newHD.ID_TaiKhoanChuyenKhoan = null;
                 SetCache_ifGara('TN_updateHD');
