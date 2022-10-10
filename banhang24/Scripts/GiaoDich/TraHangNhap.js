@@ -587,10 +587,10 @@
                     Post_NhatKySuDung_UpdateGiaVon(diary);
                 }
                 else {
-                    ShowMessage_Success('Hủy hóa đơn thất bại');
+                    ShowMessage_Danger('Hủy hóa đơn thất bại');
                 }
             }).fail(function () {
-                ShowMessage_Success('Hủy hóa đơn thất bại');
+                ShowMessage_Danger('Hủy hóa đơn thất bại');
             });
         });
     };
@@ -649,7 +649,7 @@
             arrStatus.push('0');
         }
         if (self.TT_DaHuy()) {
-            arrStatus.push('2');
+            arrStatus.push('4');
         }
         var statusInvoice = 1;
         if (self.TT_TamLuu()) {
@@ -818,6 +818,7 @@
             MaHoaDon: txtMaHDon,
             maHDGoc: '',
             TrangThai: statusInvoice,
+            ArrTrangThai: arrStatus,
             DayStart: dayStart,
             DayEnd: dayEnd,
             arrChiNhanh: self.MangIDDV(),
