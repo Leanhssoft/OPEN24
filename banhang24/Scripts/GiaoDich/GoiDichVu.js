@@ -713,7 +713,7 @@
             self.NgayHetHan_Update(formElement.HanSuDungGoiDV);
         }
 
-        var check = CheckNgayLapHD_format(self.NgayLapHD_Update(), 1 ,formElement.ID_DonVi);
+        var check = CheckNgayLapHD_format(self.NgayLapHD_Update(), 1, formElement.ID_DonVi);
 
         if (!check) {
             return;
@@ -2968,8 +2968,8 @@
                 newHD.DiemQuyDoi = diemquydoi;
                 newHD.DiemGiaoDichDB = 0;
                 newHD.TrangThaiHD = 1;
-                newHD.TienGui = newHD.ChuyenKhoan;
-                newHD.TienTheGiaTri = newHD.ThuTuThe;
+                newHD.TienMat = self.IsGara() ? 0 : newHD.PhaiThanhToan;
+
                 SetCacheHD_CTHD(newHD, maHD);
                 if (self.isGara()) {
                     localStorage.setItem('gara_CreateFrom', 'TN_copyHD');
@@ -2985,10 +2985,8 @@
                 newHD.DiemQuyDoi = 0;
                 newHD.DiemGiaoDichDB = 0;
                 newHD.DaThanhToan = phaiTT - khachdatra; // số tiền còn lại phaiTT --> bind at BanHang
-                newHD.TienMat = newHD.DaThanhToan;
-                newHD.TienATM = 0;
-                newHD.TienGui = 0;
-                newHD.TienTheGiaTri = 0;
+                newHD.TienMat = self.IsGara() ? 0 : newHD.DaThanhToan;
+
                 newHD.ID_TaiKhoanPos = null;
                 newHD.ID_TaiKhoanChuyenKhoan = null;
                 SetCacheHD_CTHD(newHD, maHD);
@@ -3011,10 +3009,7 @@
                     newHD.DiemQuyDoi = 0;
                     newHD.DiemGiaoDichDB = newHD.DiemGiaoDich; // tru diem giaodich HD cu
                     newHD.DaThanhToan = phaiTT - khachdatra;
-                    newHD.TienMat = newHD.DaThanhToan; // = số tiền còn lại phaiTT
-                    newHD.TienATM = 0;
-                    newHD.TienGui = 0;
-                    newHD.TienTheGiaTri = 0;
+                    newHD.TienMat = self.IsGara() ? 0 : newHD.DaThanhToan; // = số tiền còn lại phaiTT
                     newHD.ID_TaiKhoanPos = null;
                     newHD.ID_TaiKhoanChuyenKhoan = null;
                     SetCacheHD_CTHD(newHD, maHD);
@@ -3133,6 +3128,10 @@
             item.TongTienKhuyenMai_CT = '';
             item.TongGiamGiaKhuyenMai_CT = '';
             item.TongChiPhiHangTra = 0;
+
+            item.TienATM = 0;
+            item.TienGui = 0;
+            item.TienTheGiaTri = 0;
 
             // get chietkhau nv hoadon
             for (let k = 0; k < item.BH_NhanVienThucHiens.length; k++) {
