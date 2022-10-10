@@ -121,6 +121,14 @@
                                                         <span>{{item.BienSo}}</span>
                                                     </td>
                                                 </tr>
+                                                <tr v-if="LoaiNganhNghe !=1 && item.SLChiNhanh > 1">
+                                                    <td colspan="8">
+                                                        <i>
+                                                            <span> Chi nhánh: </span>
+                                                            <span>{{item.TenDonVi}}</span>
+                                                        </i>
+                                                    </td>
+                                                </tr>
                                                 <tr class="tr-thead tr-goi-dich-vu">
                                                     <td>Mã dịch vụ </td>
                                                     <td>Tên dịch vụ </td>
@@ -326,8 +334,10 @@
                             <div class="tab-pane " id="nhatkythegiatri">
                                 <div class="container-fluid  nhat-ky-dv-giao-dich">
                                     <div style="overflow:auto">
-                                        <label> Lịch sử nạp tiền
-                                        <span class="blue">(Số dư hiện tại:<span class="red">{{formatNumber3Digit($root.soduTheGiaTri)}}</span></span>)</label>
+                                        <label>
+                                            Lịch sử nạp tiền
+                                            <span class="blue">(Số dư hiện tại:<span class="red">{{formatNumber3Digit($root.soduTheGiaTri)}}</span></span>)
+                                        </label>
                                         <table class="table-dich-vu" style="width:100%!important">
                                             <thead>
                                                 <tr class="tr-thead tr-goi-dich-vu">

@@ -846,6 +846,9 @@ namespace libDM_DoiTuong
 
     public class GoiDichVu_KhachHang
     {
+        public Guid? ID_DonVi { get; set; }
+        public string TenDonVi { get; set; }// chinhanh ban
+        public int? SLChiNhanh { get; set; }// used to hide/show TenChiNhanh at ds GDV
         public Guid ID_GoiDV { get; set; }
         public string MaHoaDon { get; set; } // = MagoiDV
         public string NgayLapHoaDon { get; set; }

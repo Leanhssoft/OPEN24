@@ -2441,6 +2441,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     List<GoiDichVu_KhachHang> lst = classBHChiTiet.GetDSGoiDichVu_ofKhachHang(param);
                     var data = lst.GroupBy(x => new
                     {
+                        x.SLChiNhanh,
+                        x.ID_DonVi,
+                        x.TenDonVi,
                         x.ID_GoiDV,
                         x.MaHoaDon,
                         x.BienSo,
@@ -2450,6 +2453,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         x.ID_Xe
                     }).Select(x => new
                     {
+                        x.Key.SLChiNhanh,
+                        x.Key.ID_DonVi,
+                        x.Key.TenDonVi,
                         x.Key.ID_GoiDV,
                         x.Key.MaHoaDon,
                         x.Key.NgayLapHoaDon,
