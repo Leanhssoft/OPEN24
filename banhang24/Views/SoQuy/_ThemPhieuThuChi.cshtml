@@ -249,7 +249,7 @@
         data: {
             saveOK: false,
             isNew: true,
-            typeUpdate: 1,// insert, 2.update, 3.delete, 4.copy 
+            typeUpdate: 1,// insert, 2.update, 3.delete, 4.copy
             isPhieuThu: true,
             loaiNapTien: 1,//1.mat, 0.ngan hang,
             isLoading: false,
@@ -711,7 +711,6 @@
             },
 
             Save: function (print) {
-                console.log('pr ', print)
                 var self = this;
                 var ptKhach = self.newPhieuThu;
                 let khoaSo = VHeader.CheckKhoaSo(moment(ptKhach.NgayLapHoaDon, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD'), ptKhach.ID_DonVi);
@@ -942,8 +941,12 @@
                         else {
                             ShowMessage_Danger("Cập nhật phiếu thu/chi thất bại");
                         }
-                    }).always(function (x) {
+                    }).fail(function () {
+                        ShowMessage_Danger("Cập nhật phiếu thu/chi thất bại");
                     })
+                        .always(function (x) {
+                            self.isLoading = false;
+                        })
                 }
             },
 
