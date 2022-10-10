@@ -16,15 +16,15 @@
         self.roleHeader = false;
         self.isFirstLoad = true;
         self.role = {
-            PhieuTiepNhan: {},
+            PhieuTiepNhan: { ThemMoi: true, Xem: true },
             HangXe: {},
             LoaiXe: {},
             MauXe: {},
             Xe: {
                 XuatXuong: true
             },
-            BaoGia: {},
-            HoaDon: {},
+            BaoGia: { ThemMoi: true, Duyet: true, XuLy: true, CapNhat: true, In: true },
+            HoaDon: { ThemMoi: true, SuaDoi: true, In: true },
             XuatKho: {},
         };
 
@@ -86,7 +86,7 @@
             });
         });
 
-        if (!VHeader) {
+        if (VHeader.Quyen.length === 0) {
             ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
                 if (data !== "" && data.length > 0) {
                     self.listData.Quyen_NguoiDung = data;
@@ -1673,9 +1673,11 @@
                         switch (cacheValue) {
                             case 'TN_taobaogia':
                                 workTable.Gara_GetListBaoGia(true);
+                                workTable.Gara_GetListHoaDonSuaChua(true);
                                 break;
                             case 'TN_taohoadon':
                                 workTable.Gara_GetListHoaDonSuaChua(true);
+                                workTable.Gara_GetListBaoGia(true);
                                 break;
                             case 'TN_xulyBG':
                             case 'TN_updateHD':
@@ -1683,6 +1685,7 @@
                                 workTable.Gara_GetListHoaDonSuaChua(true);
                                 break;
                             default:
+                                workTable.Gara_GetListBaoGia(true);
                                 workTable.Gara_GetListHoaDonSuaChua(true);
                                 break;
                         }
@@ -1881,7 +1884,7 @@
             let bh_DebitOld = bh_NoHienTai - bh_DebitHD;
             bh_DebitOld = bh_DebitOld < 0 ? 0 : bh_DebitOld;
 
-            objPrint.PhaiThanhToanBaoHiem = formatNumber3Digit(hdChosing.PhaiThanhToanBaoHiem,0);
+            objPrint.PhaiThanhToanBaoHiem = formatNumber3Digit(hdChosing.PhaiThanhToanBaoHiem, 0);
             objPrint.KhachDaTra = formatNumber(hdChosing.KhachDaTra);
             objPrint.TongTienDichVu = formatNumber(hdChosing.TongTienDichVu);
             objPrint.TongTienPhuTung = formatNumber(hdChosing.TongTienPhuTung);
@@ -1934,7 +1937,7 @@
             objPrint.SoVuBaoHiem = formatNumber(hdChosing.SoVuBaoHiem);
             objPrint.GiamTruBoiThuong = formatNumber(hdChosing.GiamTruBoiThuong);
             objPrint.BHThanhToanTruocThue = formatNumber(hdChosing.BHThanhToanTruocThue);
-            objPrint.TongTienThueBaoHiem = formatNumber3Digit(hdChosing.TongTienThueBaoHiem,0);
+            objPrint.TongTienThueBaoHiem = formatNumber3Digit(hdChosing.TongTienThueBaoHiem, 0);
             objPrint.TongTienThue = formatNumber(hdChosing.TongTienThue);
             objPrint.PTThueBaoHiem = formatNumber(hdChosing.PTThueBaoHiem);
             objPrint.PTThueHoaDon = formatNumber(hdChosing.PTThueHoaDon);
