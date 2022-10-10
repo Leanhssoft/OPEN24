@@ -308,12 +308,13 @@ var cmpChoseCustomer = {
         },
         searchDB: function () {
             var self = this;
-            var txt = locdau(self.textSearch).trim();
+            var txt = self.textSearch;
             if (commonStatisJs.CheckNull(txt)) {
                 self.customers = [];
                 this.$emit('reset-customer-parent');
                 return;
             }
+            txt = txt.trim();
             $.getJSON("/api/DanhMuc/DM_DoiTuongAPI/" + "JqAuto_SearchDoiTuong?loaiDoiTuong="
                 + self.loaiDoiTuong + "&txtSearch=" + txt + '&idChiNhanh=' + self.idChiNhanh).done(function (data) {
                     if (self.loaiDoiTuong === 1) {
