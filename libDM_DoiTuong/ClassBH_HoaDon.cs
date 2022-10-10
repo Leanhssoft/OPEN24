@@ -1822,31 +1822,48 @@ namespace libDM_DoiTuong
                 {
                     ClassBH_HoaDon_ChiTiet classhoadonchitiet = new ClassBH_HoaDon_ChiTiet(db);
 
+                    // get all donvitinh of hanghoa in cthd
+                    var arrIDHangHoa = data.Select(x => x.ID_HangHoa).ToList();
+                    List<DonViTinh> lstDVT = db.DonViQuiDois.Where(x => arrIDHangHoa.Contains(x.ID_HangHoa) && x.Xoa != true)
+                        .Select(x => new DonViTinh
+                        {
+                            ID = x.ID,
+                            ID_HangHoa = x.ID_HangHoa,
+                            TenDonViTinh = x.TenDonViTinh,
+                            ID_DonViQuiDoi = x.ID,
+                            Xoa = false,
+                            TyLeChuyenDoi = x.TyLeChuyenDoi
+                        }).ToList();
+
+                    // get all nvth of cthd
+                    var arrIDCTHD = data.Select(x => x.ID).ToList();
+                    List<BH_NhanVienThucHienDTO> lstNV = (from nv in db.NS_NhanVien
+                                                          join bh_nv in db.BH_NhanVienThucHien
+                                                          on nv.ID equals bh_nv.ID_NhanVien
+                                                          where arrIDCTHD.Contains(bh_nv.ID_ChiTietHoaDon)
+                                                          select new BH_NhanVienThucHienDTO
+                                                          {
+                                                              ID_NhanVien = bh_nv.ID_NhanVien,
+                                                              TenNhanVien = nv.TenNhanVien,
+                                                              ID_ChiTietHoaDon = bh_nv.ID_ChiTietHoaDon,
+                                                              ThucHien_TuVan = bh_nv.ThucHien_TuVan,
+                                                              TienChietKhau = bh_nv.TienChietKhau,
+                                                              PT_ChietKhau = bh_nv.PT_ChietKhau,
+                                                              TheoYeuCau = bh_nv.TheoYeuCau,
+                                                              HeSo = bh_nv.HeSo,
+                                                              TinhChietKhauTheo = bh_nv.TinhChietKhauTheo,
+                                                              TinhHoaHongTruocCK = bh_nv.TinhHoaHongTruocCK != null ? bh_nv.TinhHoaHongTruocCK : 0
+                                                          }).ToList();
+
                     foreach (var item in data)
                     {
-                        var nv_ck = (from nv in db.NS_NhanVien
-                                     join bh_nv in db.BH_NhanVienThucHien
-                                     on nv.ID equals bh_nv.ID_NhanVien
-                                     where bh_nv.ID_ChiTietHoaDon == item.ID
-                                     select new BH_NhanVienThucHienDTO
-                                     {
-                                         ID_NhanVien = bh_nv.ID_NhanVien,
-                                         TenNhanVien = nv.TenNhanVien,
-                                         ID_ChiTietHoaDon = bh_nv.ID_ChiTietHoaDon,
-                                         ThucHien_TuVan = bh_nv.ThucHien_TuVan,
-                                         TienChietKhau = bh_nv.TienChietKhau,
-                                         PT_ChietKhau = bh_nv.PT_ChietKhau,
-                                         TheoYeuCau = bh_nv.TheoYeuCau,
-                                         HeSo = bh_nv.HeSo,
-                                         TinhChietKhauTheo = bh_nv.TinhChietKhauTheo,
-                                         TinhHoaHongTruocCK = bh_nv.TinhHoaHongTruocCK != null ? bh_nv.TinhHoaHongTruocCK : 0,
-                                     }).ToList();
                         if (item.ID_ChiTietDinhLuong != null && item.ID_ChiTietDinhLuong == item.ID)
                         {
                             item.ThanhPhan_DinhLuong = classhoadonchitiet.SP_GetThanhPhanDinhLuong_CTHD(item.ID);
                         }
-                        item.BH_NhanVienThucHien = nv_ck;
-                        item.DonViTinh = db.DonViQuiDois.Where(ct => ct.ID_HangHoa == item.ID_HangHoa && ct.Xoa != true)
+                        item.BH_NhanVienThucHien = lstNV.Where(x => x.ID_ChiTietHoaDon == item.ID).ToList();
+
+                        item.DonViTinh = lstDVT.Where(ct => ct.ID_HangHoa == item.ID_HangHoa)
                             .Select(x => new DonViTinh
                             {
                                 ID_HangHoa = item.ID_HangHoa,
@@ -1880,30 +1897,33 @@ namespace libDM_DoiTuong
             if (data != null && data.Count() > 0)
             {
                 ClassBH_HoaDon_ChiTiet classhoadonchitiet = new ClassBH_HoaDon_ChiTiet(db);
+                // get all nvth of cthd
+                var arrIDCTHD = data.Select(x => x.ID).ToList();
+                List<BH_NhanVienThucHienDTO> lstNV = (from nv in db.NS_NhanVien
+                                                      join bh_nv in db.BH_NhanVienThucHien
+                                                      on nv.ID equals bh_nv.ID_NhanVien
+                                                      where arrIDCTHD.Contains(bh_nv.ID_ChiTietHoaDon)
+                                                      select new BH_NhanVienThucHienDTO
+                                                      {
+                                                          ID_NhanVien = bh_nv.ID_NhanVien,
+                                                          TenNhanVien = nv.TenNhanVien,
+                                                          ID_ChiTietHoaDon = bh_nv.ID_ChiTietHoaDon,
+                                                          ThucHien_TuVan = bh_nv.ThucHien_TuVan,
+                                                          TienChietKhau = bh_nv.TienChietKhau,
+                                                          PT_ChietKhau = bh_nv.PT_ChietKhau,
+                                                          TheoYeuCau = bh_nv.TheoYeuCau,
+                                                          HeSo = bh_nv.HeSo,
+                                                          TinhChietKhauTheo = bh_nv.TinhChietKhauTheo,
+                                                          TinhHoaHongTruocCK = bh_nv.TinhHoaHongTruocCK != null ? bh_nv.TinhHoaHongTruocCK : 0
+                                                      }).ToList();
+
                 foreach (var item in data)
                 {
-                    var nv_ck = (from nv in db.NS_NhanVien
-                                 join bh_nv in db.BH_NhanVienThucHien
-                                 on nv.ID equals bh_nv.ID_NhanVien
-                                 where bh_nv.ID_ChiTietHoaDon == item.ID
-                                 select new BH_NhanVienThucHienDTO
-                                 {
-                                     ID_NhanVien = bh_nv.ID_NhanVien,
-                                     TenNhanVien = nv.TenNhanVien,
-                                     ID_ChiTietHoaDon = bh_nv.ID_ChiTietHoaDon,
-                                     ThucHien_TuVan = bh_nv.ThucHien_TuVan,
-                                     TienChietKhau = bh_nv.TienChietKhau,
-                                     PT_ChietKhau = bh_nv.PT_ChietKhau,
-                                     TheoYeuCau = bh_nv.TheoYeuCau,
-                                     HeSo = bh_nv.HeSo,
-                                     TinhChietKhauTheo = bh_nv.TinhChietKhauTheo,
-                                     TinhHoaHongTruocCK = bh_nv.TinhHoaHongTruocCK != null ? bh_nv.TinhHoaHongTruocCK : 0,
-                                 }).ToList();
                     if (item.ID_ChiTietDinhLuong != null && item.ID_ChiTietDinhLuong == item.ID)
                     {
                         item.ThanhPhan_DinhLuong = classhoadonchitiet.SP_GetThanhPhanDinhLuong_CTHD(item.ID);
                     }
-                    item.BH_NhanVienThucHien = nv_ck;
+                    item.BH_NhanVienThucHien = lstNV.Where(x => x.ID_ChiTietHoaDon == item.ID).ToList();
                 }
             }
             return data;
@@ -6318,7 +6338,7 @@ namespace libDM_DoiTuong
         public double KhachDaTra { get; set; }
         public string GhiChu { get; set; }
         public string TrangThai { get; set; }
-    } 
+    }
     public class Excel_BaoGiaSuaChua
     {
         public string MaHoaDon { get; set; }
