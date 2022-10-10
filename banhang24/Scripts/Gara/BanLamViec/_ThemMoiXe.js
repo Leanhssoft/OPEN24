@@ -458,10 +458,13 @@
                 DienThoai: '',
             }
         },
-        UpdateCustomer: function () {
+        UpdateCustomer: async function () {
             var self = this;
             vmThemMoiKhach.inforLogin = self.inforLogin;
-            vmThemMoiKhach.GetInforKhachHangFromDB_ByID(self.newCar.ID_KhachHang, true);
+            let cus = await vmThemMoiKhach.GetInforKhachHangFromDB_ByID(self.newCar.ID_KhachHang);
+            if (cus !== null && cus.length > 0) {
+                vmThemMoiKhach.showModalUpdate(cus[0]);
+            }
         },
         showModal_UpdateMauXe: function () {
             var self = this;

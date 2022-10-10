@@ -26,12 +26,6 @@
             title: '',
             mes: '',
             show: false,
-            //ListChose: [
-            //    { ID: 0, Text: 'Thay đổi thông tin phiếu tiếp nhận', Value: true },
-            //    { ID: 1, Text: 'Cập nhật lại công ty bảo hiểm cho hóa đơn', Value: false },
-            //    { ID: 2, Text: 'Cập nhật lại khách hàng cho hóa đơn', Value: false },
-            //    { ID: 3, Text: 'Cập nhật lại phiếu thu liên quan', Value: false },
-            //],
             ListChose: [],
         },
         role: {
@@ -973,10 +967,14 @@
             vmThemMoiKhach.inforLogin = self.inforLogin;
             vmThemMoiKhach.showModalAdd();
         },
-        UpdateCustomer: function () {
-            var self = this;
+        UpdateCustomer: async function () {
+            let self = this;
             vmThemMoiKhach.inforLogin = self.inforLogin;
-            vmThemMoiKhach.GetInforKhachHangFromDB_ByID(self.newPhieuTiepNhan.ID_KhachHang, true);
+
+            let cus = await vmThemMoiKhach.GetInforKhachHangFromDB_ByID(self.newPhieuTiepNhan.ID_KhachHang);
+            if (cus !== null && cus.length > 0) {
+                vmThemMoiKhach.showModalUpdate(cus[0]);
+            }
         },
         ResetCustomer: function () {
             var self = this;

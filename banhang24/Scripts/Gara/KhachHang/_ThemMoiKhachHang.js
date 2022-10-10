@@ -184,20 +184,19 @@
             $('#ThemMoiKhachHang').modal('show');
         },
 
-        GetInforKhachHangFromDB_ByID: function (idCus, isShow = false) {// used to update cus at phieutiepnhan
+        GetInforKhachHangFromDB_ByID: async function (idCus) {// used to update cus at phieutiepnhan
             let self = this;
             let date = moment(new Date()).format('YYYY-MM-DD HH:mm');
             if (!commonStatisJs.CheckNull(idCus)) {
-                ajaxHelper('/api/DanhMuc/DM_DoituongAPI/' + "GetInforKhachHang_ByID?idDoiTuong=" + idCus
+                let xx = await ajaxHelper('/api/DanhMuc/DM_DoituongAPI/' + "GetInforKhachHang_ByID?idDoiTuong=" + idCus
                     + '&idChiNhanh=' + self.inforLogin.ID_DonVi
-                    + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function (data) {
-                        if (data !== null) {
-                            if (isShow) {
-                                self.showModalUpdate(data[0]);
-                            }
-                        }
+                    + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function () {
+                    }).then(function (data) {
+                        return data;
                     });
+                return xx;
             }
+            return null;
         },
 
         showModalUpdate: async function (item) {
@@ -223,6 +222,9 @@
                 else {
                     item.TenNguoiGioiThieu = '';
                 }
+            }
+            if (commonStatisJs.CheckNull(item.TenTrangThai)) {
+                item.TenTrangThai = '';
             }
 
             item.LoaiDoiTuong = 1;
