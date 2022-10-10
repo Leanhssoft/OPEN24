@@ -4461,8 +4461,8 @@ var NhapHangChiTiet = function () {
             else {
                 ShowMessage_Danger(x.mes);
             }
-            Enable_btnSave();
         }).always(function () {
+            Enable_btnSave();
             vmThanhToan.PhieuThuKhach = vmThanhToan.newPhieuThu(2);
         });
     }
@@ -4497,8 +4497,8 @@ var NhapHangChiTiet = function () {
             else {
                 ShowMessage_Danger(x.mes);
             }
-            Enable_btnSave();
         }).always(function () {
+            Enable_btnSave();
             vmThanhToan.PhieuThuKhach = vmThanhToan.newPhieuThu(2);
         });
     }
