@@ -1204,14 +1204,14 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     try
                     {
                         classQuy_HoaDon _classQHD = new classQuy_HoaDon(db);
-                        Quy_HoaDon Quy_HoaDon = data["objQuyHoaDon"].ToObject<Quy_HoaDon>();
+                        Quy_HoaDon objQuyHD = data["objQuyHoaDon"].ToObject<Quy_HoaDon>();
                         List<Quy_HoaDon_ChiTiet> objCTQuyHoaDon = data["objCTQuyHoaDon"].ToObject<List<Quy_HoaDon_ChiTiet>>();
 
                         // update congnoluong: neu thaydoi khoanthuchi (tamungluong --> khongtamung or nguoclai)  
                         var tamungluong = false;
-                        var lstCTOld = db.Quy_HoaDon_ChiTiet.Where(x => x.ID_HoaDon == Quy_HoaDon.ID && x.ID_KhoanThuChi != null)
-                            .Select(x => new { x.ID, x.ID_KhoanThuChi, x.TienThu });
-                        var ctNew = objCTQuyHoaDon.Where(x => x.ID_HoaDon == Quy_HoaDon.ID && x.ID_KhoanThuChi != null)
+                        var lstCTOld = db.Quy_HoaDon_ChiTiet.Where(x => x.ID_HoaDon == objQuyHD.ID && x.ID_KhoanThuChi != null)
+                            .Select(x => new { x.ID, x.ID_KhoanThuChi, x.TienThu }).ToList();
+                        var ctNew = objCTQuyHoaDon.Where(x => x.ID_HoaDon == objQuyHD.ID && x.ID_KhoanThuChi != null)
                             .Select(x => new { x.ID, x.ID_KhoanThuChi, x.TienThu });
                         Guid? idKhoanChiOld = Guid.Empty, idKhoanChiNew = Guid.Empty;
 
@@ -1228,23 +1228,22 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         }
 
                         string sMaHoaDon = string.Empty;
-                        if (string.IsNullOrEmpty(Quy_HoaDon.MaHoaDon))
+                        if (string.IsNullOrEmpty(objQuyHD.MaHoaDon))
                         {
-                            sMaHoaDon = _classQHD.SP_GetMaPhieuThuChiMax_byTemp(Quy_HoaDon.LoaiHoaDon, Quy_HoaDon.ID_DonVi, Quy_HoaDon.NgayLapHoaDon);
+                            sMaHoaDon = _classQHD.SP_GetMaPhieuThuChiMax_byTemp(objQuyHD.LoaiHoaDon, objQuyHD.ID_DonVi, objQuyHD.NgayLapHoaDon);
                         }
                         else
                         {
-                            sMaHoaDon = Quy_HoaDon.MaHoaDon;
+                            sMaHoaDon = objQuyHD.MaHoaDon;
                         }
-                        Quy_HoaDon.MaHoaDon = sMaHoaDon;
-                        _classQHD.Update_SoQuy(Quy_HoaDon, objCTQuyHoaDon);
+                        objQuyHD.MaHoaDon = sMaHoaDon;
+                        _classQHD.Update_SoQuy(objQuyHD, objCTQuyHoaDon);
 
                         var tinhluong = db.Quy_KhoanThuChi.Where(x => (x.ID == idKhoanChiNew || x.ID == idKhoanChiOld) && x.TinhLuong == true).Select(x => x.TinhLuong);
                         if (tinhluong != null && tinhluong.Count() > 0)
                         {
                             var khoanNew = db.Quy_KhoanThuChi.Where(x => x.ID == idKhoanChiNew && x.TinhLuong == true);
-                            ClassQuy_HoaDon_ChiTiet classQuyCT = new ClassQuy_HoaDon_ChiTiet(db);
-                            var quyct = lstCTOld.Select(x => x.ID).ToList();
+                            List<Guid> quyct = db.Quy_HoaDon_ChiTiet.Where(x => x.ID_HoaDon == objQuyHD.ID).Select(x => x.ID).ToList();
                             NhanSuService nhanSuService = new NhanSuService(db);
                             if (khoanNew != null && khoanNew.Count() > 0)
                             {
@@ -1252,7 +1251,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 if (khoanOld.Count() == 0)
                                 {
                                     // chi khac --> chi tamung 
-                                    nhanSuService.UpdateCongNo_TamUngLuong(Quy_HoaDon.ID_DonVi, quyct, true);
+                                    nhanSuService.UpdateCongNo_TamUngLuong(objQuyHD.ID_DonVi, quyct, true);
                                 }
                                 else
                                 {
@@ -1261,19 +1260,19 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                     if (chenhlech != 0)
                                     {
                                         db.Database.ExecuteSqlCommand(@" UPDATE NS_CongNoTamUngLuong SET CongNo = CongNo + {0} where ID_NhanVien = {1} and ID_DonVi = {2}",
-                                           chenhlech, objCTQuyHoaDon.FirstOrDefault().ID_NhanVien, Quy_HoaDon.ID_DonVi);
+                                           chenhlech, objCTQuyHoaDon.FirstOrDefault().ID_NhanVien, objQuyHD.ID_DonVi);
                                     }
                                 }
                             }
                             else
                             {
                                 // chi tamung --> chi khac
-                                nhanSuService.HuyPhieuThu_UpdateCongNoTamUngLuong(Quy_HoaDon.ID_DonVi, quyct, true);
+                                nhanSuService.HuyPhieuThu_UpdateCongNoTamUngLuong(objQuyHD.ID_DonVi, quyct, true);
                             }
                         }
 
                         trans.Commit();
-                        return ActionTrueData(Quy_HoaDon);
+                        return ActionTrueData(objQuyHD);
                     }
                     catch (Exception e)
                     {
