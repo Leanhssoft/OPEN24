@@ -441,7 +441,10 @@ var LoHangViewModel = function () {
 
     self.filterNgayLapHD.subscribe(function (newVal) {
         self.currentPage(0);
-        SearchHangHoa();
+        var thongbaolosaphethan = localStorage.getItem('ThongBaoLoHangSapHetHan');
+        if (thongbaolosaphethan == null) {
+            SearchHangHoa();
+        }
     });
 
     self.ExportDMHHtoExcel = function () {
@@ -661,7 +664,6 @@ var LoHangViewModel = function () {
                         self.Loc_TonKho('1');
                         var setDayStart = moment(dayStart, 'YYYY-MM-DD').format('DD/MM/YYYY');
                         var setDayEnd = moment(dayEnd, 'YYYY-MM-DD').format('DD/MM/YYYY');
-                        //$('#txtNgayTaoInput').val(setDayStart + ' - ' + setDayEnd);
 
                         $(function () {
                             $('#txtNgayTaoInput').daterangepicker({
@@ -675,11 +677,14 @@ var LoHangViewModel = function () {
                             });
                         });
                         $('.table-HH').gridLoader();
+
+                        dayStart = moment(dayStart).add('days', 1).format('YYYY-MM-DD');
+                        dayEnd = moment(dayEnd).add('days', 1).format('YYYY-MM-DD');
+
                         ajaxHelper(DMHangHoaUri + 'GetListDMLoHang?currentPage=' + self.currentPage() + '&pageSize=' + self.pageSize() + '&idnhomhang=' + self.arrIDNhomHang() +
                             '&maHoaDon=' + txtMaHDon + '&tonkho=' + tonkho + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart + '&dayEnd=' + dayEnd + '&checkngay=' + check,
                             'GET').done(function (data1) {
                                 $('.table-HH').gridLoader({ show: false });
-
                                 self.DMLoHangs(data1.data.lstHH);
                                 self.TotalRecord(data1.TotalRecord);
                                 self.PageCount(data1.PageCount);
@@ -855,7 +860,10 @@ var LoHangViewModel = function () {
 
     self.Loc_TonKho.subscribe(function (newVal) {
         self.currentPage(0);
-        SearchHangHoa();
+        var thongbaolosaphethan = localStorage.getItem('ThongBaoLoHangSapHetHan');
+        if (thongbaolosaphethan == null) {
+            SearchHangHoa();
+        }
     });
     self.ListHeaderInit = ko.observableArray([
         { colName: 'colMaHang', colText: 'Mã hàng', colShow: true, index: 0 },
