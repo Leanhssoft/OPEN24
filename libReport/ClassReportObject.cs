@@ -59,6 +59,8 @@ namespace libReport
         public string TenDonViTinh { get; set; }
         public string TenLoHang { get; set; }
         public double SoLuong { get; set; }
+        public double? ThanhTienTruocCK { get; set; }
+        public double? TienChietKhau { get; set; }
         public double ThanhTien { get; set; }
         public double GiamGiaHD { get; set; }
         public double? DoanhThuThuan { get; set; }
@@ -75,12 +77,16 @@ namespace libReport
         public double? TongChiPhi { get; set; }
         public double TongLaiLo { get; set; } 
         public double? TongDoanhThuThuan { get; set; }
+        public double? TongChietKhau { get; set; }
+        public double? TongTienTruocCK { get; set; }
     }
 
     public class BaoCaoBanHang_ChiTietPRC
     {
         public double Rowns { get; set; }
         public double TongSoLuong { get; set; }
+        public double? TongChietKhau { get; set; }
+        public double? TongTienTruocCK { get; set; }
         public double TongThanhTien { get; set; }
         public double TongGiamGiaHD { get; set; }
         public double? DoanhThuThuan { get; set; }
@@ -110,6 +116,7 @@ namespace libReport
         public string TenLoHang { get; set; }
         public double SoLuong { get; set; }
         public double GiaBan { get; set; }
+        public double? ThanhTienTruocCK { get; set; }
         public double TienChietKhau { get; set; }
         public double ThanhTien { get; set; }
         public double GiamGiaHD { get; set; }
@@ -131,7 +138,9 @@ namespace libReport
     {
         public string TenNhomHangHoa { get; set; }
         public double SoLuong { get; set; }
-        public double ThanhTien { get; set; }
+        public double? ThanhTienTruocCK { get; set; }
+        public double? TienChietKhau { get; set; }
+        public double? ThanhTien { get; set; }
         public double GiamGiaHD { get; set; }
         public double? DoanhThu { get; set; }
         public double? TienThue { get; set; }

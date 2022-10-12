@@ -502,19 +502,14 @@
                                 <li>
                                     <div class="flex flex-row" data-bind="click: $root.SelectRepoert_NhomHangHoa, attr:{id: ID}">
                                         <span data-bind="text: TenNhomHangHoa"></span>
-                                        @*<button onclick="showlistTree(this)"><i class="fa fa-angle-down"></i></button>*@
 
                                     </div>
-                                    @*<span class="close-ul" onclick="ShowNhom($(this))" data-bind="visible: Childs.length >0 "><i class="fa fa-caret-right" aria-hidden="true"></i></span>*@
                                     <ul data-bind="foreach: Childs">
                                         <li>
                                             <div class="flex flex-row" data-bind="click: $root.SelectRepoert_NhomHangHoa, attr:{id: ID}">
 
                                                 <label data-bind="text: TenNhomHangHoa">Nhóm hàng hóa 2</label>
-
-                                                @*<button onclick="showlistTree(this)" data-bind="visible: Child2s.length >0 "><i class="fa fa-angle-down"></i></button>*@
                                             </div>
-                                            @*<button class="btn btn-link btn-right" data-bind="click: $root.editNhomHangHoa"><i class="fa fa-edit"></i></button>*@
                                             <ul data-bind="foreach: Child2s">
                                                 <li>
                                                     <div class="flex flex-row" data-bind="click: $root.SelectRepoert_NhomHangHoa, attr:{id: ID}">
@@ -525,22 +520,6 @@
                                             </ul>
                                         </li>
                                     </ul>
-                                    @*<ul data-bind="foreach: Childs">
-                                            <li>
-                                                <div class="li-top li-oo" data-bind="click: $root.SelectRepoert_NhomHangHoa, attr:{id: ID}">
-                                                    <span data-bind="text: TenNhomHangHoa" class="li-top li-pp"></span>
-                                                    <a href="javascript:void(0)" data-bind="click: $root.editNhomHangHoa"><i class="fa fa-pencil-square-o"></i></a>
-                                                </div>
-                                                <span class="close-ul" onclick="ShowNhom($(this))" data-bind="visible: Child2s.length >0 "><i class="fa fa-caret-right" aria-hidden="true"></i></span>
-                                                <ul data-bind="foreach: Child2s">
-                                                    <li>
-                                                        <div class="li-top li-oo" data-bind="click: $root.SelectRepoert_NhomHangHoa, attr:{id: ID}">
-                                                            <span data-bind="text: TenNhomHangHoa" class="li-top li-pp"></span>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                        </ul>*@
                                 </li>
                             </ul>
                         </aside>
@@ -809,6 +788,8 @@
                                                 </a>
                                             </td>
                                             <td class="@commonEnum.TypeReportTotal.Total_soluong text-right" data-bind="text: formatNumber3Digit(SoLuong) "></td>
+                                            <td class="@commonEnum.TypeReportTotal.Total_thanhtientruocCK text-right " data-bind="text: formatNumber3Digit(ThanhTienTruocCK,2)"></td>
+                                            <td class="@commonEnum.TypeReportDetail.Detail_chietkhau text-right " data-bind="text: formatNumber3Digit(TienChietKhau,2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_thanhtien text-right " data-bind="text: formatNumber3Digit(ThanhTien,2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_giamgia text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2) "></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_doanhthuthuan text-right" data-bind="text: formatNumber3Digit(DoanhThuThuan,2) "></td>
@@ -836,6 +817,8 @@
                                             <td class="@commonEnum.TypeReportTotal.Total_donvitinh"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_lohang"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_soluong text-right" data-bind="text: formatNumber3Digit(TH_SoLuong())"></td>
+                                            <td class="@commonEnum.TypeReportTotal.Total_thanhtientruocCK text-right " data-bind="text: formatNumber3Digit($root.TH_ThanhTienTruocCK(),2)"></td>
+                                            <td class="@commonEnum.TypeReportDetail.Detail_chietkhau text-right " data-bind="text: formatNumber3Digit($root.TH_TongChietKhau(),2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_thanhtien text-right " data-bind="text: formatNumber3Digit(TH_ThanhTien(),2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_giamgia text-right " data-bind="text: formatNumber3Digit(TH_GiamGiaHD(),2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_doanhthuthuan text-right " data-bind="text: formatNumber3Digit($root.TH_DoanhThuThuan(),2)"></td>
@@ -896,6 +879,7 @@
                                             </td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_soluong text-right" data-bind="text: formatNumber3Digit(SoLuong) "></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_giaban text-right " data-bind="text: formatNumber3Digit(GiaBan,2)"></td>
+                                            <td class="@commonEnum.TypeReportTotal.Total_thanhtientruocCK text-right" data-bind="text: formatNumber3Digit(ThanhTienTruocCK,2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_chietkhau text-right" data-bind="text: formatNumber3Digit(TienChietKhau,2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_thanhtien text-right" data-bind="text: formatNumber3Digit(ThanhTien,2) "></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_giamgiahd text-right" data-bind="text: formatNumber3Digit(GiamGiaHD)"></td>
@@ -943,7 +927,8 @@
                                             <td class="@commonEnum.TypeReportDetail.Detail_lohang"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_soluong text-right" data-bind="text: formatNumber3Digit(CT_SoLuong())"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_giaban"></td>
-                                            <td class="@commonEnum.TypeReportDetail.Detail_chietkhau"></td>
+                                            <td class="@commonEnum.TypeReportTotal.Total_thanhtientruocCK text-right" data-bind="text: formatNumber3Digit($root.TH_ThanhTienTruocCK(),2)"></td>
+                                            <td class="@commonEnum.TypeReportDetail.Detail_chietkhau  text-right" data-bind="text: formatNumber3Digit($root.TH_TongChietKhau(),2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_thanhtien text-right" data-bind="text: formatNumber3Digit(CT_ThanhTien(),2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_giamgiahd text-right" data-bind="text: formatNumber3Digit(CT_GiamGiaHD(),2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_doanhthuthuan text-right" data-bind="text: formatNumber3Digit($root.TH_DoanhThuThuan(),2)"></td>
@@ -982,6 +967,8 @@
                                         <tr class="prev-tr-hide">
                                             <td class="@commonEnum.TypeReportGroupProduct.nhomhang text-left" data-bind="text: TenNhomHangHoa"></td>
                                             <td class=" @commonEnum.TypeReportGroupProduct.soluong text-right" data-bind="text: formatNumber3Digit(SoLuong) "></td>
+                                            <td class=" @commonEnum.TypeReportTotal.Total_thanhtientruocCK text-right" data-bind="text: formatNumber3Digit(ThanhTienTruocCK,2) "></td>
+                                            <td class=" @commonEnum.TypeReportDetail.Detail_chietkhau text-right" data-bind="text: formatNumber3Digit(TienChietKhau,2) "></td>
                                             <td class=" @commonEnum.TypeReportGroupProduct.thanhtien text-right" data-bind="text: formatNumber3Digit(ThanhTien,2) "></td>
                                             <td class=" @commonEnum.TypeReportGroupProduct.giamgia text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2)"></td>
                                             <td class=" @commonEnum.TypeReportGroupProduct.doanhthuthuan text-right" data-bind="text: formatNumber3Digit(DoanhThu,2) "></td>
@@ -1005,6 +992,8 @@
                                         <tr class="bg12 bold">
                                             <td class="@commonEnum.TypeReportGroupProduct.nhomhang   text-left">Tổng cộng</td>
                                             <td class=" @commonEnum.TypeReportGroupProduct.soluong   text-right" data-bind="text: formatNumber3Digit(TNH_SoLuong())"></td>
+                                            <td data-bind="text: formatNumber3Digit($root.TH_ThanhTienTruocCK(),2)" class="@commonEnum.TypeReportTotal.Total_thanhtientruocCK  text-right"></td>
+                                            <td data-bind="text: formatNumber3Digit($root.TH_TongChietKhau(),2)" class="@commonEnum.TypeReportDetail.Detail_chietkhau  text-right"></td>
                                             <td data-bind="text: formatNumber3Digit(TNH_ThanhTien(),2)" class="@commonEnum.TypeReportGroupProduct.thanhtien  text-right"></td>
                                             <td data-bind="text: formatNumber3Digit(TNH_GiamGiaHD(),2)" class="@commonEnum.TypeReportGroupProduct.giamgia  text-right"></td>
                                             <td data-bind="text: formatNumber3Digit($root.TH_DoanhThuThuan(),2)" class="@commonEnum.TypeReportGroupProduct.doanhthuthuan  text-right"></td>

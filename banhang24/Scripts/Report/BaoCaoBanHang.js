@@ -885,6 +885,8 @@
     self.BaoCaoBanHang_HangTraLai = ko.observableArray();
     self.BaoCaoBanHang_LoiNhuan = ko.observableArray();
     self.TH_SoLuong = ko.observable();
+    self.TH_TongChietKhau = ko.observable();
+    self.TH_ThanhTienTruocCK = ko.observable();
     self.TH_ThanhTien = ko.observable();
     self.TH_TienVon = ko.observable();
     self.TH_GiamGiaHD = ko.observable();
@@ -1130,7 +1132,10 @@
                             $(".Report_Empty").hide();
                             $(".page").show();
                             self.RowsStart((_pageNumber - 1) * _pageSize + 1);
-                            self.RowsEnd((_pageNumber - 1) * _pageSize + self.BaoCaoBanHang_TongHop().length)
+                            self.RowsEnd((_pageNumber - 1) * _pageSize + self.BaoCaoBanHang_TongHop().length);
+
+                            self.TH_TongChietKhau(data.LstData[0].TongChietKhau);
+                            self.TH_ThanhTienTruocCK(data.LstData[0].TongTienTruocCK);
                         }
                         else {
                             $('.TC_TongHop').hide();
@@ -1138,6 +1143,8 @@
                             $(".page").hide();
                             self.RowsStart('0');
                             self.RowsEnd('0');
+                            self.TH_TongChietKhau(0);
+                            self.TH_ThanhTienTruocCK(0);
                         }
                         AllPage = data.numberPage;
                         self.selecPage();
@@ -1173,7 +1180,10 @@
                             $(".Report_Empty").hide();
                             $(".page").show();
                             self.RowsStart((_pageNumber - 1) * _pageSize + 1);
-                            self.RowsEnd((_pageNumber - 1) * _pageSize + self.BaoCaoBanHang_ChiTiet().length)
+                            self.RowsEnd((_pageNumber - 1) * _pageSize + self.BaoCaoBanHang_ChiTiet().length);
+
+                            self.TH_TongChietKhau(data.LstData[0].TongChietKhau);
+                            self.TH_ThanhTienTruocCK(data.LstData[0].TongTienTruocCK);
                         }
                         else {
                             $('.TC_ChiTiet').hide();
@@ -1181,6 +1191,8 @@
                             $(".page").hide();
                             self.RowsStart('0');
                             self.RowsEnd('0');
+                            self.TH_TongChietKhau(0);
+                            self.TH_ThanhTienTruocCK(0);
                         }
                         AllPage = data.numberPage;
                         self.selecPage();
@@ -1222,6 +1234,8 @@
                         self.TNH_LaiLo(data.a5);
                         self.TH_DoanhThuThuan(data.TongDoanhThuThuan);
                         self.TH_TienThue(data.SumTienThue);
+                        self.TH_TongChietKhau(data.SumChietKhau);
+                        self.TH_ThanhTienTruocCK(data.SumThanhTientruocCK);
                         LoadingForm(false);
                     });
                 }
@@ -2899,6 +2913,12 @@
                         case "Total_tienthue":
                             self.ColumnSort("TongTienThue");
                             break;
+                        case "Total_thanhtientruocCK":
+                            self.ColumnSort("ThanhTienTruocCK");
+                            break;
+                        case "Detail_chietkhau":
+                            self.ColumnSort("TienChietKhau");
+                            break;
                     }
                     self.LoadReport();
                     break;
@@ -2930,6 +2950,12 @@
                             break;
                         case "lailo":
                             self.ColumnSort("LaiLo");
+                            break;
+                        case "Total_thanhtientruocCK":
+                            self.ColumnSort("ThanhTienTruocCK");
+                            break;
+                        case "Detail_chietkhau":
+                            self.ColumnSort("TienChietKhau");
                             break;
                     }
                     self.sortTable(self.BaoCaoBanHang_TheoNhomHang());
