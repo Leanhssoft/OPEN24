@@ -855,6 +855,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         TongGiamGia = x.TongGiamGia,
                         TongPhaiTra = x.TongThanhToan,
                         PhaiThanhToan = x.PhaiThanhToan,
+                        BuTruTraHang = x.TongTienHDTra,
+                        GiaTriSauTra = x.PhaiThanhToan - x.TongTienHDTra,
                         KhachDaTra = x.KhachDaTra,
                         TienMat = x.TienMat,
                         ChuyenKhoan = x.ChuyenKhoan,
@@ -904,7 +906,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     var nganhnghe = CookieStore.GetCookieAes("shop").ToUpper();
 
-                    List<BH_HoaDonDTO> lstAllHDs = classhoadon.SP_GetListHoaDons_Where_PassObject(listParams);
+                    List<BH_HoaDonDTO> lstAllHDs = classhoadon.GetListInvoice_Paging(listParams);
                     List<GoiDichVuExcel> lst = lstAllHDs.Select(x => new GoiDichVuExcel
                     {
                         MaHoaDon = x.MaHoaDon,
@@ -926,6 +928,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         TongTienThue = x.TongTienThue,
                         TongGiamGia = x.TongGiamGia,
                         PhaiThanhToan = x.PhaiThanhToan,
+                        BuTruTraHang = x.TongTienHDTra,
+                        GiaTriSauTra = x.PhaiThanhToan - x.TongTienHDDoiTra,
                         KhachDaTra = x.KhachDaTra,
                         TienMat = x.TienMat,
                         ChuyenKhoan = x.ChuyenKhoan,
@@ -965,7 +969,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 }
                 catch (Exception ex)
                 {
-                    CookieStore.WriteLog("ExportExcel_HoaDonBanLe " + ex.InnerException + ex.Message);
+                    CookieStore.WriteLog("ExportExcel_GoiDichVu " + ex.InnerException + ex.Message);
                 }
                 return fileSave;
             }
@@ -1020,6 +1024,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         DM.TongTienThueBaoHiem = item.TongTienThueBaoHiem;
 
                         DM.PhaiThanhToan = item.PhaiThanhToan;
+                        DM.BuTruTraHang = item.TongTienHDTra;
+                        DM.GiaTriSauTra = DM.PhaiThanhToan - DM.BuTruTraHang;
                         DM.TienMat = item.TienMat;
                         DM.ChuyenKhoan = item.ChuyenKhoan;
                         DM.TienATM = item.TienATM;
@@ -1137,9 +1143,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         DM.TongSauGiamGia = item.TongTienHang - item.TongGiamGia;
                         DM.PhiTraHang = item.TongChiPhi;
                         DM.TongTienThue = item.TongTienThue;
-                        DM.CanTraKhach = item.PhaiThanhToan;
+                        DM.CanTraKhach = item.TongTienHDTra;
                         DM.DaTraKhach = item.KhachDaTra;
-                        DM.ConNo = item.PhaiThanhToan - item.KhachDaTra;
+                        DM.ConNo = DM.CanTraKhach - item.KhachDaTra;
                         DM.GhiChu = item.DienGiai;
                         DM.TrangThai = item.TrangThai;
                         lst.Add(DM);
@@ -1276,6 +1282,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     DM.TongGiamGia = item.TongGiamGia;
                     DM.TongChiPhi = item.TongChiPhi;
                     DM.PhaiThanhToan = item.PhaiThanhToan;
+                    DM.BuTruTraHang = item.TongTienHDTra;
+                    DM.GiaTriSauTra = item.PhaiThanhToan - DM.BuTruTraHang;
                     DM.ThanhTienChuaCK = item.ThanhTienChuaCK;
                     DM.TongChietKhau = item.GiamGiaCT;
                     DM.TienMat = item.TienMat;
@@ -1355,6 +1363,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     BH_PhieuTraHangNhap_Excel DM = new BH_PhieuTraHangNhap_Excel();
                     DM.MaHoaDon = item.MaHoaDon;
+                    DM.MaPhieuNhap = item.MaHoaDonGoc;
                     DM.NgayLapHoaDon = item.NgayLapHoaDon;
                     DM.MaDoiTuong = item.MaDoiTuong;
                     DM.TenDoiTuong = item.TenDoiTuong ?? "Nhà cung cấp lẻ";
@@ -1365,9 +1374,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     DM.TongTienHang = item.TongTienHang;
                     DM.TongGiamGia = item.TongGiamGia;
                     DM.TongTienThue = item.TongTienThue;
-                    DM.KhachCanTra = item.PhaiThanhToan;
+                    DM.KhachCanTra = item.TongTienHDTra;
                     DM.KhachDaTra = item.KhachDaTra;
-                    DM.ConNo = item.PhaiThanhToan - item.KhachDaTra;
+                    DM.ConNo = DM.KhachCanTra - item.KhachDaTra;
                     DM.GhiChu = item.DienGiai;
                     DM.TrangThai = item.ChoThanhToan == null ? "Đã hủy" : (item.ChoThanhToan == false ? "Đã trả hàng" : "Tạm lưu");
                     lst.Add(DM);
