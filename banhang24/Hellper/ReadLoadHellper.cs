@@ -1466,6 +1466,8 @@ namespace banhang24.Hellper
                        { ColumnInvoices.tienthue.ToString(),"Tiền thuế" },
                     {TypeServicepackage.giamgia.ToString(),"Giảm giá" },
              { TypeServicepackage. khachcantra.ToString(),"Khách cần trả" },
+             { ColumnInvoices. butruTraHang.ToString(),"Bù trừ trả hàng" },
+             { ColumnInvoices. gtriSauTra.ToString(),"Giá trị sau trả" },
                     {TypeServicepackage.khachdatra.ToString(),"Khách đã trả" },
               { TypeServicepackage. tienmat.ToString(),"Tiền mặt" },
              { TypeServicepackage. chuyenkhoan.ToString(),"Chuyển khoản" },
@@ -2438,6 +2440,8 @@ namespace banhang24.Hellper
             tienthue,
             tongphaitra,
             khachcantra,
+            butruTraHang,
+            gtriSauTra,
 
             tongtienBHduyet,
             khautrutheovu,
@@ -2482,6 +2486,8 @@ namespace banhang24.Hellper
               { ColumnInvoices.tonggiamgia.ToString(),"Tổng giảm giá" },
               { ColumnInvoices.tongphaitra.ToString(),"Tổng phải trả" },
               { ColumnInvoices.khachcantra.ToString(),"Khách cần trả" },
+              { ColumnInvoices.butruTraHang.ToString(),"Bù trừ trả hàng" },
+              { ColumnInvoices.gtriSauTra.ToString(),"Khách phải trả" },
               { ColumnInvoices.khachdatra.ToString(),"Khách đã trả" },
 
               { ColumnInvoices.tienmat.ToString(),"Tiền mặt" },
@@ -2520,6 +2526,8 @@ namespace banhang24.Hellper
               { ColumnInvoices.tonggiamgia.ToString(),"Tổng giảm giá" },
               { ColumnInvoices.tongphaitra.ToString(),"Tổng phải trả" },
               { ColumnInvoices.khachcantra.ToString(),"Khách cần trả" },
+              { ColumnInvoices.butruTraHang.ToString(),"Bù trừ trả hàng" },
+              { ColumnInvoices.gtriSauTra.ToString(),"Khách phải trả" },
               { ColumnInvoices.khachdatra.ToString(),"Khách đã trả" },
 
                { ColumnInvoices.tongtienBHduyet.ToString(),"Tổng tiền BH duyệt" },
@@ -2701,6 +2709,7 @@ namespace banhang24.Hellper
         public static Dictionary<string, string> ListColumnPurchaseReturns = new Dictionary<string, string>()
         {
               { ColumnPurchaseReturns.mahoadon.ToString(),"Mã hóa đơn" },
+              { ColumnInvoices.madathang.ToString(),"Mã phiếu nhập" },
               { ColumnPurchaseReturns.ngaylaphoadon.ToString(),"Ngày lập hóa đơn" },
               { ColumnPurchaseReturns.makhachhang.ToString(),"Mã nhà cung cấp" },
               { ColumnPurchaseReturns.tenkhachhang.ToString(),"Tên nhà cung cấp" },
@@ -2750,8 +2759,10 @@ namespace banhang24.Hellper
               { ColumnPurchaseOrder.tongtienhang.ToString(),"Tổng tiền hàng" },
               { ColumnInvoices.tienthue.ToString(),"Tổng tiền thuế" },
               { ColumnPurchaseOrder.tonggiamgia.ToString(),"Tổng giảm giá" },
-               { ColumnInvoices.tongchiphi.ToString(),"Chi phí v/c" },
+              { ColumnInvoices.tongchiphi.ToString(),"Chi phí v/c" },
               { ColumnPurchaseOrder.cantrakhach.ToString(),"Cần trả NCC" },
+              { ColumnInvoices.butruTraHang.ToString(),"Bù trừ trả hàng" },
+              { ColumnInvoices.gtriSauTra.ToString(),"Giá trị sau trả" },
               { ColumnInvoices.tienmat.ToString(),"Tiền mặt" },
               { ColumnInvoices.pos.ToString(),"Tiền POS" },
               { ColumnInvoices.chuyenkhoan.ToString(),"Chuyển khoản" },
