@@ -1868,31 +1868,33 @@ namespace libDM_DoiTuong
                               group new { hd, qct_qhd }
                               by new
                               {
-                                  ID = hd.ID,
-                                  MaHoaDon = hd.MaHoaDon,
-                                  NgayLapHoaDon = hd.NgayLapHoaDon,
-                                  PhaiThanhToan = hd.PhaiThanhToan,
-                                  TinhChietKhauTheo = hd.TinhChietKhauTheo,
-                                  TongThanhToan = hd.TongThanhToan,
-                                  TongTienThue = hd.TongTienThue,
-                                  LoaiHoaDon = hd.LoaiHoaDon,
+                                  hd.ID,
+                                  hd.MaHoaDon,
+                                  hd.NgayLapHoaDon,
+                                  hd.PhaiThanhToan,
+                                  hd.TinhChietKhauTheo,
+                                  hd.TongThanhToan,
+                                  hd.TongTienThue,
+                                  hd.LoaiHoaDon,
+                                  hd.TongTienHDTra,
                               } into g
                               select new
                               {
-                                  ID = g.Key.ID,
-                                  MaHoaDon = g.Key.MaHoaDon,
-                                  NgayLapHoaDon = g.Key.NgayLapHoaDon,
-                                  PhaiThanhToan = g.Key.PhaiThanhToan,
-                                  TongThanhToan = g.Key.TongThanhToan,
-                                  TongTienThue = g.Key.TongTienThue,
-                                  TinhChietKhauTheo = g.Key.TinhChietKhauTheo,
-                                  LoaiHoaDon = g.Key.LoaiHoaDon,
+                                  g.Key.ID,
+                                  g.Key.MaHoaDon,
+                                  g.Key.NgayLapHoaDon,
+                                  g.Key.PhaiThanhToan,
+                                  g.Key.TongThanhToan,
+                                  g.Key.TongTienThue,
+                                  g.Key.TinhChietKhauTheo,
+                                  g.Key.LoaiHoaDon,
+                                  g.Key.TongTienHDTra,
                                   TongTienThu = g.Sum(x => x.qct_qhd == null ? 0 : x.qct_qhd.TongTienThu ?? 0),
                               };
 
             foreach (var item in tblLeftjoin)
             {
-                var debit = Math.Round(item.PhaiThanhToan) - Math.Round(item.TongTienThu);
+                var debit = item.PhaiThanhToan - item.TongTienHDTra - item.TongTienThu;
                 if (debit > 0)
                 {
                     BH_HoaDonDTO dto = new BH_HoaDonDTO();
@@ -1904,7 +1906,7 @@ namespace libDM_DoiTuong
                     dto.TongTienThue = item.TongTienThue ?? 0;
                     dto.KhachDaTra = item.TongTienThu;
                     dto.SoThuTu = item.TinhChietKhauTheo; // mượn tạm trường STT
-                    dto.TienMat = debit;  // mượn tạm trường TienMat
+                    dto.TienMat = debit ?? 0;  // mượn tạm trường TienMat
                     dto.LoaiHoaDon = item.LoaiHoaDon ?? 0;
                     lstReturn.Add(dto);
                 }
@@ -2167,7 +2169,7 @@ namespace libDM_DoiTuong
                     break;
                 case 3:
                     autoCode = "BH";
-                    break; 
+                    break;
                 case 4:
                     autoCode = "GT";
                     break;
@@ -3200,6 +3202,7 @@ namespace libDM_DoiTuong
         public int TinhChietKhauTheo { get; set; }
         public double? TongTienThue { get; set; }
         public int? LoaiHoaDon { get; set; }
+        public double? TongTienHDTra { get; set; }
     }
 
     public class ParamGetListBaoHiem_v1
