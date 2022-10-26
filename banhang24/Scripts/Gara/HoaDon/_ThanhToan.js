@@ -296,6 +296,7 @@
             if (loaiDoiTuong === 2) {
                 loaiDoiTuong = 1;
             }
+            $('#ThuTienHoaDonModal table').gridLoader({ show: true })
             $.ajax({
                 type: 'POST',
                 url: '/api/DanhMuc/DM_DoiTuongAPI/' + 'GetListHD_isDebit?idDoiTuong=' + idDoiTuong
@@ -344,6 +345,8 @@
                 else {
                     self.showCheckHachToan = false;
                 }
+            }).always(function () {
+                $('#ThuTienHoaDonModal table').gridLoader({ show: false })
             });
         },
         GetListNVChietKhau_ManyHoaDon: function (data) {
@@ -539,7 +542,7 @@
 
                     // get chietkhaunv theo hoadon
                     ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetChietKhauNV_HoaDon?idHoaDon=' + item.ID, 'GET').done(function (x) {
-                        if (x.res === true) {
+                        if (x.res === true && x.data.length > 0) {
                             self.listData.HoaDons[0].BH_NhanVienThucHiens = x.data;
                         }
                     });
@@ -1101,7 +1104,6 @@
         ChangeTienThu: function (item, index) {
             var self = this;
             var $this = $(event.currentTarget);
-            formatNumberObj($this);
 
             var tienThu = formatNumberToFloat($this.val());
             if (isNaN(tienThu)) {
@@ -1113,7 +1115,7 @@
                     if (tienThu > self.listData.HoaDons[i].TienMat) {
                         tienThu = self.listData.HoaDons[i].TienMat;
                     }
-                    self.listData.HoaDons[i].TienThu = tienThu;
+                    self.listData.HoaDons[i].TienThu = formatNumber3Digit(tienThu);
                     break;
                 }
             }
@@ -2045,6 +2047,8 @@
                                         return _this + xx.TienThu;
                                     }, 0);
 
+                                    let butruTra = formatNumberToFloat(itFor.TongTienHDTra);
+
                                     let hd = {
                                         ID: itFor.ID_HoaDonLienQuan,
                                         MaHoaDon: itFor.MaHoaDonHD,
@@ -2055,7 +2059,7 @@
                                         TongTienThue: itFor.TongTienThue,
                                         TongThanhToan: itFor.TongThanhToanHD,
                                         DaThuTruoc: itFor.DaThuTruoc,
-                                        CanThu: Math.abs(itFor.TongThanhToanHD - itFor.DaThuTruoc),// neu khach thanh toan khi dathang > gtri hoadon
+                                        CanThu: itFor.TongThanhToanHD - butruTra - itFor.DaThuTruoc,// neu khach thanh toan khi dathang > gtri hoadon
                                         TienThu: formatNumber3Digit(sumCT),
                                         BH_NhanVienThucHiens: [],
                                     }

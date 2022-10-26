@@ -115,8 +115,8 @@
     self.TongSL_DichVu = ko.observable(0);
     self.TongSL_PhuTung = ko.observable(0);
 
-    self.columsort = ko.observable(null);
-    self.sort = ko.observable(null);
+    self.columsort = ko.observable('NgayLapHoaDon');
+    self.sort = ko.observable(0);
     // PThucThanhToan
     self.PThucChosed = ko.observableArray();
     self.PTThanhToan = ko.observableArray([
@@ -555,7 +555,7 @@
     }
 
     function ResetColumnSort() {
-        self.columsort('');
+        self.columsort('NgayLapHoaDon');
         self.sort(0);
     }
 
@@ -1110,14 +1110,6 @@
             arrIDBangGia.push(self.GiaBanChosed()[i].ID);
         }
 
-        if (arrIDPB.length === 0) {
-            arrIDPB = null;
-        }
-
-        if (arrIDBangGia.length === 0) {
-            arrIDBangGia = null;
-        }
-
         // search PTThanhToan
         var ptThuc = "0";// find all (TienMat + The)
         if (self.PThucChosed().length == 1) {
@@ -1233,6 +1225,20 @@
             }
         }
 
+        var arrStatus = [];
+        if (self.TT_HoanThanh()) {
+            arrStatus.push('0');
+        }
+        if (self.TT_TamLuu()) {
+            arrStatus.push('1');
+        }
+        if (self.TT_GiaoHang()) {
+            arrStatus.push('2');
+        }
+        if (self.TT_DaHuy()) {
+            arrStatus.push('4');
+        }
+
         // NgayLapHoaDon
         var _now = new Date();  //current date of week
         var currentWeekDay = _now.getDay();
@@ -1339,7 +1345,7 @@
 
         var hasPermission = self.RoleView_ServicePackage();
 
-        var Params_GetListHoaDon = {
+        let param = {
             CurrentPage: self.currentPage(),
             PageSize: self.pageSize(),
             LoaiHoaDon: loaiHoaDon,
@@ -1350,19 +1356,23 @@
             ID_BangGias: arrIDBangGia,
             ID_NhanViens: arrIDNhanVien,
             NguoiTao: userLogin,
-            TrangThai: statusInvoice,
+            TrangThaiHDs: arrStatus,
             NgayTaoHD_TuNgay: dayStart,
             NgayTaoHD_DenNgay: dayEnd,
-            TrangThai_SapXep: self.sort(),
+            SortBy: self.sort() == 0 ? 'DESC' : 'ASC',
             Cot_SapXep: self.columsort(),
-            PTThanhToan: ptThuc,
+            PhuongThucTTs: [],
             ColumnsHide: columnHide,
             ValueText: sTenChiNhanhs,
         }
 
         if (isExport) {
             $('.table-reponsive').gridLoader();
-            ajaxHelper(BH_HoaDonUri + 'ExportExcel_GoiDichVu', 'POST', Params_GetListHoaDon).done(function (url) {
+
+            param.CurrentPage = 0;
+            param.PageSize = self.TotalRecord();
+
+            ajaxHelper(BH_HoaDonUri + 'ExportExcel_GoiDichVu', 'POST', param).done(function (url) {
                 $('.table-reponsive').gridLoader({ show: false });
                 if (url !== "") {
                     self.DownloadFileTeamplateXLSX(url);
@@ -1381,51 +1391,31 @@
         else {
             if (hasPermission) {
                 // get list HoaDon
-                //hidewait('content-table');
                 $('.table-reponsive').gridLoader();
-                ajaxHelper(BH_HoaDonUri + 'GetAllHoaDons_Where_PassObject', 'POST', Params_GetListHoaDon).done(function (data) {
-                    //$("div[id ^= 'wait']").text("");
+                ajaxHelper(BH_HoaDonUri + 'GetListInvoice_Paging', 'POST', param).done(function (x) {
                     $('.table-reponsive').gridLoader({ show: false });
+                    if (x.res && x.dataSoure.length > 0) {
+                        let first = x.dataSoure[0];
+                        self.HoaDons(x.dataSoure);
+                        self.TotalRecord(first.TotalRow);
+                        self.PageCount(first.TotalPage);
 
-                    if (data !== null) {
-                        self.HoaDons(data.lstCH);
-                        self.TotalRecord(data.Rowcount);
-                        self.PageCount(data.pageCount);
+                        self.TongTienThue(first.SumTongTienThue);
+                        self.TongTienHang(first.SumTongTienHang);
+                        self.TongThanhToan(first.SumTongThanhToan);
+                        self.TongGiamGia(first.SumTongGiamGia);
+                        self.TongGiamGiaKM(first.SumKhuyeMai_GiamGia);
+                        self.TongKhachTra(first.SumKhachDaTra);
+                        self.TongTienDoiDiem(first.SumTienDoiDiem);
+                        self.TongTienTheGTri(first.SumThuTuThe);
+                        self.TongTienMat(first.SumTienMat);
+                        self.TongChuyenKhoan(first.SumChuyenKhoan);
+                        self.TongPOS(first.SumPOS);
 
-                        self.TongTienThue(data.TongTienThue);
-                        self.TongTienHang(data.TongTienHang);
-                        self.TongThanhToan(data.TongThanhToan);
-                        self.TongGiamGia(data.TongGiamGia);
-                        self.TongGiamGiaKM(data.TongGiamGiaKM);
-                        self.TongKhachTra(data.TongKhachTra);
-                        self.TongTienDoiDiem(data.TienDoiDiem);
-                        self.TongTienTheGTri(data.ThuTuThe);
-
-                        var mat = data.lstCH.reduce(function (_this, val) {
-                            return _this + val.TienMat;
+                        let conno = x.dataSoure.reduce(function (x, item) {
+                            return x + item.ConNo;
                         }, 0);
-                        self.TongTienMat(mat);
-
-                        var ck = data.lstCH.reduce(function (_this, val) {
-                            return _this + val.ChuyenKhoan;
-                        }, 0);
-                        self.TongChuyenKhoan(ck);
-
-                        var pos = data.lstCH.reduce(function (_this, val) {
-                            return _this + val.TienATM;
-                        }, 0);
-                        self.TongPOS(pos);
-
-                        // tinh tien khach no = Sum Conlai (at footer)
-                        var lstHDHuy = $.grep(data.lstCH, function (x) {
-                            return x.ChoThanhToan === null;
-                        });
-                        var sumKhachCanTra_HDHuy = lstHDHuy.reduce(function (_this, val) {
-                            return _this + val.PhaiThanhToan;
-                        }, 0);
-                        // vi HD Huy: KhachCanTra >0, nhung KhachDaTra =0, nen khong tinh vao tien khach no (OK)
-                        var conlai = data.TongThanhToan - data.TongKhachTra - sumKhachCanTra_HDHuy;
-                        self.TongKhachNo(conlai);
+                        self.TongKhachNo(conno);
                     }
                 });
             }
@@ -1571,6 +1561,7 @@
     self.GoToPageHD = function (page) {
         if (page.pageNumber !== '.') {
             self.currentPage(page.pageNumber - 1);
+            SearchHoaDon(false, false);
         }
     };
 
@@ -1622,65 +1613,31 @@
 
     //sort by cột trong bảng hóa đơn
     $('#tb thead tr').on('click', 'th', function () {
-        var id = $(this).attr('id');
-
+        let id = $(this).attr('id');
         switch (id) {
-            case "txtMaHoaDon":
+            case "mahoadon":
                 self.columsort("MaHoaDon");
                 break;
-            case "txtNgayCapNhat":
-                self.columsort("NgayCapNhat");
+            case "ngaylaphoadon":
+                self.columsort("NgayLapHoaDon");
                 break;
-            case "txtMaHoaDonGoc":
-                self.columsort("MaHoaDonGoc");
+            case "makhachhang":
+                self.columsort("MaDoiTuong");
                 break;
-            case "txtThoiGian":
-                self.columsort("ThoiGian");
+            case "khachhang":
+                self.columsort("TenDoiTuong");
                 break;
-            case "txtKhachHang":
-                self.columsort("KhachHang");
-                break;
-            case "txtEmail":
-                self.columsort("Email");
-                break;
-            case "txtSoDT":
-                self.columsort("SoDienThoai");
-                break;
-            case "txtDiaChi":
-                self.columsort("DiaChi");
-                break;
-            case "txtKhuVuc":
-                self.columsort("KhuVuc");
-                break;
-            case "txtPhuongXa":
-                self.columsort("PhuongXa");
-                break;
-            case "txtNguoiBan":
-                self.columsort("NguoiBan");
-                break;
-            case "txtNguoiTao":
-                self.columsort("NguoiTao");
-                break;
-            case "txtGhiChu":
-                self.columsort("GhiChu");
-                break;
-            case "txtTongTienHang":
+            case "tongtienhang":
                 self.columsort("TongTienHang");
                 break;
-            case "txtGiamGia":
-                self.columsort("GiamGia");
+            case "giamgia":
+                self.columsort("TongGiamGia");
                 break;
-            case "txtKhachCanTra":
-                self.columsort("KhachCanTra");
+            case "khachcantra":
+                self.columsort("PhaiThanhToan");
                 break;
-            case "txtThoiGianGiao":
-                self.columsort("ThoiGianGiao");
-                break;
-            case "txtKhachDaTra":
+            case "khachdatra":
                 self.columsort("KhachDaTra");
-                break;
-            case "txtPhiTraHang":
-                self.columsort("TongChiPhi");
                 break;
         }
 
@@ -3571,9 +3528,11 @@
         }
     }
 
-
-    self.showPopThanhToan = function (item) {
+    self.showPopThanhToan = function (hd) {
+        let item = $.extend({}, true, hd);
         item.SoDuTheGiaTri = vmThanhToan.theGiaTriCus.SoDuTheGiaTri;
+        item.PhaiThanhToan = hd.PhaiThanhToan - hd.TongTienHDTra;
+
         if (self.CongTy().length > 0) {
             vmThanhToan.inforCongTy = {
                 TenCongTy: self.CongTy()[0].TenCongTy,
@@ -4270,6 +4229,7 @@
 
     self.showModalEditCKHoaDon = function (item) {
         let tongTT = formatNumberToFloat(item.PhaiThanhToan);
+        let butruTra = formatNumberToFloat(item.TongTienHDTra);
         let daTT = formatNumberToFloat(item.KhachDaTra) + formatNumberToFloat(item.BaoHiemDaTra);
         let obj = {
             ID: item.ID,
@@ -4279,7 +4239,7 @@
             TongTienThue: item.TongTienThue,
             ThucThu: daTT - item.ThuTuThe - item.TienDoiDiem,
             DaThuTruoc: daTT,
-            ConNo: tongTT - daTT,
+            ConNo: tongTT - butruTra - daTT,
         }
         vmHoaHongHoaDon.GetChietKhauHoaDon_byID(obj);
     }

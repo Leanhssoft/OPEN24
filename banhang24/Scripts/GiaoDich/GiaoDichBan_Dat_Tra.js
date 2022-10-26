@@ -1351,7 +1351,7 @@
                     $('.content-table').gridLoader({ show: false });
 
                     if (x.res && x.dataSoure.length > 0) {
-                        var first = x.dataSoure[0];
+                        let first = x.dataSoure[0];
 
                         self.HoaDons(x.dataSoure);
                         self.TotalRecord(first.TotalRow);
@@ -1362,7 +1362,7 @@
                         self.TongGiamGia(first.SumTongGiamGia);
                         self.TongGiamGiaKM(first.SumKhuyeMai_GiamGia);
                         self.TongKhachTra(first.SumKhachDaTra);
-                        self.KhachCanTra(first.SumPhaiThanhToan);
+                     
                         self.PhaiThanhToanBaoHiem(first.SumPhaiThanhToanBaoHiem);
                         self.BaoHiemDaTra(first.SumBaoHiemDaTra);
                         self.TienDatCoc(first.SumTienCoc);
@@ -1378,13 +1378,31 @@
                         self.BHThanhToanTruocThue(first.SumBHThanhToanTruocThue);
                         self.TongTienThueBaoHiem(first.SumTongTienThueBaoHiem);
 
-                        self.TongTienMat(first.SumTienMat); // tra hang
+                        self.TongTienMat(first.SumTienMat); 
                         self.TongChuyenKhoan(first.SumChuyenKhoan);
                         self.TongPOS(first.SumPOS);
                         self.TongTienThue(first.SumTongTienThue);
                         self.TongGiaTriSDDV(first.TongGiaTriSDDV);
-                        self.TongKhachNo(first.SumConNo);
-                        self.TongNoKhach(first.SumConNo);// trahang
+
+                        // sum in page (1 page)
+                        let phaiTTSauTrahang = x.dataSoure.reduce(function (x, item) {
+                            return x + item.TongTienHDTra;
+                        }, 0);
+                        let conno = x.dataSoure.reduce(function (x, item) {
+                            return x + item.ConNo;
+                        }, 0);
+
+                        self.TongKhachNo(conno);
+                        self.TongNoKhach(conno);// trahang
+
+                        switch (loaiHoaDon) {
+                            case 6:
+                                self.KhachCanTra(phaiTTSauTrahang);
+                                break;
+                            default:
+                                self.KhachCanTra(first.SumPhaiThanhToan);
+                                break;
+                        }
                     }
                     else {
                         // if not data, reset 
@@ -1874,16 +1892,16 @@
         localStorage.setItem('FindHD', item.MaHoaDonGoc);
         switch (item.LoaiHoaDonGoc) {
             case 1:
-                window.location.href = '/#/Invoices';
+                window.open('/#/Invoices', '_blank');
                 break;
             case 2:
                 window.location.href = '/#/HoaDonBaoHanh';
                 break;
             case 19:
-                window.location.href = '/#/ServicePackage';
+                window.open('/#/ServicePackage', '_blank');
                 break;
             case 25:
-                window.location.href = '/#/HoaDonSuaChua';
+                window.open('/#/HoaDonSuaChua', '_blank');
                 break;
         }
     }
@@ -4366,8 +4384,10 @@
         $(txtTienTheGiaTri).val(0);
         $('#txtBillCode').val('');
     }
-    self.showPopThanhToan = function (item) {
-        item.DienThoaiBaoHiem = item.BH_SDT;
+    self.showPopThanhToan = function (hd) {
+       
+        let item = $.extend({}, true, hd);
+        item.DienThoaiBaoHiem = hd.BH_SDT;
 
         if (self.CongTy().length > 0) {
             vmThanhToan.inforCongTy = {
@@ -4376,6 +4396,18 @@
                 LogoCuaHang: Open24FileManager.hostUrl + self.CongTy()[0].DiaChiNganHang,
                 TenChiNhanh: $('#_txtTenDonVi').text(),
             };
+        }
+
+        switch (hd.LoaiHoaDon) {
+            case 1:
+            case 25:
+                item.PhaiThanhToan = hd.PhaiThanhToan - hd.TongTienHDTra;
+                break;
+            case 6:
+                item.PhaiThanhToan = hd.TongTienHDTra;
+                break;
+            default:
+                break;
         }
         vmThanhToan.showModalThanhToan(item);
     }
@@ -6034,6 +6066,7 @@
 
     self.showModalEditCKHoaDon = function (item) {
         let tongTT = formatNumberToFloat(item.TongThanhToan);
+        let butruTra = formatNumberToFloat(item.TongTienHDTra);
         let daTT = formatNumberToFloat(item.KhachDaTra) + formatNumberToFloat(item.BaoHiemDaTra)
             - formatNumberToFloat(item.TienDoiDiem) - formatNumberToFloat(item.ThuTuThe);
         let obj = {
@@ -6044,7 +6077,7 @@
             TongTienThue: item.TongTienThue,
             ThucThu: daTT,
             DaThuTruoc: daTT,
-            ConNo: tongTT - daTT,
+            ConNo: tongTT - butruTra - daTT,
         }
         vmHoaHongHoaDon.GetChietKhauHoaDon_byID(obj);
     }

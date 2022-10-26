@@ -414,8 +414,6 @@
     }
 
     self.showPopThanhToan = function (item) {
-        console.log('item ', item)
-
         if (self.CongTy().length > 0) {
             vmThanhToanNCC.inforCongTy = {
                 TenCongTy: self.CongTy()[0].TenCongTy,
@@ -537,6 +535,10 @@
     self.gotoKhachHang = function (item) {
         localStorage.setItem('FindKhachHang', item.MaDoiTuong);
         window.open('/#/Suppliers', '_blank');
+    };
+    self.gotoPhieuNhap = function (item) {
+        localStorage.setItem('FindHD', item.MaHoaDonGoc);
+        window.open('/#/PurchaseOrder', '_blank');
     };
 
     self.FilterHangHoaChildren = function (item) {
@@ -858,8 +860,15 @@
                     self.TongTienThue(firstR.SumTongTienThue);
                     self.TongGiamGia(firstR.SumTongGiamGia);
                     self.TongKhachTra(firstR.SumDaThanhToan);
-                    self.TongKhachNo(firstR.SumConNo);
-                    self.TongThanhToan(firstR.SumTongThanhToan);
+
+                    let phaiTTSauTrahang = x.dataSoure.reduce(function (x, item) {
+                        return x + item.TongTienHDTra;
+                    }, 0);
+                    let conno = x.dataSoure.reduce(function (x, item) {
+                        return x + item.ConNo;
+                    }, 0);
+                    self.TongKhachNo(conno);
+                    self.TongThanhToan(phaiTTSauTrahang);
 
                     if (!isGoToNext) {
                         self.TotalRecord(firstR.TotalRow);

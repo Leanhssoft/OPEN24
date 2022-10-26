@@ -223,6 +223,10 @@
                         <tbody data-bind="foreach: HoaDons">
                             <tr class="prev-tr-hide" id="table" data-bind="click: $parent.LoadChiTietHD,css:{bggray : $index()%2 == 1}" >
                                 <td class="@commonEnum.ColumnPurchaseReturns.mahoadon" data-bind="text: MaHoaDon"></td>
+                                <td class="@commonEnum.ColumnInvoices.madathang" >
+                                    <a data-bind="text: MaHoaDonGoc, click: $root.gotoPhieuNhap">
+                                    </a>
+                                </td>
                                 <td class="@commonEnum.ColumnPurchaseReturns.ngaylaphoadon"><span data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></span></td>
                                 <td class="@commonEnum.ColumnPurchaseReturns.makhachhang ">
                                     <a href="=javascript:void(0)" data-bind="text: MaDoiTuong, click: $root.gotoKhachHang"></a>
@@ -235,7 +239,7 @@
                                 <td class="@commonEnum.ColumnPurchaseReturns.tongtienhang text-right" data-bind="text: formatNumber3Digit(TongTienHang,2)"></td>
                                 <td class="@commonEnum.ColumnInvoices.tienthue text-right" data-bind="text: formatNumber3Digit(TongTienThue,2)"></td>
                                 <td class="@commonEnum.ColumnPurchaseReturns.tonggiamgia text-right" data-bind="text: formatNumber3Digit(TongGiamGia,2)"></td>
-                                <td class="@commonEnum.ColumnPurchaseReturns.cantrakhach text-right" data-bind="text: formatNumber3Digit(TongThanhToan,2)"></td>
+                                <td class="@commonEnum.ColumnPurchaseReturns.cantrakhach text-right" data-bind="text: formatNumber3Digit(TongTienHDTra,2)"></td>
                                 <td class="@commonEnum.ColumnPurchaseReturns.datrakhach text-right" data-bind="text: formatNumber3Digit(KhachDaTra,2)"></td>
                                 <td class="@commonEnum.ColumnPurchaseReturns.conno text-right"
                                     data-bind="text: formatNumber3Digit(ConNo,2), style: { color: (ConNo > 0) ? 'red' : 'black' }"></td>
@@ -529,8 +533,8 @@
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                    <!-- ko if: $root.Show_BtnThanhToanCongNo()-->
-                                                    <div class=" op-object-detail-function btnThanhToan">
+                                                    <!-- ko if: $root.Show_BtnThanhToanCongNo() && ConNo > 0-->
+                                                    <div class=" op-object-detail-function">
                                                         <button class="btn btn-main"
                                                                 data-bind="click: $parent.showPopThanhToan">
                                                             <i class="fa fa-calculator"></i>&nbsp; Thanh toán
@@ -547,6 +551,7 @@
                         <tfoot id="footerSum">
                             <tr class="border-bottom">
                                 <td class="bg12 bold @commonEnum.ColumnPurchaseReturns.mahoadon">Tổng cộng</td>
+                                <td class="bg12 bold @commonEnum.ColumnInvoices.madathang">Tổng cộng</td>
                                 <td class="bg12 @commonEnum.ColumnPurchaseReturns.ngaylaphoadon"></td>
                                 <td class="bg12 @commonEnum.ColumnPurchaseReturns.makhachhang"></td>
                                 <td class="bg12 @commonEnum.ColumnPurchaseReturns.tenkhachhang"></td>

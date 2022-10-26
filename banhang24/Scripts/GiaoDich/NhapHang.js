@@ -2700,7 +2700,9 @@
         }
     }
 
-    self.showPopThanhToan = function (item) {
+    self.showPopThanhToan = function (hd) {
+        let item = $.extend({}, true, hd);
+        item.PhaiThanhToan = hd.PhaiThanhToan - hd.TongTienHDTra;
         vmThanhToanNCC.showModalThanhToan(item);
     }
 

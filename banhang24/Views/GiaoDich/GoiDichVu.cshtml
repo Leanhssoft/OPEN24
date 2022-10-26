@@ -108,34 +108,7 @@
                             </div>
                         </aside>
                     </article>
-                    <article class="boxLeft">
-                        <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
-                            <img src="~/Content/images/icon/phuongthuc.png" />         Phương thức
-                        </h3>
-                        <aside class="op-filter-container">
-                            <div class="menuCheckbox">
-                                <div class="outselect">
-                                    <div class="choose-person" id="choose-PThuc" data-toggle="dropdown" aria-expanded="true">
-                                        <ul data-bind="foreach: PThucChosed">
-                                            <li class="li-input-span">
-                                                <span data-bind="text: TenPhuongThuc">
-                                                </span>&nbsp;
-                                                <span data-bind="click: $parent.ClosePhuongThuc">
-                                                    <i class="fa fa-times"></i>
-                                                </span>
-                                            </li>
-                                        </ul>
-                                        <input type="text" class="dropdown form-control" placeholder="Chọn phương thức thanh toán">
-                                    </div>
-                                    <div class="selec-person dropdown-menu" id="selec-pt-ThanhToan">
-                                        <ul data-bind="foreach: PTThanhToan">
-                                            <li data-bind="text: TenPhuongThuc, attr:{id:ID}, event:{click: $parent.ChosePTThanhToan}">
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </aside>
-                    </article>
+                   
                     <article class="boxLeft">
                         <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
                             <img src="~/Content/images/icon/thoigian.png" />      Thời gian
@@ -377,7 +350,7 @@
                                 }
                             </tr>
                         </thead>
-                        <tbody data-bind="foreach: {data: PageResults_HoaDon, as: 'HoaDons' }">
+                        <tbody data-bind="foreach: HoaDons">
                             <tr class="prev-tr-hide" data-bind="attr:{id: ID}, css:{bggray : $index()%2 == 1}">
                                 <td class="check-group">
                                     <input type="checkbox" data-bind="attr:{id: ID}" onclick="ChoseHoaDon(this)" />
@@ -411,6 +384,8 @@
                                 <td class="@commonEnum.ColumnInvoices.tienthue text-right" data-bind="text: formatNumber3Digit(TongTienThue,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.TypeServicepackage.giamgia text-right" data-bind="text: formatNumber3Digit(TongGiamGia + KhuyeMai_GiamGia,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.TypeServicepackage.khachcantra text-right" data-bind="text: formatNumber3Digit(PhaiThanhToan,2), click: $parent.LoadChiTietHD"></td>
+                                <td class="@commonEnum.ColumnInvoices.butruTraHang text-right" data-bind="text: formatNumber3Digit(TongTienHDTra,2), click: $parent.LoadChiTietHD"></td>
+                                <td class="@commonEnum.ColumnInvoices.gtriSauTra text-right" data-bind="text: formatNumber3Digit(PhaiThanhToan - TongTienHDTra,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.TypeServicepackage.khachdatra text-right" data-bind="text: ChoThanhToan==null?0:formatNumber3Digit(KhachDaTra,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.TypeServicepackage.tienmat text-right" data-bind="text: formatNumber3Digit(TienMat,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.TypeServicepackage.chuyenkhoan text-right" data-bind="text: formatNumber3Digit(ChuyenKhoan,2), click: $parent.LoadChiTietHD"></td>
@@ -418,7 +393,7 @@
                                 <td class="@commonEnum.TypeServicepackage.tiendoidiem text-right" data-bind="text: formatNumber3Digit(TienDoiDiem,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.TypeServicepackage.tienthegiatri text-right" data-bind="text: formatNumber3Digit(ThuTuThe,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.TypeServicepackage.conlai text-right"
-                                    data-bind="text: formatNumber3Digit(PhaiThanhToan - KhachDaTra,2), style: {color: PhaiThanhToan - KhachDaTra > 0 && ChoThanhToan!=null?'red':'black'},
+                                    data-bind="text: formatNumber3Digit(ConNo,2), style: {color: ConNo > 0 && ChoThanhToan!=null?'red':'black'},
                                         click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.TypeServicepackage.ghichu" data-bind="text: commonStatisJs.SubStringContent(DienGiai,50), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.TypeServicepackage.trangthai" data-bind="text: TrangThai, click: $parent.LoadChiTietHD"></td>
@@ -630,12 +605,9 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="floatleft sum-prduct" data-bind="visible: LoaiHoaDonGoc===6">
+                                                                    <div class="floatleft sum-prduct" data-bind="visible: TongTienHDTra > 0">
                                                                         <div class="col-xs-5 col-sm-5  col-lg-7 text-right">
                                                                             Tổng tiền hóa đơn trả :
-                                                                            <span>
-                                                                                <a href="javascript:void(0)" data-bind="text: MaHoaDonGoc, click: $parent.gotoHoaDonTH"></a>
-                                                                            </span>
                                                                         </div>
                                                                         <div class="col-xs-7 col-sm-7 col-lg-5 text-right">
                                                                             <div class="row" data-bind="text: formatNumber3Digit(TongTienHDTra,2)">
@@ -647,7 +619,7 @@
                                                                             Khách cần trả :
                                                                         </div>
                                                                         <div class="col-xs-7 col-sm-7 col-lg-5 text-right">
-                                                                            <div class="row" data-bind="text: formatNumber3Digit(PhaiThanhToan,2)">
+                                                                            <div class="row" data-bind="text: formatNumber3Digit(PhaiThanhToan - TongTienHDTra,2)">
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -800,7 +772,7 @@
                                 </td>
                             </tr>
                         </tbody>
-                        <tfoot id="footerSum" data-bind="visible: PageResults_HoaDon().length > 0">
+                        <tfoot id="footerSum" data-bind="visible: HoaDons().length > 0">
                             <tr class="border-bottom bold">
                                 <td class="hd0"></td>
                                 <td class="@commonEnum.TypeServicepackage.mahoadon">Tổng cộng</td>
@@ -822,6 +794,8 @@
                                 <td class="@commonEnum.ColumnInvoices.tienthue text-right" data-bind="text: formatNumber3Digit(TongTienThue(),2)"></td>
                                 <td class="@commonEnum.TypeServicepackage.giamgia text-right" data-bind="text: formatNumber3Digit(TongGiamGia() + TongGiamGiaKM(),2)"></td>
                                 <td class="@commonEnum.TypeServicepackage.khachcantra text-right" data-bind="text: formatNumber3Digit(TongThanhToan(),2)"></td>
+                                <td class="@commonEnum.ColumnInvoices.butruTraHang"></td>
+                                <td class="@commonEnum.ColumnInvoices.gtriSauTra"></td>
                                 <td class="@commonEnum.TypeServicepackage.khachdatra text-right" data-bind="text: formatNumber3Digit(TongKhachTra(),2)"></td>
                                 <td class="@commonEnum.TypeServicepackage.tienmat text-right" data-bind="text: formatNumber3Digit(TongTienMat(),2)"></td>
                                 <td class="@commonEnum.TypeServicepackage.chuyenkhoan text-right" data-bind="text: formatNumber3Digit(TongChuyenKhoan(),2)"></td>
@@ -833,7 +807,7 @@
                                 <td class="@commonEnum.TypeServicepackage.trangthai"></td>
                             </tr>
                         </tfoot>
-                        <tfoot class="Report_Empty" data-bind="visible: PageResults_HoaDon().length === 0">
+                        <tfoot class="Report_Empty" data-bind="visible: HoaDons().length === 0">
                             <tr class="text-center">
                                 <td colspan="25">
                                     <i>Không có dữ liệu</i>

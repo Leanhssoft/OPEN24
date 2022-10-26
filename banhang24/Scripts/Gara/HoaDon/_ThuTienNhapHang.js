@@ -165,7 +165,7 @@
                             tienmat = nohientai;
                         }
 
-                        self.newPhieuThu.TienDatCoc = formatNumber(tiendatcoc);
+                        self.newPhieuThu.TienDatCoc = formatNumber3Digit(tiendatcoc);
                         self.newPhieuThu.TienMat = formatNumber3Digit(tienmat);
                         self.newPhieuThu.DaThanhToan = self.newPhieuThu.NoHienTai;
                         self.newPhieuThu.ThucThu = tienmat;
@@ -213,6 +213,8 @@
                                         return _this + xx.TienThu;
                                     }, 0);
 
+                                    let butruTra = formatNumberToFloat(itFor.TongTienHDTra);
+
                                     let hd = {
                                         ID: itFor.ID_HoaDonLienQuan,
                                         MaHoaDon: itFor.MaHoaDonHD,
@@ -223,7 +225,7 @@
                                         TongTienThue: itFor.TongTienThue,
                                         PhaiThanhToan: itFor.TongThanhToanHD,
                                         KhachDaTra: itFor.DaThuTruoc,
-                                        CanThu: Math.abs(itFor.TongThanhToanHD - itFor.DaThuTruoc),// neu khach thanh toan khi dathang > gtri hoadon
+                                        CanThu: itFor.TongThanhToanHD - butruTra - itFor.DaThuTruoc,// neu khach thanh toan khi dathang > gtri hoadon
                                         TienThu: formatNumber3Digit(sumCT),
                                         BH_NhanVienThucHiens: [],
                                     }
@@ -408,10 +410,10 @@
                             LoaiHoaDon: item.LoaiHoaDon,
                             MaHoaDon: item.MaHoaDon,
                             NgayLapHoaDon: item.NgayLapHoaDon,
-                            PhaiThanhToan: item.PhaiThanhToan,
+                            PhaiThanhToan: item.TongThanhToan,
                             KhachDaTra: item.KhachDaTra,
                             CanThu: khachCanTra,
-                            TienThu: formatNumber(khachCanTra),
+                            TienThu: formatNumber3Digit(khachCanTra),
                         }];
 
                         if (item.ID_DoiTuong !== null) {
@@ -424,11 +426,11 @@
                         self.ddl_textVal.cusName = item.TenDoiTuong;
                         self.ddl_textVal.cusPhone = item.DienThoai;
                         self.newPhieuThu.ID_DoiTuong = item.ID_DoiTuong;
+                        self.GetSoDuDatCoc(nguoinop[0].ID);
                     }
 
                     self.listData.NguoiNops = nguoinop;
                     self.listData.HoaDons = invoice;
-                    self.GetSoDuDatCoc(nguoinop[0].ID);
                     break;
                 case 1: // at DS NCC
                 case 2:// DS NCC: chi lay chiphi DV
@@ -533,11 +535,11 @@
                 var tongthu = self.newPhieuThu.DaThanhToan;
                 for (let i = 0; i < self.listData.HoaDons.length; i++) {
                     if (tongthu > self.listData.HoaDons[i].CanThu) {
-                        self.listData.HoaDons[i].TienThu = formatNumber(self.listData.HoaDons[i].CanThu);
+                        self.listData.HoaDons[i].TienThu = formatNumber3Digit(self.listData.HoaDons[i].CanThu);
                         tongthu = tongthu - self.listData.HoaDons[i].CanThu;
                     }
                     else {
-                        self.listData.HoaDons[i].TienThu = formatNumber(tongthu);
+                        self.listData.HoaDons[i].TienThu = formatNumber3Digit(tongthu);
                         tongthu = 0;
                     }
                 }
@@ -558,7 +560,7 @@
                     if (tienThu > self.listData.HoaDons[i].TienMat) {
                         tienThu = self.listData.HoaDons[i].TienMat;
                     }
-                    self.listData.HoaDons[i].TienThu = formatNumber(tienThu);
+                    self.listData.HoaDons[i].TienThu = formatNumber3Digit(tienThu);
                     break;
                 }
             }
@@ -603,8 +605,8 @@
                 }
                 tienmat = khachcantra - datcoc;
             }
-            self.newPhieuThu.TienDatCoc = formatNumber(datcoc);
-            self.newPhieuThu.TienMat = formatNumber(tienmat);
+            self.newPhieuThu.TienDatCoc = formatNumber3Digit(datcoc);
+            self.newPhieuThu.TienMat = formatNumber3Digit(tienmat);
             self.newPhieuThu.PhaiThanhToan = tienmat;
 
             self.newPhieuThu.TienPOS = 0;
@@ -630,7 +632,7 @@
                     tienthe = soduThe;
                 }
             }
-            self.newPhieuThu.TienTheGiaTri = formatNumber(tienthe);
+            self.newPhieuThu.TienTheGiaTri = formatNumber3Digit(tienthe);
         },
 
         EditTienMat: function () {
@@ -640,7 +642,7 @@
 
             var tiencoc = formatNumberToFloat(self.newPhieuThu.TienDatCoc);
             var tienmat = formatNumberToFloat($this.val());
-            self.newPhieuThu.TienMat = formatNumber(tienmat);
+            self.newPhieuThu.TienMat = formatNumber3Digit(tienmat);
 
             var tienpos = 0, tienck = 0;
             var cantt = self.newPhieuThu.TongNoHD - tienmat - tiencoc;
@@ -658,8 +660,8 @@
                     self.EditMoney_AssignTienThe(cantt);
                 }
             }
-            self.newPhieuThu.TienPOS = formatNumber(tienpos);
-            self.newPhieuThu.TienCK = formatNumber(tienck);
+            self.newPhieuThu.TienPOS = formatNumber3Digit(tienpos);
+            self.newPhieuThu.TienCK = formatNumber3Digit(tienck);
             self.CaculatorDaThanhToan();
             self.ResetHinhThucTT();
 
@@ -697,7 +699,7 @@
             else {
                 self.EditMoney_AssignTienThe(cantt);
             }
-            self.newPhieuThu.TienCK = formatNumber(tienck);
+            self.newPhieuThu.TienCK = formatNumber3Digit(tienck);
             self.CaculatorDaThanhToan();
             self.ResetHinhThucTT();
 
@@ -759,7 +761,7 @@
                         return;
                     }
                     self.HinhThucTT = { ID: val, Text: 'Thu từ cọc' };
-                    self.newPhieuThu.TienDatCoc = formatNumber(sum);
+                    self.newPhieuThu.TienDatCoc = formatNumber3Digit(sum);
                     self.newPhieuThu.TienMat = 0;
                     self.newPhieuThu.TienPOS = 0;
                     self.newPhieuThu.TienCK = 0;
@@ -769,7 +771,7 @@
                     break;
                 case 2:
                     self.HinhThucTT = { ID: val, Text: 'Tiền mặt' };
-                    self.newPhieuThu.TienMat = formatNumber(sum);
+                    self.newPhieuThu.TienMat = formatNumber3Digit(sum);
                     self.newPhieuThu.TienPOS = 0;
                     self.newPhieuThu.TienCK = 0;
                     self.newPhieuThu.TienTheGiaTri = 0;
@@ -780,7 +782,7 @@
                 case 3:
                     self.HinhThucTT = { ID: val, Text: 'POS' };
                     self.newPhieuThu.TienMat = 0;
-                    self.newPhieuThu.TienPOS = formatNumber(sum);
+                    self.newPhieuThu.TienPOS = formatNumber3Digit(sum);
                     self.newPhieuThu.TienCK = 0;
                     self.newPhieuThu.TienTheGiaTri = 0;
                     self.newPhieuThu.TienDatCoc = 0;
@@ -790,7 +792,7 @@
                     self.HinhThucTT = { ID: val, Text: 'Chuyển khoản' };
                     self.newPhieuThu.TienMat = 0;
                     self.newPhieuThu.TienPOS = 0;
-                    self.newPhieuThu.TienCK = formatNumber(sum);
+                    self.newPhieuThu.TienCK = formatNumber3Digit(sum);
                     self.newPhieuThu.TienTheGiaTri = 0;
                     self.newPhieuThu.TienDatCoc = 0;
                     self.Only_ResetAccountPOS();
@@ -801,7 +803,7 @@
                         return;
                     }
                     self.HinhThucTT = { ID: val, Text: 'Thẻ giá trị' };
-                    self.newPhieuThu.TienTheGiaTri = formatNumber(sum);
+                    self.newPhieuThu.TienTheGiaTri = formatNumber3Digit(sum);
                     self.newPhieuThu.TienMat = 0;
                     self.newPhieuThu.TienPOS = 0;
                     self.newPhieuThu.TienCK = 0;
@@ -1146,13 +1148,13 @@
                                 ID_NhanVien: self.inforLogin.ID_NhanVien,
                                 ChucNang: 'Phiếu '.concat(self.sLoaiThuChi),
                                 NoiDung: 'Tạo phiếu '.concat(self.sLoaiThuChi, ' ', quyhd.MaHoaDon, ' cho hóa đơn ', sMaHoaDon,
-                                    ', Nhà cung cấp: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber(quyhd.TongTienThu),
+                                    ', Nhà cung cấp: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber3Digit(quyhd.TongTienThu),
                                     ', Phương thức thanh toán:', phuongthucTT,
                                     ', Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')),
                                 NoiDungChiTiet: 'Tạo phiếu '.concat(self.sLoaiThuChi, ' <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', quyhd.MaHoaDon, ')" >', quyhd.MaHoaDon, '</a> ',
                                     ' cho hóa đơn: <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', sMaHoaDon, ')" >', sMaHoaDon, '</a> ',
                                     '<br /> Nhà cung cấp: <a style="cursor: pointer" onclick = "LoadKhachHang_byMaKH(', quyhd.NguoiNopTien, ')" >', quyhd.NguoiNopTien, '</a> ',
-                                    '<br /> Giá trị: ', formatNumber(quyhd.TongTienThu),
+                                    '<br /> Giá trị: ', formatNumber3Digit(quyhd.TongTienThu),
                                     '<br/ > Phương thức thanh toán: ', phuongthucTT,
                                     '<br/ > Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm'),
                                     '<br/ > Khoản ', self.sLoaiThuChi, ': ', self.ddl_textVal.khoanthu,
@@ -1368,14 +1370,14 @@
             quyhd.NoiDungThu = quyhd.NoiDungThu;
             let tongThu = formatNumberToInt(quyhd.TongTienThu);
             quyhd.TienBangChu = DocSo(tongThu);
-            quyhd.GiaTriPhieu = formatNumber(tongThu);
+            quyhd.GiaTriPhieu = formatNumber3Digit(tongThu);
 
-            quyhd.TienMat = formatNumber(obj.TienMat);
-            quyhd.TienATM = formatNumber(obj.TienPOS);
-            quyhd.ChuyenKhoan = formatNumber(obj.TienChuyenKhoan);
-            quyhd.TienTheGiaTri = formatNumber(obj.TienTheGiaTri);
-            quyhd.TTBangTienCoc = formatNumber(obj.TienCoc);
-            quyhd.TienDoiDiem = formatNumber(obj.TTBangDiem);
+            quyhd.TienMat = formatNumber3Digit(obj.TienMat);
+            quyhd.TienATM = formatNumber3Digit(obj.TienPOS);
+            quyhd.ChuyenKhoan = formatNumber3Digit(obj.TienChuyenKhoan);
+            quyhd.TienTheGiaTri = formatNumber3Digit(obj.TienTheGiaTri);
+            quyhd.TTBangTienCoc = formatNumber3Digit(obj.TienCoc);
+            quyhd.TienDoiDiem = formatNumber3Digit(obj.TTBangDiem);
             quyhd.KhoanMucThuChi = self.ddl_textVal.khoanthu;
 
             ajaxHelper('/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + loaiCT + '&idDonVi='

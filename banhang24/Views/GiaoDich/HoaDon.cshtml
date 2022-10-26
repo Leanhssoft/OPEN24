@@ -530,7 +530,11 @@
                                 <td class="@commonEnum.ColumnInvoices.tonggiamgia text-right" data-bind="text: formatNumber3Digit(TongGiamGia + KhuyeMai_GiamGia,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.tongphaitra text-right" data-bind="text: formatNumber3Digit(TongThanhToan,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.khachcantra text-right"
-                                    data-bind="text: PhaiThanhToan - TongTienHDTra > 0? formatNumber3Digit(PhaiThanhToan - TongTienHDTra,2): 0, click: $parent.LoadChiTietHD"></td>
+                                    data-bind="text: formatNumber3Digit(PhaiThanhToan,2), click: $parent.LoadChiTietHD"></td>
+                                <td class="@commonEnum.ColumnInvoices.butruTraHang text-right"
+                                    data-bind="text: formatNumber3Digit(TongTienHDTra,2), click: $parent.LoadChiTietHD"></td>
+                                <td class="@commonEnum.ColumnInvoices.gtriSauTra text-right"
+                                    data-bind="text: formatNumber3Digit(PhaiThanhToan- TongTienHDTra,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.khachdatra text-right" data-bind="text: ChoThanhToan==null?0:formatNumber3Digit(KhachDaTra,2), click: $parent.LoadChiTietHD"></td>
                                 <!--ko if: $root.LoaiHoaDonMenu() === 25 -->
                                 <td class="@commonEnum.ColumnInvoices.tongtienBHduyet text-right" data-bind="text: formatNumber3Digit(TongTienBHDuyet,2), click: $parent.LoadChiTietHD"></td>
@@ -555,7 +559,7 @@
                                 <td class="@commonEnum.ColumnInvoices.trangthai " data-bind="text: TrangThai, click: $parent.LoadChiTietHD"></td>
                             </tr>
                             <tr class="op-js-tr-hide">
-                                <td colspan="18">
+                                <td colspan="20">
                                     <div class="op-object-detail ">
                                         <ul class="nav nav-tabs">
                                             <li class="active" onclick="LoadGetHeight()"><a data-toggle="tab" data-bind="attr:{href:'#home_'+ ID}">Thông tin</a></li>
@@ -883,7 +887,7 @@
                                                                     </div>
                                                                     <div class="col-xs-7 col-sm-7 col-lg-5 text-right">
                                                                         <div class="row"
-                                                                             data-bind="text: PhaiThanhToan - TongTienHDTra > 0? formatNumber3Digit(PhaiThanhToan - TongTienHDTra,2): 0">
+                                                                             data-bind="text: formatNumber3Digit(PhaiThanhToan - TongTienHDTra,2)">
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -1279,6 +1283,8 @@
                                 <td class="bg12 @commonEnum.ColumnInvoices.tonggiamgia bold text-right" data-bind="text: formatNumber3Digit(TongGiamGia() + TongGiamGiaKM(),2)"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.tongphaitra bold text-right" data-bind="text: formatNumber3Digit(TongThanhToan(),2)"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.khachcantra bold text-right" data-bind="text: formatNumber3Digit(KhachCanTra(),2)"></td>
+                                <td class="bg12 @commonEnum.ColumnInvoices.butruTraHang bold text-right"></td>
+                                <td class="bg12 @commonEnum.ColumnInvoices.gtriSauTra bold text-right" ></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.khachdatra bold text-right" data-bind="text: formatNumber3Digit(TongKhachTra(),2)"></td>
                                 <!--ko if: $root.LoaiHoaDonMenu() === 25 -->
                                 <td class="bg12 @commonEnum.ColumnInvoices.tongtienBHduyet bold text-right" data-bind="text: formatNumber3Digit($root.TongTienBHDuyet(),2)"></td>

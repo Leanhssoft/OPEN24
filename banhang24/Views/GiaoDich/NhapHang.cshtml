@@ -289,6 +289,8 @@
                                 <td class="@commonEnum.ColumnPurchaseOrder.tonggiamgia text-right" data-bind="text: formatNumber3Digit(TongGiamGia)"></td>
                                 <td class="@commonEnum.ColumnInvoices.tongchiphi text-right" data-bind="text: formatNumber3Digit(TongChiPhi)"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.cantrakhach text-right" data-bind="text: $root.HangHoa_XemGiaVon()?formatNumber3Digit(TongThanhToan,2):0"></td>
+                                <td class="@commonEnum.ColumnInvoices.butruTraHang text-right" data-bind="text: formatNumber3Digit(TongTienHDTra,2)"></td>
+                                <td class="@commonEnum.ColumnInvoices.gtriSauTra text-right" data-bind="text: formatNumber3Digit(TongThanhToan - TongTienHDTra,2)"></td>
                                 <td class="@commonEnum.ColumnInvoices.tienmat text-right" data-bind="text: formatNumber3Digit(TienMat,2)"></td>
                                 <td class="@commonEnum.ColumnInvoices.pos text-right" data-bind="text: formatNumber3Digit(TienATM,2)"></td>
                                 <td class="@commonEnum.ColumnInvoices.chuyenkhoan text-right" data-bind="text: formatNumber3Digit(ChuyenKhoan,3)"></td>
@@ -621,7 +623,7 @@
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                    <!-- ko if: $root.Show_BtnThanhToanCongNo() -->
+                                                    <!-- ko if: $root.Show_BtnThanhToanCongNo() && ConNo > 0 -->
                                                     <div class=" floatleft text-right padingtop">
                                                         <a href="javascript:void(0)" class="btn btn-main"
                                                            data-bind="click: $parent.showPopThanhToan">
@@ -653,6 +655,8 @@
                                 <td class="@commonEnum.ColumnInvoices.tienthue text-right" data-bind="text: formatNumber3Digit(TongTienThue(),2)"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.tonggiamgia text-right" data-bind="text: formatNumber3Digit(TongGiamGia(),2)"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.cantrakhach text-right" data-bind="text: formatNumber3Digit(TongPhaiTraKhach(),2)"></td>
+                                <td class="@commonEnum.ColumnInvoices.butruTraHang text-right"></td>
+                                <td class="@commonEnum.ColumnInvoices.gtriSauTra text-right"></td>
                                 <td class="@commonEnum.ColumnInvoices.tienmat text-right" data-bind="text: formatNumber3Digit($root.TongTienMat(),2)"></td>
                                 <td class="@commonEnum.ColumnInvoices.pos text-right" data-bind="text: formatNumber3Digit($root.TongPOS(),2)"></td>
                                 <td class="@commonEnum.ColumnInvoices.chuyenkhoan text-right" data-bind="text: formatNumber3Digit($root.TongChuyenKhoan(),2)"></td>
