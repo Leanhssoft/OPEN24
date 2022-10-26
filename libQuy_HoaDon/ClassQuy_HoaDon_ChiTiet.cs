@@ -303,6 +303,7 @@ namespace libQuy_HoaDon
         public int LaTienCoc { get; set; }
         public int? HinhThucThanhToan { get; set; }
         public double? TongThanhToanHD { get; set; }
+        public double? TongTienHDTra { get; set; }
         public int? LoaiHoaDonHD { get; set; }
         public double? TongTienThue { get; set; }
         public double? DaThuTruoc { get; set; }
