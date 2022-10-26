@@ -3575,6 +3575,19 @@ namespace libDM_DoiTuong
                     "@ID_NhanVienLogin, @NguoiTao, @IDViTris, @IDBangGias, @TrangThai, @PhuongThucThanhToan, " +
                     "@ColumnSort, @SortBy, @CurrentPage, @PageSize, @LaHoaDonSuaChua, @BaoHiem ", sql.ToArray()).ToList();
                     break;
+                case 19:
+                    sql.Add(new SqlParameter("IDViTris", idViTris));
+                    sql.Add(new SqlParameter("IDBangGias", idBangGias));
+                    sql.Add(new SqlParameter("TrangThai", trangthais));
+                    sql.Add(new SqlParameter("PhuongThucThanhToan", phuongthucTT));
+                    sql.Add(new SqlParameter("ColumnSort", param.Cot_SapXep));
+                    sql.Add(new SqlParameter("SortBy", param.SortBy));
+                    sql.Add(new SqlParameter("CurrentPage", param.CurrentPage));
+                    sql.Add(new SqlParameter("PageSize", param.PageSize));
+                    data = db.Database.SqlQuery<BH_HoaDonDTO>(" exec GetList_GoiDichVu_Where @timeStart, @timeEnd, @ID_ChiNhanh, @maHD," +
+                      "@ID_NhanVienLogin, @NguoiTao, @IDViTris, @IDBangGias, @TrangThai, @PhuongThucThanhToan, " +
+                      "@ColumnSort, @SortBy, @CurrentPage, @PageSize", sql.ToArray()).ToList();
+                    break;
                 case 3:
                     sql.Add(new SqlParameter("TrangThai", trangthais));
                     sql.Add(new SqlParameter("ColumnSort", param.Cot_SapXep));
@@ -6128,6 +6141,8 @@ namespace libDM_DoiTuong
         public double? TongGiamGia { get; set; }
         public double? TongPhaiTra { get; set; }
         public double? PhaiThanhToan { get; set; }//= khachcantra
+        public double? BuTruTraHang { get; set; }
+        public double? GiaTriSauTra { get; set; }
         public double? KhachDaTra { get; set; }
         public double? TienMat { get; set; }
         public double? ChuyenKhoan { get; set; }
@@ -6157,6 +6172,8 @@ namespace libDM_DoiTuong
         public double? TongTienThue { get; set; }
         public double? TongGiamGia { get; set; }
         public double? PhaiThanhToan { get; set; }//= khachcantra
+        public double? BuTruTraHang { get; set; }
+        public double? GiaTriSauTra { get; set; }
         public double? KhachDaTra { get; set; }
         public double? TienMat { get; set; }
         public double? ChuyenKhoan { get; set; }
@@ -6196,6 +6213,8 @@ namespace libDM_DoiTuong
         public double TongGiamGia { get; set; }
         public double TongPhaiTra { get; set; }
         public double PhaiThanhToan { get; set; }//= khachcantra
+        public double? BuTruTraHang { get; set; }
+        public double? GiaTriSauTra { get; set; }
         public double KhachDaTra { get; set; }
 
         public double? TongTienBHDuyet { get; set; }
@@ -6271,6 +6290,8 @@ namespace libDM_DoiTuong
         public double TongGiamGia { get; set; }
         public double? TongChiPhi { get; set; }// chiphi vanchuyen
         public double PhaiThanhToan { get; set; }
+        public double? BuTruTraHang { get; set; }
+        public double? GiaTriSauTra { get; set; }
         public double? TienMat { get; set; }
         public double? TienPOS { get; set; }
         public double? ChuyenKhoan { get; set; }
@@ -6301,6 +6322,7 @@ namespace libDM_DoiTuong
     public class BH_PhieuTraHangNhap_Excel
     {
         public string MaHoaDon { get; set; }
+        public string MaPhieuNhap { get; set; }
         public DateTime NgayLapHoaDon { get; set; }
         public string MaDoiTuong { get; set; }
         public string TenDoiTuong { get; set; }
