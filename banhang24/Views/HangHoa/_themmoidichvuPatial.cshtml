@@ -87,6 +87,8 @@
                             <div class="css-form-detail">
                                 <jqauto-car params="
                                         form:1,
+                                        roleAdd: newHangHoa().ID_Xe()== null,
+                                        roleUpdate:newHangHoa().ID_Xe()!= null,
                                         choseItem: ChoseCar,
                                         addItem: ShowForm_NewCar,
                                         updateItem: ShowForm_UpdateCar,

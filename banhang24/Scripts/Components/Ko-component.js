@@ -581,7 +581,8 @@ ko.components.register('jqauto-car', {
         self.indexFocus = ko.observable(0);
         self.currentPage = ko.observable(0);
         self.pageSize = ko.observable(30);
-        self.roleAdd = true;// VHeader.Quyen.indexOf('DanhMucXe_ThemMoi') > -1;
+        self.roleAdd = params.roleAdd;
+        self.roleUpdate = params.roleUpdate;
         self.formType = params.form == null || params.form === undefined ? 0 : params.form;
         self.ChangeCar = params.choseItem;
         self.AddNewItem = params.addItem;
@@ -724,12 +725,15 @@ ko.components.register('jqauto-car', {
     <div class="gara-bill-infor-button">
             <div>
                 <a data-bind="visible: roleAdd, click: showPopAdd" >
-                    <i class="material-icons">add</i>
+                    <i class="far fa-plus"></i>
+                </a>
+             <a data-bind="visible: roleUpdate, click: showPopUpdate" >
+                   <i class="fal fa-edit"></i>
                 </a>
             </div>
             <input class="gara-search-HH _jsInput" autocomplete="off" 
                 placeholder="Tìm biển số xe"
-                data-bind="value: textSearch, valueUpdate: 'afterkeydown',  event:{keyup: search}, click: showPopUpdate"
+                data-bind="value: textSearch, valueUpdate: 'afterkeydown',  event:{keyup: search}"
             />
             <div class="gara-search-dropbox">
                 <ul data-bind="foreach: searchList,event:{scroll: scrollList} ">

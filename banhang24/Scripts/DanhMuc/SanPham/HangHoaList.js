@@ -14104,16 +14104,13 @@ var ViewModel = function () {
     self.HangHoa_LaXe = ko.observable(false);
     self.ChoseCar = function (item) {
         self.newHangHoa().ID_Xe(item.ID);
-        if (self.booleanAdd()) {
-            self.newHangHoa().MaHangHoa(item.BienSo);
-            self.newHangHoa().TenHangHoa(item.BienSo);
-        }
+        self.newHangHoa().MaHangHoa(item.BienSo);
     }
     self.ShowForm_NewCar = function () {
         vmXe_ResetRole();
         vmThemMoiXe.ShowModalNewCar();
     }
-    // not use
+   
     self.ShowForm_UpdateCar = async function () {
         vmXe_ResetRole();
         let car = await vmThemMoiXe.GetInforCar_byID(self.newHangHoa().ID_Xe());
@@ -14125,7 +14122,6 @@ var ViewModel = function () {
             $('jqauto-car ._jsInput').val(vmThemMoiXe.newCar.BienSo);
             self.newHangHoa().ID_Xe(vmThemMoiXe.newCar.ID);
             self.newHangHoa().MaHangHoa(vmThemMoiXe.newCar.BienSo);
-            self.newHangHoa().TenHangHoa(vmThemMoiXe.newCar.BienSo);
         }
     })
 
