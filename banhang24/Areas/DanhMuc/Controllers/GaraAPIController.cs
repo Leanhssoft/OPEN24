@@ -2087,7 +2087,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         MaHoaDon = p.MaHoaDon,
                         MaBaoGia = p.MaBaoGia,
                         NgayLapHoaDon = p.NgayLapHoaDon.Value,
-                        PhaiThanhToanKhachHang = p.PhaiThanhToan,
+                        PhaiThanhToanKhachHang = p.PhaiThanhToan - p.TongTienHDTra ?? 0,
                         PhaiThanhToanBaoHiem = p.PhaiThanhToanBaoHiem == null ? 0 : p.PhaiThanhToanBaoHiem.Value,
                         DaThanhToanKhacchHang = p.KhachDaTra == null ? 0 : p.KhachDaTra.Value,
                         DaThanhToanBaoHiem = p.BaoHiemDaTra == null ? 0 : p.BaoHiemDaTra.Value,
