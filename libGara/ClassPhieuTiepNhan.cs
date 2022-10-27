@@ -594,6 +594,9 @@ namespace libGara
         public double? BH_TheGiaTri { get; set; }
         public double? BH_TienCoc { get; set; }
         public double? BH_TienDiem { get; set; }
+        public double? ConNo { get; set; }
+        public double? ThuDatHang { get; set; }// used to print hoadon (bind tiền KhachPhaiTra sau khi trừ tiền cọc báo giá)
+        public double? TongTienHDTra { get; set; }// used to trahang: bù trừ tiền hàng khách đã trả
     }
     public class PhieuTiepNhan_TinhTrang
     {
