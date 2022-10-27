@@ -926,7 +926,7 @@ var NewModel_BanHangLe = function () {
 
             var param = {
                 ID_ChiNhanh: id_DonVi,
-                ToDate: moment(new Date()).add(1,'seconds').format('YYYY-MM-DD HH:mm'),
+                ToDate: moment(new Date()).add(1, 'seconds').format('YYYY-MM-DD HH:mm'),
                 ListIDQuyDoi: arrIDQuiDoi,
                 ListIDLoHang: arrIDLoHang,
             }
@@ -4003,7 +4003,7 @@ var NewModel_BanHangLe = function () {
             objPrint.DiaChiCuaHang = self.CongTy()[0].DiaChi;
         }
         // tong tien
-        var tongcong = formatNumberToInt(objPrint.TongThanhToan);
+        var tongcong = formatNumberToFloat(objPrint.TongThanhToan);
         var daThanhToan = 0;
         var ptKhach = vmThanhToanGara.PhieuThuKhachPrint;
         var ptBaoHiem = vmThanhToanGara.PhieuThuBaoHiemPrint;
@@ -4051,7 +4051,7 @@ var NewModel_BanHangLe = function () {
             hd_thua = Math.abs(hd_thieu);
         }
 
-        objPrint.KhachDaTra = formatNumber3Digit(khach_tt);
+        //objPrint.KhachDaTra = formatNumber3Digit(khach_tt);
         objPrint.BaoHiemDaTra = formatNumber3Digit(bh_tt);
         objPrint.PhuongThucTT = '';
 
@@ -4105,7 +4105,7 @@ var NewModel_BanHangLe = function () {
         tongSuDungThe_TruocDo = tongSuDungThe_TruocDo < 0 ? 0 : tongSuDungThe_TruocDo;
         soDuConLai_TruocDo = soDuConLai_TruocDo < 0 ? 0 : soDuConLai_TruocDo;
 
-        objPrint.TongCong = formatNumber3Digit(objHD.TongThanhToan);
+        objPrint.TongCong = formatNumber3Digit(objHD.TongThanhToan,0);
         objPrint.TongTienTraHang = formatNumber3Digit(objHD.TongGiaGocHangTra);
         objPrint.TongTienTra = formatNumber3Digit(objHD.TongTienTra);
         objPrint.TongChiPhi = formatNumber3Digit(objHD.TongChiPhi);
@@ -4127,7 +4127,8 @@ var NewModel_BanHangLe = function () {
 
         objPrint.TongKhach_BHThanhToan = formatNumber3Digit(khach_tt + bh_tt);
         objPrint.PhaiThanhToan = formatNumber3Digit(objHD.PhaiThanhToan);
-        objPrint.PhaiThanhToanBaoHiem = formatNumber3Digit(objHD.PhaiThanhToanBaoHiem,0);
+        objPrint.PhaiThanhToan_TruCocBG = formatNumber3Digit(objHD.PhaiThanhToan - objHD.KhachDaTra);
+        objPrint.PhaiThanhToanBaoHiem = formatNumber3Digit(objHD.PhaiThanhToanBaoHiem, 0);
         objPrint.TongTienHang = formatNumber3Digit(objPrint.TongTienHoaDonMua);
         objPrint.DiemGiaoDich = formatNumber3Digit(objHD.DiemGiaoDich);
         objPrint.NoTruoc = formatNumber3Digit(notruoc);
@@ -4149,8 +4150,8 @@ var NewModel_BanHangLe = function () {
         objPrint.TongTienBHDuyet = formatNumber3Digit(objHD.TongTienBHDuyet);
         objPrint.KhauTruTheoVu = formatNumber3Digit(objHD.KhauTruTheoVu);
         objPrint.GiamTruBoiThuong = formatNumber3Digit(objHD.GiamTruBoiThuong);
-        objPrint.BHThanhToanTruocThue = formatNumber3Digit(objHD.BHThanhToanTruocThue,0);
-        objPrint.TongTienThueBaoHiem = formatNumber3Digit(objHD.TongTienThueBaoHiem,0);
+        objPrint.BHThanhToanTruocThue = formatNumber3Digit(objHD.BHThanhToanTruocThue, 0);
+        objPrint.TongTienThueBaoHiem = formatNumber3Digit(objHD.TongTienThueBaoHiem, 0);
         objPrint.BH_TienBangChu = DocSo(objHD.PhaiThanhToanBaoHiem);
 
         // nhanvienthuchien
@@ -8525,7 +8526,6 @@ var NewModel_BanHangLe = function () {
                 var lstHDafter = [];
                 if (updateHDDatHang === false) {
 
-                    // update Status HD DatHang if XuLi het Don Hang
                     CheckXuLyHet_DonDatHang(objHDAdd.LoaiHoaDon, objHDAdd.ID, objHDAdd.ID_HoaDon);
 
                     lstHDafter = localStorage.getItem(lcListHD);
@@ -8597,7 +8597,6 @@ var NewModel_BanHangLe = function () {
                 // remove cache KH offline (remove after get inforHDPrint)
                 RemoveKHoffline_afterSave();
 
-              
                 if (objHDAdd.LoaiHoaDon === 1 || objHDAdd.XuatKhoAll) {
                     Insert_ThongBaoHetTonKho(myData.objCTHoaDon);
                 }
@@ -8630,8 +8629,6 @@ var NewModel_BanHangLe = function () {
                     localStorage.setItem(lcProductKM_HoaDon, JSON.stringify(arrproductKM));
                     self.HHTang_HoaDon(arrproductKM);
                 }
-                // update status for HDDatHang
-                UpdateStatus_HDDatHang();
 
                 BindHD_CTHDafterSave();
                 Call_6Func();
@@ -8730,7 +8727,7 @@ var NewModel_BanHangLe = function () {
         // if KH was update when offline --> update infor KH to DB
         UpdateInforKH_toDB(objHDAdd.ID_DoiTuong);
     }
-  async  function PostHD_HoaDon_DichVu(myData) {
+    async function PostHD_HoaDon_DichVu(myData) {
         var objHDAdd = myData.objHoaDon;
         var idRandomHD = objHDAdd.IDRandom;
         // if TamLuuHD --> clickGoiDV: assign again PhaiTT
@@ -8874,9 +8871,10 @@ var NewModel_BanHangLe = function () {
         });
     }
 
-    function CheckXuLyHet_DonDatHang(loaiHoaDon, idHoaDon, idDatHang) {
+    async function CheckXuLyHet_DonDatHang(loaiHoaDon, idHoaDon, idDatHang) {
         if ((loaiHoaDon === 1 || loaiHoaDon === 25) && idDatHang !== null && idDatHang !== const_GuidEmpty) {
-            ajaxHelper(BHHoaDonUri + 'CheckXuLyHet_DonDathang?idHoaDon=' + idHoaDon + '&idDatHang=' + idDatHang, 'GET').done(function (x) {
+            await ajaxHelper(BHHoaDonUri + 'CheckXuLyHet_DonDathang?idHoaDon=' + idHoaDon + '&idDatHang=' + idDatHang, 'GET').done(function (x) {
+            }).then(function (x) {
                 if (x === true) {
                     self.StatusHD(3);
                     self.ID_HoaDonUpdate(idDatHang);
@@ -11665,7 +11663,7 @@ var NewModel_BanHangLe = function () {
         }
     }
 
-  async  function Assign_ThongTinPhieuTN_toHoaDon() {
+    async function Assign_ThongTinPhieuTN_toHoaDon() {
         if (self.HoaDons().ID_PhieuTiepNhan() && self.ThongTinPhieuTiepNhan()) {
             var tn = self.ThongTinPhieuTiepNhan();
             self.InforHDprintf().BienSo = tn.BienSo;
@@ -15025,12 +15023,11 @@ var NewModel_BanHangLe = function () {
             self.NotEndInvoice();
         }
     });
-    function UpdateStatudHD() {
-        if (self.ID_HoaDonUpdate() !== undefined) {
-            ajaxHelper(BHHoaDonUri + 'Update_StatusHD?id=' + self.ID_HoaDonUpdate() + '&Status=' + self.StatusHD(), 'POST').done(function (data) {
-                if (data === '') {
-                    //ShowMessage_Success('Cập nhật hóa đơn thành công');
-                }
+  async  function UpdateStatudHD() {
+      if (self.ID_HoaDonUpdate() !== undefined) {
+          await ajaxHelper(BHHoaDonUri + 'Update_StatusHD?id=' + self.ID_HoaDonUpdate() + '&Status=' + self.StatusHD(), 'POST').done(function (data) {
+            }).then(function () {
+
             }).fail(function () {
                 AddHDDatHang_updateStatus();
             });
@@ -28593,11 +28590,13 @@ var NewModel_BanHangLe = function () {
         if (cacheCP !== null) {
             cacheCP = JSON.parse(cacheCP);
 
+            let exCP = false;
             if (cacheCP.length > 0) {
                 let arr = [], details = '';
                 for (let i = 0; i < cacheCP.length; i++) {
                     let forOut = cacheCP[i];
                     if (forOut.IDRandomHD === idRandomHD) {
+                        exCP = true;
                         for (let k = 0; k < forOut.ChiTiets.length; k++) {
                             let ct = forOut.ChiTiets[k];
                             if (!commonStatisJs.CheckNull(ct.ID_NhaCungCap)) {
@@ -28626,8 +28625,7 @@ var NewModel_BanHangLe = function () {
                     myData.arrIDHoaDon = [idHoaDon];
                 }
 
-                if (myData.lstChiPhi.length > 0 || myData.arrIDHoaDon.length > 0) {
-
+                if (exCP) {
                     ajaxHelper(BHHoaDonUri + 'CTHD_PostPutChiPhi', 'POST', myData).done(function (x) {
                         console.log('CTHD_PostPutChiPhi ', myData, x)
                         if (x.res) {
