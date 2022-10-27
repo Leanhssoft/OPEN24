@@ -6545,7 +6545,7 @@ namespace libQuy_HoaDon
                             }
                             else
                             {
-                                mahanghoa = classDonViQD.GetMaHangHoa();
+                                mahanghoa = classDonViQD.GetMaHangHoa(loaihang);
                             }
 
                             if (loaihang == 1)
@@ -7013,7 +7013,7 @@ namespace libQuy_HoaDon
                             }
                             else
                             {
-                                mahanghoa = classDonViQD.GetMaHangHoa();
+                                mahanghoa = classDonViQD.GetMaHangHoa(loaihang);
                             }
                             if (loaihang == 1)
                             {
