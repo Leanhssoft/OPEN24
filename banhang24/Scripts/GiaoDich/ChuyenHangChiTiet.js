@@ -273,6 +273,24 @@ var ChuyenHangChiTiet = function () {
                     }
                     localStorage.setItem(lcCTChuyenHang, JSON.stringify(cthd));
                     self.HangHoaAfterAdd(cthd);
+
+                    // update again TongTienHang (because ThanhTien has change)
+                    let hd = localStorage.getItem(lcHDChuyenHang);
+                    if (hd !== null) {
+                        hd = JSON.parse(hd);
+                        if (self.IsChuyenHang() && hd.length > 0) {
+                            let sum = 0;
+                            for (let i = 0; i < cthd.length; i++) {
+                                sum += cthd[i].ThanhTien;
+                                for (let j = 1; j < cthd[i].DM_LoHang.length; j++) {
+                                    sum += cthd[i].DM_LoHang[j].ThanhTien;
+                                }
+                            }
+                            hd[0].TongTienHang = sum;
+                            self.newHoaDon().TongTienHang(sum);
+                            localStorage.setItem(lcHDChuyenHang, JSON.stringify(hd));
+                        }
+                    }
                 }
                 else {
                     ShowMessage_Danger(x.mes);
@@ -1347,10 +1365,10 @@ var ChuyenHangChiTiet = function () {
         format: 'd/m/Y H:i',
         maxDate: new Date(),
         onChangeDateTime: function (dp, $input) {
-            self.newHoaDon().NgayLapHoaDon($input.val());
-            var ok = CheckNgayLapHD_format($input.val());
+            let ok = CheckNgayLapHD_format($input.val());
             if (ok) {
-                var hd = localStorage.getItem(lcHDChuyenHang);
+                self.newHoaDon().NgayLapHoaDon($input.val());
+                let hd = localStorage.getItem(lcHDChuyenHang);
                 if (hd !== null) {
                     hd = JSON.parse(hd);
                     if ($input.val() !== hd[0].NgayLapHoaDon) {
