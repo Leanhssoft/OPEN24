@@ -6074,6 +6074,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     List<DonViQuiDoi> objlstDVTKhacs = new List<DonViQuiDoi>();
                     List<DonViQuiDoi> dvqdOld = _classDVQD.Select_DonViQuiDois_IDHangHoa(objNewHH.ID);
                     DonViQuiDoi objNewDVT = data["objNewDVT"].ToObject<DonViQuiDoi>();
+
+                    string maHangHoa = objNewDVT.MaHangHoa;
+                    if (string.IsNullOrEmpty(maHangHoa))
+                    {
+                        maHangHoa = _classDVQD.GetMaHangHoa(objNewHH.LoaiHangHoa);
+                    }
+                    objNewDVT.MaHangHoa = maHangHoa;
                     objNewDVT.GiaBan = double.Parse(data["objNewHH"]["GiaBan"].ToString());
                     objNewDVT.ID = dvqdOld.Where(p => p.LaDonViChuan == true).Select(p => p.ID).FirstOrDefault();
                     objNewDVT.NguoiSua = objNewHH.NguoiSua;
@@ -6109,9 +6116,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             item.NguoiTao = objNewHH.NguoiSua;
                             item.ID_HangHoa = objNewHH.ID;
                             item.Xoa = false;
-                            if (item.MaHangHoa == "" || item.MaHangHoa == null)
+                            if (string.IsNullOrEmpty(item.MaHangHoa))
                             {
-                                item.MaHangHoa = _classDVQD.GetMaHangHoa();
+                                item.MaHangHoa = _classDVQD.GetMaHangHoa(objNewHH.LoaiHangHoa);
                             }
                             string strDvqdAdd = _classDVQD.Add_DonViQuiDoi(item);
 
@@ -6555,9 +6562,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         foreach (var itemcungloai in lstCungLoaiForeach)
                         {
                             string MaHangHoa = string.Empty;
-                            if (itemcungloai.MaHangHoa == "" || itemcungloai.MaHangHoa == null)
+                            if (string.IsNullOrEmpty(itemcungloai.MaHangHoa))
                             {
-                                MaHangHoa = _classDVQD.GetMaHangHoa();
+                                MaHangHoa = _classDVQD.GetMaHangHoa(objNewHH.LoaiHangHoa);
                             }
                             else
                             {
@@ -6652,7 +6659,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                         objDVT_NewItem.MaHangHoa = lstHHCungLoai.Where(p => p.ID_ThuocTinh == itemcungloai.ID_ThuocTinh && p.TenDonViTinh.Trim().ToLower() == itemDVT.TenDonViTinh.Trim().ToLower()).FirstOrDefault().MaHangHoa;
                                         if (objDVT_NewItem.MaHangHoa == null || objDVT_NewItem.MaHangHoa == "")
                                         {
-                                            objDVT_NewItem.MaHangHoa = _classDVQD.GetMaHangHoa();
+                                            objDVT_NewItem.MaHangHoa = _classDVQD.GetMaHangHoa(objNewHH.LoaiHangHoa);
                                         }
                                         else
                                         {
@@ -6907,7 +6914,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         string MaHangHoa = string.Empty;
                         if (objNewDVT.MaHangHoa == null || objNewDVT.MaHangHoa == "")
                         {
-                            MaHangHoa = _classDVQD.GetMaHangHoa();
+                            MaHangHoa = _classDVQD.GetMaHangHoa(objNewHH.LoaiHangHoa);
                         }
                         else
                         {
@@ -7000,7 +7007,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 objDVT_NewItem.MaHangHoa = itemDVT.MaHangHoa;
                                 if (objDVT_NewItem.MaHangHoa == null || objDVT_NewItem.MaHangHoa == "")
                                 {
-                                    objDVT_NewItem.MaHangHoa = _classDVQD.GetMaHangHoa();
+                                    objDVT_NewItem.MaHangHoa = _classDVQD.GetMaHangHoa(objNewHH.LoaiHangHoa);
                                 }
                                 else
                                 {
@@ -7247,7 +7254,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         string MaHangHoa = string.Empty;
                         if (objNewDVT.MaHangHoa == null || objNewDVT.MaHangHoa == "")
                         {
-                            MaHangHoa = _classDVQD.GetMaHangHoa();
+                            MaHangHoa = _classDVQD.GetMaHangHoa(objNewHH.LoaiHangHoa);
                         }
                         else
                         {
@@ -7344,7 +7351,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                     objDVT_NewItem.MaHangHoa = itemDVT.MaHangHoa;
                                     if (objDVT_NewItem.MaHangHoa == null || objDVT_NewItem.MaHangHoa == "")
                                     {
-                                        objDVT_NewItem.MaHangHoa = _classDVQD.GetMaHangHoa();
+                                        objDVT_NewItem.MaHangHoa = _classDVQD.GetMaHangHoa(objNewHH.LoaiHangHoa);
                                     }
                                     else
                                     {
@@ -7581,7 +7588,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         string MaHangHoa = string.Empty;
                         if (objNewDVT.MaHangHoa == null || objNewDVT.MaHangHoa == "")
                         {
-                            MaHangHoa = _classDVQD.GetMaHangHoa();
+                            MaHangHoa = _classDVQD.GetMaHangHoa(objNewHH.LoaiHangHoa);
                         }
                         else
                         {
@@ -7674,7 +7681,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                     objDVT_NewItem.MaHangHoa = itemDVT.MaHangHoa;
                                     if (objDVT_NewItem.MaHangHoa == null || objDVT_NewItem.MaHangHoa == "")
                                     {
-                                        objDVT_NewItem.MaHangHoa = _classDVQD.GetMaHangHoa();
+                                        objDVT_NewItem.MaHangHoa = _classDVQD.GetMaHangHoa(objNewHH.LoaiHangHoa);
                                     }
                                     else
                                     {
@@ -7807,7 +7814,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 string productCode = string.Empty;
                 if (objNew.MaHangHoa == null || objNew.MaHangHoa == "")
                 {
-                    productCode = classDonViQD.GetMaHangHoa();
+                    productCode = classDonViQD.GetMaHangHoa(objNew.LaHangHoa ? 1 : 2);
                 }
                 else
                 {

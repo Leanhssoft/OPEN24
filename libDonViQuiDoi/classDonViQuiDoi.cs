@@ -129,48 +129,18 @@ namespace libDonViQuiDoi
             }
         }
 
-        public string GetMaHangHoa()
+        public string GetMaHangHoa(int? loaiHangHoa = 1)
         {
-            string format = "{0:0000}";
-            string mahanghoa = "HH0";
-            string mahang = db.DonViQuiDois.Where(p => p.MaHangHoa.Contains(mahanghoa)).Where(p => p.MaHangHoa.Length == 7).OrderByDescending(p => p.MaHangHoa).Select(p => p.MaHangHoa).FirstOrDefault();
-            if (mahang == null)
+            string maxCode = "HH0";
+            try
             {
-                mahanghoa = mahanghoa + string.Format(format, 1);
+                maxCode = db.Database.SqlQuery<string>(" SELECT dbo.FN_GetMaHangHoa(" + loaiHangHoa + ")").First();
             }
-            else
+            catch (Exception ex)
             {
-                List<SqlParameter> paramlist = new List<SqlParameter>();
-                paramlist.Add(new SqlParameter("LoaiHoaDon", 88));
-                List<MaxCodeMaHoaDon> lst = db.Database.SqlQuery<MaxCodeMaHoaDon>("EXEC GetMaHoaDon_AuTo @LoaiHoaDon", paramlist.ToArray()).ToList();
-                double tempstt = lst.FirstOrDefault().MaxCode + 1;
-                mahanghoa = mahanghoa + string.Format(format, tempstt);
+                CookieStore.WriteLog("GetMaHangHoa " + ex.InnerException + ex.Message);
             }
-            return mahanghoa;
-        }
-
-        public string GetMaDichVu()
-        {
-            string format = "{0:0000}";
-            string madichvu = "DV0";
-            string madv = db.DonViQuiDois.Where(p => p.MaHangHoa.Contains(madichvu)).Where(p => p.MaHangHoa.Length == 7).OrderByDescending(p => p.MaHangHoa).Select(p => p.MaHangHoa).FirstOrDefault();
-            if (madv == null)
-            {
-                madichvu = madichvu + string.Format(format, 1);
-            }
-            else
-            {
-                List<SqlParameter> paramlist = new List<SqlParameter>();
-                paramlist.Add(new SqlParameter("LoaiHoaDon", 99));
-                List<MaxCodeMaHoaDon> lst = db.Database.SqlQuery<MaxCodeMaHoaDon>("EXEC GetMaHoaDon_AuTo @ID_HoaDon", paramlist.ToArray()).ToList();
-                double tempstt = lst.FirstOrDefault().MaxCode + 1;
-                madichvu = madichvu + string.Format(format, tempstt);
-            }
-            return madichvu;
-        }
-        public class MaxCodeMaHoaDon
-        {
-            public double MaxCode { get; set; }
+            return maxCode;
         }
 
         #endregion
