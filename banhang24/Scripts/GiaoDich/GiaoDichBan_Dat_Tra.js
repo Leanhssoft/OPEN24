@@ -1362,7 +1362,7 @@
                         self.TongGiamGia(first.SumTongGiamGia);
                         self.TongGiamGiaKM(first.SumKhuyeMai_GiamGia);
                         self.TongKhachTra(first.SumKhachDaTra);
-                     
+
                         self.PhaiThanhToanBaoHiem(first.SumPhaiThanhToanBaoHiem);
                         self.BaoHiemDaTra(first.SumBaoHiemDaTra);
                         self.TienDatCoc(first.SumTienCoc);
@@ -1378,7 +1378,7 @@
                         self.BHThanhToanTruocThue(first.SumBHThanhToanTruocThue);
                         self.TongTienThueBaoHiem(first.SumTongTienThueBaoHiem);
 
-                        self.TongTienMat(first.SumTienMat); 
+                        self.TongTienMat(first.SumTienMat);
                         self.TongChuyenKhoan(first.SumChuyenKhoan);
                         self.TongPOS(first.SumPOS);
                         self.TongTienThue(first.SumTongTienThue);
@@ -4385,7 +4385,7 @@
         $('#txtBillCode').val('');
     }
     self.showPopThanhToan = function (hd) {
-       
+
         let item = $.extend({}, true, hd);
         item.DienThoaiBaoHiem = hd.BH_SDT;
 
@@ -5168,21 +5168,59 @@
         return arrNhomHHChilds;
     }
 
-    self.CheckHD_DaXuatKho = function (item, type) {
+    async function CheckHoaDon_DaXuLy(idHoaDon, loaiCheck) {
+        let xx = await $.getJSON('/api/DanhMuc/GaraAPI/' + 'CheckHoaDon_DaXuLy?idHoaDon=' + idHoaDon + '&loaiHoaDon=' + loaiCheck).done(function () {
+        }).then(function (x) {
+            return x;
+        })
+        return xx;
+    }
+
+    self.CheckHD_DaXuatKho = async function (item, type) {
         if (type === 2) {
-            var loaiCheck = item.LoaiHoaDon == 3 ? 25 : 8;
-            $.getJSON('/api/DanhMuc/GaraAPI/' + 'CheckHoaDon_DaXuLy?idHoaDon=' + item.ID + '&loaiHoaDon=' + loaiCheck).done(function (x) {
-                if (x == true) {
-                    if (item.LoaiHoaDon === 3) {
-                        commonStatisJs.ShowMessageDanger('Báo giá đã tạo hóa đơn. Không thể sửa đổi');
-                    }
-                    else {
-                        commonStatisJs.ShowMessageDanger('Hóa đơn đã xuất kho. Không thể sửa đổi');
-                    }
+            let loaiCheck = 6;
+            switch (item.LoaiHoaDon) {
+                case 1:
+                    loaiCheck = 6;
+                    break;
+                case 3:
+                    loaiCheck = 25;
+                    break;
+                case 25:
+                    loaiCheck = 8;
+                    break;
+            }
+
+            let check = await CheckHoaDon_DaXuLy(item.ID, loaiCheck);
+            let mes = '';
+            if (check) {
+                switch (item.LoaiHoaDon) {
+                    case 1:
+                        mes = 'Hóa đơn đã được trả hàng. Không thể sửa đổi';
+                        break;
+                    case 3:
+                        mes = 'Báo giá đã tạo hóa đơn. Không thể sửa đổi';
+                        break;
+                    case 25:
+                        mes = 'Hóa đơn đã xuất kho. Không thể sửa đổi';
+                        break;
+                }
+            }
+
+            if (!commonStatisJs.CheckNull(mes)) {
+                commonStatisJs.ShowMessageDanger(mes);
+                return;
+            }
+
+            if (item.LoaiHoaDon === 25) {
+                check = await CheckHoaDon_DaXuLy(item.ID, 6);
+                if (check) {
+                    commonStatisJs.ShowMessageDanger('Hóa đơn đã được trả hàng. Không thể sửa đổi');
                     return;
                 }
-                modelGiaoDich.SaoChepHD_KhuyenMai(item, type);
-            });
+            }
+
+            modelGiaoDich.SaoChepHD_KhuyenMai(item, type);
         }
         else {
             self.SaoChepHD_KhuyenMai(item, type);
