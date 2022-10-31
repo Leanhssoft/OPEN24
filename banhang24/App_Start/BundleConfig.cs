@@ -315,13 +315,15 @@ namespace banhang24
                     ));
             bundles.Add(new ScriptBundle("~/bundles/GiaoDich/ChuyenHangChiTiet").Include(
                     "~/Content/Framework/Knockout/knockout-{version}.js",
-                    "~/Scripts/BanHang/jqAutoProduct.js",
+                        "~/Scripts/BanHang/jqAutoProduct.js",
+                  "~/Scripts/Components/Ko-component.js",
                     "~/Content/js/Common.js",
                     "~/Scripts/GiaoDich/ChuyenHangChiTiet.js"
                     ));
             bundles.Add(new ScriptBundle("~/bundles/GiaoDich/XuatKhoChiTiet").Include(
                     "~/Content/Framework/Knockout/knockout-{version}.js",
                     "~/Scripts/BanHang/jqAutoProduct.js",
+                        "~/Scripts/BanHang/jqAutoProduct.js",
                     "~/Content/js/Common.js",
                     "~/Scripts/GiaoDich/XuatKhoChiTiet.js"
                     ));
