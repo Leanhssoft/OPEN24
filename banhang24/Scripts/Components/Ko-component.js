@@ -351,7 +351,10 @@ ko.components.register('jqauto-product', {
         };
         self.searchDB = function (keyCode) {
             var self = this;
-            var txt = locdau(self.textSearch()).trim();
+            var txt = self.textSearch();
+            if (commonStatisJs.CheckNull(txt)) {
+                txt = txt.trim();
+            }
             if (txt === '') {
                 self.searchList([]);
                 self.ChangeHangHoa(
@@ -365,7 +368,7 @@ ko.components.register('jqauto-product', {
                     });
                 return;
             }
-            console.log('currpage ', self.currentPage());
+           
             if (keyCode === 13 && self.searchList().length > 0) {
                 self.keyEnter();
             }
