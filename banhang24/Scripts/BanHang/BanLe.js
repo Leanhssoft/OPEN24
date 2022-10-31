@@ -6681,7 +6681,7 @@ var NewModel_BanHangLe = function () {
             if (lstHD[i].IDRandom === idRandomHD) {
                 idBangGiaOld = lstHD[i].ID_BangGia;
                 if (lstHD[i].ID_DoiTuong !== idDoiTuong) {
-                    if (lstHD[i].LoaiHoaDon === 6 && idDoiTuong.indexOf('KHO') > -1) {
+                    if (lstHD[i].LoaiHoaDon === 6 && idDoiTuong !== null && idDoiTuong.indexOf('KHO') > -1) {
                         ShowMessage_Danger('Trả hàng: Không cho phép chọn khách hàng đang lưu offline');
                         return false;
                     }
@@ -8554,7 +8554,7 @@ var NewModel_BanHangLe = function () {
                 }
                 // update status for HDDatHang
                 UpdateStatus_HDDatHang();
-             
+
                 ShowMessage_Success('Thanh toán hóa đơn thành công');
 
                 vmThemMoiKhach.NangNhomKhachHang(objHDAdd.ID_DoiTuong);

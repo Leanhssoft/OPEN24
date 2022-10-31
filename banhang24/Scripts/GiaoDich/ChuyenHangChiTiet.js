@@ -32,6 +32,7 @@ var ChuyenHangChiTiet = function () {
     var _idNhanVien = $('.idnhanvien').text();
     var _IDNguoiDung = $('.idnguoidung').text();
     var _userLogin = $('#txtTenTaiKhoan').text().trim();
+    self.ID_DonVi = ko.observable(_idDonVi);
 
     $(".btnImportExcel").hide();
     $(".filterFileSelect").hide();
