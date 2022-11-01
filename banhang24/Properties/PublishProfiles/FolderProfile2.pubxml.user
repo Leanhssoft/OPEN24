@@ -5,7 +5,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>C:\Users\PhuongND\Source\Workspaces\banhang24\banhang24\bin\Release\Publish</_PublishTargetUrl>
+    <_PublishTargetUrl>D:\Workspace\GitHub\banhang24\banhang24\bin\Release\Publish</_PublishTargetUrl>
     <History>True|2022-07-23T07:59:58.3469990Z;True|2022-05-04T23:55:25.7033580+07:00;True|2022-04-05T23:03:17.2368397+07:00;True|2022-01-19T19:36:35.2651876+07:00;True|2022-01-07T22:50:52.2824992+07:00;True|2021-12-20T23:00:14.1925504+07:00;True|2021-11-08T14:01:11.1626024+07:00;True|2021-10-15T08:26:57.4555248+07:00;True|2021-10-10T17:03:21.2897876+07:00;True|2021-10-07T09:10:15.9820603+07:00;True|2021-10-04T23:55:29.3500522+07:00;True|2021-07-14T19:15:35.8194074+07:00;True|2021-07-14T08:55:25.1163052+07:00;True|2021-07-14T08:39:25.2995117+07:00;True|2021-07-13T21:51:55.6194850+07:00;True|2021-06-14T23:46:33.9866643+07:00;True|2021-05-25T15:02:11.3787965+07:00;True|2021-05-20T23:12:12.1237531+07:00;True|2021-04-15T00:18:04.7490328+07:00;True|2021-03-23T09:05:34.2334841+07:00;True|2021-03-18T16:22:20.3778476+07:00;True|2021-03-18T15:39:12.8255594+07:00;</History>
   </PropertyGroup>
   <ItemGroup>
@@ -160,13 +160,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:25:51</publishTime>
     </File>
     <File Include="App_Data/jobs/continuous/WebJob1/WebJob1.exe">
-      <publishTime>07/23/2022 14:58:57</publishTime>
+      <publishTime>11/01/2022 15:41:24</publishTime>
     </File>
     <File Include="App_Data/jobs/continuous/WebJob1/WebJob1.exe.config">
       <publishTime>02/17/2021 09:26:10</publishTime>
     </File>
     <File Include="App_Data/jobs/continuous/WebJob1/WebJob1.pdb">
-      <publishTime>07/23/2022 14:58:57</publishTime>
+      <publishTime>11/01/2022 15:41:24</publishTime>
     </File>
     <File Include="App_Data/jobs/continuous/WebJob1/zh-Hans/Microsoft.Data.Edm.resources.dll">
       <publishTime>02/17/2021 09:25:42</publishTime>
@@ -193,7 +193,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:25:51</publishTime>
     </File>
     <File Include="App_Data/log/logErrors_0973474985.txt">
-      <publishTime>07/23/2022 14:54:56</publishTime>
+      <publishTime>09/27/2022 08:45:32</publishTime>
     </File>
     <File Include="Areas/DanhMuc/Views/Web.config">
       <publishTime>02/17/2021 09:23:18</publishTime>
@@ -208,16 +208,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:25:21</publishTime>
     </File>
     <File Include="bin/AsposeCellsDocument.dll">
-      <publishTime>11/29/2021 20:14:22</publishTime>
+      <publishTime>11/01/2022 15:40:32</publishTime>
     </File>
     <File Include="bin/AsposeCellsDocument.pdb">
-      <publishTime>11/29/2021 20:14:22</publishTime>
+      <publishTime>11/01/2022 15:40:32</publishTime>
     </File>
     <File Include="bin/banhang24.dll">
-      <publishTime>07/23/2022 14:58:48</publishTime>
+      <publishTime>11/01/2022 15:41:14</publishTime>
     </File>
     <File Include="bin/banhang24.pdb">
-      <publishTime>07/23/2022 14:58:48</publishTime>
+      <publishTime>11/01/2022 15:41:14</publishTime>
     </File>
     <File Include="bin/Common.Logging.Core.dll">
       <publishTime>02/17/2021 09:25:28</publishTime>
@@ -262,202 +262,202 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:25:33</publishTime>
     </File>
     <File Include="bin/HT.dll">
-      <publishTime>07/23/2022 14:58:32</publishTime>
+      <publishTime>11/01/2022 15:40:43</publishTime>
     </File>
     <File Include="bin/HT.dll.config">
       <publishTime>02/17/2021 09:24:16</publishTime>
     </File>
     <File Include="bin/HT.pdb">
-      <publishTime>07/23/2022 14:58:32</publishTime>
+      <publishTime>11/01/2022 15:40:43</publishTime>
     </File>
     <File Include="bin/itextsharp.dll">
       <publishTime>02/17/2021 09:25:35</publishTime>
     </File>
     <File Include="bin/libBH_NhanVienThucHien.dll">
-      <publishTime>07/23/2022 14:58:32</publishTime>
+      <publishTime>11/01/2022 15:40:44</publishTime>
     </File>
     <File Include="bin/libBH_NhanVienThucHien.pdb">
-      <publishTime>07/23/2022 14:58:32</publishTime>
+      <publishTime>11/01/2022 15:40:44</publishTime>
     </File>
     <File Include="bin/libDM_DoiTuong.dll">
-      <publishTime>07/23/2022 14:58:34</publishTime>
+      <publishTime>11/01/2022 15:40:57</publishTime>
     </File>
     <File Include="bin/libDM_DoiTuong.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_DoiTuong.pdb">
-      <publishTime>07/23/2022 14:58:34</publishTime>
+      <publishTime>11/01/2022 15:40:57</publishTime>
     </File>
     <File Include="bin/libDM_DonVi.dll">
-      <publishTime>07/23/2022 14:58:29</publishTime>
+      <publishTime>11/01/2022 15:40:41</publishTime>
     </File>
     <File Include="bin/libDM_DonVi.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_DonVi.pdb">
-      <publishTime>07/23/2022 14:58:29</publishTime>
+      <publishTime>11/01/2022 15:40:41</publishTime>
     </File>
     <File Include="bin/libDM_GiaBan.dll">
-      <publishTime>07/23/2022 14:58:35</publishTime>
+      <publishTime>11/01/2022 15:41:02</publishTime>
     </File>
     <File Include="bin/libDM_GiaBan.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_GiaBan.pdb">
-      <publishTime>07/23/2022 14:58:35</publishTime>
+      <publishTime>11/01/2022 15:41:02</publishTime>
     </File>
     <File Include="bin/libDM_GiaBan_ApDung.dll">
-      <publishTime>07/23/2022 14:58:32</publishTime>
+      <publishTime>11/01/2022 15:40:47</publishTime>
     </File>
     <File Include="bin/libDM_GiaBan_ApDung.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_GiaBan_ApDung.pdb">
-      <publishTime>07/23/2022 14:58:32</publishTime>
+      <publishTime>11/01/2022 15:40:47</publishTime>
     </File>
     <File Include="bin/libDM_HangHoa.dll">
-      <publishTime>07/23/2022 14:58:35</publishTime>
+      <publishTime>11/01/2022 15:40:58</publishTime>
     </File>
     <File Include="bin/libDM_HangHoa.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_HangHoa.pdb">
-      <publishTime>07/23/2022 14:58:35</publishTime>
+      <publishTime>11/01/2022 15:40:58</publishTime>
     </File>
     <File Include="bin/libDM_Kho.dll">
-      <publishTime>07/23/2022 14:58:30</publishTime>
+      <publishTime>11/01/2022 15:40:48</publishTime>
     </File>
     <File Include="bin/libDM_Kho.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_Kho.pdb">
-      <publishTime>07/23/2022 14:58:30</publishTime>
+      <publishTime>11/01/2022 15:40:48</publishTime>
     </File>
     <File Include="bin/libDM_KhuVuc.dll">
-      <publishTime>07/23/2022 14:58:31</publishTime>
+      <publishTime>11/01/2022 15:40:40</publishTime>
     </File>
     <File Include="bin/libDM_KhuVuc.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_KhuVuc.pdb">
-      <publishTime>07/23/2022 14:58:31</publishTime>
+      <publishTime>11/01/2022 15:40:40</publishTime>
     </File>
     <File Include="bin/libDM_LoaiChungTu.dll">
-      <publishTime>07/23/2022 14:58:31</publishTime>
+      <publishTime>11/01/2022 15:40:39</publishTime>
     </File>
     <File Include="bin/libDM_LoaiChungTu.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_LoaiChungTu.pdb">
-      <publishTime>07/23/2022 14:58:31</publishTime>
+      <publishTime>11/01/2022 15:40:39</publishTime>
     </File>
     <File Include="bin/libDM_LoaiTuVanLichHen.dll">
-      <publishTime>07/23/2022 14:58:32</publishTime>
+      <publishTime>11/01/2022 15:40:44</publishTime>
     </File>
     <File Include="bin/libDM_LoaiTuVanLichHen.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_LoaiTuVanLichHen.pdb">
-      <publishTime>07/23/2022 14:58:32</publishTime>
+      <publishTime>11/01/2022 15:40:44</publishTime>
     </File>
     <File Include="bin/libDM_NhomDoiTuong.dll">
-      <publishTime>07/23/2022 14:58:30</publishTime>
+      <publishTime>11/01/2022 15:40:48</publishTime>
     </File>
     <File Include="bin/libDM_NhomDoiTuong.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_NhomDoiTuong.pdb">
-      <publishTime>07/23/2022 14:58:30</publishTime>
+      <publishTime>11/01/2022 15:40:48</publishTime>
     </File>
     <File Include="bin/libDM_NhomHangHoa.dll">
-      <publishTime>07/23/2022 14:58:29</publishTime>
+      <publishTime>11/01/2022 15:40:38</publishTime>
     </File>
     <File Include="bin/libDM_NhomHangHoa.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/libDM_NhomHangHoa.pdb">
-      <publishTime>07/23/2022 14:58:29</publishTime>
+      <publishTime>11/01/2022 15:40:38</publishTime>
     </File>
     <File Include="bin/libDM_ViTri.dll">
-      <publishTime>07/23/2022 14:58:30</publishTime>
+      <publishTime>11/01/2022 15:40:40</publishTime>
     </File>
     <File Include="bin/libDM_ViTri.dll.config">
       <publishTime>02/17/2021 09:24:18</publishTime>
     </File>
     <File Include="bin/libDM_ViTri.pdb">
-      <publishTime>07/23/2022 14:58:30</publishTime>
+      <publishTime>11/01/2022 15:40:40</publishTime>
     </File>
     <File Include="bin/libDonViQuiDoi.dll">
-      <publishTime>07/23/2022 14:58:29</publishTime>
+      <publishTime>11/01/2022 15:40:45</publishTime>
     </File>
     <File Include="bin/libDonViQuiDoi.dll.config">
       <publishTime>02/17/2021 09:24:18</publishTime>
     </File>
     <File Include="bin/libDonViQuiDoi.pdb">
-      <publishTime>07/23/2022 14:58:29</publishTime>
+      <publishTime>11/01/2022 15:40:45</publishTime>
     </File>
     <File Include="bin/libGara.dll">
-      <publishTime>07/23/2022 14:58:31</publishTime>
+      <publishTime>11/01/2022 15:40:52</publishTime>
     </File>
     <File Include="bin/libGara.dll.config">
       <publishTime>03/13/2021 15:08:20</publishTime>
     </File>
     <File Include="bin/libGara.pdb">
-      <publishTime>07/23/2022 14:58:31</publishTime>
+      <publishTime>11/01/2022 15:40:52</publishTime>
     </File>
     <File Include="bin/libHT_NguoiDung.dll">
-      <publishTime>07/23/2022 14:58:28</publishTime>
+      <publishTime>11/01/2022 15:40:39</publishTime>
     </File>
     <File Include="bin/libHT_NguoiDung.dll.config">
       <publishTime>02/17/2021 09:24:18</publishTime>
     </File>
     <File Include="bin/libHT_NguoiDung.pdb">
-      <publishTime>07/23/2022 14:58:28</publishTime>
+      <publishTime>11/01/2022 15:40:39</publishTime>
     </File>
     <File Include="bin/libKho_HoaDon.dll">
-      <publishTime>07/23/2022 14:58:32</publishTime>
+      <publishTime>11/01/2022 15:40:50</publishTime>
     </File>
     <File Include="bin/libKho_HoaDon.dll.config">
       <publishTime>02/17/2021 09:24:18</publishTime>
     </File>
     <File Include="bin/libKho_HoaDon.pdb">
-      <publishTime>07/23/2022 14:58:32</publishTime>
+      <publishTime>11/01/2022 15:40:50</publishTime>
     </File>
     <File Include="bin/libNS_NhanVien.dll">
-      <publishTime>07/23/2022 14:58:30</publishTime>
+      <publishTime>11/01/2022 15:40:40</publishTime>
     </File>
     <File Include="bin/libNS_NhanVien.dll.config">
       <publishTime>02/17/2021 09:24:18</publishTime>
     </File>
     <File Include="bin/libNS_NhanVien.pdb">
-      <publishTime>07/23/2022 14:58:30</publishTime>
+      <publishTime>11/01/2022 15:40:40</publishTime>
     </File>
     <File Include="bin/libQuy_HoaDon.dll">
-      <publishTime>07/23/2022 14:58:38</publishTime>
+      <publishTime>11/01/2022 15:41:02</publishTime>
     </File>
     <File Include="bin/libQuy_HoaDon.dll.config">
       <publishTime>02/17/2021 09:24:18</publishTime>
     </File>
     <File Include="bin/libQuy_HoaDon.pdb">
-      <publishTime>07/23/2022 14:58:38</publishTime>
+      <publishTime>11/01/2022 15:41:02</publishTime>
     </File>
     <File Include="bin/libReport.dll">
-      <publishTime>07/23/2022 14:58:31</publishTime>
+      <publishTime>11/01/2022 15:40:52</publishTime>
     </File>
     <File Include="bin/libReport.dll.config">
       <publishTime>02/17/2021 09:24:18</publishTime>
     </File>
     <File Include="bin/libReport.pdb">
-      <publishTime>07/23/2022 14:58:31</publishTime>
+      <publishTime>11/01/2022 15:40:52</publishTime>
     </File>
     <File Include="bin/lib_ChamSocKhachHang.dll">
-      <publishTime>07/23/2022 14:58:29</publishTime>
+      <publishTime>11/01/2022 15:40:39</publishTime>
     </File>
     <File Include="bin/lib_ChamSocKhachHang.dll.config">
       <publishTime>02/17/2021 09:24:17</publishTime>
     </File>
     <File Include="bin/lib_ChamSocKhachHang.pdb">
-      <publishTime>07/23/2022 14:58:29</publishTime>
+      <publishTime>11/01/2022 15:40:39</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.SignalR.Client.dll">
       <publishTime>02/17/2021 09:25:40</publishTime>
@@ -496,31 +496,31 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:25:40</publishTime>
     </File>
     <File Include="bin/Model.dll">
-      <publishTime>07/23/2022 14:58:27</publishTime>
+      <publishTime>11/01/2022 15:40:37</publishTime>
     </File>
     <File Include="bin/Model.dll.config">
       <publishTime>02/17/2021 09:24:18</publishTime>
     </File>
     <File Include="bin/Model.pdb">
-      <publishTime>07/23/2022 14:58:27</publishTime>
+      <publishTime>11/01/2022 15:40:37</publishTime>
     </File>
     <File Include="bin/Model.Service.dll">
-      <publishTime>07/23/2022 14:58:30</publishTime>
+      <publishTime>11/01/2022 15:40:47</publishTime>
     </File>
     <File Include="bin/Model.Service.dll.config">
       <publishTime>02/17/2021 09:24:25</publishTime>
     </File>
     <File Include="bin/Model.Service.pdb">
-      <publishTime>07/23/2022 14:58:30</publishTime>
+      <publishTime>11/01/2022 15:40:47</publishTime>
     </File>
     <File Include="bin/Model_banhang24vn.dll">
-      <publishTime>11/29/2021 20:14:23</publishTime>
+      <publishTime>11/01/2022 15:40:31</publishTime>
     </File>
     <File Include="bin/Model_banhang24vn.dll.config">
       <publishTime>02/17/2021 09:24:26</publishTime>
     </File>
     <File Include="bin/Model_banhang24vn.pdb">
-      <publishTime>11/29/2021 20:14:23</publishTime>
+      <publishTime>11/01/2022 15:40:31</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>02/17/2021 09:25:49</publishTime>
@@ -637,19 +637,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/19/2015 23:14:56</publishTime>
     </File>
     <File Include="bin/vi/banhang24.resources.dll">
-      <publishTime>07/23/2022 14:58:48</publishTime>
+      <publishTime>11/01/2022 15:41:14</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>02/17/2021 09:25:52</publishTime>
     </File>
     <File Include="bin/ZaloConnectApp.dll">
-      <publishTime>11/29/2021 20:14:22</publishTime>
+      <publishTime>11/01/2022 15:40:33</publishTime>
     </File>
     <File Include="bin/ZaloConnectApp.dll.config">
       <publishTime>10/19/2021 15:44:31</publishTime>
     </File>
     <File Include="bin/ZaloConnectApp.pdb">
-      <publishTime>11/29/2021 20:14:22</publishTime>
+      <publishTime>11/01/2022 15:40:33</publishTime>
     </File>
     <File Include="config.xml">
       <publishTime>10/14/2021 10:17:52</publishTime>
@@ -34960,7 +34960,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:23:59</publishTime>
     </File>
     <File Include="Scripts/BanHang/BanLe.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/BanHang/BanLe_TraHang.js">
       <publishTime>03/07/2021 09:43:11</publishTime>
@@ -35074,7 +35074,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/25/2022 08:57:03</publishTime>
     </File>
     <File Include="Scripts/ChamSocKhachHang/HTSMS.js">
-      <publishTime>01/27/2022 09:04:28</publishTime>
+      <publishTime>09/27/2022 08:45:32</publishTime>
     </File>
     <File Include="Scripts/ChamSocKhachHang/LichHen.js">
       <publishTime>06/28/2021 15:34:41</publishTime>
@@ -35122,7 +35122,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/21/2022 11:25:52</publishTime>
     </File>
     <File Include="Scripts/Components/Ko-component.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/Components/LoadingComponent.js">
       <publishTime>02/17/2021 09:24:00</publishTime>
@@ -35131,7 +35131,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/11/2021 09:45:45</publishTime>
     </File>
     <File Include="Scripts/Components/NhanVien_KhachHang.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/Components/page-list.js">
       <publishTime>04/05/2022 17:12:54</publishTime>
@@ -35149,13 +35149,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/24/2022 14:25:12</publishTime>
     </File>
     <File Include="Scripts/DanhMuc/SanPham/HangHoaList.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/DanhMuc/SanPham/KiemKho.js">
       <publishTime>04/07/2021 08:36:35</publishTime>
     </File>
     <File Include="Scripts/DanhMuc/SanPham/LoHang.js">
-      <publishTime>05/20/2022 14:50:03</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/DanhMuc/SanPham/_vmNewProduct.js">
       <publishTime>04/05/2022 17:12:54</publishTime>
@@ -35176,7 +35176,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 10:01:13</publishTime>
     </File>
     <File Include="Scripts/DoiTac/KhachHang1_2.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>08/30/2022 14:26:23</publishTime>
     </File>
     <File Include="Scripts/DoiTac/Lienhe-1.1.js">
       <publishTime>02/25/2021 10:01:13</publishTime>
@@ -35236,7 +35236,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/08/2021 09:57:21</publishTime>
     </File>
     <File Include="Scripts/Gara/BanLamViec/BanLamViec.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/Gara/BanLamViec/vmHang_Loai_MauXe.js">
       <publishTime>01/22/2022 14:03:29</publishTime>
@@ -35251,7 +35251,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/07/2021 09:43:11</publishTime>
     </File>
     <File Include="Scripts/Gara/BanLamViec/_ThemMoiXe.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/Gara/BanLamViec/_ThemNhomKhachHang.js">
       <publishTime>02/17/2021 09:24:01</publishTime>
@@ -35260,13 +35260,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/19/2022 10:32:04</publishTime>
     </File>
     <File Include="Scripts/Gara/BanLamViec/_TiepNhanXe.js">
-      <publishTime>05/04/2022 23:43:57</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/Gara/BanLamViec/_XuatXuong.js">
       <publishTime>07/25/2021 12:04:52</publishTime>
     </File>
     <File Include="Scripts/Gara/Gara.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/Gara/HangXe.js">
       <publishTime>05/11/2021 09:45:45</publishTime>
@@ -35281,10 +35281,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/23/2022 10:19:09</publishTime>
     </File>
     <File Include="Scripts/Gara/HoaDon/_ThanhToan.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/Gara/HoaDon/_ThuTienNhapHang.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/Gara/KhachHang/vmTrangThai_NguonKhach.js">
       <publishTime>01/10/2022 09:26:14</publishTime>
@@ -35293,7 +35293,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/19/2022 19:14:24</publishTime>
     </File>
     <File Include="Scripts/Gara/KhachHang/_ThemMoiKhachHang.js">
-      <publishTime>02/21/2022 11:25:52</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/Gara/KhachHang/_ThemNhomKhachHang.js">
       <publishTime>07/08/2021 09:57:21</publishTime>
@@ -35326,10 +35326,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 10:01:13</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/ChuyenHang2.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:44</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/ChuyenHangChiTiet.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/DieuChinh.js">
       <publishTime>04/28/2022 09:23:11</publishTime>
@@ -35338,34 +35338,34 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 10:01:13</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/GiaoDichBan_Dat_Tra.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/GoiDichVu.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/NhapHang.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/NhapHangChiTiet.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/PhieuXuatKho.js">
       <publishTime>02/17/2021 09:24:01</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/TheGiaTri.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/TraHangNhap.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/TraHangNhapChiTiet.js">
-      <publishTime>05/04/2022 14:51:46</publishTime>
+      <publishTime>08/30/2022 14:26:23</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/XuatHuy.js">
       <publishTime>07/23/2022 10:19:09</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/XuatKhoChiTiet.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/_EditChietKhauNVHoaDon.js">
       <publishTime>03/24/2021 09:17:46</publishTime>
@@ -35467,7 +35467,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:24:01</publishTime>
     </File>
     <File Include="Scripts/NhanSu/BangLuong2_1.js">
-      <publishTime>03/09/2022 11:10:41</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/NhanSu/BangLuongChiTiet.js">
       <publishTime>04/14/2022 09:21:54</publishTime>
@@ -35533,7 +35533,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:23:59</publishTime>
     </File>
     <File Include="Scripts/Report/BaoCaoBanHang.js">
-      <publishTime>05/16/2022 14:59:19</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/Report/BaoCaoChietKhau.js">
       <publishTime>04/08/2021 10:22:16</publishTime>
@@ -35542,7 +35542,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/16/2021 13:53:12</publishTime>
     </File>
     <File Include="Scripts/Report/BaoCaoGoiDichVu.js">
-      <publishTime>04/28/2022 09:23:12</publishTime>
+      <publishTime>08/30/2022 14:26:23</publishTime>
     </File>
     <File Include="Scripts/Report/BaoCaoHoatDongXe.js">
       <publishTime>04/05/2022 17:12:54</publishTime>
@@ -35617,13 +35617,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 10:01:13</publishTime>
     </File>
     <File Include="Scripts/SoQuy/SoQuy_2.js">
-      <publishTime>07/23/2022 10:19:09</publishTime>
+      <publishTime>09/27/2022 08:47:57</publishTime>
     </File>
     <File Include="Scripts/ssoftvn.js">
       <publishTime>02/17/2021 09:23:59</publishTime>
     </File>
     <File Include="Scripts/Thietlap/CauHinhHeThong.js">
-      <publishTime>05/06/2022 10:41:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Scripts/Thietlap/ChietKhauList.js">
       <publishTime>05/20/2021 22:01:37</publishTime>
@@ -35647,7 +35647,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/21/2021 16:37:01</publishTime>
     </File>
     <File Include="Scripts/Thietlap/NhanVienList.js">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>08/30/2022 14:26:23</publishTime>
     </File>
     <File Include="Scripts/Thietlap/ProfileND.js">
       <publishTime>03/17/2021 11:17:46</publishTime>
@@ -35656,7 +35656,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/28/2021 15:34:42</publishTime>
     </File>
     <File Include="Scripts/Thietlap/QLMauIn.js">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>08/30/2022 14:26:23</publishTime>
     </File>
     <File Include="Scripts/Thietlap/QLMayChamCong.js">
       <publishTime>02/17/2021 09:24:02</publishTime>
@@ -37561,7 +37561,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:24:08</publishTime>
     </File>
     <File Include="Template/ExportExcel/Report/BaoCaoBanHang/Teamplate_BaoCaoBanHangChiTiet.xlsx">
-      <publishTime>12/17/2021 11:12:43</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Report/BaoCaoBanHang/Teamplate_BaoCaoBanHangChiTietTheoKhachHang.xlsx">
       <publishTime>12/17/2021 11:12:43</publishTime>
@@ -37579,10 +37579,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/17/2021 11:12:43</publishTime>
     </File>
     <File Include="Template/ExportExcel/Report/BaoCaoBanHang/Teamplate_BaoCaoBanHangTheoNhomHang.xlsx">
-      <publishTime>12/17/2021 11:12:43</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Report/BaoCaoBanHang/Teamplate_BaoCaoBanHangTongHop.xlsx">
-      <publishTime>12/17/2021 11:12:43</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Report/BaoCaoBanHang/Teamplate_BaoCaoBanHang_HangTraLai.xlsx">
       <publishTime>12/17/2021 11:12:43</publishTime>
@@ -37822,16 +37822,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/13/2021 09:31:09</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_GiaoDichHoaDon.xlsx">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_GiaoDichHoaDon_ChiTiet.xlsx">
-      <publishTime>12/13/2021 09:31:09</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_GiaoDichHoaDon_Gara.xlsx">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_GoiDichVu.xlsx">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_GoiDichVu_ChiTiet.xlsx">
       <publishTime>12/13/2021 09:31:09</publishTime>
@@ -37840,7 +37840,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/23/2022 10:19:10</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_HoaDonDatHang_ChiTiet.xlsx">
-      <publishTime>12/13/2021 09:31:09</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_KiemKhoHangHoa _ChiTiet.xlsx">
       <publishTime>12/13/2021 09:31:09</publishTime>
@@ -37855,7 +37855,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/08/2021 15:30:35</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_PhieuNhapHang.xlsx">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_PhieuNhapHang_ChiTiet.xlsx">
       <publishTime>02/17/2021 09:24:08</publishTime>
@@ -37864,10 +37864,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/23/2022 10:19:10</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_PhieuTraHang.xlsx">
-      <publishTime>12/16/2021 13:53:12</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_PhieuTraHangNhap.xlsx">
-      <publishTime>12/08/2021 15:30:35</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_PhieuTraHangNhap_ChiTiet.xlsx">
       <publishTime>12/08/2021 15:30:35</publishTime>
@@ -38254,7 +38254,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/07/2021 09:43:11</publishTime>
     </File>
     <File Include="Views/BanHang/BanLe.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>08/30/2022 15:06:27</publishTime>
     </File>
     <File Include="Views/BanHang/BanLe_TraHang.cshtml">
       <publishTime>03/07/2021 09:43:11</publishTime>
@@ -38371,7 +38371,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2021 15:19:43</publishTime>
     </File>
     <File Include="Views/BanHang/_trahanghoadon.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/BanHang/_traTienKhach.cshtml">
       <publishTime>02/25/2021 10:01:14</publishTime>
@@ -38428,7 +38428,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/14/2021 23:30:35</publishTime>
     </File>
     <File Include="Views/DoiTac/Khachhang.cshtml">
-      <publishTime>04/05/2022 19:46:38</publishTime>
+      <publishTime>08/30/2022 14:13:18</publishTime>
     </File>
     <File Include="Views/DoiTac/NhaBaoHiem.cshtml">
       <publishTime>03/01/2022 15:36:51</publishTime>
@@ -38509,7 +38509,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/23/2022 10:19:10</publishTime>
     </File>
     <File Include="Views/Gara/BanLamViec.cshtml">
-      <publishTime>05/04/2022 14:51:46</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/Gara/BaoCao/Gara_DoanhThuCoVan.cshtml">
       <publishTime>04/06/2022 14:22:36</publishTime>
@@ -38527,7 +38527,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/17/2021 15:03:05</publishTime>
     </File>
     <File Include="Views/Gara/Gara.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>08/30/2022 15:06:26</publishTime>
     </File>
     <File Include="Views/Gara/Gara_LichNhacBaoDuong.cshtml">
       <publishTime>03/09/2022 11:10:42</publishTime>
@@ -38542,7 +38542,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/21/2022 11:25:53</publishTime>
     </File>
     <File Include="Views/Gara/HoaDon/_HDSCChiTietXuatKho.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>08/30/2022 14:26:23</publishTime>
     </File>
     <File Include="Views/Gara/HoaDon/_ThanhPhanCombo.cshtml">
       <publishTime>04/28/2022 09:23:12</publishTime>
@@ -38632,7 +38632,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/28/2022 11:51:39</publishTime>
     </File>
     <File Include="Views/Gara/_NhatKyGoiBaoDuong.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/Gara/_ThanhPhanDinhLuong.cshtml">
       <publishTime>07/23/2022 10:19:10</publishTime>
@@ -38686,7 +38686,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/23/2022 10:19:10</publishTime>
     </File>
     <File Include="Views/GiaoDich/DanhSachPhieuTiepNhan.cshtml">
-      <publishTime>05/04/2022 14:51:46</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/GiaoDich/DanhSachXe.cshtml">
       <publishTime>06/09/2022 14:21:54</publishTime>
@@ -38701,10 +38701,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 10:01:15</publishTime>
     </File>
     <File Include="Views/GiaoDich/GoiDichVu.cshtml">
-      <publishTime>03/24/2022 14:25:13</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/GiaoDich/HoaDon.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/GiaoDich/HoaDonSuaChua.cshtml">
       <publishTime>05/25/2021 15:00:32</publishTime>
@@ -38713,13 +38713,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/28/2022 09:23:12</publishTime>
     </File>
     <File Include="Views/GiaoDich/NhapHang.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/GiaoDich/NhapHangItem.cshtml">
       <publishTime>06/24/2021 15:19:46</publishTime>
     </File>
     <File Include="Views/GiaoDich/NhapHangItem1_2.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/GiaoDich/NhapHangSanXuat.cshtml">
       <publishTime>06/28/2021 15:34:42</publishTime>
@@ -38728,16 +38728,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/03/2021 17:44:54</publishTime>
     </File>
     <File Include="Views/GiaoDich/TraHang.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/GiaoDich/TraHangNhap.cshtml">
-      <publishTime>05/04/2022 14:51:46</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/GiaoDich/TraHangNhapChiTiet.cshtml">
       <publishTime>06/24/2021 15:19:46</publishTime>
     </File>
     <File Include="Views/GiaoDich/TraHangNhapChiTiet_2.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/GiaoDich/XuatHuy.cshtml">
       <publishTime>05/04/2022 14:51:46</publishTime>
@@ -38749,7 +38749,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2021 15:19:46</publishTime>
     </File>
     <File Include="Views/GiaoDich/_HoaDonNapThePartial.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>08/30/2022 14:13:18</publishTime>
     </File>
     <File Include="Views/GiaoDich/_HotKey.cshtml">
       <publishTime>02/17/2021 09:24:13</publishTime>
@@ -38797,7 +38797,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/24/2022 14:25:13</publishTime>
     </File>
     <File Include="Views/HangHoa/danhsachhanghoa.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>08/30/2022 15:06:27</publishTime>
     </File>
     <File Include="Views/HangHoa/dieuchinh.cshtml">
       <publishTime>04/28/2022 09:23:12</publishTime>
@@ -38878,10 +38878,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2021 15:19:46</publishTime>
     </File>
     <File Include="Views/HangHoa/_themmoidichvuPatial.cshtml">
-      <publishTime>04/05/2022 17:12:54</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/HangHoa/_themmoihanghoaPartial.cshtml">
-      <publishTime>04/05/2022 17:12:54</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/HangHoa/_themmoinhomhhtheolanhomhanghoa.cshtml">
       <publishTime>06/24/2021 15:19:46</publishTime>
@@ -39022,7 +39022,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 10:01:15</publishTime>
     </File>
     <File Include="Views/NhanSu/BangLuong.cshtml">
-      <publishTime>04/20/2022 09:59:29</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/NhanSu/BangLuongChiTiet.cshtml">
       <publishTime>03/24/2022 14:25:13</publishTime>
@@ -39112,7 +39112,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2021 15:19:46</publishTime>
     </File>
     <File Include="Views/Report/BanHang.cshtml">
-      <publishTime>05/16/2022 14:59:19</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/Report/BaoCaoHoatDongXe.cshtml">
       <publishTime>04/05/2022 17:12:54</publishTime>
@@ -39151,7 +39151,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/23/2022 10:19:10</publishTime>
     </File>
     <File Include="Views/Report/_BCBanHangKhachHang_TongHop.cshtml">
-      <publishTime>05/16/2022 14:59:19</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/Report/_NhatKyGiaoDich.cshtml">
       <publishTime>07/08/2021 09:57:23</publishTime>
@@ -39163,7 +39163,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/03/2021 10:59:51</publishTime>
     </File>
     <File Include="Views/Shared/_header.cshtml">
-      <publishTime>07/23/2022 10:19:14</publishTime>
+      <publishTime>11/01/2022 14:00:46</publishTime>
     </File>
     <File Include="Views/Shared/_header2.cshtml">
       <publishTime>07/08/2021 09:57:23</publishTime>
@@ -39223,7 +39223,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/23/2022 10:19:10</publishTime>
     </File>
     <File Include="Views/SoQuy/_ThemPhieuThuChi.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/SoQuy/_ThemTaiKhoanNganHang.cshtml">
       <publishTime>07/23/2022 10:19:10</publishTime>
@@ -39265,7 +39265,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/28/2021 15:34:42</publishTime>
     </File>
     <File Include="Views/ThietLap/NhanVien.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>08/30/2022 14:13:18</publishTime>
     </File>
     <File Include="Views/ThietLap/PrintBlood.cshtml">
       <publishTime>02/17/2021 09:24:16</publishTime>
@@ -39274,7 +39274,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/08/2021 09:57:23</publishTime>
     </File>
     <File Include="Views/ThietLap/QuanLyMauIn.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/ThietLap/QuanLyNguoiDung.cshtml">
       <publishTime>07/16/2021 08:46:50</publishTime>
@@ -39286,7 +39286,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/02/2021 08:36:53</publishTime>
     </File>
     <File Include="Views/ThietLap/ThietLapChung.cshtml">
-      <publishTime>07/23/2022 10:19:15</publishTime>
+      <publishTime>11/01/2022 13:59:45</publishTime>
     </File>
     <File Include="Views/ThietLap/_ChonNhomHangHoaPartial.cshtml">
       <publishTime>02/25/2021 10:01:16</publishTime>
@@ -39313,7 +39313,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/24/2021 15:19:47</publishTime>
     </File>
     <File Include="Views/ThietLap/_NsPhongBanPartial.cshtml">
-      <publishTime>07/23/2022 10:19:10</publishTime>
+      <publishTime>08/30/2022 14:26:23</publishTime>
     </File>
     <File Include="Views/ThietLap/_NvbaoHiemPartial.cshtml">
       <publishTime>02/25/2021 10:01:16</publishTime>
@@ -39433,7 +39433,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:24:12</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/04/2022 23:54:32</publishTime>
+      <publishTime>11/01/2022 15:41:23</publishTime>
     </File>
   </ItemGroup>
 </Project>

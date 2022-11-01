@@ -1051,26 +1051,6 @@ SET NOCOUNT ON;
     	a.NamLapHoaDon
 END");
 
-            Sql(@"ALTER PROCEDURE [dbo].[UpdateStatusBangLuong_whenChangeCong]
-    @ID_DonVi [uniqueidentifier],
-    @NgayChamCong [datetime]
-AS
-BEGIN
-    SET NOCOUNT ON;
-    	set @NgayChamCong = FORMAT(@NgayChamCong,'yyyy-MM-dd')
-    
-    	update bl1 set bl1.TrangThai= 2
-		from NS_BangLuong bl1 
-    	where exists (select ID
-    					from
-    						(select ID, FORMAT(TuNgay,'yyyy-MM-dd') as TuNgay, FORMAT(DenNgay,'yyyy-MM-dd') as DenNgay
-    						from NS_BangLuong
-    						where TrangThai = 1 and ID_DonVi= @ID_DonVi
-    						) bl
-    					where bl.TuNgay<= @ngaychamcong and bl.DenNgay >= @ngaychamcong and bl1.ID= bl.ID)
-END");
-
-            
         }
         
         public override void Down()
