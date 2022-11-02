@@ -149,13 +149,28 @@ namespace Model_banhang24vn.DAL
                 }
                 List<string> quyenRemove = quyenold.Except(quyennew).ToList();
                 List<string> quyenAdd = quyennew.Except(quyenold).ToList();
-                List<string> lstData = GetDataBaseList();
+                List<string> lstData = new List<string>();
+                if (model.ID == new Guid("C16EDDA0-F6D0-43E1-A469-844FAB143014"))
+                {
+                    lstData = GetDataBaseList(1);
+                }
+                else
+                {
+                    lstData = GetDataBaseList();
+                }
                 var _CuaHangDangky = unitOfWork.GetRepository<CuaHangDangKy>();
                 List<string> lstCuahang = _CuaHangDangky.Get(p => p.ID_NganhKinhDoanh == model.ID).Select(p => "SSOFT_" + p.SubDomain.ToUpper()).ToList();
                 List<string> connectionData = lstData.Where(p => lstCuahang.Contains(p)).ToList();
                 foreach (var item in connectionData)
                 {
-                    UpdateQuyenToDatabase(item, quyenAdd, quyenRemove);
+                    if (model.ID == new Guid("C16EDDA0-F6D0-43E1-A469-844FAB143014"))
+                    {
+                        UpdateQuyenToDatabase(item, quyenAdd, quyenRemove, 1);
+                    }
+                    else
+                    {
+                        UpdateQuyenToDatabase(item, quyenAdd, quyenRemove);
+                    }
                 }
 
                 unitOfWork.Save();
@@ -164,10 +179,18 @@ namespace Model_banhang24vn.DAL
 
         }
 
-        public void UpdateQuyenToDatabase(string dataname, List<string> quyenAdd, List<string> quyenRemove)
+        public void UpdateQuyenToDatabase(string dataname, List<string> quyenAdd, List<string> quyenRemove, int server = 2)
         {
             var _ht_quyen = unitOfWork.GetRepository<HT_Quyen>();
-            string conString = "server=data2.ssoft.vn;uid=sa;pwd=123asd!@#123;database=" + dataname;
+            string conString = "";
+            if (server == 1)
+            {
+                conString = "server=data.ssoft.vn;uid=sa;pwd=123asd!@#123;database=" + dataname;
+            }
+            else
+            {
+                conString = "server=data2.ssoft.vn;uid=sa;pwd=123asd!@#123;database=" + dataname;
+            }
             string insertcmd = "INSERT INTO HT_Quyen (MaQuyen, TenQuyen, MoTa, QuyenCha, DuocSuDung) VALUES ";
             if(quyenAdd.Count > 0)
             {
@@ -221,10 +244,18 @@ namespace Model_banhang24vn.DAL
             }
         }
 
-        public List<string> GetDataBaseList()
+        public List<string> GetDataBaseList(int server = 2)
         {
             List<string> list = new List<string>();
-            string conString = "server=data2.ssoft.vn;uid=sa;pwd=123asd!@#123;database=master";
+            string conString = "";
+            if (server == 1)
+            {
+                conString = "server=data.ssoft.vn;uid=sa;pwd=123asd!@#123;database=master";
+            }
+            else
+            {
+                conString = "server=data2.ssoft.vn;uid=sa;pwd=123asd!@#123;database=master";
+            }    
             using (SqlConnection con = new SqlConnection(conString))
             {
                 con.Open();
