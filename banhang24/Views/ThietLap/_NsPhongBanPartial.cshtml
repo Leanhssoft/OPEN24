@@ -2,10 +2,12 @@
     #lstphongbancha li {
         padding-left: 15px !important;
     }
+
         #lstphongbancha li div {
             width: 100%;
             height: 30px;
         }
+
         #lstphongbancha li i {
             position: absolute;
             left: 5px;
@@ -14,13 +16,15 @@
             color: var(--color-main);
             width: 10px;
         }
-            #lstphongbancha li:hover {
-                background: white !important;
-            }
+
+        #lstphongbancha li:hover {
+            background: white !important;
+        }
+
         #lstphongbancha li div:hover {
             color: #0097c4 !important;
         }
-    </style>
+</style>
 <div class="modal fade" id="modalNsPhongBan">
     <div class=" modal-dialog draggable modal-md ">
         <div class="modal-content ">
@@ -83,11 +87,15 @@
             </div>
             <div class="modal-footer">
                 <div class="container-fluid">
-                    <button type="button" class="btn btn-cancel " v-show="Isnew==false" v-on:click="Deleteroom">
+                    <button type="button" class="btn btn-cancel "
+                            v-show="Isnew==false && $root.role.Delete" v-on:click="Deleteroom">
                         <i class="fa fa-trash"></i> Xóa
                     </button>
-                    <button type="button" class="btn btn-cancel" data-dismiss="modal"><i class="fa fa-ban"></i>&nbsp;Bỏ qua</button>
-                    <button type="button" class="btn btn-save" v-on:click="Saveroom" v-show="IsRole==true">
+                    <button type="button" class="btn btn-cancel" data-dismiss="modal">
+                        <i class="fa fa-ban"></i>&nbsp;Bỏ qua
+                    </button>
+                    <button type="button" class="btn btn-save" v-on:click="Saveroom"
+                            v-show="$root.role.Insert || $root.role.Update">
                         <i class="fa fa-save"></i>&nbsp; Lưu
                     </button>
                 </div>
@@ -102,22 +110,33 @@
             ID: null,
             tenphongban: "",
             phongbanchaID: 0,
-            tenphongbancha:'',
+            tenphongbancha: '',
             listPhongBan: [],
             listChiNhanh: [],
             Isnew: true,
             IsRole: true,
             saveOK: false,
-            textsearch:"",
+            textsearch: "",
             title: "",
             error: '',
-            ChinhanhId:null,
+            ChinhanhId: null,
+            role: {
+                Insert: true,
+                Update: true,
+                Delete: true,
+            }
+        },
+        created: function () {
+            let self = this;
+            self.role.Insert = VHeader.Quyen.indexOf('NS_PhongBan_ThemMoi') > -1;
+            self.role.Update = VHeader.Quyen.indexOf('NS_PhongBan_CapNhat') > -1;
+            self.role.Delete = VHeader.Quyen.indexOf('NS_PhongBan_Xoa') > -1;
         },
         methods: {
             messageError: function (input) {
                 this.error = input;
             },
-            Insert: function (id=null) {
+            Insert: function (id = null) {
                 $('#modalNsPhongBan').modal("show");
                 var self = this;
                 self.IsRole = true;
@@ -132,8 +151,7 @@
                 self.title = "Thêm mới phòng ban";
                 $('#chinhanh_phongban').prop('disabled', false);
                 sleep(500).then(() => {
-                    if (id != null)
-                    {
+                    if (id != null) {
                         self.ChinhanhId = id;
                     }
                     else {
@@ -143,9 +161,9 @@
                     self.loadphongban();
                 });
             },
-            edit: function (model,IsroleUpdate,IsRoleDelete) {
+            edit: function (model) {
                 if (model !== null && !commonStatisJs.CheckNull(model.id)) {
-                    this.IsRole = true;// VHeader.Quyen.indexOf('NS_PhongBan_CapNhat') > -1;
+                    this.IsRole = true;
                     this.Isnew = false;
                     this.saveOK = false;
                     this.ID = model.id;
@@ -185,10 +203,10 @@
                 }
                 return true;
             },
-            evensearch1 : function (o) {
+            evensearch1: function (o) {
                 return commonStatisJs.convertVieToEng(o.text).indexOf(commonStatisJs.convertVieToEng(this.textsearch)) >= 0;
             },
-            evensearch2 : function (o) {
+            evensearch2: function (o) {
                 return o.children.length > 0 && o.children.some(evensearch1);
             },
             Saveroom: function (event) {
@@ -196,10 +214,10 @@
                 if (commonStatisJs.CheckNull(self.tenphongban)) {
                     self.messageError("Vui lòng nhập tên phòng ban");
                 }
-                else if (self.ID!==null && self.phongbanchaID===self.ID) {
+                else if (self.ID !== null && self.phongbanchaID === self.ID) {
                     self.messageError("Không thể chọn phòng ban cha là phong ban hiện tại ");
                 }
-                else if (self.phongbanchaID ===0 &&($('#chinhanh_phongban').val() === null || $('#chinhanh_phongban').val()==='')) {
+                else if (self.phongbanchaID === 0 && ($('#chinhanh_phongban').val() === null || $('#chinhanh_phongban').val() === '')) {
                     self.messageError("Vui lòng chọn đơn vị");
                 }
                 else {

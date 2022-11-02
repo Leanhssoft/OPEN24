@@ -682,7 +682,7 @@ var ViewModel = function () {
         vmNsPhongBan.Insert(item.ID_ChiNhanh);
     }
     self.ShowEditPhongBan = function (item) {
-        vmNsPhongBan.edit(item, $('#RolePhongBan_Update').val(), $('#RolePhongBan_Delete').val());
+        vmNsPhongBan.edit(item);
     }
     var _maNhanVien_seach = null;
     var _trangthai_seach = 0;
@@ -2691,13 +2691,13 @@ var ViewModel = function () {
     }
 
     self.editPhongBan = function (item) {
-        vmNsPhongBan.edit(item, $('#RolePhongBan_Update').val(), $('#RolePhongBan_Delete').val());
+        vmNsPhongBan.edit(item);
     }
     self.editPhongBan1 = function (item) {
-        vmNsPhongBan.edit(item, $('#RolePhongBan_Update').val(), $('#RolePhongBan_Delete').val());
+        vmNsPhongBan.edit(item);
     }
     self.editPhongBan2 = function (item) {
-        vmNsPhongBan.edit(item, $('#RolePhongBan_Update').val(), $('#RolePhongBan_Delete').val());
+        vmNsPhongBan.edit(item);
     }
     $('body').on('InsertNsPhongBanSuccess', function () {
         loadPhongBan();
