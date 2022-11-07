@@ -321,6 +321,9 @@ var dataMauIn = function () {
     self.TongTienTraHang = ko.observable('40,000');
     self.TongTienTra = ko.observable('15,000');
     self.MaHoaDonTraHang = ko.observable('BG0000014');
+    self.ThuDatHang = ko.observable('1,000,000');
+    self.PhaiThanhToan_TruCocBG = ko.observable('2,000,000');
+    self.MaHoaDonTraHang = ko.observable('BG0000014');
 
     self.TongCong = ko.observable('0');
     self.TongSoLuongHang = ko.observable('40,000');

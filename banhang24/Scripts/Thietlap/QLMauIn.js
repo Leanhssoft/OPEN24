@@ -118,9 +118,6 @@ var PrintModel_HoaDon = function () {
     //===============================
     self.AddNewMauIn = function () {
         if (self.TenMauInAddNew() !== null && self.TenMauInAddNew().replace(/\s+/g, '') !== "") {
-            if (self.MaChungTu() === 'DH') {
-                self.MaChungTu('BG');
-            }
             var khogiay = $('#SelecttedKhoGiay').val();
             var model = {
                 Id: self.MauInID(),
@@ -289,6 +286,9 @@ $('.establish-left').on('click', 'li a', function () {
     keyid = $(this).closest('li').data("id");
     if (keyid === 'HDBL' || keyid === 'DH') {
         modelMauIn.IsInvoice(true);
+        if (keyid == 'DH') {
+            keyid = 'BG';
+        }
     }
     else {
         modelMauIn.IsInvoice(false)
@@ -1169,6 +1169,8 @@ function SetConvertDataTest(strInput) {
                 '{ChietKhauHoaDon}': '<span data-bind=\"text: $root.TongGiamGia\"></span>',
                 '{DiaChiCuaHang}': '<span data-bind=\"text: DiaChiCuaHang\"></span>',
                 '{PhiTraHang}': '<span data-bind=\"text: TongChiPhi\"></span>',
+                '{ThuDatHang}': '<span data-bind=\"text: ThuDatHang\"></span>',
+                '{PhaiThanhToan_TruCocBG}': '<span data-bind=\"text: PhaiThanhToan_TruCocBG\"></span>',
 
                 '{TongTienTraHang}': '<span data-bind=\"text: TongTienTraHang\"></span>',
                 '{TongTienTra}': '<span data-bind=\"text: $root.TongTienTra\"></span>',
