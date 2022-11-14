@@ -1,1 +1,0 @@
-27/12/2021 11:00:29 SA Migrationdatabase: No connection string named 'tyanhauto' could be found in the application config file.

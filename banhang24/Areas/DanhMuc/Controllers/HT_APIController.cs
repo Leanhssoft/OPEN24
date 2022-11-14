@@ -152,35 +152,42 @@ namespace banhang24.Areas.DanhMuc.Controllers
         #endregion
         public List<HT_CongTy> GetHT_CongTy()
         {
-            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            try
             {
-                ClassHT_CongTy _classHTCT = new ClassHT_CongTy(db);
-                var cty = _classHTCT.Gets(null);
-                if (cty != null)
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
-                    var obj = cty.Select(x => new
+                    ClassHT_CongTy _classHTCT = new ClassHT_CongTy(db);
+                    var cty = _classHTCT.Gets(null);
+                    if (cty != null)
                     {
-                        ID = x.ID,
-                        TaiKhoanNH = x.TaiKhoanNganHang,
-                        TenCongTy = x.TenCongTy,
-                        SoDienThoai = x.SoDienThoai,
-                        DiaChiNganHang = x.DiaChiNganHang,
-                        DiaChi = x.DiaChi
-                    }).AsEnumerable().Select(c => new HT_CongTy
+                        var obj = cty.Select(x => new
+                        {
+                            ID = x.ID,
+                            TaiKhoanNH = x.TaiKhoanNganHang,
+                            TenCongTy = x.TenCongTy,
+                            SoDienThoai = x.SoDienThoai,
+                            DiaChiNganHang = x.DiaChiNganHang,
+                            DiaChi = x.DiaChi
+                        }).AsEnumerable().Select(c => new HT_CongTy
+                        {
+                            ID = c.ID,
+                            TaiKhoanNganHang = c.TaiKhoanNH,
+                            TenCongTy = c.TenCongTy,
+                            SoDienThoai = c.SoDienThoai,
+                            DiaChiNganHang = c.DiaChiNganHang,
+                            DiaChi = c.DiaChi
+                        }).ToList();
+                        return obj;
+                    }
+                    else
                     {
-                        ID = c.ID,
-                        TaiKhoanNganHang = c.TaiKhoanNH,
-                        TenCongTy = c.TenCongTy,
-                        SoDienThoai = c.SoDienThoai,
-                        DiaChiNganHang = c.DiaChiNganHang,
-                        DiaChi = c.DiaChi
-                    }).ToList();
-                    return obj;
+                        return null;
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+            }
+            catch
+            {
+                return null;
             }
         }
 
