@@ -2609,55 +2609,6 @@ BEGIN
     		FETCH NEXT @PageSize ROWS ONLY
 END");
 
-            Sql(@"ALTER PROCEDURE [dbo].[GetInforProduct_ByIDQuiDoi]
-    @IDQuiDoi [uniqueidentifier],
-    @ID_ChiNhanh [uniqueidentifier],
-	@ID_LoHang uniqueidentifier null
-AS
-BEGIN
-    SET NOCOUNT ON;
-	if	@ID_LoHang is null
-		set @ID_LoHang='00000000-0000-0000-0000-000000000000'
-
-    		Select top 50
-    			qd.ID as ID_DonViQuiDoi,
-    			hh.ID,
-    			qd.MaHangHoa,
-    			hh.TenHangHoa,
-    			qd.ThuocTinhGiaTri as ThuocTinh_GiaTri,
-    			qd.TenDonViTinh,
-    			hh.LaHangHoa,
-    			Case When gv.ID is null then 0 else CAST(ROUND(( gv.GiaVon), 0) as float) end as GiaVon,
-    			qd.GiaBan,
-    			qd.GiaNhap,
-				isnull(tk.TonKho,0) as TonKho,			
-    			Case when lh.ID is null then null else lh.ID end as ID_LoHang,
-    			lh.MaLoHang,
-    			lh.NgaySanXuat,
-    			lh.NgayHetHan,
-				qd.LaDonViChuan,
-				hh.ID_NhomHang as ID_NhomHangHoa,
-				Case when hh.LaHangHoa='1' then 0 else CAST(ISNULL(hh.ChiPhiThucHien,0) as float) end as PhiDichVu,
-				Case when hh.LaHangHoa='1' then '0' else ISNULL(hh.ChiPhiTinhTheoPT,'0') end as LaPTPhiDichVu,
-			case when ISNULL(QuyCach,0) = 0 then TyLeChuyenDoi else QuyCach * TyLeChuyenDoi end as QuyCach,
-			ISNULL(hh.DonViTinhQuyCach,'0') as DonViTinhQuyCach,
-			ISNULL(QuanLyTheoLoHang,'0') as QuanLyTheoLoHang,
-			ISNULL(ThoiGianBaoHanh,0) as ThoiGianBaoHanh,
-			ISNULL(LoaiBaoHanh,0) as LoaiBaoHanh,
-			ISNULL(SoPhutThucHien,0) as SoPhutThucHien, 
-			ISNULL(hh.GhiChu,'') as GhiChuHH ,
-			ISNULL(hh.DichVuTheoGio,0) as DichVuTheoGio, 
-			ISNULL(hh.DuocTichDiem,0) as DuocTichDiem
-    	from DonViQuiDoi qd    	
-    	join DM_HangHoa hh on qd.ID_HangHoa = hh.ID
-    	left join DM_LoHang lh on qd.ID_HangHoa = lh.ID_HangHoa and (lh.TrangThai = 1 or lh.TrangThai is null)
-		left join DM_HangHoa_TonKho tk on qd.ID = tk.ID_DonViQuyDoi and (lh.ID = tk.ID_LoHang or lh.ID is null) and tk.ID_DonVi = @ID_ChiNhanh
-    	left join DM_GiaVon gv on qd.ID = gv.ID_DonViQuiDoi and (lh.ID = gv.ID_LoHang or lh.ID is null) and gv.ID_DonVi = @ID_ChiNhanh
-    	where qd.ID = @IDQuiDoi
-		and iif(@ID_LoHang='00000000-0000-0000-0000-000000000000', @ID_LoHang , lh.ID ) = @ID_LoHang
-		
-END");
-
             Sql(@"ALTER PROCEDURE [dbo].[getListDanhSachHHImport]
     @MaLoHangIP [nvarchar](max),
     @MaHangHoaIP [nvarchar](max),
@@ -3046,66 +2997,6 @@ VALUES (@year, 0, 0);
 		UNION ALL SELECT * FROM @tblThang
 		) as b
 		GROUP BY b.NamLapHoaDon
-END");
-
-            Sql(@"ALTER PROCEDURE [dbo].[Search_DMHangHoa_TonKho]
-    @MaHH [nvarchar](max),
-    @MaHH_TV [nvarchar](max),
-    @ID_ChiNhanh [uniqueidentifier],
-    @ID_NguoiDung [uniqueidentifier]
-AS
-BEGIN
-SET NOCOUNT ON;
-    DECLARE @XemGiaVon as nvarchar
-    Set @XemGiaVon = (Select 
-    						Case when nd.LaAdmin = '1' then '1' else
-    						Case when nd.XemGiaVon is null then '0' else nd.XemGiaVon end end as XemGiaVon
-    						From
-    						HT_NguoiDung nd	
-    						where nd.ID = @ID_NguoiDung)
-    DECLARE @tablename TABLE(
-    Name [nvarchar](max))
-    	DECLARE @tablenameChar TABLE(
-    Name [nvarchar](max))
-    	DECLARE @count int
-    	DECLARE @countChar int
-    	INSERT INTO @tablename(Name) select  Name from [dbo].[splitstring](@MaHH+',') where Name!='';
-    	INSERT INTO @tablenameChar(Name) select  Name from [dbo].[splitstring](@MaHH_TV+',') where Name!='';
-    	Select @count =  (Select count(*) from @tablename);
-    	Select @countChar =   (Select count(*) from @tablenameChar);
-
-select qd.ID as ID_DonViQuiDoi,
-		MaHangHoa, TenHangHoa, TenHangHoa_KhongDau, TenHangHoa_KyTuDau,TenDonViTinh, ThuocTinhGiaTri as ThuocTinh_GiaTri,
-		CONCAT(TenHangHoa,' ', ThuocTinhGiaTri,' ', case when TenDonViTinh='' or TenDonViTinh is null then '' else ' (' + TenDonViTinh + ')' end) as TenHangHoaFull,
-		ISNULL(tk.TonKho,0) as TonCuoiKy,
-		CAST(ROUND((qd.GiaBan), 0) as float) as GiaBan,		
-		case when @XemGiaVon= '1' then CAST(ROUND((ISNULL(gv.GiaVon,0)), 0) as float) else 0 end as GiaVon,
-		case when @XemGiaVon= '1' then	
-			case when hh.LaHangHoa='1' then CAST(ROUND((ISNULL(gv.GiaVon,0)), 0) as float)
-			else CAST(ROUND((ISNULL(tblDVu.GiaVon,0)), 0) as float) end
-		else 0 end as GiaVon,
-		gv.ID_DonVi, hh.LaHangHoa
-	from DonViQuiDoi qd 
-	join DM_HangHoa hh on qd.ID_HangHoa= hh.ID
-	left join DM_HangHoa_TonKho tk on qd.ID= tk.ID_DonViQuyDoi
-	left join DM_GiaVon gv on qd.id= gv.ID_DonViQuiDoi
-	left join (select qd2.ID,sum(dl.SoLuong *  ISNULL(gv.GiaVon,0)) as GiaVon
-				from DonViQuiDoi qd2
-				join DinhLuongDichVu dl on qd2.ID= dl.ID_DichVu
-				left join DM_GiaVon gv on dl.ID_DonViQuiDoi= gv.ID_DonViQuiDoi
-				where gv.ID_DonVi=@ID_ChiNhanh 
-				group by qd2.ID
-				) tblDVu on qd.ID= tblDVu.ID
-	where qd.Xoa= 0 and hh.TheoDoi=1
-	and ((tk.ID_DonVi = @ID_ChiNhanh and hh.LaHangHoa='1') or hh.LaHangHoa=0)
-	and ((gv.ID_DonVi= @ID_ChiNhanh) or gv.ID_DonVi is null )
-	and	((select count(*) from @tablename b where 
-    		qd.MaHangHoa like '%'+b.Name+'%' 
-    		or hh.TenHangHoa_KhongDau like '%'+b.Name+'%' 
-    		--or hh.TenHangHoa_KyTuDau like '%'+b.Name+'%' 
-			)=@count or @count=0)	 
-    	and	qd.Xoa = 0
-	order by tk.TonKho desc
 END");
 
             Sql(@"ALTER PROCEDURE [dbo].[SP_Get_ChietKhauDoanhThu_byDonVi]

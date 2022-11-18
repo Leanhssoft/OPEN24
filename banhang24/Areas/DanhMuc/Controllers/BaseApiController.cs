@@ -1,4 +1,5 @@
-﻿using banhang24.Hellper;
+﻿using banhang24.App_API;
+using banhang24.Hellper;
 using banhang24.Models;
 using libQuy_HoaDon;
 using Model;
@@ -12,6 +13,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
+using System.Xml.Serialization;
 
 namespace banhang24.Areas.DanhMuc.Controllers
 {
@@ -266,7 +268,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
             var host = Request.RequestUri.Host;
             if (host.Contains("localhost"))
             {
-                subdomain = "0973474985";
+                List<Subdomain> lstSubdomain = ReadXmlSubdomainMap();
+                Subdomain hostSubdomain = lstSubdomain.Where(p => p.Host == host).FirstOrDefault();
+                subdomain = hostSubdomain.domain;
             }
             else
             {
@@ -288,6 +292,25 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 return Json(model.IsCreateDatabase ?? true);
             }
             return Json(true);
+        }
+
+        public List<Subdomain> ReadXmlSubdomainMap()
+        {
+            try
+            {
+                string path = AppDomain.CurrentDomain.BaseDirectory + "SubdomainMap.xml";
+                List<Subdomain> lst = new List<Subdomain>();
+                using (var reader = new StreamReader(path))
+                {
+                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<Subdomain>), new XmlRootAttribute("SubdomainMap"));
+                    lst = (List<Subdomain>)xmlSerializer.Deserialize(reader);
+                }
+                return lst;
+            }
+            catch
+            {
+                return new List<Subdomain>();
+            }
         }
     }
 }

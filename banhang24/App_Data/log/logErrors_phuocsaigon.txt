@@ -1,5 +1,0 @@
-15/04/2021 8:57:54 SA Migrationdatabase: No connection string named 'phuocsaigon' could be found in the application config file.
-15/04/2021 8:59:11 SA Migrationdatabase: Subquery returned more than 1 value. This is not permitted when the subquery follows =, !=, <, <= , >, >= or when the subquery is used as an expression.
-The statement has been terminated.
-15/04/2021 9:15:04 SA Migrationdatabase: Subquery returned more than 1 value. This is not permitted when the subquery follows =, !=, <, <= , >, >= or when the subquery is used as an expression.
-The statement has been terminated.

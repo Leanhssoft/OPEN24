@@ -1,0 +1,208 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" type="text/css" href="~/Content/Login/css/style.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/Framework/fontawesome-pro-5.15.3-web/css/all.css" />
+    <script src="~/Content/Framework/Jquery/jquery/jquery-3.4.1.min.js"></script>
+    <script src="~/Content/Framework/fontawesome-pro-5.15.3-web/js/all.js"></script>
+    @*<script src="https://kit.fontawesome.com/a81368914c.js"></script>*@
+    <script src="~/Content/Framework/Vue.js/v2.6.14/vue.min.js"></script>
+    <script src="~/Content/Framework/Moment/moment.js"></script>
+    <title>Khởi tạo dữ liệu lần đầu</title>
+</head>
+<body>
+    <div id="init">
+        <div class="info-area">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:auto;background:#fff;display:block;" width="124px" height="124px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                <rect x="21.5" y="42.5" width="7" height="15" fill="#ffd14f">
+                    <animate attributeName="y" repeatCount="indefinite" dur="1s" calcMode="spline" keyTimes="0;0.5;1" values="35;42.5;42.5" keySplines="0 0.5 0.5 1;0 0.5 0.5 1" begin="-0.2s"></animate>
+                    <animate attributeName="height" repeatCount="indefinite" dur="1s" calcMode="spline" keyTimes="0;0.5;1" values="30;15;15" keySplines="0 0.5 0.5 1;0 0.5 0.5 1" begin="-0.2s"></animate>
+                </rect>
+                <rect x="46.5" y="42.5" width="7" height="15" fill="#4ba761">
+                    <animate attributeName="y" repeatCount="indefinite" dur="1s" calcMode="spline" keyTimes="0;0.5;1" values="36.875;42.5;42.5" keySplines="0 0.5 0.5 1;0 0.5 0.5 1" begin="-0.1s"></animate>
+                    <animate attributeName="height" repeatCount="indefinite" dur="1s" calcMode="spline" keyTimes="0;0.5;1" values="26.25;15;15" keySplines="0 0.5 0.5 1;0 0.5 0.5 1" begin="-0.1s"></animate>
+                </rect>
+                <rect x="71.5" y="42.5" width="7" height="15" fill="#2882fb">
+                    <animate attributeName="y" repeatCount="indefinite" dur="1s" calcMode="spline" keyTimes="0;0.5;1" values="36.875;42.5;42.5" keySplines="0 0.5 0.5 1;0 0.5 0.5 1"></animate>
+                    <animate attributeName="height" repeatCount="indefinite" dur="1s" calcMode="spline" keyTimes="0;0.5;1" values="26.25;15;15" keySplines="0 0.5 0.5 1;0 0.5 0.5 1"></animate>
+                </rect>
+            </svg>
+            <div class="title-thong-bao">
+                <p>Quý khách vui lòng chờ trong giây lát</p>
+                <p>Hệ thống đang khởi tạo dữ liệu cho lần đăng nhập đầu tiên</p>
+                <br/>
+                <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                    <svg v-show="TaoDatabase.InitStatus === 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:0;background:#fff;display:block;" width="20px" height="20px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                        <g transform="translate(50 50)">
+                            <g transform="translate(-19 -19) scale(0.6)">
+                                <g>
+                                    <animateTransform attributeName="transform" type="rotate" values="0;45" keyTimes="0;1" dur="0.2s" begin="0s" repeatCount="indefinite"></animateTransform>
+                                    <path d="M31.359972760794346 21.46047782418268 L38.431040572659825 28.531545636048154 L28.531545636048154 38.431040572659825 L21.46047782418268 31.359972760794346 A38 38 0 0 1 7.0000000000000036 37.3496987939662 L7.0000000000000036 37.3496987939662 L7.000000000000004 47.3496987939662 L-6.999999999999999 47.3496987939662 L-7 37.3496987939662 A38 38 0 0 1 -21.46047782418268 31.35997276079435 L-21.46047782418268 31.35997276079435 L-28.531545636048154 38.431040572659825 L-38.43104057265982 28.531545636048158 L-31.359972760794346 21.460477824182682 A38 38 0 0 1 -37.3496987939662 7.000000000000007 L-37.3496987939662 7.000000000000007 L-47.3496987939662 7.000000000000008 L-47.3496987939662 -6.9999999999999964 L-37.3496987939662 -6.999999999999997 A38 38 0 0 1 -31.35997276079435 -21.460477824182675 L-31.35997276079435 -21.460477824182675 L-38.431040572659825 -28.531545636048147 L-28.53154563604818 -38.4310405726598 L-21.4604778241827 -31.35997276079433 A38 38 0 0 1 -6.999999999999992 -37.3496987939662 L-6.999999999999992 -37.3496987939662 L-6.999999999999994 -47.3496987939662 L6.999999999999977 -47.3496987939662 L6.999999999999979 -37.3496987939662 A38 38 0 0 1 21.460477824182686 -31.359972760794342 L21.460477824182686 -31.359972760794342 L28.531545636048158 -38.43104057265982 L38.4310405726598 -28.53154563604818 L31.35997276079433 -21.4604778241827 A38 38 0 0 1 37.3496987939662 -6.999999999999995 L37.3496987939662 -6.999999999999995 L47.3496987939662 -6.999999999999997 L47.349698793966205 6.999999999999973 L37.349698793966205 6.999999999999976 A38 38 0 0 1 31.359972760794346 21.460477824182686 M0 -23A23 23 0 1 0 0 23 A23 23 0 1 0 0 -23" fill="#f47e60"></path>
+                                </g>
+                            </g>
+                            <g transform="translate(19 19) scale(0.6)">
+                                <g>
+                                    <animateTransform attributeName="transform" type="rotate" values="45;0" keyTimes="0;1" dur="0.2s" begin="-0.1s" repeatCount="indefinite"></animateTransform>
+                                    <path d="M-31.35997276079435 -21.460477824182675 L-38.431040572659825 -28.531545636048147 L-28.53154563604818 -38.4310405726598 L-21.4604778241827 -31.35997276079433 A38 38 0 0 1 -6.999999999999992 -37.3496987939662 L-6.999999999999992 -37.3496987939662 L-6.999999999999994 -47.3496987939662 L6.999999999999977 -47.3496987939662 L6.999999999999979 -37.3496987939662 A38 38 0 0 1 21.460477824182686 -31.359972760794342 L21.460477824182686 -31.359972760794342 L28.531545636048158 -38.43104057265982 L38.4310405726598 -28.53154563604818 L31.35997276079433 -21.4604778241827 A38 38 0 0 1 37.3496987939662 -6.999999999999995 L37.3496987939662 -6.999999999999995 L47.3496987939662 -6.999999999999997 L47.349698793966205 6.999999999999973 L37.349698793966205 6.999999999999976 A38 38 0 0 1 31.359972760794346 21.460477824182686 L31.359972760794346 21.460477824182686 L38.431040572659825 28.531545636048158 L28.53154563604818 38.4310405726598 L21.460477824182703 31.35997276079433 A38 38 0 0 1 6.9999999999999964 37.3496987939662 L6.9999999999999964 37.3496987939662 L6.999999999999995 47.3496987939662 L-7.000000000000009 47.3496987939662 L-7.000000000000007 37.3496987939662 A38 38 0 0 1 -21.46047782418263 31.359972760794385 L-21.46047782418263 31.359972760794385 L-28.531545636048097 38.43104057265987 L-38.431040572659796 28.531545636048186 L-31.35997276079433 21.460477824182703 A38 38 0 0 1 -37.34969879396619 7.000000000000032 L-37.34969879396619 7.000000000000032 L-47.34969879396619 7.0000000000000355 L-47.3496987939662 -7.000000000000002 L-37.3496987939662 -7.000000000000005 A38 38 0 0 1 -31.359972760794346 -21.46047782418268 M0 -23A23 23 0 1 0 0 23 A23 23 0 1 0 0 -23" fill="#abbd81"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                    <svg v-show="TaoDatabase.InitStatus === 2" xml:space="preserve" viewBox="0 0 100 100" y="0" x="0" xmlns="http://www.w3.org/2000/svg" id="圖層_1" version="1.1" style="height: 20px; width: 20px; background: rgb(255, 255, 255);" width="20px" height="20px"><g class="ldl-scale" style="transform-origin: 50% 50%; transform: rotate(0deg) scale(1, 1);"><g class="ldl-ani"><g class="ldl-layer"><g class="ldl-ani" style="transform-origin: 50px 50px; animation: 1.11111s linear -1.11111s infinite normal forwards running static-961c6f37-9385-43f3-9001-3146346c3406;"><path fill="#849b87" d="M91.982 14.521a2.54 2.54 0 0 0-3.473-.544C78.087 21.31 68.232 29.585 59.221 38.8a201.7 201.7 0 0 0-18.366 21.638 2.533 2.533 0 0 1-3.931.203c-2.356-2.607-4.903-5.026-7.638-7.188-5.541-4.41-11.757-7.741-18.184-10.049a2.543 2.543 0 0 0-3.21 1.406l-.193.461c-.487 1.163-.054 2.524 1.038 3.153 5.472 3.153 10.353 7.072 14.35 11.642 4.476 5.087 7.849 10.943 10.274 17.171l2.97 7.628c.794 2.04 3.628 2.181 4.621.229l3.836-7.546c5.881-11.57 12.93-22.599 21.099-32.843 7.672-9.635 16.326-18.568 25.734-26.734a2.53 2.53 0 0 0 .361-3.45z" style="fill: rgb(21, 238, 50);"></path></g></g><metadata xmlns:d="https://loading.io/stock/"><d:name>check</d:name><d:tags>ok,ready,success,pass,complete,finish,done,check,form</d:tags><d:license>free</d:license><d:slug>2iqi5z</d:slug></metadata></g></g></svg>
+                    <svg v-show="TaoDatabase.InitStatus === 3" xml:space="preserve" viewBox="0 0 100 100" y="0" x="0" xmlns="http://www.w3.org/2000/svg" id="圖層_1" version="1.1" style="height: 20px; width: 20px; background: rgb(255, 255, 255);" width="20px" height="20px"><g class="ldl-scale" style="transform-origin: 50% 50%; transform: rotate(0deg) scale(1, 1);"><g class="ldl-ani"><g class="ldl-layer"><g class="ldl-ani" style="transform-origin: 50px 50px; animation: 1.11111s linear -0.833333s infinite normal forwards running static-8db59a5f-bd0a-4af8-bd49-628a0727eac5;"><path fill="#e15b64" d="M14.653 85.487c-3.138-1.806-4.167-6.008-2.198-9.12 8.401-13.282 18.34-25.329 29.177-36.099 10.916-10.864 22.708-20.49 34.913-29.273 2.772-1.995 6.57-1.344 8.557 1.485 1.928 2.744 1.471 6.578-1.06 8.732-11.111 9.456-21.591 19.558-30.95 30.517C43.876 62.5 35.786 74.12 29.248 86.488c-1.653 3.126-5.423 4.276-8.429 2.547l-6.166-3.548z" style="fill: rgb(225, 91, 100);"></path></g></g><g class="ldl-layer"><g class="ldl-ani" style="transform-origin: 50px 50px; animation: 1.11111s linear -1.11111s infinite normal forwards running static-8db59a5f-bd0a-4af8-bd49-628a0727eac5;"><path fill="#e15b64" d="M78.739 82.438c-3.067 1.804-7.041.872-8.916-2.152-6.367-10.267-14.543-19.718-23.698-28.397-9.306-8.827-19.587-16.906-30.29-24.594a6.594 6.594 0 0 1-1.682-8.948l1.23-1.895a6.609 6.609 0 0 1 9.03-2.012c11.571 7.19 22.962 14.943 33.735 23.864 10.673 8.851 20.777 18.958 29.162 30.721 2.256 3.165 1.337 7.584-2.014 9.555l-6.557 3.858z" style="fill: rgb(225, 91, 100);"></path></g></g><metadata xmlns:d="https://loading.io/stock/"><d:name>fail</d:name><d:tags>error,warning,danger,cross,times,delete,remove,drop,fail,form</d:tags><d:license>free</d:license><d:slug>kw24tw</d:slug></metadata></g></g></svg>
+                    <span>Khởi tạo cơ sở dữ liệu</span><span v-show="TaoDatabase.InitStatus === 2 || TaoDatabase.InitStatus === 3"> ({{Math.round(moment.duration(TaoDatabase.TimeEnd.diff(TaoDatabase.TimeStart)).asSeconds())}})</span>
+                </div>
+                <div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                    <svg v-show="TaoData.InitStatus === 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin:0;background:#fff;display:block;" width="20px" height="20px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                        <g transform="translate(50 50)">
+                            <g transform="translate(-19 -19) scale(0.6)">
+                                <g>
+                                    <animateTransform attributeName="transform" type="rotate" values="0;45" keyTimes="0;1" dur="0.2s" begin="0s" repeatCount="indefinite"></animateTransform>
+                                    <path d="M31.359972760794346 21.46047782418268 L38.431040572659825 28.531545636048154 L28.531545636048154 38.431040572659825 L21.46047782418268 31.359972760794346 A38 38 0 0 1 7.0000000000000036 37.3496987939662 L7.0000000000000036 37.3496987939662 L7.000000000000004 47.3496987939662 L-6.999999999999999 47.3496987939662 L-7 37.3496987939662 A38 38 0 0 1 -21.46047782418268 31.35997276079435 L-21.46047782418268 31.35997276079435 L-28.531545636048154 38.431040572659825 L-38.43104057265982 28.531545636048158 L-31.359972760794346 21.460477824182682 A38 38 0 0 1 -37.3496987939662 7.000000000000007 L-37.3496987939662 7.000000000000007 L-47.3496987939662 7.000000000000008 L-47.3496987939662 -6.9999999999999964 L-37.3496987939662 -6.999999999999997 A38 38 0 0 1 -31.35997276079435 -21.460477824182675 L-31.35997276079435 -21.460477824182675 L-38.431040572659825 -28.531545636048147 L-28.53154563604818 -38.4310405726598 L-21.4604778241827 -31.35997276079433 A38 38 0 0 1 -6.999999999999992 -37.3496987939662 L-6.999999999999992 -37.3496987939662 L-6.999999999999994 -47.3496987939662 L6.999999999999977 -47.3496987939662 L6.999999999999979 -37.3496987939662 A38 38 0 0 1 21.460477824182686 -31.359972760794342 L21.460477824182686 -31.359972760794342 L28.531545636048158 -38.43104057265982 L38.4310405726598 -28.53154563604818 L31.35997276079433 -21.4604778241827 A38 38 0 0 1 37.3496987939662 -6.999999999999995 L37.3496987939662 -6.999999999999995 L47.3496987939662 -6.999999999999997 L47.349698793966205 6.999999999999973 L37.349698793966205 6.999999999999976 A38 38 0 0 1 31.359972760794346 21.460477824182686 M0 -23A23 23 0 1 0 0 23 A23 23 0 1 0 0 -23" fill="#f47e60"></path>
+                                </g>
+                            </g>
+                            <g transform="translate(19 19) scale(0.6)">
+                                <g>
+                                    <animateTransform attributeName="transform" type="rotate" values="45;0" keyTimes="0;1" dur="0.2s" begin="-0.1s" repeatCount="indefinite"></animateTransform>
+                                    <path d="M-31.35997276079435 -21.460477824182675 L-38.431040572659825 -28.531545636048147 L-28.53154563604818 -38.4310405726598 L-21.4604778241827 -31.35997276079433 A38 38 0 0 1 -6.999999999999992 -37.3496987939662 L-6.999999999999992 -37.3496987939662 L-6.999999999999994 -47.3496987939662 L6.999999999999977 -47.3496987939662 L6.999999999999979 -37.3496987939662 A38 38 0 0 1 21.460477824182686 -31.359972760794342 L21.460477824182686 -31.359972760794342 L28.531545636048158 -38.43104057265982 L38.4310405726598 -28.53154563604818 L31.35997276079433 -21.4604778241827 A38 38 0 0 1 37.3496987939662 -6.999999999999995 L37.3496987939662 -6.999999999999995 L47.3496987939662 -6.999999999999997 L47.349698793966205 6.999999999999973 L37.349698793966205 6.999999999999976 A38 38 0 0 1 31.359972760794346 21.460477824182686 L31.359972760794346 21.460477824182686 L38.431040572659825 28.531545636048158 L28.53154563604818 38.4310405726598 L21.460477824182703 31.35997276079433 A38 38 0 0 1 6.9999999999999964 37.3496987939662 L6.9999999999999964 37.3496987939662 L6.999999999999995 47.3496987939662 L-7.000000000000009 47.3496987939662 L-7.000000000000007 37.3496987939662 A38 38 0 0 1 -21.46047782418263 31.359972760794385 L-21.46047782418263 31.359972760794385 L-28.531545636048097 38.43104057265987 L-38.431040572659796 28.531545636048186 L-31.35997276079433 21.460477824182703 A38 38 0 0 1 -37.34969879396619 7.000000000000032 L-37.34969879396619 7.000000000000032 L-47.34969879396619 7.0000000000000355 L-47.3496987939662 -7.000000000000002 L-37.3496987939662 -7.000000000000005 A38 38 0 0 1 -31.359972760794346 -21.46047782418268 M0 -23A23 23 0 1 0 0 23 A23 23 0 1 0 0 -23" fill="#abbd81"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </svg>
+                    <svg v-show="TaoData.InitStatus === 2" xml:space="preserve" viewBox="0 0 100 100" y="0" x="0" xmlns="http://www.w3.org/2000/svg" id="圖層_1" version="1.1" style="height: 20px; width: 20px; background: rgb(255, 255, 255);" width="20px" height="20px"><g class="ldl-scale" style="transform-origin: 50% 50%; transform: rotate(0deg) scale(1, 1);"><g class="ldl-ani"><g class="ldl-layer"><g class="ldl-ani" style="transform-origin: 50px 50px; animation: 1.11111s linear -1.11111s infinite normal forwards running static-961c6f37-9385-43f3-9001-3146346c3406;"><path fill="#849b87" d="M91.982 14.521a2.54 2.54 0 0 0-3.473-.544C78.087 21.31 68.232 29.585 59.221 38.8a201.7 201.7 0 0 0-18.366 21.638 2.533 2.533 0 0 1-3.931.203c-2.356-2.607-4.903-5.026-7.638-7.188-5.541-4.41-11.757-7.741-18.184-10.049a2.543 2.543 0 0 0-3.21 1.406l-.193.461c-.487 1.163-.054 2.524 1.038 3.153 5.472 3.153 10.353 7.072 14.35 11.642 4.476 5.087 7.849 10.943 10.274 17.171l2.97 7.628c.794 2.04 3.628 2.181 4.621.229l3.836-7.546c5.881-11.57 12.93-22.599 21.099-32.843 7.672-9.635 16.326-18.568 25.734-26.734a2.53 2.53 0 0 0 .361-3.45z" style="fill: rgb(21, 238, 50);"></path></g></g><metadata xmlns:d="https://loading.io/stock/"><d:name>check</d:name><d:tags>ok,ready,success,pass,complete,finish,done,check,form</d:tags><d:license>free</d:license><d:slug>2iqi5z</d:slug></metadata></g></g></svg>
+                    <svg v-show="TaoData.InitStatus === 3" xml:space="preserve" viewBox="0 0 100 100" y="0" x="0" xmlns="http://www.w3.org/2000/svg" id="圖層_1" version="1.1" style="height: 20px; width: 20px; background: rgb(255, 255, 255);" width="20px" height="20px"><g class="ldl-scale" style="transform-origin: 50% 50%; transform: rotate(0deg) scale(1, 1);"><g class="ldl-ani"><g class="ldl-layer"><g class="ldl-ani" style="transform-origin: 50px 50px; animation: 1.11111s linear -0.833333s infinite normal forwards running static-8db59a5f-bd0a-4af8-bd49-628a0727eac5;"><path fill="#e15b64" d="M14.653 85.487c-3.138-1.806-4.167-6.008-2.198-9.12 8.401-13.282 18.34-25.329 29.177-36.099 10.916-10.864 22.708-20.49 34.913-29.273 2.772-1.995 6.57-1.344 8.557 1.485 1.928 2.744 1.471 6.578-1.06 8.732-11.111 9.456-21.591 19.558-30.95 30.517C43.876 62.5 35.786 74.12 29.248 86.488c-1.653 3.126-5.423 4.276-8.429 2.547l-6.166-3.548z" style="fill: rgb(225, 91, 100);"></path></g></g><g class="ldl-layer"><g class="ldl-ani" style="transform-origin: 50px 50px; animation: 1.11111s linear -1.11111s infinite normal forwards running static-8db59a5f-bd0a-4af8-bd49-628a0727eac5;"><path fill="#e15b64" d="M78.739 82.438c-3.067 1.804-7.041.872-8.916-2.152-6.367-10.267-14.543-19.718-23.698-28.397-9.306-8.827-19.587-16.906-30.29-24.594a6.594 6.594 0 0 1-1.682-8.948l1.23-1.895a6.609 6.609 0 0 1 9.03-2.012c11.571 7.19 22.962 14.943 33.735 23.864 10.673 8.851 20.777 18.958 29.162 30.721 2.256 3.165 1.337 7.584-2.014 9.555l-6.557 3.858z" style="fill: rgb(225, 91, 100);"></path></g></g><metadata xmlns:d="https://loading.io/stock/"><d:name>fail</d:name><d:tags>error,warning,danger,cross,times,delete,remove,drop,fail,form</d:tags><d:license>free</d:license><d:slug>kw24tw</d:slug></metadata></g></g></svg>
+                    <span>Khởi tạo dữ liệu</span><span v-show="TaoData.InitStatus === 2 || TaoData.InitStatus === 3"> ({{Math.round(moment.duration(TaoData.TimeEnd.diff(TaoData.TimeStart)).asSeconds())}})</span>
+                </div>
+            </div>
+        </div>
+        <div class="info-area" v-show="TaoData.InitStatus === 2">
+            <div class=" load-set-up ">
+                <div class="load-succes">
+                    <i class="fa fa-check" aria-hidden="true" style="color:green"></i>
+                </div>
+
+            </div>
+            <div class="title-thong-bao title-succes">
+                <p>Khởi tạo dữ liệu thành công!</p>
+                <p>Hệ thông sẽ tự động chuyển về trang đăng nhập trong {{TimeRedirect}} giây.</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        var VInit = new Vue({
+            el: "#init",
+            data: {
+                Subdomain: "",
+                TaoDatabase: {
+                    Status: 0, //0- Chưa khởi tạo, 1- Khởi tạo thành công
+                    InitStatus: 0, //1- Đang khởi tạo, 2- Khởi tạo thành công, 3- Khởi tạo thất bại
+                    TimeStart: new moment(),
+                    TimeEnd: new moment(),
+                },
+                TaoData: {
+                    Status: 0,  //0- Chưa khởi tạo, 1- Khởi tạo thành công
+                    InitStatus: 0, //1- Đang khởi tạo, 2- Khởi tạo thành công, 3- Khởi tạo thất bại
+                    TimeStart: new moment(),
+                    TimeEnd: new moment(),
+                },
+                urlApi: {
+                    HTApi: "/api/DanhMuc/HT_API/",
+                    SubApi: "https://qj.open24.vn/api/DomainApi/"
+                },
+                TimeRedirect: 5
+            },
+            methods: {
+                KhoiTaoDatabase: function () {
+                    let self = this;
+                    self.TaoDatabase.InitStatus = 1;
+                    self.TaoDatabase.TimeStart = new moment(new Date());
+                    $.ajax({
+                        url: self.urlApi.HTApi + "GetHT_CongTy",
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                        success: function (data) {
+                            self.TaoDatabase.InitStatus = 2;
+                            if (data.length === 0) {
+                                self.KhoiTaoData();
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            self.TaoDatabase.InitStatus = 3;
+                        },
+                        complete: function () {
+                            self.TaoDatabase.TimeEnd = new moment(new Date());
+                        }
+                    });
+                },
+                KhoiTaoData: function () {
+                    let self = this;
+                    self.TaoData.InitStatus = 1;
+                    self.TaoData.TimeStart = new moment(new Date());
+                    if (self.Subdomain !== "") {
+                        var myData = {};
+                        myData.subdomain = self.Subdomain;
+                        $.ajax({
+                            url: self.urlApi.SubApi + "KhoiTaoDuLieu",
+                            type: 'POST',
+                            dataType: 'json',
+                            data: JSON.stringify(myData),
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                if (data === true) {
+                                    self.TaoData.InitStatus = 2;
+                                }
+                                else {
+                                    self.TaoData.InitStatus = 3;
+                                }
+                            },
+                            statusCode: {
+                                404: function (message) {
+
+                                },
+                                200: function () {
+
+                                }
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                self.TaoData.InitStatus = 3;
+                            },
+                            complete: function () {
+                                self.TaoData.TimeEnd = new moment(new Date());
+                                if (self.TaoData.InitStatus === 2) {
+                                    let time = self.TimeRedirect;
+                                    setInterval(function () {
+                                        if (time >= 0) {
+                                            self.TimeRedirect = time;
+                                        }
+                                        time--;
+                                        if (time === 0) {
+                                            window.location.href = "/";
+                                        }
+                                    }, 1000);
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        self.KhoiTaoStatus = 3;
+                    }
+                }
+            },
+            created: function () {
+                let self = this;
+                self.Subdomain = '@ViewBag.Subdomain';
+                if (self.Subdomain !== "") {
+                    self.KhoiTaoDatabase();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

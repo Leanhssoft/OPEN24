@@ -1,5 +1,0 @@
-09/05/2022 12:09:08 CH Migrationdatabase: No connection string named 'liistore' could be found in the application config file.
-09/05/2022 12:12:59 CH Migrationdatabase: Subquery returned more than 1 value. This is not permitted when the subquery follows =, !=, <, <= , >, >= or when the subquery is used as an expression.
-The statement has been terminated.
-09/05/2022 2:26:53 CH Migrationdatabase: Subquery returned more than 1 value. This is not permitted when the subquery follows =, !=, <, <= , >, >= or when the subquery is used as an expression.
-The statement has been terminated.

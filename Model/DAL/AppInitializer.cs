@@ -683,28 +683,28 @@ namespace Model.DAL
         #endregion
         protected override void Seed(SsoftvnContext context)
         {
-            string str = CookieStore.GetCookieAes("SubDomain");
-            if(str == null || str.Trim() == "")
-            {
-                CookieStore.WriteLog("Không thể xác định subdomain.", str);
-                return;
-            }
-            else
-            {
-                using (context = new SsoftvnContext(str))
-                {
-                    if (context != null && context.Database.Exists())
-                    {
-                        Model_banhang24vn.CuaHangDangKy objCheck_TenMien = Model_banhang24vn.M_DangKySuDung.Get(p => p.SubDomain.Trim().ToLower() == str.Trim().ToLower());
-                        if (objCheck_TenMien != null)
-                        {
-                            List<SqlParameter> paramlist1 = new List<SqlParameter>();
-                            paramlist1.Add(new SqlParameter("Subdomain", str));
-                            context.Database.ExecuteSqlCommand("exec KhoiTaoDuLieuLanDau @Subdomain", paramlist1.ToArray());
-                        }
-                    }
-                }
-            }
+            //string str = CookieStore.GetCookieAes("SubDomain");
+            //if(str == null || str.Trim() == "")
+            //{
+            //    CookieStore.WriteLog("Không thể xác định subdomain.", str);
+            //    return;
+            //}
+            //else
+            //{
+            //    using (context = new SsoftvnContext(str))
+            //    {
+            //        if (context != null && context.Database.Exists())
+            //        {
+            //            Model_banhang24vn.CuaHangDangKy objCheck_TenMien = Model_banhang24vn.M_DangKySuDung.Get(p => p.SubDomain.Trim().ToLower() == str.Trim().ToLower());
+            //            if (objCheck_TenMien != null)
+            //            {
+            //                List<SqlParameter> paramlist1 = new List<SqlParameter>();
+            //                paramlist1.Add(new SqlParameter("Subdomain", str));
+            //                context.Database.ExecuteSqlCommand("exec KhoiTaoDuLieuLanDau @Subdomain", paramlist1.ToArray());
+            //            }
+            //        }
+            //    }
+            //}
         }
         protected static async void AddAll(string str, List<HT_Quyen> lstHTQuyen)
         {

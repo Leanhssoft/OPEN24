@@ -81,16 +81,16 @@ namespace banhang24.Controllers
                 userLogin objUser_Cookies = classHTNguoiDung.GetUserCookies(this);
                 var lstDonVi = classDonVi.getListDVByIDNguoiDung(objUser_Cookies.ID_NhanVien);
                 var lstDonViAll = classDonVi.Gets(null);
-                foreach (DM_DonViDTO item in lstDonVi)
-                {
-                    SelectListItem selectListItem = new SelectListItem
-                    {
-                        Text = item.TenDonVi,
-                        Value = item.ID.ToString(),
-                        Selected = true
-                    };
-                    selectListItems.Add(selectListItem);
-                }
+                //foreach (DM_DonViDTO item in lstDonVi)
+                //{
+                //    SelectListItem selectListItem = new SelectListItem
+                //    {
+                //        Text = item.TenDonVi,
+                //        Value = item.ID.ToString(),
+                //        Selected = true
+                //    };
+                //    selectListItems.Add(selectListItem);
+                //}
                 List<SelectListItem> selectListItems1 = new List<SelectListItem>();
                 foreach (NS_NhanVien item in db.NS_NhanVien)
                 {
@@ -109,6 +109,10 @@ namespace banhang24.Controllers
                 {
                     strIDDonVi = objUser_Cookies.ID_DonVi.ToString();
                 }
+                else if(selectListItems1.Where(p=>p.Value == strIDDonVi).Count() == 0)
+                {
+                    strIDDonVi = objUser_Cookies.ID_DonVi.ToString();
+                }    
                 CuaHangDangKy shop = M_DangKySuDung.Get(p => p.SubDomain.Trim().ToLower() == str);
                 ViewBag.Registered = shop.version == 1? true: false;
                 ViewBag.TenCongTy = cty.TenCongTy;

@@ -77,7 +77,7 @@ var ViewModel = function () {
     self.NhanViens = ko.observableArray();
     self.LichHen_byDate = ko.observableArray();
     self.Popup_LichHenChosed = ko.observableArray();
-    self.numtext = ko.observable(160)
+    self.numtext = 160;
 
     function PageLoad() {
         loadHtmlGrid();

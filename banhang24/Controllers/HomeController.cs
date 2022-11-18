@@ -15,6 +15,7 @@ using banhang24.Hellper;
 using libNS_NhanVien;
 using banhang24.Models;
 using Model_banhang24vn.DAL;
+using banhang24.App_API;
 
 namespace banhang24.Controllers
 {
@@ -231,50 +232,58 @@ namespace banhang24.Controllers
                 {
                     server = 1;
                 }
-                classHT_NguoiDung classHTNguoiDung = new classHT_NguoiDung(db);
+                
                 if (subdomain != null && subdomain.Trim() != "")
                 {
                     if (ConnectionStringSystem.CreateConnectionString(subdomain, server) == "")
                     {
-                        SystemDBContext.MigrationDatabase(subdomain);
-
-                        CookieStore.SetCookieAes("SubDomain", subdomain, new TimeSpan(30, 0, 0, 0, 0), subdomain);
-                        userLogin objUser_Cookies = classHTNguoiDung.GetUserCookies(this);
-                        if (objUser_Cookies != null)
+                        if (CheckCreateDatabase(subdomain))
                         {
-                            var cookie = HttpContext.Request.Cookies.Get("Account");
-                            var json = AesEncrypt.DecryptStringFromBytes_Aes(Convert.FromBase64String(cookie.Value), "SSOFTVN");
-                            var ison2 = json.Replace("%0d%0a", "\r\n");
-                            var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                            var result = serializer.Deserialize<userLogin>(ison2);
+                            classHT_NguoiDung classHTNguoiDung = new classHT_NguoiDung(db);
+                            SystemDBContext.MigrationDatabase(subdomain);
 
-                            HT_NguoiDung objUser = classHTNguoiDung.Select_NguoiDung(objUser_Cookies.TaiKhoan, result.MatKhau, result.IpAddress);
-                            if (objUser != null)
+                            CookieStore.SetCookieAes("SubDomain", subdomain, new TimeSpan(30, 0, 0, 0, 0), subdomain);
+                            userLogin objUser_Cookies = classHTNguoiDung.GetUserCookies(this);
+                            if (objUser_Cookies != null)
                             {
-                                CuaHangDangKy shop = M_DangKySuDung.Get(p => p.SubDomain.Trim().ToLower() == subdomain);
-                                CookieStore.SetCookieAes("shop", shop.ID_NganhKinhDoanh.ToString(), new TimeSpan(30, 0, 0, 0, 0), subdomain);
+                                var cookie = HttpContext.Request.Cookies.Get("Account");
+                                var json = AesEncrypt.DecryptStringFromBytes_Aes(Convert.FromBase64String(cookie.Value), "SSOFTVN");
+                                var ison2 = json.Replace("%0d%0a", "\r\n");
+                                var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                                var result = serializer.Deserialize<userLogin>(ison2);
 
-                                //EventUpdateCache.CreatFIleAppcache();
+                                HT_NguoiDung objUser = classHTNguoiDung.Select_NguoiDung(objUser_Cookies.TaiKhoan, result.MatKhau, result.IpAddress);
+                                if (objUser != null)
+                                {
+                                    CuaHangDangKy shop = M_DangKySuDung.Get(p => p.SubDomain.Trim().ToLower() == subdomain);
+                                    CookieStore.SetCookieAes("shop", shop.ID_NganhKinhDoanh.ToString(), new TimeSpan(30, 0, 0, 0, 0), subdomain);
 
-                                System.DateTime HanSuDung = Model_banhang24vn.DAL.CuaHangDangKyService.Get(subdomain).HanSuDung.Value;
-                                System.DateTime now = DateTime.Now;
-                                System.TimeSpan diff = HanSuDung.Subtract(now);
-                                ViewBag.HanSuDung = diff.Days + 1;
+                                    //EventUpdateCache.CreatFIleAppcache();
 
-                                return View();
+                                    System.DateTime HanSuDung = Model_banhang24vn.DAL.CuaHangDangKyService.Get(subdomain).HanSuDung.Value;
+                                    System.DateTime now = DateTime.Now;
+                                    System.TimeSpan diff = HanSuDung.Subtract(now);
+                                    ViewBag.HanSuDung = diff.Days + 1;
+
+                                    return View();
+                                }
+                                else
+                                {
+                                    TempData["TenDangNhap"] = objUser_Cookies.TaiKhoan;
+                                    TempData["MatKhau"] = objUser_Cookies.MatKhau;
+                                    TempData["Loi"] = "";
+                                    return Redirect("/Login");
+                                }
                             }
                             else
                             {
-                                TempData["TenDangNhap"] = objUser_Cookies.TaiKhoan;
-                                TempData["MatKhau"] = objUser_Cookies.MatKhau;
-                                TempData["Loi"] = "";
                                 return Redirect("/Login");
                             }
                         }
                         else
                         {
-                            return Redirect("/Login");
-                        }
+                            return Redirect("/Init");
+                        }    
                     }
                 }
                 return Redirect("http://open24.vn");
@@ -618,10 +627,7 @@ namespace banhang24.Controllers
                                                 hT_NhatKySuDung.ID_DonVi = objUser.ID_DonVi.Value;
                                                 SaveDiary.add_Diary(hT_NhatKySuDung);
                                             }
-                                            if (new CuaHangDangKyService().UpdateCreateDatabase(subdomain))
-                                                return Json(new { res = true });
-                                            else
-                                                return Json(new { res = false, mess = "Đã xảy ra lỗi vui lòng thử lại sau" });
+                                            return Json(new { res = true });
                                         }
                                         else
                                         {
@@ -948,6 +954,26 @@ namespace banhang24.Controllers
                 chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
             }
             return new string(chars);
+        }
+
+        public ActionResult Init()
+        {
+            string subdomain = CookieStore.GetCookieAes("SubDomain");
+            new CuaHangDangKyService().UpdateCreateDatabase(subdomain);
+            ViewBag.Subdomain = subdomain;
+            return View();
+        }
+
+        public bool CheckCreateDatabase(string subdomain)
+        {
+            
+            
+            var model = new CuaHangDangKyService().Query.FirstOrDefault(o => o.SubDomain.Equals(subdomain));
+            if (model != null)
+            {
+                return model.IsCreateDatabase == null ? false : model.IsCreateDatabase.Value;
+            }
+            return false;
         }
 
     }

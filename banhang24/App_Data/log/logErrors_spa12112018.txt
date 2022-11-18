@@ -1,1 +1,0 @@
-25/10/2019 11:30:09 SA Migrationdatabase: No connection string named 'spa12112018' could be found in the application config file.

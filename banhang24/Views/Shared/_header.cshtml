@@ -990,6 +990,10 @@ var VHeader = new Vue({
                 success: function (data) {
                     if (data !== null) {
                         self.ListChiNhanh = data;
+                        if (VHeader.ListChiNhanh.filter(p => p.ID === VHeader.IdDonVi).length === 0) {
+                            let selectDonVi = self.ListChiNhanh[0];
+                            self.DoiChiNhanh(selectDonVi.ID, selectDonVi.TenDonVi);
+                        }
                     }
                     else {
                         commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
