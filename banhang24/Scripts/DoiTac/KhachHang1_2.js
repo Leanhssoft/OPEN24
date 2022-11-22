@@ -731,32 +731,32 @@
         if (id !== undefined) {
             switch (id) {
                 case "madoituong":
-                    self.columsort("MaDoiTac");
+                    self.columsort("MaDoiTuong");
                     break;
                 case "tendoituong":
-                    self.columsort("MaDoiTac");
+                    self.columsort("TenDoiTuong");
                     break;
                 case "dienthoai":
-                    self.columsort("MaDoiTac");
+                    self.columsort("DienThoai");
                     break;
                 case "gioitinh":
-                    self.columsort("TenDoiTac");
+                    self.columsort("GioiTinhNam");
                     break;
                 case "nhomkhach":
-                    self.columsort("NhomDoiTac");
+                    self.columsort("TenNhomDT");
                     break;
                 case "ngaysinh":
-                    self.columsort("NgaySinh");
+                    self.columsort("NgaySinh_NgayTLap");
                     break;
                 case "email":
                     self.columsort("Email");
                     break;
-                case "tinhthanh":
-                    self.columsort("TinhThanh");
-                    break;
-                case "quanhuyen":
-                    self.columsort("QuanHuyen");
-                    break;
+                //case "tinhthanh":
+                //    self.columsort("TinhThanh");
+                //    break;
+                //case "quanhuyen":
+                //    self.columsort("QuanHuyen");
+                //    break;
                 case "diachi":
                     self.columsort("DiaChi");
                     break;
@@ -766,12 +766,12 @@
                 case "ngaytao":
                     self.columsort("NgayTao");
                     break;
-                case "nguoigioithieu":
-                    self.columsort("NguoiGioiThieu");
-                    break;
-                case "nguonkhach":
-                    self.columsort("NguonKhach");
-                    break;
+                //case "nguoigioithieu":
+                //    self.columsort("NguoiGioiThieu");
+                //    break;
+                //case "nguonkhach":
+                //    self.columsort("NguonKhach");
+                //    break;
                 case "nohientai":
                     self.columsort("NoHienTai");
                     break;
@@ -795,6 +795,9 @@
                     break;
                 case "cpDichvu":
                     self.columsort("PhiDichVu");
+                    break;
+                default:
+                    self.columsort("");
                     break;
             }
             SortGrid(id);
@@ -952,22 +955,15 @@
         else {
             debitTo = null;
         }
-        // loai khach
+
         var loaiKhach = self.customerType();
         var gioiTinh = parseInt(self.customerSex());
-        // nguonKhach
         var idNguonKhach = self.selectedNguonKhach();
-        if (idNguonKhach == undefined) {
-            idNguonKhach = null;
-        }
+       
         // tinhThanh
-        var arrIDTinhThanh = [];
-        for (var i = 0; i < self.ProvinceChosed().length; i++) {
-            arrIDTinhThanh.push(self.ProvinceChosed()[i].ID);
-        }
-        if (arrIDTinhThanh.length === 0) {
-            arrIDTinhThanh = null;
-        }
+        var arrIDTinhThanh = $.map(self.ProvinceChosed(), function (x) {
+            return x.ID
+        })
         var arrIDManager = [];
         if (self.ManagerChosed().length > 0) {
             for (var i = 0; i < self.ManagerChosed().length; i++) {
@@ -1000,8 +996,8 @@
             switch (parseInt(self.filterNgayTao_Quy())) {
                 case 0:
                     // all
-                    dayStart = '2016-01-01';
-                    dayEnd = moment(_now).add('days', 1).format('YYYY-MM-DD');
+                    //dayStart = '2016-01-01';
+                    //dayEnd = moment(_now).add('days', 1).format('YYYY-MM-DD');
                     break;
                 case 1:
                     // hom nay
@@ -1073,8 +1069,8 @@
             switch (parseInt(self.filterDateTongBan_Quy())) {
                 case 0:
                     // all
-                    dateSellStart = '2010-01-01';
-                    dateSellEnd = moment(_now).add('days', 1).format('YYYY-MM-DD');
+                    //dateSellStart = '2010-01-01';
+                    //dateSellEnd = moment(_now).add('days', 1).format('YYYY-MM-DD');
                     break;
                 case 1:
                     // hom nay
@@ -1288,6 +1284,19 @@
             }
         }
 
+        let typeSort = self.sort();
+        if (typeSort === 0) {
+            typeSort = 2;
+        }
+        if (loaiDoiTuong === 2) {
+            switch (self.columsort()) {
+                case 'NoHienTai':
+                    typeSort = typeSort == 1 ? 2 : 1;// nhacungcap sắp xếp ngược với khách hàng
+                    break;
+            }
+        }
+        let sortBy = typeSort == 2 ? 'DESC' : 'ASC';
+
         var Params_GetListKhachHang = {
             ID_DonVis: arrDV,
             LoaiDoiTuong: loaiDoiTuong,
@@ -1318,6 +1327,8 @@
             CurrentPage: self.currentPage(),
             PageSize: self.pageSize(),
             SearchColumns: self.ListFilterColumn(),
+            ColumnSort: self.columsort(),
+            SortBy: sortBy
         }
         console.log(1, Params_GetListKhachHang)
         if (isXuatExcel) {
@@ -1351,7 +1362,7 @@
             }
             if (hasPermisson) {
                 $('.content-table').gridLoader();
-                ajaxHelper(DMDoiTuongUri + 'GetListKhachHang_Where_PassObject_Paging', 'POST', Params_GetListKhachHang)
+                ajaxHelper(DMDoiTuongUri + 'LoadDanhMuc_KhachHangNhaCungCap', 'POST', Params_GetListKhachHang)
                     .done(function (x) {
                         $('.content-table').gridLoader({ show: false });
                         if (x.res === true) {
@@ -4483,7 +4494,7 @@
                 vmThemMoiTheNap.showModalUpdate(item.ID, 1);
                 break;
             case 32:
-               
+
                 break;
             default:
                 vmChiTietHoaDon.showModalChiTietHoaDon(item.ID);
@@ -4529,7 +4540,7 @@
                 vmThemMoiTheNap.showModalUpdate(item.ID, 1);
                 break;
             case 32: // hoan tra thegiatri
-                
+
                 break;
             default:
                 vmChiTietHoaDon.showModalChiTietHoaDon(item.ID);
