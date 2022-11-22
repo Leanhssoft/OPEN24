@@ -364,6 +364,7 @@ namespace banhang24.Hellper
         public static class MauInTeamPlates
         {
             public const string DatHang = "DH";
+            public const string BaoGia = "BG";
             public const string HoaDon = "HDBL";
             public const string GoiDV = "GDV";
             public const string TraHang = "TH";
@@ -386,6 +387,7 @@ namespace banhang24.Hellper
         public static Dictionary<string, string> DanhSachTenMauIn = new Dictionary<string, string>()
         {
             {MauInTeamPlates.DatHang.ToString(),"Đặt hàng" },
+            {MauInTeamPlates.BaoGia.ToString(),"Đặt hàng" },
             {MauInTeamPlates.HoaDon.ToString(),"Hóa đơn" },
             {MauInTeamPlates.TraHang.ToString(),"Trả hàng" },
             {MauInTeamPlates.DoiTraHang.ToString(),"Đổi trả hàng" },
@@ -407,6 +409,7 @@ namespace banhang24.Hellper
         public static Dictionary<string, string> DanhSachMauInA4 = new Dictionary<string, string>()
         {
             {MauInTeamPlates.DatHang.ToString(),"DatHang.txt" },
+            {MauInTeamPlates.BaoGia.ToString(),"DatHang.txt" },
             {MauInTeamPlates.HoaDon.ToString(),"HoaDonBanLe.txt" },
             {MauInTeamPlates.TraHang.ToString(),"TraHang.txt" },
             {MauInTeamPlates.DoiTraHang.ToString(),"DoiTraHang.txt" },
@@ -428,6 +431,7 @@ namespace banhang24.Hellper
         public static Dictionary<string, string> DanhSachMauInK80 = new Dictionary<string, string>()
         {
             {MauInTeamPlates.DatHang.ToString(),"K80_DatHang.txt" },
+            {MauInTeamPlates.BaoGia.ToString(),"K80_DatHang.txt" },
               {MauInTeamPlates.HoaDon.ToString(),"K80_HoaDonBanLe.txt" },
                 {MauInTeamPlates.TraHang.ToString(),"K80_TraHang.txt" },
                   {MauInTeamPlates.DoiTraHang.ToString(),"K80_DoiTraHang.txt" },
@@ -1785,6 +1789,7 @@ namespace banhang24.Hellper
             ngaygiaodichgannhat,
             trangthaikhachhang,
             ghichu,
+            laCaNhan
         }
 
         public static Dictionary<string, string> ListKhachHang = new Dictionary<string, string>()
