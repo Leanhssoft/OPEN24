@@ -2925,7 +2925,7 @@
                 newHD.DiemQuyDoi = diemquydoi;
                 newHD.DiemGiaoDichDB = 0;
                 newHD.TrangThaiHD = 1;
-                newHD.TienMat = self.IsGara() ? 0 : newHD.PhaiThanhToan;
+                newHD.TienMat = self.isGara() ? 0 : newHD.PhaiThanhToan;
 
                 SetCacheHD_CTHD(newHD, maHD);
                 if (self.isGara()) {
@@ -2942,7 +2942,7 @@
                 newHD.DiemQuyDoi = 0;
                 newHD.DiemGiaoDichDB = 0;
                 newHD.DaThanhToan = phaiTT - khachdatra; // số tiền còn lại phaiTT --> bind at BanHang
-                newHD.TienMat = self.IsGara() ? 0 : newHD.DaThanhToan;
+                newHD.TienMat = self.isGara() ? 0 : newHD.DaThanhToan;
 
                 newHD.ID_TaiKhoanPos = null;
                 newHD.ID_TaiKhoanChuyenKhoan = null;
@@ -2966,7 +2966,7 @@
                     newHD.DiemQuyDoi = 0;
                     newHD.DiemGiaoDichDB = newHD.DiemGiaoDich; // tru diem giaodich HD cu
                     newHD.DaThanhToan = phaiTT - khachdatra;
-                    newHD.TienMat = self.IsGara() ? 0 : newHD.DaThanhToan; // = số tiền còn lại phaiTT
+                    newHD.TienMat = self.isGara() ? 0 : newHD.DaThanhToan; // = số tiền còn lại phaiTT
                     newHD.ID_TaiKhoanPos = null;
                     newHD.ID_TaiKhoanChuyenKhoan = null;
                     SetCacheHD_CTHD(newHD, maHD);
