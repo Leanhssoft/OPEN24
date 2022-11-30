@@ -904,7 +904,7 @@
                                                             <div class="form-group floatleft">
                                                                 <label class="css-form-label">Mã khách hàng:</label>
                                                                 <div class="css-form-detail">
-                                                                    <span data-bind="text: MaDoiTuong"></span>
+                                                                    <span data-bind="text: MaDoiTuong, click: $root.ShowPopListDiary_ofCustomer"></span>
                                                                 </div>
                                                             </div>
                                                             <div class="form-group floatleft">
@@ -2407,6 +2407,7 @@
 @Html.Partial("~/Views/SoQuy/_ThemKhoanThuChi.cshtml")
 @Html.Partial("~/Views/SoQuy/_ThemPhieuThuChi.cshtml")
 @Html.Partial("~/Views/DoiTac/_UpAnhHoaDon.cshtml")
+@Html.Partial("~/Views/Gara/_NhatKyGoiBaoDuong.cshtml")
 
 <div class="modal " id="modalPopuplgDelete">
     <div class="modal-dialog modal-md draggable ui-draggable">

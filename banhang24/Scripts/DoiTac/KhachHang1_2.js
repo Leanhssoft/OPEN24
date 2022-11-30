@@ -5304,6 +5304,15 @@
             ShowMessage_Danger("Thêm mới " + sLoai + " thất bại");
         })
     }
+
+    self.ShowPopListDiary_ofCustomer = function () {
+        if (self.IsGara) {
+            vmNKGoiBaoDuong.ID_DonVi = idDonVi;
+            vmNKGoiBaoDuong.GetGoiDichVu_ofKhachHang(self.selectIDDoiTuong(), null);
+            vmNKGoiBaoDuong.showModal(self.selectIDDoiTuong(), null, 0, 1);
+        }
+    }
+
     $('#modalMoveGroup').on('hidden.bs.modal', function () {
         SearchKhachHang(false, false);
     })

@@ -73,6 +73,18 @@
         },
         PhieuThuKhachPrint: {},
         PhieuThuBaoHiemPrint: {},
+        QRCode: {
+            MaNganHang: '',
+            SoTaiKhoan: '',
+            SoTien: '',
+            NoiDung: 'Thanh Toan Hoa Don'
+        },
+        QRCodeBH: {
+            MaNganHang: '',
+            SoTaiKhoan: '',
+            SoTien: '',
+            NoiDung: 'BH Thanh Toan Hoa Don'
+        }
     },
     methods: {
         newPhieuThu: function (loaiDoiTuong) {
@@ -440,6 +452,8 @@
             self.PhieuThuKhach.SoTaiKhoanCK = item.SoTaiKhoan;
             self.PhieuThuKhach.TenNganHangCK = item.TenNganHang;
             self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan = item.ID;
+            self.QRCode.MaNganHang = item.MaNganHang;
+            self.QRCode.SoTaiKhoan = item.SoTaiKhoan;
         },
         ResetAccountCK: function () {
             var self = this;
@@ -449,6 +463,8 @@
             self.PhieuThuKhach.TenNganHangCK = '';
             self.PhieuThuKhach.TienCK = 0;
             self.CaculatorDaThanhToan();
+            self.QRCode.MaNganHang = '';
+            self.QRCode.SoTaiKhoan = '';
         },
 
         BH_ResetAccountPOS: function () {
@@ -473,6 +489,8 @@
             self.PhieuThuBaoHiem.ID_TaiKhoanChuyenKhoan = item.ID;
             self.PhieuThuBaoHiem.SoTaiKhoanCK = item.SoTaiKhoan;
             self.PhieuThuBaoHiem.TenNganHangCK = item.TenNganHang;
+            self.QRCodeBH.MaNganHang = item.MaNganHang;
+            self.QRCodeBH.SoTaiKhoan = item.SoTaiKhoan;
         },
         BH_ResetAccountCK: function () {
             var self = this;
@@ -482,6 +500,8 @@
             self.PhieuThuBaoHiem.TenNganHangCK = '';
             self.PhieuThuBaoHiem.TienCK = 0;
             self.BH_CaculatorDaThanhToan();
+            self.QRCodeBH.MaNganHang = '';
+            self.QRCodeBH.SoTaiKhoan = '';
         },
         Change_IsShareDiscount: function (x) {
             var self = this;
@@ -2217,5 +2237,31 @@
 
             $('#ThongTinThanhToanKHNCC').modal('hide');
         },
+        //GetQRCodeLink: function (type = 1) {
+        //    let self = this;
+        //    if (type === 1) {
+        //        //QR khách hàng
+        //        self.QRCode.SoTien = self.PhieuThuKhach.TienCK;
+        //    }
+        //    else if (type === 2) {
+        //        //QR bảo hiểm
+        //        self.QRCodeBH.SoTien = self.PhieuThuBaoHiem.TienCK;
+        //    }
+
+        //},
+        ShowModalQRCode: function (type = 1) {
+            let self = this;
+            if (type === 1) {
+                //QR khách hàng
+                self.QRCode.SoTien = self.PhieuThuKhach.TienCK;
+                VQRCode.setData(self.QRCode);
+            }
+            else if (type === 2) {
+                //QR bảo hiểm
+                self.QRCodeBH.SoTien = self.PhieuThuBaoHiem.TienCK;
+                VQRCode.setData(self.QRCodeBH);
+            }
+            VQRCode.showModal();
+        }
     },
 })

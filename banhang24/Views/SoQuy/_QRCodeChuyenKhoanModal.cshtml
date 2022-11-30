@@ -1,0 +1,45 @@
+﻿<div class="modal fade" id="modalQRCode">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">QRCode</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
+            </div>
+            <div class="modal-body">
+                <img v-bind:src="LinkQR" alt="QRCode" style="width:100%" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var VQRCode = new Vue({
+        el: '#modalQRCode',
+        data: {
+            LinkQR: '',
+            MaNganHang: '',
+            SoTaiKhoan: '',
+            SoTien: '',
+            NoiDung: ''
+        },
+        methods: {
+            setData: function (data) {
+                let self = this;
+                self.MaNganHang = data.MaNganHang;
+                self.SoTaiKhoan = data.SoTaiKhoan;
+                self.SoTien = data.SoTien.replace(',', '');
+                self.NoiDung = data.NoiDung;
+            },
+            showModal: function () {
+                let self = this;
+                self.LinkQR = self.getLinkQR();
+                $('#modalQRCode').modal('show');
+            },
+            getLinkQR: function () {
+                let self = this;
+                return 'https://img.vietqr.io/image/' + self.MaNganHang + '-' +
+                    self.SoTaiKhoan + '-print.jpg?amount=' + self.SoTien + '%5C&addInfo=' + self.NoiDung;
+            }
+        }
+    });
+</script>

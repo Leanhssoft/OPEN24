@@ -510,7 +510,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" v-show="CallFrom === 0">
 
                 <button type="button" class="btn btn-cancel" data-dismiss="modal"><i class="fa fa-ban"></i>&nbsp;Hủy bỏ</button>
                 <button type="button" class="btn btn-main" v-on:click="Agree">
@@ -637,7 +637,8 @@
                 LichSuNapThe: [],
                 NhatKySuDungThe: [],
                 GDV_ThanhPhanDinhLuong: [],
-            }
+            },
+            CallFrom: 0 //0 - Hóa đơn, 1 - Khác
         },
         methods: {
             GetGoiDichVu_ofKhachHang: function (idCus, idCar = null) {
@@ -846,7 +847,9 @@
 
                     if (commonStatisJs.CheckNull(self.ID_Customer)) {
                         self.listData.GoiDichVu = [];
-                        newModelBanLe.TongGoiDV(0);
+                        if (self.CallFrom === 0) {
+                            newModelBanLe.TongGoiDV(0);
+                        }
                         return;
                     }
                 }
@@ -854,7 +857,9 @@
                     if (x.res) {
                         let data = x.dataSoure;
                         self.listData.GoiDichVu = data;
-                        newModelBanLe.TongGoiDV(data.length);
+                        if (self.CallFrom === 0) {
+                            newModelBanLe.TongGoiDV(data.length);
+                        }
                         self.GetTPDinhLuong_ofHoaDon();
                     }
                 });
@@ -1088,8 +1093,9 @@
                 }
             },
 
-            showModal: function (idCus, idCar = null, nganhnghe = 0) {
+            showModal: function (idCus, idCar = null, nganhnghe = 0, from = 0) {
                 let self = this;
+                self.CallFrom = from;
                 self.saveOK = false;
                 self.LoaiNganhNghe = nganhnghe;
                 self.ID_Customer = idCus;
