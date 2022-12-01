@@ -184,6 +184,7 @@
     self.RoleThemMoiTheGiaTri = ko.observable(false);
     self.RoleXemTongDoanhThu = ko.observable(false);
     self.RoleXemDSTheGiaTri = ko.observable(false);
+    self.RoleView_NhatKyGiaoDich = ko.observable(false);
     self.Allow_ChangeTimeTheGiaTri = ko.observable(false);
     self.ShopCookie = ko.observable($('#shopCookies').val());
     self.IsGara = ko.observable(false);
@@ -3497,6 +3498,7 @@
                 self.RoleXemDSTheGiaTri(CheckQuyenExist('TheGiaTri_XemDS'));
                 self.RoleXemTongDoanhThu(CheckQuyenExist('KhachHang_XemTongDoanhThu'));
                 self.RoleUpdateImg_Invoice(CheckQuyenExist('HoaDon_CapNhatAnh'));
+                self.RoleView_NhatKyGiaoDich(CheckQuyenExist('HoaDon_XemDS'));
 
                 if (loaiDoiTuong == 2) {
                     HideShowButton_Vendor();
@@ -5315,6 +5317,16 @@
             ShowMessage_Danger("Thêm mới " + sLoai + " thất bại");
         })
     }
+
+    self.ShowPopListDiary_ofCustomer = function (item) {
+        let id = item.ID;
+        vmNKGoiBaoDuong.formType = 1;
+        vmNKGoiBaoDuong.ID_DonVi = VHeader.IdDonVi;
+        vmNKGoiBaoDuong.GetGoiDichVu_ofKhachHang(id);
+        vmThanhToanGara.GetSoDuTheGiaTri(id);
+        vmNKGoiBaoDuong.showModal(id, null, 0);
+    }
+
     $('#modalMoveGroup').on('hidden.bs.modal', function () {
         SearchKhachHang(false, false);
     })
