@@ -1713,28 +1713,30 @@
 
     //iframe
     var frame = document.getElementById("Iframe");
+    if (frame !== undefined && frame!==null) {
+        // Adjusting the iframe height onload event
+        frame.onload = function () {
+            /*frame.contentWindow.document.documentElement.style.setProperty('--color-main', '#c97d39');*/
 
-    // Adjusting the iframe height onload event
-    frame.onload = function () {
-        /*frame.contentWindow.document.documentElement.style.setProperty('--color-main', '#c97d39');*/
+        }
 
+        frame.onload = setInterval(function ()
+        // function execute while load the iframe
+        {
+            // set the height of the iframe as
+            // the height of the iframe content
+            frame.style.height =
+                frame.contentWindow.document.body.scrollHeight + 'px';
+
+
+            // set the width of the iframe as the
+            // width of the iframe content
+            //frame.style.width =
+            //    frame.contentWindow.document.body.scrollWidth + 'px';
+
+        }, 500)
     }
-
-    frame.onload = setInterval(function ()
-    // function execute while load the iframe
-    {
-        // set the height of the iframe as
-        // the height of the iframe content
-        frame.style.height =
-            frame.contentWindow.document.body.scrollHeight + 'px';
-
-
-        // set the width of the iframe as the
-        // width of the iframe content
-        //frame.style.width =
-        //    frame.contentWindow.document.body.scrollWidth + 'px';
-
-    }, 500)
+    
 </script>
 @*<script>
             (function (global) {
