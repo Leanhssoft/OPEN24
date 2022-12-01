@@ -8512,6 +8512,18 @@ var NewModel_BanHangLe = function () {
                 AssignValueHoaDon_ToPhieuThu(objHDAdd);
                 vmThanhToanGara.SavePhieuThu(objHDAdd.BH_NhanVienThucHiens);
 
+                let diary = {
+                    LoaiNhatKy: objHDAdd.TrangThaiHD === 8 ? 2 : 1,
+                    ID_DonVi: id_DonVi,
+                    ID_NhanVien: _idNhanVien,
+                    ChucNang: 'Bán hàng',
+                    NoiDung: 'Check DeviceId',
+                    NoiDungChiTiet: 'Tạo hóa đơn: '.concat(objHDAdd.MaHoaDon, ' (id: ', objHDAdd.ID, ') ',
+                        ' <br /> - Người tạo: ', userLogin,
+                        ' <br /> - DeviceId: ', getDeviceId())
+                }
+                Insert_NhatKyThaoTac_1Param(diary);
+
                 if (objHDAdd.XuatKhoAll) {
                     CreatePhieuXuatKho(itemDB.ID, itemDB.MaHoaDon);
                 }
@@ -8664,7 +8676,6 @@ var NewModel_BanHangLe = function () {
                 if (objDB.mes.indexOf('0x80131904') > -1) {
                     if (notSaleOffline) {
                         ShowMessage_Danger('Kết nối mạng không ổn định. Thao tác thất bại');
-                        DeleteHoaDon_WasSaved_WhenTimeout(myData.objHoaDon);
                         return false;
                     }
                     SaveHDOffline();
@@ -8717,9 +8728,6 @@ var NewModel_BanHangLe = function () {
             })
             .always(function (jqXHR, textStatus, errorThrown) {
                 SaveHD_RemoveDisable();
-                if (textStatus === 'timeout') {
-                    DeleteHoaDon_WasSaved_WhenTimeout(myData.objHoaDon);
-                }
 
                 $('#getoffline').modal('hide');
                 self.HoaDonTHs([]);
@@ -9761,6 +9769,7 @@ var NewModel_BanHangLe = function () {
         var priceOld = item.GiaBan;
         var tienGiam = 0;
         var ptGiam = 0;
+        var giasauCK = priceOld - tienGiam;
 
         var ctDoing = FindCTHD_isDoing(item, false);
         if (ctDoing !== null) {
@@ -9807,7 +9816,7 @@ var NewModel_BanHangLe = function () {
                     }
                     tienGiam = formatNumberToInt(valThis);
                 }
-                var giasauCK = priceOld - tienGiam;
+                giasauCK = priceOld - tienGiam;
                 if (ctDoing.PTThue > 0) {
                     ctDoing.TienThue = ctDoing.PTThue * giasauCK / 100;
                 }
