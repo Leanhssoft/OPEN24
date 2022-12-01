@@ -78,6 +78,7 @@ var ViewModel = function () {
     self.LichHen_byDate = ko.observableArray();
     self.Popup_LichHenChosed = ko.observableArray();
     self.numtext = 160;
+    self.textSearch = ko.observable();
 
     function PageLoad() {
         loadHtmlGrid();
@@ -141,7 +142,7 @@ var ViewModel = function () {
             PhanLoai: '%%',// lichhen + cv
             FromDate: param.DateFrom,
             ToDate: param.DateTo,
-            TextSearch: '',
+            TextSearch: self.textSearch(),
             CurrentPage: self.currentPageKH(),
             PageSize: self.pageSizeKH(),
             TypeShow: 1,
@@ -206,7 +207,7 @@ var ViewModel = function () {
             self.Popup_LichHenChosed([]);
             if (x.res === true) {
                 self.LichHen_byDate(x.data);
-                console.log(2,x.data)
+                console.log(2, x.data)
             }
         });
     }
@@ -368,7 +369,7 @@ var ViewModel = function () {
     // paging lichhen
     self.TotalPage_LichHen = ko.observable(0);
     self.TotalRow_LichHen = ko.observable(0);
-    self.PageSizes_LichHen = ko.observableArray([10,20, 30, 50]);
+    self.PageSizes_LichHen = ko.observableArray([10, 20, 30, 50]);
     self.PageSize_LichHen = ko.observable(self.PageSizes_LichHen()[0]);
     self.currentPage_LichHen = ko.observable(0);
     self.fromitem_LichHen = ko.observable(0);
@@ -772,7 +773,7 @@ var ViewModel = function () {
             }
             // get all KH had chosed by id
             ajaxHelper(DMDoiTuongUri + 'GetListCustomer_byIDs', 'POST', obj).done(function (x) {
-             
+
                 if (x.res === true) {
                     switch (self.TypeSMS()) {
                         case 1:
@@ -782,7 +783,7 @@ var ViewModel = function () {
                             self.Popup_LichHenChosed(x.data);
                             break;
                     }
-                   
+
                 }
             })
             $('#exampleModal').modal('show');
@@ -1584,7 +1585,7 @@ var ViewModel = function () {
     };
 
     //Phân trang list KH sinh nhật
-    self.pageSizesKH = [10,20, 30, 50];
+    self.pageSizesKH = [10, 20, 30, 50];
     self.pageSizeKH = ko.observable(self.pageSizesKH[0]);
     self.currentPageKH = ko.observable(0);
     self.fromitemKH = ko.observable(1);
@@ -1747,13 +1748,14 @@ var ViewModel = function () {
             NguoiTao: user.trim(),
             CurrentPage: self.currentPageKH(),
             PageSize: self.pageSizeKH(),
-            TrangThai: parseInt(self.Loc_TrangThaiGui())
+            TrangThai: parseInt(self.Loc_TrangThaiGui()),
+            TextSearch: self.textSearch(),
         };
         console.log('sn', listParams);
 
         $('.table-reponsive').gridLoader();
         ajaxHelper(DMDoiTuongUri + "SMS_KhachHangSinhNhat", 'POST', listParams).done(function (x) {
-         
+
             $('.table-reponsive').gridLoader({ show: false });
             if (x.res === true && x.data.length > 0) {
                 self.ListKhachHangSinhNhat(x.data);
@@ -1966,7 +1968,7 @@ var ViewModel = function () {
     };
     //------------------------------------end phân trang khách hàng SN
     // khách hàng giao dịch bán lẻ và gói dịch vụ
-    self.pageSizesGD = [10,20, 30, 50];
+    self.pageSizesGD = [10, 20, 30, 50];
     self.pageSizeGD = ko.observable(self.pageSizesGD[0]);
     self.currentPageGD = ko.observable(0);
     self.fromitemGD = ko.observable(1);
@@ -2008,7 +2010,8 @@ var ViewModel = function () {
             CurrentPage: self.currentPageGD(),
             PageSize: self.pageSizeGD(),
             TrangThai: parseInt(self.Loc_TrangThaiGui()),
-            iddonvi: idDonVi
+            iddonvi: idDonVi,
+            TextSearch: self.textSearch(),
         };
         console.log('gd ', listParams)
         $('.table-reponsive').gridLoader();
@@ -2261,6 +2264,16 @@ var ViewModel = function () {
         self.ListRowChosed([]);
     }
 
+    self.SearchList = function () {
+        if (event.keyCode === 13) {
+            GetListData_byType();
+        }
+    }
+
+    self.Click_IconSearch = function () {
+        GetListData_byType();
+    }
+
     function GetListData_byType() {
         ResetCurrentPage();
         switch (self.TypeSMS()) {
@@ -2289,7 +2302,7 @@ var ViewModel = function () {
     });
     //Phân trang list tin nhắn
     self.ArrayTinNhans = ko.observableArray();
-    self.pageSizes = [10,20, 30, 50];
+    self.pageSizes = [10, 20, 30, 50];
     self.pageSize = ko.observable(self.pageSizes[0]);
     self.currentPage = ko.observable(0);
     self.fromitem = ko.observable(1);
@@ -2308,6 +2321,7 @@ var ViewModel = function () {
                 ToDate: param.DateTo,
                 Status: parseInt(self.Loc_TrangThaiGui()),
                 TypeSMS: parseInt(self.Loc_LoaiTin()),
+                TextSearch: self.textSearch()
             };
             console.log(1, model)
             $('.table-reponsive').gridLoader();

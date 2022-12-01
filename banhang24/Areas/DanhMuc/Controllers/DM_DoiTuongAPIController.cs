@@ -825,6 +825,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         idNhomKH = "%" + listParams.ID_NhomDoiTuong + "%";
                     }
 
+                    var txt = string.Empty;
+                    if (!string.IsNullOrEmpty(listParams.TextSearch))
+                    {
+                        txt = listParams.TextSearch.Trim();
+                        where1 = string.Concat(" ( DienThoai like N'%", txt, "%' or TenDoiTuong like N'%", txt,
+                            "%' or TenDoiTuong_KhongDau like N'%", txt, "%')");
+                        where = classDoiTuong.GetStringWhere(where, where1);
+                    }
+
                     var ngaySinhFrom = listParams.NgaySinh_TuNgay;
                     var ngaySinhTo = listParams.NgaySinh_DenNgay;
 
@@ -1155,6 +1164,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     else
                     {
                         idNhomKH = "%" + listParams.ID_NhomDoiTuong + "%";
+                    }
+
+                    var txt = string.Empty;
+                    if (!string.IsNullOrEmpty(listParams.TextSearch))
+                    {
+                        txt = listParams.TextSearch.Trim();
+                        where1 = string.Concat(" ( DienThoai like N'%", txt, "%' or TenDoiTuong like N'%", txt,
+                            "%' or TenDoiTuong_KhongDau like N'%", txt, "%')");
+                        where = classDoiTuong.GetStringWhere(where, where1);
                     }
 
                     switch (listParams.LoaiGiaoDich)

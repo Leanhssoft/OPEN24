@@ -278,17 +278,19 @@
                 <div class="op-header-title" >
                     <h2 class="pull-left title">@banhang24.Resources.ResourceTexts.Partner / Danh sách sms</h2>
                 </div>
-                <div class="op-header-button">
-                    <div class=" header-button-left">
-                        <button class="btn btn-main btn-send-sms btn-main  txtCongViecThemMoi" name="btnExport" data-bind="click: $root.showpopupSMS" style=" background-color:var(--color-main)">
-                            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>Thêm mới
-                        </button>
-                        <button class="btn-link shownhapxuat pull-right" id="shownhapxuat" title="Chức năng nhập xuất" style="width:30px;">
-                            <i class="material-icons"> more_vert</i>
-                        </button>
-                        <div class="btn-dropdown pull-right" id="selected-column">
-                                <button type="button" class="btn btn-main dropdown-toggle" onclick="showCollumnFilter(this)"  id="loccotSMS" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                     <i class="fa fa-angle-double-down"></i>
+                <div class="flex flex-between">
+
+                    <div class="op-header-button">
+                        <div class=" header-button-left">
+                            <button class="btn btn-main btn-send-sms btn-main  txtCongViecThemMoi" name="btnExport" data-bind="click: $root.showpopupSMS" style=" background-color:var(--color-main)">
+                                <i class="fa fa-paper-plane-o" aria-hidden="true"></i>Thêm mới
+                            </button>
+                            <button class="btn-link shownhapxuat pull-right" id="shownhapxuat" title="Chức năng nhập xuất" style="width:30px;">
+                                <i class="material-icons"> more_vert</i>
+                            </button>
+                            <div class="btn-dropdown pull-right" id="selected-column">
+                                <button type="button" class="btn btn-main dropdown-toggle" onclick="showCollumnFilter(this)" id="loccotSMS" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-angle-double-down"></i>
                                 </button>
                                 <div class="dropdown-list" style="display: none;right:0">
                                     <ul>
@@ -319,35 +321,43 @@
                                         </li>
                                     </ul>
                                 </div>
-                        </div>
-                    </div>
-                    <div class="btn-group operation" id="divThaoTac">
-                        <div class=" choose-commodity">
-                            <button type="button" class="btn btn-main no-magrin"  data-bind="click: showpopupSMS_Many">
-                                <i class="fa fa-paper-plane-o"></i><font>Gửi nhiều khách</font> 
-                            </button>
-                            <div style="display: inline-block;padding: 5px 0;">
-                                Có&nbsp;
-                                <span>
-                                    <a href="javascript:void(0)"
-                                       data-bind="click:">
-                                        <span id="count"></span>&nbsp;
-                                        <span data-bind="text: TypeSMS()===1?'khách hàng':'lịch hẹn'"></span>
-                                    </a>
-                                </span>được chọn <span onclick="RemoveAllCheck()">
-                                    <a href="javascript:void(0)">
-                                        &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-times icon-del">
-                                        </i>Bỏ chọn tất cả
-                                    </a>
-                                </span>
                             </div>
                         </div>
+                        <div class="btn-group operation" id="divThaoTac">
+                            <div class=" choose-commodity">
+                                <button type="button" class="btn btn-main no-magrin" data-bind="click: showpopupSMS_Many">
+                                    <i class="fa fa-paper-plane-o"></i><font>Gửi nhiều khách</font>
+                                </button>
+                                <div style="display: inline-block;padding: 5px 0;">
+                                    Có&nbsp;
+                                    <span>
+                                        <a href="javascript:void(0)"
+                                           data-bind="click:">
+                                            <span id="count"></span>&nbsp;
+                                            <span data-bind="text: TypeSMS()===1?'khách hàng':'lịch hẹn'"></span>
+                                        </a>
+                                    </span>được chọn <span onclick="RemoveAllCheck()">
+                                        <a href="javascript:void(0)">
+                                            &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-times icon-del">
+                                            </i>Bỏ chọn tất cả
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                       
                     </div>
-                    <div class="col-md-5 nopadding pull-right input-search-filter" style="display:none">
-                        <button type="button" class=" btn-search-icon">
-                            <i class="fa fa-search"></i>
-                        </button>
-                        <input type="text" class="form-control" placeholder="Theo mã, tên hàng" id="txtFilterTinNhan">
+                    <div class="flex ">
+                        <div class="op-search">
+                            <input type="text" class="form-control"
+                                   style="min-width:400px"
+                                   placeholder="Theo mã, tên, điện thoại" 
+                                   data-bind="value: $root.textSearch, event: {keyup: $root.SearchList}" autocomplete="off">
+                            <button type="button" class=" op-search-button" data-bind="click: $root.Click_IconSearch">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -477,6 +487,7 @@
                                             <th>Mã giao dịch</th>
                                             <th>Loại giao dịch</th>
                                             <th>Ngày lập hóa đơn</th>
+                                            <th>Trạng thái</th>
                                         </tr>
                                     </thead>
                                     <tbody data-bind="foreach: ListKhachHangGD">
@@ -490,6 +501,8 @@
                                             <td data-bind="text: MaHoaDon"></td>
                                             <td data-bind="text: LoaiGiaoDich"></td>
                                             <td data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></td>
+                                            <td data-bind="text: TrangThai == 100?'Đã gửi':'Chưa gửi'">
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -529,6 +542,7 @@
                                             <th>Tên khách hàng</th>
                                             <th>Điện thoại</th>
                                             <th>Ngày sinh</th>
+                                            <th>Trạng thái</th>
                                         </tr>
                                     </thead>
                                     <tbody data-bind="foreach: ListKhachHangSinhNhat">
@@ -543,6 +557,8 @@
                                                 <a style="cursor: pointer" data-bind="text: DienThoai, click: $parent.showpopupGuiTinSN">11042019KH02</a>
                                             </td>
                                             <td data-bind="text: moment(NgaySinh_NgayTLap).format('DD/MM/YYYY')!='Invalid date'? moment(NgaySinh_NgayTLap).format('DD/MM/YYYY'):''"></td>
+                                            <td data-bind="text: TrangThai == 100?'Đã gửi':'Chưa gửi'">
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -900,7 +916,7 @@
 @*end model*@
 @*start popup gửi tin sdt*@
 <div class="modal fade in" id="exampleModalSDT" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="false">
-    <div class="modal-dialog draggable modal-sm">
+    <div class="modal-dialog draggable modal-lg">
         <div class="modal-content ">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
