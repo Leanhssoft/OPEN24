@@ -181,7 +181,7 @@ namespace Model.DAL
             }
         }
 
-        public static List<HeThong_SMSDTO> GetListSMSSend(DateTime? from, DateTime? to, int? status, int? typeSMS)
+        public static List<HeThong_SMSDTO> GetListSMSSend(DateTime? from, DateTime? to, int? status, int? typeSMS, string txtSearch=null)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
@@ -193,6 +193,7 @@ namespace Model.DAL
                                ID = o.ID,
                                TenNguoiGui = nd.TaiKhoan,
                                TenKhachHang = dt.TenDoiTuong,
+                               TenDoiTuong_KhongDau = dt.TenDoiTuong_KhongDau,
                                SoDienThoai = o.SoDienThoai,
                                ThoiGianGui = o.ThoiGianGui,
                                TrangThai = o.TrangThai,
@@ -202,6 +203,12 @@ namespace Model.DAL
                 if (from != null)
                 {
                     data = data.Where(x => x.ThoiGianGui > from && x.ThoiGianGui < to);
+                }
+                if (!string.IsNullOrEmpty(txtSearch))
+                {
+                    txtSearch = txtSearch.Trim();
+                    data = data.Where(x => x.SoDienThoai.Contains(txtSearch) || x.TenKhachHang.Contains(txtSearch)
+                    || x.TenDoiTuong_KhongDau.Contains(txtSearch));
                 }
                 switch (status)
                 {
@@ -264,6 +271,7 @@ namespace Model.DAL
         public Guid ID { get; set; }
         public string TenNguoiGui { get; set; }
         public string TenKhachHang { get; set; }
+        public string TenDoiTuong_KhongDau { get; set; }
         public string SoDienThoai { get; set; }
         public string NoiDung { get; set; }
         public DateTime ThoiGianGui { get; set; }
