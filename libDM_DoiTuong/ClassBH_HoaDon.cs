@@ -772,7 +772,7 @@ namespace libDM_DoiTuong
                 {
                     ID = t.ID,
                     MaHoaDon = t.MaHoaDon,
-                    NgayLapHoaDon = (t.LoaiHoaDon == 11 || t.LoaiHoaDon == 12) ? t.NgayLapHoaDon.AddSeconds(2) : t.NgayLapHoaDon,
+                    NgayLapHoaDon = (t.LoaiHoaDon == 11 || t.LoaiHoaDon == 12) ? t.NgayLapHoaDon.AddMilliseconds(2) : t.NgayLapHoaDon,
                     LoaiHoaDon = t.LoaiHoaDon,
                     GiaTri = Math.Round(t.GiaTri, 3, MidpointRounding.ToEven),
                     LoaiThanhToan = t.LoaiThanhToan,
@@ -6077,7 +6077,7 @@ namespace libDM_DoiTuong
         public double? SumTongChiPhi { get; set; }
         public double? SumTongTienThue { get; set; }
         public double? TongGiaTriSDDV { get; set; }
-        public double? SumTongTongTienHDTra { get; set; }
+        public double? SumTongTienHDTra { get; set; }
         public double? SumPhaiThanhToan { get; set; }
         public double? SumPhaiThanhToanBaoHiem { get; set; }
         public double? SumTongThanhToan { get; set; }
