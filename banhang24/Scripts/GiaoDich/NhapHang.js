@@ -813,10 +813,10 @@
 
         var arrStatus = [];
         if (self.TT_TamLuu()) {
-            arrStatus.push('0');
+            arrStatus.push('1');
         }
         if (self.TT_DaLuu()) {
-            arrStatus.push('1');
+            arrStatus.push('0');
         }
         if (self.TT_DangXuLy()) {
             arrStatus.push('2');
