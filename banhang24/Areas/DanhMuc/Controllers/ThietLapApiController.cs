@@ -2234,8 +2234,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public IHttpActionResult GetAllTinGui(GridModelTinNhan model)
         {
-            //List<HeThong_SMSDTO> lst = HeThong_SMS_TinMauService.GetAllTinGui(model.FromDate, model.ToDate).ToList();
-            List<HeThong_SMSDTO> lst = HeThong_SMS_TinMauService.GetListSMSSend(model.FromDate, model.ToDate, model.Status, model.TypeSMS).ToList();
+            List<HeThong_SMSDTO> lst = HeThong_SMS_TinMauService.GetListSMSSend(model.FromDate, model.ToDate,
+                model.Status, model.TypeSMS, model.TextSearch).ToList();
             var totalRecord = lst.Count();
             lst = lst.Skip(model.currentPage * model.pageSize).Take(model.pageSize).ToList();
             var pageCount = System.Math.Ceiling(totalRecord / (float)model.pageSize);
@@ -2463,6 +2463,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         public DateTime? ToDate { get; set; }
         public int? Status { get; set; }
         public int? TypeSMS { get; set; }
+        public string TextSearch { get; set; }
     }
 
 
