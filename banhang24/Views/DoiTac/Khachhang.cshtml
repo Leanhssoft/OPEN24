@@ -655,16 +655,16 @@
                                 <td class="@commonEnum.ColumnKhachHang.dienthoai">
                                     <input type="text" class="form-control search-grid" data-id="@keyphone" onclick="this.select()">
                                 </td>
-                                <td class="@commonEnum.ColumnKhachHang.nhomkhach">
+                                <td class="@commonEnum.ColumnKhachHang.nhomkhach" id="filterHeader_NhomKhach">
                                     <select class="form-control" data-bind="options: NhomDoiTuongs,
                                                 optionsText: 'TenNhomDoiTuong', optionsValue: 'ID', optionsCaption: 'Chọn',
                                                 value: selectNhomDT"></select>
                                 </td>
-                                <td class="@commonEnum.ColumnKhachHang.gioitinh">
+                                <td class="@commonEnum.ColumnKhachHang.gioitinh" id="filterHeader_GioiTinh">
                                     <select class="form-control" data-id="@keygender">
                                         <option value="0">...</option>
                                         <option value="1">Nam</option>
-                                        <option value='2'>nữ</option>
+                                        <option value='2'>Nữ</option>
                                     </select>
                                 </td>
                                 <td class="@commonEnum.ColumnKhachHang.ngaysinh"></td>
@@ -677,7 +677,7 @@
                                     <input type="text" class="form-control search-grid" data-id="@keyaddr" onclick="this.select()">
                                 </td>
                                 <td class="@commonEnum.ColumnKhachHang.tinhthanh"></td>
-                                <td class="@commonEnum.ColumnKhachHang.quanhuyen">
+                                <td class="@commonEnum.ColumnKhachHang.quanhuyen" id="filterHeader_QuanHuyen">
                                     <div id="divSearchDistr">
                                         <nav>
                                             <input type="text" class="form-control search-grid" id="txtSearchDistr" data-id="@keydistr"
@@ -695,7 +695,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="@commonEnum.ColumnKhachHang.nguonkhach">
+                                <td class="@commonEnum.ColumnKhachHang.nguonkhach" id="filterHeader_NguonKhach">
                                     <select class="form-control" data-bind="options: NguonKhachs,
                                                 optionsText: 'TenNguonKhach', optionsValue: 'ID', optionsCaption: 'Chọn',
                                                  value: selectedNguonKhach"></select>
@@ -1004,6 +1004,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="op-object-detail-function">
+                                                        <!--ko if: $root.RoleUpdate_Cus()-->
+                                                        <button class="btn" 
+                                                                style=" background: sienna; color: white "
+                                                                data-bind="click: $root.ShowPopListDiary_ofCustomer">
+                                                            <i class="far fa-book"></i> Xem nhật ký giao dịch
+                                                        </button>
+                                                        <!--/ko-->
                                                         <!--ko if: $root.RoleUpdate_Cus() && !TheoDoi-->
                                                         <button class="btn btn-main" data-bind="click: $parent.editKH">
                                                             <i class="fa fa-check-square"></i> Sửa đổi
@@ -2134,7 +2141,7 @@
                         <!--/ko-->
                         <tfoot class="Report_Empty" data-bind="visible: DoiTuongs().length === 0">
                             <tr class="text-center">
-                                <td colspan="20"><i>Không có dữ liệu </i></td>
+                                <td colspan="30"><i>Không có dữ liệu </i></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -2407,6 +2414,8 @@
 @Html.Partial("~/Views/SoQuy/_ThemKhoanThuChi.cshtml")
 @Html.Partial("~/Views/SoQuy/_ThemPhieuThuChi.cshtml")
 @Html.Partial("~/Views/DoiTac/_UpAnhHoaDon.cshtml")
+@Html.Partial("~/Views/Gara/_NhatKyGoiBaoDuong.cshtml")
+
 
 <div class="modal " id="modalPopuplgDelete">
     <div class="modal-dialog modal-md draggable ui-draggable">
