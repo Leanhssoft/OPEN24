@@ -501,7 +501,7 @@
                                             <td data-bind="text: MaHoaDon"></td>
                                             <td data-bind="text: LoaiGiaoDich"></td>
                                             <td data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></td>
-                                            <td data-bind="text: TrangThai == 100?'Đã gửi':'Chưa gửi'">
+                                            <td data-bind="text: STrangThai">
                                             </td>
                                         </tr>
                                     </tbody>
@@ -557,7 +557,7 @@
                                                 <a style="cursor: pointer" data-bind="text: DienThoai, click: $parent.showpopupGuiTinSN">11042019KH02</a>
                                             </td>
                                             <td data-bind="text: moment(NgaySinh_NgayTLap).format('DD/MM/YYYY')!='Invalid date'? moment(NgaySinh_NgayTLap).format('DD/MM/YYYY'):''"></td>
-                                            <td data-bind="text: TrangThai == 100?'Đã gửi':'Chưa gửi'">
+                                            <td data-bind="text: STrangThai">
                                             </td>
                                         </tr>
                                     </tbody>
