@@ -1237,6 +1237,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         TotalPage = x.TotalPage,
                         TotalRow = x.TotalRow,
                         TrangThai = x.TrangThai,
+                        STrangThai = x.STrangThai,
                         LoaiGiaoDich = x.LoaiHoaDon == 1 ? "Bán lẻ" : "Gói dịch vụ",
                     }).ToList();
                     return Json(new { res = true, data = lst });
