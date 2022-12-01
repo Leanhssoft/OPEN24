@@ -1096,7 +1096,7 @@
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: IDRandom},event:{keyup: $root.editPrice}" />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -1358,7 +1358,7 @@
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: IDRandom},event:{keyup: $root.editPrice}, " />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -1510,7 +1510,7 @@
                                         <!--ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)"  onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) ,
                                                attr:{id: IDRandom},
                                                event:{keyup: function(){$root.Combo_editPrice($data,$parent,false)}}, " />
@@ -1963,7 +1963,7 @@
                                     <!--ko if: $root.roleChangePriceProduct()  -->
                                     <input class="input-simple height-24"
                                            autocomplete="off"
-                                           onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                          onkeypress="keypressNumber_limitNumber(event,this)"  onclick="this.select()" maxlength="12"
                                            data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: 'priceTH_'+ IDRandom},event:{keyup: $root.editPrice_DoiTra}," />
                                     <!-- /ko-->
                                     <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -2120,7 +2120,7 @@ visible: LoaiHoaDon !==3 ">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                              onkeypress="keypressNumber_limitNumber(event,this)"  onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: 'priceTH_'+ IDRandom},event:{keyup: $root.editPrice_DoiTra}, " />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -2300,7 +2300,7 @@ visible: LoaiHoaDon !== 3">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)"  onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: 'priceTH_'+ IDRandom},event:{keyup: $root.editPrice_DoiTra}, " />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -2468,7 +2468,7 @@ visible: LoaiHoaDon !==3">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)"  onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) ,
                                                attr:{id: 'priceTH_'+ IDRandom},
                                                event:{keyup: function(){$root.Combo_editPrice($data,$parent,true)}} " />
