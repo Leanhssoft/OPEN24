@@ -248,6 +248,7 @@
         { colName: 'TenKhachHang', colText: 'Khách hàng', colShow: true, index: 7, Css: '' },
         { colName: 'SDTKhachHang', colText: 'SĐT', colShow: true, index: 8, Css: '' },
         { colName: 'TenCongTyBaoHiem', colText: 'Cty bảo hiểm', colShow: false, index: 9, Css: '' },
+        { colName: 'PTNGhiChu', colText: 'Ghi chú', colShow: false, index: 10, Css: '' },
         ],
     },
     watch: {
@@ -1967,7 +1968,7 @@
             objPrint.TongCong = formatNumber(tongcong);
             objPrint.TongThanhToan = formatNumber(tongcong);
             objPrint.BH_TienBangChu = DocSo(hdChosing.PhaiThanhToanBaoHiem);
-            objPrint.KH_TienBangChu = DocSo(hdChosing.PhaiThanhToan);
+            //objPrint.KH_TienBangChu = DocSo(hdChosing.PhaiThanhToan);
             objPrint.BH_ConThieu = formatNumber3Digit(hdChosing.PhaiThanhToanBaoHiem - hdChosing.BaoHiemDaTra);
 
             let conno = formatNumberToInt(hdChosing.TongThanhToan) - daThanhToan - hdChosing.BaoHiemDaTra;
@@ -1978,6 +1979,9 @@
             objPrint.TienBangChu = DocSo(tongcong);
             objPrint.TienKhachThieu = formatNumber(hdChosing.PhaiThanhToan - daThanhToan);
             objPrint.HD_ConThieu = conno;
+            objPrint.ThuDatHang = hdChosing.ThuDatHang;
+            objPrint.PhaiThanhToan_TruCocBG = hdChosing.PhaiThanhToan - formatNumberToFloat(hdChosing.ThuDatHang);
+            objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCocBG);
 
             let mat = 0, pos = 0, ck = 0, tgt = 0, coc = 0, diem = 0;
             mat = hdChosing.Khach_TienMat + hdChosing.BH_TienMat;
