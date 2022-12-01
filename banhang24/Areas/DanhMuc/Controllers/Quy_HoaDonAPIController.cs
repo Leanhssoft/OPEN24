@@ -1966,7 +1966,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 }
 
                 #region Quy_HoaDon
-                DateTime ngaylapHD = objQuyHD.NgayLapHoaDon.AddMilliseconds(1);
+                DateTime ngaylapHD = objQuyHD.NgayLapHoaDon.AddMilliseconds(2);
                 Quy_HoaDon itemQuy_HoaDon = new Quy_HoaDon();
                 itemQuy_HoaDon.ID = Guid.NewGuid();
                 itemQuy_HoaDon.ID_NhanVien = objQuyHD.ID_NhanVien;
