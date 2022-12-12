@@ -906,7 +906,7 @@ var ViewModel = function () {
             TenCongTy: _tencongty,
             DiaChi: _diachi,
             SoDienThoai: _sodienthoai,
-            DiaChiNganHang: _logo,
+            /*DiaChiNganHang: _logo,*/
             Website: _website,
             NgayCongChuan: self.newThongTinCH().NgayCongChuan(),
         }
