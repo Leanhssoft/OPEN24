@@ -889,6 +889,14 @@
                 }).fail(function (x) {
                 })
             }
+            else {
+                let arrayIdDoiTuongDeleteNhom = [self.newCustomer.ID];
+                // delete all nhom of DoiTuon in DB
+                if(!isChuyenNhom)
+                    ajaxHelper(self.UrlDoiTuongAPI + 'DeleteAllNhom_ofDoiTuong?lstIDDoiTuong = ' + arrayIdDoiTuongDeleteNhom, 'POST', arrayIdDoiTuongDeleteNhom).done(function (x) {
+
+                })
+            }
         },
         NangNhomKhachHang: function (id) {
             var self = this;
