@@ -61,7 +61,6 @@
     self.TongTichDiemAll = ko.observable();
     self.ContinueImport = ko.observable(false);
     self.GhiChuQuyHD = ko.observable();
-    self.NgayDieuChinh = ko.observable(moment(today).format('DD/MM/YYYY'));
     self.TongThuDieuChinh = ko.observable();
     self.NguoiNopTien = ko.observable();
     self.ID_NguoiNopTien = ko.observable();
@@ -597,6 +596,7 @@
                 NhomDT_DonVi: [],
             }
             self.NhomDoiTuongs.unshift(newObj);
+            self.AllNhomDoiTuongs.unshift(newObj);
             LoadSearchNhomDT();
         });
     }
@@ -960,7 +960,7 @@
         var loaiKhach = self.customerType();
         var gioiTinh = parseInt(self.customerSex());
         var idNguonKhach = self.selectedNguonKhach();
-       
+
         // tinhThanh
         var arrIDTinhThanh = $.map(self.ProvinceChosed(), function (x) {
             return x.ID
@@ -3203,7 +3203,7 @@
             ShowMessage_Danger("Vui lòng chọn " + sLoai + " cần chuyển nhóm");
             return;
         }
-        if (idNhomNew === 0 || idNhomNew === undefined) {
+        if (idNhomNew === 0 || commonStatisJs.CheckNull(idNhomNew) || idNhomNew === const_GuidEmpty) {
             ajaxHelper(DMDoiTuongUri + 'DeleteAllNhom_ofDoiTuong?lstIDDoiTuong=' + arrIDDoiTuong, 'POST', arrIDDoiTuong).done(function (x) {
                 console.log('deleteDT in nhom ', x.res)
             });
@@ -4757,6 +4757,7 @@
     self.loaiNKSD = ko.observable(1);
     self.loaiLSNT = ko.observable(1);
     self.TenKhachHangNapThe = ko.observable();
+
     self.clickTheGiaTri = function (item) {
         self.typeTab('thegiatri');
         ResetTime_TheGiaTri();
@@ -4774,6 +4775,9 @@
         SearchLichSuNapTien();
     };
     self.DieuChinhSoDu = function (item) {
+        self.TGT_ID(null);
+        self.GiaTriDieuChinh(0);
+        self.TenKhachHangNapThe(item.TenDoiTuong);
         self.TrangThaiTheGiaTriChoose(item.TrangThai_TheGiaTri);
         $('#modalPopup_thegiatri').modal('show');
         $('#txtSoDuPopup').val(formatNumber(self.SoDuTheGiaTri()));
@@ -4785,6 +4789,55 @@
         { TrangThai: "Đang hoạt động", value: "1" },
         { TrangThai: "Ngừng hoạt động", value: "2" }
     ]);
+
+    self.GiaTriDieuChinh = ko.observable('');
+    self.MaDieuChinh = ko.observable('');
+    self.NgayDieuChinh = ko.observable(moment(today).format('DD/MM/YYYY'));
+    self.TGT_ID = ko.observable(null);
+
+    self.DieuChinhThe_showUpdate = function (item) {
+        switch (item.LoaiHoaDon) {
+            case 22:// napthe
+                vmThemMoiTheNap.showModalUpdate(item.ID, 1);
+                break;
+            case 42:// tattoan congno
+                vmTatToanTGT.getData_andShowModalUpdate(item.ID);
+                break;
+            case 23:// dieuchinh
+                self.TGT_ID(item.ID);
+                self.MaDieuChinh(item.MaHoaDon);
+                self.GiaTriDieuChinh(item.MucNap);
+                self.NgayDieuChinh(moment(item.NgayLapHoaDon).format('DD/MM/YYYY HH:mm'));
+                $('#modalPopup_thegiatri').modal('show');
+                break;
+        }
+    }
+
+    self.TGT_HuyPhieuDieuChinh = function () {
+        // todo check sudung vuot TGT
+        $.getJSON('/api/DanhMuc/BH_HoaDonAPI/' + 'TGT_HuyPhieuDieuChinh?id=' + self.TGT_ID()).done(function (x) {
+            console.log(x)
+            if (x.res) {
+                ShowMessage_Success('Hủy phiếu điều chỉnh thành công');
+
+                $('#modalPopup_thegiatri').modal('hide');
+
+                let diary = {
+                    LoaiNhatKy: 3,
+                    ID_DonVi: VHeader.IdDonVi,
+                    ID_NhanVien: VHeader.IdNhanVien,
+                    ChucNang: 'Hủy phiếu điều chỉnh thẻ giá trị',
+                    NoiDung: 'Hủy phiếu điều chỉnh thẻ giá trị '.concat(self.MaDieuChinh()),
+                    NoiDungChiTiet: 'Thông tin hủy:'.concat('<br /> Mã phiếu: ', self.MaDieuChinh(),
+                        '<br /> Khách hàng: ', self.TenKhachHangNapThe(),
+                        '<br /> Giá trị điều chỉnh: ', formatNumber3Digit(self.GiaTriDieuChinh()),
+                        '<br /> Ngày điều chỉnh: ', self.NgayDieuChinh(),
+                        '<br /> User hủy phiếu: ', VHeader.UserLogin),
+                }
+                Insert_NhatKyThaoTac_1Param(diary);
+            }
+        })
+    }
     self.TrangThaiTheGiaTriChoose = ko.observable("1");
     self.showpopupNapTien = function (item) {
         vmThemMoiTheNap.showModalAddNew(1);
@@ -4845,12 +4898,26 @@
         var trangthai = self.TrangThaiTheGiaTriChoose();
         var nguoitao = $('#txtTenTaiKhoan').text();
         self.SoDuTheGiaTri(sodu);
+        let sDieuChinh = chenhlech > 0 ? 'Điều chỉnh tăng' : 'Điều chỉnh giảm';
+
         ajaxHelper(DMDoiTuongUri + 'UpdateDieuChinhSoDu?chenhlech=' + chenhlech + '&trangthai=' + trangthai + '&iddt=' + self.IDDT() + '&iddonvi=' + idDonVi + '&idnhanvien=' + idNhanVien + '&nguoitao=' + nguoitao + '&sodusaunap=' + sodu, 'GET').done(function (data) {
             if (data === "") {
                 bottomrightnotify('<i class="fa fa-check" aria-hidden="true"></i>' + 'Điều chỉnh thành công thẻ giá trị', 'success');
                 $('#modalPopup_thegiatri').modal('hide');
                 SearchNhatKySDThe();
                 SearchLichSuNapTien();
+                let diary = {
+                    ID_DonVi: VHeader.IdDonVi,
+                    ID_NhanVien: VHeader.IdNhanVien,
+                    ChucNang: 'Điều chỉnh số dư thẻ giá trị',
+                    LoaiNhatKy: 1,
+                    NoiDung: sDieuChinh,
+                    NoiDungChiTiet: 'Khách hàng: '.concat(self.TenKhachHangNapThe(),
+                        '<br /> ', sDieuChinh, ': ', formatNumber3Digit(chenhlech),
+                        '<br /> User điều chỉnh: ', VHeader.UserLogin
+                    ),
+                }
+                Insert_NhatKyThaoTac_1Param(diary);
             }
         });
     };
