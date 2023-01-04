@@ -1937,6 +1937,27 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 }
             }
         }
+        [HttpGet]
+        public IHttpActionResult TGT_HuyPhieuDieuChinh(Guid id)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                try
+                {
+                    var data = db.BH_HoaDon.Find(id);
+                    if (data != null)
+                    {
+                        data.ChoThanhToan = null;
+                        db.SaveChanges();
+                    }
+                    return ActionTrueData(string.Empty);
+                }
+                catch (Exception e)
+                {
+                    return ActionTrueNotData(e.InnerException + e.Message);
+                }
+            }
+        }
 
         [AcceptVerbs("GET", "POST")]
         public IHttpActionResult Comapre_DoanhThuByTheGiaTri(ModelHoaDonTheNap model)
@@ -4398,8 +4419,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                     ThanhToan = item.ThanhToan, // Giá trị lệch
                                     GiaVon = item.GiaVon,
                                     SoThuTu = dem,
-                                    ID_LoHang = item.ID_LoHang == null ? null : item.ID_LoHang
-                                    // tien giam 
+                                    ID_LoHang = item.ID_LoHang == null ? null : item.ID_LoHang,
+                                    TonLuyKe = item.ThanhTien,
                                 };
 
                                 strUpd = classhoadonchitiet.Add_ChiTietHoaDon(ctHoaDon);
