@@ -193,7 +193,7 @@ var NewModel_BanHangLe = function () {
     self.selectedDoiTuong = ko.observable();
     self.IsNhapNhanh = ko.observable(true);
     self.IsNhapNhanh_DoiTra = ko.observable(true);
-    var serverTime = new Date();
+    var serverTime = sstime.GetDatetime();
     self.DateHDDefault = ko.observable(moment(serverTime).format('DD/MM/YYYY'));
     self.TimeHDDefault = ko.observable(moment(serverTime).format('HH:mm'));
     self.FilesSelect = ko.observableArray();
@@ -575,7 +575,7 @@ var NewModel_BanHangLe = function () {
     }
     day = date + "/" + month + "/" + now.getFullYear();
     function timer() {
-        var currentTime = new Date();
+        var currentTime = sstime.GetDatetime();
         var hours = currentTime.getHours();
         var minutes = currentTime.getMinutes();
         var sec = currentTime.getSeconds();
@@ -3971,7 +3971,6 @@ var NewModel_BanHangLe = function () {
         var maHDNew = objMaHD.MaHoaDon + '1';
         var idRandom = '';
 
-        debugger;
         var lstHD = localStorage.getItem(lcListHD);
         if (lstHD !== null) {
             lstHD = JSON.parse(lstHD);
@@ -11618,8 +11617,8 @@ var NewModel_BanHangLe = function () {
                 PrintExtraReport(temp, data, self.numberOfPrint());
             }).fail(function () {
                 if (itemMauIn.length > 0) {
-                    var dulieuMauIn = ReplaceString_toData(itemMauIn[0].DuLieuMauIn);
-                    var dulieuMauIn1 = ''.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                    let dulieuMauIn = ReplaceString_toData(itemMauIn[0].DuLieuMauIn);
+                     dulieuMauIn1 = ''.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
                     dulieuMauIn1 = dulieuMauIn1.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
                         + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
                         + "; var item3=" + JSON.stringify(self.InforHDprintf()) + "; </script>");
@@ -12384,8 +12383,8 @@ var NewModel_BanHangLe = function () {
                                 lstCTHD[i].ID_LoHang = idLoHang;
                                 lstCTHD[i].MaLoHang = maLoHang; // add properties MaLoHang --> used to save LichSuThaoTac
                                 lstCTHD[i].TonKho = item.TonKho;
-                                lstCTHD[i].NgaySanXuat = item.NgaySanXuat;// --> used to InHoaDon
-                                lstCTHD[i].NgayHetHan = item.NgayHetHan;
+                                lstCTHD[i].NgaySanXuat = ngaysx;// --> used to InHoaDon
+                                lstCTHD[i].NgayHetHan = hethan;
                                 lstCTHD[i].CssWarning = (self.ThietLap().XuatAm && lstCTHD[i].TonKho < lstCTHD[i].SoLuong);
                             }
                             lstCTHD[i].DM_LoHang[j].ID_LoHang = idLoHang;
@@ -23329,8 +23328,8 @@ var NewModel_BanHangLe = function () {
                                 lstCTHD[i].ID_LoHang = idLoHang;
                                 lstCTHD[i].MaLoHang = maLoHang; // add properties MaLoHang --> used to save LichSuThaoTac
                                 lstCTHD[i].TonKho = item.TonKho; // update TonKho forCTHD parent
-                                lstCTHD[i].NgaySanXuat = item.NgaySanXuat;// --> used to InHoaDon
-                                lstCTHD[i].NgayHetHan = item.NgayHetHan;
+                                lstCTHD[i].NgaySanXuat = ngaysx;// --> used to InHoaDon
+                                lstCTHD[i].NgayHetHan = hethan;
                                 lstCTHD[i].CssWarning = (xuatAm === false && lstCTHD[i].TonKho < lstCTHD[i].SoLuong);
                             }
                             lstCTHD[i].DM_LoHang[j].ID_LoHang = idLoHang;
