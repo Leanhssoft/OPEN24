@@ -22,27 +22,31 @@
                         </h3>
                         <aside class="op-filter-container">
                             <ul class="chose_kieubang ul-radius">
-                                <li value="1" class="active">
+                                <li value="0" class="active">
                                     <a href="#smsdagui" data-toggle="tab" class="box-tab">
-                                        <input type="radio" name="kieubang1" value="1">
+                                        <input type="radio" name="kieubang1" value="0"
+                                               data-bind="checked: $root.SMS_LoaiBaoCao()">
                                         <label>Tin nhắn đã gửi</label>
                                     </a>
                                 </li>
                                 <li value="2">
                                     <a href="#smsgiaodich" data-toggle="tab">
-                                        <input type="radio" name="kieubang1" value="2">
+                                        <input type="radio" name="kieubang1" value="2"
+                                               data-bind="checked: $root.SMS_LoaiBaoCao()">
                                         <label>Danh sách giao dịch</label>
                                     </a>
                                 </li>
-                                <li value="3">
+                                <li value="1">
                                     <a href="#smssinhnhat" data-toggle="tab">
-                                        <input type="radio" name="kieubang1" value="3">
+                                        <input type="radio" name="kieubang1" value="1"
+                                               data-bind="checked: $root.SMS_LoaiBaoCao()">
                                         <label>Danh sách KH sinh nhật</label>
                                     </a>
                                 </li>
-                                <li value="4">
+                                <li value="3">
                                     <a href="#smslichhen" data-toggle="tab">
-                                        <input type="radio" name="kieubang1" value="4">
+                                        <input type="radio" name="kieubang1" value="3"
+                                               data-bind="checked: $root.SMS_LoaiBaoCao()">
                                         <label>Danh sách KH có lịch hẹn</label>
                                     </a>
                                 </li>
@@ -276,7 +280,7 @@
         <div class="col-right">
             <div class="op-header">
                 <div class="op-header-title" >
-                    <h2 class="pull-left title">@banhang24.Resources.ResourceTexts.Partner / Danh sách sms</h2>
+                    <h2 class="pull-left title" data-bind="text: $root.reportName()"></h2>
                 </div>
                 <div class="flex flex-between">
 

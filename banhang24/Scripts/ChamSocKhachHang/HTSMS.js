@@ -42,7 +42,7 @@ var ViewModel = function () {
     var DMDoiTuongUri = '/api/DanhMuc/DM_DoiTuongAPI/';
 
     self.error = ko.observable();
-    self.TypeSMS = ko.observable(0);
+    self.TypeSMS = ko.observable(0);//1.tindagui, 2.ds giaodich, 3.ds sinhnhat, 4.ds lichhen (DS hiển thị)
     self.ArrKhachHangCoSDT = ko.observableArray();
     self.ArrKhachHangCoSDTSN = ko.observableArray();
     self.ArrKhachHangCoSDTGD = ko.observableArray();
@@ -58,7 +58,7 @@ var ViewModel = function () {
     self.MangKhachHangGuiTinGD = ko.observableArray();
     self.MangKhachHangSaveDB = ko.observableArray();
     self.ListAllDoiTuong = ko.observableArray();
-    self.LoaiTinNhanGui = ko.observable();
+    self.LoaiTinNhanGui = ko.observable();//1.giaodich, 2.sinhnhat, 3.tinthuong (Loại tin)
     self.NhomKhachHangChosed = ko.observableArray();
     self.JqAutoSelectKH = ko.observable();
     self.BrandNames = ko.observableArray();
@@ -79,6 +79,7 @@ var ViewModel = function () {
     self.Popup_LichHenChosed = ko.observableArray();
     self.numtext = 160;
     self.textSearch = ko.observable();
+    self.reportName = ko.observable('Tin nhắn đã gửi');
 
     function PageLoad() {
         loadHtmlGrid();
@@ -2180,26 +2181,20 @@ var ViewModel = function () {
     self.GetClassHDGD = function (page) {
         return ((page.pageNumberGD - 1) === self.currentPageGD()) ? "click" : "";
     };
+
+    self.SMS_LoaiBaoCao = ko.computed(() => {
+        return self.TypeSMS().toString();
+    })
     //end khách hàng giao dịch bán lẻ và gói dịch vụ
     $('.chose_kieubang').on('click', 'li', function () {
         var index = $(this).val();
-        $(".chose_kieubang li").each(function (i) {
-            $(this).find('a').removeClass('box-tab');
-        });
-        $(this).find('a').addClass('box-tab');
-        $('#danhsachtab .ct-tab-pane').each(function (i) {
-            $(this).removeClass('active');
-            if (index === (i + 1)) {
-                $(this).addClass('active');
-            }
-        });
         ResetCurrentPage();
         self.Loc_TrangThaiGui('0');
         self.customerBirthday_Quy(5);// default month
         $('#txtCusBirthDay').val('Tháng này');
 
         switch (index) {
-            case 1:
+            case 0:
                 self.TypeSMS(0);
                 self.LoaiTinNhanGui(3);
                 $('#loccotSMS').show();
@@ -2207,8 +2202,7 @@ var ViewModel = function () {
                 $('.timesinhnhat').hide();
                 $('._nhomkhachhang').hide();
                 $('#loctrangthai, #loaitin').show();
-                //$('.trangthai1').hide();
-                //$('.trangthai2').show();
+                self.reportName('Tin nhắn đã gửi');
                 SearchTinNhan();
                 break;
             case 2:
@@ -2218,33 +2212,30 @@ var ViewModel = function () {
                 $('#locloaichungtu, #locchinhanh').show();
                 $('.timesinhnhat').hide();
                 $('._nhomkhachhang').show();
-                //$('.trangthai1').show();
-                //$('.trangthai2').hide();
                 $('#loctrangthai, #loaitin').hide();
                 getKhachHangGD();
+                self.reportName('Danh sách giao dịch');
                 break;
-            case 3:
+            case 1:
                 self.TypeSMS(1);
                 self.LoaiTinNhanGui(2);
                 $('#loccotSMS').hide();
                 $('#locloaichungtu, #locchinhanh, #filterleft-typework').hide();
                 $('.timesinhnhat').show();
                 $('._nhomkhachhang').show();
-                //$('.trangthai1').show();
-                //$('.trangthai2').hide();
                 $('#loctrangthai, #loaitin').hide();
                 GetAllKhachHangSinhNhat();
+                self.reportName('Danh sách KH sinh nhật');
                 break;
-            case 4:
+            case 3:
                 self.TypeSMS(3);
                 self.LoaiTinNhanGui(4);
                 $('#loccotSMS').hide();
                 $('#locloaichungtu, #locchinhanh').hide();
                 $('.timesinhnhat, #filterleft-typework').show();
                 $('._nhomkhachhang').show();
-                //$('.trangthai1').show();
-                //$('.trangthai2').hide();
                 $('#loctrangthai, #loaitin').hide();
+                self.reportName('Danh sách KH có lịch hẹn');
                 SMS_LichHen();
                 break;
         }

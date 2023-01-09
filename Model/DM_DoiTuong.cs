@@ -453,6 +453,7 @@ namespace Model
         public string TrangThaiKHGuiTin { get; set; }
         public int CountTrangThaiGuiTin { get; set; }
         public int TrangThai { get; set; }
+        public string STrangThai { get; set; }
         public DateTime? ThoiGianGui { get; set; }
         public string NguoiGui { get; set; }
         public double? TotalPage { get; set; }
@@ -472,6 +473,7 @@ namespace Model
         public string LoaiGiaoDich { get; set; }
         public string TrangThaiGuiTin { get; set; }
         public int TrangThai { get; set; }
+        public string STrangThai { get; set; }
         public DateTime NgayLapHoaDon { get; set; }
         public int CountTrangThaiGuiTin { get; set; }
         public DateTime? ThoiGianGui { get; set; }
@@ -559,5 +561,6 @@ namespace Model
         public int CurrentPage { get; set; }
         public int PageSize { get; set; }
         public int TrangThai { get; set; }
+        public string TextSearch { get; set; }
     }
 }
