@@ -1485,15 +1485,26 @@ var ViewModelHD = function () {
     }
 
     function GetCTHDPrint_Format(arrCTHD) {
+        let arr = [];
         for (var i = 0; i < arrCTHD.length; i++) {
-            arrCTHD[i].SoThuTu = i + 1;
-            arrCTHD[i].TenHangHoa = arrCTHD[i].TenHangHoa + (arrCTHD[i].TenDonViTinh !== "" && arrCTHD[i].TenDonViTinh !== null ? "(" + arrCTHD[i].TenDonViTinh + ")" : "") + (arrCTHD[i].ThuocTinh_GiaTri !== null ? arrCTHD[i].ThuocTinh_GiaTri : "") + (arrCTHD[i].MaLoHang !== "" && arrCTHD[i].MaLoHang !== null ? "(Lô: " + arrCTHD[i].MaLoHang + ")" : "");
-            arrCTHD[i].GiaChuyen = formatNumber3Digit(arrCTHD[i].DonGia, 2);
-            arrCTHD[i].SoLuongChuyen = formatNumber3Digit(arrCTHD[i].SoLuong);
-            arrCTHD[i].SoLuongNhan = (arrCTHD[i].YeuCau === '1' || arrCTHD[i].YeuCau === '2') ? 0 : formatNumber(arrCTHD[i].GiamGia);
-            arrCTHD[i].ThanhTien = formatNumber3Digit(arrCTHD[i].ThanhTien, 2);
+            let ct = $.extend({}, arrCTHD[i]);
+            ct.SoThuTu = i + 1;
+            ct.TenHangHoa = arrCTHD[i].TenHangHoa + (arrCTHD[i].TenDonViTinh !== "" && arrCTHD[i].TenDonViTinh !== null ? "(" + arrCTHD[i].TenDonViTinh + ")" : "") + (arrCTHD[i].ThuocTinh_GiaTri !== null ? arrCTHD[i].ThuocTinh_GiaTri : "") + (arrCTHD[i].MaLoHang !== "" && arrCTHD[i].MaLoHang !== null ? "(Lô: " + arrCTHD[i].MaLoHang + ")" : "");
+            ct.GiaChuyen = formatNumber3Digit(arrCTHD[i].DonGia, 2);
+            ct.SoLuongChuyen = formatNumber3Digit(arrCTHD[i].SoLuong);
+            ct.SoLuongNhan = (arrCTHD[i].YeuCau === '1' || arrCTHD[i].YeuCau === '2') ? 0 : formatNumber(arrCTHD[i].GiamGia);
+            ct.ThanhTien = formatNumber3Digit(arrCTHD[i].ThanhTien, 2);
+            ct.NgaySanXuat = '';
+            ct.NgayHetHan = '';
+            if (!commonStatisJs.CheckNull(arrCTHD[i].NgaySanXuat)) {
+                ct.NgaySanXuat = moment(arrCTHD[i].NgaySanXuat).format('DD/MM/YYYY');
+            }
+            if (!commonStatisJs.CheckNull(arrCTHD[i].NgayHetHan)) {
+                ct.NgayHetHan = moment(arrCTHD[i].NgayHetHan).format('DD/MM/YYYY');
+            }
+            arr.push(ct);
         }
-        return arrCTHD;
+        return arr;
     }
 
     function GetInforCongTy() {

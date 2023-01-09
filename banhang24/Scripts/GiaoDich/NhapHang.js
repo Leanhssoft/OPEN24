@@ -888,37 +888,37 @@
                     // hom qua
                     self.TodayBC('Hôm qua');
                     dayEnd = moment(_now).format('YYYY-MM-DD');
-                    dayStart = moment(new Date(_now.setDate(_now.getDate() - 1))).format('YYYY-MM-DD');
+                    dayStart = moment(_now).subtract(1, 'days').format('YYYY-MM-DD');
                     break;
                 case 3:
                     // tuan nay
                     self.TodayBC('Tuần này');
-                    dayStart = moment(new Date(_now.setDate(_now.getDate() - lessDays))).format('YYYY-MM-DD'); // start of wwek
-                    dayEnd = moment(new Date(_now.setDate(_now.getDate() + 6))).add('days', 1).format('YYYY-MM-DD'); // end of week
+                    dayStart = moment().startOf('week').add('days', 1).format('YYYY-MM-DD');
+                    dayEnd = moment().endOf('week').add(2, 'days').format('YYYY-MM-DD');
                     break;
                 case 4:
                     // tuan truoc
                     self.TodayBC('Tuần trước');
                     dayStart = moment().weekday(-6).format('YYYY-MM-DD');
-                    dayEnd = moment(dayStart, 'YYYY-MM-DD').add(6, 'days').add('days', 1).format('YYYY-MM-DD'); // add day in moment.js
+                    dayEnd = moment(dayStart, 'YYYY-MM-DD').add(6, 'days').add('days', 1).format('YYYY-MM-DD'); 
                     break;
                 case 5:
                     // 7 ngay qua
                     self.TodayBC('7 ngày qua');
                     dayEnd = moment(_now).format('YYYY-MM-DD').add('days', 1);
-                    dayStart = moment(new Date(_now.setDate(_now.getDate() - 7))).format('YYYY-MM-DD');
+                    dayStart = moment(_now).subtract(7, 'days').format('YYYY-MM-DD');
                     break;
                 case 6:
                     // thang nay
                     self.TodayBC('Tháng này');
-                    dayStart = moment(new Date(_now.getFullYear(), _now.getMonth(), 1)).format('YYYY-MM-DD');
-                    dayEnd = moment(new Date(_now.getFullYear(), _now.getMonth() + 1, 0)).add('days', 1).format('YYYY-MM-DD');
+                    dayStart = moment().startOf('month').format('YYYY-MM-DD');
+                    dayEnd = moment().endOf('month').add(1, 'days').format('YYYY-MM-DD');
                     break;
                 case 7:
                     // thang truoc
                     self.TodayBC('Tháng trước');
-                    dayStart = moment(new Date(_now.getFullYear(), _now.getMonth() - 1, 1)).format('YYYY-MM-DD');
-                    dayEnd = moment(new Date(_now.getFullYear(), _now.getMonth(), 0)).add('days', 1).format('YYYY-MM-DD');
+                    dayStart = moment().subtract(1, 'months').startOf('month').format('YYYY-MM-DD');
+                    dayEnd = moment().subtract(1, 'months').endOf('month').add(1, 'days').format('YYYY-MM-DD');
                     break;
                 case 10:
                     // quy nay
@@ -2118,8 +2118,10 @@
 
             localStorage.setItem('lcHDForNH', JSON.stringify(hd));
             localStorage.setItem('lcCTHDForNH', JSON.stringify(cthdLoHang));
-            localStorage.setItem('gara_CreateFrom', 'NH_XuatBan');
+
             if (self.shopCookies() === 'C16EDDA0-F6D0-43E1-A469-844FAB143014') {
+                localStorage.setItem('gara_CreateFrom', 'NH_XuatBan');
+
                 let newwindow = window.open('/g/Gara', '_blank');
                 let popupTick = setInterval(function () {
                     if (newwindow.closed) {
@@ -2378,7 +2380,7 @@
             dataType: 'json',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (result) {
-                var data = '<script src="/Scripts/knockout-3.4.2.js"></script>';
+                let data = '<script src="/Scripts/knockout-3.4.2.js"></script>';
                 data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item4=[], item5=[]; var item2=" + JSON.stringify(self.CTHoaDonPrint())
                     + ";var item3=" + JSON.stringify(itemHDFormat) + "; </script>");
@@ -2407,7 +2409,7 @@
             dataType: 'json',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (result) {
-                var data = '<script src="/Scripts/knockout-3.4.2.js"></script>';
+                let data = '<script src="/Scripts/knockout-3.4.2.js"></script>';
                 data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item4=[], item5=[]; var item2=" + JSON.stringify(self.CTHoaDonPrint())
                     + ";var item3=" + JSON.stringify(itemHDFormat) + "; </script>");
@@ -2438,6 +2440,10 @@
         var hd = $.extend({}, objHD);
         var datehoadon = moment(objHD.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
         hd.NgayLapHoaDon = datehoadon;
+        hd.Ngay = moment(objHD.NgayLapHoaDon).format('DD');
+        hd.Thang = moment(objHD.NgayLapHoaDon).format('MM');
+        hd.Nam = moment(objHD.NgayLapHoaDon).format('YYYY');
+
         var phaiTT = formatNumberToFloat(hd.PhaiThanhToan);
         var daTT = formatNumberToFloat(hd.KhachDaTra);
         var tongtien = formatNumberToFloat(hd.TongTienHang);
@@ -2506,6 +2512,14 @@
             ct.ThanhToan = formatNumber3Digit(ct.ThanhToan, 2);
             ct.TienChietKhau = formatNumber3Digit(ct.TienChietKhau, 2);
             ct.TongChietKhau = formatNumber3Digit(ct.TienChietKhau * ct.SoLuong, 2);
+            ct.NgaySanXuat = '';
+            ct.NgayHetHan = '';
+            if (!commonStatisJs.CheckNull(arrCTHD[i].NgaySanXuat)) {
+                ct.NgaySanXuat = moment(arrCTHD[i].NgaySanXuat).format('DD/MM/YYYY');
+            }
+            if (!commonStatisJs.CheckNull(arrCTHD[i].NgayHetHan)) {
+                ct.NgayHetHan = moment(arrCTHD[i].NgayHetHan).format('DD/MM/YYYY');
+            }
             arr.push(ct);
         }
         return arr;

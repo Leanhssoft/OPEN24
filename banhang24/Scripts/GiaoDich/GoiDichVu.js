@@ -2376,7 +2376,7 @@
             dataType: 'json',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (result) {
-                var data = result;
+                let data = result;
                 data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
                 data = data.concat("<script > var item4 =[], item5 =[]; var item1=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item4=[], item5=[]; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
@@ -2720,8 +2720,22 @@
             else {
                 itFor.ThanhPhanComBo = [];
             }
+
+            itFor.NgaySanXuat = '';
+            itFor.NgayHetHan = '';
+            if (!commonStatisJs.CheckNull(arrCTHD[i].NgaySanXuat)) {
+                itFor.NgaySanXuat = moment(arrCTHD[i].NgaySanXuat).format('DD/MM/YYYY');
+            }
+            if (!commonStatisJs.CheckNull(arrCTHD[i].NgayHetHan)) {
+                itFor.NgayHetHan = moment(arrCTHD[i].NgayHetHan).format('DD/MM/YYYY');
+            }
             arr.push(itFor);
         }
+        arr = arr.sort(function (a, b) {
+            let x = a.SoThuTu,
+                y = b.SoThuTu;
+            return x < y ? -1 : x > y ? 1 : 0;
+        });
         return arr;
     }
 
@@ -3067,6 +3081,7 @@
             item.HoanTraTamUng = 0;
             item.IsKhuyenMaiHD = false;
             item.IsOpeningKMaiHD = false;
+            item.BangGiaWasChanged = false;
             item.KhuyeMai_GiamGia = 0;
             item.TongGiamGiaKM_HD = item.TongGiamGia + item.KhuyeMai_GiamGia;
 

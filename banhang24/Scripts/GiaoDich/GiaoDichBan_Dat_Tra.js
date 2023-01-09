@@ -1392,7 +1392,7 @@
                             return x + item.ConNo;
                         }, 0);
 
-                        self.TongKhachNo(conno);
+                        self.TongKhachNo(first.SumConNo);
                         self.TongNoKhach(conno);// trahang
 
                         switch (loaiHoaDon) {
@@ -2628,6 +2628,7 @@
                 success: function (result) {
                     let data = result;
                     data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                    data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
                     data = data.concat(`<script> function formatNumber(number, decimalDot = 2) {
                                             if (number === undefined || number === null) {
                                                 return 0;
@@ -3004,6 +3005,7 @@
                             success: function (result) {
                                 let data = result;
                                 data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                                data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
                                 data = data.concat("<script > var item1=", JSON.stringify(cthdPrint)
                                     , "; var item2= [] "
                                     , "; var item3=", JSON.stringify(objPrint)
@@ -3071,8 +3073,9 @@
             dataType: 'json',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (result) {
-                var data = result;
+                let data = result;
                 data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
                 data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
                     + ";var item3=" + JSON.stringify(self.InforHDprintf())
@@ -3247,6 +3250,8 @@
         objPrint.TienMat = formatNumber3Digit(objPrint.TienMat);
         objPrint.TienATM = formatNumber3Digit(objPrint.TienATM);// in store: assign TienGui = TienATM
         objPrint.TienKhachThieu = formatNumber(conno);
+        objPrint.PhaiThanhToan_TruCocBG = objHD.PhaiThanhToan - objHD.ThuDatHang;
+
         // the gia tri
         objPrint.TongTaiKhoanThe = formatNumber(vmThanhToan.theGiaTriCus.TongNapThe);
         objPrint.TongSuDungThe = formatNumber(vmThanhToan.theGiaTriCus.SuDungThe);
@@ -3316,7 +3321,7 @@
         objPrint.BHThanhToanTruocThue = formatNumber(objHD.BHThanhToanTruocThue);
         objPrint.TongTienThueBaoHiem = formatNumber3Digit(objHD.TongTienThueBaoHiem, 0);
         objPrint.BH_TienBangChu = DocSo(objHD.PhaiThanhToanBaoHiem);
-        objPrint.KH_TienBangChu = DocSo(objHD.PhaiThanhToan);
+        objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCocBG);
         objPrint.BH_ConThieu = formatNumber3Digit(objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra);
 
         let bh_notruoc = 0, bh_nosau = 0;
@@ -3466,8 +3471,23 @@
             else {
                 itFor.ThanhPhanComBo = [];
             }
+
+            itFor.NgaySanXuat = '';
+            itFor.NgayHetHan = '';
+            if (!commonStatisJs.CheckNull(arr[i].NgaySanXuat)) {
+                itFor.NgaySanXuat = moment(arr[i].NgaySanXuat).format('DD/MM/YYYY');
+            }
+            if (!commonStatisJs.CheckNull(arr[i].NgayHetHan)) {
+                itFor.NgayHetHan = moment(arr[i].NgayHetHan).format('DD/MM/YYYY');
+            }
             arrCTHD.push(itFor);
         }
+
+        arrCTHD = arrCTHD.sort(function (a, b) {
+            let x = a.SoThuTu,
+                y = b.SoThuTu;
+            return x < y ? -1 : x > y ? 1 : 0;
+        });
         return arrCTHD;
     }
 
@@ -3490,6 +3510,7 @@
             ID_DoiTuong: item.ID_DoiTuong,
             NguoiTao: userLogin,
             ID_BangGia: item.ID_BangGia,
+            BangGiaWasChanged: false,
             ID_NhanVien: item.ID_NhanVien,
             NgayLapHoaDon: moment(item.NgayLapHoaDon).format('YYYY-MM-DD HH:mm:ss'),
             TongTienHang: item.TongTienHang,
@@ -4067,6 +4088,7 @@
         hdNew.IsActive = '';
         hdNew.XuatKhoAll = false;
         hdNew.DuyetBaoGia = false;
+        hdNew.BangGiaWasChanged = false;
 
         hdNew.MaPhieuTiepNhan = '';
         hdNew.BienSo = '';
@@ -4572,6 +4594,7 @@
             success: function (result) {
                 var data = result;
                 data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
                 data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
                     + "; var item3=" + JSON.stringify(itemHDFormat)
@@ -4647,8 +4670,9 @@
             dataType: 'json',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (result) {
-                var data = result;
+                let data = result;
                 data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
                 data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item4=[], item5=[]; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
                     + ";var item3=" + JSON.stringify(self.InforHDprintf()) + "; </script>");
@@ -5306,6 +5330,7 @@
         newHD.TienATM = 0;
         newHD.TienGui = 0;
         newHD.ChuyenKhoan = 0;
+        newHD.BangGiaWasChanged = false;
 
         if (commonStatisJs.CheckNull(item.CongThucBaoHiem)) {
             newHD.CongThucBaoHiem = 0;

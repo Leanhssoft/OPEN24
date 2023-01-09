@@ -1441,7 +1441,7 @@
             dataType: 'json',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (result) {
-                var data1 = '<script src="/Scripts/knockout-3.4.2.js"></script>';
+                let data1 = '<script src="/Scripts/knockout-3.4.2.js"></script>';
                 data1 = data1.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item4=[], item5=[]; var item2=" + JSON.stringify(self.CTHoaDonPrint())
                     + " ;var item3=" + JSON.stringify(itemHDFormat) + "; </script>");
@@ -1481,6 +1481,14 @@
             itFor.GiaVonHienTai = formatNumber3Digit(arrCTHD[i].GiaVonHienTai);
             itFor.GiaVonMoi = formatNumber3Digit(arrCTHD[i].GiaVonMoi);
             itFor.ChenhLech = formatNumber3Digit(arrCTHD[i].ChenhLech);
+            itFor.NgaySanXuat = '';
+            itFor.NgayHetHan = '';
+            if (!commonStatisJs.CheckNull(arrCTHD[i].NgaySanXuat)) {
+                itFor.NgaySanXuat = moment(arrCTHD[i].NgaySanXuat).format('DD/MM/YYYY');
+            }
+            if (!commonStatisJs.CheckNull(arrCTHD[i].NgayHetHan)) {
+                itFor.NgayHetHan = moment(arrCTHD[i].NgayHetHan).format('DD/MM/YYYY');
+            }
             arr.push(itFor);
         }
         return arr;

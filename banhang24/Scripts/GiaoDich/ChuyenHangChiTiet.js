@@ -652,6 +652,7 @@ var ChuyenHangChiTiet = function () {
 
                     if (self.IsNhapNhanh()) {
                         AddCTHD(item, 1);
+                        GetTonKho_byIDQuyDois();// update giavon by ngaychuyenhang
                     }
                     else {
                         $('#txtSoLuongHang').focus();
@@ -670,6 +671,7 @@ var ChuyenHangChiTiet = function () {
                         data[0].ID_HangHoa = data[0].ID;
                         self.ItemChosing(data[0]);
                         AddCTHD(data[0], 1);
+                        GetTonKho_byIDQuyDois();// update giavon by ngaychuyenhang
                     }
                 }
                 else {
@@ -1315,6 +1317,7 @@ var ChuyenHangChiTiet = function () {
         if (e.keyCode === 13) {
             if (self.IsNhapNhanh() === false) {
                 AddCTHD(self.ItemChosing(), formatNumberToFloat($(this).val()));
+                GetTonKho_byIDQuyDois();// update giavon by ngaychuyenhang
             }
         }
     })

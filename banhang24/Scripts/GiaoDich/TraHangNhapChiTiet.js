@@ -2529,7 +2529,7 @@ var TraHangNhapChiTiet = function () {
             self.InforHDprintf(itemHDFormat);
 
             ajaxHelper('/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + TeamplateMauIn + '&idDonVi=' + _idDonVi, 'GET').done(function (result) {
-                var data = '<script src="/Scripts/knockout-3.4.2.js"></script>';
+                let data = '<script src="/Scripts/knockout-3.4.2.js"></script>';
                 data = data.concat("<script > var item4=[], item5=[]; var item1=" + JSON.stringify(self.CTHoaDonPrint()) + "; var item2=" + JSON.stringify(self.CTHoaDonPrint()) + ";var item3=" + JSON.stringify(itemHDFormat) + "; </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
                 PrintExtraReport(result, data, self.numbersPrintHD());
