@@ -166,16 +166,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
 
-        public List<DM_GiaBan> GetDMGiaBan_GBApDung(Guid idDonVi)
+        public IHttpActionResult GetDMGiaBan_GBApDung(Guid idDonVi)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 var dtNow = DateTime.Now;
 
-                List<DM_GiaBan> lstReturn = new List<DM_GiaBan>();
+                List<DMGiaBanDTO> lstReturn = new List<DMGiaBanDTO>();
                 if (db == null)
                 {
-                    return null;
+                    return Json(new { res = false });
                 }
                 else
                 {
@@ -189,20 +189,20 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                     && DateTime.Compare(dtNow, gb.TuNgay ?? DateTime.Now) >= 0 && DateTime.Compare(gb.DenNgay ?? DateTime.Now, dtNow) >= 0
                                    group new { gbap } by new
                                    {
-                                       ID = gb.ID,
-                                       TenGiaBan = gb.TenGiaBan,
-                                       TuNgay = gb.TuNgay,
-                                       DenNgay = gb.DenNgay,
-                                       TatCaDoiTuong = gb.TatCaDoiTuong,
-                                       TatCaDonVi = gb.TatCaDonVi,
-                                       TatCaNhanVien = gb.TatCaNhanVien,
-                                       LoaiChungTuApDung = gb.LoaiChungTuApDung,
-                                       NgayTrongTuan = gb.NgayTrongTuan,
+                                       gb.ID,
+                                       gb.TenGiaBan,
+                                       gb.TuNgay,
+                                       gb.DenNgay,
+                                       gb.TatCaDoiTuong,
+                                       gb.TatCaDonVi,
+                                       gb.TatCaNhanVien,
+                                       gb.LoaiChungTuApDung,
+                                       gb.NgayTrongTuan,
                                    };
 
                         foreach (var item in data)
                         {
-                            DM_GiaBan itemGB = new DM_GiaBan();
+                            DMGiaBanDTO itemGB = new DMGiaBanDTO();
                             itemGB.ID = item.Key.ID;
                             itemGB.TenGiaBan = item.Key.TenGiaBan;
                             itemGB.TuNgay = item.Key.TuNgay;
@@ -212,27 +212,21 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             itemGB.TatCaNhanVien = item.Key.TatCaNhanVien;
                             itemGB.LoaiChungTuApDung = item.Key.LoaiChungTuApDung;
                             itemGB.NgayTrongTuan = item.Key.NgayTrongTuan;
-
-                            foreach (var itemGr in item)
-                            {
-                                DM_GiaBan_ApDung itemAD = new DM_GiaBan_ApDung();
-                                if (itemGr.gbap != null)
-                                {
-                                    itemAD.ID_GiaBan = itemGB.ID;
-                                    itemAD.ID_NhomKhachHang = itemGr.gbap.ID_NhomKhachHang ?? Guid.Empty;
-                                    itemAD.ID_NhanVien = itemGr.gbap.ID_NhanVien ?? Guid.Empty;
-
-                                    itemGB.DM_GiaBan_ApDung.Add(itemAD);
-                                }
-                            }
+                            itemGB.DM_GiaBan_ApDung = item.Where(x=>x.gbap.ID_GiaBan==item.Key.ID)
+                                .Select(o=> new DMGiaBan_ApDungDTO {
+                                    ID_GiaBan= itemGB.ID,
+                                    ID_DonVi= o.gbap.ID_DonVi,
+                                    ID_NhomKhachHang = o.gbap.ID_NhomKhachHang,
+                                    ID_NhanVien = o.gbap.ID_NhanVien,
+                                }).ToList();
                             lstReturn.Add(itemGB);
                         }
-                        return lstReturn;
+                        return Json(new { res = true, data = lstReturn });
                     }
                     catch (Exception e)
                     {
                         CookieStore.WriteLog("DM_GiaBanAPI_GetDMGiaBan_GBApDung: " + e.InnerException + e.Message);
-                        return null;
+                        return Json(new { res = false, mes = e.InnerException + e.Message });
                     }
                 }
             }
