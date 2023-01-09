@@ -5387,7 +5387,6 @@
 
     self.ShowPopListDiary_ofCustomer = function (item) {
         let id = item.ID;
-        vmNKGoiBaoDuong.formType = 1;
         vmNKGoiBaoDuong.ID_DonVi = VHeader.IdDonVi;
         vmNKGoiBaoDuong.GetGoiDichVu_ofKhachHang(id);
         vmThanhToanGara.GetSoDuTheGiaTri(id);
