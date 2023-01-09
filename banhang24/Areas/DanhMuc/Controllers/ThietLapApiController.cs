@@ -369,6 +369,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     temptable = temptable.Replace("{GhiChu}", "<span data-bind=\"text: GhiChu\"></span>");
                     temptable = temptable.Replace("{ThuocTinh_GiaTri}", "<span data-bind=\"text: ThuocTinh_GiaTri\"></span>");
                     temptable = temptable.Replace("{GhiChuHH}", "<span data-bind=\"text: GhiChuHH\"></span>");
+                    temptable = temptable.Replace("{NgaySanXuat}", "<span data-bind=\"text: NgaySanXuat\"></span>");
+                    temptable = temptable.Replace("{NgayHetHan}", "<span data-bind=\"text: NgayHetHan\"></span>");
 
                     // xuat huy
                     temptable = temptable.Replace("{MaHangHoa}", "<span data-bind=\"text: MaHangHoa\"></span>");
@@ -474,6 +476,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     temptable = temptable.Replace("{GhiChu}", "<span data-bind=\"text: GhiChu\"></span>");
                     temptable = temptable.Replace("{ThuocTinh_GiaTri}", "<span data-bind=\"text: ThuocTinh_GiaTri\"></span>");
                     temptable = temptable.Replace("{GhiChuHH}", "<span data-bind=\"text: GhiChuHH\"></span>");
+                    temptable = temptable.Replace("{NgaySanXuat}", "<span data-bind=\"text: NgaySanXuat\"></span>");
+                    temptable = temptable.Replace("{NgayHetHan}", "<span data-bind=\"text: NgayHetHan\"></span>");
 
                     // xuat huy
                     temptable = temptable.Replace("{MaHangHoa}", "<span data-bind=\"text: MaHangHoa\"></span>");
@@ -625,6 +629,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content = content.Replace("{TongChietKhau}", "<span data-bind=\"text: formatNumber(TongChietKhau)\"></span>");
             content = content.Replace("{TonKho}", "<span data-bind=\"text: formatNumber(TonKho)\"></span>");
             content = content.Replace("{TonLuyKe}", "<span data-bind=\"text: formatNumber(TonLuyKe)\"></span>");
+            content = content.Replace("{NgaySanXuat}", "<span data-bind=\"text: NgaySanXuat\"></span>");
+            content = content.Replace("{NgayHetHan}", "<span data-bind=\"text: NgayHetHan\"></span>");
 
             // sudung dv
             content = content.Replace("{SLDVDaSuDung}", "<span data-bind=\"text: formatNumber(SoLuongDVDaSuDung)\"></span>");
