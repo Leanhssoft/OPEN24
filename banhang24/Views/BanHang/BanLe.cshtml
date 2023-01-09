@@ -400,6 +400,8 @@
     <div id="divPage">
         <div class=" bill-header floatleft flex" id="bill-header">
             <div class="w701" id="header1">
+                @*<input id="versioncache" value="@System.Configuration.ConfigurationManager.AppSettings["VersionCache"]" 
+                       style="display:none" />*@
                 <input style="display:none" value="@ViewBag.cookieDonVi" id="txtDonVi" />
                 <input type="hidden" value="@contant.GetUserCookies().ID_NhanVien" id="txtIDNhanVien" />
                 <input type="hidden" value="@contant.GetUserCookies().ID" id="txtIDUser" />
@@ -527,9 +529,11 @@
                                    onkeypress="keypressNumber_limitNumber(event,this)" maxlength="9"
                                    data-bind="value: $root.txtSoLuong, event:{keyup: editSoLuong_NhapThuong}, valueUpdate:'afterkeydown'"
                                    placeholder="Số lượng" />
+                            <!--ko if: $root.roleChangePriceProduct()-->
                             <input type="text" class="form-control text-right" placeholder="Đơn giá" id="txtDonGia"
                                    onkeypress="return keypressNumber(event)"
                                    data-bind="value: $root.txtDonGia, event:{keyup: editDonGia_NhapThuong}, valueUpdate:'afterkeydown'" />
+                            <!--/ko-->
                         </div>
                         <div class="box-barcode " data-bind="click: NhapThuong_Nhanh" tabindex="-1">
                             <img src="~/Content/images/print-min.png" alt="Nhập nhanh" />
@@ -2934,9 +2938,9 @@
                                             <ul>
                                                 <!--ko if: RoleInsert_Invoice () && $root.HoaDons().LoaiHoaDon() !== 6-->
                                                 <!--ko if: !(
-      $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-    && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 19)
-       ) -->
+                                                  $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+                                                && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 19)
+                                                   ) -->
                                                 <li data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 1},click: clickHoaDon">
                                                     <img hidden class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1" />
                                                     <a href="javascript:void(0)">Hóa đơn</a>
@@ -2946,8 +2950,8 @@
                                                 <!--/ko-->
                                                 <!--ko if: RoleInsert_Order() && $root.HoaDons().LoaiHoaDon() !== 6 -->
                                                 <!--ko if: !(
-        $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-    &&  ($root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 19)  ) -->
+                                                    $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+                                                &&  ($root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 19)  ) -->
                                                 <li data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 3},
                                                     visible: $root.ThietLap() && $root.ThietLap().DatHang ,click: clickDatHang">
                                                     <img hidden class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1" />
@@ -2958,9 +2962,9 @@
                                                 <!--/ko-->
                                                 <!--ko if: $root.HoaDons().LoaiHoaDon() !== 6 && $root.RoleInsert_Service() -->
                                                 <!--ko if: !(
-      $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-    && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 1|| $root.HoaDons().LoaiHoaDon() == 1)
-       ) -->
+                                                  $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+                                                && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 1|| $root.HoaDons().LoaiHoaDon() == 1)
+                                                   ) -->
                                                 <li data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 19},click: clickGoiDichVu">
                                                     <img hidden class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1" />
                                                     <a href="javascript:void(0)">Gói dịch vụ</a>
@@ -3511,7 +3515,6 @@
                                             </button>
                                             <!--/ko-->
                                             <!--/ko-->
-
                                             <!--ko if: HoaDons().LoaiHoaDon() !== 3 -->
                                             <!--ko if: $root.setLuuTam() -->
                                             <button class="notifi-order"
@@ -4466,6 +4469,8 @@
 <script src="@Html.WriteRenderFile(Scripts.Url("~/bundles/BanLe"))" type="text/javascript"></script>
 
 <script>
+    @*const versionCache = '@System.Configuration.ConfigurationManager.AppSettings["VersionCache"]';*@
+
     $(function () {
         $.datetimepicker.setLocale('vi');
         $('#datepicker').datetimepicker(
@@ -4721,6 +4726,7 @@
         }
     });
 </script>
+@*<link rel="manifest"      href="../../manifest.manifest">*@
 <script type="text/javascript">
 
 
@@ -4728,4 +4734,10 @@
         minHeight: 300,
         minWidth: 300
     });
+
+    //if ('serviceWorker' in navigator) {
+    //    navigator.serviceWorker.register('../../service-worker.js')
+    //        .then((xx) => console.log('sw was registered' + xx))
+    //        .catch((err) => console.log('sw err'))
+    //}
 </script>
