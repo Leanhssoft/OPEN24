@@ -405,21 +405,21 @@
                                                         {{moment(item.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')}}
                                                     </td>
                                                     <td>
-                                                        {{item.SLoaiHoaDon}}
+                                                        {{Remove_LastComma(item.SLoaiHoaDon)}}
                                                     </td>
                                                     <td>
                                                         <span class="bold">
-                                                            {{item.MaHoaDon}}
+                                                            {{Remove_LastComma(item.MaHoaDon)}}
                                                         </span>
                                                     </td>
                                                     <td class="text-right">
                                                         {{formatNumber3Digit(item.SoDuTruoc)}}
                                                     </td>
                                                     <td class="text-right">
-                                                        {{item.LoaiHoaDonSQ== 11?formatNumber3Digit(item.TienThe):0}}
+                                                        {{formatNumber3Digit(item.PhatSinhGiam)}}
                                                     </td>
                                                     <td class="text-right">
-                                                        {{item.LoaiHoaDonSQ== 12?formatNumber3Digit(item.TienThe):0}}
+                                                        {{formatNumber3Digit(item.PhatSinhTang)}}
                                                     </td>
                                                     <td class="text-right">
                                                         {{formatNumber3Digit(item.SoDuSau)}}
@@ -510,7 +510,7 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" v-if="$root.formType==0">
+            <div class="modal-footer" v-if="$root.CallFrom==0">
 
                 <button type="button" class="btn btn-cancel" data-dismiss="modal"><i class="fa fa-ban"></i>&nbsp;Hủy bỏ</button>
                 <button type="button" class="btn btn-main" v-on:click="Agree">
@@ -571,7 +571,7 @@
             ListDichVuChosed: [],
             ListIDCarChosed: [],
 
-            formType: 0,
+            CallFrom: 0, //0 - Hóa đơn, 1 - Khác
             roleUpdateImg: false,
             roleXemHoaHong: false,
             soduTheGiaTri: false,
@@ -638,7 +638,7 @@
                 LichSuNapThe: [],
                 NhatKySuDungThe: [],
                 GDV_ThanhPhanDinhLuong: [],
-            }
+            },
         },
         methods: {
             GetGoiDichVu_ofKhachHang: function (idCus, idCar = null) {
@@ -857,7 +857,7 @@
                         self.listData.GoiDichVu = data;
                         self.GetTPDinhLuong_ofHoaDon();
 
-                        if (self.formType === 0) {
+                        if (self.CallFrom === 0) {
                             newModelBanLe.TongGoiDV(data.length);
                         }
                     }
@@ -1092,9 +1092,10 @@
                 }
             },
 
-            showModal: function (idCus, idCar = null, nganhnghe = 0) {
+            showModal: function (idCus, idCar = null, nganhnghe = 0,  from = 0) {
                 let self = this;
                 self.saveOK = false;
+                self.CallFrom = from;
                 self.LoaiNganhNghe = nganhnghe;
                 self.ID_Customer = idCus;
                 self.ID_Car = idCar;
