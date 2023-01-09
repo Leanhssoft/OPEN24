@@ -2472,7 +2472,7 @@ var NewModel_BanHangLe = function () {
     }
 
     var finishLoad_BangGia = false;
-    function GetDMGiaBan_GBApDung() {
+    function GetDMGiaBan_GBApDung(isChangeCN=false) {
         ajaxHelper("/api/DanhMuc/DM_GiaBanAPI/" + "GetDMGiaBan_GBApDung_ChiTiet?idDonVi=" + id_DonVi, 'GET').done(function (obj) {
             finishLoad_BangGia = true;
             if (obj.res === true) {
@@ -2504,7 +2504,7 @@ var NewModel_BanHangLe = function () {
                                 else {
                                     // check create hoadon from BanLamViec/NhapHnag
                                     let createHDfrom = localStorage.getItem('createHDfrom');
-                                    if (createHDfrom) {
+                                    if (createHDfrom || isChangeCN) {
                                         // update again banggia for hoadon
                                         BindLstBangGia_byNhanVien_andDoiTuong();
                                         let idBangGia = UpdateAgainBangGia_forHoaDon(hdLast[0].IDRandom);
@@ -9060,6 +9060,7 @@ var NewModel_BanHangLe = function () {
             self.GiaBan0(itemBG);
         }
         else {
+            idBangGia = const_GuidEmpty;
             self.GiaBan0([{ ID: idBangGia, TenGiaBan: 'Bảng giá chuẩn' }]);
         }
         self.selectedGiaBan(idBangGia);
@@ -9150,7 +9151,7 @@ var NewModel_BanHangLe = function () {
         GetHT_TichDiem();
         GetDM_TaiKhoanNganHang();
         GetNhanVien_NguoiDung();
-        GetDMGiaBan_GBApDung();
+        GetDMGiaBan_GBApDung(true);
         GetNhomDoiTuong_DonVi();
         vmThanhPhanDinhLuong.ID_DonVi = id_DonVi;
         vmThanhPhanDinhLuong.GetAllDinhLuongDV();
@@ -13254,6 +13255,7 @@ var NewModel_BanHangLe = function () {
             if (loaiHD === 1 || loaiHD === 25) {
                 return;
             }
+
             // count HoaDon with loaiHoaDon = 1 (HDon not offline)
             var countHD = GetMax_MaHoaDon(1, lstHD) + 1;
             var idRandomHD = GetIDRandomHD_byMaHoaDon(_maHoaDon);
@@ -13267,6 +13269,7 @@ var NewModel_BanHangLe = function () {
                 }
             }
             localStorage.setItem(lcListHD, JSON.stringify(lstHD));
+
             var cthd = localStorage.getItem(lcListCTHD);
             if (cthd !== null) {
                 cthd = JSON.parse(cthd);
@@ -13337,6 +13340,10 @@ var NewModel_BanHangLe = function () {
             }
             _maHoaDon = nameHD_InsertBH + countHD;
             localStorage.setItem(lcMaHD, _maHoaDon);
+
+            // !important: get banggia after assign _maHoaDon --> ussed to check banggia by loaiHD opening
+            BindLstBangGia_byNhanVien_andDoiTuong();
+            UpdateAgainBangGia_forHoaDon(idRandomHD);
         }
         self.KM_KMApDung([]);
         UpdateDiemGiaoDich_andResetDiemQuyDoi_forHoaDon();
@@ -13556,8 +13563,12 @@ var NewModel_BanHangLe = function () {
                         });
                         localStorage.setItem(lcProductKM_HoaDon, JSON.stringify(lstKM_HD));
                     }
+
+                    _maHoaDon = maHDNew;
                     localStorage.setItem(lcMaHD, maHDNew);
 
+                    BindLstBangGia_byNhanVien_andDoiTuong();
+                    UpdateAgainBangGia_forHoaDon(idRandomHD);
                     BindHD_CTHDafterSave();
                     UpdateCacheHDLe(idRandomHD, false);
                     Call_6Func();
@@ -13586,8 +13597,10 @@ var NewModel_BanHangLe = function () {
                         cthd = ChangeLoaiHD_CTHD(cthd, maHDNew, loaiHD);
                         localStorage.setItem(lcListHD, JSON.stringify(hd));
                         localStorage.setItem(lcListCTHD, JSON.stringify(cthd));
-
+                        _maHoaDon = maHDNew;
                         localStorage.setItem(lcMaHD, maHDNew);
+                        BindLstBangGia_byNhanVien_andDoiTuong();// bind bangia after assign _mahoadon !! 
+                        UpdateAgainBangGia_forHoaDon(idRandomHD);
                         BindHD_CTHDafterSave();
                         UpdateCacheHDLe(idRandomHD, false);
                         Call_6Func();
@@ -13647,9 +13660,12 @@ var NewModel_BanHangLe = function () {
                     localStorage.setItem(lcListHD, JSON.stringify(hd));
                     localStorage.setItem(lcListCTHD, JSON.stringify(cthd));
 
+                    _maHoaDon = maHDNew;
+                    localStorage.setItem(lcMaHD, maHDNew);
+                    BindLstBangGia_byNhanVien_andDoiTuong();
+                    UpdateAgainBangGia_forHoaDon(idRandomHD);
                     UpdateCacheHDLe(idRandomHD, false);
 
-                    localStorage.setItem(lcMaHD, maHDNew);
                     BindHD_CTHDafterSave();
                     Call_6Func();
                 }
@@ -13661,6 +13677,8 @@ var NewModel_BanHangLe = function () {
             localStorage.setItem(lcListHD, JSON.stringify(hd));
             _maHoaDon = objHDNew.MaHoaDon;
             localStorage.setItem(lcMaHD, objHDNew.MaHoaDon);
+            BindLstBangGia_byNhanVien_andDoiTuong();
+            UpdateAgainBangGia_forHoaDon(objHDNew.IDRandom);
             BindHD_CTHDafterSave();
             Call_6Func();
             ActiveTab_SoDoPhong();
@@ -20216,7 +20234,7 @@ var NewModel_BanHangLe = function () {
             $('#pressNormal').hide();
             $("#searchandadd").css("width", "calc(100% - 50px)")
         }
-        var loaiHoaDon = GetLoaiHoaDon_ofHDopening();
+        var loaiHoaDon = self.HoaDons().LoaiHoaDon();
         var roleChangePriceProduct = false;
         switch (loaiHoaDon) {
             case 1:
@@ -22066,7 +22084,7 @@ var NewModel_BanHangLe = function () {
         var lcSetPrint = localStorage.getItem(lcSetPrintConst);
         if (lcSetPrint !== null) {
             lcSetPrint = JSON.parse(lcSetPrint);
-            var loaiHD = GetLoaiHoaDon_ofHDopening();
+            var loaiHD = self.HoaDons().LoaiHoaDon();
             itemEx = $.grep(lcSetPrint, function (x) {
                 return x.LoaiHoaDon === loaiHD && x.PrintDraft === true;
             });
@@ -23134,7 +23152,7 @@ var NewModel_BanHangLe = function () {
         var check = CheckHDOffline_orTraHangfromHD();
         if (check !== 1) {
             // check role change NVien
-            var loaiHoaDon = GetLoaiHoaDon_ofHDopening();
+            var loaiHoaDon = self.HoaDons().LoaiHoaDon();
             var maQuyen = '';
             switch (loaiHoaDon) {
                 case 1:
@@ -23542,7 +23560,7 @@ var NewModel_BanHangLe = function () {
                 return x.ID === idFocus;
             });
             if (itemFocus.length > 0) {
-                var loaiHD = GetLoaiHoaDon_ofHDopening();
+                let loaiHD = self.HoaDons().LoaiHoaDon();
                 if (loaiHD === 6) {
                     self.ClickChoseLot_DoiTra(itemFocus[0]);
                 }
@@ -24688,7 +24706,7 @@ var NewModel_BanHangLe = function () {
                 }
             }
 
-            let loaiHD = GetLoaiHoaDon_ofHDopening();
+            let loaiHD = self.HoaDons().LoaiHoaDon();
             let nameCacheCTHD = lcListCTHD;
             let txtFirst_GhiChu = "Tư vấn: ";
             switch (loaiHD) {
@@ -27024,7 +27042,7 @@ var NewModel_BanHangLe = function () {
     }
 
     self.Agree_TPDinhLuong = function () {
-        var loaiHD = GetLoaiHoaDon_ofHDopening();
+        var loaiHD = self.HoaDons().LoaiHoaDon();
         var cacheName = lcListCTHD;
         if (loaiHD === 6) {
             cacheName = lcListCTHD_DoiTra;
@@ -27388,7 +27406,7 @@ var NewModel_BanHangLe = function () {
             return x.ID === self.IDPhongBan_Chosing();
         });
         if (itemPB.length > 0) {
-            var loaiHD = GetLoaiHoaDon_ofHDopening();
+            var loaiHD = self.HoaDons().LoaiHoaDon();
             var cacheName = lcListCTHD;
             if (loaiHD === 6) {
                 cacheName = lcListCTHD_DoiTra;
