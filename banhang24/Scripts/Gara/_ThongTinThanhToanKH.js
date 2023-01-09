@@ -10,6 +10,7 @@
     },
     data: {
         saveOK: false,
+        isLoading: false,
         isNew: true,
         formType: 1,
         IsShareDiscount: '2',
@@ -204,6 +205,7 @@
             var self = this;
             self.isCheckTraLaiCoc = false;
             self.saveOK = false;
+            self.isLoading = false;
             self.formType = formType;
             self.GridNVienBanGoi_Chosed = [];
             self.PhieuThuKhach = self.newPhieuThu(1);
@@ -297,6 +299,7 @@
             var self = this;
             self.isCheckTraLaiCoc = false;
             self.saveOK = false;
+            self.isLoading = false;
             self.formType = formType;
             self.inforHoaDon = hd;
             self.GridNVienBanGoi_Chosed = [];
@@ -1218,15 +1221,15 @@
         AgreeThanhToan: function () {
             var self = this;
             self.saveOK = true;
+            if (self.isLoading) {
+                return;
+            }
             switch (self.formType) {
                 case 1:// gara
+                    self.isLoading = true;
                     newModelBanLe.saveHoaDonTraHang();
                     break;
-                case 2:// banle
-                    self.saveOK = true;
-                    break;
-                case 3://thegiatri
-                    self.saveOK = true;
+                default:
                     break;
             }
             $('#ThongTinThanhToanKHNCC').modal('hide');
@@ -1920,12 +1923,11 @@
                     //    commonStatisJs.ShowMessageDanger("Là khách lẻ, không cho phép nợ");
                     //    return;
                     //}
-                    var nowSeconds = (new Date()).getSeconds() + 1;
                     let quyhd = {
                         LoaiHoaDon: loaiThuChi,
                         TongTienThu: tongthu,
                         MaHoaDon: maPhieuThuChi,
-                        NgayLapHoaDon: moment(hd.NgayLapHoaDon).add(nowSeconds, 'seconds').format('YYYY-MM-DD HH:mm:ss'),
+                        NgayLapHoaDon: hd.NgayLapHoaDon,
                         NguoiNopTien: tenDoiTuong,
                         NguoiTao: hd.NguoiTao,
                         NoiDungThu: ghichu,
@@ -1973,9 +1975,6 @@
                             }
                         })
                     }
-                    else {
-                        self.isLoading = false;
-                    }
                 }
 
                 // thu tu coc
@@ -1998,12 +1997,11 @@
                     self.PhieuThuKhachPrint.TienDatCoc = tienCocX;
                     self.PhieuThuKhachPrint.DaThanhToan = tienCocX;
 
-                    let nowSeconds = (new Date()).getSeconds() + 1;
                     let quyhd = {
                         LoaiHoaDon: 11,
                         TongTienThu: tongthu,
                         MaHoaDon: maPhieuThuChi,
-                        NgayLapHoaDon: moment(hd.NgayLapHoaDon).add(nowSeconds, 'seconds').format('YYYY-MM-DD HH:mm:ss'),
+                        NgayLapHoaDon: hd.NgayLapHoaDon,
                         NguoiNopTien: tenDoiTuong,
                         NguoiTao: hd.NguoiTao,
                         NoiDungThu: ghichu,
