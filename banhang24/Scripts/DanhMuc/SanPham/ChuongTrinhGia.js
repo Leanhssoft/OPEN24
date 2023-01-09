@@ -2347,13 +2347,13 @@ var CTGiaViewModel = function () {
         ajaxHelper(GiaBanUri + 'GetListGiaBans_where?currentPage=' + self.currentPage() + '&pageSize=' + self.pageSize() + '&idnhomhang=' + self.arrIDNhomHang() +
             '&maHoaDon=' + txtMaHDon + '&_id=' + self.selectedGiaBan() + '&columsort=' + self.columsort() + '&sort=' + self.sort() + '&iddonvi=' + _IDchinhanh,
             'GET').done(function (data) {
-                $('.table_price').gridLoader({ show: false });
                 self.GiaBanChitiets(data.lstBG);
                 self.TotalRecord(data.Rowcount);
                 self.PageCount(data.pageCount);
                 LoadHtmlGrid();
+            }).always(() => {
+                $('.table_price').gridLoader({ show: false });
             });
-        //allGiaChiTiet();
     }
 
     self.clickiconSearchBG = function () {
