@@ -5197,7 +5197,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             {
                                 ID_HangHoa = p.ID,
                                 TenDonViTinh = x.TenDonViTinh,
-                                ID_DonViQuiDoi = x.ID,
+                                ID_DonViQuiDoi = x.ID_DonViQuiDoi,
                                 QuanLyTheoLoHang = p.QuanLyTheoLoHang,
                                 Xoa = false,
                                 TyLeChuyenDoi = x.TyLeChuyenDoi
