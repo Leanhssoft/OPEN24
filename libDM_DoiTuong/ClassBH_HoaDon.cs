@@ -5196,6 +5196,7 @@ namespace libDM_DoiTuong
                     objUpd.LoaiHoaDon = obj.LoaiHoaDon;
                     objUpd.ID_NhanVien = obj.ID_NhanVien == Guid.Empty ? null : obj.ID_NhanVien;
                     objUpd.ID_ViTri = obj.ID_ViTri == Guid.Empty ? null : obj.ID_ViTri;
+                    objUpd.ID_BangGia = obj.ID_BangGia == Guid.Empty ? null : obj.ID_BangGia;
                     objUpd.DienGiai = obj.DienGiai;
                     objUpd.ID_DoiTuong = obj.ID_DoiTuong == null ? Guid.Empty : obj.ID_DoiTuong;
                     objUpd.PhaiThanhToan = obj.PhaiThanhToan;
