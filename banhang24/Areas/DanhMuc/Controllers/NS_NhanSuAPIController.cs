@@ -1846,7 +1846,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     isprev = model.pageNow > 3 && page > 5,
                     isnext = model.pageNow < page - 2 && page > 5,
                     countpage = page,
-                    totalRows= count,
+                    totalRows = count,
                 });
             }
             catch (Exception ex)
@@ -2757,7 +2757,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 var _dbcontext = SystemDBContext.GetDBContext();
                 var _NhanSuService = new NhanSuService(_dbcontext);
                 List<ChamCongModel> data = _NhanSuService.GetChamCongFilter(model).ToList();
-                var result = data.GroupBy(o => new { o.Thang, o.Nam}).Select(o => new
+                var result = data.GroupBy(o => new { o.Thang, o.Nam }).Select(o => new
                 {
                     Thang = o.Key.Thang,
                     Nam = o.Key.Nam,
@@ -3714,7 +3714,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 qct.ID_BangLuongChiTiet = item.ID_BangLuongChiTiet;
                             }
                         }
-                        
+
                         _dbcontext.SaveChanges();
                         trans.Commit();
 
@@ -4109,7 +4109,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/NhanSu/" + fileName + ".xlsx");
                 fileSave = _Class_officeDocument.createFolder_Download(fileSave);
 
-                _Class_officeDocument.ExportExcelToFileBangLuongCT(fileTeamplate, fileSave, excel, 4, 29, 24, true, _NhanSuService.GetDangKySuDungHRM() ? string.Empty : "9_8", "", model.MaBangLuong + " - " + model.TenBangLuong,
+                _Class_officeDocument.ExportExcelToFileBangLuongCT(fileTeamplate, fileSave, excel, 4, 29, 24, true, string.Empty, "", model.MaBangLuong + " - " + model.TenBangLuong,
                                                                 new int[] { 0, 1 }, listRowPan);
                 System.Web.HttpResponse Response = System.Web.HttpContext.Current.Response;
                 return ActionTrueData(fileSave);
