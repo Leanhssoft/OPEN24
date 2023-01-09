@@ -658,8 +658,10 @@
                     <div class="gara-fast-input" style="min-width:175px" hidden>
                         <input type="text" class="form-control text-right" placeholder="Số lượng"
                                data-bind="value: $root.txtSoLuong">
+                        <!--ko if: $root.roleChangePriceProduct()-->
                         <input type="text" class="form-control text-right" placeholder="Đơn giá"
                                data-bind="value: $root.txtDonGia">
+                        <!--/ko-->
                     </div>
                     <a style="padding:3px 12px; display:none" onclick="togglefastInput(this)">
                         <img src="/Content/images/print-min.png" alt="nhập nhanh" />
@@ -920,6 +922,7 @@
                     <div class="op-hoadon-quanlity">
                         <div class="op-hoadon-soluong">
                             Số lượng
+                            <span data-bind="text: SumQuantity() ===0?'':'(' +formatNumber3Digit(SumQuantity()) + ')' ">(1)</span>
                         </div>
                         <div class="op-hoadon-dongia">
                             Đơn giá
