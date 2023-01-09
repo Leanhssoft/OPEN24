@@ -11,6 +11,27 @@ namespace Model
         public double? TonKho { get; set; }
     }
 
+    public class DMGiaBanDTO
+    {
+        public Guid ID { get; set; }
+        public string TenGiaBan { get; set; }
+        public DateTime? TuNgay { get; set; }
+        public DateTime? DenNgay { get; set; }
+        public bool? TatCaDoiTuong { get; set; }
+        public bool? TatCaDonVi { get; set; }
+        public bool? TatCaNhanVien { get; set; }
+        public string LoaiChungTuApDung { get; set; }
+        public string NgayTrongTuan { get; set; }
+        public List<DMGiaBan_ApDungDTO> DM_GiaBan_ApDung { get; set; }
+    } 
+    public class DMGiaBan_ApDungDTO
+    {
+        public Guid ID_GiaBan { get; set; }
+        public Guid? ID_DonVi { get; set; }
+        public Guid? ID_NhomKhachHang { get; set; }
+        public Guid? ID_NhanVien { get; set; }
+    }
+
     public class ParamSearch_DMHangHoa : CommonParamSearch
     {
         public int? TrangThaiKho { get; set; }
@@ -319,7 +340,7 @@ namespace Model
         public double? GiaBan { get; set; }
         public double? GiamGia { get; set; }
         public double SoLuong { get; set; }
-        public int ThuTuHoaDon { get; set; } 
+        public int ThuTuHoaDon { get; set; }
         public Guid? ID_DonViQuiDoi { get; set; }
         public Guid? ID_LoHang { get; set; }
     }
