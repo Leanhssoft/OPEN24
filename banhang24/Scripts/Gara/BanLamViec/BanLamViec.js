@@ -1000,6 +1000,7 @@
             obj.HoanTraTamUng = 0;
             obj.IsKhuyenMaiHD = false;
             obj.IsOpeningKMaiHD = false;
+            obj.BangGiaWasChanged = false;
 
             obj.PTGiamGiaHH = 0;
             obj.TongGiamGiaHang = false;
@@ -1257,7 +1258,7 @@
             newObj.BienSo = self.listData.ThongTinXe.BienSo;
             newObj.TongThueKhachHang = item.TongTienThue;
             newObj.CongThucBaoHiem = 13;
-            newObj.DuyetBaoGia = !item.ChoThanhToan;
+            newObj.DuyetBaoGia = (parseInt(item.TrangThai) === 0);
             newObj.ID_Xe = self.listData.ThongTinXe.ID_Xe;
 
             var tonggiamgiahang = 0, tongtienhangchuaCK = 0;
@@ -1466,7 +1467,7 @@
             let newObj = self.newHoaDon(item, loaiHD === 3 ? 3 : 8);
             newObj.DaThanhToan = 0;
             newObj.SoDuDatCoc = 0;
-            newObj.DuyetBaoGia = !item.ChoThanhToan;
+            newObj.DuyetBaoGia = (parseInt(item.TrangThai) === 0);
             newObj.LoaiHoaDon = loaiHD;
             newObj.BienSo = self.listData.ThongTinXe.BienSo;
             newObj.ID_Xe = self.listData.ThongTinXe.ID_Xe;
@@ -2098,6 +2099,15 @@
                 else {
                     itFor.ThanhPhanComBo = [];
                 }
+
+                itFor.NgaySanXuat = '';
+                itFor.NgayHetHan = '';
+                if (!commonStatisJs.CheckNull(cthd[i].NgaySanXuat)) {
+                    itFor.NgaySanXuat = moment(cthd[i].NgaySanXuat).format('DD/MM/YYYY');
+                }
+                if (!commonStatisJs.CheckNull(cthd[i].NgayHetHan)) {
+                    itFor.NgayHetHan = moment(cthd[i].NgayHetHan).format('DD/MM/YYYY');
+                }
                 lstCT.push(itFor);
             }
             if (self.listData.HoaDonChiTiets.length > 0) {
@@ -2106,7 +2116,7 @@
                     url = '/api/DanhMuc/ThietLapApi/GetContentFIlePrint?idMauIn=' + val;
                 }
                 ajaxHelper(url, 'GET').done(function (result) {
-                    var data = result;
+                    let data = result;
                     data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
                     data = data.concat("<script > var item1=" + JSON.stringify(lstCT)
                         + "; var item2=[];"
