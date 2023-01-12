@@ -25,6 +25,8 @@
     item3.TongTienHDSauVAT = formatNumberToFloat(item3.TongTienHang)
         + formatNumberToFloat(item3.TongTienThue)
 
+    item3.ChiPhiNhap = item3.TongChiPhi;
+
     self.CTHoaDonPrint = ko.observableArray(item1);
     self.CTHoaDonPrintMH = ko.observableArray(item2);
     self.InforHDprintf = ko.observable(item3);
