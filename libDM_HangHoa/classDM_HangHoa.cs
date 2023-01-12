@@ -1786,7 +1786,7 @@ namespace libDM_HangHoa
 
         public List<DMHangHoaDTO> LoadDanhMucHangHoa(ParamSearch_DMHangHoa param)
         {
-            string idChiNhanh = string.Empty, idThuocTinhs = string.Empty;
+            string idChiNhanh = string.Empty, idThuocTinhs = string.Empty, idViTris= string.Empty;
             if (param.IDChiNhanhs != null && param.IDChiNhanhs.Count > 0)
             {
                 idChiNhanh = string.Join(",", param.IDChiNhanhs);
@@ -1794,18 +1794,23 @@ namespace libDM_HangHoa
             if (param.ListThuocTinh != null && param.ListThuocTinh.Count > 0)
             {
                 idThuocTinhs = string.Join(",", param.ListThuocTinh);
+            } 
+            if (param.ListViTri != null && param.ListViTri.Count > 0)
+            {
+                idViTris = string.Join(",", param.ListViTri);
             }
             List<SqlParameter> lstParam = new List<SqlParameter>();
             lstParam.Add(new SqlParameter("IDChiNhanh", idChiNhanh));
             lstParam.Add(new SqlParameter("TextSearch", param.TextSearch ?? (object)DBNull.Value));
             lstParam.Add(new SqlParameter("IDThuocTinhHangs", idThuocTinhs ?? (object)DBNull.Value));
+            lstParam.Add(new SqlParameter("IDViTriKhos", idViTris ?? (object)DBNull.Value));
             lstParam.Add(new SqlParameter("TrangThaiKho", param.TrangThaiKho ?? (object)DBNull.Value));
             lstParam.Add(new SqlParameter("Where", param.WhereSql ?? (object)DBNull.Value));
             lstParam.Add(new SqlParameter("CurrentPage", param.CurrentPage ?? 0));
             lstParam.Add(new SqlParameter("PageSize", param.PageSize ?? 50));
             lstParam.Add(new SqlParameter("ColumnSort", param.ColumnSort ?? (object)DBNull.Value));
             lstParam.Add(new SqlParameter("SortBy", param.SortBy ?? (object)DBNull.Value));
-            return db.Database.SqlQuery<DMHangHoaDTO>("exec LoadDanhMucHangHoa2 @IDChiNhanh, @TextSearch, @IDThuocTinhHangs, " +
+            return db.Database.SqlQuery<DMHangHoaDTO>("exec LoadDanhMucHangHoa @IDChiNhanh, @TextSearch, @IDThuocTinhHangs, @IDViTriKhos, " +
                 "@TrangThaiKho, @Where ,@CurrentPage, @PageSize," +
                       "@ColumnSort, @SortBy", lstParam.ToArray()).ToList();
         }
@@ -3608,6 +3613,7 @@ namespace libDM_HangHoa
         public bool LaDonViChuan { get; set; }
         public double? TonLuyKe { get; set; }
         public double? TonLuyKe_NhanChuyenHang { get; set; }
+        public double? LuyKeTonKho { get; set; }
     }
 
     public class List_TenDonViTinh
