@@ -786,6 +786,9 @@
         },
         AddNew_PhieuTiepNhan: function () {
             var self = this;
+            if (self.isLoading) {
+                return;
+            }
             if (commonStatisJs.CheckNull(self.newPhieuTiepNhan.ID_KhachHang)) {
                 commonStatisJs.ShowMessageDanger('Vui lòng chọn khách hàng');
                 return;
@@ -836,6 +839,19 @@
                         diary.LoaiNhatKy = 1;
                         diary.NoiDung = diary.NoiDung.concat(x.dataSoure.MaPhieuTiepNhan);
                         Insert_NhatKyThaoTac_1Param(diary);
+
+                        let diaryDevice = {
+                            LoaiNhatKy: 1,
+                            ID_DonVi: self.inforLogin.ID_DonVi,
+                            ID_NhanVien: self.inforLogin.ID_NhanVien,
+                            ChucNang: 'Phiếu tiếp nhận',
+                            NoiDung: 'Check DeviceId',
+                            NoiDungChiTiet: 'Tạo phiếu tiếp nhận: '.concat(x.dataSoure.MaPhieuTiepNhan,
+                                ' <br /> - Người tạo: ', self.inforLogin.UserLogin,
+                                ' <br /> - Ngày tạo: ', moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+                                ' <br /> - DeviceId: ', getDeviceId())
+                        }
+                        Insert_NhatKyThaoTac_1Param(diaryDevice);
 
                         //self.Put_HangMucSuaChua();
                         //self.Put_GiayToKemTheo();
