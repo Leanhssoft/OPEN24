@@ -42,12 +42,13 @@
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
@@ -360,7 +361,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="AppCache\BanLe.appcache" />
-    <Content Include="App_Data\log\logErrors_0973474985.txt" />
     <Content Include="config.xml" />
     <Content Include="Connected Services\VMGAPI\banhang24.VMGAPI.ApiAdsReturn.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -11718,7 +11718,6 @@
     <Content Include="Scripts\BanHang\FormModel_NewInvoice.js" />
     <Content Include="Scripts\BanHang\jqAutoProduct.js" />
     <Content Include="Scripts\BanHang\NhaHang.js" />
-    <Content Include="Scripts\BanHang\serviceWorker.js" />
     <Content Include="Scripts\BanHang\ssoft-server-time.js" />
     <Content Include="Scripts\BanHang\_LichHen.js" />
     <Content Include="Scripts\BanHang\_PopupTimeCTHD.js" />
@@ -13137,6 +13136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppCache\CacheSubDomain\" />
+    <Folder Include="App_Data\log\" />
     <Folder Include="App_Data\progress\" />
     <Folder Include="Areas\DanhMuc\Models\" />
     <Folder Include="Areas\DanhMuc\Views\Shared\" />
