@@ -1479,7 +1479,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TongTienTra}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongTienTra)\"></span>");
             content1 = content1.Replace("{TongCong}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongCong,2)\"></span>");
             content1 = content1.Replace("{TongSoLuongHang}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongSoLuongHang)\"></span>");
-            content1 = content1.Replace("{ChiPhiNhap}", "<span data-bind=\"text: $root.InforHDprintf().ChiPhiNhap\"></span>");
+            content1 = content1.Replace("{ChiPhiNhap}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().ChiPhiNhap)\"></span>");
             content1 = content1.Replace("{NoTruoc}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().NoTruoc)\"></span>");
             content1 = content1.Replace("{NoSau}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().NoSau)\"></span>");
 
@@ -1724,7 +1724,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TongTienTra}", "<span data-bind=\"text: formatNumber(TongTienTra,2)\"></span>");
             content1 = content1.Replace("{TongCong}", "<span data-bind=\"text: formatNumber(TongCong,2)\"></span>");
             content1 = content1.Replace("{TongSoLuongHang}", "<span data-bind=\"text: formatNumber(TongSoLuongHang,2)\"></span>");
-            content1 = content1.Replace("{ChiPhiNhap}", "<span data-bind=\"text: ChiPhiNhap\"></span>");
+            content1 = content1.Replace("{ChiPhiNhap}", "<span data-bind=\"text: formatNumber(ChiPhiNhap)\"></span>");
             content1 = content1.Replace("{NoTruoc}", "<span data-bind=\"text: formatNumber(NoTruoc,2)\"></span>");
             content1 = content1.Replace("{NoSau}", "<span data-bind=\"text: formatNumber(NoSau,2)\"></span>");
             content1 = content1.Replace("{TienThuaTraKhach}", "<span data-bind=\"text: formatNumber(TienThua,2)\"></span>");
