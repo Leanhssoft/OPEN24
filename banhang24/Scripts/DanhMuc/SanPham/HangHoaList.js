@@ -234,6 +234,8 @@ var ViewModel = function () {
     self.IsGara = ko.observable(VHeader.IdNganhNgheKinhDoanh.toUpperCase() === 'C16EDDA0-F6D0-43E1-A469-844FAB143014');
     self.getCTHH = ko.observable();
     self.ThuocTinhCuaHH = ko.observableArray();
+    self.ListGiaTri_ofThuocTinh = ko.observableArray();
+
     self.shouldShowTitleTT = ko.computed(function () {
         if (self.ThuocTinhCuaHH() !== null && self.ThuocTinhCuaHH() !== undefined && self.ThuocTinhCuaHH().length > 0)
             return true;
@@ -444,7 +446,11 @@ var ViewModel = function () {
                     index: self.Indexx(),
                     ID_ThuocTinh: item.ID,
                     TenThuocTinh: "",
-                    GiaTri: ""
+                    GiaTri: [{
+                        ID_ThuocTinh: item.ID,
+                        TenGiaTri: '',
+                        ID: const_GuidEmpty
+                    }]
                 };
                 for (var i = 0; i < self.ThuocTinhCuaHH().length; i++) {
                     if (self.ThuocTinhCuaHH()[i].index === self.Indexx()) {
@@ -738,15 +744,84 @@ var ViewModel = function () {
         });
     });
     var SaveItem;
-    self.clickChooseTT = function (item) {
+    self.clickChooseTT = async function (item) {
         self.btnEditTTEnable(item);
         SaveItem = item;
-        self.ThuocTinhCuaHH.refresh();
         if (self.ThuocTinhCuaHH().filter(p => p.ID_ThuocTinh === item.ID_ThuocTinh).length > 1) {
             self.ThuocTinhCuaHH.remove(item);
             ShowMessage_Danger("Thuộc tính này đã có trong hàng hóa. Xin vui lòng chọn thuộc tính khác");
         }
+
+        // if change other thuoctinh: remove gtri of thuoctinh old
+        for (let i = 0; i < self.ThuocTinhCuaHH().length; i++) {
+            if (self.ThuocTinhCuaHH()[i].ID_ThuocTinh === item.ID_ThuocTinh) {
+                self.ThuocTinhCuaHH()[i].GiaTri = self.ThuocTinhCuaHH()[i].GiaTri.filter(x => x.ID_ThuocTinh === item.ID_ThuocTinh
+                    || commonStatisJs.CheckNull(x.ID)
+                    || x.ID === const_GuidEmpty);
+
+                break;
+            }
+        }
+
+        // update thuoctinh for GiaTri new
+        let arrThuocTinhOld = [];
+        for (let i = 0; i < self.ThuocTinhCuaHH().length; i++) {
+            let forOut = self.ThuocTinhCuaHH()[i];
+            for (let j = 0; j < forOut.GiaTri.length; j++) {
+                let itGtr = forOut.GiaTri[j];
+                if (itGtr.ID_ThuocTinh !== forOut.ID_ThuocTinh && (commonStatisJs.CheckNull(itGtr.ID) || itGtr.ID === const_GuidEmpty)) {
+                    arrThuocTinhOld.push(itGtr.ID_ThuocTinh);
+                    self.ThuocTinhCuaHH()[i].GiaTri[j].ID_ThuocTinh = forOut.ID_ThuocTinh;
+                }
+            }
+        }
+        self.ThuocTinhCuaHH.refresh();
+        ListDanhSachHangCungLoai();
+        AddDonViTinhChoTungDong();
+
+        let arr = await GetListGiaTri_byThuocTinh(item.ID_ThuocTinh);
+        self.ListGiaTri_ofThuocTinh(arr);
     };
+
+    self.openDropdown_LoadAgain_ListGiaTri_ofThuocTinh = async function (parentIndex, itemPr) {
+        let arr = await GetListGiaTri_byThuocTinh(itemPr.ID_ThuocTinh);
+        self.ListGiaTri_ofThuocTinh(arr);
+    }
+
+    async function GetListGiaTri_byThuocTinh(id) {
+        if (commonStatisJs.CheckNull(id)) {
+            return null;
+        }
+        let xx = await ajaxHelper(DMHangHoaUri + "getGiaTriTTByID_ThuocTinh?idthuoctinh=" + id, 'GET').done(function () {
+        }).then((data) => {
+            return data;
+        });
+        return xx;
+    }
+
+    self.addNew_ChoseThuocTinh = function (parentIndex, item) {
+        for (let i = 0; i < self.ThuocTinhCuaHH().length; i++) {
+            if (i === parentIndex) {
+                let findGtri = $.grep(self.ThuocTinhCuaHH()[i].GiaTri, function (x) {
+                    return x.ID === item.ID;
+                })
+                if (findGtri.length > 0) {
+                    ShowMessage_Danger('Giá trị đã được chọn');
+                    return;
+                }
+                self.ThuocTinhCuaHH()[i].GiaTri.push(
+                    {
+                        ID: item.ID,
+                        ID_ThuocTinh: item.ID_ThuocTinh,
+                        TenGiaTri: item.GiaTri,
+                    });
+                break;
+            }
+        }
+        self.ThuocTinhCuaHH.refresh();
+        ListDanhSachHangCungLoai();
+        AddDonViTinhChoTungDong();
+    }
 
     self.clickChooseTTOld = function (item) {
         self.btnEditTTEnable(item);
@@ -3100,7 +3175,16 @@ var ViewModel = function () {
         req.onsuccess = function (event) {
             var cursor = event.target.result;
             if (cursor) {
-                myData.objChiTietKho = JSON.parse(cursor.value.Value);
+                var objKK = [];
+                var lc_CTKiemKho = JSON.parse(cursor.value.Value);
+                for (var i = 0; i < lc_CTKiemKho.length; i++) {
+                    if (lc_CTKiemKho[i].ThanhTien !== "" && lc_CTKiemKho[i].ThanhTien !== null) {
+                        lc_CTKiemKho[i].TienThue = 0;
+                        objKK.push(lc_CTKiemKho[i]);
+                    }
+                }
+                myData.objChiTietKho = objKK;
+
                 if (myData.objChiTietKho == null || self.newKiemKho().BH_KiemKho_ChiTiet() == null) {
                     EnableBtnTamLuu();
                     ShowMessage_Danger("Chưa có hàng hóa trong danh sách kiểm hàng");
@@ -3565,6 +3649,11 @@ var ViewModel = function () {
             case 4:
             case 13:
             case 14:
+                let role = CheckQuyenExist('NhapHang_XemDS');
+                if (!role) {
+                    ShowMessage_Danger('Không có quyền xem phiếu nhập hàng');
+                    return;
+                }
                 $('#modalPopuplg_NhapHang').modal('show');
                 break;
         }
@@ -3851,6 +3940,52 @@ var ViewModel = function () {
     };
 
     self.booleanAddViTri = ko.observable(true);
+    self.arrViTriChosed = ko.observableArray();
+    self.menuleft_txtViTri = ko.observable();
+    self.isMenuLeft = ko.observable(false);
+
+    self.menuleft_ChoseViTri = function (item) {
+        self.arrViTriChosed([item]);
+
+        $("#iconSort").remove();
+        self.columsort(null);
+        self.sort(null);
+        self.currentPage(0);
+        SearchHangHoa();
+    }
+    self.menuleft_CloseViTri = function (item) {
+        self.arrViTriChosed([]);
+        $("#iconSort").remove();
+        self.columsort(null);
+        self.sort(null);
+        self.currentPage(0);
+        SearchHangHoa();
+    }
+
+    self.menuleft_ArrViTri = ko.computed(() => {
+        let txt = self.menuleft_txtViTri();
+        if (commonStatisJs.CheckNull(txt)) {
+            return self.ArrViTriHH();
+        }
+
+        txt = txt.trim();
+        return self.ArrViTriHH().filter(x => x.TenViTri.indexOf(txt) > -1
+            || locdau(x.TenViTri).indexOf(txt) > -1
+            || locdau(x.TenViTri).indexOf(locdau(txt)) > -1);
+    })
+
+    self.menuleft_EditViTri = function (item) {
+        $('#modalViTriKho').modal('show');
+        self.booleanAddViTri(false);
+        self.isMenuLeft(true);
+
+        $('#modalViTriKho').on('shown.bs.modal', function () {
+            $('#txtTenViTriHH').val(item.TenViTri);
+            self.IDViTriEdit(item.ID);
+            $('#txtTenViTriHH').select();
+        });
+    }
+
     self.AddNewViTri = function () {
         var _tenViTri = $('#txtTenViTriHH').val();
         var _id = self.IDViTriEdit();
@@ -3876,16 +4011,19 @@ var ViewModel = function () {
                 dataType: 'json',
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 success: function (item) {
-                    self.MangNhomViTriHH.push(item);
-                    self.ArrViTriHH.push(item);
-                    $('#choose_ViTri input').remove();
-                    $('#selec-all-ViTri li').each(function () {
-                        if ($(this).attr('id') === item.ID) {
-                            $(this).find('.fa-check').remove();
-                            $(this).append('<i class="fa fa-check check-after-li" style="display:block"></i>');
-                        }
-                    });
                     ShowMessage_Success("Thêm mới vị trí thành công!");
+                    self.ArrViTriHH.push(item);
+
+                    if (!self.isMenuLeft()) {
+                        self.MangNhomViTriHH.push(item);
+                        $('#choose_ViTri input').remove();
+                        $('#selec-all-ViTri li').each(function () {
+                            if ($(this).attr('id') === item.ID) {
+                                $(this).find('.fa-check').remove();
+                                $(this).append('<i class="fa fa-check check-after-li" style="display:block"></i>');
+                            }
+                        });
+                    }
                 },
                 statusCode: {
                     404: function () {
@@ -3913,18 +4051,23 @@ var ViewModel = function () {
                 dataType: 'json',
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 success: function (item) {
-                    self.MangNhomViTriHH()[0].TenViTri = item.TenViTri;
+                    ShowMessage_Success("Cập nhật vị trí thành công!");
                     self.ArrViTriHH().filter(p => p.ID === item.ID)[0].TenViTri = item.TenViTri;
-                    self.MangNhomViTriHH.refresh();
                     self.ArrViTriHH.refresh();
 
-                    $('#selec-all-ViTri li').each(function () {
-                        if ($(this).attr('id') === item.ID) {
-                            $(this).find('.fa-check').remove();
-                            $(this).append('<i class="fa fa-check check-after-li" style="display:block"></i>');
-                        }
-                    });
-                    ShowMessage_Success("Cập nhật vị trí thành công!");
+                    if (!self.isMenuLeft()) {
+                        self.MangNhomViTriHH()[0].TenViTri = item.TenViTri;
+                        self.MangNhomViTriHH.refresh();
+                        $('#selec-all-ViTri li').each(function () {
+                            if ($(this).attr('id') === item.ID) {
+                                $(this).find('.fa-check').remove();
+                                $(this).append('<i class="fa fa-check check-after-li" style="display:block"></i>');
+                            }
+                        });
+                    }
+                    else {
+                        self.arrViTriChosed.refresh();
+                    }
                 },
                 statusCode: {
                     404: function () {
@@ -7514,11 +7657,11 @@ var ViewModel = function () {
 
         if (itemcheckhh !== item.ID) {
             itemcheckhh = item.ID;
-        
+
             self.IDHangHoaCheckTonLo(item.ID);
             $('#txtSearchLo' + item.ID).val("");
             self.CheckConHang("0");
-           
+
             if (item.LaChaCungLoai !== false) {
                 if (checkopenhide !== 1) {
                     $('.table-HH').gridLoader();
@@ -9138,7 +9281,8 @@ var ViewModel = function () {
     self.removeThuocTinh = function (item) {
         if (self.booleanAdd() === true) {
             self.ThuocTinhCuaHH.remove(item);
-            ListHangHoaCungLoaiAfterRemoveTT();
+            ListDanhSachHangCungLoai();
+            AddDonViTinhChoTungDong();
         } else {
             self.ThuocTinhCuaHH.remove(item);
         }
@@ -9200,8 +9344,9 @@ var ViewModel = function () {
         $('#txtAddGiaTriNew' + e.index).keypress(function (event) {
             var code = event.which;
             if (code === 13) {
-                var giatrinew = $('#txtAddGiaTriNew' + e.index).val();
-                var objgiatri = {
+                let giatrinew = $('#txtAddGiaTriNew' + e.index).val();
+                let objgiatri = {
+                    ID: const_GuidEmpty,
                     TenGiaTri: giatrinew,
                     ID_ThuocTinh: e.ID_ThuocTinh
                 };
@@ -9223,28 +9368,43 @@ var ViewModel = function () {
     function allPossibleCases(arr) {
         var result = [];
         if (arr.length === 1) {
-            for (var j = 0; j < arr[0].length; j++) {
-                var objct11 = {
+            for (let j = 0; j < arr[0].length; j++) {
+                let objct11 = {
                     ID_ThuocTinh: arr[0][j]["ID_ThuocTinh"] + ',' + arr[0][j]["TenGiaTri"] + '_',
                     TenGiaTri: arr[0][j]["TenGiaTri"],
                     TenDonViTinh: '',
                     LaDonViChuan: true,
-                    TyLeChuyenDoi: 1
+                    TyLeChuyenDoi: 1,
+                    ArrThuocTinh: [{
+                        ID: arr[0][j].ID,
+                        ID_ThuocTinh: arr[0][j].ID_ThuocTinh,
+                        GiaTri: arr[0][j].TenGiaTri
+                    }]
                 };
                 result.push(objct11);
             }
 
         } else {
-            var allCasesOfRest = allPossibleCases(arr.slice(1));  // recur with the rest of array
-            for (var i = 0; i < allCasesOfRest.length; i++) {
-                for (var j = 0; j < arr[0].length; j++) {
-                    var objct = {
+            let allCasesOfRest = allPossibleCases(arr.slice(1));  // recur with the rest of array
+            for (let i = 0; i < allCasesOfRest.length; i++) {
+                for (let j = 0; j < arr[0].length; j++) {
+                    let objct = {
                         ID_ThuocTinh: arr[0][j]["ID_ThuocTinh"] + ',' + arr[0][j]["TenGiaTri"] + '_' + allCasesOfRest[i]["ID_ThuocTinh"],
                         TenGiaTri: arr[0][j]["TenGiaTri"] + '-' + allCasesOfRest[i]["TenGiaTri"],
                         TenDonViTinh: allCasesOfRest[i]["TenDonViTinh"],
                         LaDonViChuan: allCasesOfRest[i]["LaDonViChuan"],
-                        TyLeChuyenDoi: allCasesOfRest[i]["TyLeChuyenDoi"]
+                        TyLeChuyenDoi: allCasesOfRest[i]["TyLeChuyenDoi"],
+                        ArrThuocTinh: [{
+                            ID: arr[0][j].ID,
+                            ID_ThuocTinh: arr[0][j].ID_ThuocTinh,
+                            GiaTri: arr[0][j].TenGiaTri
+                        }]
                     };
+                    objct.ArrThuocTinh.push({
+                        ID: allCasesOfRest[i].ArrThuocTinh[0].ID,
+                        ID_ThuocTinh: allCasesOfRest[i].ArrThuocTinh[0].ID_ThuocTinh,
+                        GiaTri: allCasesOfRest[i].ArrThuocTinh[0].GiaTri
+                    })
                     result.push(objct);
                 }
             }
@@ -9259,128 +9419,78 @@ var ViewModel = function () {
     };
 
     function removeGiaTriThuocTinh(ID_ThuocTinh, TenGiaTri) {
-        for (var i = 0; i < self.ThuocTinhCuaHH().filter(p => p.ID_ThuocTinh === ID_ThuocTinh)[0].GiaTri.length; i++) {
-            var lcCT = self.ThuocTinhCuaHH().filter(p => p.ID_ThuocTinh === ID_ThuocTinh)[0].GiaTri[i];
-            if (lcCT.TenGiaTri === TenGiaTri) {
-                self.ThuocTinhCuaHH().filter(p => p.ID_ThuocTinh === ID_ThuocTinh)[0].GiaTri.splice(i, 1);
+        for (let i = 0; i < self.ThuocTinhCuaHH().length; i++) {
+            let itFor = self.ThuocTinhCuaHH()[i];
+            if (itFor.ID_ThuocTinh === ID_ThuocTinh) {
+                for (let j = 0; j < self.ThuocTinhCuaHH()[i].GiaTri.length; j++) {
+                    if (self.ThuocTinhCuaHH()[i].GiaTri[j].TenGiaTri === TenGiaTri) {
+                        self.ThuocTinhCuaHH()[i].GiaTri.splice(j, 1);
+                    }
+                }
+                break;
             }
         }
         self.ThuocTinhCuaHH.refresh();
-        var objTrungGianHHCL = [];
-        var ArrHangHoaCLOld = self.newHangHoa().HangHoaCungLoaiArr().filter(p => p.LaDonViChuan === true && p.TrangThai === true);
-        self.newHangHoa().HangHoaCungLoaiArr([]);
         ListDanhSachHangCungLoai();
-        for (var i = 0; i < self.newHangHoa().HangHoaCungLoaiArr().length; i++) {
-            for (var j = 0; j < ArrHangHoaCLOld.length; j++) {
-                if (ArrHangHoaCLOld[j]["ID_ThuocTinh"].includes(self.newHangHoa().HangHoaCungLoaiArr()[i]["ID_ThuocTinh"])) {
-                    var objHH = {
-                        ID_ThuocTinh: self.newHangHoa().HangHoaCungLoaiArr()[i].ID_ThuocTinh,
-                        TenHangHoa: self.newHangHoa().HangHoaCungLoaiArr()[i].TenHangHoa,
-                        MaHangHoa: ArrHangHoaCLOld[j].MaHangHoa,
-                        GiaVon: ArrHangHoaCLOld[j].GiaVon,
-                        GiaBan: ArrHangHoaCLOld[j].GiaBan,
-                        TonKho: ArrHangHoaCLOld[j].TonKho,
-                        TrangThai: true,
-                        TenDonViTinh: self.newHangHoa().HangHoaCungLoaiArr()[i].TenDonViTinh,
-                        LaDonViChuan: self.newHangHoa().HangHoaCungLoaiArr()[i].LaDonViChuan
-                    };
-                    objTrungGianHHCL.push(objHH);
-                }
-            }
-        }
-        self.newHangHoa().HangHoaCungLoaiArr(objTrungGianHHCL);
         AddDonViTinhChoTungDong();
         self.clicktien();
         self.newHangHoa().HangHoaCungLoaiArr.refresh();
     }
 
-    function ListHangHoaCungLoaiAfterRemoveTT() {
-        var objTrungGianHHCL = [];
-        var ArrHangHoaCLOld = self.newHangHoa().HangHoaCungLoaiArr().filter(p => p.TrangThai === true);
-        self.newHangHoa().HangHoaCungLoaiArr([]);
-        ListDanhSachHangCungLoai();
-        for (var i = 0; i < self.newHangHoa().HangHoaCungLoaiArr().length; i++) {
-            //for (var j = 0; j < ArrHangHoaCLOld.length; j++) {
-            //    if (ArrHangHoaCLOld[j]["ID_ThuocTinh"].includes(self.newHangHoa().HangHoaCungLoaiArr()[i]["ID_ThuocTinh"])) {
-            //        var objHH = {
-            //            ID_ThuocTinh: self.newHangHoa().HangHoaCungLoaiArr()[i].ID_ThuocTinh,
-            //            TenHangHoa: self.newHangHoa().HangHoaCungLoaiArr()[i].TenHangHoa,
-            //            MaHangHoa: ArrHangHoaCLOld[j].MaHangHoa,
-            //            GiaVon: ArrHangHoaCLOld[j].GiaVon,
-            //            GiaBan: ArrHangHoaCLOld[j].GiaBan,
-            //            TonKho: ArrHangHoaCLOld[j].TonKho,
-            //            TrangThai: true,
-            //            TenDonViTinh: ArrHangHoaCLOld[j].TenDonViTinh,
-            //            LaDonViChuan: ArrHangHoaCLOld[j].LaDonViChuan
-            //        };
-            //        objTrungGianHHCL.push(objHH);
-            //    }
-            //}
-
-            var objHH = {
-                ID_ThuocTinh: self.newHangHoa().HangHoaCungLoaiArr()[i].ID_ThuocTinh,
-                TenHangHoa: self.newHangHoa().HangHoaCungLoaiArr()[i].TenHangHoa,
-                MaHangHoa: ArrHangHoaCLOld.filter(p => p.ID_ThuocTinh.includes(self.newHangHoa().HangHoaCungLoaiArr()[i]["ID_ThuocTinh"]))[0].MaHangHoa,
-                GiaVon: ArrHangHoaCLOld.filter(p => p.ID_ThuocTinh.includes(self.newHangHoa().HangHoaCungLoaiArr()[i]["ID_ThuocTinh"]))[0].GiaVon,
-                GiaBan: ArrHangHoaCLOld.filter(p => p.ID_ThuocTinh.includes(self.newHangHoa().HangHoaCungLoaiArr()[i]["ID_ThuocTinh"]))[0].GiaBan,
-                TonKho: ArrHangHoaCLOld.filter(p => p.ID_ThuocTinh.includes(self.newHangHoa().HangHoaCungLoaiArr()[i]["ID_ThuocTinh"]))[0].TonKho,
-                TrangThai: true,
-                TenDonViTinh: ArrHangHoaCLOld.filter(p => p.ID_ThuocTinh.includes(self.newHangHoa().HangHoaCungLoaiArr()[i]["ID_ThuocTinh"]))[0].TenDonViTinh,
-                LaDonViChuan: ArrHangHoaCLOld.filter(p => p.ID_ThuocTinh.includes(self.newHangHoa().HangHoaCungLoaiArr()[i]["ID_ThuocTinh"]))[0].LaDonViChuan
-            };
-            objTrungGianHHCL.push(objHH);
+    function ListDanhSachHangCungLoai() {
+        let arr = [];
+        for (let i = 0; i < self.ThuocTinhCuaHH().length; i++) {
+            if (self.ThuocTinhCuaHH()[i].GiaTri.length > 0) {
+                arr.push(self.ThuocTinhCuaHH()[i].GiaTri);
+            }
         }
-        self.newHangHoa().HangHoaCungLoaiArr(objTrungGianHHCL);
-        AddDonViTinhChoTungDong();
+        let arrCL = DeQuy(arr);
+        self.newHangHoa().HangHoaCungLoaiArr(arrCL);
         self.newHangHoa().HangHoaCungLoaiArr.refresh();
     }
 
-    function ListDanhSachHangCungLoai() {
-        var MangGiaTri = [];
-        for (var i = 0; i < self.ThuocTinhCuaHH().length; i++) {
-            var objGiaTri = [];
-            for (var j = 0; j < self.ThuocTinhCuaHH()[i].GiaTri.length; j++) {
-                objGiaTri.push(self.ThuocTinhCuaHH()[i].GiaTri[j]);
-            }
-            if (objGiaTri.length > 0) {
-                MangGiaTri.push(objGiaTri);
-            }
+    function DeQuy(arr) {
+        if (arr.length === 0) {
+            return [];
         }
-        if (MangGiaTri.length > 0) {
-            var result = allPossibleCases(MangGiaTri);
-            for (var i = 0; i < result.length; i++) {
-                var objHHCL = {
-                    ID_ThuocTinh: result[i]["ID_ThuocTinh"],
-                    TenHangHoa: result[i]["TenGiaTri"],
+        let arrCungLoai = [];
+        if (arr.length === 1) {
+            for (let k = 0; k < arr[0].length; k++) {
+                let obj = {
                     MaHangHoa: '',
-                    GiaVon: self.newHangHoa().GiaVon(),
                     GiaBan: self.newHangHoa().GiaBan(),
                     TonKho: self.newHangHoa().TonKho(),
                     TrangThai: true,
-                    TenDonViTinh: result[i]["TenDonViTinh"],
-                    LaDonViChuan: result[i]["LaDonViChuan"],
-                    TyLeChuyenDoi: result[i]["TyLeChuyenDoi"]
-                };
-
-                var datontai = false;
-                for (var j = 0; j < self.newHangHoa().HangHoaCungLoaiArr().length; j++) {
-                    if (result[i]["ID_ThuocTinh"].includes(self.newHangHoa().HangHoaCungLoaiArr()[j]["ID_ThuocTinh"])) {
-                        self.newHangHoa().HangHoaCungLoaiArr()[j].TenHangHoa = result[i]["TenGiaTri"];
-                        self.newHangHoa().HangHoaCungLoaiArr()[j].ID_ThuocTinh = result[i]["ID_ThuocTinh"];
-                        datontai = true;
-                    }
+                    TenDonViTinh: '',
+                    LaDonViChuan: true,
+                    TyLeChuyenDoi: 1,
+                    ID_ThuocTinh: arr[0][k].ID_ThuocTinh.concat(',', arr[0][k].TenGiaTri,'_' ), // cac thuoctinh ngancach nhau _
+                    TenHangHoa: arr[0][k].TenGiaTri,
                 }
-                if (datontai === false) {
-                    self.newHangHoa().HangHoaCungLoaiArr.push(objHHCL);
-                }
+                arrCungLoai.push(obj);
             }
-            self.newHangHoa().HangHoaCungLoaiArr.refresh();
         }
         else {
-            self.newHangHoa().HangHoaCungLoaiArr([]);
-            self.newHangHoa().HangHoaCungLoaiArr.refresh();
+            let arrChild = DeQuy(arr.slice(1));
+            for (let i = 0; i < arrChild.length; i++) {
+                for (let j = 0; j < arr[0].length; j++) {
+                    let obj = {
+                        MaHangHoa: '',
+                        GiaBan: self.newHangHoa().GiaBan(),
+                        TonKho: self.newHangHoa().TonKho(),
+                        TrangThai: true,
+                        TenDonViTinh: '',
+                        LaDonViChuan: true,
+                        TyLeChuyenDoi: 1,
+                        ID_ThuocTinh: arr[0][j].ID_ThuocTinh.concat(',', arr[0][j].TenGiaTri, '_', arrChild[i].ID_ThuocTinh), // cac thuoctinh ngancach nhau _
+                        TenHangHoa: arr[0][j].TenGiaTri.concat('-', arrChild[i].TenHangHoa),
+                    }
+                    arrCungLoai.push(obj);
+                }
+            }
         }
-    };
+        return arrCungLoai;
+    }
 
     function AddDonViTinhChoTungDong() {
         if (self.newHangHoa().DonViTinhChuan() !== "" && self.newHangHoa().DonViTinhChuan() !== undefined && self.newHangHoa().DonViTinhChuan() !== null) {
@@ -9476,6 +9586,7 @@ var ViewModel = function () {
 
     //Thuộc tính
     self.arrThuocTinhSave = ko.observableArray();
+
     self.addThuocTinhCon = function () {
         var newEmpty = {
             index: self.ThuocTinhCuaHH().length,
@@ -9483,7 +9594,7 @@ var ViewModel = function () {
             TenThuocTinh: "",
             GiaTri: []
         };
-        getallThuocTinh();
+        //getallThuocTinh();
         //self.selectedThuocTinh(undefined);
         self.ThuocTinhCuaHH.push(newEmpty);
 
@@ -9506,7 +9617,7 @@ var ViewModel = function () {
             TenThuocTinh: "",
             GiaTri: ""
         };
-        getallThuocTinh();
+        //getallThuocTinh();
         //self.selectedThuocTinh(undefined);
         self.ThuocTinhCuaHHEdit.push(newEmpty);
         if (self.ThuocTinhCuaHHEdit().length > 0) {
@@ -10503,7 +10614,7 @@ var ViewModel = function () {
             }
         });
     }
-    
+
     $('.choseNgayTao li').on('click', function () {
         $('#txtNgayTao').val($(this).text());
         self.filterNgayLapHD_Quy($(this).val());
@@ -10511,7 +10622,7 @@ var ViewModel = function () {
         SearchKiemKho();
     });
 
-  
+
     $('#txtNgayTaoInput').on('apply.daterangepicker', function (ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
         SearchKiemKho();
@@ -11121,9 +11232,10 @@ var ViewModel = function () {
                 self.ListFilterColumn.push({ Key: 2, Value: self.arrIDNhomHang().toString(), type: 0 })
             }
         }
-      
+
         // thuoctinhhang
         let arrThuocTinh = self.arrListThuocTinh().map(function (x) { return x.ID });
+        let arrViTri = self.arrViTriChosed().map(function (x) { return x.ID });
 
         // trangthaikinhdoanh (key = 7)   
         let filterKD = $.grep(self.ListFilterColumn(), function (x) {
@@ -11183,6 +11295,7 @@ var ViewModel = function () {
             ColumnSort: colSort,
             SortBy: sort == 1 ? 'DESC' : 'ASC',
             ListThuocTinh: arrThuocTinh,
+            ListViTri: arrViTri,
             ListSearchColumn: arrFilter,
         };
     }
@@ -11224,7 +11337,7 @@ var ViewModel = function () {
                             count = count + 1;
                         }
                     }
-                    
+
                     if (count == 10) {
                         $(".checkboxsetHH").prop("checked", true);
                     } else {
@@ -11765,12 +11878,14 @@ var ViewModel = function () {
         self.addColum($(this).val())
     });
     $("#cbdvt").click(function () {
-        //$(".tendvt").toggle();
         addClassHH(".tendvt", "cbdvt", $(this).val());
         self.addColum($(this).val())
     });
+    $("#cbTenViTri").click(function () {
+        addClassHH(".vitrikho", "cbTenViTri", $(this).val());
+        self.addColum($(this).val())
+    });
     $("#cbnhomhang").click(function () {
-        //$(".nhomhang").toggle();
         addClassHH(".nhomhang", "cbnhomhang", $(this).val());
         self.addColum($(this).val())
     });
@@ -13298,7 +13413,7 @@ var ViewModel = function () {
             dataType: 'json',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (result) {
-                var data = '<script src="/Scripts/knockout-3.4.2.js"></script>';
+                let data = '<script src="/Scripts/knockout-3.4.2.js"></script>';
                 data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item4=[], item5= []; var item2=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item3=" + JSON.stringify(itemHDFormat) + "; </script>");
@@ -14202,7 +14317,7 @@ var ViewModel = function () {
         vmXe_ResetRole();
         vmThemMoiXe.ShowModalNewCar();
     }
-   
+
     self.ShowForm_UpdateCar = async function () {
         vmXe_ResetRole();
         let car = await vmThemMoiXe.GetInforCar_byID(self.newHangHoa().ID_Xe());
@@ -14263,6 +14378,41 @@ var ViewModel = function () {
                 break;
         }
         window.open(url, '_blank');
+    }
+
+    self.CapNhatTonKho = function (item) {
+        let itemTK = {}
+        for (let i = 0; i < self.TheKhos().length; i++) {
+            let tk = self.TheKhos()[i]
+            if (tk.LuyKeTonKho !== tk.TonKho) {
+                if (i > 0) {
+                    itemTK = self.TheKhos()[i - 1];// tìm đến dòng đầu tiên bị sai lũy kế --> get dòng trc đó
+                }
+                else {
+                    itemTK = tk;
+                }
+                break;
+            }
+        }
+        if (!$.isEmptyObject(itemTK)) {
+            let diary = {
+                ID_DonVi: itemTK.ID_DonVi,
+                ID_NhanVien: VHeader.IdNhanVien,
+                LoaiNhatKy: 2,
+                ChucNang: 'Cập nhật tồn lũy kế',
+                NoiDung: 'Cập nhật tồn lũy kế cho hàng hóa '.concat(item.TenHangHoa, ' (', item.MaHangHoa, ')'),
+                NoiDungChiTiet: 'Cập nhật tồn lũy kế '.concat(item.TenHangHoa, ' (', item.MaHangHoa,
+                    ') <br /> Mã phiếu: ', itemTK.MaHoaDon,
+                    ') <br /> Ngày lập phiếu: ', itemTK.NgayLapHoaDon,
+                    ' <br /> Người cập nhật: ', VHeader.UserLogin
+                ),
+                ID_HoaDon: itemTK.ID_HoaDon,
+                LoaiHoaDon: itemTK.LoaiHoaDon,
+                ThoiGianUpdateGV: itemTK.NgayLapHoaDon,
+            }
+            Post_NhatKySuDung_UpdateGiaVon(diary);
+            ShowMessage_Success('Cập nhật thành công');
+        }
     }
 };
 var FileModel = function (filef, srcf) {
