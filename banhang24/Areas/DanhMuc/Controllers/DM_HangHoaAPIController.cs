@@ -4204,8 +4204,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     List<DM_HangHoa_Excel> lst = data.Select(x => new DM_HangHoa_Excel
                     {
                         MaHangHoa = x.MaHangHoa,
-                        TenHangHoa = x.TenHangHoa,
+                        TenHangHoa = string.Concat(x.TenHangHoa, " ", x.ThuocTinhGiaTri),
                         TenDonViTinh = x.TenDonViTinh,
+                        TenViTris = x.TenViTris,
                         NhomHangHoa = x.NhomHangHoa,
                         LoaiHangHoa = x.sLoaiHangHoa,
                         GiaBan = x.GiaBan,
@@ -4513,6 +4514,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         LaHangHoa = x.LaHangHoa,
                         LoaiHangHoa = x.LoaiHangHoa,
                         TenDonViTinh = x.TenDonViTinh,
+                        TenViTris = x.TenViTris,
                         DonViTinhChuan = x.DonViTinhChuan,
                         ThuocTinhGiaTri = x.ThuocTinhGiaTri,
                         NhomHangHoa = x.NhomHangHoa,
