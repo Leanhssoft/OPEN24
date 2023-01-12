@@ -39,6 +39,7 @@ namespace Model
         public string SortBy { get; set; }
         public string WhereSql { get; set; }
         public List<string> ListThuocTinh { get; set; }
+        public List<string> ListViTri { get; set; }
         public List<ColumSearch> ListSearchColumn { get; set; }
     }
 
@@ -52,6 +53,7 @@ namespace Model
         public string TenHangHoa { get; set; }
         public string MaHangHoa { get; set; }
         public string TenDonViTinh { get; set; }
+        public string TenViTris { get; set; }
         public string DonViTinhChuan { get; set; }
         public string ThuocTinhGiaTri { get; set; }
         public string NhomHangHoa { get; set; }
@@ -298,6 +300,7 @@ namespace Model
         public string MaHangHoa { get; set; }
         public string TenHangHoa { get; set; }
         public string TenDonViTinh { get; set; }
+        public string TenViTris { get; set; }
         public string NhomHangHoa { get; set; }
         public string LoaiHangHoa { get; set; }
         public double? GiaBan { get; set; }
