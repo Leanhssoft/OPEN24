@@ -235,6 +235,7 @@ var ViewModel = function () {
     self.getCTHH = ko.observable();
     self.ThuocTinhCuaHH = ko.observableArray();
     self.ListGiaTri_ofThuocTinh = ko.observableArray();
+    self.ListGiaTri_ofThuocTinh_Search = ko.observableArray();
 
     self.shouldShowTitleTT = ko.computed(function () {
         if (self.ThuocTinhCuaHH() !== null && self.ThuocTinhCuaHH() !== undefined && self.ThuocTinhCuaHH().length > 0)
@@ -781,11 +782,13 @@ var ViewModel = function () {
 
         let arr = await GetListGiaTri_byThuocTinh(item.ID_ThuocTinh);
         self.ListGiaTri_ofThuocTinh(arr);
+        self.ListGiaTri_ofThuocTinh_Search(arr);
     };
 
     self.openDropdown_LoadAgain_ListGiaTri_ofThuocTinh = async function (parentIndex, itemPr) {
         let arr = await GetListGiaTri_byThuocTinh(itemPr.ID_ThuocTinh);
         self.ListGiaTri_ofThuocTinh(arr);
+        self.ListGiaTri_ofThuocTinh_Search(arr);
     }
 
     async function GetListGiaTri_byThuocTinh(id) {
@@ -797,6 +800,18 @@ var ViewModel = function () {
             return data;
         });
         return xx;
+    }
+
+    self.searchGiaTriThuocTinh = function () {
+        let txt = $(event.currentTarget).val();
+        if (commonStatisJs.CheckNull(txt)) {
+            self.ListGiaTri_ofThuocTinh_Search(self.ListGiaTri_ofThuocTinh());
+            return;
+        }
+        let arr = self.ListGiaTri_ofThuocTinh().filter(x => x.GiaTri.indexOf(txt) > -1
+            || locdau(x.GiaTri).indexOf(txt) > -1
+            || locdau(x.GiaTri).indexOf(locdau(txt)) > -1)
+        self.ListGiaTri_ofThuocTinh_Search(arr);
     }
 
     self.addNew_ChoseThuocTinh = function (parentIndex, item) {
@@ -821,6 +836,16 @@ var ViewModel = function () {
         self.ThuocTinhCuaHH.refresh();
         ListDanhSachHangCungLoai();
         AddDonViTinhChoTungDong();
+    }
+
+    self.editHang_ChoseThuocTinh = function (parentIndex, item) {
+        for (let i = 0; i < self.ThuocTinhCuaHHEdit().length; i++) {
+            if (i === parentIndex) {
+                self.ThuocTinhCuaHHEdit()[i].GiaTri = item.GiaTri;
+                break;
+            }
+        }
+        self.ThuocTinhCuaHHEdit.refresh();
     }
 
     self.clickChooseTTOld = function (item) {
@@ -3835,10 +3860,11 @@ var ViewModel = function () {
     self.getChiTietHangHoaByID = function (item) {
         if (item.QuanLyTheoLoHang === false) {
             ajaxHelper("/api/DanhMuc/DM_HangHoaAPI/" + "GetHangHoa_ByIDQuyDoiDVT?id=" + item.ID_DonViQuiDoi + '&iddonvi=' + _IDchinhanh, 'GET').done(function (data) {
-                for (var i = 0; i < self.HangHoas().length; i++) {
-                    for (var j = 0; j < self.HangHoas()[i].DonViTinh.length; j++) {
+                for (let i = 0; i < self.HangHoas().length; i++) {
+                    for (let j = 0; j < self.HangHoas()[i].DonViTinh.length; j++) {
                         if (data.ID_DonViQuiDoi === self.HangHoas()[i].DonViTinh[j].ID_DonViQuiDoi) {
                             data.CountCungLoai = 1;
+                            data.TenViTris = self.HangHoas()[i].TenViTris;
                             self.HangHoas.replace(self.HangHoas()[i], data);
                         }
                         if ($.inArray(data.ID_DonViQuiDoi, arrIDHang) > -1) {
@@ -3852,10 +3878,11 @@ var ViewModel = function () {
         }
         else {
             ajaxHelper("/api/DanhMuc/DM_HangHoaAPI/" + "GetHangHoa_ByIDQuyDoiDVTByLo?id=" + item.ID_DonViQuiDoi + '&iddonvi=' + _IDchinhanh, 'GET').done(function (data) {
-                for (var i = 0; i < self.HangHoas().length; i++) {
-                    for (var j = 0; j < self.HangHoas()[i].DonViTinh.length; j++) {
+                for (let i = 0; i < self.HangHoas().length; i++) {
+                    for (let j = 0; j < self.HangHoas()[i].DonViTinh.length; j++) {
                         if (data.ID_DonViQuiDoi === self.HangHoas()[i].DonViTinh[j].ID_DonViQuiDoi) {
                             data.CountCungLoai = 1;
+                            data.TenViTris = self.HangHoas()[i].TenViTris;
                             self.HangHoas.replace(self.HangHoas()[i], data);
                         }
                         if ($.inArray(data.ID_DonViQuiDoi, arrIDHang) > -1) {
@@ -5816,10 +5843,14 @@ var ViewModel = function () {
                     var countCLHH = 0;
                     var countCLVoiNhau = 0;
                     var lstMaHHCLKhacEmpty = self.newHangHoa().HangHoaCungLoaiArr().filter(p => p.MaHangHoa !== "");
-                    for (var i = 0; i < lstMaHHCLKhacEmpty.length; i++) {
-                        if (lstMaHHCLKhacEmpty[i].MaHangHoa.trim().toLowerCase() === strMaHangHoa.trim().toLowerCase()) {
-                            countCLHH++;
+                    if (!commonStatisJs.CheckNull(strMaHangHoa) && lstMaHHCLKhacEmpty.length > 0) {
+                        for (var i = 0; i < lstMaHHCLKhacEmpty.length; i++) {
+                            if (lstMaHHCLKhacEmpty[i].MaHangHoa.trim().toLowerCase() === strMaHangHoa.trim().toLowerCase()) {
+                                countCLHH++;
+                            }
                         }
+                    }
+                    for (var i = 0; i < lstMaHHCLKhacEmpty.length; i++) {
                         for (var j = 0; j < lstMaHHCLKhacEmpty.length; j++) {
                             if (i !== j && lstMaHHCLKhacEmpty[i].MaHangHoa.trim().toLowerCase() === lstMaHHCLKhacEmpty[j].MaHangHoa.trim().toLowerCase()) {
                                 countCLVoiNhau++;
@@ -9341,78 +9372,30 @@ var ViewModel = function () {
 
     self.ArrManghangHoaCungLoai = ko.observableArray();
     self.pushGiaTriNew = function (e) {
-        $('#txtAddGiaTriNew' + e.index).keypress(function (event) {
-            var code = event.which;
-            if (code === 13) {
-                let giatrinew = $('#txtAddGiaTriNew' + e.index).val();
-                let objgiatri = {
-                    ID: const_GuidEmpty,
-                    TenGiaTri: giatrinew,
-                    ID_ThuocTinh: e.ID_ThuocTinh
-                };
-                if (self.ThuocTinhCuaHH().filter(p => p.index === e.index)[0].GiaTri.filter(p => p.TenGiaTri === giatrinew).length === 0 && giatrinew !== "") {
-                    self.ThuocTinhCuaHH().filter(p => p.index === e.index)[0].GiaTri.push(objgiatri);
-                    self.ThuocTinhCuaHH.refresh();
-                    ListDanhSachHangCungLoai();
-                    AddDonViTinhChoTungDong();
-                    self.clicktien();
-                }
-                else {
-                    $('#txtAddGiaTriNew' + e.index).val("");
-                }
-                $('#txtAddGiaTriNew' + e.index).focus();
+        let keyCode = event.which;
+        if (keyCode === 13) {
+            let giatrinew = $('#txtAddGiaTriNew' + e.index).val();
+            let objgiatri = {
+                ID: const_GuidEmpty,
+                TenGiaTri: giatrinew,
+                ID_ThuocTinh: e.ID_ThuocTinh
+            };
+            if (self.ThuocTinhCuaHH().filter(p => p.index === e.index)[0].GiaTri.filter(p => p.TenGiaTri === giatrinew).length === 0 && giatrinew !== "") {
+                self.ThuocTinhCuaHH().filter(p => p.index === e.index)[0].GiaTri.push(objgiatri);
+                self.ThuocTinhCuaHH.refresh();
+                ListDanhSachHangCungLoai();
+                AddDonViTinhChoTungDong();
+                self.clicktien();
             }
-        });
-    };
-
-    function allPossibleCases(arr) {
-        var result = [];
-        if (arr.length === 1) {
-            for (let j = 0; j < arr[0].length; j++) {
-                let objct11 = {
-                    ID_ThuocTinh: arr[0][j]["ID_ThuocTinh"] + ',' + arr[0][j]["TenGiaTri"] + '_',
-                    TenGiaTri: arr[0][j]["TenGiaTri"],
-                    TenDonViTinh: '',
-                    LaDonViChuan: true,
-                    TyLeChuyenDoi: 1,
-                    ArrThuocTinh: [{
-                        ID: arr[0][j].ID,
-                        ID_ThuocTinh: arr[0][j].ID_ThuocTinh,
-                        GiaTri: arr[0][j].TenGiaTri
-                    }]
-                };
-                result.push(objct11);
+            else {
+                $('#txtAddGiaTriNew' + e.index).val("");
             }
-
-        } else {
-            let allCasesOfRest = allPossibleCases(arr.slice(1));  // recur with the rest of array
-            for (let i = 0; i < allCasesOfRest.length; i++) {
-                for (let j = 0; j < arr[0].length; j++) {
-                    let objct = {
-                        ID_ThuocTinh: arr[0][j]["ID_ThuocTinh"] + ',' + arr[0][j]["TenGiaTri"] + '_' + allCasesOfRest[i]["ID_ThuocTinh"],
-                        TenGiaTri: arr[0][j]["TenGiaTri"] + '-' + allCasesOfRest[i]["TenGiaTri"],
-                        TenDonViTinh: allCasesOfRest[i]["TenDonViTinh"],
-                        LaDonViChuan: allCasesOfRest[i]["LaDonViChuan"],
-                        TyLeChuyenDoi: allCasesOfRest[i]["TyLeChuyenDoi"],
-                        ArrThuocTinh: [{
-                            ID: arr[0][j].ID,
-                            ID_ThuocTinh: arr[0][j].ID_ThuocTinh,
-                            GiaTri: arr[0][j].TenGiaTri
-                        }]
-                    };
-                    objct.ArrThuocTinh.push({
-                        ID: allCasesOfRest[i].ArrThuocTinh[0].ID,
-                        ID_ThuocTinh: allCasesOfRest[i].ArrThuocTinh[0].ID_ThuocTinh,
-                        GiaTri: allCasesOfRest[i].ArrThuocTinh[0].GiaTri
-                    })
-                    result.push(objct);
-                }
-            }
-
+            $('#txtAddGiaTriNew' + e.index).focus();
         }
-        return result;
-
-    }
+        else {
+            self.searchGiaTriThuocTinh();
+        }
+    };
 
     self.closeGiaTri = function (item) {
         removeGiaTriThuocTinh(item.ID_ThuocTinh, item.TenGiaTri);
@@ -9464,7 +9447,7 @@ var ViewModel = function () {
                     TenDonViTinh: '',
                     LaDonViChuan: true,
                     TyLeChuyenDoi: 1,
-                    ID_ThuocTinh: arr[0][k].ID_ThuocTinh.concat(',', arr[0][k].TenGiaTri,'_' ), // cac thuoctinh ngancach nhau _
+                    ID_ThuocTinh: arr[0][k].ID_ThuocTinh.concat(',', arr[0][k].TenGiaTri, '_'), // cac thuoctinh ngancach nhau _
                     TenHangHoa: arr[0][k].TenGiaTri,
                 }
                 arrCungLoai.push(obj);

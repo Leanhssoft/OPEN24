@@ -248,11 +248,11 @@
                         <div class="form-group ">
                             <label class="css-form-label">Bảo hành</label>
                             <div class="css-form-detail bao-hanh" data-bind="with: newHangHoa" style="display:flex; flex-direction:row; justify-content:space-between">
-                                <input type="text" autocomplete="off" class="dropdown input-add-select form-control" 
-                                       data-bind="value: formatNumber3Digit(ThoiGianBaoHanh)" 
-                                       onkeypress="return keypressNumber(event,this)" 
+                                <input type="text" autocomplete="off" class="dropdown input-add-select form-control"
+                                       data-bind="value: formatNumber3Digit(ThoiGianBaoHanh)"
+                                       onkeypress="return keypressNumber(event,this)"
                                        onkeyup="return formatNumberObj(this)">
-                                <select style="right:0" class="form-control select-add-input" 
+                                <select style="right:0" class="form-control select-add-input"
                                         id="dllLoaiThoiGianBH" data-bind="options: $root.LoaiThoiGianBaoHanhs, optionsValue: 'value',
                                     optionsText: 'TenLoai', value: $root.selectedLoaiThoiGianBH"></select>
                             </div>
@@ -535,9 +535,11 @@
                                             </td>
                                             <td>
                                                 <div class="op-tag-picker ">
-                                                    <div data-toggle="dropdown" class="flex flex-row" style="flex-wrap:wrap; background:white" aria-expanded="true">
+                                                    <div data-toggle="dropdown" class="flex flex-row"
+                                                         data-bind="click: function(){$root.openDropdown_LoadAgain_ListGiaTri_ofThuocTinh($index(),$data)}"
+                                                         style="flex-wrap:wrap; background:white" aria-expanded="true">
                                                         <!-- ko foreach: GiaTri -->
-                                                        <div class="flex " style="align-items:center; padding:3px 7px; background:var(--color-primary); color:white; border-radius:3px; line-height:18px; margin:3px;">
+                                                        <div class="flex " style="align-items:center; width:50px; padding:3px 7px; background:var(--color-primary); color:white; border-radius:3px; line-height:18px; margin:3px;">
                                                             <span data-bind="text: TenGiaTri">
                                                             </span>
                                                             <i class="material-icons font-14 " style="margin-left:5px; margin-right:-3px" data-bind="click: $root.closeGiaTri">
@@ -545,10 +547,19 @@
                                                             </i>
                                                         </div>
                                                         <!--/ko-->
-                                                        <div class="input-simple" style="width:150px;position:relative; height:30px;">
-                                                            <input placeholder="Nhập giá trị" data-bind="event:{keyup: $root.pushGiaTriNew}, attr:{id: 'txtAddGiaTriNew' + index}, enable: ID_ThuocTinh !== undefined">
+                                                        <div class="input-simple" style="position:relative; height:30px;">
+                                                            <input placeholder="Nhập giá trị"
+                                                                   data-bind="event:{keyup: $root.pushGiaTriNew},
+                                                                   attr:{id: 'txtAddGiaTriNew' + index}, enable: ID_ThuocTinh !== undefined">
                                                         </div>
                                                     </div>
+                                                    <ul data-bind="foreach: $root.ListGiaTri_ofThuocTinh_Search" class=" dropdown-menu" style=" width: 100%;">
+                                                        <li class="floatleft"
+                                                            data-bind="click: function(){ $root.addNew_ChoseThuocTinh ($parentContext.$index(), $data)},
+                                                            text: GiaTri"
+                                                            style="padding:5px 5px; border-bottom:1px solid #ccc">
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </td>
                                             <td class="hidexoathuoctinh">
@@ -594,8 +605,28 @@
                                                     </button>
                                                 </div>
                                             </td>
-                                            <td> <input type="text" data-bind="value: GiaTri" class="form-control"> </td>
-                                            <td class="hidexoathuoctinh" data-bind="visible: $root.CheckLaChaCungLoai() === true"><a href="javascript:void(0)" title="Xóa đơn vị" class="delete-attribute" data-bind="click: $root.removeThuocTinhOld"><i class="fa fa-times"></i></a></td>
+                                            <td>
+                                                <div data-toggle="dropdown" class="flex flex-row"
+                                                     data-bind="click: function(){$root.openDropdown_LoadAgain_ListGiaTri_ofThuocTinh($index(),$data)}">
+                                                    <input type="text"
+                                                           data-bind="value: GiaTri,
+                                                           event: {keyup: $root.searchGiaTriThuocTinh}" class="form-control">
+                                                </div>
+                                                <ul data-bind="foreach: $root.ListGiaTri_ofThuocTinh_Search" class=" dropdown-menu" style=" width: 100%;">
+                                                    <li class="floatleft"
+                                                        data-bind="click: function(){ $root.editHang_ChoseThuocTinh ($parentContext.$index(), $data)},
+                                                            text: GiaTri"
+                                                        style="padding:5px 5px; border-bottom:1px solid #ccc">
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                            <td class="hidexoathuoctinh"
+                                                data-bind="visible: $root.CheckLaChaCungLoai() === true">
+                                                <a href="javascript:void(0)" title="Xóa đơn vị" class="delete-attribute"
+                                                   data-bind="click: $root.removeThuocTinhOld">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -613,7 +644,8 @@
                     <!-- ko if: $root.booleanAdd() === false-->
                     <div class="panel-collapse ">
                         <div class="panel-body">
-                            <div class="table-frame">
+                            <!--don't set style (table-frame: overflow) because bind list Gtri of thuoctinh -->
+                            <div class="table-frame" style="overflow: unset!important">
                                 <table class="" id="attribute1">
                                     <thead>
                                         <tr data-bind="visible:shouldShowTitleTTEdit">
@@ -640,7 +672,17 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                <input type="text" data-bind="value: GiaTri" class="form-control">
+                                                <div data-toggle="dropdown" class="flex flex-row"
+                                                     data-bind="click: function(){$root.openDropdown_LoadAgain_ListGiaTri_ofThuocTinh($index(),$data)}">
+                                                    <input type="text" data-bind="value: GiaTri, event: {keyup: $root.searchGiaTriThuocTinh}" class="form-control">
+                                                </div>
+                                                <ul data-bind="foreach: $root.ListGiaTri_ofThuocTinh_Search" class=" dropdown-menu" style=" width: 100%;">
+                                                    <li class="floatleft"
+                                                        data-bind="click: function(){ $root.editHang_ChoseThuocTinh ($parentContext.$index(), $data)},
+                                                            text: GiaTri"
+                                                        style="padding:5px 5px; border-bottom:1px solid #ccc">
+                                                    </li>
+                                                </ul>
                                             </td>
                                             <td class="hidexoathuoctinh" data-bind="visible: $root.CheckLaChaCungLoai() === true">
                                                 <button href="javascript:void(0)" title="Xóa đơn vị" class="btn btn-link" data-bind="click: $root.removeThuocTinhOld">
@@ -796,7 +838,7 @@
                         <div class="form-group " style="display:flex; flex-direction:row;flex-wrap:wrap">
                             <label class="control-label">Hàng hóa định mức<span style="color:red"> (*)</span></label>
                             <div style="position:relative;max-width:400px;min-width: 250px;margin-left: 15px;">
-                                <input type="text" class=" form-control" 
+                                <input type="text" class=" form-control"
                                        data-bind="jqAutoProduct: { source: HangHoas, value: getCTHH,
                                                      inputProp: 'MaHangHoa', labelProp: 'TenHangHoa', valueProp: 'MaHangHoa',  template: 'rowChiTiet'}"
                                        placeholder="Thêm hàng hóa thành phần" />
