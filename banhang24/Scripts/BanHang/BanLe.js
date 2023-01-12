@@ -4010,7 +4010,7 @@ var NewModel_BanHangLe = function () {
                 OnOff_Timer(hdLast.NgayLapHoaDon);
 
                 if (hdLast.StatusOffline === false) {
-                    $('input, select').removeAttr('disabled');
+                    $('select').removeAttr('disabled');
                     $('.parent-price-1, #txtDaThanhToan').removeAttr('disabled');
                 }
             }
@@ -4024,7 +4024,7 @@ var NewModel_BanHangLe = function () {
                 self.IDPhongBan_Chosing(null);
                 ClearTextSearch();
                 $('#txtDaThanhToan').text('');
-                $('input, select').removeAttr('disabled');
+                $('select').removeAttr('disabled');
                 $('.parent-price-1, #txtDaThanhToan').removeAttr('disabled');
                 $('#lblTienMat').text('(Tiền mặt)');
                 stopTimer();
@@ -4049,7 +4049,7 @@ var NewModel_BanHangLe = function () {
             self.countHDoffilne(0);
             ClearTextSearch();
             $('#txtDaThanhToan').text('');
-            $('input, select').removeAttr('disabled');
+            $('select').removeAttr('disabled');
             $('.parent-price-1, #txtDaThanhToan').removeAttr('disabled');
             $('#lblTienMat').text('(Tiền mặt)');
             timer();
@@ -13339,6 +13339,7 @@ var NewModel_BanHangLe = function () {
             }
             _maHoaDon = nameHD_InsertBH + countHD;
             localStorage.setItem(lcMaHD, _maHoaDon);
+            self.HoaDons().LoaiHoaDon(1);
 
             // !important: get banggia after assign _maHoaDon --> ussed to check banggia by loaiHD opening
             BindLstBangGia_byNhanVien_andDoiTuong();
@@ -13661,6 +13662,7 @@ var NewModel_BanHangLe = function () {
 
                     _maHoaDon = maHDNew;
                     localStorage.setItem(lcMaHD, maHDNew);
+                    self.HoaDons().LoaiHoaDon(loaiHD);
                     BindLstBangGia_byNhanVien_andDoiTuong();
                     UpdateAgainBangGia_forHoaDon(idRandomHD);
                     UpdateCacheHDLe(idRandomHD, false);
@@ -13676,6 +13678,7 @@ var NewModel_BanHangLe = function () {
             localStorage.setItem(lcListHD, JSON.stringify(hd));
             _maHoaDon = objHDNew.MaHoaDon;
             localStorage.setItem(lcMaHD, objHDNew.MaHoaDon);
+            self.HoaDons().LoaiHoaDon(loaiHD);
             BindLstBangGia_byNhanVien_andDoiTuong();
             UpdateAgainBangGia_forHoaDon(objHDNew.IDRandom);
             BindHD_CTHDafterSave();
@@ -20233,7 +20236,7 @@ var NewModel_BanHangLe = function () {
             $('#pressNormal').hide();
             $("#searchandadd").css("width", "calc(100% - 50px)")
         }
-        var loaiHoaDon = self.HoaDons().LoaiHoaDon();
+        var loaiHoaDon = GetLoaiHoaDon_ofHDopening();
         var roleChangePriceProduct = false;
         switch (loaiHoaDon) {
             case 1:
@@ -23569,6 +23572,8 @@ var NewModel_BanHangLe = function () {
             }
         }
     }
+    // !! vì func BindHD_CTHDafterSave (async)
+    // nên sẽ chưa kịp lấy thông tin loại hóa đơn
     function GetLoaiHoaDon_ofHDopening() {
         if (_maHoaDon === '') {
             _maHoaDon = $('.bill-bxslide li.using font').text();
