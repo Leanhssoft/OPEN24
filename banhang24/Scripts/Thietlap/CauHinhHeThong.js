@@ -1683,7 +1683,19 @@ var ViewModel = function () {
                             $('#PhieuTiepNhan').val(value.selected);
                             break;
                         case KeyDatHang:
+                        case 'BG':
                             self.ListMauInDathang(value.ListSelectMauIn);
+                            //var arrMauIn = [];
+                            //var arr = $.grep(result, function (x) {
+                            //    return $.inArray(x.Key, ['DH', 'BG']) > -1;
+                            //})
+                            //for (let i = 0; i < arr.length; i++) {
+                            //    for (let j = 0; j < arr[i].ListSelectMauIn.length; j++) {
+                            //        arrMauIn.push(arr[i].ListSelectMauIn[j]);
+                            //    }
+                            //}
+                            //console.log('arrMauIn ', result)
+                            //self.ListMauInDathang(arrMauIn);
                             $('#DatHang').val(value.selected);
                             break;
                         case KeyHoaDon:
