@@ -352,7 +352,7 @@ ko.components.register('jqauto-product', {
         self.searchDB = function (keyCode) {
             var self = this;
             var txt = self.textSearch();
-            if (commonStatisJs.CheckNull(txt)) {
+            if (!commonStatisJs.CheckNull(txt)) {
                 txt = txt.trim();
             }
             if (txt === '') {
