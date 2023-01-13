@@ -889,6 +889,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                        tk.SoTaiKhoan,
                                        tk.GhiChu,
                                        tk.TaiKhoanPOS,
+                                       nh.MaNganHang,
                                        nh.TenNganHang,
                                        TrangThai = tk.TrangThai == null ? 1 : tk.TrangThai.Value,
                                        ChiPhiThanhToan = nh.ChiPhiThanhToan == null ? 0 : nh.ChiPhiThanhToan,

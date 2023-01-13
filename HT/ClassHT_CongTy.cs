@@ -159,7 +159,7 @@ namespace libHT
                     objUpd.TenCongTy = obj.TenCongTy;
                     objUpd.DiaChi = obj.DiaChi;
                     objUpd.SoDienThoai = obj.SoDienThoai;
-                    objUpd.DiaChiNganHang = obj.DiaChiNganHang;
+                    //objUpd.DiaChiNganHang = obj.DiaChiNganHang;
                     objUpd.NgayCongChuan = obj.NgayCongChuan;
                     #endregion
                     db.Entry(objUpd).State = EntityState.Modified;
@@ -198,7 +198,7 @@ namespace libHT
                     objUpdate.GhiChu = cty.GhiChu;
                     objUpdate.TaiKhoanNganHang = cty.TaiKhoanNganHang;
                     objUpdate.ID_NganHang = cty.ID_NganHang;
-                    objUpdate.DiaChiNganHang = cty.DiaChiNganHang;
+                    //objUpdate.DiaChiNganHang = cty.DiaChiNganHang;
                     objUpdate.TenVT = cty.TenVT;
                     objUpdate.DiaChiVT = cty.DiaChiVT;
                     objUpdate.DangHoatDong = cty.DangHoatDong;

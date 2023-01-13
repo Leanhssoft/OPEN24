@@ -229,9 +229,9 @@
                             </div>
                             <!--Chuyển khoản-->
                             <div class="container-fluid row" style="margin-bottom:5px">
-                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="display: flex; flex-direction: row; align-content: center; justify-content: space-between; align-items: center;">
                                     <label>Tiền chuyển khoản</label>
-
+                                    <i class="fas fa-qrcode" style="color: #005aaa" v-on:click="ShowModalQRCode()"></i>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <account-bank :text-search="PhieuThuKhach.TenTaiKhoanCK"
@@ -340,8 +340,9 @@
                             </div>
                             <!--Chuyển khoản-->
                             <div class="floatleft" style="margin-bottom:5px">
-                                <div class="col-lg-4 col-md-4 col-xs-12">
+                                <div class="col-lg-4 col-md-4 col-xs-12" style="display: flex; flex-direction: row; align-content: center; justify-content: space-between; align-items: center;">
                                     <label>Tiền chuyển khoản</label>
+                                    <i class="fas fa-qrcode" style="color: #005aaa" v-on:click="ShowModalQRCode(2)"></i>
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-xs-12">
                                     <account-bank :text-search="PhieuThuBaoHiem.TenTaiKhoanCK"

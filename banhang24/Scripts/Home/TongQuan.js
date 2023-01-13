@@ -1961,5 +1961,6 @@
     }
 
 }
-ko.applyBindings(new ViewModelTongQuan());
+var knViewModelTongQuan = new ViewModelTongQuan();
+ko.applyBindings(knViewModelTongQuan);
 
