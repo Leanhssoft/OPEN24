@@ -377,6 +377,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     temptable = temptable.Replace("{SoLuongHuy}", "<span data-bind=\"text: SoLuongHuy\"></span>");
                     temptable = temptable.Replace("{GiaVon}", "<span data-bind=\"text: GiaVon\"></span>");
                     temptable = temptable.Replace("{GiaTriHuy}", "<span data-bind=\"text: GiaTriHuy\"></span>");
+                    temptable = temptable.Replace("{ViTriKho}", "<span data-bind=\"text: ViTriKho\"></span>");
 
                     content1 = content1.Replace(temptable1, temptable);
                 }
@@ -484,6 +485,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     temptable = temptable.Replace("{SoLuongHuy}", "<span data-bind=\"text: SoLuongHuy\"></span>");
                     temptable = temptable.Replace("{GiaVon}", "<span data-bind=\"text: GiaVon\"></span>");
                     temptable = temptable.Replace("{GiaTriHuy}", "<span data-bind=\"text: GiaTriHuy\"></span>");
+                    temptable = temptable.Replace("{ViTriKho}", "<span data-bind=\"text: ViTriKho\"></span>");
 
                     content1 = content1.Replace(temptable1, temptable);
                 }
@@ -650,6 +652,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content = content.Replace("{SoLuongHuy}", "<span data-bind=\"text: formatNumber(SoLuongHuy)\"></span>");
             content = content.Replace("{GiaVon}", "<span data-bind=\"text: formatNumber(GiaVon)\"></span>");
             content = content.Replace("{GiaTriHuy}", "<span data-bind=\"text: formatNumber(GiaTriHuy)\"></span>");
+            content = content.Replace("{ViTriKho}", "<span data-bind=\"text: ViTriKho\"></span>");
 
             // spa
             content = content.Replace("{GhiChu_NVThucHien}", "<span data-bind=\"text: GhiChu_NVThucHienPrint\"></span>");

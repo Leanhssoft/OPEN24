@@ -158,6 +158,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             MaLoHang = p.MaLoHang,
                             NgaySanXuat = p.NgaySanXuat,
                             NgayHetHan = p.NgayHetHan,
+                            ViTriKho = p.ViTriKho,
                             DonViTinh = classQuiDoi.Gets(ct => ct.ID_HangHoa == p.ID && ct.Xoa != true).Select(x => new DonViTinh
                             {
                                 ID_HangHoa = p.ID,
@@ -5194,6 +5195,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         p.TonToiThieu,// used to check thong bao tonkho
                         p.LoaiHangHoa,
                         p.HoaHongTruocChietKhau,
+                        p.ViTriKho,
                         DonViTinh = lstDVT.Where(ct => ct.ID_HangHoa == p.ID)
                             .Select(x => new DonViTinh
                             {

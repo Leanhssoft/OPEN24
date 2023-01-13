@@ -369,6 +369,9 @@ var NhapHangChiTiet = function () {
                 if (commonStatisJs.CheckNull(cthd[i].ID_ChiTietGoiDV)) {
                     cthd[i].ID_ChiTietGoiDV = null;
                 }
+                if (commonStatisJs.CheckNull(cthd[i].ViTriKho)) {
+                    cthd[i].ViTriKho = '';
+                }
                 tongtienchuaCK += formatNumberToFloat(itFor.SoLuong) * formatNumberToFloat(itFor.DonGia);
                 tongGiamGiaHang += formatNumberToFloat(itFor.SoLuong) * formatNumberToFloat(itFor.TienChietKhau);
 
@@ -395,6 +398,9 @@ var NhapHangChiTiet = function () {
                     if (commonStatisJs.CheckNull(cthd[i].DM_LoHang[j].ID_ChiTietGoiDV)) {
                         cthd[i].DM_LoHang[j].ID_ChiTietGoiDV = null;
                     }
+                    if (commonStatisJs.CheckNull(cthd[i].DM_LoHang[j].ViTriKho)) {
+                        cthd[i].DM_LoHang[j].ViTriKho = '';
+                    }
                 }
                 for (let j = 0; j < cthd[i].HangCungLoais.length; j++) {
                     tongtienchuaCK += itFor.HangCungLoais[j].SoLuong * itFor.HangCungLoais[j].DonGia;
@@ -417,6 +423,9 @@ var NhapHangChiTiet = function () {
                     }
                     if (commonStatisJs.CheckNull(cthd[i].HangCungLoais[j].ID_ChiTietGoiDV)) {
                         cthd[i].HangCungLoais[j].ID_ChiTietGoiDV = null;
+                    }
+                    if (commonStatisJs.CheckNull(cthd[i].HangCungLoais[j].ViTriKho)) {
+                        cthd[i].HangCungLoais[j].ViTriKho = '';
                     }
                 }
             }
@@ -885,6 +894,7 @@ var NhapHangChiTiet = function () {
                 TienThue: tienThue,
                 SoLuongConLai: 0,
                 ID_ChiTietGoiDV: null,
+                ViTriKho: itemHH.ViTriKho,
             }
         }
         else {
@@ -941,6 +951,7 @@ var NhapHangChiTiet = function () {
                 TienThue: tienThue,
                 SoLuongConLai: 0,
                 ID_ChiTietGoiDV: null,
+                ViTriKho: itemHH.ViTriKho,
             }
         }
     }
@@ -1017,6 +1028,7 @@ var NhapHangChiTiet = function () {
             TienThue: tienThue,
             SoLuongConLai: 0,
             ID_ChiTietGoiDV: null,
+            ViTriKho: itemHH.ViTriKho,
         }
     }
 
@@ -3349,6 +3361,7 @@ var NhapHangChiTiet = function () {
             }
             productNew.GiaBanHH = productNew.GiaBan;
             productNew.ID_HangHoa = productNew.ID;
+            productNew.ViTriKho = '';
             self.ItemChosing(productNew);
             AddCTHD(productNew, 1);
             $('jqauto-product ._jsInput').val(productNew.MaHangHoa);

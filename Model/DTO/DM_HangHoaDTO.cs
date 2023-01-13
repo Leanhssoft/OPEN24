@@ -258,6 +258,7 @@ namespace Model
         public bool CheckDinhLuongDV { get; set; }
         public double? QuyCach { get; set; }
         public int? LoaiHangHoa { get; set; }
+        public string ViTriKho { get; set; }
     }
 
     public class BCDM_LoHangDTO
@@ -478,6 +479,7 @@ namespace Model
         public int? DuocTichDiem { get; set; }
         public int? LoaiHangHoa { get; set; }
         public int? HoaHongTruocChietKhau { get; set; }
+        public string ViTriKho { get; set; }
     }
 
     public static class Comonndll

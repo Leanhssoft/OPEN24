@@ -741,6 +741,7 @@ namespace libDM_DoiTuong
         public List<BH_HoaDon_ChiTietDTO> ThanhPhanComBo { get; set; }
         public int? HoaHongTruocChietKhau { get; set; }// TinhHoaHongTruocCK (0,1)
         public Guid? ID_Xe { get; set; }// used to banxe (hanhhoa laxe)
+        public string ViTriKho { get; set; } = string.Empty;
     }
 
     public class ChiPhiDichVuDTO

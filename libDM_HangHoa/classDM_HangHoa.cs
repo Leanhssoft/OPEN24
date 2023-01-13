@@ -30,9 +30,14 @@ namespace libDM_HangHoa
 
         public List<SP_DM_HangHoaDTO> Gara_JqAutoHangHoa(Gara_ParamSearchHangHoa param)
         {
+            var idBangGia = param.ID_BangGia;
+            if (idBangGia == null)
+            {
+                idBangGia = Guid.Empty;
+            }
             List<SqlParameter> prm = new List<SqlParameter>();
             prm.Add(new SqlParameter("ID_DonVi", param.ID_ChiNhanh));
-            prm.Add(new SqlParameter("ID_BangGia", param.ID_BangGia));
+            prm.Add(new SqlParameter("ID_BangGia", idBangGia));
             prm.Add(new SqlParameter("TextSearch", param.TextSearch));
             prm.Add(new SqlParameter("LaHangHoa", param.LaHangHoa));
             prm.Add(new SqlParameter("QuanLyTheoLo", param.QuanLyTheoLo));
@@ -40,7 +45,7 @@ namespace libDM_HangHoa
             prm.Add(new SqlParameter("Form", param.Form ?? 0));// 1.nhaphang, 0.other (0.bán hàng: chỉ hiện nếu có mã lô, và chưa hết hạn - nhập hàng: show all)
             prm.Add(new SqlParameter("CurrentPage", param.CurrentPage ?? 0));
             prm.Add(new SqlParameter("PageSize", param.PageSize ?? 500));
-            var xx= db.Database.SqlQuery<SP_DM_HangHoaDTO>("exec Gara_JqAutoHangHoa @ID_DonVi, @ID_BangGia, @TextSearch," +
+            var xx = db.Database.SqlQuery<SP_DM_HangHoaDTO>("exec Gara_JqAutoHangHoa @ID_DonVi, @ID_BangGia, @TextSearch," +
                 " @LaHangHoa, @QuanLyTheoLo, @ConTonKho, @Form, @CurrentPage, @PageSize", prm.ToArray()).ToList();
             return xx;
         }
@@ -1786,7 +1791,7 @@ namespace libDM_HangHoa
 
         public List<DMHangHoaDTO> LoadDanhMucHangHoa(ParamSearch_DMHangHoa param)
         {
-            string idChiNhanh = string.Empty, idThuocTinhs = string.Empty, idViTris= string.Empty;
+            string idChiNhanh = string.Empty, idThuocTinhs = string.Empty, idViTris = string.Empty;
             if (param.IDChiNhanhs != null && param.IDChiNhanhs.Count > 0)
             {
                 idChiNhanh = string.Join(",", param.IDChiNhanhs);
@@ -1794,7 +1799,7 @@ namespace libDM_HangHoa
             if (param.ListThuocTinh != null && param.ListThuocTinh.Count > 0)
             {
                 idThuocTinhs = string.Join(",", param.ListThuocTinh);
-            } 
+            }
             if (param.ListViTri != null && param.ListViTri.Count > 0)
             {
                 idViTris = string.Join(",", param.ListViTri);

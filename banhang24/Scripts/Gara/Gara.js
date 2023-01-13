@@ -776,6 +776,9 @@ var NewModel_BanHangLe = function () {
                 if (commonStatisJs.CheckNull(cthd[i].ThanhPhanComBo)) {
                     cthd[i].ThanhPhanComBo = [];
                 }
+                if (commonStatisJs.CheckNull(cthd[i].ViTriKho)) {
+                    cthd[i].ViTriKho = '';
+                }
                 for (let j = 0; j < cthd[i].ThanhPhan_DinhLuong.length; j++) {
                     if (commonStatisJs.CheckNull(cthd[i].ThanhPhan_DinhLuong[j].isDefault)) {
                         cthd[i].ThanhPhan_DinhLuong[j].isDefault = false;
@@ -810,6 +813,9 @@ var NewModel_BanHangLe = function () {
                     if (commonStatisJs.CheckNull(cthd[i].DM_LoHang[j].LoaiHangHoa)) {
                         cthd[i].DM_LoHang[j].LoaiHangHoa = 1;
                     }
+                    if (commonStatisJs.CheckNull(cthd[i].DM_LoHang[j].ViTriKho)) {
+                        cthd[i].DM_LoHang[j].ViTriKho = '';
+                    }
                     cthd[i].DM_LoHang[j].ThanhPhanComBo = [];
                 }
                 for (let j = 0; j < cthd[i].HangCungLoais.length; j++) {
@@ -821,6 +827,9 @@ var NewModel_BanHangLe = function () {
                     }
                     if (commonStatisJs.CheckNull(cthd[i].HangCungLoais[j].ID_LichBaoDuong)) {
                         cthd[i].HangCungLoais[j].ID_LichBaoDuong = null;
+                    }
+                    if (commonStatisJs.CheckNull(cthd[i].HangCungLoais[j].ViTriKho)) {
+                        cthd[i].HangCungLoais[j].ViTriKho = '';
                     }
                     if (commonStatisJs.CheckNull(cthd[i].HangCungLoais[j].LoaiHangHoa)) {
                         if (cthd[i].HangCungLoais[j].LaHangHoa) {
@@ -6158,6 +6167,7 @@ var NewModel_BanHangLe = function () {
             ThanhPhanComBo: combo,
             LoaiHangHoa: ctDoing.LoaiHangHoa,
             HoaHongTruocChietKhau: ctDoing.HoaHongTruocChietKhau,
+            ViTriKho: ctDoing.ViTriKho,
         }
     }
 
@@ -16546,6 +16556,7 @@ var NewModel_BanHangLe = function () {
                     ThanhPhanComBo: [],
                     HangCungLoais: [],
                     HoaHongTruocChietKhau: 0,
+                    ViTriKho: '',
                 }
                 var sumSL_inCTHD = GetSum_SoLuongHang_SameGroup(null);
                 // tinh SLTang phu hop voi HH da mua
@@ -17331,14 +17342,16 @@ var NewModel_BanHangLe = function () {
                                     }
                                 }
                                 else {
-                                    // find TP dinhluong & check TonKho  
-                                    let arrTP = $.grep(vmThanhPhanDinhLuong.All_DinhLuongDichVu, function (x) {
-                                        return x.ID_DichVu === objCTAdd[i].ID_DonViQuiDoi;
-                                    });
-                                    for (let j = 0; j < arrTP.length; j++) {
-                                        let sluongDL = objCTAdd[i].SoLuong * arrTP[j].SoLuong;
-                                        if (sluongDL > arrTP[j].TonKho) {
-                                            errCT += arrTP[j].TenHangHoa + ', ';
+                                    if (objCTAdd[i].LoaiHangHoa !== 1) {
+                                        // find TP dinhluong & check TonKho  
+                                        let arrTP = $.grep(vmThanhPhanDinhLuong.All_DinhLuongDichVu, function (x) {
+                                            return x.ID_DichVu === objCTAdd[i].ID_DonViQuiDoi;
+                                        });
+                                        for (let j = 0; j < arrTP.length; j++) {
+                                            let sluongDL = objCTAdd[i].SoLuong * arrTP[j].SoLuong;
+                                            if (sluongDL > arrTP[j].TonKho) {
+                                                errCT += arrTP[j].TenHangHoa + ', ';
+                                            }
                                         }
                                     }
                                 }
@@ -17804,6 +17817,7 @@ var NewModel_BanHangLe = function () {
                     ThanhPhanComBo: [],
                     HangCungLoais: [],
                     HoaHongTruocChietKhau: 0,
+                    ViTriKho: '',
                 }
                 // get TongTienHang of HoaDon
                 var lstHD = JSON.parse(localStorage.getItem(lcListHD));

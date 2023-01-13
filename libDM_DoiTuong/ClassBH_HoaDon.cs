@@ -2173,6 +2173,7 @@ namespace libDM_DoiTuong
                 ID_LichBaoDuong = p.ID_LichBaoDuong,
                 LoaiHangHoa = p.LoaiHangHoa,
                 HoaHongTruocChietKhau = p.HoaHongTruocChietKhau,
+                ViTriKho = p.ViTriKho,
                 DonViTinh = _ClassDVQD.Gets(ct => ct.ID_HangHoa == p.ID_HangHoa && ct.Xoa != true).Select(x => new DonViTinh
                 {
                     ID_HangHoa = p.ID_HangHoa,
