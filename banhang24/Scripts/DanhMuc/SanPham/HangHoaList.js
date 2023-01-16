@@ -11642,14 +11642,16 @@ var ViewModel = function () {
         let param = GetParamSearch1();
         let columnHide = [];
         for (let i = 0; i < self.ColumnsExcel().length; i++) {
-            columnHide.push(self.ColumnsExcel()[i]);
+            if ($.inArray(self.ColumnsExcel()[i], columnHide) === -1) {
+                columnHide.push(self.ColumnsExcel()[i]);
+            }
         }
         param.ColumnHide = columnHide;
+        param.CurrentPage = 0;
         param.PageSize = self.TotalRecord();
 
         ajaxHelper(DMHangHoaUri + 'ExportExcel_DanhMucHangHoa', 'POST', param).done(function (x) {
             $('.content-table').gridLoader({ show: false });
-            console.log('x ', x)
             if (x.res) {
                 self.DownloadFile_byURL(x.dataSoure);
 
@@ -11692,19 +11694,19 @@ var ViewModel = function () {
     }
 
     self.ColumnsExcel = ko.observableArray();
-    var arrColumnsExcel = [];
-    self.addColum = function (item) {
-        if (self.ColumnsExcel().length < 1) {
-            self.ColumnsExcel.push(item);
+    self.addColum = function (item, uncheck = false) {
+        if (!uncheck) {
+            let ex = $.grep(self.ColumnsExcel(), (x) => {
+                return x == item;
+            });
+            if (ex.length === 0) {
+                self.ColumnsExcel.push(item);
+            }
         }
         else {
-            for (var i = 0; i < self.ColumnsExcel().length; i++) {
+            for (let i = 0; i < self.ColumnsExcel().length; i++) {
                 if (self.ColumnsExcel()[i] === item) {
                     self.ColumnsExcel.splice(i, 1);
-                    break;
-                }
-                if (i == self.ColumnsExcel().length - 1) {
-                    self.ColumnsExcel.push(item);
                     break;
                 }
             }
@@ -11727,13 +11729,17 @@ var ViewModel = function () {
             } else {
                 current = JSON.parse(current);
                 for (var i = 0; i < current.length; i++) {
-                    $(current[i].NameClass).addClass("operation");
+                    //$(current[i].NameClass).addClass("operation");
                     document.getElementById(current[i].NameId).checked = false;
-                    if (loadColumExeHH) {
-                        self.addColum(current[i].Value);
-                    }
+                    //if (loadColumExeHH) {
+                    self.addColum(current[i].Value);
+                    //}
+
                 }
                 loadColumExeHH = false;
+
+                // set checked in list check
+
             }
             $('#myTable tbody .op-js-tr-hide').each(function () {
                 $(this).find('.td-colspan').attr("colspan", 11 - current.length);
@@ -11851,56 +11857,49 @@ var ViewModel = function () {
     }
 
     $("#cbmahang").click(function () {
-        //$(".mahang").toggle();
+        let isCheck = $(this).prop('checked');
         addClassHH(".mahang", "cbmahang", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), isCheck);
     });
     $("#cbtenhang").click(function () {
-        //$(".tenhang").toggle();
         addClassHH(".tenhang", "cbtenhang", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), $(this).prop('checked'))
     });
     $("#cbdvt").click(function () {
         addClassHH(".tendvt", "cbdvt", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), $(this).prop('checked'))
     });
     $("#cbTenViTri").click(function () {
         addClassHH(".vitrikho", "cbTenViTri", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), $(this).prop('checked'))
     });
     $("#cbnhomhang").click(function () {
         addClassHH(".nhomhang", "cbnhomhang", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), $(this).prop('checked'))
     });
     $("#cbloaihang").click(function () {
-        //$(".loaihang").toggle();
         addClassHH(".loaihang", "cbloaihang", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), $(this).prop('checked'))
     });
     $("#cbgiaban").click(function () {
-        //$(".giaban").toggle();
         addClassHH(".giaban", "cbgiaban", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), $(this).prop('checked'))
     });
     $("#cbgiavon").click(function () {
-        //$(".giavon").toggle();
         addClassHH(".giavon", "cbgiavon", $(this).val());
         self.addColum($(this).val())
     });
     $("#cbtonkho").click(function () {
-        //$(".tonkho").toggle();
         addClassHH(".tonkho", "cbtonkho", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), $(this).prop('checked'))
     });
     $("#cbghichu").click(function () {
-        //$(".ghichu").toggle();
         addClassHH(".ghichu", "cbghichu", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), $(this).prop('checked'))
     });
     $("#cbtrangthai").click(function () {
-        //$(".trangthai").toggle();
         addClassHH(".trangthai", "cbtrangthai", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), $(this).prop('checked'))
     });
 
     $("#cbmahangkk").click(function () {

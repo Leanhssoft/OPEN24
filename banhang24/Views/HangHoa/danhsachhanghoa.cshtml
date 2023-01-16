@@ -250,7 +250,7 @@
                                 <div class=" choose-person floatleft " data-toggle="dropdown" aria-expanded="false">
                                     <ul data-bind="foreach: arrViTriChosed">
                                         <li class="li-input-span" style="width:100%!important">
-                                            <span style="width:70%" data-bind="text: TenViTri" >
+                                            <span style="width:70%" data-bind="text: TenViTri">
                                             </span>&nbsp;
                                             <div class="pull-right">
                                                 <span style="width:40px"
@@ -459,57 +459,100 @@
                                     <ul>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbmahang" checked="checked" value="0" /><span></span>Mã hàng hóa</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbmahang"
+                                                           checked="checked"
+                                                           value="0" /><span></span>Mã hàng hóa
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox cbtenhang" id="cbtenhang" checked="checked" value="1" /><span></span>Tên hàng</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox cbtenhang" id="cbtenhang"
+                                                            checked="checked"
+                                                           value="1" /><span></span>Tên hàng
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox cbdvt" id="cbdvt" checked="checked" value="2" /><span></span>Đvt</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox cbdvt" id="cbdvt"
+                                                            checked="checked"
+                                                           value="2" /><span></span>Đvt
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox cbTenViTri" id="cbTenViTri" value="3" checked="checked" /><span></span>Vị trí kho</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox cbTenViTri"
+                                                            checked="checked"
+                                                           id="cbTenViTri" value="3" /><span></span>Vị trí kho
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbnhomhang" checked="checked" value="4" /><span></span>Nhóm hàng</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbnhomhang"
+                                                            checked="checked"
+                                                           value="4" /><span></span>Nhóm hàng
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbloaihang" checked="checked" value="5" /><span></span>Loại hàng</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbloaihang"
+                                                            checked="checked"
+                                                           value="5" /><span></span>Loại hàng
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbgiaban" checked="checked" value="6" /><span></span>Giá bán</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbgiaban"
+                                                            checked="checked"
+                                                           value="6" /><span></span>Giá bán
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbgiavon" checked="checked" value="7" /><span></span>Giá vốn</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbgiavon"
+                                                            checked="checked"
+                                                           value="7" /><span></span>Giá vốn
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbtonkho" checked="checked" value="8" /><span></span>Tồn kho</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbtonkho"
+                                                            checked="checked"
+                                                           value="8" /><span></span>Tồn kho
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbghichu" checked="checked" value="9" /><span></span>Ghi chú</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbghichu"
+                                                           value="9" /><span></span>Ghi chú
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbtrangthai" checked="checked" value="10" /><span></span>Trạng thái</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbtrangthai"
+                                                            checked="checked"
+                                                           value="10" /><span></span>Trạng thái
+                                                </label>
                                             </div>
                                         </li>
                                     </ul>
@@ -842,7 +885,6 @@
                                                         </span>
                                                     </td>
                                                     <!--/ko-->
-                                                 
                                                     <!--ko if: $root.ColumnsExcel().indexOf('4') < 0-->
                                                     <td onclick="loadshowdetail($(this))" class="ch1 nhomhang cmnh w190" data-bind="text: NhomHangHoa, click: $root.loadTheKhoCungLoai"></td>
                                                     <!--/ko-->
