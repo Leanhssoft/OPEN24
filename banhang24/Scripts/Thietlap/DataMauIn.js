@@ -85,6 +85,7 @@ var dataMauIn = function () {
         MaLoHang: 'Lô 01',
         NgaySanXuat: '01/01/2022',
         NgayHetHan: '01/01/2024',
+        ViTriKho:'Kho 1',
     };
     var obj2 = {
         SoThuTu: 2,
@@ -149,6 +150,7 @@ var dataMauIn = function () {
         MaLoHang: 'Lô 02',
         NgaySanXuat: '02/01/2022',
         NgayHetHan: '02/01/2024',
+        ViTriKho: 'Kho 2',
     };
 
     var obj3 = {
@@ -214,6 +216,7 @@ var dataMauIn = function () {
         MaLoHang: 'Lô 02',
         NgaySanXuat: '03/01/2022',
         NgayHetHan: '03/01/2024',
+        ViTriKho: 'Kho 3',
     };
     var obj4 = {
         SoThuTu: 2,
@@ -278,6 +281,7 @@ var dataMauIn = function () {
         MaLoHang: 'Lô 04',
         NgaySanXuat: '04/01/2022',
         NgayHetHan: '04/01/2024',
+        ViTriKho: 'Kho 4',
     };
     self.CTHoaDonPrint = ko.observableArray([
         obj,

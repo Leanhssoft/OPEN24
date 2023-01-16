@@ -414,6 +414,7 @@ function ReplaceCTHD(content) {
             '{SoLuongHuy}': '<span data-bind=\"text: SoLuongHuy\"></span>',
             '{GiaVon}': '<span data-bind=\"text: GiaVon\"></span>',
             '{GiaTriHuy}': '<span data-bind=\"text: GiaTriHuy\"></span>',
+            '{ViTriKho}': '<span data-bind=\"text: ViTriKho\"></span>',
         });
     return content;
 }
