@@ -3545,10 +3545,10 @@
         if (self.RoleView_Cus() === true && itemInsert.length > 0) {
             self.RoleInsert_Cus(true);
         }
-        // xuat file
+      
         self.RoleExport_Cus(CheckQuyenExist('KhachHang_XuatFile'));
-        // import file
         self.RoleImport_Cus(CheckQuyenExist('KhachHang_Import'));
+
         // update
         var itemUpdate = $.grep(arrRoleCus, function (x) {
             return x.MaQuyen.indexOf('KhachHang_CapNhat') > -1;
@@ -5390,7 +5390,7 @@
         vmNKGoiBaoDuong.ID_DonVi = VHeader.IdDonVi;
         vmNKGoiBaoDuong.GetGoiDichVu_ofKhachHang(id);
         vmThanhToanGara.GetSoDuTheGiaTri(id);
-        vmNKGoiBaoDuong.showModal(id, null, 0);
+        vmNKGoiBaoDuong.showModal(id, null, 0, 1);
     }
 
     $('#modalMoveGroup').on('hidden.bs.modal', function () {
