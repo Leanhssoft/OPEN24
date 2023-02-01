@@ -413,6 +413,12 @@
                                     }
                                     self.UpdateNhomKhachHang([objDTNhom]);
                                 }
+                                else {
+                                    // delete nhomold
+                                    if (!commonStatisJs.CheckNull(self.customerOld.ID_NhomDoiTuong)) {
+                                        self.Delete_NhomOld_ofCus([_id]);
+                                    }
+                                }
                                 var diary = {
                                     ID_DonVi: self.inforLogin.ID_DonVi,
                                     ID_NhanVien: self.inforLogin.ID_NhanVien,
@@ -439,7 +445,14 @@
                     }
                 }
             },
+            Delete_NhomOld_ofCus: function (arrIDCus = []) {
+                let self = this;
+                if (arrIDCus.length > 0) {
+                    ajaxHelper(self.UrlDoiTuongAPI + 'DeleteAllNhom_ofDoiTuong?lstIDDoiTuong=' + arrIDCus, 'POST', arrIDCus).done(function (x) {
 
+                    });
+                }
+            },
             UpdateNhomKhachHang: function (lstNhom, isChuyenNhom = false) {
                 var self = this;
                 var lst = [];
