@@ -857,8 +857,10 @@
                     if (x.res) {
                         let data = x.dataSoure;
                         self.listData.GoiDichVu = data;
-                        newModelBanLe.TongGoiDV(data.length);
                         self.GetTPDinhLuong_ofHoaDon();
+                        if (self.CallFrom == 0) {
+                            newModelBanLe.TongGoiDV(data.length);
+                        }
                     }
                 });
             },
@@ -1091,9 +1093,8 @@
                 }
             },
 
-            showModal: function (idCus, idCar = null, nganhnghe = 0) {
+            showModal: function (idCus, idCar = null, nganhnghe = 0, from = 0) {
                 let self = this;
-                self.CallFrom = from;
                 self.saveOK = false;
                 self.CallFrom = from;
                 self.LoaiNganhNghe = nganhnghe;
