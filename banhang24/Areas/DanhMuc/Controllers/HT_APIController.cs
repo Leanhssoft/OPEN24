@@ -1,4 +1,5 @@
-﻿using banhang24.Hellper;
+﻿using banhang24.Cors;
+using banhang24.Hellper;
 using HT;
 using libHT;
 using libHT_NguoiDung;
@@ -11,7 +12,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
+using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using ZaloConnectApp;
 
 namespace banhang24.Areas.DanhMuc.Controllers
@@ -150,8 +153,11 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
 
         #endregion
+        //[AllowCrossSite]
+        //[EnableCors(origins: "https://localhost:3000", headers: "*", methods: "GET")]
         public List<HT_CongTy> GetHT_CongTy()
         {
+            HttpCookie cookie = HttpContext.Current.Request.Cookies["SubDomain"];
             try
             {
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())

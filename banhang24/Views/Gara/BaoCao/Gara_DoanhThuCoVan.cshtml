@@ -186,7 +186,7 @@
                                             <p>Từ</p>
                                         </div>
                                         <div class="conten-choose">
-                                            <input type="text" class="form-control" placeholder="0" autocomplete="off" v-model="DoanhThuFrom" v-on:keyup="EnterKeyup" onkeyup="return formatNumberObj(this)">
+                                            <input type="text" class="form-control" placeholder="0" autocomplete="off" v-model="DoanhThuFrom" v-on:keyup="EnterKeyup">
                                         </div>
                                     </div>
                                     <div class="form-group floatleft">
@@ -194,7 +194,7 @@
                                             <p>Đến</p>
                                         </div>
                                         <div class="conten-choose">
-                                            <input type="text" class="form-control" placeholder="0" autocomplete="off" v-model="DoanhThuTo" v-on:keyup="EnterKeyup" onkeyup="return formatNumberObj(this)">
+                                            <input type="text" class="form-control" placeholder="0" autocomplete="off" v-model="DoanhThuTo" v-on:keyup="EnterKeyup">
                                         </div>
                                     </div>
                                 </div>
@@ -212,7 +212,7 @@
                                             <p>Từ</p>
                                         </div>
                                         <div class="conten-choose">
-                                            <input type="text" class="form-control" placeholder="0" autocomplete="off" v-model="LoiNhuanFrom" v-on:keyup="EnterKeyup" onkeyup="return formatNumberObj(this)">
+                                            <input type="text" class="form-control" placeholder="0" autocomplete="off" v-model="LoiNhuanFrom" v-on:keyup="EnterKeyup">
                                         </div>
                                     </div>
                                     <div class="form-group floatleft">
@@ -220,9 +220,30 @@
                                             <p>Đến</p>
                                         </div>
                                         <div class="conten-choose">
-                                            <input type="text" class="form-control" placeholder="0" autocomplete="off" v-model="LoiNhuanTo" v-on:keyup="EnterKeyup" onkeyup="return formatNumberObj(this)">
+                                            <input type="text" class="form-control" placeholder="0" autocomplete="off" v-model="LoiNhuanTo" v-on:keyup="EnterKeyup">
                                         </div>
                                     </div>
+                                </div>
+                            </aside>
+                        </article>
+                        <article class="boxLeft showLoaiHang">
+                            <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
+                                <img src="/Content/images/icon/loaihang.png">  Khác
+                            </h3>
+                            <aside class="op-filter-container">
+                                <div class="menuCheckbox">
+                                    <ul>
+                                        <li>
+                                            <label>
+                                                <input type="checkbox" v-model="DaXuatXuong"> Đã xuất xưởng
+                                            </label>
+                                        </li>
+                                        <li>
+                                            <label>
+                                                <input type="checkbox" v-model="ChuaXuatXuong"> Chưa xuất xưởng
+                                            </label>
+                                        </li>
+                                    </ul>
                                 </div>
                             </aside>
                         </article>
@@ -732,6 +753,8 @@
                 LoiNhuanFrom: '',
                 LoiNhuanTo: '',
                 TextSearch: '',
+                DaXuatXuong: true,
+                ChuaXuatXuong: true,
                 BaoCaoTongHopHeader: [],
                 BaoCaoTongHop: {
                     dataAll: [],
@@ -880,6 +903,7 @@
                         myData.LoiNhuanFrom = self.LoiNhuanFrom.replace(/,/gi, '');
                         myData.LoiNhuanTo = self.LoiNhuanTo.replace(/,/gi, '');
                         myData.TextSearch = self.TextSearch;
+                        myData.TrangThai = self.GetStringTrangThai();
                         $.ajax({
                             url: self.urlApi.ReportApi + "GetBaoCaoDoanhThuSuaChuaTongHop",
                             type: 'POST',
@@ -918,6 +942,7 @@
                         myData.LoiNhuanTo = self.LoiNhuanTo.replace(/,/gi, '');
                         myData.TextSearch = self.TextSearch;
                         myData.IdNhomHangHoa = self.IdNhomHangHoaSelected;
+                        myData.TrangThai = self.GetStringTrangThai();
                         $.ajax({
                             url: self.urlApi.ReportApi + "GetBaoCaoDoanhThuSuaChuaChiTiet",
                             type: 'POST',
@@ -959,6 +984,7 @@
                         myData.LoiNhuanFrom = self.LoiNhuanFrom.replace(/,/gi, '');
                         myData.LoiNhuanTo = self.LoiNhuanTo.replace(/,/gi, '');
                         myData.TextSearch = self.TextSearch;
+                        myData.TrangThai = self.GetStringTrangThai();
                         $.ajax({
                             url: self.urlApi.ReportApi + "GetBaoCaoDoanhThuSuaChuaTheoXe",
                             type: 'POST',
@@ -1000,6 +1026,7 @@
                         myData.LoiNhuanFrom = self.LoiNhuanFrom.replace(/,/gi, '');
                         myData.LoiNhuanTo = self.LoiNhuanTo.replace(/,/gi, '');
                         myData.TextSearch = self.TextSearch;
+                        myData.TrangThai = self.GetStringTrangThai();
                         $.ajax({
                             url: self.urlApi.ReportApi + "GetBaoCaoDoanhThuSuaChuaTheoCoVan",
                             type: 'POST',
@@ -1297,6 +1324,7 @@
                         myData.LoiNhuanFrom = self.LoiNhuanFrom.replace(/,/gi, '');
                         myData.LoiNhuanTo = self.LoiNhuanTo.replace(/,/gi, '');
                         myData.TextSearch = self.TextSearch;
+                        myData.TrangThai = self.GetStringTrangThai();
                         myData.ColHide = self.BaoCaoTongHopHeader.filter(p => p.colShow === false).map(p => p.index);
                     }
                     else if (self.LoaiBaoCao === '2') {
@@ -1309,6 +1337,7 @@
                         myData.LoiNhuanFrom = self.LoiNhuanFrom.replace(/,/gi, '');
                         myData.LoiNhuanTo = self.LoiNhuanTo.replace(/,/gi, '');
                         myData.TextSearch = self.TextSearch;
+                        myData.TrangThai = self.GetStringTrangThai();
                         myData.ColHide = self.BaoCaoChiTietHeader.filter(p => p.colShow === false).map(p => p.index);
                         myData.IdNhomHangHoa = self.IdNhomHangHoaSelected;
                     }
@@ -1326,6 +1355,7 @@
                         myData.LoiNhuanFrom = self.LoiNhuanFrom.replace(/,/gi, '');
                         myData.LoiNhuanTo = self.LoiNhuanTo.replace(/,/gi, '');
                         myData.TextSearch = self.TextSearch;
+                        myData.TrangThai = self.GetStringTrangThai();
                         myData.ColHide = self.BaoCaoTheoXeHeader.filter(p => p.colShow === false).map(p => p.index);
                     }
                     else if (self.LoaiBaoCao === '4') {
@@ -1342,6 +1372,7 @@
                         myData.LoiNhuanFrom = self.LoiNhuanFrom.replace(/,/gi, '');
                         myData.LoiNhuanTo = self.LoiNhuanTo.replace(/,/gi, '');
                         myData.TextSearch = self.TextSearch;
+                        myData.TrangThai = self.GetStringTrangThai();
                         myData.ColHide = self.BaoCaoTheoCoVanHeader.filter(p => p.colShow === false).map(p => p.index);
                     }
                     $.ajax({
@@ -1362,6 +1393,24 @@
                         }
                     });
                 },
+                GetStringTrangThai: function () {
+                    let self = this;
+                    let TrangThai = "";
+                    if (self.ChuaXuatXuong) {
+                        if (self.DaXuatXuong) {
+                            TrangThai = "1,2,3";
+                        }
+                        else {
+                            TrangThai = "1,2";
+                        }
+                    }
+                    else {
+                        if (self.DaXuatXuong) {
+                            TrangThai = "3";
+                        }
+                    }
+                    return TrangThai;
+                }
             },
             created: function () {
                 var self = this;
@@ -1471,7 +1520,53 @@
                     },
                     deep: true
                 },
-            },
+                DoanhThuFrom: {
+                    handler: function () {
+                        this.DoanhThuFrom = formatNumber(this.DoanhThuFrom.replace(/,/gi, ''));
+                    },
+                    deep: true
+                },
+                DoanhThuTo: {
+                    handler: function () {
+                        this.DoanhThuTo = formatNumber(this.DoanhThuTo.replace(/,/gi, ''));
+                    },
+                    deep: true
+                },
+                LoiNhuanFrom: {
+                    handler: function () {
+                        this.LoiNhuanFrom = formatNumber(this.LoiNhuanFrom.replace(/,/gi, ''));
+                    },
+                    deep: true
+                },
+                LoiNhuanTo: {
+                    handler: function () {
+                        this.LoiNhuanTo = formatNumber(this.LoiNhuanTo.replace(/,/gi, ''));
+                    },
+                    deep: true
+                },
+                DaXuatXuong: {
+                    handler: function () {
+                        let self = this;
+                        self.BaoCaoTongHop.reLoad = true;
+                        self.BaoCaoChiTiet.reLoad = true;
+                        self.BaoCaoTheoXe.reLoad = true;
+                        self.BaoCaoTheoCoVan.reLoad = true;
+                        self.LoadData();
+                    },
+                    deep: true
+                },
+                ChuaXuatXuong: {
+                    handler: function () {
+                        let self = this;
+                        self.BaoCaoTongHop.reLoad = true;
+                        self.BaoCaoChiTiet.reLoad = true;
+                        self.BaoCaoTheoXe.reLoad = true;
+                        self.BaoCaoTheoCoVan.reLoad = true;
+                        self.LoadData();
+                    },
+                    deep: true
+                }
+            }
         });
     </script>
     <script>
