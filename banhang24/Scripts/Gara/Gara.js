@@ -200,7 +200,6 @@ var NewModel_BanHangLe = function () {
     var _idNhanVien = $('#txtIDNhanVien').val();
     var _subDomain = $('#subDomain').val();
     var DMDoiTuongUri = '/api/DanhMuc/DM_DoiTuongAPI/';
-    var DMNguonKhachUri = '/api/DanhMuc/DM_NguonKhachAPI/';
     var BHHoaDonUri = '/api/DanhMuc/BH_HoaDonAPI/';
     var GaraAPI = '/api/DanhMuc/GaraAPI/';
 
@@ -1498,6 +1497,7 @@ var NewModel_BanHangLe = function () {
                         newHD.TenBaoHiem = phieuTN.TenBaoHiem;
                         newHD.LienHeBaoHiem = phieuTN.NguoiLienHeBH;
                         newHD.SoDienThoaiLienHeBaoHiem = phieuTN.SoDienThoaiLienHeBH;
+                        newHD.BienSo = phieuTN.BienSo;
                     }
                     else {
                         newHD.MaPhieuTiepNhan = '';
@@ -1516,7 +1516,6 @@ var NewModel_BanHangLe = function () {
 
                     // update banggia by chinhanh (if add new from banlamviec)
                     BindLstBangGia_byNhanVien_andDoiTuong();
-                    console.log('hdle')
                     UpdateAgainBangGia_forHoaDon(newHD.IDRandom);
                 }
                 break;
@@ -7273,6 +7272,10 @@ var NewModel_BanHangLe = function () {
             let cus = await GetInforKhachHangFromDB_ByID(id);
             self.ChiTietDoiTuong(cus);
 
+            GetTienDatCoc(id);
+            GetInfor_PhieuTiepNhan(false);
+            ChangeKhachhang_GetListCar();
+
             vmNKGoiBaoDuong.GetGoiDichVu_ofKhachHang(id);
             vmThanhToanGara.GetSoDuTheGiaTri(id);
         }
@@ -11977,6 +11980,7 @@ var NewModel_BanHangLe = function () {
         if (self.HoaDons().ID_PhieuTiepNhan() && self.ThongTinPhieuTiepNhan()) {
             var tn = self.ThongTinPhieuTiepNhan();
             self.InforHDprintf().BienSo = tn.BienSo;
+            self.InforHDprintf().MaPhieuTiepNhan = tn.MaPhieuTiepNhan;
             self.InforHDprintf().ChuXe_DiaChi = tn.ChuXe_DiaChi;
             self.InforHDprintf().ChuXe_Email = tn.ChuXe_Email;
             self.InforHDprintf().ChuXe_SDT = tn.ChuXe_SDT;
@@ -12031,6 +12035,13 @@ var NewModel_BanHangLe = function () {
             var hd = GetHDOpening_byIDRandom(self.HoaDons().IDRandom(), lstHD);
             if (hd.length > 0) {
                 hd = GetInforHDPrint(hd[0]);
+                if (!commonStatisJs.CheckNull(hd.MaPhieuTiepNhan)) {
+                    let maTN = hd.MaPhieuTiepNhan;
+                    if (maTN.split('_').length > 0) {
+                        maTN = maTN.split('_')[0];
+                    }
+                    hd.MaPhieuTiepNhan = maTN;
+                }
                 self.InforHDprintf(hd);
 
                 self.InforHDprintf().BH_TenLienHe = hd.LienHeBaoHiem;
