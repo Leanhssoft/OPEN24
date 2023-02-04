@@ -4180,6 +4180,7 @@ var NewModel_BanHangLe = function () {
         GetCurrentPage_byMaHoaDon(_maHoaDon);
         localStorage.setItem('lcIDRandom', idRandom); // used to get at form DisplayCustomer when first load
         checkIsShowbtnSave();
+        GetInfor_PhieuTiepNhan(false);
     }
 
     function Bind_CTHĐoiTra_afterHideColumn() {
@@ -5742,8 +5743,8 @@ var NewModel_BanHangLe = function () {
 
         Call_6Func();
         self.HoaDons().LoaiHoaDon(loaiHD);// used to check width of list btn
-        checkIsShowbtnSave();
         self.HoaDons().IDRandom(objNew.IDRandom);// must assign IDRanDom --> check nhiều chỗ theo id này
+        checkIsShowbtnSave();
     }
 
     self.IsClickCloseHD = ko.observable(false);
@@ -5954,6 +5955,8 @@ var NewModel_BanHangLe = function () {
         BindHD_byIDRandom(idRandom);
         BindCTHD_byIDRandomHD(idRandom);
         OnOff_Timer(item.NgayLapHoaDon);
+        GetInfor_PhieuTiepNhan(false);
+
         // styele active hoadon opening
         $('.gara-bill-label  li.active').removeClass('active');
         $('.gara-bill-label  li font').each(function () {
@@ -7246,6 +7249,7 @@ var NewModel_BanHangLe = function () {
 
                 BindHD_byIDRandom(idRandomHD);
                 BindCTHD_byIDRandomHD(idRandomHD);
+                GetInfor_PhieuTiepNhan(false);
             }
         }
     }
@@ -7273,7 +7277,6 @@ var NewModel_BanHangLe = function () {
             self.ChiTietDoiTuong(cus);
 
             GetTienDatCoc(id);
-            GetInfor_PhieuTiepNhan(false);
             ChangeKhachhang_GetListCar();
 
             vmNKGoiBaoDuong.GetGoiDichVu_ofKhachHang(id);
@@ -12719,7 +12722,6 @@ var NewModel_BanHangLe = function () {
             self.SetChiNhanh(item.ID_DonVi);
             self.HoaDons().SetData(objNew);
             self.PhongBanSelected.push(objNew);
-            checkIsShowbtnSave();
         }
         else {
             // Find HD Tra Hang and active
@@ -12757,6 +12759,7 @@ var NewModel_BanHangLe = function () {
         Call_6Func();
         ActiveTab_SoDoPhong(false);
         checkIsShowbtnSave();
+        GetInfor_PhieuTiepNhan(false);
     }
     shortcut.add('ESC', function (item) {
         $('#txtDaThanhToan').select();
@@ -27071,6 +27074,7 @@ var NewModel_BanHangLe = function () {
         ClearTextSearch();
         Call_6Func();
         checkIsShowbtnSave();
+        GetInfor_PhieuTiepNhan();
     }
     $("#banhangsodo").on('LoadSoDoPhong', function () {
         self.ClickTab_PhongBan(false);
