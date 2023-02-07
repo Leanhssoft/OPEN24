@@ -504,16 +504,12 @@
                                     <table class="table table-striped table-hover">
                                         <thead>
                                             <tr>
-                                                <th class="@commonEnum.TypeReportWarehouse.Warehouse_nhomhang text-left">Nhóm hàng</th>
-                                                <th class="@commonEnum.TypeReportWarehouse.Warehouse_mahang text-left">Mã hàng</th>
-                                                <th class="@commonEnum.TypeReportWarehouse.Warehouse_tenhang text-left">Tên hàng</th>
-                                                <th class="@commonEnum.TypeReportWarehouse.Warehouse_donvitinh text-left">Đvt</th>
-                                                <th class="@commonEnum.TypeReportWarehouse.Warehouse_lohang text-left">Lô hàng</th>
-                                                <th class="@commonEnum.TypeReportWarehouse.Warehouse_MaChiNhanh text-left">Mã chi nhánh</th>
-                                                <th class="@commonEnum.TypeReportWarehouse.Warehouse_TenChiNhanh text-left">Tên chi nhánh</th>
-                                                <th class="@commonEnum.TypeReportWarehouse.Warehouse_soluong text-right">Số lượng tồn </th>
-                                                <th class="@commonEnum.TypeReportWarehouse.Warehouse_soluongquycach text-right">Số lượng tồn (quy cách) </th>
-                                                <th class="@commonEnum.TypeReportWarehouse.Warehouse_giamgia text-right">Giá trị tồn</th>
+                                                @foreach (var item in commonEnum.ReportWarehouseTotal)
+                                                {
+                                                    <th class="@item.Key text-center" id="@item.Key">
+                                                        <a class="black" href="javascript:void(0)">@item.Value</a>
+                                                    </th>
+                                                }
                                             </tr>
                                         </thead>
                                         <tbody data-bind="foreach: BaoCaoKho_TonKho_Page">
@@ -615,22 +611,12 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_nhomhang text-left">Nhóm hàng</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_mahang text-left">Mã hàng</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_tenhang text-left">Tên hàng</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_donvitinh text-left">Đvt</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_lohang text-left">Lô hàng</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_MaChiNhanh text-left">Mã chi nhánh</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_TenChiNhanh text-left">Tên chi nhánh</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_tondauky text-right">Tồn đầu kỳ</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_giatridau text-right">Giá trị đầu kỳ</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_soluong text-right">Số lượng nhập</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_giatri text-right">Giá trị nhập</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_soluongnhan text-right">Số lượng xuất</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_giatrixuat text-right">Giá trị xuất</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_toncuoiky text-right">Tồn cuối kỳ</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_soluongquycach text-right">Tồn quy cách</th>
-                                        <th class="@commonEnum.TypeReportWarehouse.Warehouse_giatricuoi text-right">Giá trị cuối kỳ</th>
+                                        @foreach (var item in commonEnum.ReportWarehouseExport)
+                                        {
+                                            <th class="@item.Key text-center" id="@item.Key">
+                                                <a class="black" href="javascript:void(0)">@item.Value</a>
+                                            </th>
+                                        }
                                     </tr>
                                 </thead>
                                 <tbody data-bind="foreach: BaoCaoKho_NhapXuatTon_Page">
@@ -826,15 +812,12 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_nhomhang text-left">Nhóm hàng</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_mahang text-left">Mã hàng</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_tenhang text-left">Tên hàng</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_donvitinh text-left">Đvt</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_lohang text-left">Lô hàng</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_MaChiNhanh text-left">Mã chi nhánh</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_TenChiNhanh text-left">Tên chi nhánh</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_soluong text-right">Số lượng chuyển</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_giatri text-right">Giá trị chuyển</th>
+                                            @foreach (var item in commonEnum.ReportWarehouseTransportExport)
+                                            {
+                                                <th class="@item.Key text-center" id="@item.Key">
+                                                    <a class="black" href="javascript:void(0)">@item.Value</a>
+                                                </th>
+                                            }
                                         </tr>
                                     </thead>
                                     <tbody data-bind="foreach: BaoCaoKho_XuatDieuChuyen_Page">
@@ -1043,15 +1026,12 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_nhomhang text-left">Nhóm hàng</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_mahang text-left">Mã hàng</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_tenhang text-left">Tên hàng</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_donvitinh text-left">Đvt</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_lohang text-left">Lô hàng</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_MaChiNhanh  text-left">Mã chi nhánh</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_TenChiNhanh  text-left">Tên chi nhánh</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_soluong text-right">Số lượng nhập</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_giatri text-right">Giá trị nhập</th>
+                                            @foreach (var item in commonEnum.ReportWarehouseImportStoreHH)
+                                            {
+                                                <th class="@item.Key text-center" id="@item.Key">
+                                                    <a class="black" href="javascript:void(0)">@item.Value</a>
+                                                </th>
+                                            }
                                         </tr>
                                     </thead>
                                     <tbody data-bind="foreach: BaoCaoKho_TongHopHangNhap_Page">
@@ -1200,7 +1180,7 @@
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_nhomhang text-left">Nhóm hàng</th>
+                                            @*<th class="@commonEnum.TypeReportWarehouse.Warehouse_nhomhang text-left">Nhóm hàng</th>
                                             <th class="@commonEnum.TypeReportWarehouse.Warehouse_mahang text-left">Mã hàng</th>
                                             <th class="@commonEnum.TypeReportWarehouse.Warehouse_tenhang text-left">Tên hàng</th>
                                             <th class="@commonEnum.TypeReportWarehouse.Warehouse_donvitinh text-left">Đvt</th>
@@ -1208,7 +1188,13 @@
                                             <th class="@commonEnum.TypeReportWarehouse.Warehouse_MaChiNhanh  text-left">Mã chi nhánh</th>
                                             <th class="@commonEnum.TypeReportWarehouse.Warehouse_TenChiNhanh  text-left">Tên chi nhánh</th>
                                             <th class="@commonEnum.TypeReportWarehouse.Warehouse_soluong text-right">Số lượng xuất</th>
-                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_giatrixuat text-right">Giá trị xuất</th>
+                                            <th class="@commonEnum.TypeReportWarehouse.Warehouse_giatrixuat text-right">Giá trị xuất</th>*@
+                                            @foreach (var item in commonEnum.ReportWarehouseExportStoreHH)
+                                            {
+                                                <th class="@item.Key text-center" id="@item.Key">
+                                                    <a class="black" href="javascript:void(0)">@item.Value</a>
+                                                </th>
+                                            }
                                         </tr>
                                     </thead>
                                     <tbody data-bind="foreach: BaoCaoKho_TongHopHangXuat_Page">

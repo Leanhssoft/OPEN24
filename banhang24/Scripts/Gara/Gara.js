@@ -200,7 +200,6 @@ var NewModel_BanHangLe = function () {
     var _idNhanVien = $('#txtIDNhanVien').val();
     var _subDomain = $('#subDomain').val();
     var DMDoiTuongUri = '/api/DanhMuc/DM_DoiTuongAPI/';
-    var DMNguonKhachUri = '/api/DanhMuc/DM_NguonKhachAPI/';
     var BHHoaDonUri = '/api/DanhMuc/BH_HoaDonAPI/';
     var GaraAPI = '/api/DanhMuc/GaraAPI/';
 
@@ -1498,6 +1497,7 @@ var NewModel_BanHangLe = function () {
                         newHD.TenBaoHiem = phieuTN.TenBaoHiem;
                         newHD.LienHeBaoHiem = phieuTN.NguoiLienHeBH;
                         newHD.SoDienThoaiLienHeBaoHiem = phieuTN.SoDienThoaiLienHeBH;
+                        newHD.BienSo = phieuTN.BienSo;
                     }
                     else {
                         newHD.MaPhieuTiepNhan = '';
@@ -1516,7 +1516,6 @@ var NewModel_BanHangLe = function () {
 
                     // update banggia by chinhanh (if add new from banlamviec)
                     BindLstBangGia_byNhanVien_andDoiTuong();
-                    console.log('hdle')
                     UpdateAgainBangGia_forHoaDon(newHD.IDRandom);
                 }
                 break;
@@ -4181,6 +4180,7 @@ var NewModel_BanHangLe = function () {
         GetCurrentPage_byMaHoaDon(_maHoaDon);
         localStorage.setItem('lcIDRandom', idRandom); // used to get at form DisplayCustomer when first load
         checkIsShowbtnSave();
+        GetInfor_PhieuTiepNhan(false);
     }
 
     function Bind_CTHĐoiTra_afterHideColumn() {
@@ -5743,8 +5743,8 @@ var NewModel_BanHangLe = function () {
 
         Call_6Func();
         self.HoaDons().LoaiHoaDon(loaiHD);// used to check width of list btn
-        checkIsShowbtnSave();
         self.HoaDons().IDRandom(objNew.IDRandom);// must assign IDRanDom --> check nhiều chỗ theo id này
+        checkIsShowbtnSave();
     }
 
     self.IsClickCloseHD = ko.observable(false);
@@ -5955,6 +5955,8 @@ var NewModel_BanHangLe = function () {
         BindHD_byIDRandom(idRandom);
         BindCTHD_byIDRandomHD(idRandom);
         OnOff_Timer(item.NgayLapHoaDon);
+        GetInfor_PhieuTiepNhan(false);
+
         // styele active hoadon opening
         $('.gara-bill-label  li.active').removeClass('active');
         $('.gara-bill-label  li font').each(function () {
@@ -7247,6 +7249,7 @@ var NewModel_BanHangLe = function () {
 
                 BindHD_byIDRandom(idRandomHD);
                 BindCTHD_byIDRandomHD(idRandomHD);
+                GetInfor_PhieuTiepNhan(false);
             }
         }
     }
@@ -7272,6 +7275,9 @@ var NewModel_BanHangLe = function () {
         if (id !== const_GuidEmpty && id !== null) {
             let cus = await GetInforKhachHangFromDB_ByID(id);
             self.ChiTietDoiTuong(cus);
+
+            GetTienDatCoc(id);
+            ChangeKhachhang_GetListCar();
 
             vmNKGoiBaoDuong.GetGoiDichVu_ofKhachHang(id);
             vmThanhToanGara.GetSoDuTheGiaTri(id);
@@ -11977,6 +11983,7 @@ var NewModel_BanHangLe = function () {
         if (self.HoaDons().ID_PhieuTiepNhan() && self.ThongTinPhieuTiepNhan()) {
             var tn = self.ThongTinPhieuTiepNhan();
             self.InforHDprintf().BienSo = tn.BienSo;
+            self.InforHDprintf().MaPhieuTiepNhan = tn.MaPhieuTiepNhan;
             self.InforHDprintf().ChuXe_DiaChi = tn.ChuXe_DiaChi;
             self.InforHDprintf().ChuXe_Email = tn.ChuXe_Email;
             self.InforHDprintf().ChuXe_SDT = tn.ChuXe_SDT;
@@ -12031,6 +12038,13 @@ var NewModel_BanHangLe = function () {
             var hd = GetHDOpening_byIDRandom(self.HoaDons().IDRandom(), lstHD);
             if (hd.length > 0) {
                 hd = GetInforHDPrint(hd[0]);
+                if (!commonStatisJs.CheckNull(hd.MaPhieuTiepNhan)) {
+                    let maTN = hd.MaPhieuTiepNhan;
+                    if (maTN.split('_').length > 0) {
+                        maTN = maTN.split('_')[0];
+                    }
+                    hd.MaPhieuTiepNhan = maTN;
+                }
                 self.InforHDprintf(hd);
 
                 self.InforHDprintf().BH_TenLienHe = hd.LienHeBaoHiem;
@@ -12708,7 +12722,6 @@ var NewModel_BanHangLe = function () {
             self.SetChiNhanh(item.ID_DonVi);
             self.HoaDons().SetData(objNew);
             self.PhongBanSelected.push(objNew);
-            checkIsShowbtnSave();
         }
         else {
             // Find HD Tra Hang and active
@@ -12746,6 +12759,7 @@ var NewModel_BanHangLe = function () {
         Call_6Func();
         ActiveTab_SoDoPhong(false);
         checkIsShowbtnSave();
+        GetInfor_PhieuTiepNhan(false);
     }
     shortcut.add('ESC', function (item) {
         $('#txtDaThanhToan').select();
@@ -27060,6 +27074,7 @@ var NewModel_BanHangLe = function () {
         ClearTextSearch();
         Call_6Func();
         checkIsShowbtnSave();
+        GetInfor_PhieuTiepNhan();
     }
     $("#banhangsodo").on('LoadSoDoPhong', function () {
         self.ClickTab_PhongBan(false);

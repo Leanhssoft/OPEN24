@@ -13141,6 +13141,7 @@
     <Content Include="Template\ExportExcel\Teamplate_GiaoDichHoaDon_Gara.xlsx" />
     <Content Include="Views\Home\Init.cshtml" />
     <Content Include="Views\SoQuy\_QRCodeChuyenKhoanModal.cshtml" />
+    <Content Include="Template\ExportExcel\Teamplate_DanhSachBaoGiaSuaChua.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppCache\CacheSubDomain\" />

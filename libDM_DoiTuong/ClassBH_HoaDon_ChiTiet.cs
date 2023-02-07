@@ -843,6 +843,7 @@ namespace libDM_DoiTuong
         public int SoThuTu { get; set; }
         public List<SP_ThanhPhanDinhLuong> ThanhPhan_DinhLuong { get; set; }
         public List<DonViTinh> DonViTinh { get; set; }
+        public string ViTriKho { get; set; } 
     }
 
     public class GoiDichVu_KhachHang
