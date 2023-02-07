@@ -112,6 +112,9 @@ var XuatKhoChiTiet = function () {
                 if (commonStatisJs.CheckNull(cthd[i].CssWarning)) {
                     cthd[i].CssWarning = false;
                 }
+                if (commonStatisJs.CheckNull(cthd[i].ViTriKho)) {
+                    cthd[i].ViTriKho = '';
+                }
                 if (commonStatisJs.CheckNull(cthd[i].ThanhPhan_DinhLuong)) {
                     cthd[i].ThanhPhan_DinhLuong = [];
                     cthd[i].HasTPDinhLuong = false;
@@ -121,6 +124,12 @@ var XuatKhoChiTiet = function () {
                             cthd[i].DM_LoHang[j].ThanhPhan_DinhLuong = [];
                             cthd[i].DM_LoHang[j].HasTPDinhLuong = false;
                         }
+                    }
+                }
+
+                for (let j = 0; j < cthd[i].DM_LoHang.length; j++) {
+                    if (commonStatisJs.CheckNull(cthd[i].DM_LoHang[j].ViTriKho)) {
+                        cthd[i].DM_LoHang[j].ViTriKho = '';
                     }
                 }
             }
@@ -397,6 +406,7 @@ var XuatKhoChiTiet = function () {
             ThanhPhan_DinhLuong: [],
             HasTPDinhLuong: false,// used to check if hanghoa la TPdinhluong (at gara- hdsc)
             CssWarning: RoundDecimal(itemHH.TonKho, 3) < RoundDecimal(soluong),
+            ViTriKho: itemHH.ViTriKho,
         }
     }
 
@@ -445,6 +455,7 @@ var XuatKhoChiTiet = function () {
             ThanhPhan_DinhLuong: [],
             HasTPDinhLuong: false,
             CssWarning: RoundDecimal(itemHH.TonKho, 3) < RoundDecimal(itemHH.SoLuong, 3),
+            ViTriKho: itemHH.ViTriKho,
         }
     }
 
@@ -2162,6 +2173,9 @@ var XuatKhoChiTiet = function () {
             itFor.SoLuongHuy = formatNumber3Digit(itFor.SoLuong);
             itFor.GiaVon = formatNumber3Digit(itFor.GiaVon, 2);
             itFor.GiaTriHuy = formatNumber3Digit(itFor.ThanhTien, 2);
+            if (commonStatisJs.CheckNull(itFor.ViTriKho)) {
+                itFor.ViTriKho = '';
+            }
             arrReturn.push(itFor);
 
             for (let k = 1; k < itFor.DM_LoHang.length; k++) {
@@ -2172,6 +2186,9 @@ var XuatKhoChiTiet = function () {
                 forIn.SoLuongHuy = formatNumber3Digit(forIn.SoLuong);
                 forIn.GiaVon = formatNumber3Digit(forIn.GiaVon, 2);
                 forIn.GiaTriHuy = formatNumber3Digit(forIn.ThanhTien, 2);
+                if (commonStatisJs.CheckNull(forIn.ViTriKho)) {
+                    forIn.ViTriKho = '';
+                }
                 arrReturn.push(forIn);
             }
         }
