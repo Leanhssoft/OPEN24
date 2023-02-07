@@ -8884,13 +8884,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 string BaoCaoChiNhanh = "";
                 if (objIn["BaoCaoChiNhanh"] != null && objIn["BaoCaoChiNhanh"].ToObject<string>() != "")
                     BaoCaoChiNhanh = objIn["BaoCaoChiNhanh"].ToObject<string>();
+                string TrangThai = "";
+                if (objIn["TrangThai"] != null && objIn["TrangThai"].ToObject<string>() != "")
+                    TrangThai = objIn["TrangThai"].ToObject<string>();
                 List<BaoCaoDoanhThuSuaChuaTongHop> lstResult = new List<BaoCaoDoanhThuSuaChuaTongHop>();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     ClassReportGara reportGara = new ClassReportGara(db);
                     Class_officeDocument classOffice = new Class_officeDocument(db);
                     lstResult = reportGara.GetBaoCaoDoanhThuSuaChuaTongHop(IdChiNhanhs, ThoiGianFrom, ThoiGianTo, DoanhThuFrom, DoanhThuTo,
-                        LoiNhuanFrom, LoiNhuanTo, TextSearch);
+                        LoiNhuanFrom, LoiNhuanTo, TextSearch, TrangThai);
                     List<BaoCaoDoanhThuSuaChuaTongHop_Export> lst = lstResult.Select(p => new BaoCaoDoanhThuSuaChuaTongHop_Export
                     {
                         MaPhieuTiepNhan = p.MaPhieuTiepNhan,
@@ -8979,13 +8982,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 Guid? IdNhomHangHoa = null;
                 if (objIn["IdNhomHangHoa"] != null && objIn["IdNhomHangHoa"].ToObject<string>() != "")
                     IdNhomHangHoa = objIn["IdNhomHangHoa"].ToObject<Guid>();
+                string TrangThai = "";
+                if (objIn["TrangThai"] != null && objIn["TrangThai"].ToObject<string>() != "")
+                    TrangThai = objIn["TrangThai"].ToObject<string>();
                 List<BaoCaoDoanhThuSuaChuaChiTiet> lstResult = new List<BaoCaoDoanhThuSuaChuaChiTiet>();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     ClassReportGara reportGara = new ClassReportGara(db);
                     Class_officeDocument classOffice = new Class_officeDocument(db);
                     lstResult = reportGara.GetBaoCaoDoanhThuSuaChuaChiTiet(IdChiNhanhs, ThoiGianFrom, ThoiGianTo, DoanhThuFrom, DoanhThuTo,
-                        LoiNhuanFrom, LoiNhuanTo, TextSearch, IdNhomHangHoa);
+                        LoiNhuanFrom, LoiNhuanTo, TextSearch, IdNhomHangHoa, TrangThai);
                     List<BaoCaoDoanhThuSuaChuaChiTiet_Export> lst = lstResult.Select(p => new BaoCaoDoanhThuSuaChuaChiTiet_Export
                     {
                         MaPhieuTiepNhan = p.MaPhieuTiepNhan,
@@ -9087,13 +9093,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 string BaoCaoChiNhanh = "";
                 if (objIn["BaoCaoChiNhanh"] != null && objIn["BaoCaoChiNhanh"].ToObject<string>() != "")
                     BaoCaoChiNhanh = objIn["BaoCaoChiNhanh"].ToObject<string>();
+                string TrangThai = "";
+                if (objIn["TrangThai"] != null && objIn["TrangThai"].ToObject<string>() != "")
+                    TrangThai = objIn["TrangThai"].ToObject<string>();
                 List<BaoCaoDoanhThuSuaChuaTheoXe> lstResult = new List<BaoCaoDoanhThuSuaChuaTheoXe>();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     Class_officeDocument classOffice = new Class_officeDocument(db);
                     ClassReportGara reportGara = new ClassReportGara(db);
                     lstResult = reportGara.GetBaoCaoDoanhThuSuaChuaTheoXe(IdChiNhanhs, ThoiGianFrom, ThoiGianTo, SoLanTiepNhanFrom, SoLanTiepNhanTo, SoLuongHoaDonFrom, SoLuongHoaDonTo, DoanhThuFrom, DoanhThuTo,
-                        LoiNhuanFrom, LoiNhuanTo, TextSearch);
+                        LoiNhuanFrom, LoiNhuanTo, TextSearch, TrangThai);
                     List<BaoCaoDoanhThuSuaChuaTheoXe_Export> lst = lstResult.Select(p => new BaoCaoDoanhThuSuaChuaTheoXe_Export
                     {
                         BienSo = p.BienSo,
@@ -9185,13 +9194,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 string BaoCaoChiNhanh = "";
                 if (objIn["BaoCaoChiNhanh"] != null && objIn["BaoCaoChiNhanh"].ToObject<string>() != "")
                     BaoCaoChiNhanh = objIn["BaoCaoChiNhanh"].ToObject<string>();
+                string TrangThai = "";
+                if (objIn["TrangThai"] != null && objIn["TrangThai"].ToObject<string>() != "")
+                    TrangThai = objIn["TrangThai"].ToObject<string>();
                 List<BaoCaoDoanhThuSuaChuaTheoCoVan> lstResult = new List<BaoCaoDoanhThuSuaChuaTheoCoVan>();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     Class_officeDocument classOffice = new Class_officeDocument(db);
                     ClassReportGara reportGara = new ClassReportGara(db);
                     lstResult = reportGara.GetBaoCaoDoanhThuSuaChuaTheoCoVan(IdChiNhanhs, ThoiGianFrom, ThoiGianTo, SoLanTiepNhanFrom, SoLanTiepNhanTo, SoLuongHoaDonFrom, SoLuongHoaDonTo, DoanhThuFrom, DoanhThuTo,
-                        LoiNhuanFrom, LoiNhuanTo, TextSearch);
+                        LoiNhuanFrom, LoiNhuanTo, TextSearch, TrangThai);
                     List<BaoCaoDoanhThuSuaChuaTheoCoVan_Export> lst = lstResult.Select(p => new BaoCaoDoanhThuSuaChuaTheoCoVan_Export
                     {
                         MaNhanVien = p.MaNhanVien,
@@ -9324,12 +9336,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 string TextSearch = "";
                 if (objIn["TextSearch"] != null && objIn["TextSearch"].ToObject<string>() != "")
                     TextSearch = objIn["TextSearch"].ToObject<string>();
+                string TrangThai = "";
+                if (objIn["TrangThai"] != null && objIn["TrangThai"].ToObject<string>() != "")
+                    TrangThai = objIn["TrangThai"].ToObject<string>();
                 List<BaoCaoDoanhThuSuaChuaTongHop> lstResult = new List<BaoCaoDoanhThuSuaChuaTongHop>();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     ClassReportGara reportGara = new ClassReportGara(db);
                     lstResult = reportGara.GetBaoCaoDoanhThuSuaChuaTongHop(IdChiNhanhs, ThoiGianFrom, ThoiGianTo, DoanhThuFrom, DoanhThuTo,
-                        LoiNhuanFrom, LoiNhuanTo, TextSearch);
+                        LoiNhuanFrom, LoiNhuanTo, TextSearch, TrangThai);
                 }
                 return ActionTrueData(new
                 {
@@ -9380,12 +9395,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 Guid? IdNhomHangHoa = null;
                 if (objIn["IdNhomHangHoa"] != null && objIn["IdNhomHangHoa"].ToObject<string>() != "")
                     IdNhomHangHoa = objIn["IdNhomHangHoa"].ToObject<Guid>();
+                string TrangThai = "";
+                if (objIn["TrangThai"] != null && objIn["TrangThai"].ToObject<string>() != "")
+                    TrangThai = objIn["TrangThai"].ToObject<string>();
                 List<BaoCaoDoanhThuSuaChuaChiTiet> lstResult = new List<BaoCaoDoanhThuSuaChuaChiTiet>();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     ClassReportGara reportGara = new ClassReportGara(db);
                     lstResult = reportGara.GetBaoCaoDoanhThuSuaChuaChiTiet(IdChiNhanhs, ThoiGianFrom, ThoiGianTo, DoanhThuFrom, DoanhThuTo,
-                        LoiNhuanFrom, LoiNhuanTo, TextSearch, IdNhomHangHoa);
+                        LoiNhuanFrom, LoiNhuanTo, TextSearch, IdNhomHangHoa, TrangThai);
                 }
                 return ActionTrueData(new
                 {
@@ -9445,12 +9463,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double? SoLuongHoaDonTo = null;
                 if (objIn["SoLuongHoaDonTo"] != null && objIn["SoLuongHoaDonTo"].ToObject<string>() != "")
                     SoLuongHoaDonTo = objIn["SoLuongHoaDonTo"].ToObject<double>();
+                string TrangThai = "";
+                if (objIn["TrangThai"] != null && objIn["TrangThai"].ToObject<string>() != "")
+                    TrangThai = objIn["TrangThai"].ToObject<string>();
                 List<BaoCaoDoanhThuSuaChuaTheoXe> lstResult = new List<BaoCaoDoanhThuSuaChuaTheoXe>();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     ClassReportGara reportGara = new ClassReportGara(db);
                     lstResult = reportGara.GetBaoCaoDoanhThuSuaChuaTheoXe(IdChiNhanhs, ThoiGianFrom, ThoiGianTo, SoLanTiepNhanFrom, SoLanTiepNhanTo, SoLuongHoaDonFrom, SoLuongHoaDonTo, DoanhThuFrom, DoanhThuTo,
-                        LoiNhuanFrom, LoiNhuanTo, TextSearch);
+                        LoiNhuanFrom, LoiNhuanTo, TextSearch, TrangThai);
                 }
                 return ActionTrueData(new
                 {
@@ -9510,12 +9531,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double? SoLuongHoaDonTo = null;
                 if (objIn["SoLuongHoaDonTo"] != null && objIn["SoLuongHoaDonTo"].ToObject<string>() != "")
                     SoLuongHoaDonTo = objIn["SoLuongHoaDonTo"].ToObject<double>();
+                string TrangThai = "";
+                if (objIn["TrangThai"] != null && objIn["TrangThai"].ToObject<string>() != "")
+                    TrangThai = objIn["TrangThai"].ToObject<string>();
                 List<BaoCaoDoanhThuSuaChuaTheoCoVan> lstResult = new List<BaoCaoDoanhThuSuaChuaTheoCoVan>();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     ClassReportGara reportGara = new ClassReportGara(db);
                     lstResult = reportGara.GetBaoCaoDoanhThuSuaChuaTheoCoVan(IdChiNhanhs, ThoiGianFrom, ThoiGianTo, SoLanTiepNhanFrom, SoLanTiepNhanTo, SoLuongHoaDonFrom, SoLuongHoaDonTo, DoanhThuFrom, DoanhThuTo,
-                        LoiNhuanFrom, LoiNhuanTo, TextSearch);
+                        LoiNhuanFrom, LoiNhuanTo, TextSearch, TrangThai);
                 }
                 return ActionTrueData(new
                 {

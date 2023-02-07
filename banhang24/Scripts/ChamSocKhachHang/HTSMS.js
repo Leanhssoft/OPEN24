@@ -1183,12 +1183,16 @@ var ViewModel = function () {
     $('.outselectmodalsms .input-khach-hang').on('click', function () {
         $(this).closest('div').next().show();
     });
+    self.DemSoTinGui = function (sokitu) {
+        let arrMessCount = [160, 306, 459, 612];
+        return (arrMessCount.length - arrMessCount.filter(p => p >= sokitu).length) + 1;
+    }
     self.GuiTinNhan = function () {
         document.getElementById("btnGuiTinNhan").disabled = true;
         document.getElementById("btnGuiTinNhan").lastChild.data = " Đang lưu";
         var _noiDungTin = $('#txtNoiDungTin').val();
         var lenghtTinNhan = _noiDungTin.length;
-        var _soTinGui = Math.ceil(lenghtTinNhan / self.numtext);
+        var _soTinGui = self.DemSoTinGui(lenghtTinNhan);
         var _loaiTinNhan = self.LoaiTinNhanGui();
         var _idbrand = self.IDBrandNameChoose();
         if (_idbrand === undefined) {
@@ -1285,7 +1289,7 @@ var ViewModel = function () {
         document.getElementById("btnGuiTinNhanSN").lastChild.data = " Đang lưu";
         var _noiDungTin = $('#txtNoiDungTin').val();
         var lenghtTinNhan = _noiDungTin.length;
-        var _soTinGui = Math.ceil(lenghtTinNhan / self.numtext);
+        var _soTinGui = self.DemSoTinGui(lenghtTinNhan);
         var _loaiTinNhan = self.LoaiTinNhanGui();
         var _idbrand = self.IDBrandNameChoose();
         if (_idbrand === undefined) {
@@ -1377,7 +1381,7 @@ var ViewModel = function () {
         document.getElementById("btnGuiTinNhanGD").lastChild.data = " Đang lưu";
         var _noiDungTin = $('#txtNoiDungTin').val();
         var lenghtTinNhan = _noiDungTin.length;
-        var _soTinGui = Math.ceil(lenghtTinNhan / self.numtext);
+        var _soTinGui = self.DemSoTinGui(lenghtTinNhan);
         var _loaiTinNhan = self.LoaiTinNhanGui();
         var _idbrand = self.IDBrandNameChoose();
         if (_idbrand === undefined) {
@@ -1455,7 +1459,7 @@ var ViewModel = function () {
         var _soDienThoai = $('#txtSoDienThoai').val();
         var _noiDungTin = $('#txtNoiDungTinSDT').val();
         var lenghtTinNhan = _noiDungTin.length;
-        var _soTinGui = Math.ceil(lenghtTinNhan / self.numtext);
+        var _soTinGui = self.DemSoTinGui(lenghtTinNhan);
         var _loaiTinNhan = self.LoaiTinNhanGui();
         var _idbrand = self.IDBrandNameChoose();
         var _id_hoaDon = null;
@@ -1529,7 +1533,7 @@ var ViewModel = function () {
         document.getElementById("btnGuiTinLichHen").lastChild.data = " Đang lưu";
         var _noiDungTin = $('#txtNoiDungTin').val();
         var lenghtTinNhan = _noiDungTin.length;
-        var _soTinGui = Math.ceil(lenghtTinNhan / self.numtext);
+        var _soTinGui = self.DemSoTinGui(lenghtTinNhan);
         var _idbrand = self.IDBrandNameChoose();
         if (_idbrand === undefined) {
             ShowMessage_Danger("Vui lòng chọn BrandName gửi tin");

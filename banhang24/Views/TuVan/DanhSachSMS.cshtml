@@ -895,7 +895,7 @@
                     <div class="form-group floatleft">
                         <label>Nội dung</label>
                         <div class="form-news">
-                            <textarea type="text" rows="4" id="txtNoiDungTin"></textarea>
+                            <textarea type="text" rows="4" id="txtNoiDungTin" maxlength="612"></textarea>
                             <span id="remaining"></span><span id="messages"></span>
                         </div>
                     </div>
@@ -992,7 +992,7 @@
                     <div class="form-group floatleft">
                         <label>Nội dung</label>
                         <div class="form-news">
-                            <textarea type="text" rows="4" id="txtNoiDungTinSDT"></textarea>
+                            <textarea type="text" rows="4" id="txtNoiDungTinSDT" maxlength="612"></textarea>
                             <span id="remainingSDT"></span><span id="messages"></span>
                         </div>
                     </div>
@@ -1137,15 +1137,17 @@
     });
     var $remaining = $('#remaining'),
         $messages = $remaining.next();
-    var numtext = 160;
+    let arrMessCount = [160, 306, 459, 612];
+    var numtext = 0;
     $('#txtNoiDungTin').keyup(function () {
-        //!(/^[A-z&#209;&#241;!-9-\s]*$/i).test(this.value) ? this.value = this.value.replace(/[^A-z&#209;&#241;!-9-\s]/ig, '') : null;
-        var chars = this.value.length,
-            messages = Math.ceil(chars / numtext),
-            remaining = messages > 1 ? (messages - 1) * numtext + (chars % ((messages - 1) * numtext) || (messages - 1) * numtext) : (messages - 1) * numtext + (chars % (messages * numtext) || messages * numtext);
-        var totalmes = messages * numtext;
+        !(/^[A-z&#209;&#241;!-9-\s]*$/i).test(this.value) ? this.value = this.value.replace(/[^A-z&#209;&#241;!-9-\s]/ig, '') : null;
+        var chars = this.value.length;
+            //messages = Math.ceil(chars / numtext),
+            //remaining = messages > 1 ? (messages - 1) * numtext + (chars % ((messages - 1) * numtext) || (messages - 1) * numtext) : (messages - 1) * numtext + (chars % (messages * numtext) || messages * numtext);
+        var totalmes = arrMessCount.filter(p => p >= chars).length > 0 ? arrMessCount.filter(p => p >= chars)[0] : arrMessCount[3],
+            messages = (arrMessCount.length - arrMessCount.filter(p => p >= totalmes).length) + 1;
         if (messages !== 0) {
-            $remaining.text(remaining + '/' + totalmes);
+            $remaining.text(chars + '/' + totalmes);
             $messages.text(' (' + messages + ' tin nhắn)');
         }
         else {
@@ -1158,12 +1160,14 @@
     
     $('#txtNoiDungTinSDT').keyup(function () {
         !(/^[A-z&#209;&#241;!-9-\s]*$/i).test(this.value) ? this.value = this.value.replace(/[^A-z&#209;&#241;!-9-\s]/ig, '') : null;
-        var chars = this.value.length,
-            messages = Math.ceil(chars / numtext),
-            remaining = messages > 1 ? (messages - 1) * numtext + (chars % ((messages - 1) * numtext) || (messages - 1) * numtext) : (messages - 1) * numtext + (chars % (messages * numtext) || messages * numtext);
-        var totalmes = messages * numtext;
+        var chars = this.value.length;
+        //    messages = Math.ceil(chars / numtext),
+        //    remaining = messages > 1 ? (messages - 1) * numtext + (chars % ((messages - 1) * numtext) || (messages - 1) * numtext) : (messages - 1) * numtext + (chars % (messages * numtext) || messages * numtext);
+        //var totalmes = messages * numtext;
+        var totalmes = arrMessCount.filter(p => p >= chars).length > 0 ? arrMessCount.filter(p => p >= chars)[0] : arrMessCount[3],
+            messages = (arrMessCount.length - arrMessCount.filter(p => p >= totalmes).length) + 1;
         if (messages !== 0) {
-            $remainingSDT.text(remaining + '/' + totalmes);
+            $remainingSDT.text(chars + '/' + totalmes);
             $messagesSDT.text(' (' + messages + ' tin nhắn)');
         }
         else {
