@@ -162,6 +162,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             {
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
+                    db.Database.CommandTimeout = 10 * 60;
                     ClassHT_CongTy _classHTCT = new ClassHT_CongTy(db);
                     var cty = _classHTCT.Gets(null);
                     if (cty != null)
