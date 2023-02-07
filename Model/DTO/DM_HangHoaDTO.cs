@@ -186,6 +186,7 @@ namespace Model
         public int? HoaHongTruocChietKhau { get; set; }
         public Guid? ID_Xe { get; set; }
         public string BienSo { get; set; }
+        public string ViTriKho { get; set; }
     }
 
     public class DM_DonViTinhClick
