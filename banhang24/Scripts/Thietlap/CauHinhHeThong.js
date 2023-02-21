@@ -1683,7 +1683,7 @@ var ViewModel = function () {
                             $('#PhieuTiepNhan').val(value.selected);
                             break;
                         case KeyDatHang:
-                        case 'BG':
+                      // case 'BG':
                             self.ListMauInDathang(value.ListSelectMauIn);
                             //var arrMauIn = [];
                             //var arr = $.grep(result, function (x) {
