@@ -1402,7 +1402,7 @@ var NewModel_BanHangLe = function () {
             case 6: // Sao Chep GDV
             case 7: // update HDTamLuu
             case 8: // update HD was save
-                var lcHDSaoChep = localStorage.getItem('lcHDSaoChep');
+                var lcHDSaoChep = localStorage.getItem('lcHDSaoChep'); 
                 if (lcHDSaoChep !== null) {
                     lcHDSaoChep = JSON.parse(lcHDSaoChep);
                     let idHD = const_GuidEmpty;
@@ -20277,12 +20277,11 @@ var NewModel_BanHangLe = function () {
                         ActiveTab_SoDoPhong(false);
                     }
 
+                    UpdateTonKhoCTHD_FirstLoad(lcListCTHD);
+                    UpdateTonKhoCTHD_FirstLoad(lcListCTHD_DoiTra);
                     Update_GiaVonCTHD_FirstLoad(lcListCTHD);
                     Update_GiaVonCTHD_FirstLoad(lcListCTHD_DoiTra);
                 }
-                UpdateTonKhoCTHD_FirstLoad(lcListCTHD);
-                UpdateTonKhoCTHD_FirstLoad(lcListCTHD_DoiTra);
-
                 WriteData_Dexie(db.Quyen_NguoiDung, data);
             }
             else {
@@ -26224,6 +26223,8 @@ var NewModel_BanHangLe = function () {
         if (isView === false) {
             if (firstLoad) {
                 getListHoaDonLe();
+                UpdateTonKhoCTHD_FirstLoad(lcListCTHD);
+                UpdateTonKhoCTHD_FirstLoad(lcListCTHD_DoiTra);
             }
             BindTime_inSoDoPhong(isChangeVT);
             ActiveTab_SoDoPhong(true);
