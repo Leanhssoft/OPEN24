@@ -382,7 +382,7 @@ namespace banhang24.Hellper
             public const string DieuChinh = "DCGV";
             public const string TheGiaTri = "TGT";
             public const string PhieuTiepNhan = "PTN";
-            public const string PhieuXuatXuong = "PBGX";// phiếu bàn giao xe
+            public const string PhieuXuatXuong = "XuatXuong";
             public const string PhieuLuong = "BL";// phải get đúng in DM_LoaiChungTu
         }
 
@@ -428,7 +428,6 @@ namespace banhang24.Hellper
             {MauInTeamPlates.TheGiaTri.ToString(),"TheGiaTri.txt" },
             {MauInTeamPlates.PhieuTiepNhan.ToString(),"PhieuTiepNhan.txt" },
             {MauInTeamPlates.PhieuLuong.ToString(),"PhieuLuong.txt" },
-            {MauInTeamPlates.PhieuXuatXuong.ToString(),"PhieuXuatXuong.txt" },
         };
 
         public static Dictionary<string, string> DanhSachMauInK80 = new Dictionary<string, string>()
