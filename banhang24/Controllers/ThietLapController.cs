@@ -93,6 +93,7 @@ namespace banhang24.Controllers
                         IsInsert = true,
                         IsUpdate = true,
                         GoiDichVu = true,
+                        TheGiaTri = true,
                     };
                 }
                 else
@@ -102,6 +103,7 @@ namespace banhang24.Controllers
                     result.RolePermission = new PermissionMauIn()
                     {
                         TraHang = true,
+                        TheGiaTri = lstMaquyen.Any(o => o.ToUpper().Equals(RoleMauIn.TheGiaTri_View.ToUpper()) || o.ToUpper().Equals(RoleMauIn.TheGiaTri_Insert.ToUpper())),
                         GoiDichVu = lstMaquyen.Any(o => o.ToUpper().Equals(RoleMauIn.GoiDichVu_View.ToUpper()) || o.ToUpper().Equals(RoleMauIn.GoiDichVu_Insert.ToUpper())),
                         DatHang = lstMaquyen.Any(o => o.ToUpper().Equals(RoleMauIn.DatHang_View.ToUpper()) || o.ToUpper().Equals(RoleMauIn.DatHang_Insert.ToUpper())),
                         HoaDon = lstMaquyen.Any(o => o.ToUpper().Equals(RoleMauIn.HoaDon_View.ToUpper()) || o.ToUpper().Equals(RoleMauIn.HoaDon_Insert.ToUpper())),
@@ -648,7 +650,7 @@ namespace banhang24.Controllers
                             {
                                 file = commonEnum.Gara_DanhSachMauHoaDon.FirstOrDefault(o => o.Key.Equals(commonEnum.TypeMauin.nhomhang.ToString())).Value;
                             }
-                            break; 
+                            break;
                         case (int)commonEnum.TypeMauin.combo:
                             checkExits = commonEnum.Gara_DanhSachMauHoaDon.Any(o => o.Key.Equals(commonEnum.TypeMauin.combo.ToString()));
                             if (checkExits)
@@ -664,7 +666,7 @@ namespace banhang24.Controllers
                             }
                             break;
                     }
-                    
+
                     userLogin objUser_Cookies = _classHTND.GetUserCookies(this);
                     var chungTu = db.DM_LoaiChungTu.FirstOrDefault(o => o.MaLoaiChungTu.Equals(model.MaChungTu));
                     int chungTuID = chungTu != null ? chungTu.ID : 0;
@@ -771,7 +773,7 @@ namespace banhang24.Controllers
                                     break;
                                 case (int)commonEnum.TypeMauin.nhomhang:
                                     valuebyKey = commonEnum.TypeMauin.nhomhang.ToString();
-                                    break; 
+                                    break;
                                 case (int)commonEnum.TypeMauin.combo:
                                     valuebyKey = commonEnum.TypeMauin.combo.ToString();
                                     break;
@@ -782,7 +784,7 @@ namespace banhang24.Controllers
                             file = commonEnum.Gara_DanhSachMauHoaDon.FirstOrDefault(o => o.Key.Equals(valuebyKey)).Value;
                         }
                     }
-                    
+
                     if (checkExits)
                     {
 
@@ -1326,13 +1328,13 @@ namespace banhang24.Controllers
             rowtable = rowtable.Replace("{MaVach}", "<div style='text-align: center'><img style='max-width:132px' src=\" " + model.Link + "\"  height='24' /></div>");
             model.Table = rowtable;
             return View(model);
-        
+
         }
         public ActionResult InTemMaVach(Guid mauId, Guid ID_SanPham)
         {
-           
+
             return View();
-            
+
         }
 
         public static string RenderViewToString(ControllerContext context, string viewName, object model)
