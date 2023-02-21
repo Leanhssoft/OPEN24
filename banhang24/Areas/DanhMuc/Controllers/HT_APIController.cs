@@ -719,11 +719,11 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         UrlPage.Gara_LichNhacBaoDuong, "g/Gara_LichNhacBaoDuong", false, "fa fa-calendar", new List<HeaderMenu>()));
                     lstSubMenuKhachHangCheck = true;
                 }
-                if (lstQuyen.Where(p => p == "PhanHoi_XemDS").FirstOrDefault() != null)
-                {
-                    lstSubMenuKhachHang.Add(new HeaderMenu(7, "Phản hồi", "Phản hồi", UrlPage.PhanHoi, "s/PhanHoi", false, "fa fa-phone", new List<HeaderMenu>()));
-                    lstSubMenuKhachHangCheck = true;
-                }
+                //if (lstQuyen.Where(p => p == "PhanHoi_XemDS").FirstOrDefault() != null)
+                //{
+                //    lstSubMenuKhachHang.Add(new HeaderMenu(7, "Phản hồi", "Phản hồi", UrlPage.PhanHoi, "s/PhanHoi", false, "fa fa-phone", new List<HeaderMenu>()));
+                //    lstSubMenuKhachHangCheck = true;
+                //}
                 if (lstQuyen.Where(p => p == "GuiTinNhan_XemDS").FirstOrDefault() != null)
                 {
                     lstSubMenuKhachHang.Add(new HeaderMenu(8, "Quản lý SMS", "Quản lý SMS", UrlPage.DichVuSMS, "s/DanhSachSMS", false, "fa fa-comment", new List<HeaderMenu>()));
