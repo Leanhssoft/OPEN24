@@ -426,6 +426,31 @@ namespace libGara
                 "@NgayBaoDuongTo, @NgayNhacFrom, @NgayNhacTo, @IDNhanVienPhuTrachs, @IDNhomHangs," +
                 "@ID_Xe, @ID_PhieuTiepNhan, @LanNhacs, @TrangThais, @CurrentPage, @PageSize", sql.ToArray()).ToList();
         }
+        /// <summary>
+        /// use for subDomain = LeeAuto
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public List<PhuTung_LichBaoDuong> GetLichBaoDuong_TheoXe(ParamSeachLichBaoDuong param)
+        {
+            var idChiNhanhs = string.Empty;
+            if (param.IDChiNhanhs != null && param.IDChiNhanhs.Count > 0)
+            {
+                idChiNhanhs = string.Join(",", param.IDChiNhanhs);
+            }
+            List<SqlParameter> sql = new List<SqlParameter>();
+            sql.Add(new SqlParameter("IDChiNhanhs", idChiNhanhs ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("ID_Xe", param.ID_Xe ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("TextSearch", param.TextSeach ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("NgayBaoDuongFrom", param.NgayBaoDuongFrom ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("NgayBaoDuongTo", param.NgayBaoDuongTo ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("TrangThais", param.TrangThais ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("CurrentPage", param.CurrentPage ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("PageSize", param.PageSize ?? (object)DBNull.Value));
+            return _db.Database.SqlQuery<PhuTung_LichBaoDuong>("exec dbo.GetLichNhacBaoDuong_TheoXe @IDChiNhanhs,@ID_Xe, @TextSearch, @NgayBaoDuongFrom," +
+                "@NgayBaoDuongTo, " +
+                "@TrangThais, @CurrentPage, @PageSize", sql.ToArray()).ToList();
+        }
         public List<NhatKyBaoDuong> GetNhatKyBaoDuong_byCar(Guid idCar)
         {
             SqlParameter param = new SqlParameter("ID_Xe", idCar);
@@ -435,6 +460,11 @@ namespace libGara
         {
             SqlParameter param = new SqlParameter("ID_HoaDon", idHoaDon);
             _db.Database.ExecuteSqlCommand("exec Insert_LichNhacBaoDuong @ID_HoaDon", param);
+        }
+        public void Insert_LichNhacBaoDuong_TheoXe(Guid idPhieuTiepNhan)
+        {
+            SqlParameter param = new SqlParameter("ID_PhieuTiepNhan", idPhieuTiepNhan);
+            _db.Database.ExecuteSqlCommand("exec Insert_LichNhacBaoDuong_TheoXe @ID_PhieuTiepNhan", param);
         }
 
         public void UpdateLichBD_whenChangeNgayLapHD(Guid idHoaDon, DateTime ngaylapOld, DateTime ngaylapNew)
@@ -474,6 +504,19 @@ namespace libGara
                 sql.Add(new SqlParameter("Status", status));
                 _db.Database.ExecuteSqlCommand("exec SuDungBaoDuong_UpdateStatus @IDLichNhacs, @Status", sql.ToArray());
             }
+        }
+
+        public bool CheckTienDo_CongViec(ParamThongBao param)
+        {
+            List<SqlParameter> sql = new List<SqlParameter>();
+            sql.Add(new SqlParameter("ID_DonVi", param.ID_DonVi));
+            sql.Add(new SqlParameter("ID_PhieuTiepNhan", param.ID_PhieuTiepNhan));
+            //sql.Add(new SqlParameter("ID_Xe", param.ID_Xe));
+            sql.Add(new SqlParameter("BienSo", param.BienSo));
+            sql.Add(new SqlParameter("TimeCompare", param.ThoiGian));
+            sql.Add(new SqlParameter("TimeSetup", param.TimeSetup));
+            sql.Add(new SqlParameter("LoaiNhac", param.LoaiNhac));
+            return _db.Database.SqlQuery<bool>("exec Gara_CheckTienDoCongViec @ID_DonVi, @ID_PhieuTiepNhan, @BienSo, @TimeCompare, @TimeSetup, @LoaiNhac", sql.ToArray()).FirstOrDefault();
         }
     }
     public class XuatKho_JqautoHDSC
