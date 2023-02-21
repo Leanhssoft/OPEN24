@@ -63,6 +63,7 @@
         },
         GridNVienBanGoi_Chosed: [],
         PhieuThuKhach: {
+            DaThanhToan: 0,
             DiemQuyDoi: 0,// phai gan de lay gtri khi update diem khachhang
         },
         PhieuThuBaoHiem: {},
