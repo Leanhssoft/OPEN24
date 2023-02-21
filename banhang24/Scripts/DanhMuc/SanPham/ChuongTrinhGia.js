@@ -830,19 +830,12 @@ var CTGiaViewModel = function () {
 
 
     self.modalDeleteGiaBan = function (GiaBans) {
-        var lc_CTQuyen = JSON.parse(localStorage.getItem('lc_CTQuyen'));
-        if ($.inArray('ThietLapGia_Xoa', lc_CTQuyen) > -1) {
-            self.deleteID(self.newGiaBan().ID());
-            self.deleteTenHangHoa(self.newGiaBan().TenGiaBan());
-            ajaxHelper(GiaBanUri + 'CheckBangGia_wasUse/' + self.deleteID(), 'GET').done(function (exist) {
-                if (exist) {
-                    ShowMessage_Danger('Có giao dịch liên quan đến bảng giá. Không thể xóa');
-                }
-                else {
-                    $('#modalpopup_deleteGB').modal('show');
-                }
-            })
-        }
+        self.deleteID(self.newGiaBan().ID());
+        self.deleteTenHangHoa(self.newGiaBan().TenGiaBan());
+
+        dialogConfirm('Xóa bảng giá ', 'Bạn có chắc chắn muốn xóa bảng giá <b>'.concat(self.newGiaBan().TenGiaBan(), ' </b> không?'), function () {
+            self.xoaGiaBan();
+        })
     };
 
     self.xoaGiaBan = function () {
