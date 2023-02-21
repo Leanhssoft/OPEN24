@@ -286,9 +286,9 @@ $('.establish-left').on('click', 'li a', function () {
     keyid = $(this).closest('li').data("id");
     if (keyid === 'HDBL' || keyid === 'DH') {
         modelMauIn.IsInvoice(true);
-        if (keyid == 'DH') {
-            keyid = 'BG';
-        }
+        //if (keyid == 'DH') {
+        //    keyid = 'BG';
+        //}
     }
     else {
         modelMauIn.IsInvoice(false)
