@@ -1,4 +1,4 @@
-﻿var chat = $.connection.chatHub;
+﻿//var chat = $.connection.chatHub;
 
 var workTable = new Vue({
     el: '#BanLamViec',
@@ -1723,6 +1723,7 @@ var workTable = new Vue({
                                 workTable.Gara_GetListHoaDonSuaChua(true);
                                 break;
                         }
+                        vmThongBao.requestApi();
                         $(".gara-section-list-body li").removeClass("open");
                     }
                 }
@@ -2731,114 +2732,11 @@ var workTable = new Vue({
         ShowModalDanhSachDatLich: function () {
             vModalDatLich.ShowModalDanhSachDatLich();
         },
-        //End Đặt lịch
-        Create_tblRequest: function () {
-            let self = this;
-            let ptn = self.listData.ThongTinXe;
-            let lcRequest = localStorage.getItem('lcRequest');
-
-            // check tblSetUp
-            let setup = $.grep(self.tblSetUpThongBao, (x) => {
-                return x.ID_QuyTrinhTruoc === 0;// 0.PTN
-            });
-            if (setup.length > 0) {
-
-                let loaiTG = setup[0].LoaiThoiGian;
-                let minutes_Setup = setup[0].ThoiGian;
-                switch (loaiTG) {
-                    case 2:
-                        minutes_Setup = minutes_Setup * 60;
-                        break;
-                    default:
-                        break;
-                }
-
-                let obj = {
-                    ID_DonVi: self.ID_DonVi,
-                    ID_PhieuTiepNhan: ptn.ID,
-                    ID_Xe: ptn.ID_Xe,
-                    BienSo: ptn.BienSo,
-                    NgayVaoXuong: ptn.NgayVaoXuong,
-                    LoaiNhac: 1,
-                    TimeSetup: minutes_Setup,
-                    TrangThaiRequest: 0
-                };
-
-                if (commonStatisJs.CheckNull(lcRequest)) {
-                    lcRequest = [];
-                }
-                else {
-                    lcRequest = JSON.parse(lcRequest);
-                }
-
-                let ex = $.grep(lcRequest, (x) => {
-                    return x.ID_PhieuTiepNhan === obj.ID_PhieuTiepNhan && x.LoaiNhac === obj.LoaiNhac;
-                });
-                if (ex.length === 0) {
-                    lcRequest.push(obj);
-                    localStorage.setItem('lcRequest', JSON.stringify(lcRequest));
-                }
-            }
-        },
-
-        GetThongBao: async function (param) {
-            let self = this;
-            let xx = await ajaxHelper(self.GaraAPI + 'ThongBao_TienDoCongViec', 'POST', param).done().then((obj) => {
-                console.log('obj ', obj)
-                if (obj.res) {
-                    return obj.dataSoure;
-                }
-                return false;
-            });
-            return xx;
-        },
     }
 })
 workTable.Gara_GetListPhieuTiepNhan(true);
 
 $(function () {
-    let t = 0;
-    async function requestApi() {
-        let lcRequest = localStorage.getItem('lcRequest');
-        if (!commonStatisJs.CheckNull(lcRequest)) {
-            lcRequest = JSON.parse(lcRequest);
-
-            for (let i = 0; i < lcRequest.length; i++) {
-                let itFor = lcRequest[i];
-                if (itFor.TrangThaiRequest === 0) {
-
-                    let diff = (new Date() - new Date(itFor.NgayVaoXuong)) / 1000;
-                    let minutes = Math.floor(diff / 60);
-                    if (minutes >= itFor.TimeSetup) {
-                        itFor.TrangThaiRequest = 1;
-
-                        let result = await workTable.GetThongBao(itFor);
-                        console.log('result ', result, lcRequest[i]);
-                        if (result) {
-                            $.connection.hub.start().done(function () {
-                                chat.server.send();
-                            });
-                        }
-                    }
-                }
-            }
-            console.log('remove');
-            lcRequest = $.grep(lcRequest, (x) => {
-                return x.TrangThaiRequest === 0;
-            });
-            localStorage.setItem('lcRequest', JSON.stringify(lcRequest));
-
-            if (lcRequest.length == 0) {
-                clearTimeout(t);
-            }
-            else {
-                t = setTimeout(requestApi, 1000);
-            }
-        }
-    }
-
-    requestApi();
-
     $('#TiepNhanXeModal').on('hidden.bs.modal', function () {
         if (vmTiepNhanXe.saveOK) {
             var phieuTN = vmTiepNhanXe.newPhieuTiepNhan;
@@ -2924,17 +2822,43 @@ $(function () {
                     workTable.Gara_GetListBaoGia();
                 }
             }
-            workTable.Create_tblRequest();
-            requestApi();
+            // ptn --> bg
+            vmThongBao.Create_tblRequest({
+                ID_DonVi: workTable.ID_DonVi,
+                ID_PhieuTiepNhan: thongtin.ID,
+                ID_Xe: thongtin.ID_Xe,
+                BienSo: thongtin.BienSo,
+                ThoiGian: thongtin.NgayVaoXuong,
+                ID_QuyTrinhTruoc: 0,
+                ID_QuyTrinhSau: 1,
+            });
+
+            /// if not baogia: PTN --> hoadon
+            vmThongBao.Create_tblRequest({
+                ID_DonVi: workTable.ID_DonVi,
+                ID_PhieuTiepNhan: thongtin.ID,
+                ID_Xe: thongtin.ID_Xe,
+                BienSo: thongtin.BienSo,
+                ThoiGian: thongtin.NgayVaoXuong,
+                ID_QuyTrinhTruoc: 0,
+                ID_QuyTrinhSau: 3,
+            });
         }
     })
     $('#XuatXuongModal').on('hidden.bs.modal', function () {
         if (vmXuatXuong.saveOK) {
+            let obj = {};
             for (let i = 0; i < workTable.listData.PhieuSuaChuas.length; i++) {
                 if (workTable.listData.PhieuSuaChuas[i].ID === vmXuatXuong.phieuXuat.ID) {
+                    obj = workTable.listData.PhieuSuaChuas[i];
+                    obj.NgayXuatXuong = vmXuatXuong.NgayXuatXuong;
                     workTable.listData.PhieuSuaChuas.splice(i, 1);
                     break;
                 }
+            }
+
+            if (VHeader.SubDomain.toLowerCase() === '0973474985') {
+                vmNhatKyBaoDuong.Insert_LichNhacBaoDuong_TheoXe(obj);
             }
 
             workTable.isFirstLoad = true;
