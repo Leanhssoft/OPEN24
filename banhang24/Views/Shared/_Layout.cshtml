@@ -237,7 +237,6 @@
 
     <script>
         var HUbChat = $.connection.formHub;
-        var chat = $.connection.chatHub;
         function ReloadSearchHangHoa() {
             try {
                 HUbChat.server.changeDataHangHoa();
@@ -275,10 +274,15 @@
                     $('#thongbaoload').load("/Shared/_thongbao");
                 }
         };
-        chat.client.addNewMessageToPage = function () {
-            VHeader.GetThongBao();
-            $('#op-popup-thongbao').trigger();
-        }
+        $(function () {
+            vmThongBao.chat.client.hello = function () {
+            //vmThongBao.chat.client.addNewMessageToPage = function () {
+                console.log('into ',)
+                VHeader.GetThongBao();
+                //VHeader.Count += 1;
+            }
+        })
+
          @*$(function () {
             var chat = $.connection.chatHub;
             chat.client.addNewMessageToPage = function (url, userId, VerSion) {
@@ -335,5 +339,6 @@
         //}
     </script>
     <script src="~/Content/Framework/Jquery/JqueryUI/jquery-ui.js" type="text/javascript"></script>
+    <script src="~/Scripts/Gara/_signalThongBao.js"></script>
 </body>
 </html>
