@@ -491,7 +491,11 @@
             hd.NgayLapHoaDon = moment(hd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');;
             hd.MucNap = hd.TongChiPhi;
             hd.KhuyenMai = hd.TongChietKhau;
-            hd.NoSau = formatNumber(Math.abs(hd.TienThua));
+            let khachthieu = 0;
+            if (hd.TienThua < 0) {
+                khachthieu = Math.abs(hd.TienThua);
+            }
+            hd.NoSau = khachthieu;
             hd.PhaiThanhToan = formatNumber(hd.PhaiThanhToan);
             hd.DaThanhToan = hd.DaThanhToan;
             hd.TienBangChu = DocSo(formatNumberToFloat(hd.DaThanhToan));
