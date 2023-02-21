@@ -1513,7 +1513,7 @@
                                         <!--ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="keypressNumber_limitNumber(event,this)"  onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) ,
                                                attr:{id: IDRandom},
                                                event:{keyup: function(){$root.Combo_editPrice($data,$parent,false)}}, " />
@@ -1966,7 +1966,7 @@
                                     <!--ko if: $root.roleChangePriceProduct()  -->
                                     <input class="input-simple height-24"
                                            autocomplete="off"
-                                          onkeypress="keypressNumber_limitNumber(event,this)"  onclick="this.select()" maxlength="12"
+                                           onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                            data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: 'priceTH_'+ IDRandom},event:{keyup: $root.editPrice_DoiTra}," />
                                     <!-- /ko-->
                                     <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -2123,7 +2123,7 @@ visible: LoaiHoaDon !==3 ">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                              onkeypress="keypressNumber_limitNumber(event,this)"  onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: 'priceTH_'+ IDRandom},event:{keyup: $root.editPrice_DoiTra}, " />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -2303,7 +2303,7 @@ visible: LoaiHoaDon !== 3">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="keypressNumber_limitNumber(event,this)"  onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: 'priceTH_'+ IDRandom},event:{keyup: $root.editPrice_DoiTra}, " />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -2471,7 +2471,7 @@ visible: LoaiHoaDon !==3">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="keypressNumber_limitNumber(event,this)"  onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) ,
                                                attr:{id: 'priceTH_'+ IDRandom},
                                                event:{keyup: function(){$root.Combo_editPrice($data,$parent,true)}} " />
@@ -3392,25 +3392,25 @@ event:{change: ChangeNgayLapHD}" tabindex="0" title="Nhập giờ" />
     <script>
         if (location.hostname.indexOf("open24.vn") > 0 || location.hostname === "localhost") {
             var boxloading = `<div class="loading-box">
-                                                        <div class="loading-bg">
-                                                            <div class="loading-obj">
-                                                                <img src="/Content/images/logo-open24-min.png" />
-                                                                <div class="inicator-loading">
-                                                                    <div>
-                                                            </div>
-                                                    </div>
-                                                </div>`;
+                                                            <div class="loading-bg">
+                                                                <div class="loading-obj">
+                                                                    <img src="/Content/images/logo-open24-min.png" />
+                                                                    <div class="inicator-loading">
+                                                                        <div>
+                                                                </div>
+                                                        </div>
+                                                    </div>`;
             document.getElementById('btnGoHome').style.display = "block";
         }
         else {
             var boxloading = `<div class="loading-box">
-                                                        <div class="loading-bg">
-                                                            <div class="loading-obj">
-                                                                <div class="inicator-loading">
-                                                                    <div>
-                                                            </div>
-                                                    </div>
-                                                </div>`;
+                                                            <div class="loading-bg">
+                                                                <div class="loading-obj">
+                                                                    <div class="inicator-loading">
+                                                                        <div>
+                                                                </div>
+                                                        </div>
+                                                    </div>`;
             document.getElementById('btnGoHome').style.display = "none";
         }
 
@@ -3445,6 +3445,7 @@ event:{change: ChangeNgayLapHD}" tabindex="0" title="Nhập giờ" />
     @Html.Partial("~/Views/Gara/HoaDon/_ChiPhiHoaDon.cshtml")
     @Html.Partial("~/Views/SoQuy/_QRCodeChuyenKhoanModal.cshtml")
     <script src="@Html.WriteRenderFile(Scripts.Url("~/bundles/Gara"))" type="text/javascript"></script>
+    <script src="~/Scripts/Gara/_signalThongBao.js"></script>
 
     <script>
         function openListHoaDon(elm) {
