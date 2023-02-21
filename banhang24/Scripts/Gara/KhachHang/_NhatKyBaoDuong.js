@@ -54,6 +54,29 @@
                     });
             }
         },
+        // apply for subdomain = LeeAuto
+        Insert_LichNhacBaoDuong_TheoXe: function (objPTN = {}) {
+            if (!$.isEmptyObject(objPTN)) {
+                ajaxHelper('/api/DanhMuc/GaraAPI/Insert_LichNhacBaoDuong_TheoXe?idPhieuTiepNhan=' + objPTN.ID, 'GET').done(function (x) {
+                    if (x.res) {
+                        let diary = {
+                            ID_DonVi: VHeader.IdDonVi,
+                            ID_NhanVien: VHeader.IdNhanVien,
+                            LoaiNhatKy: 1,
+                            ChucNang: 'Nhắc bảo dưỡng',
+                            NoiDung: 'Nhắc bảo dưỡng tự động khi xe xuất xưởng',
+                            NoiDungChiTiet: 'Tạo lịch nhắc bảo dưỡng cho xe '.concat(objPTN.BienSo,
+                                ' <br /> - Mã tiếp nhận: ', objPTN.MaPhieuTiepNhan,
+                                ' <br /> - Ngày tiếp nhận: ', moment(objPTN.NgayVaoXuong).format('DD/MM/YYYY HH:mm'),
+                                ' <br /> - Ngày xuất xưởng: ', moment(objPTN.NgayXuatXuong).format('DD/MM/YYYY HH:mm'),
+                                ' <br /> - Ngày nhắc bảo dưỡng tiếp theo: ', moment(objPTN.NgayXuatXuong).add('months', 6).format('DD/MM/YYYY HH:mm'),
+                            ),
+                        };
+                        Insert_NhatKyThaoTac_1Param(diary);
+                    }
+                });
+            }
+        },
         Insert_LichNhacBaoDuong: function (idHoaDon, cthd, isPrint = true) {
 
             if (!commonStatisJs.CheckNull(idHoaDon) && idHoaDon !== const_GuidEmpty) {
