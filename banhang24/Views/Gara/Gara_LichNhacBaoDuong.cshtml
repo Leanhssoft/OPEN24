@@ -1,6 +1,7 @@
 ﻿@{
     Layout = null;
 }
+@using banhang24.Hellper
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,7 @@
         #vmLichBaoDuong table th {
             text-align: center
         }
+
         #vmLichBaoDuong .header-button-check {
             font-size: 11px;
             float: left;
@@ -46,7 +48,7 @@
                                      v-on:callfunction="NgayBaoDuong_Change"
                                      v-bind:selectvalue="filter.NgayBaoDuong_DefaultTypeTime"></filter-datetime>
                 </article>
-                <article class="boxLeft">
+                <article class="boxLeft" v-show="!$root.isLeeAuto">
                     <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
                         <i class="far fa-calendar-alt"></i>
                         Thời gian nhắc
@@ -63,7 +65,7 @@
                     <filter-checkbox v-bind:listitem="TrangThais"
                                      v-on:callfunctionloaddata="TrangThai_Change"></filter-checkbox>
                 </article>
-                <article class="boxLeft">
+                <article class="boxLeft" v-show="!$root.isLeeAuto">
                     <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
                         <i class="far fa-object-group"></i>   Nhóm hàng
                     </h3>
@@ -140,7 +142,7 @@
                         <button class="btn btn-main " v-on:click="showModalSMS">
                             <i class="far fa-sms"></i><span>Gửi SMS</span>
                         </button>
-                        <button class="btn btn-main " v-on:click="showModalEmail" style="display:none" >
+                        <button class="btn btn-main " v-on:click="showModalEmail" style="display:none">
                             <i class="far fa-envelope"></i>
                             <span>Gửi Email</span>
                         </button>
@@ -174,7 +176,194 @@
                                 <th v-for="item in ListHeader.filter(p=>p.colShow === true)">{{item.colText}}</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody v-if="$root.isLeeAuto">
+                            <template v-for="(item, index) in listData.LichBaoDuong">
+                                <tr class="tr-prev-hide">
+                                    <td class="td-func text-center">
+                                        <input type="checkbox" v-model="item.isCheck" v-on:click="CheckBox_Chose(1,item)"
+                                               v-bind:id="'ck_'+ item.ID" />
+                                    </td>
+                                    <td v-if="CheckColShow('BienSo')" v-on:click="RowSelected(item)">
+                                        <span>
+                                            <a href="javascript:void(0)">{{item.BienSo}}</a>
+                                        </span>
+                                    </td>
+                                    <td v-if="CheckColShow('MaDoiTuong')" v-on:click="RowSelected(item)">
+                                        <a href="javascript:void(0)"
+                                           v-on:click="updateCus(item.ID_KhachHang)">{{item.MaDoiTuong}}</a>
+                                    </td>
+                                    <td v-if="CheckColShow('TenDoiTuong')" v-on:click="RowSelected(item)">
+                                        <span>
+                                            {{item.TenDoiTuong}}
+                                        </span>
+                                    </td>
+                                    <td v-if="CheckColShow('DienThoai')" v-on:click="RowSelected(item)">{{item.DienThoai}}</td>
+                                    <td v-if="CheckColShow('Email')" v-on:click="RowSelected(item)">{{item.Email}}</td>
+                                    <td class="text-center" v-if="CheckColShow('NgayBaoDuongDuKien')" v-on:click="RowSelected(item)">{{moment(item.NgayBaoDuongDuKien).format('DD/MM/YYYY HH:mm')}}</td>
+                                    <td v-if="CheckColShow('GhiChu')" v-on:click="RowSelected(item)">{{item.GhiChu}}</td>
+                                    <td v-if="CheckColShow('TrangThai')" v-on:click="RowSelected(item)">
+                                        {{TrangThais.find(p=>p.Value === item.TrangThai).Text}}
+                                    </td>
+                                </tr>
+                                <tr class="op-js-tr-hide">
+                                    <td v-bind:colspan="ListHeader.filter(p=>p.colShow === true).length + 1" style="padding:0">
+                                        <div>
+                                            <div class="gara-tab-title">
+                                                <a class="enable-detail nav-link active"
+                                                   data-toggle="tab"
+                                                   v-bind:href="'#sc_'+ item.ID"
+                                                   v-on:click="ClickTab(item)">Thông tin</a>
+                                                <a class="enable-content nav-link" style="display:none"
+                                                   data-toggle="tab"
+                                                   v-on:click="ClickTab(item)"
+                                                   v-bind:href="'#bd_'+ item.ID">Nhật ký bảo dưỡng</a>
+                                            </div>
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" v-bind:id="'sc_'+ item.ID">
+                                                    <div class="containder-fluid">
+                                                        <div class="col-xs-12 col-md-6">
+                                                            <div class="floatleft">
+                                                                <div class="form-group floatleft">
+                                                                    <label class="form-label css-form-label">Biển số xe:</label>
+                                                                    <div class="css-form-detail">
+                                                                        <span><a href="javacript:void(0)">{{item.BienSo}}</a></span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group floatleft">
+                                                                    <label class="form-label css-form-label">Chủ xe:</label>
+                                                                    <div class="css-form-detail">
+                                                                        <div>
+                                                                            <span>
+                                                                                {{item.TenDoiTuong}}
+                                                                            </span>
+                                                                            <a v-if="item.MaDoiTuong">
+                                                                                ({{item.MaDoiTuong}})
+                                                                            </a>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group floatleft">
+                                                                    <label class="form-label css-form-label">SĐT:</label>
+                                                                    <div class="css-form-detail">
+                                                                        <span class="bold">{{item.DienThoai}}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group floatleft" style="display:none">
+                                                                    <label class="form-label css-form-label">Số lần đã nhắc:</label>
+                                                                    <div class="css-form-detail">
+                                                                        <div class="dropdown">
+                                                                            <a class="btn btn-link nopadding" data-toggle="dropdown">
+                                                                                <span>{{item.LanNhac}}</span>
+                                                                                <i class="fa fa-angle-down"></i>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li v-for="(tt, index) in LanNhacs"
+                                                                                    v-on:click="ChangeSoLanNhac(item,tt)">
+                                                                                    <a href="javascript:void(0)">
+                                                                                        <span>{{tt.Text}}</span>
+                                                                                        <span class="fa fa-check" style="float:right"
+                                                                                              v-if="tt.Value== item.LanNhac"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-12 col-md-6">
+                                                            <div>
+                                                                <div class="form-group floatleft " style="align-items: baseline;padding:0">
+                                                                    <label class="form-label css-form-label">Ngày BD dự kiến:</label>
+                                                                    <div class="css-form-detail">
+                                                                        <date-time :date-chose="moment(item.NgayBaoDuongDuKien).format('YYYY-MM-DD HH:mm')"
+                                                                                   v-on:change-date="Update_ChangeDate">
+
+                                                                        </date-time>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group floatleft ">
+                                                                    <label class="form-label css-form-label" style=" min-width: 75px;">Trạng thái:</label>
+                                                                    <div class="css-form-detail" style="width: calc(100% - 75px);">
+                                                                        <div class="dropdown">
+                                                                            <a class="btn btn-link nopadding" data-toggle="dropdown">
+                                                                                <span>{{TrangThais.find(p=>p.Value === item.TrangThai).Text}}</span>
+                                                                                <i class="fa fa-angle-down"></i>
+                                                                            </a>
+                                                                            <ul class="dropdown-menu">
+                                                                                <li v-for="(tt, index) in TrangThais"
+                                                                                    v-on:click="UpdateTrangThai(tt,item)">
+                                                                                    <a href="javascript:void(0)">
+                                                                                        <span>{{tt.Text}}</span>
+                                                                                        <span class="fa fa-check" style="float:right"
+                                                                                              v-if="tt.Value== item.TrangThai"></span>
+                                                                                    </a>
+                                                                                </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group floatleft" style="align-items:flex-start">
+                                                                    <label class="form-label css-form-label" style=" min-width: 75px;">Ghi chú</label>
+                                                                    <div class="css-form-detail" style="width: calc(100% - 75px);">
+                                                                        <textarea placeholder="Ghi chú.." v-model="item.GhiChu" rows="3" style="resize:none;"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <div class="group-btn pull-right">
+                                                                <button href="javascript:void(0)" class="btn btn-main" v-on:click="UpdateLichNhac(item)">
+                                                                    <i class="fa fa-save"></i> Lưu
+                                                                </button>
+                                                                <button href="javascript:void(0)" class="btn btn-cancel" v-on:click="DeleteLichNhac(1, item)">
+                                                                    <i class="fa fa-close"></i> Hủy bỏ
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="tab-pane gara-tab-content" v-bind:id="'bd_'+ item.ID">
+                                                    <div class="table-frame" style="width:100%">
+                                                        <table class='table'>
+                                                            <thead>
+                                                                <tr style="background:#ccc">
+                                                                    <th>Ngày bảo dưỡng</th>
+                                                                    <th>Mã hóa đơn</th>
+                                                                    <th>Mã hàng hóa</th>
+                                                                    <th>Tên hàng hóa</th>
+                                                                    <th>Số lượng</th>
+                                                                    <th>Lần bảo dưỡng</th>
+                                                                    <th>Số Km bảo dưỡng</th>
+                                                                    <th>Ghi chú</th>
+                                                                    <th>Trạng thái</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for="(nk, index2) in listData.NhatKyBaoDuong">
+                                                                    <td class="text-center">{{moment(nk.NgayLapHoaDon).format('DD/MM/YYYY')}}</td>
+                                                                    <td class="text-center"><a>{{nk.MaHoaDon}}</a></td>
+                                                                    <td class="text-center"><a>{{nk.MaHangHoa}}</a></td>
+                                                                    <td>{{nk.TenHangHoa}}</td>
+                                                                    <td class="text-right">{{nk.SoLuong}}</td>
+                                                                    <td class="text-right">{{nk.LanBaoDuong}}</td>
+                                                                    <td class="text-right">{{formatNumber(nk.SoKmBaoDuong)}}</td>
+                                                                    <td>{{nk.GhiChu}}</td>
+                                                                    <td>
+                                                                        {{nk.sTrangThai}}
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                        <tbody v-else>
                             <template v-for="(item, index) in listData.LichBaoDuong">
                                 <tr class="tr-prev-hide">
                                     <td class="td-func text-center">
@@ -228,7 +417,8 @@
                                                    v-bind:href="'#bd_'+ item.ID">Nhật ký bảo dưỡng</a>
                                             </div>
                                             <div class="tab-content">
-                                                <div class="tab-pane gara-tab-detail active" v-bind:id="'sc_'+ item.ID"> @* class gara-tab-detail *@
+                                                <div class="tab-pane gara-tab-detail active" v-bind:id="'sc_'+ item.ID">
+                                                    @* class gara-tab-detail *@
                                                     <div class="containder-fluid">
                                                         <div class="col-xs-12 col-md-4">
                                                             <div class="detail-content floatleft">
@@ -266,8 +456,8 @@
                                                                 <div class="form-group floatleft">
                                                                     <label class="form-label control-label">Số lần đã nhắc:</label>
                                                                     @*<div class="css-form-detail">
-            <span>{{item.LanNhac}}</span>
-        </div>*@
+                                                                            <span>{{item.LanNhac}}</span>
+                                                                        </div>*@
                                                                     <div class="css-form-detail">
                                                                         <div class="dropdown">
                                                                             <a class="btn btn-link nopadding" data-toggle="dropdown">
@@ -393,7 +583,8 @@
                                                                     <td class="text-right">{{nk.LanBaoDuong}}</td>
                                                                     <td class="text-right">{{formatNumber(nk.SoKmBaoDuong)}}</td>
                                                                     <td>{{nk.GhiChu}}</td>
-                                                                    <td>{{nk.sTrangThai}}
+                                                                    <td>
+                                                                        {{nk.sTrangThai}}
                                                                     </td>
                                                                 </tr>
                                                             </tbody>
@@ -461,6 +652,9 @@
         });
     </script>
 
+
+
+
     <div class="modal " id="modalPopuplgDelete">
         <div class="modal-dialog draggable modal-sm">
             @Html.Partial("~/Views/GiaoDich/_modalDelete.cshtml")
@@ -468,6 +662,7 @@
     </div>
 
     @Html.Partial("~/Views/Marketing/_SendSMS.cshtml")
+
 
     <script src="~/Content/js/GaraUI.js"></script>
     <script src="~/Scripts/Components/filter-datetime.js"></script>
@@ -478,39 +673,17 @@
     <script src="~/Content/js/Common.js"></script>
     <script src="~/Scripts/BanHang/Public.js"></script>
     <script src="~/Scripts/Gara/LichNhacBaoDuong.js"></script>
+
+    <script src="@Url.ContentVersioned("~/Scripts/Components/Input.js")"></script>
+    <script src="@Url.ContentVersioned("~/Scripts/Components/NhanVien_KhachHang.js")"></script>
+
+
+    @Html.Partial("~/Views/Gara/KhachHang/_ThemMoiKhachHang.cshtml")
+    @Html.Partial("~/Views/Gara/KhachHang/_ThemNhomKhachHang.cshtml")
+    @Html.Partial("~/Views/Gara/KhachHang/_vmTrangThai_NguonKhach.cshtml")
+
     <script>
-        //$(document.body).on('click', '[data-toggle=dropdown]', function () {
-        //    var dropmenu = $(this).next('.dropdown-menu');
 
-        //    dropmenu.css({
-        //        visibility: "hidden",
-        //        display: "block"
-        //    });
-
-        //    // Necessary to remove class each time so we don't unwantedly use dropup's offset top
-        //    dropmenu.parent().removeClass("dropup");
-        //    dropmenu.parent().removeClass("dropleft");
-        //    console.log(dropmenu.offset().left + dropmenu.outerWidth());
-        //    if (dropmenu.offset().left + dropmenu.outerWidth() > $('.table-frame').innerWidth() + $('.table-frame').offset().left) {
-        //        dropmenu.parent().addClass("dropleft");
-        //    }
-
-        //    // Determine whether bottom of menu will be below window at current scroll position
-        //    if (dropmenu.offset().top + dropmenu.outerHeight() > $('.table-frame').innerHeight() + $('.table-frame').offset().top) {
-        //        dropmenu.parent().addClass("dropup");
-        //    }
-
-        //    // Return dropdown menu to fully hidden state
-        //    dropmenu.removeAttr("style");
-        //});
-        //$(document.body).on('click', '[data-toggle=dropdown]', function () {
-        //    var dropmenu = $(this).next('.dropdown-menu');
-        //    if (dropmenu.offset().top + dropmenu.outerHeight() > $('.table-frame').innerHeight() + $('.table-frame').offset().top) {
-        //        console.log('true');
-        //        $('.table-frame').css("overflow", "inherit");
-        //    }
-        //});
- 
         $('.table-frame').on('show.bs.dropdown', function () {
             $('.table-frame').css("overflow-y", "overlay");
         });
