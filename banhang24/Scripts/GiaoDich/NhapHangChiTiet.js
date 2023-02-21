@@ -4694,8 +4694,11 @@ var NhapHangChiTiet = function () {
     self.EditDaThanhToan = function () {
         var $this = $(event.currentTarget);
         formatNumberObj($this);
+
+        let chiphiVC = formatNumberToFloat(self.newHoaDon().TongChiPhi());
         var phaiTT = self.newHoaDon().TongTienHang()
             + formatNumberToFloat(self.newHoaDon().TongTienThue())
+            + chiphiVC
             - self.newHoaDon().TongGiamGia();
         var daTT = formatNumberToFloat($this.val());
         self.newHoaDon().DaThanhToan(formatNumberToFloat($this.val()));
