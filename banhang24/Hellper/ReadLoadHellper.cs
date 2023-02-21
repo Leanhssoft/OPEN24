@@ -251,6 +251,8 @@ namespace banhang24.Hellper
         public const string DatHang_Insert = "DatHang_ThemMoi";
         public const string GoiDichVu_View = "GoiDichVu_XemDS";
         public const string GoiDichVu_Insert = "GoiDichVu_ThemMoi";
+        public const string TheGiaTri_View = "TheGiaTri_XemDS";
+        public const string TheGiaTri_Insert = "TheGiaTri_ThemMoi";
         public const string HoaDon_View = "HoaDon_XemDs";
         public const string HoaDon_Insert = "HoaDon_ThemMoi";
         public const string TraHang_View = "TraHang_XuatFile";
@@ -380,7 +382,7 @@ namespace banhang24.Hellper
             public const string DieuChinh = "DCGV";
             public const string TheGiaTri = "TGT";
             public const string PhieuTiepNhan = "PTN";
-            public const string PhieuXuatXuong = "XuatXuong";
+            public const string PhieuXuatXuong = "PBGX";// phiếu bàn giao xe
             public const string PhieuLuong = "BL";// phải get đúng in DM_LoaiChungTu
         }
 
@@ -426,6 +428,7 @@ namespace banhang24.Hellper
             {MauInTeamPlates.TheGiaTri.ToString(),"TheGiaTri.txt" },
             {MauInTeamPlates.PhieuTiepNhan.ToString(),"PhieuTiepNhan.txt" },
             {MauInTeamPlates.PhieuLuong.ToString(),"PhieuLuong.txt" },
+            {MauInTeamPlates.PhieuXuatXuong.ToString(),"PhieuXuatXuong.txt" },
         };
 
         public static Dictionary<string, string> DanhSachMauInK80 = new Dictionary<string, string>()
