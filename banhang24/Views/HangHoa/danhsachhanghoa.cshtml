@@ -470,7 +470,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" class="checkbox cbtenhang" id="cbtenhang"
-                                                            checked="checked"
+                                                           checked="checked"
                                                            value="1" /><span></span>Tên hàng
                                                 </label>
                                             </div>
@@ -479,7 +479,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" class="checkbox cbdvt" id="cbdvt"
-                                                            checked="checked"
+                                                           checked="checked"
                                                            value="2" /><span></span>Đvt
                                                 </label>
                                             </div>
@@ -488,7 +488,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" class="checkbox cbTenViTri"
-                                                            checked="checked"
+                                                           checked="checked"
                                                            id="cbTenViTri" value="3" /><span></span>Vị trí kho
                                                 </label>
                                             </div>
@@ -497,7 +497,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" class="checkbox" id="cbnhomhang"
-                                                            checked="checked"
+                                                           checked="checked"
                                                            value="4" /><span></span>Nhóm hàng
                                                 </label>
                                             </div>
@@ -506,7 +506,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" class="checkbox" id="cbloaihang"
-                                                            checked="checked"
+                                                           checked="checked"
                                                            value="5" /><span></span>Loại hàng
                                                 </label>
                                             </div>
@@ -515,7 +515,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" class="checkbox" id="cbgiaban"
-                                                            checked="checked"
+                                                           checked="checked"
                                                            value="6" /><span></span>Giá bán
                                                 </label>
                                             </div>
@@ -524,7 +524,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" class="checkbox" id="cbgiavon"
-                                                            checked="checked"
+                                                           checked="checked"
                                                            value="7" /><span></span>Giá vốn
                                                 </label>
                                             </div>
@@ -533,7 +533,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" class="checkbox" id="cbtonkho"
-                                                            checked="checked"
+                                                           checked="checked"
                                                            value="8" /><span></span>Tồn kho
                                                 </label>
                                             </div>
@@ -550,7 +550,7 @@
                                             <div class="checkbox">
                                                 <label>
                                                     <input type="checkbox" class="checkbox" id="cbtrangthai"
-                                                            checked="checked"
+                                                           checked="checked"
                                                            value="10" /><span></span>Trạng thái
                                                 </label>
                                             </div>
@@ -622,6 +622,11 @@
                 <div class="Content-add-dich-vu" id="modalPopuplg_DVNew" style="max-height: calc(100vh - 150px);overflow: auto;" hidden>
                     @Html.Partial("_themmoidichvuPatial")
                 </div>
+                <style>
+                    #danhsachhanghoa .width-number {
+                        width: 5% !important;
+                    }
+                </style>
                 <div class="Content-table-hang-hoa" id="danhsachhanghoa">
                     <div class="table-reponsive table-HH banghh table-frame" id="table-reponsive">
                         <table class=" table-hover" id="myTable">
@@ -799,22 +804,24 @@
                                     </td>
                                     <!--/ko-->
                                 </tr>
+
+
                                 <!--ko foreach: {data: HangHoas, as: 'itemHH'}  -->
                                 <tr class="prev-tr-hide" data-bind="css:{bggray : $index()%2 == 1}, attr:{id: ID_HangHoaCungLoai}">
                                     <td class="check-group hideCheck chacungloai">
                                         <input id="inputGetIDHH" type="checkbox" data-bind="attr:{id: ID_DonViQuiDoi}" onclick="getIDHH(this)" />
                                     </td>
                                     <!--ko if: $root.ColumnsExcel().indexOf('0') != 0-->
-                                    <td class="ch mahang cmmh" style="width:150px  !important;min-width:150px  !important" data-bind="text: commonStatisJs.SubStringContent(MaHangHoa,15), click: $parent.loadTheKho"></td>
+                                    <td class="ch mahang" style="min-width:150px  !important" data-bind="text: commonStatisJs.SubStringContent(MaHangHoa,30), click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('1') < 0-->
-                                    <td class="ch tenhang cmth" style="width:150px  !important;min-width:355px  !important" data-bind="click: $parent.loadTheKho">
-                                        <span data-bind="text: commonStatisJs.SubStringContent(TenHangHoa,60)"></span>
+                                    <td class="ch tenhang" style="min-width:355px  !important" data-bind="click: $parent.loadTheKho">
+                                        <span data-bind="text: commonStatisJs.SubStringContent(TenHangHoa,100)"></span>
                                         <span data-bind="text: ThuocTinhGiaTri" style="color:#ff6a00"></span>
                                     </td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('2') < 0-->
-                                    <td class="ch tendvt">
+                                    <td class="ch tendvt"  style="width:4%  !important">
                                         <!--ko if: CountCungLoai == 1-->
                                         <span data-bind="if: (DonViTinh.length == 1 && DonViTinhChuan != ''&& DonViTinhChuan!= null)">
                                             <span data-bind="text: DonViTinhChuan"></span>
@@ -836,28 +843,28 @@
                                     </td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('3') < 0-->
-                                    <td class="ch vitrikho cmnh w190" data-bind="text: Remove_LastComma(TenViTris), click: $parent.loadTheKho"></td>
+                                    <td class="ch vitrikho  width-number" data-bind="text: Remove_LastComma(TenViTris), click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('4') < 0-->
-                                    <td class="ch nhomhang cmnh w190" data-bind="text: NhomHangHoa, click: $parent.loadTheKho"></td>
+                                    <td class="ch nhomhang " style="width:15%  !important" data-bind="text: NhomHangHoa, click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('5') < 0-->
-                                    <td class="ch loaihang cmlh" data-bind="text: sLoaiHangHoa, click: $parent.loadTheKho"></td>
+                                    <td class="ch loaihang width-number cmlh" data-bind="text: sLoaiHangHoa, click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('6') < 0-->
-                                    <td class="ch giaban cmgb text-right" data-bind="text: formatNumber3Digit(GiaBan), click: $parent.loadTheKho"></td>
+                                    <td class="ch giaban width-number text-right" data-bind="text: formatNumber3Digit(GiaBan), click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('7') < 0-->
-                                    <td class="ch giavon cmgb text-right" data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === true ? 'Theo Lô Hàng' : formatNumber3Digit(GiaVon,2)): 0, click: $parent.loadTheKho"></td>
+                                    <td class="ch giavon width-number text-right" data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === true ? 'Theo Lô Hàng' : formatNumber3Digit(GiaVon,2)): 0, click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('8') < 0-->
-                                    <td class="ch tonkho cmtk text-right" data-bind="text: formatNumber3Digit(TonKho), click: $parent.loadTheKho"></td>
+                                    <td class="ch tonkho width-number text-right" data-bind="text: formatNumber3Digit(TonKho), click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('9') < 0-->
-                                    <td class="ch ghichu cmtt" data-bind="text: GhiChu, click: $parent.loadTheKho"></td>
+                                    <td class="ch ghichu " data-bind="text: GhiChu, click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('10') < 0-->
-                                    <td class="ch trangthai cmtt" data-bind="text: TrangThai ? 'Đang kinh doanh': 'Ngừng kinh doanh', click: $parent.loadTheKho"></td>
+                                    <td class="ch trangthai" data-bind="text: TrangThai ? 'Đang kinh doanh': 'Ngừng kinh doanh', click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                 </tr>
                                 <tr class="op-js-tr-hide">
