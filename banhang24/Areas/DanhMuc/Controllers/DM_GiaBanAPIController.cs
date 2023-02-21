@@ -40,11 +40,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     {
                         var tbl = from gb in db.DM_GiaBan
                                   join gbad in db.DM_GiaBan_ApDung on gb.ID equals gbad.ID_GiaBan
-                                  where gbad.ID_DonVi == null || gbad.ID_DonVi == iddonvi
+                                  where (gbad.ID_DonVi == null || gbad.ID_DonVi == iddonvi) && gb.TrangThai != 0
                                   select new DM_GiaBanSelect
                                   {
                                       ID = gb.ID,
-                                      TenGiaBan = gb.TenGiaBan
+                                      TenGiaBan = gb.TenGiaBan,
+                                      TrangThai = gb.TrangThai ?? 1,
                                   };
                         return tbl.Distinct().ToList();
                     }
@@ -104,6 +105,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                    join ad in db.DM_GiaBan_ApDung on gb.ID equals ad.ID_GiaBan into GB_GBAD
                                    from gbap in GB_GBAD.DefaultIfEmpty()
                                    where gb.ApDung == true
+                                   && gb.TrangThai != 0
                                     && (gb.TatCaDonVi == true || gbap.ID_DonVi == idDonVi)
                                     && DateTime.Compare(dtNow, gb.TuNgay ?? DateTime.Now) >= 0 && DateTime.Compare(gb.DenNgay ?? DateTime.Now, dtNow) >= 0
                                    group new { gbap } by new
@@ -212,10 +214,11 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             itemGB.TatCaNhanVien = item.Key.TatCaNhanVien;
                             itemGB.LoaiChungTuApDung = item.Key.LoaiChungTuApDung;
                             itemGB.NgayTrongTuan = item.Key.NgayTrongTuan;
-                            itemGB.DM_GiaBan_ApDung = item.Where(x=>x.gbap.ID_GiaBan==item.Key.ID)
-                                .Select(o=> new DMGiaBan_ApDungDTO {
-                                    ID_GiaBan= itemGB.ID,
-                                    ID_DonVi= o.gbap.ID_DonVi,
+                            itemGB.DM_GiaBan_ApDung = item.Where(x => x.gbap.ID_GiaBan == item.Key.ID)
+                                .Select(o => new DMGiaBan_ApDungDTO
+                                {
+                                    ID_GiaBan = itemGB.ID,
+                                    ID_DonVi = o.gbap.ID_DonVi,
                                     ID_NhomKhachHang = o.gbap.ID_NhomKhachHang,
                                     ID_NhanVien = o.gbap.ID_NhanVien,
                                 }).ToList();
@@ -1182,8 +1185,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
             {
                 try
                 {
-                    classDM_GiaBan _classDMGB = new classDM_GiaBan(db);
-                    _classDMGB.Delete_GiaBan(id);
+                    DM_GiaBan obj = db.DM_GiaBan.Find(id);
+                    if (obj != null)
+                    {
+                        obj.TrangThai = 0;
+                        db.SaveChanges();
+                    }
                     return Json(new { res = true });
                 }
                 catch (Exception ex)
@@ -1214,6 +1221,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
     {
         public Guid ID { get; set; }
         public string TenGiaBan { get; set; }
+        public int? TrangThai { get; set; }
     }
 
     public class GiaBan_ChiTiet_UpdateGiaBan
