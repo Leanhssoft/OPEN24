@@ -128,4 +128,15 @@ namespace Model
     {
         public int? Loai { get; set; }
     }
+
+    public class ParamThongBao
+    {
+        public Guid ID_DonVi { get; set; }
+        public Guid? ID_PhieuTiepNhan { get; set; }
+        public Guid? ID_Xe { get; set; }
+        public string BienSo { get; set; }
+        public DateTime? ThoiGian { get; set; }
+        public int TimeSetup { get; set; }
+        public int LoaiNhac { get; set; }
+    }
 }
