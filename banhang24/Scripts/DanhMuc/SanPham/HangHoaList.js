@@ -397,8 +397,10 @@ var ViewModel = function () {
         ajaxHelper(ReportUri + "getQuyenXemGiaVon?ID_NguoiDung=" + _IDNguoiDung + "&MaQuyen=" + "HangHoa_XemGiaVon", "GET").done(function (data) {
             self.HangHoa_XemGiaVon(data);
         });
-        ajaxHelper(ReportUri + "getQuyen_NguoiDung?ID_NguoiDung=" + _IDNguoiDung + "&ID_DonVi=" + _IDchinhanh + "&MaQuyen=" + "HangHoa_GiaVon", "GET").done(function (data) {
-            self.HangHoa_GiaVon('HangHoa_GiaVon');
+        ajaxHelper('/api/DanhMuc/ReportAPI/' + "getQuyenXemGiaVon?ID_NguoiDung=" + _IDNguoiDung + "&MaQuyen=" + "HangHoa_XemGiaVon", "GET").done(function (data) {
+            if (data !== '') {
+                self.HangHoa_GiaVon('HangHoa_GiaVon');
+            }
         });
     };
 
@@ -8118,9 +8120,15 @@ var ViewModel = function () {
         }
     };
 
-    self.ResetCurrentPageTheKho = function () {
-        self.currentPageLH(0);
-        SeartTheKhoByMaLoHang();
+    self.ResetCurrentPageTheKho = function (item) {
+        if (item.QuanLyTheoLoHang) {
+            self.currentPageLH(0);
+            SeartTheKhoByMaLoHang();
+        }
+        else {
+            self.currentPageTK(0);
+            searchTheKho();
+        }
     };
 
     self.VisibleStartPageTheKho = ko.computed(function () {
@@ -9489,15 +9497,15 @@ var ViewModel = function () {
         var objTG = [];
         var hanghoacungloaichuan = self.newHangHoa().HangHoaCungLoaiArr().filter(p => p.LaDonViChuan === true && p.TrangThai === true);
         if (self.newHangHoa().DonViTinh().length > 0) {
-            for (var i = 0; i < self.newHangHoa().DonViTinh().length; i++) {
+            for (let i = 0; i < self.newHangHoa().DonViTinh().length; i++) {
                 if (self.newHangHoa().DonViTinh()[i].TenDonViTinh !== "" && self.newHangHoa().DonViTinh()[i].TenDonViTinh !== undefined && self.newHangHoa().DonViTinh()[i].TenDonViTinh !== null) {
-                    for (var j = 0; j < hanghoacungloaichuan.length; j++) {
-                        var objCT = {
+                    for (let j = 0; j < hanghoacungloaichuan.length; j++) {
+                        let objCT = {
                             ID_ThuocTinh: hanghoacungloaichuan[j].ID_ThuocTinh,
                             TenHangHoa: hanghoacungloaichuan[j].TenHangHoa,
                             MaHangHoa: '',
-                            GiaVon: self.newHangHoa().GiaVon() * self.newHangHoa().DonViTinh()[i].TyLeChuyenDoi,
-                            GiaBan: self.newHangHoa().GiaBan() * self.newHangHoa().DonViTinh()[i].TyLeChuyenDoi,
+                            GiaVon: formatNumberToFloat(self.newHangHoa().GiaVon()) * self.newHangHoa().DonViTinh()[i].TyLeChuyenDoi,
+                            GiaBan: formatNumber(formatNumberToFloat(self.newHangHoa().GiaBan()) * self.newHangHoa().DonViTinh()[i].TyLeChuyenDoi),
                             TonKho: self.newHangHoa().TonKho() / self.newHangHoa().DonViTinh()[i].TyLeChuyenDoi,
                             TrangThai: true,
                             TenDonViTinh: self.newHangHoa().DonViTinh()[i].TenDonViTinh,
@@ -11887,7 +11895,7 @@ var ViewModel = function () {
     });
     $("#cbgiavon").click(function () {
         addClassHH(".giavon", "cbgiavon", $(this).val());
-        self.addColum($(this).val())
+        self.addColum($(this).val(), $(this).prop('checked'))
     });
     $("#cbtonkho").click(function () {
         addClassHH(".tonkho", "cbtonkho", $(this).val());
@@ -14363,15 +14371,17 @@ var ViewModel = function () {
     }
 
     self.CapNhatTonKho = function (item) {
-        let itemTK = {}
-        for (let i = 0; i < self.TheKhos().length; i++) {
-            let tk = self.TheKhos()[i]
+        let lenTK = self.TheKhos().length;
+        let itemTK = {};
+        // tìm đến dòng đầu tiên bị sai lũy kế
+        for (let i = lenTK - 1; i > -1; i--) {
+            let tk = self.TheKhos()[i];
             if (tk.LuyKeTonKho !== tk.TonKho) {
-                if (i > 0) {
-                    itemTK = self.TheKhos()[i - 1];// tìm đến dòng đầu tiên bị sai lũy kế --> get dòng trc đó
+                if (i === lenTK - 1) {
+                    itemTK = tk;
                 }
                 else {
-                    itemTK = tk;
+                    itemTK = self.TheKhos()[i + 1];
                 }
                 break;
             }
