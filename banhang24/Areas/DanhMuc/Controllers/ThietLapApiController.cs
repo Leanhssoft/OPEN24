@@ -1842,6 +1842,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TienPOS}", "<span data-bind=\"text: InforHDprintf().TienATM\"></span>");
             content1 = content1.Replace("{TienChuyenKhoan}", "<span data-bind=\"text: formatNumber(InforHDprintf().ChuyenKhoan)\"></span>");
             content1 = content1.Replace("{NoSau}", "<span data-bind=\"text: formatNumber(InforHDprintf().NoSau)\"></span>");
+            content1 = content1.Replace("{TienKhachThieu}", "<span data-bind=\"text: formatNumber(InforHDprintf().TienKhachThieu)\"></span>");
             content1 = content1.Replace("{PhuongThucTT}", "<span data-bind=\"text: InforHDprintf().PhuongThucTT\"></span>");
 
             return content1;
