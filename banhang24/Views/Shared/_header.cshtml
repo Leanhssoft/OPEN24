@@ -539,7 +539,23 @@
             <ul>
                 <li v-for="item in ListThongBao.data">
                     <div class="op-thongbao-item" v-bind:class="{ 'op-thongbao-dadoc':  !item.DaDoc }">
-                        <div class="op-thongbao-image" v-html="item.Image"></div>
+                        <div class="op-thongbao-image" >
+                            <span v-if="SubDomain.toLowerCase() === '0973474985'">
+                                <i class="fal fa-car fa-2x" v-if="item.LoaiThongBao == 5"></i>
+                                <i class="fal fa-birthday-cake fa-2x" v-if="item.LoaiThongBao == 3"></i>
+                                <i class="fal fa-cart-plus fa-2x" v-if="item.LoaiThongBao == 0"></i>
+                                <i class="fal fa-dolly-flatbed-alt fa-2x" v-if="item.LoaiThongBao == 1"></i>
+                                <i class="fab fa-fedex fa-2x" v-if="item.LoaiThongBao == 4"></i>
+                                @*<i class="fal fa-file-invoice-dollar fa-2x"></i> chua thanhtoan*@
+                                @*<i class="fas fa-tools"></i>* baoduong*@
+                            </span>
+                            <span v-else>
+                                <i class="fal fa-birthday-cake fa-2x" v-if="item.LoaiThongBao == 3"></i>
+                                <i class="fal fa-cart-plus fa-2x" v-if="item.LoaiThongBao == 0"></i>
+                                <i class="fal fa-dolly-flatbed-alt fa-2x" v-if="item.LoaiThongBao == 1"></i>
+                                <i class="fab fa-fedex fa-2x" v-if="item.LoaiThongBao == 1"></i>
+                            </span>
+                        </div>
                         <div>
                             <div style="line-height:18px" v-html="item.NoiDungThongBao"></div>
                             <span style="line-height:18px" class="date-notifi">{{ item.NgayTao }}</span>
@@ -1145,10 +1161,11 @@ var VHeader = new Vue({
             $.ajax({
                 url: self.urlApi.NguoiDungApi + 'UpdateDaDocAll?nguoidoc=' + self.IdNguoiDung + '&iddonvi=' + self.IdDonVi,
                 success: function (item) {
-                    self.ListThongBao = self.ListThongBao.map(p => ({
+                    self.ListThongBao.data = self.ListThongBao.data.map(p => ({
                         DaDoc: true,
                         Image: p.Image,
                         NgayTao: p.NgayTao,
+                        LoaiThongBao: p.LoaiThongBao,
                         NoiDungThongBao: p.NoiDungThongBao
                     }));
                     self.Count = 0;
@@ -1173,6 +1190,7 @@ var VHeader = new Vue({
         self.IdNganhNgheKinhDoanh = '@ViewBag.ID_NganhKinhDoanh'.toUpperCase();
         self.UserLogin = '@ViewBag.TenTaiKhoan';
         self.SubDomain = '@ViewBag.SubDomain';
+        console.log('self.SubDomain', self.SubDomain)
         self.TenCongTy = '@ViewBag.TenCongTy';
         self.Registered = '@ViewBag.Registered';
         self.UserAvata = Open24FileManager.hostUrl + '@ViewBag.Avatar';
