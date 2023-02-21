@@ -161,7 +161,7 @@
             arrIDDonVi: [], // used at form KhachHang: get hdDebit by list chinhanh
         },
         QuyHD_Share: [],
-        HoaDonChosing: { SoDuTheGiaTri:0},
+        HoaDonChosing: { SoDuTheGiaTri: 0 },
         theGiaTriCus: {
             TongNapThe: 0,
             SuDungThe: 0,
@@ -1616,6 +1616,34 @@
                             commonStatisJs.ShowMessageSuccess('Thanh toán thành công');
                         }
                         $('#ThuTienHoaDonModal').modal('hide');
+
+                        // ptn --> bg
+                        if (self.formType === 0 && !commonStatisJs.CheckNull(self.HoaDonChosing.ID_PhieuTiepNhan)) {// apply at form: banlamviec+ ds hoadon
+
+                            switch (self.HoaDonChosing.LoaiHoaDon) {
+                                case 3:// coc --> hoadon
+                                    vmThongBao.Create_tblRequest({
+                                        ID_DonVi: self.HoaDonChosing.ID_DonVi,
+                                        ID_PhieuTiepNhan: self.HoaDonChosing.ID_PhieuTiepNhan,
+                                        BienSo: self.HoaDonChosing.BienSo,
+                                        ThoiGian: quyhd.NgayLapHoaDon,
+                                        ID_QuyTrinhTruoc: 2,
+                                        ID_QuyTrinhSau: 3,
+                                    });
+                                    break;
+                                case 25:// thanhtoan hd --> xuatkho
+                                    vmThongBao.Create_tblRequest({
+                                        ID_DonVi: self.HoaDonChosing.ID_DonVi,
+                                        ID_PhieuTiepNhan: self.HoaDonChosing.ID_PhieuTiepNhan,
+                                        BienSo: self.HoaDonChosing.BienSo,
+                                        ThoiGian: quyhd.NgayLapHoaDon,
+                                        ID_QuyTrinhTruoc: 4,
+                                        ID_QuyTrinhSau: 5,
+                                    });
+                                    break;
+                            }
+                        }
+
                     })
                 }
                 else {
@@ -1954,7 +1982,7 @@
                                 '<br /><b> Thông tin cũ: </b>',
                                 '<br /> - Giá trị: ', formatNumber3Digit(self.phieuThuOld.TongTienThu),
                                 '<br /> - Phương thức thanh toán: ', self.phieuThuOld.PhuongThucTT,
-                                '<br /> - Khoản ', self.sLoai,': ',self.ddl_textVal.khoanthu,
+                                '<br /> - Khoản ', self.sLoai, ': ', self.ddl_textVal.khoanthu,
                                 '<br /> - Người nộp: ', self.phieuThuOld.NguoiNopTien, ' (', self.phieuThuOld.MaNguoiNop, ')'),
                             LoaiNhatKy: 3
                         }
