@@ -49,6 +49,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
@@ -11793,6 +11794,7 @@
     <Content Include="Scripts\Gara\LichNhacBaoDuong.js" />
     <Content Include="Scripts\Gara\_NapTienDatCoc.js" />
     <Content Include="Scripts\Gara\KhachHang\_NhatKyBaoDuong.js" />
+    <Content Include="Scripts\Gara\_signalThongBao.js" />
     <Content Include="Scripts\Gara\_ThongTinThanhToanBaoHiem.js" />
     <Content Include="Scripts\Gara\_ThongTinThanhToanKH.js" />
     <Content Include="Scripts\Gara\_ThongTinThanhToanNCC.js" />
@@ -13142,6 +13144,7 @@
     <Content Include="Views\Home\Init.cshtml" />
     <Content Include="Views\SoQuy\_QRCodeChuyenKhoanModal.cshtml" />
     <Content Include="Template\ExportExcel\Teamplate_DanhSachBaoGiaSuaChua.xlsx" />
+    <Content Include="Template\ExportExcel\Gara\LeeAuto_Template_LichNhacBaoDuong.xlsx" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppCache\CacheSubDomain\" />
