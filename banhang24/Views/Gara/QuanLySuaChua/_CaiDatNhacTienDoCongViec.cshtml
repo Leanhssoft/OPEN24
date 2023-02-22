@@ -1,0 +1,206 @@
+﻿@using banhang24.Hellper
+<style scoped>
+    #vmCaiDatNhacTienDoCV.verticalLine {
+        border-left: solid 1px #cccc;
+        height: 110px;
+        margin-left: 47%;
+    }
+
+    #vmCaiDatNhacTienDoCV.horizontalline {
+        border-bottom: 1px solid #be6c6ccc;
+        margin-left: 47%;
+        width: 275px;
+    }
+
+    #vmCaiDatNhacTienDoCV.input-time {
+        width: 80px;
+        padding: 20px;
+    }
+
+    #vmCaiDatNhacTienDoCV.select-time {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    #vmCaiDatNhacTienDoCV table tr td {
+        height: 90px !important;
+    }
+
+    #vmCaiDatNhacTienDoCV input {
+        /*border:none!important*/
+    }
+
+    #vmCaiDatNhacTienDoCV .type-time {
+        font-size: 13px;
+        width: 100%;
+        line-height: 42px;
+        background: #747474;
+        color: #fff
+    }
+</style>
+<div class="modal fade" id="vmCaiDatNhacTienDoCV">
+    <div class="modal-dialog draggable">
+        <div class="modal-content  ui-draggable">
+            <div class="modal-header ui-draggable-handle">
+                <h5 class="modal-title">
+                    {{isNew?'Thiết lập quy trình nhắc tiến độ công việc':'Cài đặt nhắc tiến độ công việc'}}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
+
+            </div>
+            <div class="modal-body" style="padding:15px;">
+                <div class="col-sm-12">
+                    @*<div class="col-sm-5">
+                            <buoc1 placeholder="Chọn tên bước thực hiện"
+                                   :list-all="LstQuyTrinh"
+                                   :list-search="LstQuyTrinh"
+                                   v-on:on-select-item="ChoseItem">
+                            </buoc1>
+                            <div class="verticalLine"></div>
+                            <div class="horizontalline">
+
+                            </div>
+                            <buoc2 placeholder="Chọn tên bước thực hiện"
+                                   :text-search="txt"
+                                   :list-all="LstQuyTrinh"
+                                   :list-search="LstQuyTrinh"
+                                   :id-chosing="id"
+                                   v-on:on-select-item="ChoseItem">
+                            </buoc2>
+                        </div>*@
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>
+                                    STT
+                                </th>
+                                <th>
+                                    Tên bước
+                                </th>
+                                <th colspan="3">
+                                    Thời gian
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(item,index) in QuyTrinh">
+                                <td class="text-center">
+                                    {{index + 1}}
+                                </td>
+                                <td style="font-weight:700">
+                                    <buoc1 placeholder="Chọn tên bước thực hiện"
+                                           :text-search="item.TenBuocThucHien"
+                                           :list-all="LstQuyTrinh"
+                                           :list-search="LstQuyTrinh"
+                                           v-on:on-select-item="ChoseItem">
+                                    </buoc1>
+                                </td>
+                                <td v-bind:rowspan="index % 2 ===0 ?2:0" v-if="index % 2 ===0" style="width:20%; padding-left:20px!important">
+                                    <input class="form-control" style="padding:25px!important" />
+                                </td>
+                                <td v-bind:rowspan="index % 2 ===0 ?2:0" v-if="index % 2 ===0">
+                                    <div class="plus vnd1 gb type-time">Phút</div>
+                                </td>
+                                <td v-bind:rowspan="index % 2 ===0 ?2:0" v-if="index % 2 ===0">
+                                    <div class="plus senter1 type-time">
+                                        Giờ
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-cancel" data-dismiss="modal">
+                    <i class="fa fa-ban"></i>Hủy
+                </button>
+                <button type="button" class="btn btn-save" v-if="!$root.isLoading" v-on:click="Save">
+                    <i class="fa fa-save"></i>
+                    Lưu
+                </button>
+                <button type="button" class="btn btn-save"
+                        v-if="$root.isLoading">
+                    <i class="fa fa-save"></i>
+                    Đang lưu
+                </button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.ContentVersioned("~/Scripts/Components/Input.js")"></script>
+<script>
+    var _vmCaiDatNhacTienDo = new Vue({
+        el: '#vmCaiDatNhacTienDoCV',
+        components: {
+            'buoc1': cmpDropdown1Item,
+            'buoc2': cmpDropdown1Item,
+            'buoc3': cmpDropdown1Item,
+            'buoc4': cmpDropdown1Item,
+            'type-time': cmpDropdown1Item,
+        },
+        created: function () {
+
+        },
+        data: {
+            isLoading: false,
+            isNew: true,
+            txt: '',
+            id: '',
+            LoaiThoiGian: [
+                { ID: 1, Text2: 'Phút' },
+                { ID: 2, Text2: 'Giờ' },
+            ],
+            LstQuyTrinh: [
+                { ID: 0, Text1: 'PTN', Text2: 'Tiếp nhận xe' },
+                { ID: 1, Text1: 'BG', Text2: 'Báo giá' },
+                { ID: 2, Text1: 'Coc', Text2: 'Đặt cọc' },
+                { ID: 3, Text1: 'HD', Text2: 'Tạo lệnh sửa chữa' },
+                { ID: 4, Text1: 'TT', Text2: 'Thanh toán' },
+                { ID: 5, Text1: 'XK', Text2: 'Xuất kho' },
+                { ID: 6, Text1: 'XX', Text2: 'Xuất xưởng' },
+            ],
+            Buoc1: { STT: 0, TenBuocThucHien: '', ThoiGian: 15, LoaiThoiGian: 1 },
+            Buoc2: { STT: 1, TenBuocThucHien: '', ThoiGian: 15, LoaiThoiGian: 1 },
+            Buoc3: { STT: 2, TenBuocThucHien: '', ThoiGian: 15, LoaiThoiGian: 1 },
+            Buoc4: { STT: 3, TenBuocThucHien: '', ThoiGian: 15, LoaiThoiGian: 1 },
+            QuyTrinh: [
+                { STT: 0, TenBuocThucHien: 'Tiếp nhận xe', ThoiGian: 10, LoaiThoiGian: 1 },
+                { STT: 1, TenBuocThucHien: 'Báo giá', ThoiGian: 5, LoaiThoiGian: 1 },
+                { STT: 2, TenBuocThucHien: 'Đặt cọc', ThoiGian: 15, LoaiThoiGian: 1 },
+                { STT: 3, TenBuocThucHien: 'Tạo lệnh sửa chữa', ThoiGian: 20, LoaiThoiGian: 1 },
+            ],
+            //QuyTrinh: {
+            //    CacBuoc: [
+            //        { STT: 0, TenBuocThucHien: '' },
+            //        { STT: 1, TenBuocThucHien: '' },
+            //        { STT: 2, TenBuocThucHien: '' },
+            //        { STT: 3, TenBuocThucHien: '' },
+            //    ],
+            //    ThoiGian: [
+            //        { ID_QuyTrinhTruoc: 0, ID_QuyTrinhSau: 1, ThoiGian: 15, LoaiThoiGian: 1 },
+            //        { ID_QuyTrinhTruoc: 1, ID_QuyTrinhSau: 2, ThoiGian: 15, LoaiThoiGian: 1 },
+            //        { ID_QuyTrinhTruoc: 2, ID_QuyTrinhSau: 13, ThoiGian: 15, LoaiThoiGian: 1 },
+            //    ],
+            //},
+        },
+        methods: {
+            showModal: function () {
+                $('#vmCaiDatNhacTienDoCV').modal('show');
+            },
+            ChoseItem: function () {
+
+            },
+            Save: function () {
+
+            },
+        }
+    })
+
+</script>
+
