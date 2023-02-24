@@ -214,6 +214,9 @@ var NewModel_BanHangLe = function () {
     var tree = '';// use at treeview NhomHangHoa
     var tree2 = '';// use at treeview NhomHangHoa --> check KhuyenMai
     self.SubDomain = ko.observable(_subDomain.toLowerCase());
+    vmThemMoiXe.isLeeAuto = self.SubDomain() === '0973474985';
+    vmTiepNhanXe.isLeeAuto = vmThemMoiXe.isLeeAuto;
+
     self.ShopCookies = ko.observable(shopCookies);
     self.selectedGiaBan = ko.observable();
     self.selectedNVien = ko.observable();
@@ -625,7 +628,7 @@ var NewModel_BanHangLe = function () {
         GetInforChiNhanh();
         GetKM_CTKhuyenMai();
         GetDM_TaiKhoanNganHang();
-        GetListTrangThaiKhachHang();
+        //GetListTrangThaiKhachHang();
         Call_ManyFunction_Onsuccess();
         CheckHDNull_andRemove();
         RemoveHD_undefinedTrangThai();
@@ -1074,8 +1077,6 @@ var NewModel_BanHangLe = function () {
                 self.ThietLap_TraHang(obj.CauHinhTraHang);
 
                 vmThanhToan.ThietLapChotSo = obj.ChotSo;
-                vmThemMoiKhach.listData.NguonKhachs = obj.NguonKhach;
-                vmThemMoiNhomKhach.listData.VungMiens = obj.VungMien;
             }
         });
     }
@@ -2804,16 +2805,6 @@ var NewModel_BanHangLe = function () {
         }
         return arrBGNgayTrongTuan;
     }
-    function GetListTrangThaiKhachHang() {
-        ajaxHelper(DMDoiTuongUri + 'GetListTrangThaiTimKiem', 'GET').done(function (obj) {
-            var data = obj.data;
-            if (obj.res === true && data !== undefined) {
-                self.TrangThaiKhachHang(data);
-                vmThemMoiKhach.listData.TrangThaiKhachs = data;
-                WriteData_Dexie(db.DM_DoiTuong_TrangThai, data);
-            }
-        });
-    };
     self.ListAllDoiTuong = ko.observableArray();// to do bind at list NguoiGioiThieu (ThemMoiKH)
 
     self.showHoaDonOffline = function () {
@@ -15685,61 +15676,6 @@ var NewModel_BanHangLe = function () {
         }
     }
 
-    function CheckInput(obj) {
-        var sReturn = '';
-        var id = obj.ID();
-        var maDT = obj.MaDoiTuong();
-        var tenDT = obj.TenDoiTuong();
-        var date1 = obj.NgaySinh_NgayTLap();
-        var date2 = moment(new Date()).format('YYYY-MM-DD');
-        var email = obj.Email();
-        var phone = obj.DienThoai();
-        var idTinhThanh = obj.ID_TinhThanh();
-        var idQuanHuyen = obj.ID_QuanHuyen();
-        var idNguoiGioiThieu = obj.ID_NguoiGioiThieu();
-        var idNguoiQuanLy = obj.ID_NhanVienPhuTrach();
-        if (tenDT === null || tenDT === "" || tenDT === undefined) {
-            sReturn = 'Bạn chưa nhập tên khách hàng <br />';
-        }
-        // check MaDoiTuong contain char special
-        if (CheckChar_Special(maDT)) {
-            sReturn += 'Mã khách hàng không được chứa kí tự đặc biệt <br />';
-        }
-        if (email !== '' && email !== undefined && email !== null) {
-            //var re = /^(([^<>()[\]\\.,;:\s@#ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴ\"]+(\.[^<>()[\]\\.,;:\s@#ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴ\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
-            var re = /^(([^<>()[\]\\.,;:\s@#ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴ"]+(\.[^<>()[\]\\.,;:\s@#ẮẰẲẴẶĂẤẦẨẪẬÂÁÀÃẢẠĐẾỀỂỄỆÊÉÈẺẼẸÍÌỈĨỊỐỒỔỖỘÔỚỜỞỠỢƠÓÒÕỎỌỨỪỬỮỰƯÚÙỦŨỤÝỲỶỸỴ"]+)*)|(".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
-            var valReturn = re.test(email);
-            if (valReturn === false) {
-                sReturn += 'Email không hợp lệ <br />';
-            }
-        }
-        if (Is_undefined_empty_GuidEmpty(idTinhThanh) === false) {
-            var itemTT = $.grep(self.TinhThanhs(), function (item) {
-                return item.ID === idTinhThanh;
-            });
-            if (itemTT.length === 0) {
-                sReturn += 'Tỉnh thành không tồn tại trong hệ thống <br />';
-            }
-        }
-        if (Is_undefined_empty_GuidEmpty(idQuanHuyen) === false) {
-            var itemQH = $.grep(self.QuanHuyens(), function (item) {
-                return item.ID === idQuanHuyen;
-            });
-            if (itemQH.length === 0) {
-                sReturn += 'Quận huyện không tồn tại trong hệ thống <br />';
-            }
-        }
-
-        if (Is_undefined_empty_GuidEmpty(idNguoiQuanLy) === false) {
-            var itemNV = $.grep(self.NhanViens(), function (item) {
-                return item.ID === idNguoiQuanLy;
-            });
-            if (itemNV.length === 0) {
-                sReturn += 'Người quản lý không tồn tại trong hệ thống <br />';
-            }
-        }
-        return sReturn;
-    }
     // Khuyen mai
     function GetKM_CTKhuyenMai() {
         ajaxHelper('/api/DanhMuc/BH_KhuyenMaiAPI/' + 'GetKM_CTKhuyenMai?idDonVi=' + id_DonVi, 'GET').done(function (data) {
@@ -29019,9 +28955,12 @@ var NewModel_BanHangLe = function () {
                         for (let k = 0; k < forOut.ChiTiets.length; k++) {
                             let ct = forOut.ChiTiets[k];
                             if (!commonStatisJs.CheckNull(ct.ID_NhaCungCap)) {
+                                //let itemDB = $.grep(cthdDB, function (x) {
+                                //    return x.ID_DonViQuiDoi === ct.ID_DonViQuiDoi;// todo (same dichvu - khong biet lay cai nao)
+                                //})
                                 let itemDB = $.grep(cthdDB, function (x) {
-                                    return x.ID_DonViQuiDoi === ct.ID_DonViQuiDoi;// todo (same dichvu - khong biet lay cai nao)
-                                })
+                                    return x.TenHangHoaThayThe === ct.TenHangHoaThayThe;
+                                });
 
                                 if (itemDB.length > 0) {
                                     ct.ID_HoaDon_ChiTiet = itemDB[0].ID;

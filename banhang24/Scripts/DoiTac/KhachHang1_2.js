@@ -720,9 +720,6 @@
         if (navigator.onLine) {
             ajaxHelper(DMNguonKhachUri + 'GetDM_NguonKhach', 'GET').done(function (data) {
                 self.NguonKhachs(data);
-                if (loaiDoiTuong === 1) {
-                    vmThemMoiKhach.listData.NguonKhachs = data;
-                }
             });
         }
     }
@@ -4604,9 +4601,6 @@
                 var lst = data.dataSoure.ttkhachhang;
                 self.TrangThaiKhachHang(lst);
                 partialWork.LoaiKhachHang(lst);
-                if (loaiDoiTuong === 1) {
-                    vmThemMoiKhach.listData.TrangThaiKhachs = lst;
-                }
             }
         });
     };

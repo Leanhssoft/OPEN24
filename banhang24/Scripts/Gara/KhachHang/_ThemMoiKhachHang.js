@@ -16,23 +16,17 @@
         self.ToDay = new Date();
         if (commonStatisJs.CheckNull(self.SubDomain)) {
             self.SubDomain = VHeader.SubDomain;
+            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === '0973474985';
+            self.inforLogin.ID_DonVi = VHeader.IdDonVi;
+
+            self.role.KhachHang.ThemMoi = VHeader.Quyen.indexOf('KhachHang_ThemMoi') > -1;
+            self.role.KhachHang.CapNhat = VHeader.Quyen.indexOf('KhachHang_CapNhat') > -1;
+        }
+        else {
+            self.isLeeAuto = self.SubDomain.toLowerCase() === '0973474985';
         }
 
-        $.getJSON(self.UrlDoiTuongAPI + 'GetListTinhThanh').done(function (x) {
-            if (x.res === true) {
-                let data = x.data;
-                var province = data.map(function (p) {
-                    return {
-                        ID: p.ID,
-                        val2: p.TenTinhThanh
-                    }
-                });
-                self.listData.TinhThanhs = province;
-                self.listData.ListTinhThanhSearch = province;
-                vmThemMoiNhomKhach.listData.TinhThanhs = province;
-                vmThemMoiNhomKhach.listData.ListTinhThanhSearch = province;
-            }
-        })
+        self.PageLoad();
     },
     data: {
         saveOK: false,
@@ -104,6 +98,40 @@
         ImgHost: ""
     },
     methods: {
+        PageLoad: function () {
+            let self = this;
+            // trangthaikhach
+            $.getJSON('/api/DanhMuc/ChamSocKhachHangAPI/' + 'GetTrangThaiTimKiem').done(function (data) {
+                if (data.res === true) {
+                    self.listData.TrangThaiKhachs = data.dataSoure.ttkhachhang;
+                }
+            });
+
+            // nguonkhach
+            $.getJSON('/api/DanhMuc/DM_NguonKhachAPI/' + 'GetDM_NguonKhach').done(function (data) {
+                self.listData.NguonKhachs = data;
+            });
+
+            $.getJSON('/api/DanhMuc/DM_DoiTuongAPI/' + 'getList_VungMien').done(function (data) {
+                self.listData.VungMiens = data;
+            });
+
+            $.getJSON(self.UrlDoiTuongAPI + 'GetListTinhThanh').done(function (x) {
+                if (x.res === true) {
+                    let data = x.data;
+                    let province = data.map(function (p) {
+                        return {
+                            ID: p.ID,
+                            val2: p.TenTinhThanh
+                        }
+                    });
+                    self.listData.TinhThanhs = province;
+                    self.listData.ListTinhThanhSearch = province;
+                    vmThemMoiNhomKhach.listData.TinhThanhs = province;
+                    vmThemMoiNhomKhach.listData.ListTinhThanhSearch = province;
+                }
+            })
+        },
         showModalAdd: function () {
             var self = this;
             self.isNew = true;
@@ -191,7 +219,7 @@
                 let xx = await ajaxHelper('/api/DanhMuc/DM_DoituongAPI/' + "GetInforKhachHang_ByID?idDoiTuong=" + idCus
                     + '&idChiNhanh=' + self.inforLogin.ID_DonVi
                     + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function () {
-                    }).then(function (data) {
+                    }).then(function (data) {// return arr
                         return data;
                     });
                 return xx;
@@ -592,6 +620,10 @@
             let cus = self.newCustomer;
             if (commonStatisJs.CheckNull(cus.TenDoiTuong)) {
                 ShowMessage_Danger('Vui lòng nhập tên khách hàng');
+                return false;
+            }
+            if (self.isLeeAuto && commonStatisJs.CheckNull(cus.DienThoai)) {
+                ShowMessage_Danger('Vui lòng nhập số điện thoại khách hàng');
                 return false;
             }
             return true;
