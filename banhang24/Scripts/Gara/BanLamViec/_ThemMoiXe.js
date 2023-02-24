@@ -60,15 +60,18 @@
         var self = this;
         self.GaraAPI = '/api/DanhMuc/GaraAPI/';
         self.Guid_Empty = '00000000-0000-0000-0000-000000000000';
-
+        self.isLeeAuto = false;
         let idDonVi = $('#txtDonVi').val();
         if (commonStatisJs.CheckNull(idDonVi)) {
+            self.isLeeAuto = VHeader.SubDomain.toLowerCase() ==='0973474985'
+
             self.inforLogin = {
                 ID_NhanVien: VHeader.IdNhanVien,
                 ID_User: VHeader.IdNguoiDung,
                 UserLogin: VHeader.UserLogin,
                 ID_DonVi: VHeader.IdDonVi,
             };
+
         }
         self.role.ThemMoi = self.CheckRole('DanhMucXe_ThemMoi');
         self.role.CapNhat = self.CheckRole('DanhMucXe_CapNhat');
@@ -405,10 +408,10 @@
         },
         CheckSave: function () {
             let self = this;
-            //if (commonStatisJs.CheckNull(self.newCar.ID_MauXe)) {
-            //    commonStatisJs.ShowMessageDanger('Vui lòng chọn mẫu xe');
-            //    return;
-            //}
+            if (self.isLeeAuto && commonStatisJs.CheckNull(self.newCar.SoKhung)) {
+                commonStatisJs.ShowMessageDanger('Vui lòng nhập số khung');
+                return;
+            }
             if (commonStatisJs.CheckNull(self.newCar.BienSo)) {
                 commonStatisJs.ShowMessageDanger('Vui lòng nhập biển số xe');
                 return;
