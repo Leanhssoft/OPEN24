@@ -50,25 +50,6 @@
             </div>
             <div class="modal-body" style="padding:15px;">
                 <div class="col-sm-12">
-                    @*<div class="col-sm-5">
-                            <buoc1 placeholder="Chọn tên bước thực hiện"
-                                   :list-all="LstQuyTrinh"
-                                   :list-search="LstQuyTrinh"
-                                   v-on:on-select-item="ChoseItem">
-                            </buoc1>
-                            <div class="verticalLine"></div>
-                            <div class="horizontalline">
-
-                            </div>
-                            <buoc2 placeholder="Chọn tên bước thực hiện"
-                                   :text-search="txt"
-                                   :list-all="LstQuyTrinh"
-                                   :list-search="LstQuyTrinh"
-                                   :id-chosing="id"
-                                   v-on:on-select-item="ChoseItem">
-                            </buoc2>
-                        </div>*@
-
                     <table>
                         <thead>
                             <tr>
@@ -85,29 +66,36 @@
                         </thead>
                         <tbody>
                             <tr v-for="(item,index) in QuyTrinh">
-                                <td class="text-center">
-                                    {{index + 1}}
-                                </td>
-                                <td style="font-weight:700">
-                                    <buoc1 placeholder="Chọn tên bước thực hiện"
-                                           :text-search="item.TenBuocThucHien"
-                                           :list-all="LstQuyTrinh"
-                                           :list-search="LstQuyTrinh"
-                                           v-on:on-select-item="ChoseItem">
-                                    </buoc1>
-                                </td>
-                                <td v-bind:rowspan="index % 2 ===0 ?2:0" v-if="index % 2 ===0" style="width:20%; padding-left:20px!important">
-                                    <input class="form-control" style="padding:25px!important" />
-                                </td>
-                                <td v-bind:rowspan="index % 2 ===0 ?2:0" v-if="index % 2 ===0">
-                                    <div class="plus vnd1 gb type-time">Phút</div>
-                                </td>
-                                <td v-bind:rowspan="index % 2 ===0 ?2:0" v-if="index % 2 ===0">
-                                    <div class="plus senter1 type-time">
-                                        Giờ
-                                    </div>
-                                </td>
-                            </tr>
+                                    <td class="text-center">
+                                        {{index}}
+                                    </td>
+                                    <td style="font-weight: 700;" v-on:click="FocusRow(index)">
+                                        <buoc1 placeholder="Chọn tên bước thực hiện"
+                                               :text-search="item.TenBuocThucHien"
+                                               :list-all="DM_QuyTrinh"
+                                               :list-search="DM_QuyTrinh"
+                                               v-on:on-select-item="ChoseItem">
+                                        </buoc1>
+                                    </td>
+                                    <td v-bind:rowspan="rowSpan(index)" v-if="rowSpan(index) !==0" style="width:20%; padding-left:20px!important">
+                                        <input class="form-control" style="padding:25px!important" v-model="item.ThoiGian" />
+                                    </td>
+                                    <td v-bind:rowspan="rowSpan(index)" v-if="rowSpan(index) !==0">
+                                        <div class="plus vnd1 type-time"
+                                             v-bind:class="{gb: item.LoaiThoiGian ===1}"
+                                             v-on:click="Change_LoaiThoiGian(index,1)">Phút</div>
+                                    </td>
+                                    <td v-bind:rowspan="rowSpan(index)" v-if="rowSpan(index) !==0">
+                                        <div class="plus senter1 type-time"
+                                             v-bind:class="{gb: item.LoaiThoiGian ===2}"
+                                             v-on:click="Change_LoaiThoiGian(index,2)">
+                                            Giờ
+                                        </div>
+                                    </td>
+                                </tr>
+                            
+                           
+                            
                         </tbody>
                     </table>
 
@@ -145,18 +133,22 @@
             'type-time': cmpDropdown1Item,
         },
         created: function () {
+            console.log('_vmCaiDatNhacTienDo')
+        },
+        computed: {
 
         },
         data: {
             isLoading: false,
             isNew: true,
-            txt: '',
-            id: '',
+            saveOK: true,
+            indexChosing: 0,
+
             LoaiThoiGian: [
                 { ID: 1, Text2: 'Phút' },
                 { ID: 2, Text2: 'Giờ' },
             ],
-            LstQuyTrinh: [
+            DM_QuyTrinh: [
                 { ID: 0, Text1: 'PTN', Text2: 'Tiếp nhận xe' },
                 { ID: 1, Text1: 'BG', Text2: 'Báo giá' },
                 { ID: 2, Text1: 'Coc', Text2: 'Đặt cọc' },
@@ -165,39 +157,107 @@
                 { ID: 5, Text1: 'XK', Text2: 'Xuất kho' },
                 { ID: 6, Text1: 'XX', Text2: 'Xuất xưởng' },
             ],
-            Buoc1: { STT: 0, TenBuocThucHien: '', ThoiGian: 15, LoaiThoiGian: 1 },
-            Buoc2: { STT: 1, TenBuocThucHien: '', ThoiGian: 15, LoaiThoiGian: 1 },
-            Buoc3: { STT: 2, TenBuocThucHien: '', ThoiGian: 15, LoaiThoiGian: 1 },
-            Buoc4: { STT: 3, TenBuocThucHien: '', ThoiGian: 15, LoaiThoiGian: 1 },
             QuyTrinh: [
-                { STT: 0, TenBuocThucHien: 'Tiếp nhận xe', ThoiGian: 10, LoaiThoiGian: 1 },
-                { STT: 1, TenBuocThucHien: 'Báo giá', ThoiGian: 5, LoaiThoiGian: 1 },
-                { STT: 2, TenBuocThucHien: 'Đặt cọc', ThoiGian: 15, LoaiThoiGian: 1 },
-                { STT: 3, TenBuocThucHien: 'Tạo lệnh sửa chữa', ThoiGian: 20, LoaiThoiGian: 1 },
+                { STT: 0, TenBuocThucHien: 'Tiếp nhận xe', ThoiGian: 10, LoaiThoiGian: 1, ID_BuocThucHien: 0 },
+                { STT: 1, TenBuocThucHien: 'Báo giá', ThoiGian: 5, LoaiThoiGian: 1, ID_BuocThucHien: 1 },
+                { STT: 2, TenBuocThucHien: 'Đặt cọc', ThoiGian: 15, LoaiThoiGian: 1, ID_BuocThucHien: 2 },
+                { STT: 3, TenBuocThucHien: 'Tạo lệnh sửa chữa', ThoiGian: 20, LoaiThoiGian: 1, ID_BuocThucHien: 3 },
+                { STT: 4, TenBuocThucHien: 'Thanh toán', ThoiGian: 20, LoaiThoiGian: 1, ID_BuocThucHien: 4 },
+                { STT: 5, TenBuocThucHien: 'Xuất kho', ThoiGian: 30, LoaiThoiGian: 1, ID_BuocThucHien: 5 },
+                { STT: 6, TenBuocThucHien: 'Xuất xưởng', ThoiGian: 5, LoaiThoiGian: 2, ID_BuocThucHien: 6 },
             ],
-            //QuyTrinh: {
-            //    CacBuoc: [
-            //        { STT: 0, TenBuocThucHien: '' },
-            //        { STT: 1, TenBuocThucHien: '' },
-            //        { STT: 2, TenBuocThucHien: '' },
-            //        { STT: 3, TenBuocThucHien: '' },
-            //    ],
-            //    ThoiGian: [
-            //        { ID_QuyTrinhTruoc: 0, ID_QuyTrinhSau: 1, ThoiGian: 15, LoaiThoiGian: 1 },
-            //        { ID_QuyTrinhTruoc: 1, ID_QuyTrinhSau: 2, ThoiGian: 15, LoaiThoiGian: 1 },
-            //        { ID_QuyTrinhTruoc: 2, ID_QuyTrinhSau: 13, ThoiGian: 15, LoaiThoiGian: 1 },
-            //    ],
-            //},
         },
         methods: {
+            rowSpan: function (index) {
+                let self = this;
+                if (index % 2 ===0) {
+                    return 2;
+                }
+                if (index % 2 === 1) {
+                    return 1;
+                }
+                return 0;
+            },
             showModal: function () {
                 $('#vmCaiDatNhacTienDoCV').modal('show');
             },
-            ChoseItem: function () {
-
+            FocusRow: function (index) {
+                let self = this;
+                self.indexChosing = index;
+            },
+            ChoseItem: function (item) {
+                for (let i = 0; i < self.QuyTrinh.length; i++) {
+                    if (i === self.indexChosing) {
+                        self.QuyTrinh[i].TenBuocThucHien = item.Text2;
+                        break;
+                    }
+                }
+            },
+            Change_LoaiThoiGian: function (index, type) {
+                let self = this;
+                for (let i = 0; i < self.QuyTrinh.length; i++) {
+                    if (i === index) {
+                        self.QuyTrinh[i].LoaiThoiGian = type;
+                        break;
+                    }
+                }
             },
             Save: function () {
+                let self = this;
 
+                if (self.isLoading) {
+                    return;
+                }
+                self.isLoading = true;
+
+                // sort by STT
+                let arrSort = self.QuyTrinh.sort(function (a, b) {
+                    let x = a.STT, y = b.STT;
+                    return x > y ? 1 : x < y ? -1 : 0;
+                });
+
+                let arr = [], sDetail = '';
+                for (let i = 0; i < arrSort.length; i++) {
+                    let itFor = arrSort[i];
+                    if (itFor.STT % 2 == 1) {
+                        let itemNext = arrSort[i + 1];
+                        let obj = {
+                            LoaiThongBao: itFor.STT,
+                            LoaiThoiGianLapLai: itFor.ID_BuocThucHien,
+                            SoLanLapLai: i < arrSort.length - 1 ? itemNext.ID_BuocThucHien : itFor.STT,
+                            NhacTruocThoiGian: itFor.ThoiGian,
+                            NhacTruocLoaiThoiGian: itFor.LoaiThoiGian,
+                        }
+                        arr.push(obj);
+
+                        sDetail = sDetail.concat('<br /> ', itFor.STT, '. ', itFor.TenBuocThucHien, ' - ', itemNext.TenBuocThucHien,
+                            ': Thời gian ', itFor.ThoiGian, ' ', itFor.LoaiThoiGian == 1 ? 'phút' : 'giờ');
+                    }
+                }
+                let myData = {
+                    LstCaiDat: arr
+                }
+                ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + 'LeeAuto_CaiDatNhacTienDo', 'POST', myData).done(function (x) {
+                    console.log(x)
+                    if (x.res) {
+                        self.saveOK = true;
+                        let diary = {
+                            ID_DonVi: VHeader.IdDonVi,
+                            ID_NhanVien: VHeader.IdNhanVien,
+                            LoaiNhatKy: 1,
+                            ChucNang: 'Cài đặt nhắc tiến độ công việc',
+                            NoiDung: 'Cài đặt nhắc tiến độ công việc, user cài đặt: ' + VHeader.UserLogin,
+                            NoiDungChiTiet: sDetail,
+                        }
+                        Insert_NhatKyThaoTac_1Param(diary);
+                        ShowMessage_Success('Cài đặt thành công');
+                    }
+                }).fail(function () {
+                    ShowMessage_Danger('Cài đặt thất bại');
+                }).always(function () {
+                    self.isLoading = false;
+                    $('#vmCaiDatNhacTienDoCV').modal('hide');
+                });
             },
         }
     })
