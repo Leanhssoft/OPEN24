@@ -813,7 +813,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 try
                 {
                     ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
-                    List<PhuTung_LichBaoDuong> data = classPhieuTiepNhan.GetLichBaoDuong(param);
+                    var subDomain = CookieStore.GetCookieAes("SubDomain");
+                    List<PhuTung_LichBaoDuong> data = new List<PhuTung_LichBaoDuong>();
+                    if (subDomain.ToLower() == "leeauto")
+                    {
+                        data = classPhieuTiepNhan.GetLichBaoDuong_TheoXe(param);
+                    }
+                    else
+                    {
+                        data = classPhieuTiepNhan.GetLichBaoDuong(param);
+                    }
                     var xx = data.GroupBy(x => new { x.ID_DoiTuong, x.MaDoiTuong, x.TenDoiTuong, x.DienThoai, x.Email })
                         .Select(x => new
                         {
