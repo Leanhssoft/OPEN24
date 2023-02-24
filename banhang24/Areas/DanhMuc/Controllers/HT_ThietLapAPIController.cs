@@ -892,6 +892,67 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
 
+        [HttpGet]
+        public IHttpActionResult LeeAuto_GetCaiDatNhacTienDo()
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    var data = db.HT_ThongBao_CatDatThoiGian.Select(x => new
+                    {
+                        x.ID,
+                        x.LoaiThongBao,
+                        x.SoLanLapLai,
+                        x.LoaiThoiGianLapLai,
+                        x.NhacTruocThoiGian,
+                        x.NhacTruocLoaiThoiGian,
+                    }).ToList();
+                    return ActionTrueData(data);
+                }
+            }
+            catch
+            {
+                return ActionFalseNotData("");
+            }
+        }
+
+        [HttpPost]
+        public IHttpActionResult LeeAuto_CaiDatNhacTienDo([FromBody] JObject objIn)
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    List<HT_ThongBao_CatDatThoiGian> lst = new List<HT_ThongBao_CatDatThoiGian>();
+                    if (objIn["LstCaiDat"] != null)
+                    {
+                        lst = objIn["LstCaiDat"].ToObject<List<HT_ThongBao_CatDatThoiGian>>();
+                        db.Database.ExecuteSqlCommand("DELETE FROM HT_ThongBao_CatDatThoiGian");
+                    }
+                    foreach (var item in lst)
+                    {
+                        HT_ThongBao_CatDatThoiGian objNew = new HT_ThongBao_CatDatThoiGian
+                        {
+                            ID = Guid.NewGuid(),
+                            LoaiThongBao = item.LoaiThongBao,
+                            NhacTruocThoiGian = item.NhacTruocThoiGian,
+                            NhacTruocLoaiThoiGian = item.NhacTruocLoaiThoiGian,
+                            LoaiThoiGianLapLai = item.LoaiThoiGianLapLai,
+                            SoLanLapLai = item.SoLanLapLai
+                        };
+                        db.HT_ThongBao_CatDatThoiGian.Add(objNew);
+                    }
+                    db.SaveChanges();
+                }
+                return ActionTrueNotData("");
+            }
+            catch (Exception ex)
+            {
+                return ActionFalseNotData(ex.InnerException + ex.Message);
+            }
+        }
+
         [AcceptVerbs("GET", "POST")]
         public IHttpActionResult GetCaiDatLichNhacBaoDuong()
         {
@@ -909,6 +970,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 return ActionFalseNotData("");
             }
         }
+
     }
 
     public class ChotSoDTO
