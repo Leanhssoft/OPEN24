@@ -150,6 +150,8 @@ var ViewModel = function () {
     self.selectedNKH = ko.observable();
     self.TodayCS = ko.observable();
 
+    self.isLeeAuto = ko.observable(VHeader.SubDomain.toLowerCase() === '0973474985');
+
     var dt1 = new Date();
     var _time = dt1.getFullYear() + "-" + (dt1.getMonth() + 1) + "-" + dt1.getDate();
     self.TodayCS(moment(dt1).format("DD/MM/YYYY"));
@@ -2079,6 +2081,10 @@ var ViewModel = function () {
 
     //self.GetTemplateDatLich();
     //End Template Đặt lịch
+
+    self.showModalNhacTienDo = function () {
+        _vmCaiDatNhacTienDo.showModal();
+    }
 };
 
 var FileModel = function (filef, srcf) {
