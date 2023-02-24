@@ -10,6 +10,11 @@
     created: function () {
         let self = this;
         self.GuidEmpty = '00000000-0000-0000-0000-000000000000';
+        self.isLeeAuto = false;
+        let idDonVi = $('#txtDonVi').val();
+        if (commonStatisJs.CheckNull(idDonVi)) {
+            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === '0973474985'
+        }
     },
     data: {
         saveOK: false,
@@ -789,12 +794,16 @@
             if (self.isLoading) {
                 return;
             }
+            if (commonStatisJs.CheckNull(self.newPhieuTiepNhan.ID_Xe)) {
+                commonStatisJs.ShowMessageDanger('Vui lòng nhập biển số xe');
+                return;
+            }
             if (commonStatisJs.CheckNull(self.newPhieuTiepNhan.ID_KhachHang)) {
                 commonStatisJs.ShowMessageDanger('Vui lòng chọn khách hàng');
                 return;
             }
-            if (commonStatisJs.CheckNull(self.newPhieuTiepNhan.ID_Xe)) {
-                commonStatisJs.ShowMessageDanger('Vui lòng nhập biển số xe');
+            if (self.isLeeAuto && (commonStatisJs.CheckNull(self.newPhieuTiepNhan.SoKmVao) || self.newPhieuTiepNhan.SoKmVao ===0)) {
+                commonStatisJs.ShowMessageDanger('Vui lòng nhập số Km vào');
                 return;
             }
             if (self.newPhieuTiepNhan.SoKmRa === 0) {
