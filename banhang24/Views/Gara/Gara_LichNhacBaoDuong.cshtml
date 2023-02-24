@@ -16,11 +16,11 @@
             height: 30px;
         }
 
-        .detail-content label {
+        #vmLichBaoDuong .detail-content label {
             min-width: 125px;
         }
 
-        .css-form-detail input {
+        #vmLichBaoDuong .css-form-detail input {
             border: none;
             color: var(--color-primary);
         }
@@ -189,8 +189,7 @@
                                         </span>
                                     </td>
                                     <td v-if="CheckColShow('MaDoiTuong')" v-on:click="RowSelected(item)">
-                                        <a href="javascript:void(0)"
-                                           v-on:click="updateCus(item.ID_KhachHang)">{{item.MaDoiTuong}}</a>
+                                        <a href="javascript:void(0)">{{item.MaDoiTuong}}</a>
                                     </td>
                                     <td v-if="CheckColShow('TenDoiTuong')" v-on:click="RowSelected(item)">
                                         <span>
@@ -226,7 +225,10 @@
                                                                 <div class="form-group floatleft">
                                                                     <label class="form-label css-form-label">Biển số xe:</label>
                                                                     <div class="css-form-detail">
-                                                                        <span><a href="javacript:void(0)">{{item.BienSo}}</a></span>
+                                                                        <span>
+                                                                            <a href="javascript:void(0)"
+                                                                               v-on:click="updateCar(item)">{{item.BienSo}}</a>
+                                                                        </span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group floatleft">
@@ -236,7 +238,8 @@
                                                                             <span>
                                                                                 {{item.TenDoiTuong}}
                                                                             </span>
-                                                                            <a v-if="item.MaDoiTuong">
+                                                                            <a v-if="item.MaDoiTuong"
+                                                                               v-on:click="updateCus(item.ID_DoiTuong)">
                                                                                 ({{item.MaDoiTuong}})
                                                                             </a>
                                                                         </div>
@@ -425,7 +428,7 @@
                                                                 <div class="form-group floatleft">
                                                                     <label class="form-label control-label">Biển số xe:</label>
                                                                     <div class="css-form-detail">
-                                                                        <span><a href="javacript:void(0)">{{item.BienSo}}</a></span>
+                                                                        <span><a href="javascript:void(0)">{{item.BienSo}}</a></span>
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group floatleft">
@@ -681,7 +684,11 @@
     @Html.Partial("~/Views/Gara/KhachHang/_ThemMoiKhachHang.cshtml")
     @Html.Partial("~/Views/Gara/KhachHang/_ThemNhomKhachHang.cshtml")
     @Html.Partial("~/Views/Gara/KhachHang/_vmTrangThai_NguonKhach.cshtml")
-
+    @Html.Partial("~/Views/Gara/KhachHang/_vmTrangThai_NguonKhach.cshtml")
+    @Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiXe.cshtml")
+    @Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiHangXe.cshtml")
+    @Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiLoaiXe.cshtml")
+    @Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiMauXe.cshtml")
     <script>
 
         $('.table-frame').on('show.bs.dropdown', function () {

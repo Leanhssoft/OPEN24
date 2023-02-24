@@ -231,7 +231,7 @@
         NhacBaoDuong_GetHTCaiDat: function () {
             let self = this;
             $.getJSON('/api/DanhMuc/HT_ThietLapAPI/' + 'GetCaiDatLichNhacBaoDuong').done(function (x) {
-                if (x.res) {
+                if (x.res && x.dataSoure !== null) {
                     let data = x.dataSoure;
                     for (let i = 0; i <= data.SoLanLapLai; i++) {
                         let obj = {}
@@ -629,18 +629,18 @@
         updateCus: async function (id) {
             var self = this;
             let cus = await vmThemMoiKhach.GetInforKhachHangFromDB_ByID(id);
-            if (!$.isEmptyObject(cus)) {
-                cus.TenTrangThai = '';
-                cus.TenNguoiGioiThieu = cus.NguoiGioiThieu;
-                vmThemMoiKhach.showModalUpdate(cus);
-                vmThemMoiKhach.inforLogin = {
-                    ID_NhanVien: self.ID_NhanVien,
-                    ID_User: self.ID_User,
-                    UserLogin: self.UserLogin,
-                    ID_DonVi: self.ID_DonVi,
-                    TenNhanVien: self.getTenNhanVien_Login(),
-                };
+            if (cus != null && cus.length > 0) {
+                cus[0].TenTrangThai = '';
+                cus[0].TenNguoiGioiThieu = cus[0].NguoiGioiThieu;
+                vmThemMoiKhach.showModalUpdate(cus[0]);
+                vmThemMoiKhach.inforLogin = self.inforLogin;
             }
+        },
+        updateCar: async function (item) {
+            let self = this;
+            vmThemMoiXe.inforLogin = self.inforLogin;
+            let car = await vmThemMoiXe.GetInforCar_byID(item.ID_Xe);
+            vmThemMoiXe.ShowModalUpdate(car);
         },
         ExportExcel: function () {
             let self = this;
