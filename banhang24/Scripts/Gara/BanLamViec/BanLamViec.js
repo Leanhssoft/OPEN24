@@ -120,8 +120,6 @@ var workTable = new Vue({
             vmHoaHongHoaDon.listData.NhanViens = data;
         });
 
-
-
         // account bank
         ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/' + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + self.ID_DonVi, 'GET').done(function (x) {
             if (x.res === true) {
@@ -140,18 +138,6 @@ var workTable = new Vue({
             if (data != null) {
                 self.listData.CongTy = data;
             }
-        });
-
-        // trangthaikhach
-        $.getJSON('/api/DanhMuc/ChamSocKhachHangAPI/' + 'GetTrangThaiTimKiem').done(function (data) {
-            if (data.res === true) {
-                vmThemMoiKhach.listData.TrangThaiKhachs = data.dataSoure.ttkhachhang;
-            }
-        });
-
-        // nguonkhach
-        $.getJSON('/api/DanhMuc/DM_NguonKhachAPI/' + 'GetDM_NguonKhach').done(function (data) {
-            vmThemMoiKhach.listData.NguonKhachs = data;
         });
 
         // nhomkhach
@@ -191,20 +177,6 @@ var workTable = new Vue({
                     }
                 });
             }
-        });
-
-        // tinhthanh, quanhuyen
-        $.getJSON('/api/DanhMuc/BaseApi/' + "GetAllTinhThanh").done(function (x) {
-            var data = x.map(p => ({
-                ID: p.Key,
-                val2: p.Value
-            }));
-            vmThemMoiKhach.listData.TinhThanhs = data;
-            vmThemMoiKhach.listData.ListTinhThanhSearch = data;
-        });
-
-        $.getJSON('/api/DanhMuc/DM_DoiTuongAPI/' + 'getList_VungMien').done(function (data) {
-            vmThemMoiNhomKhach.listData.VungMiens = data;
         });
     },
     data: {
