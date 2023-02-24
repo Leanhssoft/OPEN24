@@ -17,7 +17,7 @@
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>49876</IISExpressSSLPort>
+    <IISExpressSSLPort>44368</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
@@ -13145,6 +13145,7 @@
     <Content Include="Views\SoQuy\_QRCodeChuyenKhoanModal.cshtml" />
     <Content Include="Template\ExportExcel\Teamplate_DanhSachBaoGiaSuaChua.xlsx" />
     <Content Include="Template\ExportExcel\Gara\LeeAuto_Template_LichNhacBaoDuong.xlsx" />
+    <Content Include="Views\Gara\QuanLySuaChua\_CaiDatNhacTienDoCongViec.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppCache\CacheSubDomain\" />
@@ -13340,7 +13341,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59381</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44381/</IISUrl>
+          <IISUrl>https://localhost:44368/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
