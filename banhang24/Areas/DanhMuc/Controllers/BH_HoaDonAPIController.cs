@@ -9197,6 +9197,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                     SoLuong = x.SoLuong,
                                     DonGia = x.DonGia,
                                     ThanhTien = x.ThanhTien,
+                                    TenHangHoaThayThe = x.TenHangHoaThayThe,
                                     ThanhPhanComBo = new List<BH_HoaDon_ChiTietDTO>(),
                                 }).ToList()
                             }
@@ -9988,6 +9989,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             DonGia = x.DonGia,
                             SoLuong = x.SoLuong,
                             ThanhTien = x.ThanhTien,
+                            TenHangHoaThayThe = x.TenHangHoaThayThe,
                         }).ToList();
 
                     return Json(new
