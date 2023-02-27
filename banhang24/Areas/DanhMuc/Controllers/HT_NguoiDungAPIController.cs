@@ -550,11 +550,11 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     NhacTonKho = objIn["NhacTonKho"].ToObject<bool>();
                 if (objIn["NhacDieuChuyen"] != null)
                     NhacDieuChuyen = objIn["NhacDieuChuyen"].ToObject<bool>();
-                if(objIn["NhacLoHang"] != null)
+                if (objIn["NhacLoHang"] != null)
                     NhacLoHang = objIn["NhacLoHang"].ToObject<bool>();
                 if (objIn["NhacBaoDuong"] != null)
                     NhacBaoDuong = objIn["NhacBaoDuong"].ToObject<bool>();
-                string sIdNguoiDung ="";
+                string sIdNguoiDung = "";
                 if (objIn["IdNguoiDung"] != null)
                     sIdNguoiDung = objIn["IdNguoiDung"].ToObject<string>();
 
@@ -594,6 +594,95 @@ namespace banhang24.Areas.DanhMuc.Controllers
             catch
             {
                 return ActionFalseNotData("");
+            }
+        }
+
+        public IHttpActionResult UpdateThongBao_CongViecDaXuLy(ParamThongBaoTienDo param)
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    classHTThongBao cthongbao = new classHTThongBao(db);
+                    cthongbao.UpdateThongBao_CongViecDaXuLy(param);
+                    return ActionTrueNotData(string.Empty);
+                }
+            }
+            catch (Exception ex)
+            {
+                return ActionFalseNotData(ex.InnerException + ex.Message);
+            }
+        }
+
+        [HttpPost, HttpGet]
+        public IHttpActionResult GetThongBao_ChuaDoc(Param_HeThongThongBao param)
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    classHTThongBao cthongbao = new classHTThongBao(db);
+                    List<GetListThongBao> lstThongBao = cthongbao.HTGetListThongBa_ChuaDoc(param);
+                    List<ObjectHTThongBao> lstTB = new List<ObjectHTThongBao>();
+
+                    int CountChuaDoc = 0;
+                    if (lstThongBao.Count > 0)
+                    {
+                        CountChuaDoc = lstThongBao[0].ChuaDoc;
+                    }
+                    foreach (var item in lstThongBao)
+                    {
+                        item.NoiDungThongBao = item.NoiDungThongBao.Replace("key", item.ID.ToString());
+                        System.DateTime ngaytao = item.NgayTao;
+                        System.DateTime now = DateTime.Now;
+                        System.TimeSpan diff = now.Subtract(ngaytao);
+                        string date = "";
+
+                        double tonggio = diff.TotalHours;
+                        if (1 < tonggio && tonggio < 24)
+                        {
+                            date = Math.Floor(tonggio) + " giờ trước";
+                        }
+                        if (tonggio < 1)
+                        {
+                            if (diff.TotalMinutes < 1)
+                            {
+                                date = "vài giây trước";
+                            }
+                            else
+                            {
+                                date = Math.Floor(diff.TotalMinutes) + " phút trước";
+                            }
+                        }
+                        if (tonggio > 24 && (item.NgayTao.Day + 1) == now.Day)
+                        {
+                            date = "Hôm qua lúc " + item.NgayTao.ToString("HH:ss");
+                        }
+                        if (tonggio > 24 && (item.NgayTao.Day + 1) != now.Day)
+                        {
+                            date = item.NgayTao.Day + " Tháng " + item.NgayTao.Month + " lúc " + item.NgayTao.ToString("HH:ss");
+                        }
+                        ObjectHTThongBao thongbao = new ObjectHTThongBao
+                        {
+                            NoiDungThongBao = item.NoiDungThongBao.ToString(),
+                            NgayTao = date,
+                            LoaiThongBao = item.LoaiThongBao,
+                            DaDoc = item.NguoiDungDaDoc != "" && (item.NguoiDungDaDoc.Contains(param.ID_NguoiDung.ToString()) ? true : false),
+                            Image = item.LoaiThongBao == 3 ? "<img src=\"/Content/images/anhhh/gato.png\" height=\"30\"/>" : (item.LoaiThongBao == 1 ? "<img src=\"/Content/images/anhhh/trao.png\" height=\"30\"/>" : "<img src=\"/Content/images/anhhh/hetkho.png\" height=\"30\"/>"),
+                        };
+                        lstTB.Add(thongbao);
+                    }
+
+                    return ActionTrueData(new
+                    {
+                        ListThongBao = lstTB,
+                        CountTB = CountChuaDoc
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                return ActionFalseNotData(ex.Message + ex.InnerException);
             }
         }
 
@@ -645,10 +734,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     classHTThongBao cthongbao = new classHTThongBao(db);
                     List<GetListThongBao> lstThongBao = cthongbao.HTGetListThongBao(IdDonVi, sIdNguoiDung, NhacSinhNhat, NhacTonKho, NhacDieuChuyen, NhacLoHang, NhacBaoDuong, CurrentPage, PageSize);
 
-                    if(lstThongBao.Count > 0)
+                    if (lstThongBao.Count > 0)
                     {
                         CountChuaDoc = lstThongBao[0].ChuaDoc;
-                    }    
+                    }
                     foreach (var item in lstThongBao)
                     {
                         item.NoiDungThongBao = item.NoiDungThongBao.Replace("key", item.ID.ToString());
@@ -692,7 +781,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         lstTB.Add(thongbao);
                     }
                 }
-                return ActionTrueData(new { 
+                return ActionTrueData(new
+                {
                     ListThongBao = lstTB,
                     CountTB = CountChuaDoc
                 });
