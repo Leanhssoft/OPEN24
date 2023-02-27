@@ -1642,8 +1642,16 @@
                                     });
                                     break;
                             }
-                        }
 
+                            // if create bg/hoadon --> don't show htthongbao
+                            let paramTB = {
+                                ID_NguoiDung: self.inforLogin.ID_User,
+                                ID_PhieuTiepNhan: self.HoaDonChosing.ID_PhieuTiepNhan,
+                                BienSo: self.HoaDonChosing.BienSo,
+                                LoaiNhac: self.HoaDonChosing.LoaiHoaDon == 3 ? 1 : 3,
+                            }
+                            vmThongBao.UpdateThongBao_CongViecDaXuLy(paramTB);
+                        }
                     })
                 }
                 else {
