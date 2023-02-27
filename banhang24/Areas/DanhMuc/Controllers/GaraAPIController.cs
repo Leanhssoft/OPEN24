@@ -2007,7 +2007,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult ThongBao_TienDoCongViec(ParamThongBao param)
+        public IHttpActionResult ThongBao_TienDoCongViec(ParamThongBaoTienDo param)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
