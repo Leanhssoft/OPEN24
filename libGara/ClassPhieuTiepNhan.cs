@@ -506,12 +506,11 @@ namespace libGara
             }
         }
 
-        public bool CheckTienDo_CongViec(ParamThongBao param)
+        public bool CheckTienDo_CongViec(ParamThongBaoTienDo param)
         {
             List<SqlParameter> sql = new List<SqlParameter>();
             sql.Add(new SqlParameter("ID_DonVi", param.ID_DonVi));
             sql.Add(new SqlParameter("ID_PhieuTiepNhan", param.ID_PhieuTiepNhan));
-            //sql.Add(new SqlParameter("ID_Xe", param.ID_Xe));
             sql.Add(new SqlParameter("BienSo", param.BienSo));
             sql.Add(new SqlParameter("TimeCompare", param.ThoiGian));
             sql.Add(new SqlParameter("TimeSetup", param.TimeSetup));
