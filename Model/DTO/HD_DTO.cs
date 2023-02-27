@@ -129,14 +129,28 @@ namespace Model
         public int? Loai { get; set; }
     }
 
-    public class ParamThongBao
+    public class ParamThongBaoTienDo
     {
         public Guid ID_DonVi { get; set; }
+        public Guid? ID_NguoiDung { get; set; }
         public Guid? ID_PhieuTiepNhan { get; set; }
         public Guid? ID_Xe { get; set; }
         public string BienSo { get; set; }
         public DateTime? ThoiGian { get; set; }
         public int TimeSetup { get; set; }
         public int LoaiNhac { get; set; }
+    }
+    public class Param_HeThongThongBao
+    {
+        public Guid ID_DonVi { get; set; }
+        public Guid? ID_NguoiDung { get; set; }
+        public bool? NhacTonKho { get; set; }
+        public bool? NhacDieuChuyen { get; set; }
+        public bool? NhacLoHetHan { get; set; }
+        public bool? NhacSinhNhat { get; set; }
+        public bool? NhacBaoDuong { get; set; }
+        public bool? NhacTienDo { get; set; }
+        public int? CurrentPage { get; set; }
+        public int? PageSize { get; set; }
     }
 }
