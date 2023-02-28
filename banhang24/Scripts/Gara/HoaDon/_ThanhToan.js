@@ -1648,7 +1648,7 @@
                                 ID_NguoiDung: self.inforLogin.ID_User,
                                 ID_PhieuTiepNhan: self.HoaDonChosing.ID_PhieuTiepNhan,
                                 BienSo: self.HoaDonChosing.BienSo,
-                                LoaiNhac: self.HoaDonChosing.LoaiHoaDon == 3 ? 1 : 3,
+                                LoaiNhac: self.HoaDonChosing.LoaiHoaDon == 3 ? 2 : 4,//2.coc, 4.thanhtoan
                             }
                             vmThongBao.UpdateThongBao_CongViecDaXuLy(paramTB);
                         }
