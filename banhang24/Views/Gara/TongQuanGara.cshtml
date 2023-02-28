@@ -16,9 +16,11 @@
             line-height: 24px;
             color: #686868;
         }
+
         #optionsChartType + .dropdown-menu {
             overflow: initial;
         }
+
         span.date.in-range {
             background: pink;
         }
@@ -431,13 +433,17 @@
                             <img src="~/Content/images/Gara/LoHetHanIcon.svg" alt="aaaa" />
                             <span class="bold font-main-color">{{SuKienToDay.SoLoHetHan}}</span><span>Lô hết hạn</span>
                         </div>
-                        <div  v-if="SuKienToDay.XeMoiTiepNhan" v-on:click="LoadXeMoiTiepNhan">
+                        <div v-if="SuKienToDay.XeMoiTiepNhan" v-on:click="LoadXeMoiTiepNhan">
                             <img src="~/Content/images/Gara/XeMoiTiepNhanIcon.svg" alt="aaaa" />
                             <span class="bold font-main-color">{{SuKienToDay.XeMoiTiepNhan}}</span><span>Xe mới tiếp nhận</span>
                         </div>
-                        <div v-if="SuKienToDay.XeXuatXuong" v-on:click="LoadXeXuatXuong">
+                        <div v-if="SuKienToDay.XeXuatXuong" v-on:click="LoadXeXuatXuong(1)">
                             <img src="~/Content/images/Gara/XeXuatXuongIcon.svg" alt="aaaa" />
                             <span class="bold font-main-color">{{SuKienToDay.XeXuatXuong}}</span><span>Xe xuất xưởng</span>
+                        </div>
+                        <div v-if="SuKienToDay.XeXuatXuong3Ngay && $root.isLeeAuto" v-on:click="LoadXeXuatXuong(2)">
+                            <img src="~/Content/images/Gara/XeXuatXuongIcon.svg" alt="aaaa" />
+                            <span class="bold font-main-color">{{SuKienToDay.XeXuatXuong3Ngay}}</span><span>Xe xuất xưởng (3 ngày)</span>
                         </div>
                         <div v-if="(SuKienToDay.KhachHangMoi + SuKienToDay.SinhNhat + SuKienToDay.CongViec + SuKienToDay.LichHen + SuKienToDay.XeMoiTiepNhan + SuKienToDay.XeXuatXuong + SuKienToDay.SoLoHetHan + SuKienToDay.SoLoSapHetHan) === 0">
                             <img src="~/Content/images/Gara/BlankIcon.svg" alt="aaaa" /> <span>Không có thông tin</span>
@@ -495,7 +501,8 @@
                     SoLoHetHan: 0,
                     XeMoiTiepNhan: 0,
                     XeXuatXuong: 0,
-                    KhachHangMoi: 0
+                    KhachHangMoi: 0,
+                    XeXuatXuong3Ngay: 0,
                 },
                 NhatKyHoatDong: [],
                 TongQuanDoanhThuCongNo:
@@ -592,7 +599,7 @@
                             if (data.res === true) {
                                 self.dataTrangThaiXuong.DangSua = data.dataSoure.data.filter(p => p.TrangThaiPhieuTiepNhan === 1).length;
                                 self.dataTrangThaiXuong.ChoXuatXuong = data.dataSoure.data.filter(p => p.TrangThaiPhieuTiepNhan === 2).length;
-                           
+
                             }
                             else {
                                 commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
@@ -662,7 +669,7 @@
                     if ($.inArray('TongQuan', lc_CTQuyen) > -1) {
                         ajaxHelper(self.urlApi.TongQuanApi + "getDiary?&IDchinhanh=" + $('#hd_IDdDonVi').val() +
                             '&TongQuan_XemDS_PhongBan=' + TongQuan_XemDS_PhongBan + '&TongQuan_XemDS_HeThong=' + TongQuan_XemDS_HeThong + '&ID_NguoiDung=' + $('.idnguoidung').text(), "GET").done(function (data) {
-                             
+
                                 self.NhatKyHoatDong = data;
                             });
                     }
@@ -916,9 +923,18 @@
                     var url = "/#/DanhSachPhieuTiepNhan";
                     window.open(url);
                 },
-                LoadXeXuatXuong: function (item) {
+                LoadXeXuatXuong: function (type) {
                     let self = this;
-                    localStorage.setItem('ThongBaoXeXuatXuong', self.SetObj_Localstore());
+                    if (type == 2) {
+                        let obj = {
+                            FromDate: moment(self.dateSelected, 'YYYY-MM-DD').add(-2, 'days').format('DD/MM/YYYY'),
+                            ToDate: moment(self.dateSelected, 'YYYY-MM-DD').add(-2, 'days').format('DD/MM/YYYY')
+                        }
+                        localStorage.setItem('ThongBaoXeXuatXuong', JSON.stringify(obj));
+                    }
+                    else {
+                        localStorage.setItem('ThongBaoXeXuatXuong', self.SetObj_Localstore());
+                    }
                     var url = "/#/DanhSachPhieuTiepNhan";
                     window.open(url);
                 },
@@ -931,6 +947,7 @@
             },
             created: function () {
                 let self = this;
+                self.isLeeAuto = VHeader.SubDomain.toLowerCase() === '0973474985';
                 self.LoadChiNhanh();
                 self.GetListSuKien();
                 self.getDiary();
@@ -947,7 +964,7 @@
         });
     </script>
     <script>
-      
+
         Chart.pluginService.register({
             beforeDraw: function (chart) {
                 if (chart.config.options.elements.center) {
@@ -1014,7 +1031,7 @@
         function color(index) {
             return ('#' + ArrayColor[index]);
         };
-      
+
         var item = [13, 49, 29, 26, 20, 1, 41, 38, 15, -22, 14, 39, 3, 4, 21];
         var item2 = [3, 17, 12, 13, 19, 43, 26, 50, 18, 36, 29, 23, 5, 44, 21,];
         var bieudodoanhthuthuan = document.getElementById('ChartMixed1');
