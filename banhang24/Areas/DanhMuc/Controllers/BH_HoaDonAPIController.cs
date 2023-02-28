@@ -4191,7 +4191,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 httbCH.ID = Guid.NewGuid();
                 httbCH.ID_DonVi = itemBH_HoaDon.ID_DonVi;
                 httbCH.LoaiThongBao = 1; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật
-                httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('2', '" + itemBH_HoaDon.MaHoaDon + "','" + httbCH.ID + "')\">" + " <span class=\"blue\">" + itemBH_HoaDon.MaHoaDon
+                httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('1', '" + itemBH_HoaDon.MaHoaDon + "','" + httbCH.ID + "')\">" + " <span class=\"blue\">" + itemBH_HoaDon.MaHoaDon
                     + " </span>" + " </a> đã được nhận thành công </p>";
                 httbCH.NgayTao = DateTime.Now;
                 httbCH.NguoiDungDaDoc = "";
@@ -6968,7 +6968,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             httbCH.ID = Guid.NewGuid();
                             httbCH.ID_DonVi = objHoaDon.ID_CheckIn.Value;
                             httbCH.LoaiThongBao = 1; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật
-                            httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('2', '" + sMaHoaDon + "','" + httbCH.ID + "')\">" + "<span class=\"blue\">" + sMaHoaDon
+                            httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('1', '" + sMaHoaDon + "','" + httbCH.ID + "')\">" + "<span class=\"blue\">" + sMaHoaDon
                                 + " </span>" + " </a> đang đợi nhận. Vui lòng theo dõi và nhận đơn hàng để thêm hàng hóa vào kho </p>";
                             httbCH.NgayTao = DateTime.Now;
                             httbCH.NguoiDungDaDoc = "";
@@ -6979,7 +6979,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             tblCNChuyen.ID = Guid.NewGuid();
                             tblCNChuyen.ID_DonVi = objHoaDon.ID_DonVi;
                             tblCNChuyen.LoaiThongBao = 1;
-                            tblCNChuyen.NoiDungThongBao = "<p onclick=\"loaddadoc('" + tblCNChuyen.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('2', '" + sMaHoaDon + "','" + tblCNChuyen.ID + "')\">" + "<span class=\"blue\">" + sMaHoaDon
+                            tblCNChuyen.NoiDungThongBao = "<p onclick=\"loaddadoc('" + tblCNChuyen.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('1', '" + sMaHoaDon + "','" + tblCNChuyen.ID + "')\">" + "<span class=\"blue\">" + sMaHoaDon
                                 + " </span>" + " </a> đã được chuyển đến chi nhánh " + chinhanhnhan + "  </p>";
                             tblCNChuyen.NgayTao = DateTime.Now;
                             tblCNChuyen.NguoiDungDaDoc = "";
@@ -7192,7 +7192,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                     httb.ID = Guid.NewGuid();
                                     httb.ID_DonVi = objHoaDon.ID_DonVi;
                                     httb.LoaiThongBao = 0; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật
-                                    httb.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httb.ID + "')\"> Hàng hóa <a onclick=\"loadthongbao('1', '" + dvqd.MaHangHoa + "','" + httb.ID + "')\">" + "<span class=\"blue\">" + dvqd.MaHangHoa + " </span>" + " </a> đã hết số lượng tồn kho. Xin vui lòng nhập thêm để tiếp tục kinh doanh </p>";
+                                    httb.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httb.ID + "')\"> Hàng hóa <a onclick=\"loadthongbao('0', '" + dvqd.MaHangHoa + "','" + httb.ID + "')\">" + "<span class=\"blue\">" + dvqd.MaHangHoa + " </span>" + " </a> đã hết số lượng tồn kho. Xin vui lòng nhập thêm để tiếp tục kinh doanh </p>";
                                     httb.NgayTao = DateTime.Now;
                                     httb.NguoiDungDaDoc = "";
                                     db.HT_ThongBao.Add(httb);
@@ -7247,7 +7247,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 httbCH.ID = Guid.NewGuid();
                                 httbCH.ID_DonVi = itemBH_HoaDon.ID_DonVi;
                                 httbCH.LoaiThongBao = 1; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật
-                                httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('2', '" + mahoadon + "','" + httbCH.ID + "')\">" + " <span class=\"blue\">" + mahoadon
+                                httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('1', '" + mahoadon + "','" + httbCH.ID + "')\">" + " <span class=\"blue\">" + mahoadon
                                     + " </span>" + " </a> đã được nhận thành công </p>";
                                 httbCH.NgayTao = DateTime.Now;
                                 httbCH.NguoiDungDaDoc = "";
@@ -7258,7 +7258,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 tbCNNhan.ID = Guid.NewGuid();
                                 tbCNNhan.ID_DonVi = itemBH_HoaDon.ID_CheckIn ?? itemBH_HoaDon.ID_DonVi;
                                 tbCNNhan.LoaiThongBao = 1; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật
-                                tbCNNhan.NoiDungThongBao = "<p onclick=\"loaddadoc('" + tbCNNhan.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('2', '" + mahoadon + "','" + tbCNNhan.ID + "')\">" + " <span class=\"blue\">" + mahoadon
+                                tbCNNhan.NoiDungThongBao = "<p onclick=\"loaddadoc('" + tbCNNhan.ID + "')\"> Đơn chuyển hàng <a onclick=\"loadthongbao('1', '" + mahoadon + "','" + tbCNNhan.ID + "')\">" + " <span class=\"blue\">" + mahoadon
                                     + " </span>" + " </a> đã được nhận thành công </p>";
                                 tbCNNhan.NgayTao = DateTime.Now;
                                 tbCNNhan.NguoiDungDaDoc = "";
@@ -7458,7 +7458,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 httb.ID = Guid.NewGuid();
                                 httb.ID_DonVi = objHoaDon.ID_DonVi;
                                 httb.LoaiThongBao = 0; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật
-                                httb.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httb.ID + "')\"> Hàng hóa <a onclick=\"loadthongbao('1', '" + dvqd.MaHangHoa + "','" + httb.ID + "')\">" + "<span class=\"blue\">" + dvqd.MaHangHoa + " </span>" + " </a> đã hết số lượng tồn kho. Xin vui lòng nhập thêm để tiếp tục kinh doanh </p>";
+                                httb.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httb.ID + "')\"> Hàng hóa <a onclick=\"loadthongbao('0', '" + dvqd.MaHangHoa + "','" + httb.ID + "')\">" + "<span class=\"blue\">" + dvqd.MaHangHoa + " </span>" + " </a> đã hết số lượng tồn kho. Xin vui lòng nhập thêm để tiếp tục kinh doanh </p>";
                                 httb.NgayTao = DateTime.Now;
                                 httb.NguoiDungDaDoc = "";
                                 db.HT_ThongBao.Add(httb);
@@ -7988,7 +7988,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                     httbCH.ID = Guid.NewGuid();
                                     httbCH.ID_DonVi = objHoaDon.ID_DonVi;
                                     httbCH.LoaiThongBao = 0; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật
-                                    httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\"> Hàng hóa <a onclick=\"loadthongbao('1', '" + dvqd.MaHangHoa + "','" + httbCH.ID + "')\">" + "<span class=\"blue\">" + dvqd.MaHangHoa + " </span>" + " </a> đã hết số lượng tồn kho. Vui lòng nhập thêm để tiếp tục kinh doanh </p>";
+                                    httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\"> Hàng hóa <a onclick=\"loadthongbao('0', '" + dvqd.MaHangHoa + "','" + httbCH.ID + "')\">" + "<span class=\"blue\">" + dvqd.MaHangHoa + " </span>" + " </a> đã hết số lượng tồn kho. Vui lòng nhập thêm để tiếp tục kinh doanh </p>";
                                     httbCH.NgayTao = DateTime.Now;
                                     httbCH.NguoiDungDaDoc = "";
                                     db.HT_ThongBao.Add(httbCH);
@@ -8467,7 +8467,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                     httbCH.ID = Guid.NewGuid();
                                     httbCH.ID_DonVi = objHoaDon.ID_DonVi;
                                     httbCH.LoaiThongBao = 0; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật
-                                    httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\"> Hàng hóa <a onclick=\"loadthongbao('1', '" + dvqd.MaHangHoa + "','" + httbCH.ID + "')\">" + "<span class=\"blue\">" + dvqd.MaHangHoa + " </span>" + " </a> đã hết số lượng tồn kho. Vui lòng nhập thêm để tiếp tục kinh doanh </p>";
+                                    httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\"> Hàng hóa <a onclick=\"loadthongbao('0', '" + dvqd.MaHangHoa + "','" + httbCH.ID + "')\">" + "<span class=\"blue\">" + dvqd.MaHangHoa + " </span>" + " </a> đã hết số lượng tồn kho. Vui lòng nhập thêm để tiếp tục kinh doanh </p>";
                                     httbCH.NgayTao = DateTime.Now;
                                     httbCH.NguoiDungDaDoc = "";
                                     db.HT_ThongBao.Add(httbCH);
