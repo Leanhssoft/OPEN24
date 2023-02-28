@@ -928,6 +928,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     if (objIn["LstCaiDat"] != null)
                     {
                         lst = objIn["LstCaiDat"].ToObject<List<HT_ThongBao_CatDatThoiGian>>();
+
+                        db.Database.ExecuteSqlCommand("disable trigger TrigerCapNhatLichBaoDuongTemp ON dbo.HT_ThongBao_CatDatThoiGian");
                         db.Database.ExecuteSqlCommand("DELETE FROM HT_ThongBao_CatDatThoiGian");
                     }
                     foreach (var item in lst)
@@ -944,6 +946,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         db.HT_ThongBao_CatDatThoiGian.Add(objNew);
                     }
                     db.SaveChanges();
+                    db.Database.ExecuteSqlCommand("enable trigger TrigerCapNhatLichBaoDuongTemp ON dbo.HT_ThongBao_CatDatThoiGian");
                 }
                 return ActionTrueNotData("");
             }
