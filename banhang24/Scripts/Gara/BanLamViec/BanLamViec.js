@@ -403,10 +403,16 @@ var workTable = new Vue({
             paramPhieuSC.IdChiNhanhs = [self.ID_DonVi];
             paramPhieuSC.CurrentPage = self.Paging_PhieuSuaChua.CurrentPage;
             paramPhieuSC.TrangThais = self.filterTrangThai;
-            paramPhieuSC.TextSearch = self.textSearch;
             paramPhieuSC.PageSize = self.Paging_PhieuSuaChua.PageSize;
 
+            let bienso = localStorage.getItem('findBienSo');
+            if (!commonStatisJs.CheckNull(bienso)) {
+                self.textSearch = bienso;
+            }
+            paramPhieuSC.TextSearch = self.textSearch;
+
             ajaxHelper(self.GaraAPI + "GetListPhieuTiepNhan_v2", 'POST', paramPhieuSC).done(function (x) {
+                localStorage.removeItem('findBienSo');
                 if (x.res) {
                     self.listData.PhieuSuaChuas = x.dataSoure.data;
                     self.Paging_PhieuSuaChua.ListPage = x.dataSoure.ListPage;
@@ -764,6 +770,20 @@ var workTable = new Vue({
                                     self.listData.BaoGias[i].TrangThai = status;
                                     break;
                                 }
+                            }
+
+                            // if duyetbaogia --> tbao
+                            if (!type) {
+                                let tbao = {
+                                    ID_DonVi: item.ID_DonVi,
+                                    ID_PhieuTiepNhan: item.ID_PhieuTiepNhan,
+                                    ID_Xe: self.listData.ThongTinXe.ID_Xe,
+                                    BienSo: item.BienSo,
+                                    ThoiGian: item.NgayLapHoaDon,
+                                    ID_QuyTrinhTruoc: 1,
+                                    ID_QuyTrinhSau: 2,
+                                }
+                                vmThongBao.Create_tblRequest(tbao);
                             }
                         }
                         else {
