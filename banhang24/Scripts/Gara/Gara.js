@@ -8759,7 +8759,7 @@ var NewModel_BanHangLe = function () {
 
 
     function CheckThongBao_TienDoCongViec(objHD) {
-        if (self.isLeeAuto() && !commonStatisJs.CheckNull(objHD.ID_PhieuTiepNhan)) {
+        if (!commonStatisJs.CheckNull(objHD.ID_PhieuTiepNhan)) {
             let tbao = {
                 ID_DonVi: objHD.ID_DonVi,
                 ID_PhieuTiepNhan: objHD.ID_PhieuTiepNhan,
@@ -8909,7 +8909,9 @@ var NewModel_BanHangLe = function () {
                         break;
                 }
 
-                CheckThongBao_TienDoCongViec(objHDAdd);
+                if (isInsert) {
+                    CheckThongBao_TienDoCongViec(objHDAdd);
+                }
 
                 AssignValueHoaDon_ToPhieuThu(objHDAdd);
                 vmThanhToanGara.SavePhieuThu(objHDAdd.BH_NhanVienThucHiens);
@@ -9062,7 +9064,7 @@ var NewModel_BanHangLe = function () {
                     if (!updateHDDatHang) {
                         let isPrint = Check_AutoPrint(objHDAdd.LoaiHoaDon);
                         if (!isPrint) {
-                            //window.close();
+                            window.close();
                         }
                     }
                 }
