@@ -982,6 +982,7 @@
                             self.NgayXuatXuongFrom = moment(cacheThoiGianXuatXuong.FromDate, "DD/MM/YYYY").format("YYYY-MM-DD");
                             self.NgayXuatXuongTo = moment(cacheThoiGianXuatXuong.ToDate, "DD/MM/YYYY").add('days', 1).format("YYYY-MM-DD");
                             localStorage.removeItem('ThongBaoXeXuatXuong');
+                            $('#rdNgayXuatXuong-menuleft-daterange').val(cacheThoiGianXuatXuong.FromDate.concat(' - ', cacheThoiGianXuatXuong.ToDate));
                         }
                     }
                     //console.log(self.NgayTiepNhanFrom);
