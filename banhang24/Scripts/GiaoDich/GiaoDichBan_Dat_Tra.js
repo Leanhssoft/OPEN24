@@ -12,6 +12,7 @@
     var _IDNguoiDung = $('.idnguoidung').text();
     var DiaryUri = '/api/DanhMuc/SaveDiary/';
     self.TodayBC = ko.observable('Toàn thời gian');
+    self.isLeeAuto = ko.observable(VHeader.SubDomain.toLowerCase()==='0973474985');
     self.ShopCookie = ko.observable($('#txtShopCookie').val());
     self.TenChiNhanh = ko.observableArray();
     self.HoaDons = ko.observableArray();
@@ -627,14 +628,18 @@
     }
 
     function HuyHoaDon_UpdateLichBaoDuong(idHoaDon) {
-        ajaxHelper('/api/DanhMuc/GaraAPI/' + 'HuyHoaDon_UpdateLichBaoDuong?idHoaDon=' + idHoaDon, 'GET').done(function (x) {
-        });
+        if (!self.isLeeAuto()) {
+            ajaxHelper('/api/DanhMuc/GaraAPI/' + 'HuyHoaDon_UpdateLichBaoDuong?idHoaDon=' + idHoaDon, 'GET').done(function (x) {
+            });
+        }
     }
     function UpdateLichBD_whenChangeNgayLapHD(idHoaDon, ngaylapOld, ngaylapNew) {
-        ajaxHelper('/api/DanhMuc/GaraAPI/UpdateLichBD_whenChangeNgayLapHD?idHoaDon=' + idHoaDon +
-            '&ngaylapOld=' + ngaylapOld + '&ngaylapNew=' + ngaylapNew, 'GET')
-            .done(function (x) {
-            })
+        if (!self.isLeeAuto()) {
+            ajaxHelper('/api/DanhMuc/GaraAPI/UpdateLichBD_whenChangeNgayLapHD?idHoaDon=' + idHoaDon +
+                '&ngaylapOld=' + ngaylapOld + '&ngaylapNew=' + ngaylapNew, 'GET')
+                .done(function (x) {
+                })
+        }
     }
 
     // huy hdDoi, khong huy hdTra
