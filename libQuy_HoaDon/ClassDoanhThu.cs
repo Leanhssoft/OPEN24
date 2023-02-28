@@ -479,6 +479,7 @@ namespace libQuy_HoaDon
         public double XeMoiTiepNhan { get; set; }
         public double XeXuatXuong { get; set; }
         public double KhachHangMoi { get; set; }
+        public double? XeXuatXuong3Ngay { get; set; }
     }
     public class TongQuan_DoanhThuPROC
     {
