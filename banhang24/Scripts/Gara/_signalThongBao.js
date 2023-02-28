@@ -4,18 +4,18 @@
         console.log('vmThongBao')
 
         self.hasHeader = true;
-        self.SubDomain = '';
+        self.isLeeAuto = false;
         self.tblSetUpThongBao = [];
 
         if (commonStatisJs.CheckNull($('#subDomain').val())) {
-            self.SubDomain = VHeader.SubDomain.toLowerCase();
+            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === '0973474985';
         }
         else {
             self.hasHeader = false;
-            self.SubDomain = $('#subDomain').val().toLowerCase();
+            self.isLeeAuto = $('#subDomain').val().toLowerCase() === '0973474985';
         }
 
-        if (self.SubDomain === '0973474985') {
+        if (self.isLeeAuto) {
             $.getJSON('/api/DanhMuc/HT_ThietLapAPI/LeeAuto_GetCaiDatNhacTienDo').done(function (obj) {
                 if (obj.res) {
                     obj.dataSoure.map(function (x) {
@@ -57,92 +57,71 @@
     },
     methods: {
         UpdateThongBao_CongViecDaXuLy: function (param) {
-            let obj = {
-                ID_NguoiDung: param.ID_NguoiDung,
-                ID_PhieuTiepNhan: param.ID_PhieuTiepNhan,
-                BienSo: param.BienSo,
-                LoaiNhac: param.LoaiNhac,
+            let self = this;
+            if (self.isLeeAuto) {
+                let obj = {
+                    ID_NguoiDung: param.ID_NguoiDung,
+                    ID_PhieuTiepNhan: param.ID_PhieuTiepNhan,
+                    BienSo: param.BienSo,
+                    LoaiNhac: param.LoaiNhac,
+                }
+                ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateThongBao_CongViecDaXuLy', 'POST', obj).done(function (x) {
+                    self.chat.server.hello();
+                })
             }
-            ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateThongBao_CongViecDaXuLy', 'POST', obj).done(function (x) {
-
-            })
         },
         Create_tblRequest: function (param) {
             let self = this;
-            let lcRequest = localStorage.getItem('lcRequest');
+            if (self.isLeeAuto) {
+                let lcRequest = localStorage.getItem('lcRequest');
 
-            // check tblSetUp
-            let setup = $.grep(self.tblSetUpThongBao, (x) => {
-                return x.ID_QuyTrinhTruoc === param.ID_QuyTrinhTruoc
-                    && x.ID_QuyTrinhSau === param.ID_QuyTrinhSau;
-            });
-            if (setup.length > 0) {
-
-                let loaiTG = setup[0].LoaiThoiGian;
-                let minutes_Setup = setup[0].ThoiGian;
-                switch (loaiTG) {
-                    case 2:
-                        minutes_Setup = minutes_Setup * 60;
-                        break;
-                    default:
-                        break;
-                }
-
-                let obj = {
-                    ID_DonVi: param.ID_DonVi,
-                    ID_PhieuTiepNhan: param.ID_PhieuTiepNhan,
-                    ID_Xe: param.ID_Xe,
-                    BienSo: param.BienSo,
-                    ThoiGian: param.ThoiGian,
-                    ID_QuyTrinhTruoc: param.ID_QuyTrinhTruoc,
-                    LoaiNhac: param.ID_QuyTrinhSau,
-                    TimeSetup: minutes_Setup,
-                    TrangThaiRequest: 0
-                };
-
-                if (commonStatisJs.CheckNull(lcRequest)) {
-                    lcRequest = [];
-                }
-                else {
-                    lcRequest = JSON.parse(lcRequest);
-                }
-
-                let ex = $.grep(lcRequest, (x) => {
-                    return x.ID_PhieuTiepNhan === obj.ID_PhieuTiepNhan && x.LoaiNhac === obj.LoaiNhac;
+                // check tblSetUp
+                let setup = $.grep(self.tblSetUpThongBao, (x) => {
+                    return x.ID_QuyTrinhTruoc === param.ID_QuyTrinhTruoc
+                        && x.ID_QuyTrinhSau === param.ID_QuyTrinhSau;
                 });
-                if (ex.length === 0) {
-                    lcRequest.push(obj);
-                    localStorage.setItem('lcRequest', JSON.stringify(lcRequest));
+                if (setup.length > 0) {
+
+                    let loaiTG = setup[0].LoaiThoiGian;
+                    let minutes_Setup = setup[0].ThoiGian;
+                    switch (loaiTG) {
+                        case 2:
+                            minutes_Setup = minutes_Setup * 60;
+                            break;
+                        default:
+                            break;
+                    }
+
+                    let obj = {
+                        ID_DonVi: param.ID_DonVi,
+                        ID_PhieuTiepNhan: param.ID_PhieuTiepNhan,
+                        ID_Xe: param.ID_Xe,
+                        BienSo: param.BienSo,
+                        //ThoiGian: param.ThoiGian,
+                        ThoiGian: moment(new Date()).format('YYYY-MM-DD HH:mm:ss'), // get thoigian tao
+                        ToDate: moment(new Date()).add(minutes_Setup, 'minutes').format('YYYY-MM-DD HH:mm:ss'),
+                        ID_QuyTrinhTruoc: param.ID_QuyTrinhTruoc,
+                        LoaiNhac: param.ID_QuyTrinhSau,
+                        TimeSetup: minutes_Setup,
+                        TrangThaiRequest: 0
+                    };
+
+                    if (commonStatisJs.CheckNull(lcRequest)) {
+                        lcRequest = [];
+                    }
+                    else {
+                        lcRequest = JSON.parse(lcRequest);
+                    }
+
+                    let ex = $.grep(lcRequest, (x) => {
+                        return x.ID_PhieuTiepNhan === obj.ID_PhieuTiepNhan && x.LoaiNhac === obj.LoaiNhac;
+                    });
+                    if (ex.length === 0) {
+                        lcRequest.push(obj);
+                        localStorage.setItem('lcRequest', JSON.stringify(lcRequest));
+                    }
+                    self.requestApi();
                 }
-                self.requestApi();
-
-                //let hostUrl = "https://signalr.open24.vn/";
-                //let objSend = {
-                //    Subdomain: '0973474985',
-                //    Type: 2,
-                //    Title:'Hello',
-                //    Body :'every body 001',
-                //}
-                //ajaxHelper(hostUrl + 'api/Message/SendMessage', 'POST', objSend).done(function (x) {
-                //    console.log('xx ', x)
-                //})
-
-                //let objPost = {
-                //    Subdomain: '0973474985',
-                //    UserName: 'admin',
-                //    Type: 3, // 1- lịch hẹn, 2- Công việc, 3- Nhắc bảo hành gara
-                //    IdThongBao: '1583AD19-0988-47C5-A8C1-B6A13F340239',
-                //    //ThoiGianThongBao: moment(new Date()).format('YYYY-MM-DD HH:mm'),
-                //    KieuLap: 0,
-                //    GiaTriLap: 0,
-                //    NoiDungThongBao: 'Xe 01236999 chưa tạo hóa đơn',
-                //    TieuDe: 'Báo giá',
-                //    Url: '',
-                //}
-                //// post notifiy
-                //ajaxHelper(hostUrl + 'api/Message/PostTest', 'POST', objPost).done(function (x) {
-                //    console.log('xx ', x)
-                //})
             }
         },
 
@@ -157,7 +136,6 @@
         },
         requestApi: async function () {
             let self = this;
-
             let lcRequest = localStorage.getItem('lcRequest');
             if (!commonStatisJs.CheckNull(lcRequest)) {
                 lcRequest = JSON.parse(lcRequest);
@@ -176,7 +154,7 @@
 
                             let result = await self.GetThongBao(itFor);
                             console.log('result ', result, lcRequest[i]);
-                            if (result) {
+                            if (result && self.connected) {
                                 self.chat.server.hello();
                             }
                         }
@@ -193,6 +171,14 @@
                 else {
                     localStorage.setItem('lcRequest', JSON.stringify(arrWait));
 
+                    // sort by todate
+                    arrWait = arrWait.sort(function (a, b) {
+                        let x = a.ToDate, y = b.ToDate;
+                        return x > y ? 1 : x < y ? -1 : 0;
+                    });
+
+                    console.log('arrWait ', arrWait)
+
                     let diff = (new Date() - new Date(arrWait[0].ThoiGian)) / 1000;
                     let minutes = Math.floor(diff / 60);
 
@@ -200,13 +186,12 @@
                     self.timeRequest = setTimeout(self.requestApi, time);
                 }
             }
-            clearTimeout(self.timeRequest);
         },
     }
 });
 
 vmThongBao.chat.client.hello = function () {
-    if (vmThongBao.hasHeader) {
+    if (vmThongBao.hasHeader && vmThongBao.isLeeAuto) {
         VHeader.GetThongBao();
     }
 }
