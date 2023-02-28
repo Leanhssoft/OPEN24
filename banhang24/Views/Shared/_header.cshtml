@@ -413,7 +413,7 @@
                                 Cài đặt hoa hồng
                             </a>
                         </li>
-                        <li class="khuyenmaichild" v-if="Quyen.indexOf('KhuyenMai') > -1 && IdNganhNgheKinhDoanh != 'C16EDDA0-F6D0-43E1-A469-844FAB143014'" >
+                        <li class="khuyenmaichild" v-if="Quyen.indexOf('KhuyenMai') > -1 && IdNganhNgheKinhDoanh != 'C16EDDA0-F6D0-43E1-A469-844FAB143014'">
                             <a href="/#/@UrlPage.CD_KhuyenMai">
                                 <i class="material-icons">
                                     card_giftcard
@@ -539,15 +539,18 @@
             <ul>
                 <li v-for="item in ListThongBao.data">
                     <div class="op-thongbao-item" v-bind:class="{ 'op-thongbao-dadoc':  !item.DaDoc }">
-                        <div class="op-thongbao-image" >
+                        <div class="op-thongbao-image">
                             <span v-if="SubDomain.toLowerCase() === '0973474985'">
-                                <i class="fal fa-car fa-2x" v-if="item.LoaiThongBao == 5"></i>
-                                <i class="fal fa-birthday-cake fa-2x" v-if="item.LoaiThongBao == 3"></i>
                                 <i class="fal fa-cart-plus fa-2x" v-if="item.LoaiThongBao == 0"></i>
                                 <i class="fal fa-dolly-flatbed-alt fa-2x" v-if="item.LoaiThongBao == 1"></i>
-                                <i class="fab fa-fedex fa-2x" v-if="item.LoaiThongBao == 4"></i>
-                                @*<i class="fal fa-file-invoice-dollar fa-2x"></i> chua thanhtoan*@
-                                @*<i class="fas fa-tools"></i>* baoduong*@
+                                <i class="fal fa-birthday-cake fa-2x" v-if="item.LoaiThongBao == 3"></i>
+                                <i class="fab fa-fedex fa-2x" v-if="item.LoaiThongBao == 2"></i> @*lo het han*@
+                                <i class="fal fa-tools fa-2x" v-if="item.LoaiThongBao == 4"></i> @*baoduong*@
+                                <i class="far fa-file-alt fa-2x" v-if="item.LoaiThongBao == 5"></i> @*baogia*@
+                                <i class="fal fa-file-invoice-dollar fa-2x" v-if="item.LoaiThongBao == 8 || item.LoaiThongBao == 6"></i> @*coc baogia + thanhtoan hd*@
+                                <i class="fal fa-file-invoice fa-2x" v-if="item.LoaiThongBao == 7"></i>@*hoadon*@
+                                <i class="far fa-forklift fa-2x" v-if="item.LoaiThongBao == 9"></i>@*xuatkho*@
+                                <i class="fal fa-reply fa-2x" v-if="item.LoaiThongBao == 10"></i>@*xuatxuong*@
                             </span>
                             <span v-else>
                                 <i class="fal fa-birthday-cake fa-2x" v-if="item.LoaiThongBao == 3"></i>
@@ -1052,24 +1055,22 @@ var VHeader = new Vue({
         },
         GetThongBao: function () {
             let self = this;
-            let myData = {};
-            myData.IdDonVi = self.IdDonVi;
-            myData.IdNguoiDung = self.IdNguoiDung;
-            myData.NhacTonKho = self.ThongBaoCaiDat.isTonKho;
-            myData.NhacDieuChuyen = self.ThongBaoCaiDat.isDieuChuyen;
-            myData.NhacSinhNhat = self.ThongBaoCaiDat.isSinhNhat;
-            myData.NhacLoHang = self.ThongBaoCaiDat.isLoHang;
-            myData.NhacBaoDuong = self.ThongBaoCaiDat.isNhacBaoDuongXe;
-            myData.CurrentPage = self.ListThongBao.CurrentPage;
-            myData.PageSize = self.ListThongBao.PageSize;
-            $.ajax({
-                url: self.urlApi.NguoiDungApi + "GetThongBao",
-                type: 'POST',
-                dataType: 'json',
-                data: myData,
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                success: function (data) {
-                    if (data.res === true) {
+
+            if (self.SubDomain.toLowerCase() === '0973474985') {
+                let param = {
+                    ID_DonVi: self.IdDonVi,
+                    ID_NguoiDung: self.IdNguoiDung,
+                    NhacTonKho: self.ThongBaoCaiDat.isTonKho,
+                    NhacDieuChuyen: self.ThongBaoCaiDat.isDieuChuyen,
+                    NhacLoHetHan: self.ThongBaoCaiDat.isLoHang,
+                    NhacSinhNhat: self.ThongBaoCaiDat.isSinhNhat,
+                    NhacBaoDuong: self.ThongBaoCaiDat.isNhacBaoDuongXe,
+                    CurrentPage: self.ListThongBao.CurrentPage - 1,
+                    PageSize: self.ListThongBao.PageSize,
+                }
+                ajaxHelper(self.urlApi.NguoiDungApi + 'GetThongBao_ChuaDoc', 'POST', param).done(function (data) {
+                    console.log('GetThongBao_ChuaDoc ', data)
+                    if (data.res) {
                         self.Count = data.dataSoure.CountTB;
                         loadCountThongBao(data.dataSoure.CountTB);
                         if (self.ListThongBao.CurrentPage === 1) {
@@ -1080,30 +1081,44 @@ var VHeader = new Vue({
                         }
                     }
                     else {
-                        commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
+                        commonStatisJs.ShowMessageDanger(data.mess);
                     };
-                }
-            });
-            //$.ajax({
-            //    url: "/Shared/SearchPageMessage?numberPage=" + 0 + '&notifyBirth=' + self.ThongBaoCaiDat.isSinhNhat + '&notifyTonKho=' + self.ThongBaoCaiDat.isTonKho + '&notifyDieuChuyen=' + self.ThongBaoCaiDat.isDieuChuyen + '&notifyLoHang=' + self.ThongBaoCaiDat.isLoHang,
-            //    type: 'GET',
-            //    dataType: 'json',
-            //    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            //    success: function (result) {
-            //        if (result.res != true) {
-            //        }
-            //        else {
-            //            self.numberPage = 0;
-            //        }
-            //        self.ListThongBao = [];
-            //        self.Count = result.CountTB;
-            //        loadCountThongBao(result.CountTB);
-            //        var item = self.ListThongBao;
-            //        item.push.apply(item, result.data);
-            //        self.ListThongBao = item;
-            //        return self.ListThongBao;
-            //    }
-            //});
+                })
+            }
+            else {
+                let myData = {};
+                myData.IdDonVi = self.IdDonVi;
+                myData.IdNguoiDung = self.IdNguoiDung;
+                myData.NhacTonKho = self.ThongBaoCaiDat.isTonKho;
+                myData.NhacDieuChuyen = self.ThongBaoCaiDat.isDieuChuyen;
+                myData.NhacSinhNhat = self.ThongBaoCaiDat.isSinhNhat;
+                myData.NhacLoHang = self.ThongBaoCaiDat.isLoHang;
+                myData.NhacBaoDuong = self.ThongBaoCaiDat.isNhacBaoDuongXe;
+                myData.CurrentPage = self.ListThongBao.CurrentPage;
+                myData.PageSize = self.ListThongBao.PageSize;
+                $.ajax({
+                    url: self.urlApi.NguoiDungApi + "GetThongBao",
+                    type: 'POST',
+                    dataType: 'json',
+                    data: myData,
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    success: function (data) {
+                        if (data.res === true) {
+                            self.Count = data.dataSoure.CountTB;
+                            loadCountThongBao(data.dataSoure.CountTB);
+                            if (self.ListThongBao.CurrentPage === 1) {
+                                self.ListThongBao.data = data.dataSoure.ListThongBao;
+                            }
+                            else {
+                                self.ListThongBao.data = self.ListThongBao.data.concat(data.dataSoure.ListThongBao);
+                            }
+                        }
+                        else {
+                            commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
+                        };
+                    }
+                });
+            }
         },
         LoadCauHinhThongBao: function () {
             var self = this;
@@ -1345,41 +1360,42 @@ var VHeader = new Vue({
     }
     function loadthongbao(item, maload, id)
     {
-        if (item == 1) {
-            $.ajax({
-                url: '/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateNguoiDocTB?idtb=' + id + '&nguoidoc=' + VHeader.IdNguoiDung,
-                success: function (item) {
+        switch (parseInt(item)) {
+            case 0:
+                $.getJSON('/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateNguoiDocTB?idtb=' + id + '&nguoidoc=' + VHeader.IdNguoiDung).done(function () {
                     localStorage.setItem('loadMaHang', maload);
                     window.location.href = "/#/" + '@UrlPage.Danhsachhanghoa';
-                }
-            });
-        }
-        if (item == 2) {
-            $.ajax({
-                url: '/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateNguoiDocTB?idtb=' + id + '&nguoidoc=' + VHeader.IdNguoiDung,
-                success: function (item) {
+                });
+                break;
+            case 1:
+                $.getJSON('/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateNguoiDocTB?idtb=' + id + '&nguoidoc=' + VHeader.IdNguoiDung).done(function () {
                     localStorage.setItem('FindHD', maload);
                     window.location.href = "/#/" + '@UrlPage.ChuyenHang';
-                }
-            });
-        }
-        if (item == 3) {
-            $.ajax({
-                url: '/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateNguoiDocTB?idtb=' + id + '&nguoidoc=' + VHeader.IdNguoiDung,
-                success: function (item) {
-                    localStorage.setItem('FindKhachHang', maload);
+                });
+                break;
+            case 2:
+                $.getJSON('/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateNguoiDocTB?idtb=' + id + '&nguoidoc=' + VHeader.IdNguoiDung).done(function () {
+                     localStorage.setItem('FindKhachHang', maload);
                     window.location.href = "/#/" + '@UrlPage.KhachHang';
-                }
-            });
-        }
-        if (item == 4) {
-            $.ajax({
-                url: '/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateNguoiDocTB?idtb=' + id + '&nguoidoc=' + VHeader.IdNguoiDung,
-                success: function (item) {
-                    localStorage.setItem('FindLoHang', maload);
+                });
+                break;
+            case 3:
+                $.getJSON('/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateNguoiDocTB?idtb=' + id + '&nguoidoc=' + VHeader.IdNguoiDung).done(function () {
+                     localStorage.setItem('FindLoHang', maload);
                     window.location.href = "/#/" + '@UrlPage.LoHangHoa';
-                }
-            });
+                });
+                break;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                $.getJSON('/api/DanhMuc/HT_NguoiDungAPI/' + 'UpdateNguoiDocTB?idtb=' + id + '&nguoidoc=' + VHeader.IdNguoiDung).done(function () {
+                    localStorage.setItem('findBienSo', maload);
+                    window.location.href = "/#/" + '@UrlPage.BanLamViec';
+                });
+                break;
         }
     }
     function loaddadoc(id) {
@@ -1595,7 +1611,7 @@ var VHeader = new Vue({
     //$.ajax({
     //    type: "GET",
     //    url: "https://localhost:7015/api/exrate/getexrate",
-        
+
     //    success: function (xml) {
     //        console.log(xml);
     //    }
