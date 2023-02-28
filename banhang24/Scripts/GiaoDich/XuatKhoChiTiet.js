@@ -57,7 +57,7 @@ var XuatKhoChiTiet = function () {
     var _idDonVi = $('#hd_IDdDonVi').val();
     var _tenDonVi = $('#hd_TenDonVi').val();
     var _idNhanVien = $('.idnhanvien').text();
-    var _IDNguoiDung = $('.idnguoidung').text();
+    var _IDNguoiDung = VHeader.IdNguoiDung;
     var _userLogin = $('#txtTenTaiKhoan').text().trim();
 
     $(".btnImportExcel").hide();
@@ -2018,6 +2018,28 @@ var XuatKhoChiTiet = function () {
                     myData.objHoaDon.NgayLapHoaDonOld = x.data.NgayLapHoaDon;
 
                     ShowMessage_Success('Tạo phiếu xuất kho thành công');
+
+                    if (!myData.objHoaDon.ChoThanhToan) {
+                        let paramTB = {
+                            ID_NguoiDung: _IDNguoiDung,
+                            ID_PhieuTiepNhan: myData.objHoaDon.ID_PhieuTiepNhan,
+                            BienSo: myData.objHoaDon.BienSo,
+                            LoaiNhac: 6,
+                        }
+                        vmThongBao.UpdateThongBao_CongViecDaXuLy(paramTB);
+
+                        // xuatkho --> xuatxuong
+                        let tbao = {
+                            ID_DonVi: myData.objHoaDon.ID_DonVi,
+                            ID_PhieuTiepNhan: myData.objHoaDon.ID_PhieuTiepNhan,
+                            //ID_Xe: objHD.ID_Xe,
+                            BienSo: myData.objHoaDon.BienSo,
+                            ThoiGian: myData.objHoaDon.NgayLapHoaDon,
+                            ID_QuyTrinhTruoc: 5,
+                            ID_QuyTrinhSau: 6,
+                        }
+                        vmThongBao.Create_tblRequest(tbao);
+                    }
 
                     var cthdView = getcthd_atView();
                     SaveDiary(myData.objHoaDon, cthdView);
