@@ -87,6 +87,24 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 return _classDMHH.SP_GetInfor_TPDinhLuong(idChiNhanh, Guid.Empty);
             }
         }
+
+        [HttpGet]
+        public IHttpActionResult GetThanhPhanDinhLuong_byIDCTHD(Guid id)
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    ClassBH_HoaDon_ChiTiet classhoadonchitiet = new ClassBH_HoaDon_ChiTiet(db);
+                    List<SP_ThanhPhanDinhLuong> data = classhoadonchitiet.SP_GetThanhPhanDinhLuong_CTHD(id);
+                    return ActionTrueData(data);
+                }
+            }
+            catch (Exception e)
+            {
+                return ActionFalseNotData(e.InnerException + e.Message);
+            }
+        }
         [HttpGet, HttpPost]
         public IHttpActionResult GetTPDinhLuong_ofHoaDon([FromBody] JObject data)
         {
@@ -106,6 +124,73 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 catch (Exception ex)
                 {
                     return ActionFalseNotData(ex.InnerException + ex.Message);
+                }
+            }
+        }
+
+        [HttpGet, HttpPost]
+        public IHttpActionResult CTHD_UpdateThanhPhanDinhLuong(Guid idCTHD, [FromBody] JObject data)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                using (var trans = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        List<BH_HoaDon_ChiTiet> lstTPhan = new List<BH_HoaDon_ChiTiet>();
+                        ClassBH_HoaDon_ChiTiet classHDChiTiet = new ClassBH_HoaDon_ChiTiet(db);
+
+                        // get all tpdluong of dichvu --> assisgn ChatLieu =5'
+                        var tpDLOld = db.BH_HoaDon_ChiTiet.Where(x => x.ID_ChiTietDinhLuong == idCTHD && x.ID_ChiTietDinhLuong != x.ID)
+                                .ToList();
+                        tpDLOld.ForEach(x => x.ChatLieu = "5");
+
+
+                        #region check ctOld have/ or not TPDL
+                        if (tpDLOld != null && tpDLOld.Count() > 0)
+                        {
+                            // codinhluong --> khong dinhluong
+                            if (data == null || (data != null && data["lstTPhan"] == null))
+                            {
+                                // reset ID_ChiTietDinhLuong
+                                db.BH_HoaDon_ChiTiet.Where(x => x.ID == idCTHD)
+                                    .ToList()
+                                    .ForEach(x => x.ID_ChiTietDinhLuong = null);
+                            }
+                        }
+                        else
+                        {
+                            // khongdinhluong --> co dinhluong: assign ID_ChiTietDinhLuong
+                            db.BH_HoaDon_ChiTiet.Where(x => x.ID == idCTHD)
+                                .ToList()
+                                .ForEach(x => x.ID_ChiTietDinhLuong = x.ID);
+                        }
+                        #endregion
+
+                        if (data != null && data["lstTPhan"] != null)
+                        {
+                            lstTPhan = data["lstTPhan"].ToObject<List<BH_HoaDon_ChiTiet>>();
+
+                            List<BH_HoaDon_ChiTiet> lstNew = new List<BH_HoaDon_ChiTiet>();
+                            foreach (var item in lstTPhan)
+                            {
+                                item.ID = Guid.NewGuid();
+                                lstNew.Add(item);
+                            }
+
+                            db.BH_HoaDon_ChiTiet.AddRange(lstNew);
+                            db.SaveChanges();
+                            trans.Commit();
+
+                            return ActionTrueData(string.Empty);
+                        }
+                        return ActionFalseNotData("Tham số null");
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        return ActionFalseNotData(ex.InnerException + ex.Message);
+                    }
                 }
             }
         }
