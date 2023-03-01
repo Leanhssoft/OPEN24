@@ -24,6 +24,9 @@
                 padding: 6px;
                 text-align: center;
             }
+        #vDanhSachXe table thead tr th{
+            text-align:center
+        }
     </style>
 </head>
 <body>
@@ -239,6 +242,7 @@
                                             <div class="gara-tab-title">
                                                 <a class="enable-detail active" onclick="toggleTab(this, 1)">Thông tin</a>
                                                 <a class="enable-content" onclick="toggleTab(this, 2)">Lịch sử sửa chữa</a>
+                                                <a class="enable-content" onclick="toggleTab(this, 6)">Nhật ký báo giá</a>
                                                 <a onclick="toggleTab(this, 3)">Nhật ký bảo dưỡng</a>
                                                 <a onclick="toggleTab(this, 4)">Lịch bảo dưỡng</a>
                                                 <a onclick="toggleTab(this, 5)" v-if="item.NguoiSoHuu === 1">Phụ tùng theo dõi</a>
@@ -508,7 +512,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>
-                                                                    <input type="checkbox" v-model="PhuTungCheckAll"/>
+                                                                    <input type="checkbox" v-model="PhuTungCheckAll" />
                                                                 </th>
                                                                 <th>Mã hàng hóa</th>
                                                                 <th>Tên hàng hóa</th>
@@ -522,7 +526,7 @@
                                                         <tbody>
                                                             <tr v-for="(itemphutung, index) in dataPhuTungTheoDoi" v-show="!PhuTungTheoDoiLoadding">
                                                                 <td>
-                                                                    <input type="checkbox" v-model="itemphutung.Checked" v-on:click="PhuTungCheckbox"/>
+                                                                    <input type="checkbox" v-model="itemphutung.Checked" v-on:click="PhuTungCheckbox" />
                                                                 </td>
                                                                 <td>{{itemphutung.MaHangHoa}}</td>
                                                                 <td>{{itemphutung.TenHangHoa}}</td>
@@ -540,6 +544,62 @@
                                                     </table>
                                                 </div>
                                             </div>
+
+                                            <div class="gara-tab-quotation" hidden>
+                                                <div class="table-frame" style="width:100%">
+                                                    <table class='table'>
+                                                        <thead>
+                                                            <tr style="background:#ccc; text-align:center">
+                                                                <th>Mã báo giá</th>
+                                                                <th>Ngày lập báo giá</th>
+                                                                <th>Tên khách hàng</th>
+                                                                <th>Mã phiếu tiếp nhận</th>
+                                                                <th>Phải thanh toán</th>
+                                                                <th>Đã thanh toán</th>
+                                                                <th>Ghi chú</th>
+                                                                <th>Trạng thái</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr v-if="idXeRowSelected == item.ID" v-for="itemHoaDon in dataBaoGia.data">
+                                                                <td><a v-on:click="showModalChiTietHoaDon(itemHoaDon.ID)"><span>{{itemHoaDon.MaHoaDon}}</span></a></td>
+                                                                <td class="text-center">{{moment(itemHoaDon.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')}}</td>
+                                                                <td>
+                                                                    {{itemHoaDon.TenDoiTuong}}
+                                                                </td>
+                                                                <td>
+                                                                    <a href="javascript:void(0)" v-on:click="$root.showModalTiepNhanXe(itemHoaDon)">
+                                                                        {{itemHoaDon.MaPhieuTiepNhan}}
+                                                                    </a>
+                                                                </td>
+                                                                <td class="text-right">{{commonStatisJs.FormatNumber3Digit(itemHoaDon.PhaiThanhToan)}}</td>
+                                                                <td class="text-right">{{commonStatisJs.FormatNumber3Digit(itemHoaDon.KhachDaTra)}}</td>
+                                                                <td>{{itemHoaDon.DienGiai}}</td>
+                                                                <td>{{itemHoaDon.TrangThaiText}}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                        <tfoot v-show="dataBaoGia.data.length<=0 || isLoading">
+                                                            <tr>
+                                                                <td class="text-center" v-bind:colspan="10"><i>Không có dữ liệu</i></td>
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+                                                <page-list v-bind:pagesize="dataBaoGia.PageSize"
+                                                           v-bind:listpage="dataBaoGia.ListPage" v-bind:currentpage="dataBaoGia.currentPage" v-bind:pageview="dataBaoGia.PageView"
+                                                           v-bind:numberofpage="dataBaoGia.NumberOfPage"
+                                                           v-on:pageselected="BaoGiaPageChange"></page-list>
+                                                @*<div class="container-fluid row" style="margin-top:15px">
+                                                        <div style="float:right">
+                                                            <button class="btn btn-save" v-on:click="$root.ExportBaoGia"
+                                                                    v-if="$root.role.HoaDon.XuatFile">
+                                                                <i class="fa fa-file-excel-o"></i>
+                                                                Xuất file
+                                                            </button>
+                                                        </div>
+                                                    </div>*@
+                                            </div>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -684,6 +744,8 @@
     @Html.Partial("~/Views/Gara/KhachHang/_vmTrangThai_NguonKhach.cshtml")
     @Html.Partial("~/Views/Gara/HoaDon/_ThongTinHoaDon.cshtml")
     @Html.Partial("~/Views/Gara/QuanLyBaoDuong/_ThemMoiPhuTungTheoDoi.cshtml")
+    @Html.Partial("~/Views/Gara/QuanLySuaChua/_TiepNhanXe.cshtml")
+
     <div class="modal fade" id="modalPopuplgDelete">
         <div class="modal-dialog draggable modal-sm " role="document">
             @Html.Partial("~/Views/GiaoDich/_modalDelete.cshtml")
@@ -796,6 +858,14 @@
                     TextSearch: ''
                 },
                 dataHoaDon: {
+                    data: [],
+                    ListPage: [1],
+                    PageView: "",
+                    NumberOfPage: 1,
+                    currentPage: 1,
+                    PageSize: 10
+                },
+                dataBaoGia: {
                     data: [],
                     ListPage: [1],
                     PageView: "",
@@ -942,13 +1012,17 @@
                     else {
                         self.isPageSelect = false;
                     }
+                    let txt = self.dataDanhMucXe.TextSearch;
+                    if (!commonStatisJs.CheckNull(txt)) {
+                        txt = txt.trim();
+                    }
                     let myData = {};
                     myData.IdHangXe = self.listHangXe.HangXeSelected;
                     myData.IdLoaiXe = self.listLoaiXe.LoaiXeSelected;
                     myData.IdMauXe = self.listMauXe.MauXeSelected;
                     myData.CurrentPage = self.dataDanhMucXe.currentPage;
                     myData.TrangThais = [""];
-                    myData.TextSearch = self.dataDanhMucXe.TextSearch;
+                    myData.TextSearch = txt;
                     this.ListTrangThai.filter(p => p.Checked === true).forEach(p => myData.TrangThais.push(p.Value));
                     myData.TrangThais.shift();
                     myData.PageSize = self.dataDanhMucXe.PageSize;
@@ -996,6 +1070,7 @@
                     if (value.ID !== self.idXeRowSelected) {
                         self.idXeRowSelected = value.ID;
                         self.LoadHoaDonByIdXe();
+                        self.LoadBaoGiaByIdXe();
                         self.LoadNhatKyBaoDuong();
                         self.LoadLichBaoDuong();
                         if (value.NguoiSoHuu === 1) {
@@ -1162,6 +1237,46 @@
                     }
                 },
                 //End Hóa đơn
+
+                //Begin baogia
+                LoadBaoGiaByIdXe: function () {
+                    let self = this;
+                    let paramBG = {
+                        IdChiNhanhs: [],// all chinhanh
+                        TextSearch: '%%',
+                        IdXe: self.idXeRowSelected,
+                        CurrentPage: self.dataBaoGia.currentPage,
+                        PageSize: self.dataBaoGia.PageSize,
+                        BaoGiaDateFrom: '2016-01-01',
+                        BaoGiaDateTo: moment(new Date()).add(1, 'days').format('YYYY-MM-DD'),
+                        TrangThais: [0, 1, 2],// all trangthai
+                    }
+                    ajaxHelper(urlApiGara + "Gara_GetListBaoGia_v2", 'POST', paramBG).done(function (x) {
+                        console.log('Gara_GetListBaoGia_v2 ', x)
+                        if (x.res) {
+                            self.dataBaoGia.data = x.dataSoure.data;
+                            self.dataBaoGia.ListPage = x.dataSoure.ListPage;
+                            self.dataBaoGia.PageView = x.dataSoure.PageView;
+                            self.dataHoaDon.NumberOfPage = x.dataSoure.NumberOfPage;
+                        }
+                    });
+
+                },
+                BaoGiaPageChange: function (value) {
+                    if (this.dataBaoGia.currentPage !== value.currentPage) {
+                        this.dataBaoGia.currentPage = value.currentPage;
+                        this.LoadBaoGiaByIdXe();
+                    } else if (this.dataBaoGia.PageSize !== value.pageSize) {
+                        this.dataBaoGia.PageSize = value.pageSize;
+                        this.LoadBaoGiaByIdXe();
+                    }
+                },
+                showModalTiepNhanXe: async function (item) {
+                    let data = await vmTiepNhanXe.GetInforPhieuTiepNhan_byID(item.ID_PhieuTiepNhan);
+                    vmTiepNhanXe.UpdatePhieuTiepNhan(data, [], []);
+                },
+                //End baogia
+
                 //Begin Nhật ký bảo dưỡng
                 LoadNhatKyBaoDuong: function () {
                     let self = this;
@@ -1390,6 +1505,9 @@
                         });
                     }
                 },
+                ExportBaoGia: function () {
+                    let self = this;
+                },
                 //End ExportFile
                 showModalChiTietHoaDon: function (id) {
                     vmChiTietHoaDon.showModalChiTietHoaDon(id);
@@ -1408,8 +1526,8 @@
                         data: mydata
                     }).done(function (result) {
                         if (result.res) {
-                            self.PhuTungCheckAll= false;
-                            self.dataPhuTungTheoDoi = result.dataSoure.data.map(p => Object.assign(p, {Checked: false}));
+                            self.PhuTungCheckAll = false;
+                            self.dataPhuTungTheoDoi = result.dataSoure.data.map(p => Object.assign(p, { Checked: false }));
                         }
                     }).fail(function (jqXHR, textStatus) {
                         console.log(textStatus);
@@ -1534,11 +1652,11 @@
                     handler: function () {
                         let self = this;
                         if (self.PhuTungCheckAll) {
-                            self.dataPhuTungTheoDoi.filter(p=>p.Checked === false).map(p => p.Checked = true);
+                            self.dataPhuTungTheoDoi.filter(p => p.Checked === false).map(p => p.Checked = true);
                         }
                         else {
                             if (self.dataPhuTungTheoDoi.filter(p => p.Checked === true).length === self.dataPhuTungTheoDoi.length)
-                            self.dataPhuTungTheoDoi.map(p => p.Checked = false);
+                                self.dataPhuTungTheoDoi.map(p => p.Checked = false);
                         }
                     },
                     deep: true
@@ -1578,6 +1696,9 @@
                     break;
                 case 5:
                     menu.siblings(".gara-tab-phutung").addClass("active");
+                    break;
+                case 6:
+                    menu.siblings(".gara-tab-quotation").addClass("active");
                     break;
             }
         };
@@ -1689,7 +1810,7 @@
                     let self = this;
                     self.Status.PhieuTiepNhan = 1;
                     self.Status.HoaDonSuaChua = 1;
-                    if(self.TaoPhieuXuatKho === true) {
+                    if (self.TaoPhieuXuatKho === true) {
                         self.Status.PhieuXuatKho = 1;
                     }
                     if (self.TaoPhieuXuatXuong === true) {
@@ -1856,7 +1977,7 @@
                         else {
                             self.Status.PhieuTiepNhan = 3;
                             self.Status.HoaDonSuaChua = 3;
-                            if(self.TaoPhieuXuatKho === true) {
+                            if (self.TaoPhieuXuatKho === true) {
                                 self.Status.PhieuXuatKho = 3;
                             }
                             if (self.TaoPhieuXuatXuong) {
