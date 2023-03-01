@@ -341,6 +341,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     param.CurrentPage = objIn["CurrentPage"].ToObject<int>() - 1;
                 if (objIn["PageSize"] != null)
                     param.PageSize = objIn["PageSize"].ToObject<int>();
+                if (objIn["IdXe"] != null)
+                    param.IDXe = objIn["IdXe"].ToObject<string>();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
