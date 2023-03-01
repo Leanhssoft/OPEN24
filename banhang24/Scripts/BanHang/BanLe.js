@@ -1402,7 +1402,7 @@ var NewModel_BanHangLe = function () {
             case 6: // Sao Chep GDV
             case 7: // update HDTamLuu
             case 8: // update HD was save
-                var lcHDSaoChep = localStorage.getItem('lcHDSaoChep'); 
+                var lcHDSaoChep = localStorage.getItem('lcHDSaoChep');
                 if (lcHDSaoChep !== null) {
                     lcHDSaoChep = JSON.parse(lcHDSaoChep);
                     let idHD = const_GuidEmpty;
@@ -2547,7 +2547,7 @@ var NewModel_BanHangLe = function () {
                             else {
                                 hdLast = arrHD_byRole[arrHD_byRole.length - 1];
                             }
-                            if (hdLast.length> 0) {
+                            if (hdLast.length > 0) {
                                 self.SetBangGia(hdLast[0].ID_BangGia);
                             }
                             UpdateGiaBan_inListHangHoa_byPage(hdLast[0].ID_BangGia);
@@ -3810,7 +3810,15 @@ var NewModel_BanHangLe = function () {
             switch (itFor.LoaiHangHoa) {
                 case 1:
                     arrQuiDoi.push(itFor.ID_DonViQuiDoi);
-                    arrCT.push(itFor);
+                    let obj = {
+                        MaHangHoa: itFor.MaHangHoa,
+                        ID_DonViQuiDoi: itFor.ID_DonViQuiDoi,
+                        ID_LoHang: itFor.ID_LoHang,
+                        LaHangHoa: itFor.LaHangHoa,
+                        LoaiHangHoa: itFor.LoaiHangHoa,
+                        SoLuong: formatNumberToFloat(itFor.SoLuong),
+                    }
+                    arrCT.push(obj);
                     break;
                 case 2:
                     if (itFor.ThanhPhan_DinhLuong.length > 0) {
@@ -3819,12 +3827,20 @@ var NewModel_BanHangLe = function () {
                             let tpdl = itFor.ThanhPhan_DinhLuong[k];
                             if ($.inArray(tpdl.ID_DonViQuiDoi, arrQuiDoi) === -1) {
                                 arrQuiDoi.push(tpdl.ID_DonViQuiDoi);
-                                arrCT.push(tpdl);
+                                let objDL = {
+                                    MaHangHoa: tpdl.MaHangHoa,
+                                    ID_DonViQuiDoi: tpdl.ID_DonViQuiDoi,
+                                    ID_LoHang: tpdl.ID_LoHang,
+                                    LaHangHoa: tpdl.LaHangHoa,
+                                    LoaiHangHoa: tpdl.LoaiHangHoa,
+                                    SoLuong: formatNumberToFloat(tpdl.SoLuong),
+                                }
+                                arrCT.push(objDL);
                             }
                             else {
                                 for (let j = 0; j < arrCT.length; j++) {
                                     if (arrCT[j].ID_DonViQuiDoi === tpdl.ID_DonViQuiDoi && tpdl.ID_LoHang === arrCT[j].ID_LoHang) {
-                                        arrCT[j].SoLuong += tpdl.SoLuong;
+                                        arrCT[j].SoLuong += formatNumberToFloat(tpdl.SoLuong);
                                     }
                                 }
                             }
@@ -3841,8 +3857,15 @@ var NewModel_BanHangLe = function () {
                                 if (tpdl.LoaiHangHoa === 1) {
                                     if ($.inArray(tpdl.ID_DonViQuiDoi, arrQuiDoi) === -1) {
                                         arrQuiDoi.push(tpdl.ID_DonViQuiDoi);
-                                        tpdl.SoLuong = itFor.SoLuong * tpdl.SoLuongMacDinh;
-                                        arrCT.push(tpdl);
+                                        let objDL = {
+                                            MaHangHoa: tpdl.MaHangHoa,
+                                            ID_DonViQuiDoi: tpdl.ID_DonViQuiDoi,
+                                            ID_LoHang: tpdl.ID_LoHang,
+                                            LaHangHoa: tpdl.LaHangHoa,
+                                            LoaiHangHoa: tpdl.LoaiHangHoa,
+                                            SoLuong: formatNumberToFloat(itFor.SoLuong) *  tpdl.SoLuongMacDinh,
+                                        }
+                                        arrCT.push(objDL);
                                     }
                                     else {
                                         for (let j = 0; j < arrCT.length; j++) {
@@ -7123,6 +7146,9 @@ var NewModel_BanHangLe = function () {
 
             if (commonStatisJs.CheckNull(idBangGiaOld)) {
                 idBangGiaOld = const_GuidEmpty;
+            }
+            if (commonStatisJs.CheckNull(idBangGia)) {
+                idBangGia = const_GuidEmpty;
             }
 
             if (idBangGiaOld !== idBangGia) {
