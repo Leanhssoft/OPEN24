@@ -60,6 +60,7 @@ var ChuyenHangChiTiet = function () {
     self.fileNameExcel = ko.observable();
     self.selectedDonVi = ko.observable();
     self.DonVis = ko.observableArray();
+    self.ListCNNhan = ko.observableArray();
     self.IsChuyenHang = ko.observable(true); //true. ChuyenHang, false. NhanHang
 
     self.TongSoLuongHH = ko.observable(0);
@@ -346,6 +347,9 @@ var ChuyenHangChiTiet = function () {
     function GetListDonVi() {
         ajaxHelper("/api/DanhMuc/DM_DonViAPI/" + "GetListDonVi1", 'GET').done(function (data) {
             self.DonVis(data);
+            if (self.IsChuyenHang()) {
+                self.ListCNNhan(data.filter(x => x.ID !== VHeader.IdDonVi));
+            }
             CheckSaoChep_EditPhieuNhap();
         });
     }
