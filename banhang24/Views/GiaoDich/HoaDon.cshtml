@@ -1284,7 +1284,7 @@
                                 <td class="bg12 @commonEnum.ColumnInvoices.tongphaitra bold text-right" data-bind="text: formatNumber3Digit(TongThanhToan(),2)"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.khachcantra bold text-right" data-bind="text: formatNumber3Digit(KhachCanTra(),2)"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.butruTraHang bold text-right"></td>
-                                <td class="bg12 @commonEnum.ColumnInvoices.gtriSauTra bold text-right" ></td>
+                                <td class="bg12 @commonEnum.ColumnInvoices.gtriSauTra bold text-right"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.khachdatra bold text-right" data-bind="text: formatNumber3Digit(TongKhachTra(),2)"></td>
                                 <!--ko if: $root.LoaiHoaDonMenu() === 25 -->
                                 <td class="bg12 @commonEnum.ColumnInvoices.tongtienBHduyet bold text-right" data-bind="text: formatNumber3Digit($root.TongTienBHDuyet(),2)"></td>
@@ -1359,6 +1359,7 @@
 @Html.Partial("~/Views/Gara/HoaDon/_ThanhPhanCombo.cshtml")
 @Html.Partial("~/Views/Gara/HoaDon/_ChiPhiHoaDon.cshtml")
 @Html.Partial("~/Views/DoiTac/_UpAnhHoaDon.cshtml")
+@Html.Partial("~/Views/Gara/_ThanhPhanDinhLuong.cshtml")
 
 <div class="modal " id="modalPopuplgDelete">
     <div class="modal-dialog draggable">
