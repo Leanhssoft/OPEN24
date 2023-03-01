@@ -210,6 +210,19 @@
             $("#TiepNhanXeModal").modal('show');
             console.log('tnx')
         },
+        GetInforPhieuTiepNhan_byID: async function (id) {
+            if (!commonStatisJs.CheckNull(id)) {
+                let xx = await $.getJSON('/api/DanhMuc/GaraAPI/' + 'PhieuTiepNhan_GetThongTinChiTiet?id=' + id).done(function () {
+                }).then(function (x) {
+                    if (x.res && x.dataSoure.length > 0) {
+                        return x.dataSoure[0];
+                    }
+                    return {};
+                })
+                return xx;
+            }
+            return {};
+        },
         UpdatePhieuTiepNhan: function (thongtin, hangmuc, vatdung) {
             var self = this;
             self.isNew = false;
