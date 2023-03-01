@@ -5624,6 +5624,9 @@ var ViewModel = function () {
             loaiBaoHanh = 0;
         }
         var mahanghoa = self.newHangHoa().MaHangHoa();
+        if (!commonStatisJs.CheckNull(mahanghoa)) {
+            mahanghoa = mahanghoa.trim();
+        }
         var obj = {
             ID: self.newHangHoa().ID(),
             MaHangHoa: mahanghoa,
@@ -5719,7 +5722,6 @@ var ViewModel = function () {
                     return false;
                 }
 
-                var strMaHangHoa = self.newHangHoa().MaHangHoa();
                 var _id = self.newHangHoa().ID();
                 var _tonKho = self.newHangHoa().TonKho();
                 if (_tonKho !== 0 && _tonKho.indexOf(',') > -1) {
@@ -5731,6 +5733,8 @@ var ViewModel = function () {
                 _quanlytheolohang = _quanlytheolohang === null ? false : _quanlytheolohang;
 
                 var DM_HangHoa = GetProperties_ofHangHoa();
+                var strMaHangHoa = DM_HangHoa.MaHangHoa;
+
                 var dvt = {
                     MaHangHoa: strMaHangHoa,
                     TenDonViTinh: self.newHangHoa().DonViTinhChuan(),
@@ -6094,7 +6098,6 @@ var ViewModel = function () {
                     return false;
                 }
 
-                var strMaHangHoa = self.newHangHoa().MaHangHoa();
                 var _id = self.newHangHoa().ID();
                 var _tonKho = self.newHangHoa().TonKho();
                 if (_tonKho !== 0 && _tonKho.indexOf(',') > -1) {
@@ -6107,6 +6110,8 @@ var ViewModel = function () {
                 Disable_btnSave();
 
                 var DM_HangHoa = GetProperties_ofHangHoa();
+                var strMaHangHoa = DM_HangHoa.MaHangHoa;
+
                 var dvt = {
                     MaHangHoa: strMaHangHoa,
                     TenDonViTinh: _donvitinhchuan,
@@ -6460,7 +6465,6 @@ var ViewModel = function () {
                 chuoi = "";
                 checkThemCL = 1;
                 localStorage.removeItem('DVT');
-                var strMaHangHoa = self.newHangHoa().MaHangHoa();
                 var _id = self.newHangHoa().ID();
 
                 var check = CheckInput_Parent();
@@ -6477,6 +6481,8 @@ var ViewModel = function () {
                 _quanlytheolohang = _quanlytheolohang === null ? false : _quanlytheolohang;
 
                 var DM_HangHoa = GetProperties_ofHangHoa();
+                var strMaHangHoa = DM_HangHoa.MaHangHoa;
+
                 var dvt = {
                     MaHangHoa: strMaHangHoa,
                     TenDonViTinh: _donvitinhchuan,
@@ -7017,7 +7023,6 @@ var ViewModel = function () {
                 ShowMessage_Danger("Cửa hàng đã đạt số mặt hàng quy định, không thể thêm mới");
             }
             else {
-                var strMaHangHoa = self.newHangHoa().MaHangHoa();
                 var _id = self.newHangHoa().ID();
                 var _donvitinhchuan = self.newHangHoa().DonViTinhChuan();
 
@@ -7028,6 +7033,7 @@ var ViewModel = function () {
                 }
 
                 var DM_HangHoa = GetProperties_ofHangHoa();
+                var strMaHangHoa = DM_HangHoa.MaHangHoa;
                 var dvt = {
                     MaHangHoa: strMaHangHoa,
                     TenDonViTinh: _donvitinhchuan,
