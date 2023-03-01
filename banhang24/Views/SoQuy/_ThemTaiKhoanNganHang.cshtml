@@ -15,11 +15,14 @@
                     <div class="form-news">
                         <banks placeholder="Chọn ngân hàng"
                                :text-search="newAccountBank.TenNganHang"
+                               :showbutton="true"
                                :list-all="ListBanks"
                                :list-search="ListBanks"
                                :id-chosing="newAccountBank.ID_NganHang"
                                v-on:show-modal="showModalBank"
-                               v-on:on-select-item="ChoseNganHang">
+                               v-on:on-select-item="ChoseNganHang"
+                               v-on:reset-item="ResetNganHang"
+                               >
                         </banks>
                     </div>
                 </div>
@@ -57,7 +60,7 @@
             </div>
             <div class="modal-footer">
                 <div class="container-fluid">
-                    <button type="button" class="btn btn-cancel"  v-if="typeUpdate==2" v-on:click="Delete">
+                    <button type="button" class="btn btn-cancel" v-if="typeUpdate==2" v-on:click="Delete">
                         <i class="fa fa-trash"></i> Xóa
                     </button>
                     <button type="button" class="btn btn-cancel" data-dismiss="modal">

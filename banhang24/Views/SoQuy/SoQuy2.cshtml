@@ -511,7 +511,7 @@
                                 <td class="@commonEnum.ECashFlow.dienthoai" data-bind="text: SoDienThoai"></td>
                                 <td class="@commonEnum.ColumnInvoices.diachi" data-bind="text: DiaChiKhachHang"></td>
                                 <td class="@commonEnum.ECashFlow.nguonkhach" data-bind="text: TenNguonKhach"></td>
-                                <td class="@commonEnum.ECashFlow.ghichu" data-bind="text: NoiDungThu!=null? commonStatisJs.SubStringContent(NoiDungThu,100):'', 
+                                <td class="@commonEnum.ECashFlow.ghichu" data-bind="text: NoiDungThu!=null? commonStatisJs.SubStringContent(NoiDungThu,100):'',
                                     attr:{title: NoiDungThu}"></td>
                                 <td class="@commonEnum.ECashFlow.trangthai" data-bind="text: TrangThai == false? 'Đã hủy': 'Đã thanh toán'"></td>
                                 <td class="@commonEnum.ECashFlow.nvlapphieu" data-bind="text: TenNhanVien"></td>
@@ -754,6 +754,7 @@
     </div>
 </div>
 @Html.Partial("~/Views/Gara/_NapTienDatCoc.cshtml")
+@Html.Partial("~/Views/SoQuy/_ThemNganHang.cshtml")
 @Html.Partial("~/Views/SoQuy/_ThemTaiKhoanNganHang.cshtml")
 @Html.Partial("~/Views/SoQuy/_ThemKhoanThuChi.cshtml")
 @Html.Partial("~/Views/SoQuy/_ThemPhieuThuChi.cshtml")
