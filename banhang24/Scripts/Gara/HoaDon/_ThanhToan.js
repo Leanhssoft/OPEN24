@@ -252,29 +252,38 @@
         },
         GetSoDuTheGiaTri: function (idDoiTuong) {
             var self = this;
-            let datetime = moment(new Date()).add('days', 1).format('YYYY-MM-DD');
-            $.getJSON("/api/DanhMuc/DM_DoiTuongAPI/Get_SoDuTheGiaTri_ofKhachHang?idDoiTuong=" + idDoiTuong + '&datetime=' + datetime, function (data) {
-                if (data !== null && data.length > 0) {
-                    let sodu = data[0].SoDuTheGiaTri;
-                    if (self.typeUpdate === 1) {// update: + tien thututhe
-                        sodu += formatNumberToFloat(self.phieuThuOld.TienTheGiaTri);
-                    }
-                    sodu = sodu < 0 ? 0 : sodu;
-                    self.HoaDonChosing.SoDuTheGiaTri = sodu;
+            if (!commonStatisJs.CheckNull(idDoiTuong) && idDoiTuong !== const_GuidEmpty) {
+                let datetime = moment(new Date()).add('days', 1).format('YYYY-MM-DD');
+                $.getJSON("/api/DanhMuc/DM_DoiTuongAPI/Get_SoDuTheGiaTri_ofKhachHang?idDoiTuong=" + idDoiTuong + '&datetime=' + datetime, function (data) {
+                    if (data !== null && data.length > 0) {
+                        let sodu = data[0].SoDuTheGiaTri;
+                        if (self.typeUpdate === 1) {// update: + tien thututhe
+                            sodu += formatNumberToFloat(self.phieuThuOld.TienTheGiaTri);
+                        }
+                        sodu = sodu < 0 ? 0 : sodu;
+                        self.HoaDonChosing.SoDuTheGiaTri = sodu;
 
-                    self.theGiaTriCus.SoDuTheGiaTri = sodu;
-                    self.theGiaTriCus.CongNoThe = data[0].CongNoThe;
-                    self.theGiaTriCus.TongNapThe = data[0].TongThuTheGiaTri;
-                    self.theGiaTriCus.SuDungThe = data[0].SuDungThe;
-                }
-                else {
-                    self.HoaDonChosing.SoDuTheGiaTri = 0;
-                    self.theGiaTriCus.SoDuTheGiaTri = 0;
-                    self.theGiaTriCus.CongNoThe = 0;
-                    self.theGiaTriCus.TongNapThe = 0;
-                    self.theGiaTriCus.SuDungThe = 0;
-                }
-            });
+                        self.theGiaTriCus.SoDuTheGiaTri = sodu;
+                        self.theGiaTriCus.CongNoThe = data[0].CongNoThe;
+                        self.theGiaTriCus.TongNapThe = data[0].TongThuTheGiaTri;
+                        self.theGiaTriCus.SuDungThe = data[0].SuDungThe;
+                    }
+                    else {
+                        self.HoaDonChosing.SoDuTheGiaTri = 0;
+                        self.theGiaTriCus.SoDuTheGiaTri = 0;
+                        self.theGiaTriCus.CongNoThe = 0;
+                        self.theGiaTriCus.TongNapThe = 0;
+                        self.theGiaTriCus.SuDungThe = 0;
+                    }
+                });
+            }
+            else {
+                self.HoaDonChosing.SoDuTheGiaTri = 0;
+                self.theGiaTriCus.SoDuTheGiaTri = 0;
+                self.theGiaTriCus.CongNoThe = 0;
+                self.theGiaTriCus.TongNapThe = 0;
+                self.theGiaTriCus.SuDungThe = 0;
+            }
         },
         GetDebitCustomer_allBrands: function (idDoiTuong) {
             var self = this;
