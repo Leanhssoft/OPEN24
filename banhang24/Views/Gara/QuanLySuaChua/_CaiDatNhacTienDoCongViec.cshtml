@@ -225,6 +225,7 @@
                     ID_BuocThucHien: null,
                 };
                 self.QuyTrinh.push(obj);
+                self.updateSTT();
             },
             deleteStep: function (index) {
                 let self = this;
@@ -234,6 +235,7 @@
                         break;
                     }
                 }
+                self.updateSTT();
             },
             FocusRow: function (index) {
                 let self = this;
@@ -241,9 +243,10 @@
             },
             ChoseItem: function (item) {
                 let self = this;
-                let stepEx = $.grep(self.QuyTrinh, (x) => {
-                    return x.ID_BuocThucHien === item.ID;
+                let stepEx = $.grep(self.QuyTrinh, (x, index) => {
+                    return x.ID_BuocThucHien === item.ID && self.indexChosing !== index;// chose again same location
                 });
+
                 if (stepEx.length > 0) {
                     ShowMessage_Danger('Các bước thực hiện không được trùng nhau');
                     return;
@@ -252,6 +255,17 @@
                     if (i === self.indexChosing) {
                         self.QuyTrinh[i].ID_BuocThucHien = item.ID;
                         self.QuyTrinh[i].TenBuocThucHien = item.Text2;
+                        break;
+                    }
+                }
+                self.updateSTT();
+                self.QuyTrinh = $.extend([], true, self.QuyTrinh);// refreh
+            },
+            updateSTT: function () {
+                let self = this;
+                for (let i = 0; i < self.QuyTrinh.length; i++) {
+                    if (i === self.indexChosing) {
+                        self.QuyTrinh[i].STT = i;
                         break;
                     }
                 }
@@ -295,7 +309,6 @@
                     let x = a.STT, y = b.STT;
                     return x > y ? 1 : x < y ? -1 : 0;
                 });
-
                 let arr = [], sDetail = '';
                 for (let i = 0; i < arrSort.length; i++) {
                     let itFor = arrSort[i];
@@ -317,8 +330,8 @@
                 if (self.QuyTrinhOld.length > 0) {
                     sOld = '<br /> <b> Quy trình cũ </b>:'
                     for (let i = 0; i < self.QuyTrinhOld.length; i++) {
-                        let itFor = arrSort[i];
-                        let itemNext = i < arrSort.length - 1 ? arrSort[i + 1] : itFor;
+                        let itFor = self.QuyTrinhOld[i];
+                        let itemNext = i < self.QuyTrinhOld.length - 1 ? self.QuyTrinhOld[i + 1] : itFor;
                         sOld = sOld.concat('<br /> ', itFor.STT, '. ', itFor.TenBuocThucHien, ' - ', itemNext.TenBuocThucHien,
                             ': Thời gian ', itFor.ThoiGian, ' ', itFor.LoaiThoiGian == 1 ? 'phút' : 'giờ');
                     }
@@ -340,6 +353,9 @@
                         }
                         Insert_NhatKyThaoTac_1Param(diary);
                         ShowMessage_Success('Cài đặt thành công');
+
+                        // assign agian quytrinh old
+                        self.QuyTrinhOld = self.QuyTrinh
                     }
                 }).fail(function () {
                     ShowMessage_Danger('Cài đặt thất bại');
