@@ -2024,7 +2024,7 @@ var XuatKhoChiTiet = function () {
                             ID_NguoiDung: _IDNguoiDung,
                             ID_PhieuTiepNhan: myData.objHoaDon.ID_PhieuTiepNhan,
                             BienSo: myData.objHoaDon.BienSo,
-                            LoaiNhac: 6,
+                            LoaiNhac: 5,
                         }
                         vmThongBao.UpdateThongBao_CongViecDaXuLy(paramTB);
 
