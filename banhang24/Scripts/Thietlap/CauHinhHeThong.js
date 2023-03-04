@@ -135,14 +135,12 @@ var modelThongTinCuaHang = function () {
 
 var ViewModel = function () {
     var self = this;
-    var _IDNhomNguoiDung = $('.idnhomnguoidung').text();
     var _IDNguoiDung = $('.idnguoidung').text();
     var _IDchinhanh = $('#hd_IDdDonVi').val();
     var _IDNhanVien = $('.idnhanvien').text();
     self.error = ko.observable();
     var ThietLapUri = '/api/DanhMuc/HT_ThietLapAPI/';
     var DonViUri = '/api/DanhMuc/DM_DonViAPI/';
-    var _TenDonVi = null;
     self.newTichDiem = ko.observable(new ModelTichDiem());
     self.newGioiHanTH = ko.observable(new Model_GioiHanTraHang);
     self.newThongTinCH = ko.observable(new modelThongTinCuaHang());
@@ -153,7 +151,6 @@ var ViewModel = function () {
     self.isLeeAuto = ko.observable(VHeader.SubDomain.toLowerCase() === '0973474985');
 
     var dt1 = new Date();
-    var _time = dt1.getFullYear() + "-" + (dt1.getMonth() + 1) + "-" + dt1.getDate();
     self.TodayCS(moment(dt1).format("DD/MM/YYYY"));
     function ajaxHelper(uri, method, data) {
         self.error(''); // Clear error message
