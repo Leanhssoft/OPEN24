@@ -8791,21 +8791,10 @@ var NewModel_BanHangLe = function () {
                 case 25:
                     if (vmThanhToanGara.DaThanhToan === 0 || isNaN(vmThanhToanGara.DaThanhToan)) {
                         tbao.ID_QuyTrinhTruoc = 3;
-                        tbao.ID_QuyTrinhSau = 4;// hoadon --> thanhtoan--> xuatkho
+                        tbao.ID_QuyTrinhSau = 4;// hoadon --> thanhtoan
                     }
 
-                    // hoadon --> xuatkho --> thanhtoan
-                    var tbao2 = {
-                        ID_DonVi: objHD.ID_DonVi,
-                        ID_PhieuTiepNhan: objHD.ID_PhieuTiepNhan,
-                        ID_Xe: objHD.ID_Xe,
-                        BienSo: objHD.BienSo,
-                        ThoiGian: objHD.NgayLapHoaDon,
-                        ID_QuyTrinhTruoc: 3,
-                        ID_QuyTrinhSau: 5,
-                    }
-                    vmThongBao.Create_tblRequest(tbao2);
-
+                    // chua xuatkho
                     if (!objHD.XuatKhoAll) {
                         let tbao3 = {
                             ID_DonVi: objHD.ID_DonVi,
@@ -8813,10 +8802,25 @@ var NewModel_BanHangLe = function () {
                             ID_Xe: objHD.ID_Xe,
                             BienSo: objHD.BienSo,
                             ThoiGian: objHD.NgayLapHoaDon,
-                            ID_QuyTrinhTruoc: 3,
+                            ID_QuyTrinhTruoc: 3,// hoadon --> xuatkho
                             ID_QuyTrinhSau: 5,
                         }
                         vmThongBao.Create_tblRequest(tbao3);
+                    }
+                    else {
+                        // da xuatkho - chua thanhtoan
+                        if (tbao.ID_QuyTrinhTruoc === 3) {
+                            let tbao2 = {
+                                ID_DonVi: objHD.ID_DonVi,
+                                ID_PhieuTiepNhan: objHD.ID_PhieuTiepNhan,
+                                ID_Xe: objHD.ID_Xe,
+                                BienSo: objHD.BienSo,
+                                ThoiGian: objHD.NgayLapHoaDon,
+                                ID_QuyTrinhTruoc: 5,// xuatkho --> thanhtoan
+                                ID_QuyTrinhSau: 4,
+                            }
+                            vmThongBao.Create_tblRequest(tbao2);
+                        }
                     }
                     break;
             }
@@ -29005,7 +29009,7 @@ var NewModel_BanHangLe = function () {
                                     let itemDB = $.grep(sameDV, function (x) {
                                         return x.TenHangHoaThayThe === ct.TenHangHoaThayThe;
                                     });
-                                 
+
                                     if (itemDB.length > 0) {
                                         ct.ID_HoaDon_ChiTiet = itemDB[0].ID;
                                         ct.ID_HoaDon = idHoaDon;
