@@ -1819,6 +1819,23 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 return ActionFalseNotData(ex.ToString());
             }
         }
+        [HttpPost]
+        public IHttpActionResult GetHoaDonBaoGia_ofXeDangSua(ParamSearch param)
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    ClassPhieuTiepNhan classPhieuTN = new ClassPhieuTiepNhan(db);
+                    List<XuatKho_JqautoHDSC> data = classPhieuTN.GetHoaDonBaoGia_ofXeDangSua(param);
+                    return ActionTrueData(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return ActionFalseNotData(ex.ToString());
+            }
+        }
 
         [HttpPost, HttpGet]
         public IHttpActionResult ImageUpload(string rootFolder, string subFolder = null)
