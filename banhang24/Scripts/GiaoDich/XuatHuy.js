@@ -829,6 +829,7 @@ function ViewModel() {
                 ctNew.ID_DonVi = hd.ID_DonVi;
                 ctNew.TongTienHang = hd.TongTienHang;
                 ctNew.ID_PhieuTiepNhan = hd.ID_PhieuTiepNhan;
+                ctNew.ID_Xe = hd.ID_Xe;
                 ctNew.ID_HoaDon = loai === 1 ? '00000000-0000-0000-0000-000000000000' : hd.ID;
                 ctNew.ID_HoaDonSC = hd.ID_HoaDon;
                 ctNew.MaHoaDonSuaChua = hd.MaHoaDonGoc;
