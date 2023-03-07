@@ -220,6 +220,7 @@ var XuatKhoChiTiet = function () {
                             ID_NhanVien: cthd[0].ID_NhanVien,
                             ID_HoaDon: cthd[0].ID_HoaDonSC,
                             ID_PhieuTiepNhan: cthd[0].ID_PhieuTiepNhan,
+                            ID_Xe: cthd[0].ID_Xe,
                             MaHoaDonSuaChua: cthd[0].MaHoaDonSuaChua,
                             DienGiai: cthd[0].DienGiai,
                             BienSo: cthd[0].BienSo,// bienso xe
@@ -238,6 +239,7 @@ var XuatKhoChiTiet = function () {
 
                         self.HangHoaAfterAdd(cthd);
                         Caculator_AmountProduct();
+                        GetTonKho_byIDQuyDois();
                     }
                 }
             }
@@ -1670,6 +1672,7 @@ var XuatKhoChiTiet = function () {
             TongTienHang: 0,
             ID_HoaDon: null,
             ID_PhieuTiepNhan: null,
+            ID_Xe: null,
             MaHoaDonSuaChua: '',
             MaPhieuTiepNhan: '',
             BienSo: '',
@@ -1731,6 +1734,7 @@ var XuatKhoChiTiet = function () {
                 TongTienHang: 0,
                 ID_HoaDon: null,
                 ID_PhieuTiepNhan: null,
+                ID_Xe: null,
                 MaHoaDonSuaChua: '',
                 MaPhieuTiepNhan: '',
                 BienSo: '',
@@ -2938,6 +2942,7 @@ var XuatKhoChiTiet = function () {
                     hd[0].MaHoaDonSuaChua = item.MaHoaDon;
                     hd[0].BienSo = item.BienSo;
                     hd[0].ID_HoaDon = item.ID;
+                    hd[0].ID_Xe = item.ID_Xe;
                     hd[0].HasTPDinhLuong = exTPDL.length > 0;
                     hd[0].NgayLapHoaDon = moment(new Date()).format('DD/MM/YYYY HH:mm');
 
@@ -2959,6 +2964,7 @@ var XuatKhoChiTiet = function () {
                         MaHoaDonSuaChua: item.MaHoaDon,
                         MaPhieuTiepNhan: item.MaPhieuTiepNhan,
                         BienSo: item.BienSo,
+                        ID_Xe: item.ID_Xe,
                         NguoiTao: _userLogin,
                         LoaiHoaDon: 8,
                         DienGiai: '',
