@@ -223,7 +223,7 @@
             }
             return {};
         },
-        UpdatePhieuTiepNhan: function (thongtin, hangmuc, vatdung) {
+        UpdatePhieuTiepNhan: function (thongtin, hangmuc=[], vatdung=[]) {
             var self = this;
             self.isNew = false;
             self.saveOK = false;
