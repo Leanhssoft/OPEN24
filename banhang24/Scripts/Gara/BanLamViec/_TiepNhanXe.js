@@ -13,7 +13,7 @@
         self.isLeeAuto = false;
         let idDonVi = $('#txtDonVi').val();
         if (commonStatisJs.CheckNull(idDonVi)) {
-            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === '0973474985'
+            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === 'leeauto'
         }
     },
     data: {

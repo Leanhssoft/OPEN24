@@ -16,14 +16,14 @@
         self.ToDay = new Date();
         if (commonStatisJs.CheckNull(self.SubDomain)) {
             self.SubDomain = VHeader.SubDomain;
-            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === '0973474985';
+            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === 'leeauto';
             self.inforLogin.ID_DonVi = VHeader.IdDonVi;
 
             self.role.KhachHang.ThemMoi = VHeader.Quyen.indexOf('KhachHang_ThemMoi') > -1;
             self.role.KhachHang.CapNhat = VHeader.Quyen.indexOf('KhachHang_CapNhat') > -1;
         }
         else {
-            self.isLeeAuto = self.SubDomain.toLowerCase() === '0973474985';
+            self.isLeeAuto = self.SubDomain.toLowerCase() === 'leeauto';
         }
 
         self.PageLoad();

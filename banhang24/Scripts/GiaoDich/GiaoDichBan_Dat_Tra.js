@@ -12,7 +12,7 @@
     var _IDNguoiDung = $('.idnguoidung').text();
     var DiaryUri = '/api/DanhMuc/SaveDiary/';
     self.TodayBC = ko.observable('Toàn thời gian');
-    self.isLeeAuto = ko.observable(VHeader.SubDomain.toLowerCase()==='0973474985');
+    self.isLeeAuto = ko.observable(VHeader.SubDomain.toLowerCase() ==='leeauto');
     self.ShopCookie = ko.observable($('#txtShopCookie').val());
     self.TenChiNhanh = ko.observableArray();
     self.HoaDons = ko.observableArray();

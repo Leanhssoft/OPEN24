@@ -148,7 +148,7 @@ var ViewModel = function () {
     self.selectedNKH = ko.observable();
     self.TodayCS = ko.observable();
 
-    self.isLeeAuto = ko.observable(VHeader.SubDomain.toLowerCase() === '0973474985');
+    self.isLeeAuto = ko.observable(VHeader.SubDomain.toLowerCase() === 'leeauto');
 
     var dt1 = new Date();
     self.TodayCS(moment(dt1).format("DD/MM/YYYY"));

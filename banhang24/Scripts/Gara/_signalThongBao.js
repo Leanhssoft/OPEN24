@@ -8,11 +8,11 @@
         self.tblSetUpThongBao = [];
 
         if (commonStatisJs.CheckNull($('#subDomain').val())) {
-            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === '0973474985';
+            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === 'leeauto';
         }
         else {
             self.hasHeader = false;
-            self.isLeeAuto = $('#subDomain').val().toLowerCase() === '0973474985';
+            self.isLeeAuto = $('#subDomain').val().toLowerCase() === 'leeauto';
         }
 
         if (self.isLeeAuto) {

@@ -33,7 +33,7 @@
             ID_NhanVien: VHeader.IdNhanVien,
         };
         self.onRefresh = true;
-        self.isLeeAuto = VHeader.SubDomain.toLowerCase() === '0973474985';
+        self.isLeeAuto = VHeader.SubDomain.toLowerCase() === 'leeauto';
         self.PageLoad();
     },
     data: {
