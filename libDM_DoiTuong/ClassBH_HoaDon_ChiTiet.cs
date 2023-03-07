@@ -977,6 +977,7 @@ namespace libDM_DoiTuong
         public DateTime? NgaySanXuat { get; set; }
         public DateTime? NgayHetHan { get; set; }
         public double? GiaBanHH { get; set; } /// used to nhaphang from hoadon
+        public string ViTriKho { get; set; } // used to nhaphang from hoadon
     }
 
     public class SP_InvoiceNewest
