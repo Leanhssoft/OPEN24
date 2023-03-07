@@ -63,7 +63,7 @@
         self.isLeeAuto = false;
         let idDonVi = $('#txtDonVi').val();
         if (commonStatisJs.CheckNull(idDonVi)) {
-            self.isLeeAuto = VHeader.SubDomain.toLowerCase() ==='0973474985'
+            self.isLeeAuto = VHeader.SubDomain.toLowerCase() ==='leeauto'
 
             self.inforLogin = {
                 ID_NhanVien: VHeader.IdNhanVien,
@@ -546,7 +546,8 @@ $(function () {
             }
             vmThemMoiXe.manufacturerName = newObj.TenHangXe;
             vmThemMoiXe.newCar.ID_HangXe = newObj.ID;
-            if (!vmHangXe.isNew && newObj.ID !== null && newObj.ID !== Guid_Empty) {
+
+            if (newObj.ID !== null && newObj.ID !== const_GuidEmpty) {
                 for (let i = 0; i < vmThemMoiXe.listData.HangXe.length; i++) {
                     if (vmThemMoiXe.listData.HangXe[i].ID === vmHangXe.ID) {
                         vmThemMoiXe.listData.HangXe.splice(i, 1);
@@ -566,7 +567,8 @@ $(function () {
             }
             vmThemMoiXe.typeCarName = vmLoaiXe.TenLoaiXe;
             vmThemMoiXe.newCar.ID_LoaiXe = vmLoaiXe.ID;
-            if (!vmLoaiXe.isNew && newObj.ID !== null && newObj.ID !== Guid_Empty) {
+
+            if (newObj.ID !== null && newObj.ID !== const_GuidEmpty) {
                 for (let i = 0; i < vmThemMoiXe.listData.LoaiXe.length; i++) {
                     if (vmThemMoiXe.listData.LoaiXe[i].ID === vmLoaiXe.ID) {
                         vmThemMoiXe.listData.LoaiXe.splice(i, 1);
