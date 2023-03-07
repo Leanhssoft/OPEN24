@@ -540,7 +540,7 @@
                 <li v-for="item in ListThongBao.data">
                     <div class="op-thongbao-item" v-bind:class="{ 'op-thongbao-dadoc':  !item.DaDoc }">
                         <div class="op-thongbao-image">
-                            <span v-if="SubDomain.toLowerCase() === '0973474985'">
+                            <span v-if="SubDomain.toLowerCase() === 'leeauto'">
                                 <i class="fal fa-cart-plus fa-2x" v-if="item.LoaiThongBao == 0"></i>
                                 <i class="fal fa-dolly-flatbed-alt fa-2x" v-if="item.LoaiThongBao == 1"></i>
                                 <i class="fal fa-birthday-cake fa-2x" v-if="item.LoaiThongBao == 3"></i>
@@ -553,10 +553,11 @@
                                 <i class="fal fa-reply fa-2x" v-if="item.LoaiThongBao == 10"></i>@*xuatxuong*@
                             </span>
                             <span v-else>
-                                <i class="fal fa-birthday-cake fa-2x" v-if="item.LoaiThongBao == 3"></i>
                                 <i class="fal fa-cart-plus fa-2x" v-if="item.LoaiThongBao == 0"></i>
                                 <i class="fal fa-dolly-flatbed-alt fa-2x" v-if="item.LoaiThongBao == 1"></i>
-                                <i class="fab fa-fedex fa-2x" v-if="item.LoaiThongBao == 1"></i>
+                                <i class="fab fa-fedex fa-2x" v-if="item.LoaiThongBao == 2"></i>
+                                <i class="fal fa-birthday-cake fa-2x" v-if="item.LoaiThongBao == 3"></i>
+                                <i class="fal fa-tools fa-2x" v-if="item.LoaiThongBao == 4"></i>
                             </span>
                         </div>
                         <div>
@@ -1056,7 +1057,7 @@ var VHeader = new Vue({
         GetThongBao: function () {
             let self = this;
 
-            if (self.SubDomain.toLowerCase() === '0973474985') {
+            if (self.SubDomain.toLowerCase() === 'leeauto') {
                 let param = {
                     ID_DonVi: self.IdDonVi,
                     ID_NguoiDung: self.IdNguoiDung,
