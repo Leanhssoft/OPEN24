@@ -2697,7 +2697,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
                     ClassBH_HoaDon_ChiTiet classhoadonchitiet = new ClassBH_HoaDon_ChiTiet(db);
 
-                    var cthd = classhoadon.GetCTHDSuaChua_afterXuatKho(idHoaDon);
+                    List<BH_HoaDon_ChiTietDTO> cthd = classhoadon.GetCTHDSuaChua_afterXuatKho(idHoaDon);
                     // get tpdinhluong
                     foreach (var item in cthd)
                     {
@@ -5036,7 +5036,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 GiaVon = item.GiaVon,
                                 ID_LoHang = item.ID_LoHang == null ? null : item.ID_LoHang,
                                 GhiChu = item.GhiChu,
-                                TenHangHoaThayThe = item.TenHangHoaThayThe
+                                TenHangHoaThayThe = item.TenHangHoaThayThe,
+                                ID_ChiTietDinhLuong = item.ID_ChiTietDinhLuong,
+                                ID_ChiTietGoiDV = item.ID_ChiTietGoiDV
                             };
                             double GiaNhapTB = ctHoaDon.DonGia / dvqd.TyLeChuyenDoi;
                             if (newHD.ChoThanhToan == false)
@@ -7633,7 +7635,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 }
             }
         }
-        
+
         #endregion
         [HttpPost, HttpGet]
         public string Check_Exist([FromBody] JObject data)
