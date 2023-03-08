@@ -28,6 +28,7 @@ var workTable = new Vue({
             BaoGia: { ThemMoi: true, Duyet: true, XuLy: true, CapNhat: true, In: true },
             HoaDon: { ThemMoi: true, SuaDoi: true, In: true },
             XuatKho: {},
+            NhapHang: { ThemMoi: true, },
         };
 
         self.PageLoad();
@@ -109,6 +110,7 @@ var workTable = new Vue({
                     self.role.PhieuTiepNhan.In = self.CheckRole('PhieuTiepNhan_In');
                     self.role.BaoGia.ThemMoi = self.CheckRole('DatHang_ThemMoi');
                     self.role.HoaDon.ThemMoi = self.CheckRole('HoaDon_ThemMoi');
+                    self.role.NhapHang.ThemMoi = self.CheckRole('NhapHang_ThemMoi');
                 }
             });
         }
@@ -387,6 +389,11 @@ var workTable = new Vue({
                 PageSize: 20,
             };
         },
+        filter_DanhSachPTN: function () {
+            let self = this;
+            self.Paging_PhieuSuaChua.CurrentPage = 1;
+            self.Gara_GetListPhieuTiepNhan(true);
+        },
         PhieuTiepNhan_ChangePage: function (value) {
             var self = this;
             if (self.Paging_PhieuSuaChua.CurrentPage !== value.currentPage) {
@@ -405,11 +412,16 @@ var workTable = new Vue({
             paramPhieuSC.TrangThais = self.filterTrangThai;
             paramPhieuSC.PageSize = self.Paging_PhieuSuaChua.PageSize;
 
+            let txt = self.textSearch;
             let bienso = localStorage.getItem('findBienSo');
             if (!commonStatisJs.CheckNull(bienso)) {
+                txt = bienso;
                 self.textSearch = bienso;
             }
-            paramPhieuSC.TextSearch = self.textSearch;
+            if (!commonStatisJs.CheckNull(txt)) {
+                txt = txt.trim();
+            }
+            paramPhieuSC.TextSearch = txt;
 
             ajaxHelper(self.GaraAPI + "GetListPhieuTiepNhan_v2", 'POST', paramPhieuSC).done(function (x) {
                 localStorage.removeItem('findBienSo');
@@ -1265,7 +1277,6 @@ var workTable = new Vue({
             newObj.ID_Xe = self.listData.ThongTinXe.ID_Xe;
 
             var tonggiamgiahang = 0, tongtienhangchuaCK = 0;
-            var chitiets = [];
             ajaxHelper(self.HoaDonAPI + 'GetCTHoaDon_afterDatHang?idHoaDon=' + item.ID).done(function (data) {
                 if (data.length > 0) {
                     var cthd = data.sort(function (a, b) {
@@ -1426,6 +1437,7 @@ var workTable = new Vue({
                     localStorage.setItem('lcCTDatHang', JSON.stringify(cthd_XLBG));
                     localStorage.setItem('lcXuLiDonHang', JSON.stringify(hd_XLBG));
                     localStorage.setItem('maHDCache', item.MaHoaDon);// used to get at gara.js (phieu dang xuly)
+                    self.CheckExistCacheHD_atGara(item);
                     self.GotoGara('TN_xulyBG');
                 }
             });
@@ -1437,6 +1449,35 @@ var workTable = new Vue({
                 return x;
             })
             return xx;
+        },
+        CheckExistCacheHD_atGara: function (item) {
+            var lstHD = localStorage.getItem('gara_lstHDLe');
+            var cthd = localStorage.getItem('gara_lstCTHDLe');
+            if (lstHD !== null) {
+                lstHD = JSON.parse(lstHD);
+            }
+            else {
+                lstHD = [];
+            }
+            if (cthd !== null) {
+                cthd = JSON.parse(cthd);
+            }
+            else {
+                cthd = [];
+            }
+            let ex = $.grep(lstHD, function (x) {
+                return x.ID === item.ID;
+            });
+            if (ex.length > 0) {
+                lstHD = $.grep(lstHD, function (x) {
+                    return x.ID !== item.ID;
+                });
+                cthd = $.grep(cthd, function (x) {
+                    return x.IDRandomHD !== ex[0].IDRandom;
+                });
+                localStorage.setItem('gara_lstHDLe', JSON.stringify(lstHD));
+                localStorage.setItem('gara_lstCTHDLe', JSON.stringify(cthd));
+            }
         },
         CapNhatHoaDon: async function (item, loaiHD) {
             let self = this;
@@ -1626,6 +1667,8 @@ var workTable = new Vue({
 
                     localStorage.setItem('lcHDSaoChep', JSON.stringify(newObj));
                     localStorage.setItem('lcCTHDSaoChep', JSON.stringify(chitiets));
+
+                    self.CheckExistCacheHD_atGara(item);
                     self.GotoGara('TN_updateHD');
                 }
             });
@@ -2544,10 +2587,60 @@ var workTable = new Vue({
                 };
             }
         },
+        CheckHD_onlyDichVu: function () {
+            let self = this;
+            let cthd = self.listData.HoaDonChiTiets;
+            let arr = [];
+            for (let i = 0; i < cthd.length; i++) {
+                let forOut = cthd[i];
+                switch (parseInt(forOut.LoaiHangHoa)) {
+                    case 1:
+                        arr.push(forOut);
+                        break;
+                    case 2:
+                        if (!commonStatisJs.CheckNull(forOut.ThanhPhan_DinhLuong)) {
+                            for (let j = 0; j < forOut.ThanhPhan_DinhLuong.length; j++) {
+                                let forIn = forOut.ThanhPhan_DinhLuong[j];
+                                arr.push(forIn);
+                            }
+                        }
+                        break;
+                    case 3:
+                        let combo = $.grep(vmThanhPhanCombo.AllComBo_ofHD, function (x) {
+                            return x.ID_ParentCombo === forOut.ID_ParentCombo;
+                        });
+
+                        if (combo.length > 0) {
+                            for (let k = 0; k < combo.length; k++) {
+                                let for1 = combo[k];
+                                switch (parseInt(for1.LoaiHangHoa)) {
+                                    case 1:
+                                        arr.push(for1);
+                                        break;
+                                    case 2:
+                                        if (!commonStatisJs.CheckNull(for1.ThanhPhan_DinhLuong)) {
+                                            for (let j = 0; j < for1.ThanhPhan_DinhLuong.length; j++) {
+                                                let forIn = for1.ThanhPhan_DinhLuong[j];
+                                                arr.push(forIn);
+                                            }
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                        break;
+                }
+            }
+
+            if (arr.length === 0) {
+                commonStatisJs.ShowMessageDanger('Hóa đơn chỉ bao gồm dịch vụ. Không thể nhập kho');
+                return false;
+            }
+            return true;
+        },
         NhapHang: function (item) {
             var self = this;
             let cthd = self.listData.HoaDonChiTiets;
-            console.log(cthd)
             var arr = [];
             for (let i = 0; i < cthd.length; i++) {
                 let forOut = cthd[i];
@@ -2591,7 +2684,7 @@ var workTable = new Vue({
             }
 
             if (arr.length === 0) {
-                commonStatisJs.ShowMessageDanger('Hóa đơn chỉ bao gồm dịch vụ. Không thể xuất kho');
+                commonStatisJs.ShowMessageDanger((item.LoaiHoaDon === 3 ? 'Báo giá' : 'Hóa đơn') + 'chỉ bao gồm dịch vụ. Không thể nhập kho');
                 return;
             }
 
@@ -2602,7 +2695,6 @@ var workTable = new Vue({
             let cthdLoHang = [], arrIDQuiDoi = [];
             for (let i = 0; i < arr.length; i++) {
                 var ctNew = $.extend({}, arr[i]);
-                delete ctNew["ID"];
                 ctNew.TenDoiTuong = '';
                 ctNew.TongTienHangChuaCK = 0;
                 ctNew.TongGiamGiaHang = 0;
@@ -2668,6 +2760,7 @@ var workTable = new Vue({
                 ctNew.DonGia = ctNew.GiaNhap;
                 ctNew.ThanhTien = ctNew.SoLuong * ctNew.GiaNhap;
                 ctNew.ThanhToan = ctNew.ThanhTien;
+                delete ctNew["ID"];
 
                 if ($.inArray(ctNew.ID_DonViQuiDoi, arrIDQuiDoi) === -1) {
                     arrIDQuiDoi.unshift(ctNew.ID_DonViQuiDoi);
@@ -2683,7 +2776,8 @@ var workTable = new Vue({
                 else {
                     // find in cthdLoHang with same ID_QuiDoi
                     for (let j = 0; j < cthdLoHang.length; j++) {
-                        if (cthdLoHang[j].ID_DonViQuiDoi === ctNew.ID_DonViQuiDoi) {
+                        let itFor = cthdLoHang[j];
+                        if (itFor.ID_DonViQuiDoi === ctNew.ID_DonViQuiDoi) {
                             if (quanLiTheoLo) {
                                 let exLo = false;
                                 for (let k = 0; k < cthdLoHang[j].DM_LoHang.length; k++) {
@@ -2692,6 +2786,14 @@ var workTable = new Vue({
                                         exLo = true;
                                         cthdLoHang[j].DM_LoHang[k].SoLuong = forLot.SoLuong + ctNew.SoLuong;
                                         cthdLoHang[j].DM_LoHang[k].ThanhTien = cthdLoHang[j].DM_LoHang[k].SoLuong * forLot.GiaNhap;
+                                        cthdLoHang[j].DM_LoHang[k].ThanhToan = cthdLoHang[j].DM_LoHang[k].ThanhTien;
+
+                                        // if lot parent
+                                        if (itFor.ID_LoHang === ctNew.ID_LoHang) {
+                                            cthdLoHang[j].SoLuong = itFor.SoLuong + ctNew.SoLuong;
+                                            cthdLoHang[j].ThanhTien = cthdLoHang[j].SoLuong * cthdLoHang[j].DonGia;
+                                            cthdLoHang[j].ThanhToan = cthdLoHang[j].ThanhTien;
+                                        }
                                     }
                                 }
                                 if (!exLo) {
@@ -2711,6 +2813,16 @@ var workTable = new Vue({
                         }
                     }
                 }
+            }
+
+            // nhaphang from baogia/hoadon
+            if (cthdLoHang.length > 0) {
+                cthdLoHang[0].ID_HoaDonGoc = item.ID;
+                cthdLoHang[0].ID_Xe = self.listData.ThongTinXe.ID_Xe;
+                cthdLoHang[0].ID_PhieuTiepNhan = item.ID_PhieuTiepNhan;
+                cthdLoHang[0].MaPhieuTiepNhan = item.MaPhieuTiepNhan;
+                cthdLoHang[0].BienSo = item.BienSo;
+                cthdLoHang[0].MaHoaDonSuaChua = item.MaHoaDon;
             }
 
             localStorage.setItem('lc_CTSaoChep', JSON.stringify(cthdLoHang));
@@ -2849,7 +2961,7 @@ $(function () {
                 }
             }
 
-            if (VHeader.SubDomain.toLowerCase() === '0973474985') {
+            if (VHeader.SubDomain.toLowerCase() === 'leeauto') {
                 vmNhatKyBaoDuong.Insert_LichNhacBaoDuong_TheoXe(obj);
             }
 
