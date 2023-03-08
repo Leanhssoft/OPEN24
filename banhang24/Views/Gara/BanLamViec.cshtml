@@ -116,9 +116,9 @@
                         <div class="op-search" style="position:relative">
                             <input type="text" class="form-control"
                                    placeholder="Tìm kiếm" aria-label="Tìm kiếm xe"
-                                   v-model="textSearch" v-on:keyup.enter="Gara_GetListPhieuTiepNhan">
+                                   v-model="textSearch" v-on:keyup.enter="$root.filter_DanhSachPTN">
                             <button class="op-search-button">
-                                <i class="material-icons" style="font-size:18px; color:white;" v-on:click="Gara_GetListPhieuTiepNhan">search</i>
+                                <i class="material-icons" style="font-size:18px; color:white;" v-on:click="$root.filter_DanhSachPTN">search</i>
                             </button>
                         </div>
                     </div>
@@ -311,6 +311,11 @@
                                                 <i class="material-icons" style="display:none">gavel</i>
                                                 <p>Duyệt</p>
                                             </a>
+                                            @*<a title="Nhập hàng"
+                                               v-on:click="NhapHang(item)"
+                                               v-if="$root.role.HoaDon.NhapHang && item.YeuCau!=='3' && item.TrangThai ==='0'">
+                                                <i class="fal fa-cart-plus"></i> Nhập hàng
+                                            </a>*@
                                             <a title="Thanh toán"
                                                v-on:click="showModalThanhToan(item)"
                                                v-if="$root.role.HoaDon.ThanhToan && item.YeuCau!=='3' && item.TrangThai ==='0'">

@@ -26,9 +26,8 @@ var workTable = new Vue({
                 XuatXuong: true
             },
             BaoGia: { ThemMoi: true, Duyet: true, XuLy: true, CapNhat: true, In: true },
-            HoaDon: { ThemMoi: true, SuaDoi: true, In: true },
+            HoaDon: { ThemMoi: true, SuaDoi: true, In: true, NhapHang: true },
             XuatKho: {},
-            NhapHang: { ThemMoi: true, },
         };
 
         self.PageLoad();
@@ -110,7 +109,6 @@ var workTable = new Vue({
                     self.role.PhieuTiepNhan.In = self.CheckRole('PhieuTiepNhan_In');
                     self.role.BaoGia.ThemMoi = self.CheckRole('DatHang_ThemMoi');
                     self.role.HoaDon.ThemMoi = self.CheckRole('HoaDon_ThemMoi');
-                    self.role.NhapHang.ThemMoi = self.CheckRole('NhapHang_ThemMoi');
                 }
             });
         }
