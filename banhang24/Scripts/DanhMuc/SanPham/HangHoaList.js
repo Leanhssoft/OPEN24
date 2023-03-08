@@ -14377,21 +14377,20 @@ var ViewModel = function () {
     }
 
     self.CapNhatTonKho = function (item) {
-        let lenTK = self.TheKhos().length;
+        let saiTK = $.grep(self.TheKhos(), (x) => {
+            return x.LuyKeTonKho !== tk.TonKho;
+        });
+
         let itemTK = {};
         // tìm đến dòng đầu tiên bị sai lũy kế
-        for (let i = lenTK - 1; i > -1; i--) {
-            let tk = self.TheKhos()[i];
+        for (let i = saiTK.length - 1; i > 0; i--) {
+            let tk = saiTK[i];
             if (tk.LuyKeTonKho !== tk.TonKho) {
-                if (i === lenTK - 1) {
-                    itemTK = tk;
-                }
-                else {
-                    itemTK = self.TheKhos()[i + 1];
-                }
+                itemTK = tk;
                 break;
             }
         }
+
         if (!$.isEmptyObject(itemTK)) {
             let diary = {
                 ID_DonVi: itemTK.ID_DonVi,
