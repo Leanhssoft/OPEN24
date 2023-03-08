@@ -73,7 +73,10 @@
                     </div>
                     <div class="col-lg-6 col-sm-12 col-xs-12 nopadding">
                         <div class="gara-detail-information">
-                            <label>Số khung</label>
+                            <label>
+                                Số khung
+                                <span class="red" v-if="$root.isLeeAuto"> (*) </span>
+                            </label>
                             <input type="text" class="form-control search-line" autocomplete="off"
                                    v-model="newCar.SoKhung" />
                         </div>
@@ -120,7 +123,7 @@
                                     </label>
                                 </div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="cbxekh" value="1" v-model="newCar.NguoiSoHuu" id="cbxegara" style="margin: 4px 0 0;"/>
+                                    <input class="form-check-input" type="radio" name="cbxekh" value="1" v-model="newCar.NguoiSoHuu" id="cbxegara" style="margin: 4px 0 0;" />
                                     <label class="form-check-label" for="cbxegara">
                                         Xe gara
                                     </label>
