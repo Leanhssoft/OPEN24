@@ -2496,45 +2496,6 @@ BEGIN
     				--order by b.ngaytao desc
 END");
 
-            Sql(@"ALTER PROCEDURE [dbo].[getListDanhSachHHImport]
-    @MaLoHangIP [nvarchar](max),
-    @MaHangHoaIP [nvarchar](max),
-    @ID_DonViIP [uniqueidentifier],
-    @TimeIP [datetime]
-AS
-BEGIN
-    
-    select 
-    	dvqd.ID as ID_DonViQuiDoi,
-    	hh.ID as ID,
-    	lh.ID as ID_LoHang,
-    	case when hh.QuanLyTheoLoHang is null then 'false' else hh.QuanLyTheoLoHang end as QuanLyTheoLoHang,
-    	dvqd.MaHangHoa,
-    	hh.TenHangHoa,
-    	dvqd.ThuocTinhGiaTri as ThuocTinh_GiaTri,
-    	dvqd.TenDonViTinh,
-    		dvqd.TyLeChuyenDoi,
-    		dvqd.GiaNhap,
-			dvqd.GiaBan,
-    	Case when lh.ID is null then '' else lh.MaLoHang end as MaLoHang,
-    	Case when gv.ID is null then 0 else Cast(round(gv.GiaVon, 0) as float) end as GiaVon,
-    		hhtonkho.TonKho as TonKho,
-    		Case when lh.ID is null then'' else lh.NgayHetHan end as NgayHetHan,
-			Case when lh.ID is null then'' else lh.NgaySanXuat end as NgaySanXuat
-    	FROM 
-
-    	DonViQuiDoi dvqd 
-    	inner join DM_HangHoa hh on dvqd.ID_HangHoa = hh.ID
-    		left join DM_LoHang lh on lh.ID_HangHoa = hh.ID and lh.MaLoHang = @MaLoHangIP 
-    		left join DM_GiaVon gv on (dvqd.ID = gv.ID_DonViQuiDoi and (lh.ID = gv.ID_LoHang or gv.ID_LoHang is null) and gv.ID_DonVi = @ID_DonViIP)
-			left join DM_HangHoa_TonKho hhtonkho on dvqd.ID = hhtonkho.ID_DonViQuyDoi and (hhtonkho.ID_LoHang = gv.ID_LoHang or gv.ID_LoHang is null) and hhtonkho.ID_DonVi = @ID_DonViIP
-    	where dvqd.MaHangHoa = @MaHangHoaIP 
-    		and dvqd.Xoa = 0
-    		and hh.TheoDoi = 1 
-    	order by NgayHetHan
-   
-END");
-
             Sql(@"ALTER PROCEDURE [dbo].[GetListSuDungThe]
     @ID_DoiTuong [nvarchar](max),
 	@FromDate datetime,
