@@ -1184,7 +1184,6 @@ var ViewModel = function () {
         $(this).closest('div').next().show();
     });
     self.DemSoTinGui = function (sokitu) {
-        let arrMessCount = [160, 306, 459, 612];
         return (arrMessCount.length - arrMessCount.filter(p => p >= sokitu).length) + 1;
     }
     self.GuiTinNhan = function () {
