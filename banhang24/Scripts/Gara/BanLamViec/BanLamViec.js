@@ -70,9 +70,6 @@ var workTable = new Vue({
 
         $.getJSON("/api/DanhMuc/ThietLapApi/GetListMauIn?typeChungTu=PTN&idDonVi=" + self.ID_DonVi, function (data) {
             self.MauIn.PhieuTiepNhan = data;
-        });
-
-        $.getJSON("/api/DanhMuc/ThietLapApi/GetListMauIn?typeChungTu=PBGX&idDonVi=" + self.ID_DonVi, function (data) {
             vmXuatXuong.MauIn.ListMauIn = data;
         });
 
@@ -109,6 +106,12 @@ var workTable = new Vue({
                     self.role.PhieuTiepNhan.In = self.CheckRole('PhieuTiepNhan_In');
                     self.role.BaoGia.ThemMoi = self.CheckRole('DatHang_ThemMoi');
                     self.role.HoaDon.ThemMoi = self.CheckRole('HoaDon_ThemMoi');
+
+                    self.role.BaoGia.CapNhat = self.CheckRole('DatHang_CapNhat');
+                    self.role.BaoGia.In = self.CheckRole('DatHang_In');
+                    self.role.BaoGia.Xoa = self.CheckRole('DatHang_Xoa');
+                    self.role.BaoGia.XuLy = self.CheckRole('DatHang_TaoHoaDon');
+                    self.role.BaoGia.Duyet = self.CheckRole('DatHang_DuyetBaoGia');
                 }
             });
         }
@@ -2014,7 +2017,6 @@ var workTable = new Vue({
             objPrint.TongCong = formatNumber(tongcong);
             objPrint.TongThanhToan = formatNumber(tongcong);
             objPrint.BH_TienBangChu = DocSo(hdChosing.PhaiThanhToanBaoHiem);
-            //objPrint.KH_TienBangChu = DocSo(hdChosing.PhaiThanhToan);
             objPrint.BH_ConThieu = formatNumber3Digit(hdChosing.PhaiThanhToanBaoHiem - hdChosing.BaoHiemDaTra);
 
             let conno = formatNumberToInt(hdChosing.TongThanhToan) - daThanhToan - hdChosing.BaoHiemDaTra;
@@ -2028,6 +2030,9 @@ var workTable = new Vue({
             objPrint.ThuDatHang = hdChosing.ThuDatHang;
             objPrint.PhaiThanhToan_TruCocBG = hdChosing.PhaiThanhToan - formatNumberToFloat(hdChosing.ThuDatHang);
             objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCocBG);
+            if (hdChosing.LoaiHoaDon === 3) {
+                objPrint.KH_TienBangChu = DocSo(objPrint.TienKhachThieu);
+            }
 
             let mat = 0, pos = 0, ck = 0, tgt = 0, coc = 0, diem = 0;
             mat = hdChosing.Khach_TienMat + hdChosing.BH_TienMat;
