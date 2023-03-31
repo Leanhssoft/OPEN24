@@ -284,7 +284,7 @@ var NhapHangChiTiet = function () {
 
     self.role_NhapKhoNoiBo = ko.observable(VHeader.Quyen.indexOf('NhapKhoNoiBo') > -1);
     self.role_NhapHangKhachThua = ko.observable(VHeader.Quyen.indexOf('NhapHangKhachThua') > -1);
-    self.role_InsertSoQuy = ko.observable(VHeader.Quyen.indexOf('SoQuy_ThemMoi') > -1);
+    self.role_InsertSoQuy = ko.observable(false);
 
     self.ListTypePurchase = ko.observableArray([
         { ID: 4, Text: 'Nhập hàng nhà cung cấp' },
@@ -795,6 +795,7 @@ var NhapHangChiTiet = function () {
                     self.Quyen_NguoiDung(data);
                     self.HangHoa_GiaBan(CheckQuyenExist('HangHoa_GiaBan'));
                     self.HangHoa_GiaNhap(CheckQuyenExist('HangHoa_GiaNhap'));
+                    self.role_InsertSoQuy(CheckQuyenExist('SoQuy_ThemMoi'));
 
                     switch (self.LoaiHoaDonMenu()) {
                         case 4:
