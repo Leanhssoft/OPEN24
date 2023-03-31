@@ -144,6 +144,7 @@ namespace libGara
         public int TotalRow { get; set; }
         public double TotalPage { get; set; }
         public Guid? ID_DonVi { get; set; }
+        public string XuatXuong_GhiChu { get; set; }
     }
 
     public class GetListPhieuTiepNhan_v2_Export
