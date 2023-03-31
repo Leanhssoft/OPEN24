@@ -99,6 +99,7 @@
             else {
                 item3.NgayXuatXuongDuKien = '';
             }
+            item3.XuatXuong_GhiChu = self.phieuXuat.XuatXuong_GhiChu;
             console.log(2, item3)
 
             ajaxHelper(url, 'GET').done(function (result) {
@@ -111,6 +112,7 @@
                     " var item5= ", JSON.stringify(item5), ' ;',
                     " </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
+                data = data.replace("{XuatXuong_GhiChu}", "<span data-bind=\"text: $root.InforHDprintf().XuatXuong_GhiChu\"></span>");
                 PrintExtraReport(data);
             });
             self.XuatXuong();
