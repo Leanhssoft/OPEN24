@@ -1639,6 +1639,21 @@
             case "khachdatra":
                 self.columsort("KhachDaTra");
                 break;
+            case "tienmat":
+                self.columsort("TienMat");
+                break;
+            case "chuyenkhoan":
+                self.columsort("ChuyenKhoan");
+                break;
+            case "pos":
+                self.columsort("TienATM");
+                break;
+            case "thegiatri":
+                self.columsort("ThuTuThe");
+                break;
+            case "butruTraHang":
+                self.columsort("TongTienHDTra");
+                break;
         }
 
         SortGrid(id);
