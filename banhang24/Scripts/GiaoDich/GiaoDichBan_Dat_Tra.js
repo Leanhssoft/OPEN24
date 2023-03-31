@@ -2435,13 +2435,7 @@
     }
 
     self.GetLichSuThanhToan = function (item) {
-        // neu hdDoiTra (tra > mua): khong get lichsu thanhtoan
-        if (item.PhaiThanhToan !== 0 || item.TongThanhToan !== 0) {
-            GetLichSuThanhToan(item.ID, item.ID_HoaDon);
-        }
-        else {
-            self.LichSuThanhToan([]);
-        }
+        GetLichSuThanhToan(item.ID, item.ID_HoaDon);
     }
     self.GetLichSuTraHang = function () {
         GetLichSuTraHang(item.ID);
