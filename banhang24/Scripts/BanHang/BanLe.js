@@ -15761,12 +15761,6 @@ var NewModel_BanHangLe = function () {
         $('#promotiont').modal('show');
         // reset self.ListKM_ofHangHoa
         self.ListKM_ofHangHoa([]);
-        var dtNow = new Date();
-        var _month = (dtNow.getMonth() + 1).toString(); // 1-12 (+1 because getMoth() return 0-11)
-        var _date = (dtNow.getDate()).toString(); // 1- 31
-        var _hours = (dtNow.getHours()).toString(); // 1-24
-        var _day = (dtNow.getDay() + 1).toString(); // mon:2, tues:3, wed:4, thur:5, fri:6, sat: 7, sun: 8
-        var _weekofMonth = Math.ceil(dtNow.getDate() / 7); // get week of Month ( 1- 5);
         if (self.KM_KMApDung().length === 0) {
             GetList_KMApDung();
         }
@@ -16015,8 +16009,10 @@ var NewModel_BanHangLe = function () {
             for (let i = 0; i < itemKM[0].DM_KhuyenMai_ChiTiet.length; i++) {
                 let itemCTKM = itemKM[0].DM_KhuyenMai_ChiTiet[i];
                 if (itemCTKM.ID === isKMNhom.ID_ChiTietKM) {
-                    idNhomHHTang.push(itemCTKM.ID_NhomHangHoa);
-                    idNhomHHTang.push(itemCTKM.ID_DonViQuiDoi);
+                    // if muanhom - tanghang: get all hang dc tang
+                    for (let k = 0; k < itemKM[0].DM_KhuyenMai_ChiTiet.length; k++) {
+                        idNhomHHTang.push(itemKM[0].DM_KhuyenMai_ChiTiet[k].ID_DonViQuiDoi);
+                    }
                     self.SoLuongMua(itemCTKM.SoLuongMua);// assign SLTang, SLMua to do check Add HHTang
                     self.SoLuongTang(itemCTKM.SoLuong);
                     self.IsTangTheoNhom(true);
