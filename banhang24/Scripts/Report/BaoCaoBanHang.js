@@ -1421,6 +1421,9 @@
             case 9:
                 MenuLeft_ShowSearchHang();
                 ajaxHelper(ReportUri + "BaoCaoHangKhuyenMai", "POST", array_Seach).done(function (data) {
+                    LoadingForm(false);
+
+                    console.log(data.LstData)
                     self.BaoCaoHangKhuyenMai(data.LstData);
                     AllPage = data.numberPage;
                     self.selecPage();
@@ -1429,7 +1432,6 @@
                     self.HTL_SoLuongBan(data.TongSoLuong);
                     self.HTL_ThanhTien(data.TongDoanhThu);
                     self.HTL_GiamGiaHD(data.TongGiatriKM);
-                    LoadingForm(false);
                 });
                 break;
         }

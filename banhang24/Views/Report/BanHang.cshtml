@@ -1418,32 +1418,49 @@
                                             }
                                         </tr>
                                     </thead>
-                                    <tbody data-bind="foreach: BaoCaoHangKhuyenMai_Page">
+                                    <tbody data-bind="foreach: {data: BaoCaoHangKhuyenMai_Page, as: 'itemOut' } ">
+                                        <!--ko foreach: {data: itemOut.lstDetail, as:'itemIn'}  -->
                                         <tr class="prev-tr-hide">
-                                            <td class="@commonEnum.ReportPromotion.makhuyenmai">
+
+                                            <td class="@commonEnum.ReportPromotion.makhuyenmai"
+                                                >
                                                 <a href="javascript: void(0)" data-bind="text: MaKhuyenMai, click: $parent.LoadChungTuGoc_byMaHD">
                                                 </a>
                                             </td>
-                                            <td class="@commonEnum.ReportPromotion.tenkhuyenmai" data-bind="text: TenKhuyenMai">  </td>
-                                            <td class="@commonEnum.ReportPromotion.hinhthuc" data-bind="text: sHinhThuc">  </td>
-                                            <td class="@commonEnum.ReportPromotion.mahoadon">
+                                            <td class="@commonEnum.ReportPromotion.tenkhuyenmai" data-bind="text: TenKhuyenMai,
+                                               ">  </td>
+                                            <td class="@commonEnum.ReportPromotion.hinhthuc" data-bind="text: sHinhThuc,
+                                              ">  </td>
+                                            <!--ko if: $index()==0-->
+                                            <td class="@commonEnum.ReportPromotion.mahoadon"
+                                                data-bind="attr:{rowspan: itemOut.lstDetail.length}">
                                                 <a href="javascript: void(0)" data-bind="text: MaHoaDon, click: $parent.LoadChungTuGoc_byMaHD">
                                                 </a>
                                             </td>
-                                            <td class="@commonEnum.ReportPromotion.ngaylaphd" data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')"> </td>
-                                            <td class="@commonEnum.ReportPromotion.madoituong">
+                                            <td class="@commonEnum.ReportPromotion.ngaylaphd text-center" data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'),
+                                                attr:{rowspan: itemOut.lstDetail.length}"> </td>
+                                            <td class="@commonEnum.ReportPromotion.madoituong"
+                                                data-bind="attr:{rowspan: itemOut.lstDetail.length}">
                                                 <a href="javascript: void(0)" data-bind="text: MaDoiTuong, click: $parent.LoadChungTuGoc_byMaHD">
                                                 </a>
                                             </td>
-                                            <td class="@commonEnum.ReportPromotion.tendoituong" data-bind="text: TenDoiTuong"></td>
-                                            <td class="@commonEnum.ReportPromotion.tongtienhang" data-bind="text: formatNumber3Digit(TongTienHang,2)"> </td>
+                                            <td class="@commonEnum.ReportPromotion.tendoituong" data-bind="text: TenDoiTuong,
+                                                 attr:{rowspan: itemOut.lstDetail.length}"></td>
+                                            <td class="@commonEnum.ReportPromotion.tongtienhang text-right"
+                                                data-bind="text: formatNumber3Digit(TongTienHang,2), attr:{rowspan: itemOut.lstDetail.length}"> </td>
+                                            <!--/ko-->
                                             <td class="@commonEnum.ReportPromotion.mahanghoa" data-bind="text: MaHangHoa"></td>
-                                            <td class="@commonEnum.ReportPromotion.tenhanghoa text-right" data-bind="text: TenHangHoa"></td>
+                                            <td class="@commonEnum.ReportPromotion.tenhanghoa" data-bind="text: TenHangHoa"></td>
                                             <td class="@commonEnum.ReportPromotion.soluong text-right" data-bind="text: SoLuong"></td>
                                             <td class="@commonEnum.ReportPromotion.giatrikm text-right " data-bind="text: formatNumber3Digit(GiaTriKM,2)"></td>
-                                            <td class="@commonEnum.ReportPromotion.nguoitao text-center" data-bind="text: NguoiTao"></td>
-                                            <td class="@commonEnum.ReportPromotion.nvban text-left" data-bind="text: TenNhanVien"></td>
+                                            <!--ko if: $index()==0-->
+                                            <td class="@commonEnum.ReportPromotion.nguoitao text-center"
+                                                data-bind="text: NguoiTao, attr:{rowspan: itemOut.lstDetail.length}"></td>
+                                            <td class="@commonEnum.ReportPromotion.nvban text-left"
+                                                data-bind="text: TenNhanVien,  attr:{rowspan: itemOut.lstDetail.length}"></td>
+                                            <!--/ko-->
                                         </tr>
+                                        <!--/ko-->
                                     </tbody>
                                     <tfoot class="Report_Empty" data-bind="visible: BaoCaoHangKhuyenMai().length === 0">
                                         <tr>

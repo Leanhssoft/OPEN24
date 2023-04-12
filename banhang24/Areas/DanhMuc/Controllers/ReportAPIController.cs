@@ -3542,21 +3542,64 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 ClassReportBanHang report = new ClassReportBanHang(db);
                 List<BaoCaoHangKhuyenMai> lst = report.SP_BaoCaoHangKhuyenMai(param);
 
-                int rows = lst.Count();
                 double soluong = lst.Sum(x => x.SoLuong);
-                double doanhthu = lst.Sum(x => x.TongTienHang);
                 double giatrikm = lst.Sum(x => x.GiaTriKM);
-                double lstPages = Math.Ceiling(rows * 1.0 / param.pageSize);
 
-                return Json(new
+                if (lst.Count() > 0)
                 {
-                    LstData = lst,
-                    Rowcount = rows,
-                    numberPage = lstPages,
-                    TongDoanhThu = Math.Round(doanhthu, 0, MidpointRounding.ToEven),
-                    TongSoLuong = Math.Round(soluong, 3, MidpointRounding.ToEven),
-                    TongGiatriKM = Math.Round(giatrikm, 0, MidpointRounding.ToEven),
-                });
+                    var firstRow = lst[0];
+                    var lstGr = lst.GroupBy(x => new
+                    {
+                        //x.MaKhuyenMai,
+                        //x.TenKhuyenMai,
+                        //x.sHinhThuc,
+                        x.MaHoaDon,
+                        x.NgayLapHoaDon,
+                        x.TongTienHang,
+                        x.MaDoiTuong,
+                        x.TenDoiTuong,
+                        x.NguoiTao,
+                        x.TenNhanVien
+                    }).Select(x => new
+                    {
+                        //x.Key.MaKhuyenMai,
+                        //x.Key.TenKhuyenMai,
+                        //x.Key.sHinhThuc,
+                        x.Key.MaHoaDon,
+                        x.Key.NgayLapHoaDon,
+                        x.Key.TongTienHang,
+                        x.Key.MaDoiTuong,
+                        x.Key.TenDoiTuong,
+                        x.Key.NguoiTao,
+                        x.Key.TenNhanVien,
+                        lstDetail = x,
+                    });
+
+                    int rows = lstGr.Count();
+                    double lstPages = Math.Ceiling(rows * 1.0 / param.pageSize);
+                    return Json(new
+                    {
+                        LstData = lstGr,
+                        Rowcount = rows,
+                        numberPage = lstPages,
+                        TongDoanhThu = lstGr.Sum(x => x.TongTienHang),
+                        TongSoLuong = Math.Round(soluong, 3, MidpointRounding.ToEven),
+                        TongGiatriKM = Math.Round(giatrikm, 0, MidpointRounding.ToEven),
+                    });
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        res = true,
+                        LstData = new List<BaoCaoHangKhuyenMai>(),
+                        Rowcount = 0,
+                        numberPage = 0,
+                        TongDoanhThu = 0,
+                        TongSoLuong = 0,
+                        TongGiatriKM = 0
+                    });
+                }
             }
         }
         [AcceptVerbs("GET", "POST")]
