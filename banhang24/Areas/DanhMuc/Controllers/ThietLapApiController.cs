@@ -1347,6 +1347,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             {
                                 if (content1.IndexOf("{TenHangHoa") != -1)
                                 {
+                                    var loopNext = 1;
                                     var open = content1.LastIndexOf("tbody", content1.IndexOf("{TenHangHoa")) - 1;
                                     var close = content1.IndexOf("tbody", content1.IndexOf("{TenHangHoa")) + 6;
                                     var temptable = content1.Substring(open, close - open);
@@ -1387,6 +1388,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                     }
                                 CheckRowNext:
                                     {
+                                        loopNext += 1;
+                                        if (loopNext >3)
+                                        {
+                                            row1Str = string.Concat(row1Str, "<!--/ko-->");
+                                            goto ReplaceDetail;
+                                        }
                                         int nextRowTo = temptable.IndexOf("<tr", nextRowFrom + 1);
                                         if (nextRowTo < 0)
                                         {
