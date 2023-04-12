@@ -449,12 +449,38 @@
                                     <a href="javascript:void(0)">Tài khoản POS</a>
                                 </th>
                                 <!--/ko-->
+                                <!--ko if: $root.isGara() -->
                                 <th class="@commonEnum.ECashFlow.manguoinop">
+                                    <!--ko if: $root.LoaiHoaDonMenu === '0' -->
+                                    <a href="javascript:void(0)">Mã người nộp</a>
+                                    <!--/ko-->
+                                    <!--ko if: $root.LoaiHoaDonMenu === '1' -->
+                                    <a href="javascript:void(0)">Mã người nhận</a>
+                                    <!--/ko-->
+                                    <!--ko if: $root.LoaiHoaDonMenu === '' -->
                                     <a href="javascript:void(0)">Mã người nhận nộp</a>
+                                    <!--/ko-->
                                 </th>
                                 <th class="@commonEnum.ECashFlow.tennguoinop">
+                                    <!--ko if: $root.LoaiHoaDonMenu === '0' -->
+                                    <a href="javascript:void(0)">Tên người nộp</a>
+                                    <!--/ko-->
+                                    <!--ko if: $root.LoaiHoaDonMenu === '1' -->
+                                    <a href="javascript:void(0)">Tên người nhận</a>
+                                    <!--/ko-->
+                                    <!--ko if: $root.LoaiHoaDonMenu === '2' -->
                                     <a href="javascript:void(0)">Người nhận nộp</a>
+                                    <!--/ko-->
                                 </th>
+                                <!--/ko-->
+                                <!--ko if: !$root.isGara() -->
+                                <th class="@commonEnum.ECashFlow.manguoinop">
+                                    Mã người nhận nộp
+                                </th>
+                                <th class="@commonEnum.ECashFlow.tennguoinop">
+                                    Người nhận nộp
+                                </th>
+                                <!--/ko-->
                                 <th class="@commonEnum.ECashFlow.dienthoai">
                                     <a href="javascript:void(0)">Điện thoại</a>
                                 </th>
