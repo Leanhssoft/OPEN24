@@ -483,6 +483,7 @@ var dataMauIn = function () {
     self.LH_SDT = ko.observable('0985 624 321');
 
     self.TenBaoHiem = ko.observable('Bảo hiểm nhân thọ');
+    self.BH_MaSoThue = ko.observable('1803898225');
     self.BH_SDT = ko.observable('024 125 2255');
     self.BH_Email = ko.observable('baohiemnhantho@gmail.com');
     self.BH_DiaChi = ko.observable('Tầng 2, Tòa nhà TimeTower');
@@ -492,6 +493,7 @@ var dataMauIn = function () {
     self.BH_TienBangChu = ko.observable('Ba trăm nghìn đồng');
 
     self.TongTienBHDuyet = ko.observable('300,000');
+    self.GiamTruThanhToanBaoHiem = ko.observable('100,000');
     self.PTThueHoaDon = ko.observable('10');
     self.PTThueBaoHiem = ko.observable('10');
     self.SoVuBaoHiem = ko.observable('2');

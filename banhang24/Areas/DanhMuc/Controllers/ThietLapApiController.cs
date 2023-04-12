@@ -1518,6 +1518,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{KH_TienBangChu}", "<span data-bind=\"text: $root.InforHDprintf().KH_TienBangChu\"></span>");
             content1 = content1.Replace("{BH_NoTruoc}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().BH_NoTruoc)\"></span>");
             content1 = content1.Replace("{BH_NoSau}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().BH_NoSau)\"></span>");
+            content1 = content1.Replace("{BH_MaSoThue}", "<span data-bind=\"text: $root.InforHDprintf().BH_MaSoThue\"></span>");
 
             #region ChuyenHang
             content1 = content1.Replace("{ChiNhanhChuyen}", "<span data-bind=\"text: InforHDprintf().ChiNhanhChuyen\"></span>");
@@ -1624,6 +1625,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{PTThueHoaDon}", "<span data-bind=\"text: $root.InforHDprintf().PTThueHoaDon\"></span>");
             content1 = content1.Replace("{BHThanhToanTruocThue}", "<span data-bind=\"text: $root.InforHDprintf().BHThanhToanTruocThue\"></span>");
             content1 = content1.Replace("{TongTienBHDuyet}", "<span data-bind=\"text: $root.InforHDprintf().TongTienBHDuyet\"></span>");
+            content1 = content1.Replace("{GiamTruThanhToanBaoHiem}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().GiamTruThanhToanBaoHiem)\"></span>");
 
             content1 = content1.Replace("{ChuXe}", "<span data-bind=\"text: InforHDprintf().ChuXe\"></span>");
             content1 = content1.Replace("{ChuXe_SDT}", "<span data-bind=\"text: InforHDprintf().ChuXe_SDT\"></span>");

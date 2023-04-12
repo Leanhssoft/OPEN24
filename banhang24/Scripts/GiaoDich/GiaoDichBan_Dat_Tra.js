@@ -2874,7 +2874,7 @@
                             TenMauXe: '',
                             TenHangXe: '',
                             ChuXe: '',
-                            MaSoThue: '',
+                            MaSoThue: cus.MaSoThue,
                             TaiKhoanNganHang: '',
 
                             BH_SDT: '',
@@ -2882,6 +2882,7 @@
                             BH_DiaChi: '',
                             BH_TenLienHe: '',
                             BH_SDTLienHe: '',
+                            BH_MaSoThue: baohiem.MaSoThue,
 
                             ChiPhi_GhiChu: '',
                             PTChietKhauHH: 0,
@@ -3210,9 +3211,10 @@
         if (objPrint.NgaySinh_NgayTLap !== null) {
             objPrint.NgaySinh_NgayTLap = moment(objPrint.NgaySinh_NgayTLap).format('DD/MM/YYYY');
         }
-        var tongcong = formatNumberToFloat(objPrint.TongTienHang) - formatNumberToFloat(objPrint.TongGiamGia)
-            - formatNumberToFloat(objPrint.KhuyeMai_GiamGia)
-            + formatNumberToFloat(objPrint.TongTienThue);
+        //var tongcong = formatNumberToFloat(objPrint.TongTienHang) - formatNumberToFloat(objPrint.TongGiamGia)
+          //  - formatNumberToFloat(objPrint.KhuyeMai_GiamGia)
+           // + formatNumberToFloat(objPrint.TongTienThue);
+let tongcong= formatNumberToFloat(objPrint.TongThanhToan) ;
 
         objPrint.NgayLapHoaDon = moment(objHD.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
         objPrint.Ngay = moment(objHD.NgayLapHoaDon).format('DD');
@@ -3295,6 +3297,12 @@
         objPrint.TienDoiDiem = formatNumber(objPrint.TienDoiDiem);
         objPrint.TienTheGiaTri = formatNumber(objPrint.ThuTuThe);
 
+
+        objPrint.BH_MaSoThue = '';
+        if (!commonStatisJs.CheckNull(objHD.ID_BaoHiem)) {
+            let baohiem = await GetInforCus(objHD.ID_BaoHiem);
+            objPrint.BH_MaSoThue = baohiem.MaSoThue;
+        }
         let pthuc = '';
         if (formatNumberToFloat(objHD.TienMat) > 0) {
             pthuc += 'Tiền mặt, ';
@@ -4735,7 +4743,7 @@
     }
 
     async function GetInforCus(id) {
-        if (!commonStatisJs.CheckNull(id)) {
+        if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
             var date = moment(new Date()).format('YYYY-MM-DD HH:mm');
             var xx = await ajaxHelper(DMDoiTuongUri + "GetInforKhachHang_ByID?idDoiTuong=" + id + '&idChiNhanh=' + VHeader.IdDonVi
                 + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function () {

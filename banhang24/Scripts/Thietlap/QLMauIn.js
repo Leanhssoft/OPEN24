@@ -1320,8 +1320,10 @@ function SetConvertDataTest(strInput) {
                 '{BH_SDTLienHe}': '<span data-bind=\"text: BH_SDTLienHe\"></span>',
                 '{BaoHiemDaTra}': '<span data-bind=\"text: BaoHiemDaTra\"></span>',
                 '{BH_TienBangChu}': '<span data-bind=\"text: BH_TienBangChu\"></span>',
+                '{BH_MaSoThue}': '<span data-bind=\"text: BH_MaSoThue\"></span>',
 
                 '{TongTienBHDuyet}': '<span data-bind=\"text: $root.TongTienBHDuyet\"></span>',
+                '{GiamTruThanhToanBaoHiem}': '<span data-bind=\"text: $root.GiamTruThanhToanBaoHiem\"></span>',
                 '{PTThueBaoHiem}': '<span data-bind=\"text: $root.PTThueBaoHiem\"></span>',
                 '{TongTienThueBaoHiem}': '<span data-bind=\"text: $root.TongTienThueBaoHiem\"></span>',
                 '{SoVuBaoHiem}': '<span data-bind=\"text: $root.SoVuBaoHiem\"></span>',

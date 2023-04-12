@@ -1942,11 +1942,14 @@ var workTable = new Vue({
             let baohiem = await self.GetinforCus_byID(hdChosing.ID_BaoHiem);
 
             let cus_NoHienTai = 0, bh_NoHienTai = 0;
+            let bh_masothue = '';
             if (!$.isEmptyObject(cus)) {
                 cus_NoHienTai = cus.NoHienTai;
             }
+
             if (!$.isEmptyObject(baohiem)) {
                 bh_NoHienTai = baohiem.NoHienTai;
+                bh_masothue = baohiem.MaSoThue;
             }
 
             let cus_DebitOld = cus_NoHienTai - cus_DebitHD;
@@ -1983,6 +1986,7 @@ var workTable = new Vue({
             objPrint.BH_TenLienHe = hdChosing.LienHeBaoHiem;
             objPrint.BH_SDTLienHe = hdChosing.SoDienThoaiLienHeBaoHiem;
             objPrint.MaSoThue = hdChosing.MaSoThue;
+            objPrint.BH_MaSoThue = bh_masothue;
             objPrint.TaiKhoanNganHang = hdChosing.TaiKhoanNganHang;
 
             objPrint.MaHoaDon = hdChosing.MaHoaDon;
@@ -2004,6 +2008,7 @@ var workTable = new Vue({
             objPrint.DaThanhToan = formatNumber(daThanhToan);
             objPrint.BaoHiemDaTra = formatNumber(hdChosing.BaoHiemDaTra);
             objPrint.TongTienBHDuyet = formatNumber(hdChosing.TongTienBHDuyet);
+            objPrint.GiamTruThanhToanBaoHiem = formatNumber(hdChosing.GiamTruThanhToanBaoHiem);
             objPrint.KhauTruTheoVu = formatNumber(hdChosing.KhauTruTheoVu);
             objPrint.SoVuBaoHiem = formatNumber(hdChosing.SoVuBaoHiem);
             objPrint.GiamTruBoiThuong = formatNumber(hdChosing.GiamTruBoiThuong);
@@ -2422,6 +2427,7 @@ var workTable = new Vue({
                 BH_DiaChi: '',
                 BH_TenLienHe: '',
                 BH_SDTLienHe: '',
+                BH_MaSoThue: '',
 
                 ChiPhi_GhiChu: '',
                 PTChietKhauHH: 0,
