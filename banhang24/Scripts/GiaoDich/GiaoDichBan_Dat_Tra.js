@@ -12,7 +12,7 @@
     var _IDNguoiDung = $('.idnguoidung').text();
     var DiaryUri = '/api/DanhMuc/SaveDiary/';
     self.TodayBC = ko.observable('Toàn thời gian');
-    self.isLeeAuto = ko.observable(VHeader.SubDomain.toLowerCase() ==='leeauto');
+    self.isLeeAuto = ko.observable(VHeader.SubDomain.toLowerCase() === 'leeauto');
     self.ShopCookie = ko.observable($('#txtShopCookie').val());
     self.TenChiNhanh = ko.observableArray();
     self.HoaDons = ko.observableArray();
@@ -306,6 +306,9 @@
             }
             else {
                 if (loaiHoaDon === 3) {
+                    data = $.grep(data, function (x) {
+                        return $.inArray(x.Key, ['tongchiphi']) === -1;
+                    })
                     if (self.LoaiHoaDonMenu() === 0) {
                         data = $.grep(data, function (x) {
                             return $.inArray(x.Key, ['maphieutiepnhan', 'bienso']) === -1;
@@ -1302,11 +1305,45 @@
                         funcName = 'ExportExcel_DatHang';
                         txtLoaiHD = 'Đặt hàng';
                         noidungNhatKy = "Xuất excel danh sách hóa đơn đặt hàng";
+
+                        // remove column {TongChiPhi}
+                        let allHide = columnHide.split('_');
+                        let arrNew = [];
+                        for (let i = 0; i < allHide.length; i++) {
+                            if (allHide[i]!=='') {
+                                let col = formatNumberToFloat(allHide[i]);
+                                if (col > 12) {
+                                    arrNew.push(col + 1);
+                                }
+                                else {
+                                    arrNew.push(col);
+                                }
+                            }
+                        }
+                        arrNew.push(13);
+                        columnHide = arrNew.join('_');
                     }
                     else {
                         funcName = 'ExportExcel_BaoGiaSuaChua';
                         txtLoaiHD = 'Báo giá sửa chữa';
                         noidungNhatKy = "Xuất excel danh sách báo giá sửa chữa";
+
+                        // remove column {TongChiPhi}
+                        let allHide = columnHide.split('_');
+                        let arrNew = [];
+                        for (let i = 0; i < allHide.length; i++) {
+                            if (allHide[i] !== '') {
+                                let col = formatNumberToFloat(allHide[i]);
+                                if (col > 14) {
+                                    arrNew.push(col + 1);
+                                }
+                                else {
+                                    arrNew.push(col);
+                                }
+                            }
+                        }
+                        arrNew.push(15);
+                        columnHide = arrNew.join('_');
                     }
                     break;
                 case 6:
