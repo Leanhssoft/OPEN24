@@ -437,7 +437,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 try
                 {
                     classQuy_HoaDon classQuyHoaDon = new classQuy_HoaDon(db);
-                    var data = classQuyHoaDon.GetListCashFlow_Paging(lstParam);
+                    List<SP_GetListCashFlow> data = classQuyHoaDon.GetListCashFlow_Paging(lstParam);
                     double? tongthuMat = 0, tongchiMat = 0, tongthuCK = 0, tongchiCK = 0, totalPage = 0;
                     int? totalRow = 0;
                     if (data.Count > 0)
