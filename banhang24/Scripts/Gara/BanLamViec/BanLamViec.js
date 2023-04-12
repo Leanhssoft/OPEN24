@@ -2397,6 +2397,9 @@ var workTable = new Vue({
                 NgayXuatXuongDuKien: ptn.NgayXuatXuongDuKien ? moment(ptn.NgayXuatXuongDuKien).format('DD/MM/YYYY HH:mm') : '',
                 LienHeBaoHiem: ptn.LienHeBaoHiem,
                 SoDienThoaiLienHeBaoHiem: ptn.SoDienThoaiLienHeBaoHiem,
+                TenLienHe: ptn.TenLienHe,
+                SoDienThoaiLienHe: ptn.SoDienThoaiLienHe,
+                SoKmRa: ptn.SoKmRa,
                 PTN_GhiChu: ptn.GhiChu,
                 CoVan_SDT: self.Get_SDTCoVan(),
                 CoVanDichVu: ptn.CoVanDichVu,
@@ -2959,6 +2962,7 @@ $(function () {
                 if (workTable.listData.PhieuSuaChuas[i].ID === vmXuatXuong.phieuXuat.ID) {
                     obj = workTable.listData.PhieuSuaChuas[i];
                     obj.NgayXuatXuong = vmXuatXuong.NgayXuatXuong;
+                    obj.SoKmRa = vmXuatXuong.SoKmRa;
                     workTable.listData.PhieuSuaChuas.splice(i, 1);
                     break;
                 }
