@@ -1044,6 +1044,7 @@ function SetConvertDataTest(strInput) {
                             }
                             else {
                                 if (strInput.indexOf('{TenHangHoa') > -1) {
+                                    let loppNext=0;
                                     let open = result.lastIndexOf("tbody", result.indexOf("{TenHangHoa")) - 1;
                                     let close = result.indexOf("tbody", result.indexOf("{TenHangHoa")) + 6;
                                     let temptable = result.substr(open, close - open);
@@ -1078,8 +1079,10 @@ function SetConvertDataTest(strInput) {
                                     }
                                     else {
                                         CheckRowNext();
+                                       
                                     }
                                     function CheckRowNext() {
+                                        if(loppNext >3) { ReplaceDetail();}
                                         let nextRowTo = temptable.indexOf("<tr", nextRowFrom + 1);
                                         if (nextRowTo < 0) {
                                             nextRowTo = temptable.lastIndexOf("/tr>") + 5;
@@ -1110,6 +1113,7 @@ function SetConvertDataTest(strInput) {
                                             nextRowFrom = nextRowTo;
                                             CheckRowNext();
                                         }
+                                         loppNext+=1;
                                     }
 
                                     function ReplaceDetail() {
