@@ -222,6 +222,15 @@ var ChuyenHangChiTiet = function () {
         })
 
         var ngayKK = GetNgayLapHD_withTimeNow(self.newHoaDon().NgayLapHoaDon());
+        // if update phieuchuyen: get exacly NgaylapHD from DB
+        let cthdUpdate = localStorage.getItem('lcCH_EditOpen');
+        if (!commonStatisJs.CheckNull(cthdUpdate)) {
+            cthdUpdate = JSON.parse(cthdUpdate);
+            if (cthdUpdate.length > 0) {
+                ngayKK = GetNgayLapHD_withTimeNow(cthdUpdate[0].NgayLapHoaDon);
+            }
+        }
+
         var obj = {
             ID_ChiNhanh: _idDonVi,
             ToDate: ngayKK,
@@ -1473,8 +1482,8 @@ var ChuyenHangChiTiet = function () {
             let ddMMyyyy = ngaylapHD.split('/');
             if (ddMMyyyy.length > 1) {
                 ngaylapHD = moment(ngaylapHD, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm');
+                ngaylapHD = moment(ngaylapHD).add(giay, 'seconds').add(miligiay, 'milliseconds').format('YYYY-MM-DD HH:mm:ss');
             }
-            ngaylapHD = moment(ngaylapHD).add(giay, 'seconds').add(miligiay, 'milliseconds').format('YYYY-MM-DD HH:mm:ss');
             // else keep value YYYY-MM-DD
         }
         return ngaylapHD;
@@ -1562,40 +1571,40 @@ var ChuyenHangChiTiet = function () {
                             err += itOut.TenHangHoa + ', ';
                         }
                         // check soluong > tonkho
-                        if (idHoaDon === const_GuidEmpty) {
-                            if (formatNumberToFloat(itOut.SoLuong) > itOut.TonKho) {
-                                errTonKho += itOut.TenHangHoa + ', ';
-                            }
-                            for (let j = 0; j < itOut.DM_LoHang.length; j++) {
-                                let itFor = itOut.DM_LoHang[j];
-                                if (j !== 0) {
-                                    if (formatNumberToFloat(itFor.SoLuong) === 0) {
-                                        err += itFor.TenHangHoa + ', ';
-                                    }
-                                    if (formatNumberToFloat(itFor.SoLuong) > itFor.TonKho) {
-                                        errTonKho += itFor.TenHangHoa + ' (Lô: ' + itFor.MaLoHang + ') ,';
-                                    }
+                        //if (idHoaDon === const_GuidEmpty) {
+                        if (formatNumberToFloat(itOut.SoLuong) > itOut.TonKho) {
+                            errTonKho += itOut.TenHangHoa + ', ';
+                        }
+                        for (let j = 0; j < itOut.DM_LoHang.length; j++) {
+                            let itFor = itOut.DM_LoHang[j];
+                            if (j !== 0) {
+                                if (formatNumberToFloat(itFor.SoLuong) === 0) {
+                                    err += itFor.TenHangHoa + ', ';
+                                }
+                                if (formatNumberToFloat(itFor.SoLuong) > itFor.TonKho) {
+                                    errTonKho += itFor.TenHangHoa + ' (Lô: ' + itFor.MaLoHang + ') ,';
                                 }
                             }
                         }
-                        else {
-                            // sua doi hoadonchuyenhang: cộng ngược lại số lượng chuyển trước đó
-                            if (formatNumberToFloat(itOut.SoLuong) > itOut.TonKho + itOut.SoLuongChuyen) {
-                                errTonKho += itOut.TenHangHoa + ', ';
-                            }
+                        //}
+                        //else {
+                        //    // sua doi hoadonchuyenhang: cộng ngược lại số lượng chuyển trước đó
+                        //    if (formatNumberToFloat(itOut.SoLuong) > itOut.TonKho + itOut.SoLuongChuyen) {
+                        //        errTonKho += itOut.TenHangHoa + ', ';
+                        //    }
 
-                            for (let j = 0; j < itOut.DM_LoHang.length; j++) {
-                                let itFor = itOut.DM_LoHang[j];
-                                if (j !== 0) {
-                                    if (formatNumberToFloat(itFor.SoLuong) === 0) {
-                                        err += itFor.TenHangHoa + ', ';
-                                    }
-                                    if (formatNumberToFloat(itFor.SoLuong) > itFor.TonKho + itFor.SoLuongChuyen) {
-                                        errTonKho += itFor.TenHangHoa + ' (Lô: ' + itFor.MaLoHang + ') ,';
-                                    }
-                                }
-                            }
-                        }
+                        //    for (let j = 0; j < itOut.DM_LoHang.length; j++) {
+                        //        let itFor = itOut.DM_LoHang[j];
+                        //        if (j !== 0) {
+                        //            if (formatNumberToFloat(itFor.SoLuong) === 0) {
+                        //                err += itFor.TenHangHoa + ', ';
+                        //            }
+                        //            if (formatNumberToFloat(itFor.SoLuong) > itFor.TonKho + itFor.SoLuongChuyen) {
+                        //                errTonKho += itFor.TenHangHoa + ' (Lô: ' + itFor.MaLoHang + ') ,';
+                        //            }
+                        //        }
+                        //    }
+                        //}
                     }
                 }
                 err = Remove_LastComma(err);
