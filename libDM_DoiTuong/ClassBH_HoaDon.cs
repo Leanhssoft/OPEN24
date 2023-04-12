@@ -6064,7 +6064,7 @@ namespace libDM_DoiTuong
         public double? TongThueKhachHang { get; set; }
         public int? CongThucBaoHiem { get; set; }
         public double? ThuDatHang { get; set; }
-
+        public double? GiamTruThanhToanBaoHiem { get; set; }
         public double? SumDaThanhToan { get; set; }
         public double? SumConNo { get; set; }
         public double? SumBaoHiemDaTra { get; set; }

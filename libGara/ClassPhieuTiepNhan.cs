@@ -637,6 +637,7 @@ namespace libGara
         public string BienSo { get; set; }
         public string YeuCau { get; set; }// used to check trangthai hddathang (1:Phieu tam, 2: Dang giao hang, 3: HoanThanh, 4: Huy)
         public double? DiemGiaoDich { get; set; }
+        public double? GiamTruThanhToanBaoHiem { get; set; }
         public int? TotalRow { get; set; }
         public double? TotalPage { get; set; }
 
