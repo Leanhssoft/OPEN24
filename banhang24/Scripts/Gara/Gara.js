@@ -27415,6 +27415,7 @@ var NewModel_BanHangLe = function () {
                     hd[i].BHThanhToanTruocThue = obj.BHThanhToanTruocThue;
                     hd[i].PhaiThanhToanBaoHiem = obj.PhaiThanhToanBaoHiem;
                     hd[i].CongThucBaoHiem = obj.CongThucChosed;
+                    hd[i].GiamTruThanhToanBaoHiem = formatNumberToFloat(obj.GiamTruThanhToanBaoHiem);
 
                     let tongThueCT = 0;
                     for (let i = 0; i < cthd.length; i++) {

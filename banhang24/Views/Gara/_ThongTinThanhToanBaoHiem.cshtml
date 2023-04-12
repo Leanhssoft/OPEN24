@@ -72,6 +72,17 @@
                                    v-model="TongTienBHDuyet" />
                         </div>
                     </div>
+                    <div class="flex flex-between">
+                        <label>Giảm trừ bảo hiểm</label>
+                        <div class="flex">
+                            <input class="input-simple width-100 text-right" placeholder="0"
+                                   autofocus
+                                   onclick="this.select()"
+                                   onkeypress="keypressNumber_limitNumber(event, this)"
+                                   v-on:keyup="editGiamTruBaoHiem"
+                                   v-model="GiamTruThanhToanBaoHiem" />
+                        </div>
+                    </div>
 
                     <div class="flex flex-between" v-if="parseInt(RdoKhauTru)===1 && (parseInt(RdoCheTai) === 5 || parseInt(RdoCheTai) === 6)">
                         <label class="flex">
