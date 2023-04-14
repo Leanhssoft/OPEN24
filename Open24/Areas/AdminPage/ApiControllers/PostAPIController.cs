@@ -599,15 +599,19 @@ namespace Open24.Areas.AdminPage.ApiControllers
                 item.CreateDate = DateTime.Now;
                 item.Type = (int)Notification.TypeContact.lienhe;
                 item.Status = (int)Notification.StatusContact.Moi;
-                string body = "<h3> Thông tin khách hàng liên hệ với Open24</h3><br>"
-                         + "<span>Họ tên: " + item.FullName + "</span><br>"
-                         + "<span>Số điện thoại: " + item.Phone + "</span><br>"
-                         + "<span>Email: " + item.Email + "</span><br>"
-                         + "<span>Địa chỉ: " + item.Address + "</span><br><br>"
-                         + "<span style='text-align: center'>--- Nội dung liên hệ --- </span>"
-                         + "<p>  " + item.Note + "</p>";
-                MailHellper.SendThreadEmail(WebConfigurationManager.AppSettings["SPGmail"].ToString(), "[Phản hồi Open24] KH: " + item.FullName + " gửi liên hệ", body);
+                //string body = "<h3> Thông tin khách hàng liên hệ với Open24</h3><br>"
+                //         + "<span>Họ tên: " + item.FullName + "</span><br>"
+                //         + "<span>Số điện thoại: " + item.Phone + "</span><br>"
+                //         + "<span>Email: " + item.Email + "</span><br>"
+                //         + "<span>Địa chỉ: " + item.Address + "</span><br><br>"
+                //         + "<span style='text-align: center'>--- Nội dung liên hệ --- </span>"
+                //         + "<p>  " + item.Note + "</p>";
+                //MailHellper.SendThreadEmail(WebConfigurationManager.AppSettings["SPGmail"].ToString(), "[Phản hồi Open24] KH: " + item.FullName + " gửi liên hệ", body);
                 data = M_News_Post.InsertContact(item);
+                TelegramBot telegram = new TelegramBot();
+                string TelegramMessage = "Khách hàng liên hệ\n" + "Họ tên: " + item.FullName + "\n" + "Số điện thoại: " + item.Phone + "\n" +
+                    "Email: " + item.Email + "\n" + "Nội dung: " + item.Note;
+                telegram.SendMessage(TelegramMessage);
             }
             catch (Exception ex)
             {
@@ -632,15 +636,19 @@ namespace Open24.Areas.AdminPage.ApiControllers
                 item.CreateDate = DateTime.Now;
                 item.Type = (int)Notification.TypeContact.lienhe;
                 item.Status = (int)Notification.StatusContact.Moi;
-                string body = "<h3> Thông tin khách hàng liên hệ với Open24</h3><br>"
-                         + "<span>Họ tên: " + item.FullName + "</span><br>"
-                         + "<span>Số điện thoại: " + item.Phone + "</span><br>"
-                         + "<span>Email: " + item.Email + "</span><br>"
-                         + "<span>Địa chỉ: " + item.Address + "</span><br><br>"
-                         + "<span style='text-align: center'>--- Nội dung liên hệ --- </span>"
-                         + "<p>  " + item.Note + "</p>";
-                MailHellper.SendThreadEmail(WebConfigurationManager.AppSettings["SPGmail"].ToString(), "[Phản hồi Open24] KH: " + item.FullName + " gửi liên hệ", body);
+                //string body = "<h3> Thông tin khách hàng liên hệ với Open24</h3><br>"
+                //         + "<span>Họ tên: " + item.FullName + "</span><br>"
+                //         + "<span>Số điện thoại: " + item.Phone + "</span><br>"
+                //         + "<span>Email: " + item.Email + "</span><br>"
+                //         + "<span>Địa chỉ: " + item.Address + "</span><br><br>"
+                //         + "<span style='text-align: center'>--- Nội dung liên hệ --- </span>"
+                //         + "<p>  " + item.Note + "</p>";
+                //MailHellper.SendThreadEmail(WebConfigurationManager.AppSettings["SPGmail"].ToString(), "[Phản hồi Open24] KH: " + item.FullName + " gửi liên hệ", body);
                 data = M_News_Post.InsertContact(item);
+                TelegramBot telegram = new TelegramBot();
+                string TelegramMessage = "Khách hàng liên hệ\n" + "Họ tên: " + item.FullName + "\n" + "Số điện thoại: " + item.Phone + "\n" +
+                    "Email: " + item.Email + "\n" + "Nội dung: " + item.Note;
+                telegram.SendMessage(TelegramMessage);
             }
             catch 
             {

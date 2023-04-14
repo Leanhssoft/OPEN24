@@ -10,7 +10,7 @@ namespace Open24.Hellper
     public class TelegramBot
     {
         private string Token = "934999753:AAE_fur8TYGkwj2KHoqvn0Eqn0dLIFywTkY";
-        private ChatId ChatId = -526426581;
+        private ChatId ChatId = -1001974491014;
         public async void SendMessage(string message)
         {
             var botClient = new TelegramBotClient(Token);

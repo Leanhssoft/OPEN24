@@ -188,12 +188,14 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     }
                     else
                     {
+                        CookieStore.WriteLog("HTAPIController - GetHT_CongTy: cty is null");
                         return null;
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                CookieStore.WriteLog("HTAPIController - GetHT_CongTy: " + ex.Message);
                 return null;
             }
         }

@@ -34,6 +34,9 @@ namespace Model
         [Column(TypeName = "int")]
         public int TrangThai { get; set; } = 1; //0 - xóa
 
+        [Column(TypeName = "int")]
+        public int? STT { get; set; } = 0;
+
         public virtual Gara_PhieuTiepNhan Gara_PhieuTiepNhan { get; set; }
     }
 }

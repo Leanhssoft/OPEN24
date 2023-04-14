@@ -253,7 +253,7 @@ namespace Model
 
             modelBuilder.Entity<BH_HoaDon_ChiTiet>()
                 .HasMany(e => e.BH_HoaDon_ChiPhi)
-                .WithRequired(e => e.BH_HoaDon_ChiTiet)
+                .WithOptional(e => e.BH_HoaDon_ChiTiet)
                 .HasForeignKey(e => e.ID_HoaDon_ChiTiet);
 
             modelBuilder.Entity<DM_ChucVu>()
