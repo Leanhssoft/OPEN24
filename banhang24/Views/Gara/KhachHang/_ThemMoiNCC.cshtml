@@ -192,6 +192,20 @@
             },
         },
         methods: {
+            GetInforVendor_byID: async function (idCus) {// used to update cus at phieutiepnhan
+            let self = this;
+            let date = moment(new Date()).format('YYYY-MM-DD HH:mm');
+            if (!commonStatisJs.CheckNull(idCus)) {
+                let xx = await ajaxHelper('/api/DanhMuc/DM_DoituongAPI/' + "GetInforKhachHang_ByID?idDoiTuong=" + idCus
+                    + '&idChiNhanh=' + self.inforLogin.ID_DonVi
+                    + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function () {
+                    }).then(function (data) {// return arr
+                        return data;
+                    });
+                return xx;
+            }
+            return null;
+        },
             showModalAdd: function () {
                 var self = this;
                 self.isNew = true;
