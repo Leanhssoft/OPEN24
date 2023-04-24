@@ -4229,7 +4229,7 @@ var NewModel_BanHangLe = function () {
         var phone = '';
         var maKH = '';
         var tongdiemKH = '';
-        var ngaysinh = '';
+        var ngaysinh = '', email = '';
         var tenNhomKH = 'Nhóm mặc định';
         var tongTaiKhoanThe = 0;
         var tongSuDungThe_TruocDo = 0;
@@ -4262,6 +4262,7 @@ var NewModel_BanHangLe = function () {
             tenNhomKH = itemEx[0].TenNhomDT;
             cusTax = itemEx[0].MaSoThue;
             soTK = itemEx[0].TaiKhoanNganHang;
+            email = itemEx[0].Email;
 
             if (self.ChiTietDoiTuong() !== undefined && self.ChiTietDoiTuong() !== null && self.ChiTietDoiTuong().length > 0) {
                 // lấy thông tin Thẻ giá trị từ Khách hàng đang chọn (phải get trước khi reset hoặc bind lại infor hóa đơn)
@@ -4284,6 +4285,7 @@ var NewModel_BanHangLe = function () {
         objPrint.TenNhomKhach = Remove_LastComma(tenNhomKH);
         objPrint.MaSoThue = cusTax;
         objPrint.TaiKhoanNganHang = soTK;
+        objPrint.Email = email;
 
         if (objPrint.NgayLapHoaDon === null) {
             objPrint.NgayLapHoaDon = moment(new Date()).format('DD/MM/YYYY HH:mm');
@@ -7275,7 +7277,7 @@ var NewModel_BanHangLe = function () {
 
     async function GetInforKhachHangFromDB_ByID(id) {
         let date = moment(new Date()).format('YYYY-MM-DD HH:mm');
-        if (id !== null) {
+        if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
             let xx = await ajaxHelper(DMDoiTuongUri + "GetInforKhachHang_ByID?idDoiTuong=" + id + '&idChiNhanh=' + id_DonVi
                 + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function () {
                 }).then((data) => {
@@ -7288,6 +7290,7 @@ var NewModel_BanHangLe = function () {
                 });
             return xx;
         }
+        return [];
     }
 
     async function GetInForCustomer_byID(id) {
@@ -12326,6 +12329,11 @@ var NewModel_BanHangLe = function () {
 
             HDPrint_SumDichVuHangHoa(self.CTHoaDonPrint());
             await Assign_ThongTinPhieuTN_toHoaDon();
+            let baohiem = await GetInforKhachHangFromDB_ByID(self.HoaDons().ID_BaoHiem());
+            self.InforHDprintf().BH_MaSoThue = '';
+            if (baohiem.length > 0) {
+                self.InforHDprintf().BH_MaSoThue = baohiem[0].MaSoThue;
+            }
 
             ajaxHelper(url, 'GET').done(function (result) {
                 let temp = result;
@@ -12337,6 +12345,7 @@ var NewModel_BanHangLe = function () {
                     " var item5= ", JSON.stringify(self.VatDungKemTheos()), ' ;',
                     " </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
+                temp = temp.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>")
                 PrintExtraReport(temp, data, self.numberOfPrint(), isPrintDraft === true ? 0 : 1);
             }).fail(function () {
                 if (itemMauIn.length > 0) {
