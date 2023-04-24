@@ -273,6 +273,8 @@ namespace libGara
 
     public class LichSuSuaChua_Export
     {
+        public string MaPhieuTiepNhan { get; set; }
+        public int? SoKmVao { get; set; }
         public string MaHoaDon { get; set; }
         public string MaBaoGia { get; set; }
         public DateTime NgayLapHoaDon { get; set; }
