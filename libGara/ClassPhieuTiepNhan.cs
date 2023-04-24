@@ -633,6 +633,7 @@ namespace libGara
         public double? TongThueKhachHang { get; set; }
         public int? CongThucBaoHiem { get; set; }
         public string MaPhieuTiepNhan { get; set; }
+        public int? SoKmVao { get; set; }
         public string ChiPhi_GhiChu { get; set; }
         public string BienSo { get; set; }
         public string YeuCau { get; set; }// used to check trangthai hddathang (1:Phieu tam, 2: Dang giao hang, 3: HoanThanh, 4: Huy)
