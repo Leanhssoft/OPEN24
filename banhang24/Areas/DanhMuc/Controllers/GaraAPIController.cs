@@ -2228,6 +2228,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     List<Gara_BaoGia> xx = classPhieuTiepNhan.Gara_GetListHoaDonSuaChua(param);
                     List<LichSuSuaChua_Export> lst = xx.Select(p => new LichSuSuaChua_Export
                     {
+                        MaPhieuTiepNhan = p.MaPhieuTiepNhan,
+                        SoKmVao = p.SoKmVao, 
                         MaHoaDon = p.MaHoaDon,
                         MaBaoGia = p.MaBaoGia,
                         NgayLapHoaDon = p.NgayLapHoaDon.Value,
