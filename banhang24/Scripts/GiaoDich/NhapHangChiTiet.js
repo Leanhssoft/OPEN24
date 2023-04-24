@@ -460,6 +460,41 @@ var NhapHangChiTiet = function () {
             localStorage.setItem(lcCTNhapHang, JSON.stringify(cthd));
         }
     }
+
+    function ChiPhiDV_updateIDRandomHD(idRandom, idHoaDon, mahoadon) {
+        let cacheCP = localStorage.getItem('lcChiPhi_NhapHang');
+        if (cacheCP !== null) {
+            cacheCP = JSON.parse(cacheCP);
+            for (let i = 0; i < cacheCP.length; i++) {
+                let forOut = cacheCP[i];
+                if (forOut.ID_HoaDon === idHoaDon || 
+                    (!commonStatisJs.CheckNull(forOut.MaHoaDon) && forOut.MaHoaDon.indexOf('Copy') > -1 && forOut.MaHoaDon=== mahoadon)) {
+                    forOut.IDRandomHD = idRandom;
+                    break;
+                }
+            }
+            localStorage.setItem('lcChiPhi_NhapHang', JSON.stringify(cacheCP));
+        }
+    }
+
+    function BindNCCVanChuyen(idRandom) {
+        let cacheCP = localStorage.getItem('lcChiPhi_NhapHang');
+        if (cacheCP !== null) {
+            cacheCP = JSON.parse(cacheCP);
+            let ex = $.grep(cacheCP, function (x) {
+                return x.IDRandomHD === idRandom;
+            });
+            if (ex.length > 0) {
+                vmCus.ID_DoiTuong = ex[0].ID_DoiTuong;
+                vmCus.customerChosing = ex[0];
+                vmCus.customerChosing.ID = ex[0].ID_DoiTuong;
+            }
+            else {
+                vmCus.ResetCustomer();
+            }
+        }
+    }
+
     self.ChangeCheckTonKho = function () {
         var tk = parseInt(self.ConTonKho());
         if (tk === 1) {
@@ -565,6 +600,7 @@ var NhapHangChiTiet = function () {
                         ctNhap.push(cthd[i]);
                     }
                 }
+                ChiPhiDV_updateIDRandomHD(idRanDomHD, objHD.ID, objHD.MaHoaDon);
             }
             else {
                 let typeCacheNhapHang = localStorage.getItem('typeCacheNhapHang');
@@ -629,6 +665,7 @@ var NhapHangChiTiet = function () {
             BindHD_byIDRandom(idRanDomHD);
             BindCTHD_byIDRandomHD(idRanDomHD);
             Caculator_AmountProduct(idRanDomHD);
+            BindNCCVanChuyen(idRanDomHD);
 
             if (!commonStatisJs.CheckNull(objHD.ID_DoiTuong)) {
                 getChiTietNCCByID(objHD.ID_DoiTuong);
@@ -703,6 +740,9 @@ var NhapHangChiTiet = function () {
                         BindHD_byIDRandom(idRandom);
                         BindCTHD_byIDRandomHD(idRandom);
                         Caculator_AmountProduct(idRandom);
+
+                        ChiPhiDV_updateIDRandomHD(idRandom, hdLast.ID, hdLast.MaHoaDon);
+                        BindNCCVanChuyen(idRandom);
 
                         if (!commonStatisJs.CheckNull(hdLast.ID_DoiTuong)) {
                             getChiTietNCCByID(hdLast.ID_DoiTuong, true);
@@ -820,6 +860,8 @@ var NhapHangChiTiet = function () {
                     else {
                         $('#hiddenShowaddNCC,#btnLuuNhomDoiTuong').hide();
                     }
+                    vmCus.role.ThemMoiNhaCungCap = insertNCC;
+                    vmCus.role.CapNhatNhaCungCap = CheckQuyenExist('NhaCungCap_CapNhat');
                 }
                 else {
                     ShowMessage_Danger('Không có quyền');
@@ -4090,11 +4132,14 @@ var NhapHangChiTiet = function () {
         localStorage.setItem(lcHDNhapHang, JSON.stringify(lstHD));
     }
 
+    self.isNCCVanChuyen = ko.observable(false);
     self.showPopupNCC = function () {
+        self.isNCCVanChuyen(false);
         vmThemMoiNCC.showModalAdd();
     };
 
     self.showPopupEditNCC = function (item) {
+        self.isNCCVanChuyen(false);
         if (CheckQuyenExist('NhaCungCap_CapNhat')) {
             item.TenNhomKhachs = item.NhomDoiTuong;
             vmThemMoiNCC.showModalUpdate(item);
@@ -4482,6 +4527,15 @@ var NhapHangChiTiet = function () {
             localStorage.removeItem(lcCTNhapHang);
         }
 
+        let cacheCP = localStorage.getItem('lcChiPhi_NhapHang');
+        if (cacheCP !== null) {
+            cacheCP = JSON.parse(cacheCP);
+            cacheCP = $.grep(cacheCP, function (x) {
+                return x.IDRandomHD !== idRandom;
+            });
+            localStorage.getItem('lcChiPhi_NhapHang');
+        }
+
         localStorage.removeItem('CacheBangGiaNhapHang');
         localStorage.removeItem('nhaphang_cacheTPDL');
     }
@@ -4509,9 +4563,11 @@ var NhapHangChiTiet = function () {
                 RemoveCache(myData.objHoaDon.IDRandom);
                 ShowMessage_Success('Tạo phiếu nhập thành công');
 
-                var dataDB = x.data;
+                let dataDB = x.data;
                 myData.objHoaDon.MaHoaDon = dataDB.MaHoaDon;
                 myData.objHoaDon.ID = dataDB.ID;
+
+                NhapHang_PostChiPhiVanChuyen(myData.objHoaDon, true);
 
                 CheckXuLyHet_DonDatHang(myData.objHoaDon.LoaiHoaDon, dataDB.ID, myData.objHoaDon.ID_HoaDon);
 
@@ -4550,6 +4606,7 @@ var NhapHangChiTiet = function () {
                 myData.objHoaDon.MaHoaDon = dataDB.MaHoaDon;
                 myData.objHoaDon.ID = dataDB.ID;
 
+                NhapHang_PostChiPhiVanChuyen(myData.objHoaDon, true);
                 CheckXuLyHet_DonDatHang(myData.objHoaDon.LoaiHoaDon, dataDB.ID, myData.objHoaDon.ID_HoaDon);
 
                 if (myData.objHoaDon.ChoThanhToan === false) {
@@ -4970,6 +5027,8 @@ var NhapHangChiTiet = function () {
 
         var obj = {
             ID: hd.ID,
+            IDRandom: hd.IDRandom,
+            TongChiPhi: hd.TongChiPhi,
             LoaiDoiTuong: 2,// 1.kh, 2.ncc, 3.bh
             LoaiHoaDon: hd.LoaiHoaDon,
             MaHoaDon: hd.MaHoaDon,
@@ -5536,10 +5595,15 @@ var NhapHangChiTiet = function () {
 
     $('#vmThemMoiNCC').on('hidden.bs.modal', function () {
         if (vmThemMoiNCC.saveOK) {
-            self.ChiTietDoiTuong(vmThemMoiNCC.newVendor);
-            self.newHoaDon().ID_DoiTuong(vmThemMoiNCC.newVendor.ID);
-            $('#txtAutoDoiTuong').val('');
-            SetIDDoiTuong_toCacheHD(vmThemMoiNCC.newVendor.ID);
+            if (!self.isNCCVanChuyen()) {
+                self.ChiTietDoiTuong(vmThemMoiNCC.newVendor);
+                self.newHoaDon().ID_DoiTuong(vmThemMoiNCC.newVendor.ID);
+                $('#txtAutoDoiTuong').val('');
+                SetIDDoiTuong_toCacheHD(vmThemMoiNCC.newVendor.ID);
+            }
+            else {
+                vmCus.ChangeCustomer(vmThemMoiNCC.newVendor);
+            }
         }
     });
 
@@ -5768,7 +5832,7 @@ var NhapHangChiTiet = function () {
                         }
                     }
                     self.textSearchPhieuTN('');
-                break;
+                    break;
 
             }
             self.textSearchHDSC('');
@@ -6065,13 +6129,206 @@ var NhapHangChiTiet = function () {
             self.hideListHDSC();
         })
     }
+
+    function NhapHang_PostChiPhiVanChuyen(dataHD, isInsert = false) {
+        let cacheCP = localStorage.getItem('lcChiPhi_NhapHang');
+        if (cacheCP !== null) {
+            cacheCP = JSON.parse(cacheCP);
+
+            let exCP = $.grep(cacheCP, function (x) {
+                return x.IDRandomHD === dataHD.IDRandom;
+            });
+            if (exCP.length > 0) {
+                let objCP = {
+                    ID_HoaDon: dataHD.ID,
+                    ID_NhaCungCap: exCP[0].ID_DoiTuong,
+                    ThanhTien: dataHD.TongChiPhi,
+                    GhiChu: dataHD.ChiPhi_GhiChu,
+                    SoLuong: 0,
+                    DonGia: 0,
+                    MaDoiTuong: exCP[0].MaDoiTuong,
+                    TenDoiTuong: exCP[0].TenDoiTuong,
+                }
+
+                let arr = [];
+                if (objCP.ThanhTien > 0) {
+                    arr = [objCP];
+                }
+                let myData = {
+                    lstChiPhi: [objCP],
+                    arrIDHoaDon: [],
+                }
+                if (!isInsert) {
+                    myData.arrIDHoaDon = [dataHD.ID];
+                }
+
+                ajaxHelper(BH_HoaDonUri + 'NhapHang_PostChiPhiVanChuyen', 'POST', myData).done(function (x) {
+                    console.log('CTHD_PostPutChiPhi ', x)
+                    if (x.res) {
+                        let diary = {
+                            ID_DonVi: _idDonVi,
+                            ID_NhanVien: _idNhanVien,
+                            LoaiNhatKy: isInsert ? 1 : 2,
+                            ChucNang: 'Nhập hàng - Chi phí vận chuyyển',
+                            NoiDung: ''.concat(isInsert ? 'Thêm mới' : 'Cập nhật', ' chi phí vận chuyển cho phiếu nhập hàng <b>',
+                                dataHD.MaHoaDon, ' </b> . Người tạo: ', _userLogin),
+                            NoiDungChiTiet: '',
+                        }
+                        if (arr.length === 0) {
+                            if (myData.arrIDHoaDon.length > 0) {
+                                diary.NoiDungChiTiet = 'Xóa chi phí của hóa đơn '.concat(dataHD.MaHoaDon);
+                                Insert_NhatKyThaoTac_1Param(diary);
+                            }
+                        }
+                        else {
+                            diary.NoiDungChiTiet = diary.NoiDung.concat('<br /> Chi phí: ', dataHD.TongChiPhi,
+                                '<br /> Bên vận chuyển: ', objCP.TenDoiTuong, ' (', objCP.MaDoiTuong, ')');
+                            Insert_NhatKyThaoTac_1Param(diary);
+                        }
+
+                        // remove cache CP
+                        cacheCP = $.grep(cacheCP, function (x) {
+                            return x.IDRandomHD !== dataHD.IDRandom;
+                        });
+                        localStorage.setItem('lcChiPhi_NhapHang', JSON.stringify(cacheCP));
+
+                        $('#vmCus .gara-search-HH').val('');
+                        vmCus.ID_DoiTuong = '';
+                    }
+                })
+            }
+        }
+    }
+
+    function updateIDNhaCungCap_toHD(idRandom, idNCC=null){
+        var hd = localStorage.getItem(lcHDNhapHang);
+        if (hd != null) {
+            hd = JSON.parse(hd);
+
+            for (let i = 0; i < hd.length; i++)   {
+                if(hd[i].IDRandom===idRandom){
+                    hd[i].ID_NhaCungCap = idNCC;
+                    break
+                }
+            } 
+            localStorage.setItem(lcHDNhapHang, JSON.stringify(hd));
+        }
+        else {
+            hd = [];
+        }
+    }
+
+    var vmCus = new Vue({
+        el: '#vmCus',
+        components: {
+            'customers': cmpChoseCustomer
+        },
+        created: function () {
+            let self = this;
+            self.inforLogin = vmThemMoiNCC.inforLogin;
+        },
+        data: {
+            txtSeach: '',
+            ID_DoiTuong: null,
+            ID_DonVi: null,
+            role: {
+                ThemMoiNhaCungCap: false,
+                CapNhatNhaCungCap: false,
+            },
+            customerChosing: {
+                ID: null,
+                MaDoiTuong: '',
+                TenDoiTuong: '',
+                Email: '',
+                DienThoai: '',
+                DiaChi: ''
+            }
+        },
+        methods: {
+            ChangeCustomer: function (item) {
+                var self = this;
+                self.ID_DoiTuong = item.ID;
+                self.customerChosing = item;
+
+                let idRanDomHD = modelGiaoDich.newHoaDon().IDRandom();
+                let cacheCP = localStorage.getItem('lcChiPhi_NhapHang');
+                let ex = [];
+                if (cacheCP !== null) {
+                    cacheCP = JSON.parse(cacheCP);
+                    let ex = $.grep(cacheCP, function (x) {
+                        return x.IDRandomHD === idRanDomHD;
+                    });
+                    if (ex.length > 0) {
+                        for (let i = 0; i < cacheCP.length; i++) {
+                            let forOut = cacheCP[i];
+                            if (forOut.IDRandomHD === idRanDomHD) {
+                                forOut.ID_DoiTuong = self.ID_DoiTuong;
+                                break;
+                            }
+                        }
+                    }
+                }
+                else {
+                    cacheCP = [];
+                }
+
+                if (ex.length === 0) {
+                    let obj = {
+                        IDRandomHD: idRanDomHD,
+                        ID_DoiTuong: self.ID_DoiTuong,
+                        MaDoiTuong: self.customerChosing.MaDoiTuong,
+                        TenDoiTuong: self.customerChosing.TenDoiTuong,
+                    }
+                    cacheCP.push(obj);
+                }
+                localStorage.setItem('lcChiPhi_NhapHang', JSON.stringify(cacheCP));
+            },
+            showModalCustomer: function () {
+                let self = this;
+                modelGiaoDich.isNCCVanChuyen(true);
+                vmThemMoiNCC.showModalAdd();
+            },
+            UpdateCustomer: async function () {
+                let self = this;
+                modelGiaoDich.isNCCVanChuyen(true);
+                let cus = await vmThemMoiNCC.GetInforVendor_byID(self.ID_DoiTuong);
+                if (cus !== null && cus.length > 0) {
+                    vmThemMoiNCC.showModalUpdate(cus[0]);
+                }
+            },
+            ResetCustomer: function () {
+                let self = this;
+                self.ID_DoiTuong = null;
+                self.customerChosing = {
+                    ID: null,
+                    MaDoiTuong: '',
+                    TenDoiTuong: '',
+                    Email: '',
+                    DienThoai: '',
+                    DiaChi: ''
+                };
+                let idRanDomHD = modelGiaoDich.newHoaDon().IDRandom();
+                let cacheCP = localStorage.getItem('lcChiPhi_NhapHang');
+                if (cacheCP !== null) {
+                    cacheCP = JSON.parse(cacheCP);
+                    for (let i = 0; i < cacheCP.length; i++) {
+                        let forOut = cacheCP[i];
+                        if (forOut.IDRandomHD === idRanDomHD) {
+                            forOut.ID_DoiTuong = null;
+                            break;
+                        }
+                    }
+                    localStorage.setItem('lcChiPhi_NhapHang', JSON.stringify(cacheCP));
+                }
+            },
+        }
+    })
 }
 
 var modelGiaoDich = new NhapHangChiTiet();
 ko.applyBindings(modelGiaoDich, document.getElementById('divPage'));
 var partialProduct = new PartialAddProduct();
 ko.applyBindings(partialProduct, document.getElementById('partial_product_group'));
-
 
 function jqAutoSelectItem(item) {
     modelGiaoDich.JqAutoSelectItem(item);

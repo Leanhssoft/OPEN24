@@ -115,7 +115,7 @@
                             let itFor = data[i];
                             data[i].TienThu = 0;
                             data[i].BH_NhanVienThucHiens = [];
-                            data[i].CanThu = itFor.TienMat;
+                            data[i].CanThu = itFor.TienMat// (tienmat = conno trong DB);
                             data[i].PhaiThu = itFor.PhaiThanhToan;
                             data[i].DaThuTruoc = itFor.KhachDaTra;
                             tongnoHD += itFor.TienMat;
@@ -399,19 +399,27 @@
             };
             switch (formType) {
                 case 0:// at DS nhaphang/trahangnhap
-                    var nguoinop = [];
-                    var invoice = [];
-                    var khachCanTra = item.PhaiThanhToan - item.KhachDaTra;
+                    let nguoinop = [];
+                    let invoice = [];
+                    let cpVC_benkhac= 0, conno_benVC=0;
+                    let dachi_benVCKhac = formatNumberToFloat(item.DaChi_BenVCKhac);
+                    let khachCanTra = item.PhaiThanhToan - item.KhachDaTra;
 
-                    if (khachCanTra > 0) {
+                    if (!commonStatisJs.CheckNull(item.ID_NhaCungCap)) {
+                        cpVC_benkhac = item.TongChiPhi;
+                        khachCanTra = khachCanTra - item.TongChiPhi + dachi_benVCKhac;
+                        conno_benVC = cpVC_benkhac - dachi_benVCKhac;
+                    }
+
+                    if (RoundDecimal(khachCanTra) > 0) {
                         // get thong tin khachhang
                         invoice = [{
                             ID: item.ID,
                             LoaiHoaDon: item.LoaiHoaDon,
                             MaHoaDon: item.MaHoaDon,
                             NgayLapHoaDon: item.NgayLapHoaDon,
-                            PhaiThanhToan: item.TongThanhToan,
-                            KhachDaTra: item.KhachDaTra,
+                            PhaiThanhToan: item.PhaiThanhToan - cpVC_benkhac,
+                            KhachDaTra: item.KhachDaTra - dachi_benVCKhac,
                             CanThu: khachCanTra,
                             TienThu: formatNumber3Digit(khachCanTra),
                         }];
@@ -427,6 +435,35 @@
                         self.ddl_textVal.cusPhone = item.DienThoai;
                         self.newPhieuThu.ID_DoiTuong = item.ID_DoiTuong;
                         self.GetSoDuDatCoc(nguoinop[0].ID);
+                    }
+                    else {
+                         if (conno_benVC > 0)      {
+                              invoice = [{
+                                ID: item.ID,
+                                MaHoaDon: item.MaHoaDon,
+                                LoaiHoaDon: item.LoaiHoaDon,
+                                NgayLapHoaDon: item.NgayLapHoaDon,
+                                PhaiThanhToan: cpVC_benkhac,
+                                PhaiThu: cpVC_benkhac,
+                                KhachDaTra: dachi_benVCKhac,
+                                CanThu: conno_benVC,
+                                TienThu: formatNumber3Digit(conno_benVC),
+                            }];
+                            self.newPhieuThu.NoHienTai = cpVC_benkhac;
+                            self.newPhieuThu.TongNoHD = cpVC_benkhac;
+
+                            self.newPhieuThu.ID_DoiTuong = item.ID_NhaCungCap;
+                            self.ddl_textVal.cusName = item.TenNCCVanChuyen;
+                            self.ddl_textVal.cusPhone = '';
+                            self.GetSoDuDatCoc(item.ID_NhaCungCap);
+                          }
+                    }
+
+                    if (cpVC_benkhac > 0) {
+                        if (item.ID_NhaCungCap !== null) {
+                            let benVC = { ID: item.ID_NhaCungCap, MaNguoiNop: item.MaNCCVanChuyen, TenNguoiNop: item.TenNCCVanChuyen, DienThoaiKhachHang: '', LoaiDoiTuong: 2 };
+                            nguoinop.push(benVC);
+                        }
                     }
 
                     self.listData.NguoiNops = nguoinop;
@@ -453,6 +490,16 @@
                     break;
             }
             $('#vmThanhToanNCC').modal('show');
+        },
+         ChangeCustomer: function (item) {
+            let self = this;
+            let idCus = item.ID;
+            self.newPhieuThu.ID_DoiTuong = idCus;
+            self.ddl_textVal.cusName = item.TenDoiTuong;
+            self.ddl_textVal.cusPhone = item.DienThoai;
+            self.HoaDonChosing.DienThoaiKhachHang = item.DienThoai;
+            self.GetListHD_isDebitOfKH(idCus);
+            //self.GetInforBasic_Cus();
         },
         ChangeCreator: function (item) {
             var self = this;
@@ -518,7 +565,64 @@
             self.newPhieuThu.ID_KhoanThuChi = null;
         },
         ChoseNguoiNopTien: function (item) {
+            let self = this;
             $(event.currentTarget).closest('div').hide();
+
+            self.newPhieuThu.ID_DoiTuong = item.ID;
+            let cpVC_benkhac = 0, conno_benVC = 0;
+            let dachi_benVCKhac = formatNumberToFloat(self.HoaDonChosing.DaChi_BenVCKhac);
+            let khachCanTra = self.HoaDonChosing.PhaiThanhToan - self.HoaDonChosing.KhachDaTra;
+
+            if (!commonStatisJs.CheckNull(self.HoaDonChosing.ID_NhaCungCap)) {
+                khachCanTra = khachCanTra - self.HoaDonChosing.TongChiPhi;
+                cpVC_benkhac = self.HoaDonChosing.TongChiPhi;
+                conno_benVC = cpVC_benkhac - dachi_benVCKhac;
+            }
+
+            if (self.formType === 0) {// ds phieunhap
+                // ncc
+                let invoice = [];
+                if (item.ID === self.HoaDonChosing.ID_DoiTuong) {
+                    invoice = [{
+                        ID: self.HoaDonChosing.ID,
+                        MaHoaDon: self.HoaDonChosing.MaHoaDon,
+                        LoaiHoaDon: self.HoaDonChosing.LoaiHoaDon,
+                        NgayLapHoaDon: self.HoaDonChosing.NgayLapHoaDon,
+                        PhaiThanhToan: self.HoaDonChosing.PhaiThanhToan - cpVC_benkhac,
+                        KhachDaTra: self.HoaDonChosing.KhachDaTra,
+                        CanThu: khachCanTra,
+                        TienThu: formatNumber3Digit(khachCanTra),
+                    }];
+                }
+                else {
+                    khachCanTra = conno_benVC;
+                    invoice = [{
+                        ID: self.HoaDonChosing.ID,
+                        MaHoaDon: self.HoaDonChosing.MaHoaDon,
+                        LoaiHoaDon: self.HoaDonChosing.LoaiHoaDon,
+                        NgayLapHoaDon: self.HoaDonChosing.NgayLapHoaDon,
+                        PhaiThanhToan: cpVC_benkhac,
+                        KhachDaTra: dachi_benVCKhac,
+                        CanThu: conno_benVC,
+                        TienThu: formatNumber3Digit(conno_benVC),
+                    }];
+                    self.newPhieuThu.LoaiDoiTuong = 3;
+                }
+                self.newPhieuThu.ID_DoiTuong = item.ID;
+                self.ddl_textVal.cusName = item.TenNguoiNop;
+                self.ddl_textVal.cusPhone = item.DienThoaiKhachHang;
+                self.listData.HoaDons = invoice;
+                self.newPhieuThu.NoHienTai = khachCanTra;
+                self.newPhieuThu.TongNoHD = khachCanTra;
+                self.newPhieuThu.TienMat = formatNumber3Digit(khachCanTra);
+                self.newPhieuThu.TienATM = 0;
+                self.newPhieuThu.TienCK = 0;
+                self.newPhieuThu.TienTheGiaTri = 0;
+                self.newPhieuThu.DaThanhToan = khachCanTra;
+                self.newPhieuThu.ThucThu = khachCanTra;
+
+                self.GetSoDuDatCoc(self.newPhieuThu.ID_DoiTuong);
+            }
         },
         ChangeNgayLapPhieu: function (e) {
             let self = this;

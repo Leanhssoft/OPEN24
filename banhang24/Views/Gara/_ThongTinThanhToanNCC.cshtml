@@ -36,11 +36,26 @@
             <div class="modal-body" style="padding:15px;">
                 <div class="tab-content ">
                     <div class="gara-tttt-thongtin" v-if="inforHoaDon.HoanTra <= 0 || inforHoaDon.SoDuDatCoc > 0">
-                        <label>Tổng thanh toán</label>
+                        <label>
+                            Tổng thanh toán <span>
+                            </span>
+                        </label>
                         <input class="gara-tttt-tienthu"
                                v-bind:value="formatNumber3Digit(inforHoaDon.PhaiThanhToan,2)" />
 
                     </div>
+                    @*<div class="gara-tttt-thongtin" v-if="inforHoaDon.TongChiPhi > 0 && inforHoaDon.ID_NhaCungCap !== null">
+                            <label>Trừ chi phí v/c</label>
+                            <input class="gara-tttt-tienthu"
+                                   v-bind:value="formatNumber3Digit(inforHoaDon.TongChiPhi,2)" />
+
+                        </div>
+                        <div class="gara-tttt-thongtin" v-if="inforHoaDon.TongChiPhi > 0 && inforHoaDon.ID_NhaCungCapg !== null">
+                            <label>Phải thanh toán sau phí</label>
+                            <input class="gara-tttt-tienthu"
+                                   v-bind:value="formatNumber3Digit(PhieuThuKhach.PhaiThanhToan,2)" />
+
+                        </div>*@
                     <div class="gara-tttt-thongtin"
                          v-if="inforHoaDon.KhachDaTra > 0 && (inforHoaDon.HoanTra <=0 || inforHoaDon.SoDuDatCoc > 0) ">
                         <label style="width:200px;">Đã thanh toán</label>
@@ -65,7 +80,7 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                 <khoan-thu-chi :text-search="khoanthuchi.NoiDungThuChi"
-                                                :la-khoan-thu="$root.LaKhoanThu"
+                                               :la-khoan-thu="$root.LaKhoanThu"
                                                :list-all="listData.KhoanThuChis"
                                                :id-chosing="newPhieuThu.ID_KhoanThuChi"
                                                v-on:change-khoan-thu="ChangeKhoanThu"

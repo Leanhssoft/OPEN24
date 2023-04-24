@@ -39,6 +39,12 @@
                             </div>
 
                         </div>
+                        <div class="form-group floatleft" v-if="HoaDon.LoaiHoaDon === 4 && HoaDon.TenNCCVanChuyen !=''">
+                            <label class="form-label control-label ">Bên vận chuyển:</label>
+                            <div class=" form-news lineHeight-24 " style='padding:3px'>
+                                <span>{{HoaDon.TenNCCVanChuyen}}</span>
+                            </div>
+                        </div>
                         <div class="form-group floatleft" v-if="HoaDon.LoaiHoaDon === 25">
                             <label class="form-label control-label ">Bảo hiểm:</label>
                             <div class=" form-news lineHeight-24 " style='padding:3px'>
@@ -194,6 +200,14 @@
 
                                     {{formatNumber3Digit(HoaDon.TongGiamGia,2)}}
 
+                                </div>
+                            </div>
+                            <div class="form-group" v-if="HoaDon.TongChiPhi > 0">
+                                <label>
+                                    Chi phí v/c :
+                                </label>
+                                <div class="text-right form-news lineHeight-24 " style='padding:3px'>
+                                    {{formatNumber3Digit(HoaDon.TongChiPhi,2)}}
                                 </div>
                             </div>
                             <div class="form-group" v-if="!$root.hideBottom">
@@ -360,7 +374,7 @@
             isKhoaSo: false,
             isGara: false,
             role: { CapNhatHoaHongDichVu: false, ThayDoiThanhPhanDinhLuong: false},
-            HoaDon: { LoaiHoaDon: 1 },
+            HoaDon: { LoaiHoaDon: 1, ID_NhaCungCap: null, MaNCCVanChuyen: '', TenNCCVanChuyen:'', TongChiPhi: 0},
             CTHD_ChangeCKNV: [],// ds dichvu bi thay doi hoahong nhanvien
         },
         methods: {

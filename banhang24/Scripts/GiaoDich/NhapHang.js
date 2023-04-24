@@ -900,7 +900,7 @@
                     // tuan truoc
                     self.TodayBC('Tuần trước');
                     dayStart = moment().weekday(-6).format('YYYY-MM-DD');
-                    dayEnd = moment(dayStart, 'YYYY-MM-DD').add(6, 'days').add('days', 1).format('YYYY-MM-DD'); 
+                    dayEnd = moment(dayStart, 'YYYY-MM-DD').add(6, 'days').add('days', 1).format('YYYY-MM-DD');
                     break;
                 case 5:
                     // 7 ngay qua
@@ -1724,6 +1724,32 @@
         localStorage.setItem('lc_CTSaoChep', JSON.stringify(cthdLoHang));
         localStorage.setItem('isSaoChep', isSaochep);
         localStorage.setItem('isEditNH', !isSaochep);
+
+        let cacheCP = localStorage.getItem('lcChiPhi_NhapHang');
+        if (cacheCP !== null) {
+            cacheCP = JSON.parse(cacheCP);
+            // remove & add again
+            cacheCP = $.grep(cacheCP, function (x) {
+                return x.ID_HoaDon !== item.ID;
+            });
+        }
+        else {
+            cacheCP = [];
+        }
+        if (!commonStatisJs.CheckNull(item.ID_NhaCungCap)) {
+            let objCP = {
+                // saochep phieunhap: idhoadon = Guid.empty --> get MaHoaDon to assign IDRanDomHD at nhaphangchitiet.js
+                MaHoaDon: cthdLoHang.length > 0 ? cthdLoHang[0].MaHoaDon : item.MaHoaDon, 
+                ID_HoaDon: item.ID,
+                ID_DoiTuong: item.ID_NhaCungCap,
+                MaDoiTuong: item.MaNCCVanChuyen,
+                TenDoiTuong: item.TenNCCVanChuyen,
+                Email: ''
+            }
+            cacheCP.push(objCP);
+            localStorage.setItem('lcChiPhi_NhapHang', JSON.stringify(cacheCP));
+        }
+
         GoToChiTietNhap();
     }
 
@@ -2716,6 +2742,9 @@
     self.showPopThanhToan = function (hd) {
         let item = $.extend({}, true, hd);
         item.PhaiThanhToan = hd.PhaiThanhToan - hd.TongTienHDTra;
+        //if (!commonStatisJs.CheckNull(hd.ID_NhaCungCap)) {
+        //    item.PhaiThanhToan = item.PhaiThanhToan - item.TongChiPhi;
+        //}
         vmThanhToanNCC.showModalThanhToan(item);
     }
 

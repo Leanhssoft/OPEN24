@@ -1131,6 +1131,33 @@
                         </td>
                     </tr>
 
+                    <tr id="vmCus">
+                        <td>
+                            Bên vận chuyển   &nbsp; &nbsp; &nbsp;
+                            <span class="commodity-note">
+                                <i class="fa fa-info-circle red"></i>
+                                <span href="javascript:void(0)" class="materiall red" style="right:unset!important">Nếu vận chuyển là một bên khác.
+                                <br /> Vui lòng tạo phiếu chi riêng cho bên này
+                                <br /> <i>(sau khi lưu phiếu nhập hàng)</i></span>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="detail-infor floatleft " style="position:relative">
+                                <customers :text-search="customerChosing.TenDoiTuong"
+                                           :loai-doi-tuong="2"
+                                           :showbutton="role.ThemMoiNhaCungCap && $root.ID_DoiTuong ==null"
+                                           :showbutton-update="role.CapNhatNhaCungCap  && $root.ID_DoiTuong!==null"
+                                           :disable-search="false"
+                                           :id-chi-nhanh="inforLogin.ID_DonVi"
+                                           v-on:show-modal-customer="showModalCustomer"
+                                           v-on:show-modal-update="$root.UpdateCustomer"
+                                           v-on:reset-customer-parent="$root.ResetCustomer"
+                                           v-on:change-customer-parent="ChangeCustomer">
+                                </customers>
+
+                            </div>
+                        </td>
+                    </tr>
                     <tr data-bind="visible: newHoaDon().PhaiThanhToan() > 0">
                         <td>
                             <span class="span_inline_block">
@@ -1299,6 +1326,7 @@
         </div>
     </div>
 </div>
+
 <script src="~/Scripts/Components/Input.js"></script>
 <script src="~/Scripts/Components/NhanVien_KhachHang.js"></script>
 <script src="~/Scripts/Components/TrangThai_NguonKhach.js"></script>
@@ -1311,6 +1339,7 @@
 @Html.Partial("~/Views/Gara/HoaDon/_ThongTinHoaDon.cshtml")
 @Html.Partial("~/Views/Gara/_DichVu_ofThanhPhanDL.cshtml")
 @Html.Partial("~/Views/Gara/QuanLySuaChua/_TiepNhanXe.cshtml")
+
 <script>
     var TeamplateMauIn = '@commonEnum.MauInTeamPlates.NhapHang';
     var funcName = '@RoleKey.NhapHang';
