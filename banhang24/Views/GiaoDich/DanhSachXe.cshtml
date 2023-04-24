@@ -368,6 +368,8 @@
                                                     <table class='table'>
                                                         <thead>
                                                             <tr style="background:#ccc">
+                                                                <th rowspan="2">Phiếu tiếp nhận</th>
+                                                                <th rowspan="2">Số Km vào</th>
                                                                 <th rowspan="2">Mã hóa đơn</th>
                                                                 <th rowspan="2">Mã báo giá</th>
                                                                 <th rowspan="2">Ngày lập hóa đơn</th>
@@ -387,16 +389,18 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr v-if="idXeRowSelected == item.ID" v-for="itemHoaDon in dataHoaDon.data">
+                                                                <td><a><span>{{itemHoaDon.MaPhieuTiepNhan}}</span></a></td>
+                                                                <td class="text-right">{{formatNumber3Digit(itemHoaDon.SoKmVao)}}</td>
                                                                 <td><a v-on:click="showModalChiTietHoaDon(itemHoaDon.ID)"><span>{{itemHoaDon.MaHoaDon}}</span></a></td>
                                                                 <td><a v-on:click="showModalChiTietHoaDon(itemHoaDon.ID_HoaDon)"><span>{{itemHoaDon.MaBaoGia}}</span></a></td>
                                                                 <td>{{moment(itemHoaDon.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')}}</td>
-                                                                <td>{{commonStatisJs.FormatNumber3Digit(itemHoaDon.PhaiThanhToan)}}</td>
-                                                                <td>{{commonStatisJs.FormatNumber3Digit(itemHoaDon.PhaiThanhToanBaoHiem)}}</td>
-                                                                <td>{{commonStatisJs.FormatNumber3Digit(itemHoaDon.KhachDaTra)}}</td>
-                                                                <td>{{commonStatisJs.FormatNumber3Digit(itemHoaDon.BaoHiemDaTra)}}</td>
-                                                                <td>{{commonStatisJs.FormatNumber3Digit(itemHoaDon.PhaiThanhToan - itemHoaDon.KhachDaTra)}}</td>
-                                                                <td>{{commonStatisJs.FormatNumber3Digit(itemHoaDon.PhaiThanhToanBaoHiem - itemHoaDon.BaoHiemDaTra)}}</td>
-                                                                <td>{{itemHoaDon.DienGiai}}</td>
+                                                                <td class="text-right">{{commonStatisJs.FormatNumber3Digit(itemHoaDon.PhaiThanhToan)}}</td>
+                                                                <td class="text-right">{{commonStatisJs.FormatNumber3Digit(itemHoaDon.PhaiThanhToanBaoHiem)}}</td>
+                                                                <td class="text-right">{{commonStatisJs.FormatNumber3Digit(itemHoaDon.KhachDaTra)}}</td>
+                                                                <td class="text-right">{{commonStatisJs.FormatNumber3Digit(itemHoaDon.BaoHiemDaTra)}}</td>
+                                                                <td class="text-right">{{commonStatisJs.FormatNumber3Digit(itemHoaDon.PhaiThanhToan - itemHoaDon.KhachDaTra)}}</td>
+                                                                <td class="text-right">{{commonStatisJs.FormatNumber3Digit(itemHoaDon.PhaiThanhToanBaoHiem - itemHoaDon.BaoHiemDaTra)}}</td>
+                                                                <td class="text-right">{{itemHoaDon.DienGiai}}</td>
                                                             </tr>
                                                         </tbody>
                                                         <tfoot v-show="dataHoaDon.data.length<=0 || isLoading">
