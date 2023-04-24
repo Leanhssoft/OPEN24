@@ -6065,6 +6065,12 @@ namespace libDM_DoiTuong
         public int? CongThucBaoHiem { get; set; }
         public double? ThuDatHang { get; set; }
         public double? GiamTruThanhToanBaoHiem { get; set; }
+
+        public Guid? ID_NhaCungCap { get; set; }// used to nhaphang - vanchuyen ben thu3
+        public string MaNCCVanChuyen { get; set; }
+        public string TenNCCVanChuyen { get; set; }
+        public double DaChi_BenVCKhac { get; set; }
+
         public double? SumDaThanhToan { get; set; }
         public double? SumConNo { get; set; }
         public double? SumBaoHiemDaTra { get; set; }
