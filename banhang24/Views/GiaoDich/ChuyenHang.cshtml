@@ -207,7 +207,7 @@
                     </thead>
                     <tbody data-bind="foreach: HoaDons">
                         <tr class="prev-tr-hide" data-bind="click: $parent.LoadChiTietHD,css:{bggray : $index()%2 == 1}">
-                            <td class="@commonEnum.ColumnTransfers.mahoadon" data-bind="text: MaHoaDon, style: { color: (TongTienHang > TongChiPhi) && NguoiSua=='4' ? 'red' : 'black' }"></td>
+                            <td class="@commonEnum.ColumnTransfers.mahoadon" data-bind="text: MaHoaDon, style: { color: (TongTienHang.toFixed(2) > TongChiPhi.toFixed(2)) && NguoiSua=='4' ? 'red' : 'black' }"></td>
                             <td class="@commonEnum.ColumnTransfers.chinhanhchuyen" data-bind="text: TenDonVi"></td>
                             <td class="@commonEnum.ColumnTransfers.nguoichuyen" data-bind="text: NguoiTao"></td>
                             <td class="@commonEnum.ColumnTransfers.chinhanhnhan" data-bind="text: TenDonViChuyen"></td>
