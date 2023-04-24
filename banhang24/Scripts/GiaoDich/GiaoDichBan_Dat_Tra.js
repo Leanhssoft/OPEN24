@@ -3120,6 +3120,7 @@
                     + ";var item5=" + JSON.stringify(self.VatDungKemTheos())
                     + "; </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>"); // MauInTeamplate.js: used to bind data in knockout
+                data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>")
                 PrintExtraReport(data); // assign content HTML into frame
             }
         });
@@ -3214,7 +3215,7 @@
         //var tongcong = formatNumberToFloat(objPrint.TongTienHang) - formatNumberToFloat(objPrint.TongGiamGia)
           //  - formatNumberToFloat(objPrint.KhuyeMai_GiamGia)
            // + formatNumberToFloat(objPrint.TongTienThue);
-let tongcong= formatNumberToFloat(objPrint.TongThanhToan) ;
+        let tongcong= formatNumberToFloat(objPrint.TongThanhToan) ;
 
         objPrint.NgayLapHoaDon = moment(objHD.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
         objPrint.Ngay = moment(objHD.NgayLapHoaDon).format('DD');
@@ -4646,6 +4647,7 @@ let tongcong= formatNumberToFloat(objPrint.TongThanhToan) ;
                     + "; var item5=" + JSON.stringify(self.VatDungKemTheos())
                     + "; </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
+                data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
                 PrintExtraReport(data);
             }
         });
