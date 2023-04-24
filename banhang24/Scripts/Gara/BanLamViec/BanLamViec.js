@@ -1941,10 +1941,11 @@ var workTable = new Vue({
             let cus = await self.GetinforCus_byID(hdChosing.ID_DoiTuong);
             let baohiem = await self.GetinforCus_byID(hdChosing.ID_BaoHiem);
 
-            let cus_NoHienTai = 0, bh_NoHienTai = 0;
+            let cus_NoHienTai = 0, bh_NoHienTai = 0, cus_Email='';
             let bh_masothue = '';
             if (!$.isEmptyObject(cus)) {
                 cus_NoHienTai = cus.NoHienTai;
+                cus_Email = cus.Email;
             }
 
             if (!$.isEmptyObject(baohiem)) {
@@ -1958,6 +1959,7 @@ var workTable = new Vue({
             let bh_DebitOld = bh_NoHienTai - bh_DebitHD;
             bh_DebitOld = bh_DebitOld < 0 ? 0 : bh_DebitOld;
 
+            objPrint.Email = cus_Email;
             objPrint.PhaiThanhToanBaoHiem = formatNumber3Digit(hdChosing.PhaiThanhToanBaoHiem, 0);
             objPrint.KhachDaTra = formatNumber(hdChosing.KhachDaTra);
             objPrint.TongTienDichVu = formatNumber(hdChosing.TongTienDichVu);
@@ -2179,6 +2181,7 @@ var workTable = new Vue({
                     + " var item5 =", JSON.stringify(self.MauIn.ListData.VatDungKemTheo) + ";"
                     + " var item3=" + JSON.stringify(hd) + "; </script>");
                     data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
+                    data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
                     PrintExtraReport(data);
                 })
             }
