@@ -4535,11 +4535,17 @@
                     VueChiPhi.CTHD_GetChiPhiDichVu([item.ID], 2, [self.IDDT()]);
                 }
                 break;
+            case 124: // chiphi vanchuyen (ben thu3)
+                if (loaiDoiTuong === 2) {
+                    let copy = { ...item };
+                    copy.LoaiHoaDon = 4;
+                    vmChiTietHoaDon.showModalChiTietHoaDon(copy.ID);
+                }
+                break;
             case 22: // nap thegiatri
                 vmThemMoiTheNap.showModalUpdate(item.ID, 1);
                 break;
             case 32: // hoan tra thegiatri
-
                 break;
             default:
                 vmChiTietHoaDon.showModalChiTietHoaDon(item.ID);
