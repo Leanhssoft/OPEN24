@@ -6954,6 +6954,63 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
 
         [HttpPost, HttpGet]
+        public IHttpActionResult NhapHang_PostChiPhiVanChuyen([FromBody] JObject data)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                using (var trans = db.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        List<BH_HoaDon_ChiPhi> lstData = new List<BH_HoaDon_ChiPhi>();
+                        List<Guid> arrIDHoaDon = new List<Guid>();
+                        if (data["lstChiPhi"] != null)
+                        {
+                            lstData = data["lstChiPhi"].ToObject<List<BH_HoaDon_ChiPhi>>();
+
+                            // only update ChiPhi to BH_HoaDon if update ChiPhi in BH_HoaDon_ChiPhi
+                            if (data["arrIDHoaDon"] != null)
+                            {
+                                foreach (var item in lstData)
+                                {
+                                    BH_HoaDon hd = db.BH_HoaDon.Find(item.ID_HoaDon);
+                                    if (hd != null)
+                                    {
+                                        hd.ChiPhi = item.ThanhTien;
+                                    }
+                                }
+                            }
+                        }
+                        if (data["arrIDHoaDon"] != null)
+                        {
+                            arrIDHoaDon = data["arrIDHoaDon"].ToObject<List<Guid>>();
+                        }
+                        // delete chiphi old & add again
+                        var cpOld = db.BH_HoaDon_ChiPhi.Where(x => arrIDHoaDon.Contains(x.ID_HoaDon) == true);
+                        db.BH_HoaDon_ChiPhi.RemoveRange(cpOld);
+
+                        List<BH_HoaDon_ChiPhi> lstAdd = new List<BH_HoaDon_ChiPhi>();
+                        foreach (var item in lstData)
+                        {
+                            item.ID = Guid.NewGuid();
+                            lstAdd.Add(item);
+                        }
+                        db.BH_HoaDon_ChiPhi.AddRange(lstAdd);
+                        db.SaveChanges();
+                        trans.Commit();
+                        return ActionTrueData(string.Empty);
+                    }
+                    catch (Exception ex)
+                    {
+                        trans.Rollback();
+                        return ActionFalseNotData(ex.Message + ex.InnerException);
+                    }
+
+                }
+            }
+        }
+
+        [HttpPost, HttpGet]
         public IHttpActionResult CTHD_GetChiPhiDichVu([FromBody] JObject data)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
