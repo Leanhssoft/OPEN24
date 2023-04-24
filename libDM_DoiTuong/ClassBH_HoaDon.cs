@@ -834,6 +834,9 @@ namespace libDM_DoiTuong
                         case 27: // HD datcoc
                             dto.strLoaiHoaDon = "Nạp tiền đặt cọc";
                             break;
+                        case 124: // CP vanchuyen (ben thu3)
+                            dto.strLoaiHoaDon = "Chi phí vận chuyển";
+                            break;
                         case 125: // CP dichvu giacong (hoadon 1 + hdsc)
                             dto.strLoaiHoaDon = "Chi phí hóa đơn";
                             break;
