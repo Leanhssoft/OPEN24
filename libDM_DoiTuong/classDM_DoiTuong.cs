@@ -2134,7 +2134,7 @@ namespace libDM_DoiTuong
                     dto.TongTienThue = item.TongTienThue ?? 0;
                     dto.KhachDaTra = item.TongTienThu;
                     dto.SoThuTu = item.TinhChietKhauTheo; // mượn tạm trường STT
-                    dto.TienMat = debit ?? 0;  // mượn tạm trường TienMat
+                    dto.TienMat = debit ?? 0;  // mượn tạm trường TienMat (conno)
                     dto.LoaiHoaDon = item.LoaiHoaDon ?? 0;
                     lstReturn.Add(dto);
                 }
