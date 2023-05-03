@@ -250,8 +250,9 @@ namespace libGara
                     TinhTrang = x.TinhTrang,
                     PhuongAnSuaChua = x.PhuongAnSuaChua,
                     TrangThai = x.TrangThai,
-                    Anh = x.Anh
-                }).ToList();
+                    Anh = x.Anh,
+                    STT = x.STT ?? 0,
+                }).OrderBy(x => x.STT).ToList();
         }
         public List<PhieuTiepNhan_VatDungDinhKem> PhieuTiepNhan_GetVatDungKemTheo(Guid id)
         {
@@ -264,7 +265,8 @@ namespace libGara
                      SoLuong = x.SoLuong,
                      FileDinhKem = x.FileDinhKem,
                      TrangThai = x.TrangThai,
-                 }).ToList();
+                     STT = x.STT ?? 0,
+                 }).OrderBy(x=>x.STT).ToList();
         }
 
         public void AddPhieuTiepNhan(Gara_PhieuTiepNhan obj)
@@ -378,7 +380,7 @@ namespace libGara
             sql.Add(new SqlParameter("TextSearch", txt));
             List<XuatKho_JqautoHDSC> xx = _db.Database.SqlQuery<XuatKho_JqautoHDSC>(" exec JqAuto_HoaDonSC @IDChiNhanhs, @ID_PhieuTiepNhan, @TextSearch ", sql.ToArray()).ToList();
             return xx;
-        } 
+        }
         public List<XuatKho_JqautoHDSC> GetHoaDonBaoGia_ofXeDangSua(ParamSearch param)
         {
             var idChiNhanh = string.Join(",", param.LstIDChiNhanh);
@@ -661,6 +663,7 @@ namespace libGara
     }
     public class PhieuTiepNhan_TinhTrang
     {
+        public int? STT { get; set; }
         public Guid ID { get; set; }
         public Guid? ID_PhieuTiepNhan { get; set; }
         public string TenHangMuc { get; set; }
@@ -671,6 +674,7 @@ namespace libGara
     }
     public class PhieuTiepNhan_VatDungDinhKem
     {
+        public int? STT { get; set; }
         public Guid ID { get; set; }
         public Guid? ID_PhieuTiepNhan { get; set; }
         public string TieuDe { get; set; }

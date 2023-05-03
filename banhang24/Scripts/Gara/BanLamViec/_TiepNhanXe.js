@@ -769,6 +769,7 @@
                         vatdung[i].FileDinhKem = result[0];
                     }
                 }
+                vatdung[i].STT = i + 1;
             }
             self.Put_GiayToKemTheoUpload(vatdung);
             //Hạng mục sửa chữa
@@ -789,6 +790,7 @@
                         hangmuc[i].Anh = result[0];
                     }
                 }
+                hangmuc[i].STT = i + 1;
             }
             self.Put_HangMucSuaChuaUpload(hangmuc);
             //$.ajax({
