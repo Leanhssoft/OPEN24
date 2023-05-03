@@ -1296,67 +1296,72 @@
         }
     }
     self.LoadHoaDon_byMaHD = function (item) {
-        if (item.MaHoaDon != '' && item.MaHoaDon != null && item.MaHoaDon != 'HD trả nhanh') {
-            var maHD = item.MaHoaDon;
-            if (maHD.indexOf('TT') > -1) {
-                localStorage.setItem('FindMaPhieuChi', maHD);
-                url = "/#/CashFlow"; // soquy
-            }
-            else {
-                localStorage.setItem('FindHD', maHD);
-                if (maHD.indexOf('HD') > -1) {
-                    url = "/#/Invoices"; // hoadon
-                }
-                else if (maHD.indexOf('GDV') > -1) {
-                    url = "/#/ServicePackage"; // hoadon
-                }
-                else if (maHD.indexOf('PNK') > -1) {
-                    var url = "/#/PurchaseOrder";
-                }
-                else if (maHD.indexOf('THN') > -1) {
-                    var url = "/#/PurchaseReturns";
-                }
-                else {
-                    if (maHD.indexOf('TH') > -1) {
-                        url = "/#/Returns"; // trahang
-                    }
-                    else {
-                        url = "/#/Order"; // dathang
-                    }
-                }
-            }
-            window.open(url);
-        }
+        localStorage.setItem('FindHD', item.MaHoaDon);
+        var url = "/#/PurchaseOrder";
+        window.open(url);
+        //if (item.MaHoaDon != '' && item.MaHoaDon != null && item.MaHoaDon != 'HD trả nhanh') {
+        //    var maHD = item.MaHoaDon;
+        //    if (maHD.indexOf('TT') > -1) {
+        //        localStorage.setItem('FindMaPhieuChi', maHD);
+        //        url = "/#/CashFlow"; // soquy
+        //    }
+        //    else {
+        //        localStorage.setItem('FindHD', maHD);
+        //        if (maHD.indexOf('HD') > -1) {
+        //            url = "/#/Invoices"; // hoadon
+        //        }
+        //        else if (maHD.indexOf('GDV') > -1) {
+        //            url = "/#/ServicePackage"; // hoadon
+        //        }
+        //        else if (maHD.indexOf('PNK') > -1) {
+        //            var url = "/#/PurchaseOrder";
+        //        }
+        //        else if (maHD.indexOf('THN') > -1) {
+        //            var url = "/#/PurchaseReturns";
+        //        }
+        //        else {
+        //            if (maHD.indexOf('TH') > -1) {
+        //                url = "/#/Returns"; // trahang
+        //            }
+        //            else {
+        //                url = "/#/Order"; // dathang
+        //            }
+        //        }
+        //    }
+        //    window.open(url);
+        //}
     }
     self.LoadChungTu_byMaHD = function (item) {
-        var maHD = item.MaChungTu;
-        if (maHD.indexOf('TT') > -1) {
-            localStorage.setItem('FindMaPhieuChi', maHD);
-            url = "/#/CashFlow"; // soquy
-        }
-        else {
-            localStorage.setItem('FindHD', maHD);
-            if (maHD.indexOf('HD') > -1) {
-                url = "/#/Invoices"; // hoadon
-            }
-            else if (maHD.indexOf('GDV') > -1) {
-                url = "/#/Invoices"; // hoadon
-            }
-            else if (maHD.indexOf('PNK') > -1) {
-                var url = "/#/PurchaseOrder";
-            }
-            else if (maHD.indexOf('THN') > -1) {
-                var url = "/#/PurchaseReturns";
-            }
-            else {
-                if (maHD.indexOf('TH') > -1) {
-                    url = "/#/Returns"; // trahang
-                }
-                else {
-                    url = "/#/Order"; // dathang
-                }
-            }
-        }
+        //var maHD = item.MaChungTu;
+        localStorage.setItem('FindHD', item.MaChungTu);
+        let url = "/#/PurchaseReturns";
+        //if (maHD.indexOf('TT') > -1) {
+        //    localStorage.setItem('FindMaPhieuChi', maHD);
+        //    url = "/#/CashFlow"; // soquy
+        //}
+        //else {
+        //    localStorage.setItem('FindHD', maHD);
+        //    if (maHD.indexOf('HD') > -1) {
+        //        url = "/#/Invoices"; // hoadon
+        //    }
+        //    else if (maHD.indexOf('GDV') > -1) {
+        //        url = "/#/Invoices"; // hoadon
+        //    }
+        //    else if (maHD.indexOf('PNK') > -1) {
+        //        var url = "/#/PurchaseOrder";
+        //    }
+        //    else if (maHD.indexOf('THN') > -1) {
+        //        var url = "/#/PurchaseReturns";
+        //    }
+        //    else {
+        //        if (maHD.indexOf('TH') > -1) {
+        //            url = "/#/Returns"; // trahang
+        //        }
+        //        else {
+        //            url = "/#/Order"; // dathang
+        //        }
+        //    }
+        //}
         window.open(url);
     }
     self.LoadChungTuGoc_byMaHD = function (item) {
