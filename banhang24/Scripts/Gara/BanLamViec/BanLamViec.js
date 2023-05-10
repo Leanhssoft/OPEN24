@@ -2025,6 +2025,7 @@ var workTable = new Vue({
             objPrint.TongThanhToan = formatNumber(tongcong);
             objPrint.BH_TienBangChu = DocSo(hdChosing.PhaiThanhToanBaoHiem);
             objPrint.BH_ConThieu = formatNumber3Digit(hdChosing.PhaiThanhToanBaoHiem - hdChosing.BaoHiemDaTra);
+            objPrint.BH_ConThieu_BangChu = DocSo(hdChosing.PhaiThanhToanBaoHiem - hdChosing.BaoHiemDaTra);
 
             let conno = formatNumberToInt(hdChosing.TongThanhToan) - daThanhToan - hdChosing.BaoHiemDaTra;
             objPrint.NoTruoc = formatNumber3Digit(cus_DebitOld);
@@ -2040,6 +2041,7 @@ var workTable = new Vue({
             if (hdChosing.LoaiHoaDon === 3) {
                 objPrint.KH_TienBangChu = DocSo(objPrint.TienKhachThieu);
             }
+            objPrint.TienKhachThieu_BangChu = DocSo(hdChosing.PhaiThanhToan - daThanhToan);
 
             let mat = 0, pos = 0, ck = 0, tgt = 0, coc = 0, diem = 0;
             mat = hdChosing.Khach_TienMat + hdChosing.BH_TienMat;
@@ -2182,6 +2184,8 @@ var workTable = new Vue({
                     + " var item3=" + JSON.stringify(hd) + "; </script>");
                     data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
                     data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
+                    data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
+                    data = data.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
                     PrintExtraReport(data);
                 })
             }

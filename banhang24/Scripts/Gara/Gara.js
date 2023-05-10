@@ -4466,6 +4466,8 @@ var NewModel_BanHangLe = function () {
         objPrint.HD_TienThua = formatNumber3Digit(hd_thieu);
         objPrint.HD_ConThieu = formatNumber3Digit(hd_thua);
         objPrint.KH_TienBangChu = DocSo(objHD.PhaiThanhToan);
+        objPrint.TienKhachThieu_BangChu = DocSo(khachthieu);
+        objPrint.BH_ConThieu_BangChu = DocSo(bh_thieu);
 
         objPrint.TongTienHangChuaCK = formatNumber3Digit(objHD.TongTienHangChuaCK);
         objPrint.TongGiamGiaHang = formatNumber3Digit(objHD.TongGiamGiaHang);
@@ -12345,7 +12347,9 @@ var NewModel_BanHangLe = function () {
                     " var item5= ", JSON.stringify(self.VatDungKemTheos()), ' ;',
                     " </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
-                temp = temp.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>")
+                temp = temp.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
+                temp = temp.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
+                temp = temp.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
                 PrintExtraReport(temp, data, self.numberOfPrint(), isPrintDraft === true ? 0 : 1);
             }).fail(function () {
                 if (itemMauIn.length > 0) {

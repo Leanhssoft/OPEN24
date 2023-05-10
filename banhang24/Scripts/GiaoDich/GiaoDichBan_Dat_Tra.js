@@ -3120,7 +3120,9 @@
                     + ";var item5=" + JSON.stringify(self.VatDungKemTheos())
                     + "; </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>"); // MauInTeamplate.js: used to bind data in knockout
-                data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>")
+                data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
+                data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
+                data = data.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
                 PrintExtraReport(data); // assign content HTML into frame
             }
         });
@@ -3290,6 +3292,7 @@
         objPrint.TienATM = formatNumber3Digit(objPrint.TienATM);// in store: assign TienGui = TienATM
         objPrint.TienKhachThieu = formatNumber(conno);
         objPrint.PhaiThanhToan_TruCocBG = objHD.PhaiThanhToan - objHD.ThuDatHang;
+        objPrint.TienKhachThieu_BangChu = DocSo(conno);
 
         // the gia tri
         objPrint.TongTaiKhoanThe = formatNumber(vmThanhToan.theGiaTriCus.TongNapThe);
@@ -3368,6 +3371,7 @@
         objPrint.BH_TienBangChu = DocSo(objHD.PhaiThanhToanBaoHiem);
         objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCocBG);
         objPrint.BH_ConThieu = formatNumber3Digit(objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra);
+        objPrint.BH_ConThieu_BangChu = DocSo(objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra);
 
         let bh_notruoc = 0, bh_nosau = 0;
         if (self.InforBaoHiem() !== null && self.InforBaoHiem().length > 0) {
@@ -4648,6 +4652,8 @@
                     + "; </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
                 data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
+                data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
+                data = data.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
                 PrintExtraReport(data);
             }
         });
