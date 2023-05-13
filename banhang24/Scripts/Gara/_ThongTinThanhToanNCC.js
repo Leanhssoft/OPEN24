@@ -93,7 +93,7 @@
                 SoTaiKhoanCK: '',
                 TenNganHangPos: '',
                 TenNganHangCK: '',
-                HoanTraTamUng: 0,
+                HoanTraTamUng: 0
             };
         },
         GetKhoanThuChi_byLoaiChungTu: function (lakhoanthu = true) {
