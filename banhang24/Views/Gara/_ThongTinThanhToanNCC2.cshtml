@@ -30,7 +30,7 @@
         <div class="modal-content ">
             <div class="modal-header ">
                 <h5 class="modal-title">
-                    {{(inforHoaDon.HoanTra <=0 || inforHoaDon.SoDuDatCoc > 0)?'Thông tin thanh toán':'NCC trả lại tiền'}}
+                    Thông tin thanh toán
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
 
@@ -41,7 +41,7 @@
                         v-on:click="changeTab(2)">
                         <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
                            href="#KhachHang" role="tab" aria-controls="pills-profile" aria-selected="false">
-                            {{inforHoaDon.HoanTra > 0?'Thông tin':'Thông tin thanh toán'}}
+                            {{PhieuThuKhach.HoanTraTamUng > 0?'Thông tin':'Thông tin thanh toán'}}
                         </a>
                     </li>
                     <li class="nav-item"
@@ -57,35 +57,35 @@
                     <div class="tab-pane"
                          v-bind:class="{active: inforHoaDon.LoaiDoiTuong == 2}"
                          id="KhachHang" role="tabpanel">
-                        <div class="gara-tttt-thongtin" v-if="inforHoaDon.HoanTra <=0 || inforHoaDon.SoDuDatCoc > 0">
+                        <div class="gara-tttt-thongtin" v-if="PhieuThuKhach.HoanTraTamUng <=0 || inforHoaDon.SoDuDatCoc > 0">
                             <label style="width:200px;">Cần trả nhà cung cấp</label>
                             <input class="gara-tttt-tienthu"
                                    v-bind:value="formatNumber3Digit(inforHoaDon.PhaiThanhToan - inforHoaDon.TongChiPhi,2)" />
                         </div>
                         <div class="gara-tttt-thongtin"
-                             v-if="inforHoaDon.KhachDaTra > 0 && (inforHoaDon.HoanTra <=0 || inforHoaDon.SoDuDatCoc > 0) ">
+                             v-if="PhieuThuKhach.KhachDaTra > 0 && (PhieuThuKhach.HoanTraTamUng <=0 || inforHoaDon.SoDuDatCoc > 0) ">
                             <label style="width:200px;">Đã thanh toán</label>
                             <input class="gara-tttt-tienthu" readonly
-                                   v-bind:value="formatNumber3Digit(inforHoaDon.KhachDaTra,2)" />
+                                   v-bind:value="formatNumber3Digit(PhieuThuKhach.KhachDaTra,2)" />
                         </div>
-                        <div class="gara-tttt-thongtin" v-if="inforHoaDon.HoanTra > 0 && inforHoaDon.SoDuDatCoc <=0">
-                            <label style="width:200px;">Tổng tiền trả</label>
+                        <div class="gara-tttt-thongtin" v-if="PhieuThuKhach.HoanTraTamUng > 0 && inforHoaDon.SoDuDatCoc <=0">
+                            <label style="width:200px;">Nhà cung cấp trả lại</label>
                             <input class="gara-tttt-tienthu"
-                                   v-bind:value="formatNumber3Digit(inforHoaDon.HoanTra,2)" />
+                                   v-bind:value="formatNumber3Digit(PhieuThuKhach.HoanTraTamUng,2)" />
 
                         </div>
                         <div class="gara-tttt-chuyenkhoan">
                             <div class="container-fluid row " style="margin-bottom:5px">
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                     <label>
-                                        Khoản mục {{$root.LaKhoanThu?'thu':'chi'}}
+                                        Khoản mục {{$root.PhieuThuKhach.LaKhoanThu?'thu':'chi'}}
                                     </label>
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <khoan-thu-chi :text-search="khoanthuchi.NoiDungThuChi"
-                                                   :la-khoan-thu="$root.LaKhoanThu"
+                                                   :la-khoan-thu="$root.PhieuThuKhach.LaKhoanThu"
                                                    :list-all="listData.KhoanThuChis"
                                                    :id-chosing="newPhieuThu.ID_KhoanThuChi"
                                                    v-on:change-khoan-thu="ChangeKhoanThu"
@@ -96,7 +96,7 @@
                         </div>
                         <div class="gara-tttt-chuyenkhoan" v-if="inforHoaDon.SoDuDatCoc > 0">
                             <div class="container-fluid row" style="margin-bottom:5px"
-                                 v-if="inforHoaDon.TongThanhToan > inforHoaDon.KhachDaTra">
+                                 v-if="inforHoaDon.TongThanhToan > PhieuThuKhach.KhachDaTra">
                                 <div class="col-lg-4 col-sm-12 col-xs-12 col-md-4"> <label class="bold">Chi từ cọc</label></div>
                                 <div class="col-lg-4 col-sm-12 col-xs-12 col-md-4">
                                     <span style="line-height:30px">
@@ -126,8 +126,10 @@
                                     <label>&nbsp;</label>
                                 </div>
                                 <div class="col-lg-4 col-sm-12 col-xs-12 col-md-4">
-                                    <input type="text" class="form-control text-right " readonly
+                                    <input type="text" class="form-control text-right " readonly v-if="PhieuThuKhach.PhaiThanhToan >= 0"
                                            v-bind:value="formatNumber3Digit(PhieuThuKhach.PhaiThanhToan,2)" />
+                                    <input type="text" class="form-control text-right " readonly v-else
+                                           v-bind:value="formatNumber3Digit(PhieuThuKhach.HoanTraTamUng,2)" />
                                 </div>
 
                             </div>
@@ -135,7 +137,7 @@
                         </div>
 
                         <div class="gara-tttt-thongtin"
-                             v-if="PhieuThuKhach.HoanTraTamUng > 0 && inforHoaDon.SoDuDatCoc > 0 && PhieuThuKhach.PhaiThanhToan > 0">
+                             v-if="PhieuThuKhach.HoanTraCoc > 0 && inforHoaDon.SoDuDatCoc > PhieuThuKhach.PhaiThanhToan > 0">
                             <label style="width:unset">
                                 <input type="checkbox" v-model="isCheckTraLaiCoc" v-on:change="$root.ChangeCheckTraLaiCoc" />
                                 <span>
@@ -229,23 +231,34 @@
                     <div class="tab-pane" id="BaoHiem"
                          v-bind:class="{active: inforHoaDon.LoaiDoiTuong == 3}"
                          role="tabpanel" aria-labelledby="pills-profile-tab">
-                        <div style=" " class="gara-tttt-thongtin">
+                        <div class="gara-tttt-thongtin">
                             <label style="width:200px;">Cần chi bên vận chuyển</label>
                             <input class="gara-tttt-tienthu" readonly
                                    v-bind:value="formatNumber3Digit(inforHoaDon.TongChiPhi,2)" />
+                        </div>
+                        <div class="gara-tttt-thongtin"
+                             v-if="PhieuChiVanChuyen.KhachDaTra > 0">
+                            <label style="width:200px;">Đã chi</label>
+                            <input class="gara-tttt-tienthu" readonly
+                                   v-bind:value="formatNumber3Digit(PhieuChiVanChuyen.KhachDaTra,2)" />
+                        </div>
+                        <div class="gara-tttt-thongtin" v-if="formatNumberToFloat(PhieuChiVanChuyen.HoanTraTamUng) > 0">
+                            <label style="width:200px;">Bên vc trả lại tiền</label>
+                            <input class="gara-tttt-tienthu" readonly
+                                   v-bind:value="formatNumber3Digit(PhieuChiVanChuyen.HoanTraTamUng,2)" />
                         </div>
                         <div class="gara-tttt-chuyenkhoan">
                             <div class="container-fluid row " style="margin-bottom:5px">
                                 <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
                                     <label>
-                                        Khoản mục {{$root.LaKhoanThu?'thu':'chi'}}
+                                        Khoản mục {{$root.PhieuChiVanChuyen.LaKhoanThu?'thu':'chi'}}
                                     </label>
                                 </div>
                                 <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <khoan-thu-chi :text-search="bh_khoanthuchi.NoiDungThuChi"
-                                                   :la-khoan-thu="$root.LaKhoanThu"
+                                                   :la-khoan-thu="$root.PhieuChiVanChuyen.LaKhoanThu"
                                                    :list-all="listData.KhoanThuChis"
                                                    :id-chosing="PhieuChiVanChuyen.ID_KhoanThuChi"
                                                    v-on:change-khoan-thu="BH_ChangeKhoanThu"
@@ -320,12 +333,12 @@
 
 
                         </div>
-                        <div style=" " class="gara-tttt-thongtin">
+                        <div class="gara-tttt-thongtin">
                             <label>Tổng trả bên vận chuyển</label>
                             <input class="gara-tttt-tienthu" readonly
                                    v-bind:value="formatNumber3Digit(PhieuChiVanChuyen.DaThanhToan,2)" />
                         </div>
-                        <div style=" " class="gara-tttt-thongtin">
+                        <div class="gara-tttt-thongtin">
                             <label>
                                 {{PhieuChiVanChuyen.TienThua> 0?'Tiền thừa trả lại':'Tiền thiếu'}}
                             </label>
@@ -379,17 +392,6 @@
                 ID: null,
                 NoiDungThuChi: '',
             };
-        },
-        computed: {
-            LaKhoanThu: function () {
-                let self = this;
-                let loaiHD = self.inforHoaDon.LoaiHoaDon;
-                if (commonStatisJs.CheckNull(loaiHD)) {
-                    loaiHD = 4;
-                }
-                loaiHD = parseInt(loaiHD);
-                return loaiHD === 7 || (loaiHD === 4 && self.inforHoaDon.HoanTra > 0);
-            }
         },
         data: {
             saveOK: false,
@@ -465,8 +467,8 @@
                     ID_KhoanThuChi: null,
                     TenKhoanThuChi: '',
                     NoHienTai: 0,
-                    PhaiThanhToan: 0,// sotien phaitt sau khi nhap tiencoc
-                    DaThanhToan: 0,
+                    PhaiThanhToan: 0,// sotien phaitt sau khi tru khachdatra (update phieunhap)
+                    DaThanhToan: 0,// tổng tienmat + pó + ck
                     TienThua: 0,
                     ThucThu: 0,
                     TenTaiKhoanPos: '',//= ten chu the
@@ -475,17 +477,13 @@
                     SoTaiKhoanCK: '',
                     TenNganHangPos: '',
                     TenNganHangCK: '',
-                    HoanTraTamUng: 0,
+                    HoanTraTamUng: 0,// sotien ncc phaitra (khong tinh tiencoc)
+                    HoanTraCoc: 0,
                     MaDoiTuong: '',
                     TenDoiTuong: '',
+                    KhachDaTra: 0,// if update phieunhap
+                    LaKhoanThu: false,// update phieunhap (thu lai tien ncc/benVC)
                 };
-            },
-            GetKhoanThuChi_byLoaiChungTu: function (lakhoanthu = true) {
-                let self = this;
-                let ktc = $.grep(self.listData.KhoanThuChis, function (x) {
-                    return x.LoaiChungTu.indexOf(self.inforHoaDon.LoaiHoaDon) > -1 && x.LaKhoanThu === lakhoanthu;
-                });
-                return ktc;
             },
             Get_benVanChuyen: function (idRandom) {
                 // check ben vanchuyen thu3
@@ -500,99 +498,6 @@
                     }
                 }
                 return [];
-            },
-            showModalUpdate: function (hd, formType = 2) {// use at banle
-                var self = this;
-                self.isCheckTraLaiCoc = false;
-                self.saveOK = false;
-                self.isLoading = false;
-                self.formType = formType;
-                self.GridNVienBanGoi_Chosed = [];
-                self.PhieuThuKhach = self.newPhieuThu();
-                self.PhieuChiVanChuyen = self.newPhieuThu();
-                self.PhieuThuKhachPrint = self.newPhieuThu();
-                self.PhieuChiVanChuyenPrint = self.newPhieuThu();
-                var tiendatcoc = 0, datt = 0, cantt = 0, tienmat = 0, tienpos = 0, tienck = 0, tiendiem = 0, diemquydoi = 0, tienthe = 0;
-                var idPOS = null, idCK = null;
-                var hoantra = hd.HoanTraTamUng;
-                var soduDatCoc = hd.SoDuDatCoc;
-
-                var lstHD = localStorage.getItem('lstHDLe');
-                if (lstHD !== null) {
-                    lstHD = JSON.parse(lstHD);
-                }
-                else {
-                    lstHD = [];
-                }
-                console.log('hd ', hd)
-
-                for (let i = 0; i < lstHD.length; i++) {
-                    let itFor = lstHD[i];
-                    if (itFor.IDRandom === hd.IDRandom) {
-                        tienmat = itFor.TienMat;
-                        tienpos = itFor.TienATM;
-                        tienck = itFor.TienGui;
-                        diemquydoi = itFor.DiemQuyDoi;
-                        tiendiem = itFor.TTBangDiem;
-                        tienthe = itFor.TienTheGiaTri;
-                        idPOS = itFor.ID_TaiKhoanPos;
-                        idCK = itFor.ID_TaiKhoanChuyenKhoan;
-
-                        break;
-                    }
-                }
-
-                if (hoantra > 0) {
-                    cantt = hoantra;
-                }
-                else {
-                    tiendatcoc = soduDatCoc;
-                    cantt = hd.PhaiThanhToan - tiendatcoc - hd.KhachDaTra;
-
-                    let isAgree = tienthe > 0 || tienpos > 0 || tienck > 0;
-                    if (self.theGiaTriCus.SoDuTheGiaTri > 0 && isAgree === false) {
-                        let obj = self.SetDefault_TienTheGiaTri_ifHaveSoSu(hd.PhaiThanhToan);
-                        tienthe = obj.TienTheGiaTri;
-                        tienmat = obj.TienMat;
-                    }
-                }
-                datt = tienmat + tienpos + tienck + tiendiem + tienthe;
-
-                self.inforHoaDon = hd;
-                self.inforHoaDon.DaThanhToan = datt;
-                self.inforHoaDon.ThucThu = datt - tiendiem - tienthe;
-
-                self.PhieuThuKhach.TienDatCoc = formatNumber3Digit(tiendatcoc, 2);
-                self.PhieuThuKhach.TienMat = formatNumber3Digit(tienmat, 2);
-                self.PhieuThuKhach.TienPOS = formatNumber3Digit(tienpos, 2);
-                self.PhieuThuKhach.TienCK = formatNumber3Digit(tienck, 2);
-                self.PhieuThuKhach.TienTheGiaTri = formatNumber3Digit(tienthe, 2);
-                self.PhieuThuKhach.TTBangDiem = formatNumber3Digit(tiendiem, 2);
-                self.PhieuThuKhach.DiemQuyDoi = formatNumber3Digit(diemquydoi);
-
-                self.PhieuThuKhach.PhaiThanhToan = cantt;
-                self.PhieuThuKhach.HoanTraTamUng = hoantra;
-                self.PhieuThuKhach.ThucThu = self.inforHoaDon.ThucThu;
-
-                let tkPos = $.grep(self.listData.AccountBanks, function (x) {
-                    return x.ID === idPOS;
-                });
-                if (tkPos.length > 0) {
-                    self.ChangeAccountPOS(tkPos[0]);
-                }
-                else {
-                    self.ResetAccountPOS();
-                }
-                let tkCK = $.grep(self.listData.AccountBanks, function (x) {
-                    return x.ID === idCK;
-                });
-                if (tkCK.length > 0) {
-                    self.ChangeAccountCK(tkCK[0]);
-                }
-                else {
-                    self.ResetAccountCK();
-                }
-                $('#ThongTinThanhToanNCC2').modal('show');
             },
             showModalThanhToan: function (idRandom, loaiHoaDon = 7) {
                 let self = this;
@@ -651,11 +556,20 @@
                 }
                 console.log('hd ', itemHD[0])
 
+                // KhachDaTra = datraNCC + datra benVC (when update nhaphang)
+                let dachiVC = formatNumberToFloat(itemHD[0].DaChi_BenVCKhac);
+                let khachDaTra = formatNumberToFloat(itemHD[0].KhachDaTra) - dachiVC;
+                khachDaTra = khachDaTra < 0 ? 0 : khachDaTra;// if update NCC, khachDaTra =0, but dachiVC > 0
+
                 self.inforHoaDon = itemHD[0];
                 self.inforHoaDon.LoaiDoiTuong = 2;
                 self.isCheckTraLaiCoc = commonStatisJs.CheckNull(itemHD[0].isCheckTraLaiCoc) ? false : itemHD[0].isCheckTraLaiCoc;
+
                 self.PhieuThuKhach = self.newPhieuThu();
+                self.PhieuThuKhach.KhachDaTra = khachDaTra;
+
                 self.PhieuChiVanChuyen = self.newPhieuThu();
+                self.PhieuChiVanChuyen.KhachDaTra = dachiVC;
 
                 let cpVCbenthu3 = 0;
                 let benVC = self.Get_benVanChuyen(idRandom);
@@ -663,7 +577,8 @@
                     self.inforHoaDon.ID_NhaCungCap = benVC[0].ID_DoiTuong;
                     cpVCbenthu3 = itemHD[0].TongChiPhi;
                 }
-                self.PhieuThuKhach.PhaiThanhToan = self.inforHoaDon.PhaiThanhToan - formatNumberToFloat(itemHD[0].KhachDaTra) - cpVCbenthu3;
+                self.PhieuThuKhach.PhaiThanhToan = self.inforHoaDon.PhaiThanhToan - khachDaTra - cpVCbenthu3;
+                self.PhieuChiVanChuyen.PhaiThanhToan = self.inforHoaDon.TongChiPhi - dachiVC;
 
                 self.GetLocalCacheThuChi(itemHD[0]);
 
@@ -683,12 +598,12 @@
                     return x.IDRandomHD === hd.IDRandom;
                 });
 
-                let tiencoc = 0, tienmat = 0, tienPOS = 0, tienCK = 0;
+                let tiendatcoc = 0, tienmat = 0, tienPOS = 0, tienCK = 0;
                 let dathanhtoanNCC = 0;
-                let nccHoanTra = hd.HoanTra;
+                let hoantraHD = hd.HoanTra;
                 let soduDatCoc = hd.SoDuDatCoc;
-                let khachDaTra = formatNumberToFloat(hd.KhachDaTra);
                 let phaiTTNCC = self.PhieuThuKhach.PhaiThanhToan;
+                let phaiTTBenVC = self.PhieuChiVanChuyen.PhaiThanhToan;
 
                 if (exThuChi.length > 0) {
                     let sqNCC = exThuChi[0].PhieuThuKhach;
@@ -719,30 +634,34 @@
                     self.ResetKhoanThu();
                     self.BH_ResetKhoanThu();
 
-                    if (nccHoanTra <= 0) {
+                    if (phaiTTNCC > 0) {
                         if (soduDatCoc > phaiTTNCC) {
                             tiendatcoc = phaiTTNCC;
                             tienmat = soduDatCoc - tiendatcoc;// tra lai coc
-                            self.PhieuThuKhach.HoanTraTamUng = tienmat;
+                            self.PhieuThuKhach.HoanTraCoc = tienmat;
                         }
                         else {
                             tiendatcoc = soduDatCoc;
                             tienmat = phaiTTNCC - tiendatcoc;
                         }
+                        self.PhieuThuKhach.TienMat = formatNumber3Digit(tienmat, 2);
+                        self.PhieuThuKhach.DaThanhToan = tienmat;
                     }
                     else {
-                        tienmat = nccHoanTra;
-                        self.PhieuThuKhach.PhaiThanhToan = nccHoanTra;
-                        self.PhieuThuKhach.HoanTraTamUng = hoantra;
+                        self.PhieuThuKhach.TienMat = formatNumber3Digit(Math.abs(phaiTTNCC), 2);
+                        self.PhieuThuKhach.HoanTraTamUng = Math.abs(phaiTTNCC);
+                        self.PhieuThuKhach.DaThanhToan = Math.abs(phaiTTNCC);
                     }
-                    dathanhtoanNCC = tienmat;
-                    self.PhieuThuKhach.TienMat = formatNumber3Digit(tienmat, 2);
-                    self.PhieuThuKhach.TienDatCoc = tiendatcoc;
-                    self.PhieuThuKhach.TienPOS = formatNumber3Digit(tienPOS, 2);
-                    self.PhieuThuKhach.TienCK = formatNumber3Digit(tienCK, 2);
-                    self.PhieuThuKhach.DaThanhToan = dathanhtoanNCC;
-                    self.PhieuThuKhach.TienThua = dathanhtoanNCC - phaiTTNCC;
+
+                    if (phaiTTBenVC < 0) {
+                        // ben VC hoantra
+                        self.PhieuChiVanChuyen.TienMat = formatNumber3Digit(Math.abs(phaiTTBenVC));
+                        self.PhieuChiVanChuyen.HoanTraTamUng = Math.abs(phaiTTBenVC);
+                    }
                 }
+
+                self.PhieuThuKhach.LaKhoanThu = formatNumberToFloat(self.PhieuThuKhach.HoanTraTamUng) > 0;;
+                self.PhieuChiVanChuyen.LaKhoanThu = formatNumberToFloat(self.PhieuChiVanChuyen.HoanTraTamUng) > 0;;
             },
             ResetPhieuThuChi_whenEditThanhToan: function (idRandomHD) {
                 let self = this;
@@ -788,15 +707,12 @@
                 }
                 let chiNCC = self.newPhieuThu();
                 let chiVanChuyen = self.newPhieuThu();
-                let phaitraNCC = itemHD[0].PhaiThanhToan - cpVCbenthu3;
+                let phaitraNCC = itemHD[0].PhaiThanhToan - cpVCbenthu3 - formatNumberToFloat(itemHD[0].KhachDaTra) - formatNumberToFloat(itemHD[0].DaChi_BenVCKhac);
 
                 // set defaul tienmat
                 if (itemHD[0].DaThanhToan > phaitraNCC) {
                     chiNCC.TienMat = formatNumber3Digit(phaitraNCC);
                     chiNCC.DaThanhToan = phaitraNCC;
-
-                    chiVanChuyen.DaThanhToan = itemHD[0].DaThanhToan - phaitraNCC;
-                    chiVanChuyen.TienMat = formatNumber3Digit(chiVanChuyen.DaThanhToan);
                 }
                 else {
                     chiNCC.TienMat = formatNumber3Digit(itemHD[0].DaThanhToan, 2);
@@ -849,7 +765,7 @@
                     + formatNumberToFloat(self.PhieuThuKhach.TienPOS)
                     + formatNumberToFloat(self.PhieuThuKhach.TienCK);
 
-                self.PhieuThuKhach.TienThua = self.PhieuThuKhach.DaThanhToan - self.PhieuThuKhach.PhaiThanhToan;
+                self.PhieuThuKhach.TienThua = self.PhieuThuKhach.DaThanhToan - Math.abs(self.PhieuThuKhach.PhaiThanhToan);
             },
             ResetAccountPOS: function () {
                 var self = this;
@@ -917,9 +833,10 @@
                 var $this = $(event.currentTarget);
                 formatNumberObj($this);
 
+                let phaiTT = Math.abs(formatNumberToFloat(self.PhieuThuKhach.PhaiThanhToan));
                 var tienmat = 0;
-                var khachdatra = formatNumberToFloat(self.inforHoaDon.KhachDaTra);
-                var khachcantra = formatNumberToFloat(self.inforHoaDon.PhaiThanhToan) - khachdatra;
+                var khachdatra = formatNumberToFloat(self.PhieuThuKhach.KhachDaTra);
+                var khachcantra = phaiTT - khachdatra;
                 var soduDatCoc = self.inforHoaDon.SoDuDatCoc;
                 var datcoc = formatNumberToFloat($this.val());
 
@@ -944,18 +861,17 @@
                 }
                 self.PhieuThuKhach.TienDatCoc = formatNumber3Digit(datcoc, 2);
 
-                if (datcoc === khachcantra && tienmat > 0) {
+                if (datcoc === khachcantra) {
                     // tra lai coc
-                    self.PhieuThuKhach.HoanTraTamUng = tienmat;
+                    self.PhieuThuKhach.HoanTraCoc = tienmat;
                 }
                 else {
-                    self.PhieuThuKhach.HoanTraTamUng = 0;
+                    self.PhieuThuKhach.HoanTraCoc = 0;
                     self.isCheckTraLaiCoc = false;
                 }
 
                 self.PhieuThuKhach.TienDatCoc = formatNumber3Digit(datcoc, 2);
                 self.PhieuThuKhach.TienMat = formatNumber3Digit(tienmat, 2);
-                self.PhieuThuKhach.PhaiThanhToan = tienmat;
 
                 self.PhieuThuKhach.TienPOS = 0;
                 self.PhieuThuKhach.TienCK = 0;
@@ -975,16 +891,17 @@
 
                 var tienmat = formatNumberToFloat($this.val());
                 self.PhieuThuKhach.TienMat = formatNumber3Digit(tienmat, 2);
+                let phaiTT = Math.abs(formatNumberToFloat(self.PhieuThuKhach.PhaiThanhToan));
 
                 var tienpos = 0, tienck = 0;
                 if (self.PhieuThuKhach.ID_TaiKhoanPos !== null) {
-                    tienpos = self.PhieuThuKhach.PhaiThanhToan - tienmat;
+                    tienpos = phaiTT - tienmat;
                     tienpos = tienpos > 0 ? tienpos : 0;
                     tienck = 0;
                 }
                 else {
                     if (self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan !== null) {
-                        tienck = self.PhieuThuKhach.PhaiThanhToan - tienmat;
+                        tienck = phaiTT - tienmat;
                         tienck = tienck > 0 ? tienck : 0;
                     }
                     else {
@@ -1019,9 +936,10 @@
                 self.PhieuThuKhach.TienPOS = $this.val();
 
                 var tienck = 0;
+                let phaiTT = Math.abs(formatNumberToFloat(self.PhieuThuKhach.PhaiThanhToan));
                 var tienmat = formatNumberToFloat(self.PhieuThuKhach.TienMat);
                 if (self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan !== null) {
-                    tienck = self.PhieuThuKhach.PhaiThanhToan - tienmat - tienpos;
+                    tienck = phaiTT - tienmat - tienpos;
                     tienck = tienck < 0 ? 0 : tienck;
                 }
                 self.PhieuThuKhach.TienCK = formatNumber3Digit(tienck, 2);
@@ -1082,21 +1000,24 @@
                 self.BH_CaculatorDaThanhToan();
             },
             BH_EditTienMat: function () {
-                var self = this;
-                var $this = $(event.currentTarget);
+                let self = this;
+                let $this = $(event.currentTarget);
                 formatNumberObj($this);
 
-                var tienmat = formatNumberToFloat($this.val());
+                // update nhaphang - if benVC tralaitien thi PhaiThanhToan < 0, HoanTraTamUng >0
+                let phaiTT = Math.abs(self.PhieuChiVanChuyen.PhaiThanhToan);
+
+                let tienmat = formatNumberToFloat($this.val());
                 self.PhieuChiVanChuyen.TienMat = formatNumber3Digit(tienmat, 2);
 
-                var tienpos = 0, tienck = 0;
+                let tienpos = 0, tienck = 0;
                 if (self.PhieuChiVanChuyen.ID_TaiKhoanPos !== null) {
-                    tienpos = self.inforHoaDon.TongChiPhi - tienmat;
+                    tienpos = phaiTT - tienmat;
                     tienck = 0;
                 }
                 else {
                     if (self.PhieuChiVanChuyen.ID_TaiKhoanChuyenKhoan !== null) {
-                        tienck = self.inforHoaDon.TongChiPhi - tienmat;
+                        tienck = phaiTT - tienmat;
                     }
                     else {
 
@@ -1106,7 +1027,7 @@
                 self.PhieuChiVanChuyen.TienCK = formatNumber3Digit(tienck, 2);
                 self.BH_CaculatorDaThanhToan();
 
-                var key = event.keyCode || event.which;
+                let key = event.keyCode || event.which;
                 if (key === 13) {
                     if (self.PhieuChiVanChuyen.ID_TaiKhoanPos !== null) {
                         $this.parent().next().find('input').focus();
@@ -1132,7 +1053,7 @@
                 var tienck = 0;
                 var tienmat = formatNumberToFloat(self.PhieuChiVanChuyen.TienMat);
                 if (self.PhieuChiVanChuyen.ID_TaiKhoanChuyenKhoan !== null) {
-                    tienck = self.inforHoaDon.TongChiPhi - tienmat - tienpos;
+                    tienck = Math.abs(self.PhieuChiVanChuyen.PhaiThanhToan) - tienmat - tienpos;
                 }
                 self.PhieuChiVanChuyen.TienCK = formatNumber3Digit(tienck, 2);
                 self.BH_CaculatorDaThanhToan();
@@ -1173,7 +1094,7 @@
                 self.PhieuChiVanChuyen.ThucThu = formatNumberToFloat(self.PhieuChiVanChuyen.TienMat)
                     + formatNumberToFloat(self.PhieuChiVanChuyen.TienPOS)
                     + formatNumberToFloat(self.PhieuChiVanChuyen.TienCK);
-                self.PhieuChiVanChuyen.TienThua = self.PhieuChiVanChuyen.DaThanhToan - self.inforHoaDon.TongChiPhi;
+                self.PhieuChiVanChuyen.TienThua = self.PhieuChiVanChuyen.DaThanhToan - Math.abs(self.PhieuChiVanChuyen.PhaiThanhToan);
                 self.Caculator_ThucThu();
             },
             Caculator_ThucThu: function () {
@@ -1365,24 +1286,16 @@
                 let sLoai = hd.LoaiHoaDon === 7 ? 'thu' : 'chi';
                 let tiendatcoc = formatNumberToFloat(ptKhach.TienDatCoc), soduDatCoc = hd.SoDuDatCoc;
                 let maPhieuThuChi = 'TT' + mahoadon;
-                let chitracoc = self.isCheckTraLaiCoc;
-                let khach_PhieuThuTT = hd.PhaiThanhToan - formatNumberToFloat(hd.KhachDaTra);
+                let chitracoc = itemThuChi[0].IsCheckTraLaiCoc;
+                let khach_PhieuThuTT = Math.abs(ptKhach.PhaiThanhToan);
+                console.log('ptKhach ', ptKhach, itemThuChi)
 
-                let benVC = self.Get_benVanChuyen(hd.IDRandom);
-                console.log('benVC ', benVC);
-                if (benVC.length > 0) {
-                    khach_PhieuThuTT = khach_PhieuThuTT - formatNumberToFloat(hd.TongChiPhi);
-                }
-
-                if ((hd.HoanTra > 0 && soduDatCoc <= 0) || ptKhach.HoanTraTamUng > 0) {
+                if (ptKhach.HoanTraTamUng > 0 || (chitracoc && soduDatCoc > 0)) {
                     sLoai = 'thu';
                     loaiThuChi = 11;
                 }
-                if (ptKhach.HoanTraTamUng > 0) {
-                    khach_PhieuThuTT = ptKhach.PhaiThanhToan;
-                    if (tiendatcoc > 0) {
-                        idHoaDon = null; // neu tiencoc > 0 & hoantra tiencho khach --> khong gan idHoaDon (vi no bi bu tru congno)
-                    }
+                if (chitracoc && soduDatCoc > 0) {
+                    idHoaDon = null;
                 }
 
                 //  used to get save diary
@@ -1392,7 +1305,7 @@
                     let dataReturn = self.shareMoney_QuyHD(khach_PhieuThuTT, ptKhach.TTBangDiem,
                         formatNumberToFloat(ptKhach.TienMat), formatNumberToFloat(ptKhach.TienPOS),
                         formatNumberToFloat(ptKhach.TienCK), 0,
-                        ptKhach.HoanTraTamUng > 0 ? 0 : tiendatcoc);// nếu hoàn trả tiền: không gán tiền cọc ở đây
+                         formatNumberToFloat(ptKhach.HoanTraCoc) > 0 ? 0 : tiendatcoc);// nếu hoàn trả tiền: không gán tiền cọc ở đây
 
                     tiendatcoc = dataReturn.TienCoc;
                     tienmat = dataReturn.TienMat;
@@ -1525,6 +1438,7 @@
                                     lcThuChi = $.grep(lcThuChi, function (x) {
                                         return x.IDRandomHD !== idRandomHD;
                                     });
+                                    console.log('lcThuChi ', lcThuChi)
                                     localStorage.setItem('lcThuChiNhapTra', JSON.stringify(lcThuChi));
                                 }
                             }
@@ -1532,9 +1446,9 @@
                     }
                 }
 
-                //  hoantra
-                var tienCocX = formatNumberToFloat(ptKhach.TienDatCoc);
-                if (ptKhach.HoanTraTamUng > 0 && tienCocX > 0) {
+                // 'Chi từ cọc';
+                let tienCocX = formatNumberToFloat(ptKhach.TienDatCoc);
+                if (chitracoc && tienCocX > 0) {
                     let qct = newQuyChiTiet({
                         ID_HoaDonLienQuan: hd.ID,
                         ID_KhoanThuChi: idKhoanThuChi,
@@ -1552,6 +1466,7 @@
                     self.PhieuThuKhachPrint.TienDatCoc = tienCocX;
                     self.PhieuThuKhachPrint.DaThanhToan = tienCocX;
 
+                     let nowSeconds = (new Date()).getSeconds() + 1;
                     let quyhd = {
                         LoaiHoaDon: 12,
                         TongTienThu: tongthu,
@@ -1624,12 +1539,14 @@
                     let idDoiTuong = hd.ID_DoiTuong;// được gán khi lưu chi phí VC
                     let ghichu = hd.DienGiai;
                     let idHoaDon = hd.ID;
+                    let mahoadon = hd.MaHoaDon;
 
                     let chitracoc = false;
                     let tienmat = 0, tienpos = 0, tienck = 0, tiendatcoc = 0, tongthu = 0;
+                    let benVChoantra = formatNumberToFloat(phieuChiVC.HoanTraTamUng);
 
-                    let loaiThuChi = hd.LoaiHoaDon === 7 ? 11 : 12;
-                    let sLoai = hd.LoaiHoaDon === 7 ? 'thu' : 'chi';
+                    let loaiThuChi = benVChoantra > 0 ? 11 : 12;
+                    let sLoai = loaiThuChi === 11 ? 'thu' : 'chi';
 
                     if (commonStatisJs.CheckNull(ghichu)) {
                         ghichu = ''.concat(hd.TenDoiTuong, ' (', hd.MaDoiTuong, ') / ', mahoadon);
@@ -1640,7 +1557,7 @@
 
                     let lstQuyCT = [];
                     let phuongthucTT = '';
-                    let dataReturn = self.shareMoney_QuyHD(hd.TongChiPhi, phieuChiVC.TTBangDiem,
+                    let dataReturn = self.shareMoney_QuyHD(benVChoantra > 0 ? benVChoantra : hd.TongChiPhi, phieuChiVC.TTBangDiem,
                         formatNumberToFloat(phieuChiVC.TienMat), formatNumberToFloat(phieuChiVC.TienPOS),
                         formatNumberToFloat(phieuChiVC.TienCK), 0,
                         phieuChiVC.HoanTraTamUng > 0 ? 0 : tiendatcoc);// nếu hoàn trả tiền: không gán tiền cọc ở đây
@@ -1773,9 +1690,12 @@
                                 Insert_NhatKyThaoTac_1Param(diary);
                             }
                         }).always(function () {
+
                             let lcThuChi = localStorage.getItem('lcThuChiNhapTra');
                             if (lcThuChi !== null) {
                                 lcThuChi = JSON.parse(lcThuChi);
+                                console.log('lcThuChi ', lcThuChi, hd.IDRandom)
+
                                 lcThuChi = $.grep(lcThuChi, function (x) {
                                     return x.IDRandomHD !== hd.IDRandom;
                                 });
