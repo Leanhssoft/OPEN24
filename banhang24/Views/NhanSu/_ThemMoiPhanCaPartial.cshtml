@@ -280,9 +280,10 @@
                                                 <div class="op-tag-picker dropdown">
                                                     <div class="" data-toggle="dropdown" aria-expanded="true">
                                                         <ul>
-                                                            <li v-for="(item, index) in   listdata.calamviec.filter(o=>o.Checked)">
+                                                            <li v-for="(item, index) in   listdata.calamviec.filter(o=>o.Checked)"
+                                                                v-on:click="ChangeCaNhanVien(item)">
                                                                 <span>{{item.Ma +' - '+ item.Ten}}</span>
-                                                                <span v-on:click="ChangeCaNhanVien(item)" v-if="data.TrangThai!==2 || isNew">
+                                                                <span  v-if="data.TrangThai!==2 || isNew">
                                                                     <i class="fa fa-times"></i>
                                                                 </span>
                                                             </li>
@@ -295,7 +296,8 @@
                                                         </li>
                                                     </ul>
                                                     <ul class=" dropdown-menu" v-else>
-                                                        <li v-for="(item, index) in   listdata.calamviec.filter(o=>!o.Checked)">
+                                                        <li v-for="(item, index) in   listdata.calamviec.filter(o=>!o.Checked)"
+                                                            v-on:click="ChangeCaNhanVien(item)">
                                                             <span>{{item.Ma +' - '+ item.Ten}}</span>
                                                         </li>
                                                     </ul>
