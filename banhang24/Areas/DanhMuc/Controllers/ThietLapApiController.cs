@@ -1520,6 +1520,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{BH_NoSau}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().BH_NoSau)\"></span>");
             content1 = content1.Replace("{BH_MaSoThue}", "<span data-bind=\"text: $root.InforHDprintf().BH_MaSoThue\"></span>");
 
+            // nhaphang
+            content1 = content1.Replace("{PhaiThanhToan_SauPhiVC}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().PhaiThanhToan_SauPhiVC)\"></span>");
+            content1 = content1.Replace("{MaNccVanChuyen}", "<span data-bind=\"text: $root.InforHDprintf().MaNccVanChuyen\"></span>");
+            content1 = content1.Replace("{TenNccVanChuyen}", "<span data-bind=\"text: $root.InforHDprintf().TenNccVanChuyen\"></span>");
+            content1 = content1.Replace("{DaTraNCC}", "<span data-bind=\"text: $root.InforHDprintf().DaTraNCC\"></span>");
+            content1 = content1.Replace("{DaChi_BenVCKhac}", "<span data-bind=\"text: $root.InforHDprintf().DaChi_BenVCKhac\"></span>");
+
             #region ChuyenHang
             content1 = content1.Replace("{ChiNhanhChuyen}", "<span data-bind=\"text: InforHDprintf().ChiNhanhChuyen\"></span>");
             content1 = content1.Replace("{NguoiChuyen}", "<span data-bind=\"text: InforHDprintf().NguoiChuyen\"></span>");

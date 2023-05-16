@@ -6072,7 +6072,8 @@ namespace libDM_DoiTuong
         public Guid? ID_NhaCungCap { get; set; }// used to nhaphang - vanchuyen ben thu3
         public string MaNCCVanChuyen { get; set; }
         public string TenNCCVanChuyen { get; set; }
-        public double DaChi_BenVCKhac { get; set; }
+        public double? DaChi_BenVCKhac { get; set; }
+        public double? SumDaChi_BenVCKhac { get; set; }
 
         public double? SumDaThanhToan { get; set; }
         public double? SumConNo { get; set; }
@@ -6300,7 +6301,9 @@ namespace libDM_DoiTuong
         public double TongTienHang { get; set; }
         public double? TongTienThue { get; set; }
         public double TongGiamGia { get; set; }
+        public string TenNCCVanChuyen { get; set; }
         public double? TongChiPhi { get; set; }// chiphi vanchuyen
+        public double? DaChi_BenVCKhac { get; set; }// tien dachi cho ben VC
         public double PhaiThanhToan { get; set; }
         public double? BuTruTraHang { get; set; }
         public double? GiaTriSauTra { get; set; }

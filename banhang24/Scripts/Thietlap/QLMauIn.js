@@ -1176,8 +1176,17 @@ function SetConvertDataTest(strInput) {
                 '{ChietKhauHoaDon}': '<span data-bind=\"text: $root.TongGiamGia\"></span>',
                 '{DiaChiCuaHang}': '<span data-bind=\"text: DiaChiCuaHang\"></span>',
                 '{PhiTraHang}': '<span data-bind=\"text: TongChiPhi\"></span>',
+                '{TongChiPhi}': '<span data-bind=\"text: TongChiPhi\"></span>',
                 '{ThuDatHang}': '<span data-bind=\"text: ThuDatHang\"></span>',
                 '{PhaiThanhToan_TruCocBG}': '<span data-bind=\"text: PhaiThanhToan_TruCocBG\"></span>',
+                '{TienKhachThieu_BangChu}': '<span data-bind=\"text: TienKhachThieu_BangChu\"></span>',
+                '{DaTraNCC}': '<span data-bind=\"text: DaTraNCC\"></span>',// used at nhaphang
+                '{KhachDaTra}': '<span data-bind=\"text: KhachDaTra\"></span>',
+
+                // nhaphang - VC
+                '{PhaiThanhToan_SauPhiVC}': '<span data-bind=\"text: PhaiThanhToan_SauPhiVC\"></span>',
+                '{MaNccVanChuyen}': '<span data-bind=\"text: MaNccVanChuyen\"></span>',
+                '{TenNccVanChuyen}': '<span data-bind=\"text: TenNccVanChuyen\"></span>',
 
                 '{TongTienTraHang}': '<span data-bind=\"text: TongTienTraHang\"></span>',
                 '{TongTienTra}': '<span data-bind=\"text: $root.TongTienTra\"></span>',
@@ -1212,6 +1221,7 @@ function SetConvertDataTest(strInput) {
                 '{NoiDungThu}': '<span data-bind=\"text: NoiDungThu\"></span>',
                 '{TienBangChu}': '<span data-bind=\"text: TienBangChu\"></span>',
                 '{KH_TienBangChu}': '<span data-bind=\"text: KH_TienBangChu\"></span>',
+                '{TienKhachThieu_BangChu}': '<span data-bind=\"text: TienKhachThieu_BangChu\"></span>',
                 '{GhiChuChiNhanhChuyen}': '<span data-bind=\"text: GhiChuChiNhanhChuyen\"></span>',
                 '{ChiNhanhBanHang}': '<span data-bind=\"text: ChiNhanhBanHang\"></span>',
                 '{HoaDonLienQuan}': '<span data-bind=\"text: HoaDonLienQuan\"></span>',
@@ -1320,6 +1330,7 @@ function SetConvertDataTest(strInput) {
                 '{BH_SDTLienHe}': '<span data-bind=\"text: BH_SDTLienHe\"></span>',
                 '{BaoHiemDaTra}': '<span data-bind=\"text: BaoHiemDaTra\"></span>',
                 '{BH_TienBangChu}': '<span data-bind=\"text: BH_TienBangChu\"></span>',
+                '{BH_ConThieu_BangChu}': '<span data-bind=\"text: BH_ConThieu_BangChu\"></span>',
                 '{BH_MaSoThue}': '<span data-bind=\"text: BH_MaSoThue\"></span>',
 
                 '{TongTienBHDuyet}': '<span data-bind=\"text: $root.TongTienBHDuyet\"></span>',

@@ -440,6 +440,7 @@
                                     <li><label onclick="CopyThisText(this)">{BH_TienBangChu}</label><span>Số tiền bảo hiểm phải thanh toán (bằng chữ)</span></li>
                                     <li><label onclick="CopyThisText(this)">{BaoHiemDaTra}</label><span>Số tiền bảo hiếm đã thanh toán (theo hóa đơn)</span></li>
                                     <li><label onclick="CopyThisText(this)">{BH_ConThieu}</label><span>Số tiền bảo hiếm còn thiếu</span></li>
+                                    <li><label onclick="CopyThisText(this)">{BH_ConThieu_BangChu}</label><span>Số tiền bảo hiếm còn thiếu (bằng chữ)</span></li>
                                     <li><label onclick="CopyThisText(this)">{BH_NoTruoc}</label><span>Nợ cũ bảo hiểm</span></li>
                                     <li><label onclick="CopyThisText(this)">{BH_NoSau}</label><span>Nợ hiện tại</span></li>
 
@@ -634,6 +635,7 @@
                                 <li><label onclick="CopyThisText(this)">{DaThanhToan}</label><span>Khách đã trả</span></li>
                                 <li><label onclick="CopyThisText(this)">{TienThuaTraKhach}</label><span>Tiền thừa trả khách</span></li>
                                 <li><label onclick="CopyThisText(this)">{TienKhachThieu}</label><span>Tiền khách nợ của hóa đơn hiện tại</span></li>
+                                <li><label onclick="CopyThisText(this)">{TienKhachThieu_BangChu}</label><span>Tiền khách nợ của hóa đơn hiện tại (bằng chữ)</span></li>
                                 <li><label onclick="CopyThisText(this)">{DiemGiaoDich}</label><span>Điểm giao dịch của hóa đơn</span></li>
                                 <li><label onclick="CopyThisText(this)">{DienGiai}</label><span>Ghi chú của hóa đơn</span></li>
                                 <li><label onclick="CopyThisText(this)">{TongSoLuongHang}</label><span>Tổng số lượng mặt hàng</span></li>
@@ -673,6 +675,16 @@
                                 <li><label onclick="CopyThisText(this)">{TienPOS}</label><span>Giá trị tiền POS khách thanh toán</span></li>
                                 <li><label onclick="CopyThisText(this)">{TienChuyenKhoan}</label><span>Giá trị tiền chuyển khoản khách thanh toán</span></li>
                                 <li><label onclick="CopyThisText(this)">{PhuongThucTT}</label><span>Phương thức thanh toán (dạng text)</span></li>
+                            </ul>
+                            <ul class="note-print-page">
+                                <li class="title"><p>Phiếu nhập hàng</p></li>
+                                <li><label onclick="CopyThisText(this)">{MaNccVanChuyen}</label><span>Mã Ncc vận chuyển</span></li>
+                                <li><label onclick="CopyThisText(this)">{TenNccVanChuyen}</label><span>Tên Ncc vận chuyển</span></li>
+                                <li><label onclick="CopyThisText(this)">{PhaiThanhToan_SauPhiVC} </label><span>Số tiền phải thanh toán cho nhà cung cấp (sau khi trừ chi phí v/c)</span></li>
+                                <li><label onclick="CopyThisText(this)">{DaChi_BenVCKhac} </label><span>Số tiền đã thanh toán cho bên vận chuyển</span></li>
+                                <li><label onclick="CopyThisText(this)">{DaTraNCC} </label><span>Số tiền đã thanh toán cho nhà cung cấp nhập hàng</span></li>
+                                <li><label onclick="CopyThisText(this)">{TienKhachThieu} </label><span>Số tiền còn nợ nhà cung cấp nhập hàng (theo hóa đơn)</span></li>
+                                <li><label onclick="CopyThisText(this)">{KH_TienBangChu} </label><span>Số tiền còn nợ nhà cung cấp (bằng chữ)</span></li>
                             </ul>
                             <ul class="note-print-page">
                                 <li class="title"><p>Phiếu chuyển hàng</p></li>

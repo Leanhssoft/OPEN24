@@ -287,7 +287,9 @@
                                 <td class="@commonEnum.ColumnPurchaseOrder.tongtienhang text-right" data-bind="text: $root.HangHoa_XemGiaVon()? formatNumber3Digit(TongTienHang,2):0"></td>
                                 <td class="@commonEnum.ColumnInvoices.tienthue text-right" data-bind="text: formatNumber3Digit(TongTienThue,2)"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.tonggiamgia text-right" data-bind="text: formatNumber3Digit(TongGiamGia)"></td>
+                                <td class="@commonEnum.ColumnPurchaseOrder.benVanChuyen text-right" data-bind="text: TenNCCVanChuyen"></td>
                                 <td class="@commonEnum.ColumnInvoices.tongchiphi text-right" data-bind="text: formatNumber3Digit(TongChiPhi)"></td>
+                                <td class="@commonEnum.ColumnPurchaseOrder.dachiBenVC text-right" data-bind="text: formatNumber3Digit(DaChi_BenVCKhac)"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.cantrakhach text-right" data-bind="text: $root.HangHoa_XemGiaVon()?formatNumber3Digit(TongThanhToan,2):0"></td>
                                 <td class="@commonEnum.ColumnInvoices.butruTraHang text-right" data-bind="text: formatNumber3Digit(TongTienHDTra,2)"></td>
                                 <td class="@commonEnum.ColumnInvoices.gtriSauTra text-right" data-bind="text: formatNumber3Digit(TongThanhToan - TongTienHDTra,2)"></td>
@@ -612,6 +614,7 @@
                                                             <th>Mã phiếu</th>
                                                             <th>Thời gian</th>
                                                             <th>Người tạo</th>
+                                                            <th>Loại thu/chi</th>
                                                             <th>Phương thức</th>
                                                             <th>Trạng thái</th>
                                                             <th>Tiền chi</th>
@@ -623,6 +626,7 @@
                                                                 </td>
                                                                 <td data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></td>
                                                                 <td data-bind="text: NguoiTao"></td>
+                                                                <td data-bind="text: LoaiHoaDon === 11 ? 'Phiếu thu' : 'Phiếu chi'"></td>
                                                                 <td data-bind="text: PhuongThucTT"></td>
                                                                 <td data-bind="text: TrangThai === false ? 'Đã hủy' : 'Đã thanh toán'"></td>
                                                                 <td data-bind="text: formatNumber3Digit(TongTienThu)"></td>
@@ -659,7 +663,9 @@
                                 <td class="@commonEnum.ColumnPurchaseOrder.tongtienhang text-right" data-bind="text: $root.HangHoa_XemGiaVon()?formatNumber3Digit(TongTienHang(),2):0"></td>
                                 <td class="@commonEnum.ColumnInvoices.tienthue text-right" data-bind="text: formatNumber3Digit(TongTienThue(),2)"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.tonggiamgia text-right" data-bind="text: formatNumber3Digit(TongGiamGia(),2)"></td>
+                                <td class="@commonEnum.ColumnPurchaseOrder.benVanChuyen text-right"></td>
                                 <td class="@commonEnum.ColumnInvoices.tongchiphi text-right" data-bind="text: formatNumber3Digit($root.TongChiPhi(),2)"></td>
+                                <td class="@commonEnum.ColumnPurchaseOrder.dachiBenVC text-right" data-bind="text: formatNumber3Digit($root.TongChiBenVC(),2)"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.cantrakhach text-right" data-bind="text: formatNumber3Digit(TongPhaiTraKhach(),2)"></td>
                                 <td class="@commonEnum.ColumnInvoices.butruTraHang text-right"></td>
                                 <td class="@commonEnum.ColumnInvoices.gtriSauTra text-right"></td>

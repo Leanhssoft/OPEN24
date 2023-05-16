@@ -2750,6 +2750,8 @@ namespace banhang24.Hellper
             datrakhach,
             ghichu,
             trangthai,
+            benVanChuyen,
+            dachiBenVC,
         }
         public static Dictionary<string, string> ListColumnPurchaseOrder = new Dictionary<string, string>()
         {
@@ -2766,7 +2768,9 @@ namespace banhang24.Hellper
               { ColumnPurchaseOrder.tongtienhang.ToString(),"Tổng tiền hàng" },
               { ColumnInvoices.tienthue.ToString(),"Tổng tiền thuế" },
               { ColumnPurchaseOrder.tonggiamgia.ToString(),"Tổng giảm giá" },
+              { ColumnPurchaseOrder.benVanChuyen.ToString(),"Bên vận chuyển" },
               { ColumnInvoices.tongchiphi.ToString(),"Chi phí v/c" },
+              { ColumnPurchaseOrder.dachiBenVC.ToString(),"Đã chi v/c" },
               { ColumnPurchaseOrder.cantrakhach.ToString(),"Cần trả NCC" },
               { ColumnInvoices.butruTraHang.ToString(),"Bù trừ trả hàng" },
               { ColumnInvoices.gtriSauTra.ToString(),"Giá trị sau trả" },

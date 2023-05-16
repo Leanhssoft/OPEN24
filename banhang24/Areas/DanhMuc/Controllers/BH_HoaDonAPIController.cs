@@ -1365,7 +1365,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     DM.TongTienHang = item.TongTienHang;
                     DM.TongTienThue = item.TongTienThue;
                     DM.TongGiamGia = item.TongGiamGia;
+                    DM.TenNCCVanChuyen = item.TenNCCVanChuyen;
                     DM.TongChiPhi = item.TongChiPhi;
+                    DM.DaChi_BenVCKhac = item.DaChi_BenVCKhac;
                     DM.PhaiThanhToan = item.PhaiThanhToan;
                     DM.BuTruTraHang = item.TongTienHDTra;
                     DM.GiaTriSauTra = item.PhaiThanhToan - DM.BuTruTraHang;

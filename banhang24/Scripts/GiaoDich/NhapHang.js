@@ -58,6 +58,7 @@
     self.GiamGiaCT = ko.observable();
     self.TongTienHang = ko.observable();
     self.TongChiPhi = ko.observable();
+    self.TongChiBenVC = ko.observable(0);
     self.TongKhachTra = ko.observable();
     self.TongTienMat = ko.observable();
     self.TongPOS = ko.observable();
@@ -1001,6 +1002,7 @@
                     self.GiamGiaCT(firstR.SumGiamGiaCT);
                     self.TongTienHang(firstR.SumTongTienHang);
                     self.TongChiPhi(firstR.SumTongChiPhi);
+                    self.TongChiBenVC(firstR.SumDaChi_BenVCKhac);
                     self.TongTienThue(firstR.SumTongTienThue);
                     self.TongGiamGia(firstR.SumTongGiamGia);
                     self.TongPhaiTraKhach(firstR.SumTongThanhToan);
@@ -1719,6 +1721,7 @@
 
         if (cthdLoHang.length > 0) {
             cthdLoHang[0].LoaiHoaDon = item.LoaiHoaDon;
+            cthdLoHang[0].DaChi_BenVCKhac = isSaochep ? 0 : item.DaChi_BenVCKhac;
             cthdLoHang[0].ID_DonVi = isSaochep ? VHeader.IdDonvi : item.ID_DonVi;// keep idDonVi if update hoadon
         }
         localStorage.setItem('lc_CTSaoChep', JSON.stringify(cthdLoHang));
@@ -2495,6 +2498,15 @@
         hd.TongGiamGiaHang = formatNumber3Digit(self.TongGiamGiaHang(), 2);
         hd.TienMat = formatNumber3Digit(hd.TienMat, 2);
         hd.TienKhachThieu = formatNumber3Digit(hd.ConNo, 2);
+
+        // thong tin thanhtoan NCC
+        hd.PhaiThanhToan_SauPhiVC = phaiThanhToan - hd.TongChiPhi;
+        hd.DaTraNCC = daTT - hd.DaChi_BenVCKhac;
+        hd.KH_TienBangChu = DocSo(hd.PhaiThanhToan_SauPhiVC);
+        hd.TienKhachThieu_BangChu = DocSo(hd.PhaiThanhToan_SauPhiVC - hd.DaTraNCC);
+        // benVC
+        hd.MaNccVanChuyen = hd.MaNCCVanChuyen;
+        hd.TenNccVanChuyen = hd.TenNCCVanChuyen;
 
         let pthuc = '';
         if (formatNumberToFloat(objHD.TienMat) > 0) {

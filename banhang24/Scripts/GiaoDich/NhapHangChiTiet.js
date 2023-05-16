@@ -4708,6 +4708,7 @@ var NhapHangChiTiet = function () {
         let lcThuChi = localStorage.getItem('lcThuChiNhapTra');
         if (lcThuChi !== null) {
             lcThuChi = JSON.parse(lcThuChi);
+
         }
         else {
             lcThuChi = [];
@@ -4716,17 +4717,54 @@ var NhapHangChiTiet = function () {
             return x.IDRandomHD === objHD.IDRandom;
         });
 
+        let chiphiVC = localStorage.getItem('lcChiPhi_NhapHang');
+        if (chiphiVC !== null) {
+            chiphiVC = JSON.parse(chiphiVC);
+
+        }
+        else {
+            chiphiVC = [];
+        }
+        console.log(lcThuChi)
+        console.log(localStorage.getItem('lcChiPhi_NhapHang'))
+
+        let exChiPhi = $.grep(chiphiVC, function (x) {
+            return x.IDRandomHD === objHD.IDRandom;
+        });
+
+        let maNCCVC = '', tenNCCVC = '', chiPhiVC = 0;
+        if (exChiPhi.length > 0) {
+            maNCCVC = exChiPhi[0].MaDoiTuong;
+            tenNCCVC = exChiPhi[0].TenDoiTuong;
+            chiPhiVC = objHD.TongChiPhi;
+        }
+
         let daThanhToan = 0, conno = 0;
         let tienmat = 0, tienPos = 0, tienCK = 0, tiencoc = 0;
+        let ncc_tienmat = 0, ncc_tienPos = 0, ncc_tienCK = 0, ncc_tiencoc = 0, ncc_daThanhToan = 0, ncc_tienthieu = 0;
+        let vc_tienmat = 0, vc_tienPos = 0, vc_tienCK = 0, vc_tiencoc = 0, vc_daThanhToan = 0;
 
         if (exThuChi.length > 0) {
             let chiNCC = exThuChi[0].PhieuThuKhach;
-            tienmat = chiNCC.TienMat;
-            tienPos = chiNCC.TienPOS;
-            tienCK = chiNCC.TienCK;
-            tiencoc = chiNCC.TienDatCoc;
-            daThanhToan = chiNCC.DaThanhToan;
+            ncc_tienmat = formatNumberToFloat(chiNCC.TienMat);
+            ncc_tienPos = formatNumberToFloat(chiNCC.TienPOS);
+            ncc_tienCK = formatNumberToFloat(chiNCC.TienCK);
+            ncc_tiencoc = formatNumberToFloat(chiNCC.TienDatCoc);
+            ncc_daThanhToan = formatNumberToFloat(chiNCC.DaThanhToan);
+            ncc_tienthieu = chiNCC.TienThua > 0 ? 0 : chiNCC.TienThua;
+
+            let chiVC = exThuChi[0].PhieuChiVanChuyen;
+            vc_tienmat = formatNumberToFloat(chiVC.TienMat);
+            vc_tienPos = formatNumberToFloat(chiVC.TienPOS);
+            vc_tienCK = formatNumberToFloat(chiVC.TienCK);
+            vc_tiencoc = formatNumberToFloat(chiVC.TienDatCoc);
+            vc_daThanhToan = formatNumberToFloat(chiVC.DaThanhToan);
         }
+        tienmat = ncc_tienmat + vc_tienmat;
+        tienPos = ncc_tienmat + vc_tienPos;
+        tienCK = ncc_tienmat + vc_tienCK;
+        tiencoc = ncc_tienmat + vc_tiencoc;
+        daThanhToan = ncc_daThanhToan + vc_daThanhToan;
 
         hdPrint.TienMat = tienmat;
         hdPrint.TienATM = tienPos;
@@ -4734,16 +4772,16 @@ var NhapHangChiTiet = function () {
         hdPrint.TTBangTienCoc = tiencoc;
 
         let pthuc = '';
-        if (formatNumberToFloat(tienmat) > 0) {
+        if (tienmat > 0) {
             pthuc = 'Tiền mặt, ';
         }
-        if (formatNumberToFloat(tienPos) > 0) {
+        if (tienPos > 0) {
             pthuc += 'POS, ';
         }
-        if (formatNumberToFloat(tienCK) > 0) {
+        if (tienCK > 0) {
             pthuc += 'Chuyển khoản, ';
         }
-        if (formatNumberToFloat(tiencoc) > 0) {
+        if (tiencoc > 0) {
             pthuc += 'Tiền cọc, ';
         }
         hdPrint.PhuongThucTT = Remove_LastComma(pthuc);
@@ -4768,6 +4806,16 @@ var NhapHangChiTiet = function () {
         hdPrint.TongCong = formatNumber3Digit(phaiThanhToan, 2);
         hdPrint.ChiPhiNhap = hdPrint.TongChiPhi;
         hdPrint.KhuyeMai_GiamGia = 0;
+        // thong tin thanhtoan NCC
+        hdPrint.PhaiThanhToan_SauPhiVC = phaiThanhToan - chiPhiVC;
+        hdPrint.DaTraNCC = ncc_daThanhToan;
+        hdPrint.KH_TienBangChu = DocSo(hdPrint.PhaiThanhToan_SauPhiVC);
+        hdPrint.TienKhachThieu = ncc_tienthieu;
+        hdPrint.TienKhachThieu_BangChu = DocSo(ncc_tienthieu);
+        // benVC
+        hdPrint.MaNccVanChuyen = maNCCVC;
+        hdPrint.TenNccVanChuyen = tenNCCVC;
+        hdPrint.DaChi_BenVCKhac = vc_daThanhToan;
 
         hdPrint.NguoiTaoHD = _userLogin;
         hdPrint.NhanVienBanHang = $('#selectedNV :selected').text();

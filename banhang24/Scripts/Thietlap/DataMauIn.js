@@ -336,6 +336,11 @@ var dataMauIn = function () {
     self.ThuDatHang = ko.observable('1,000,000');
     self.PhaiThanhToan_TruCocBG = ko.observable('2,000,000');
     self.MaHoaDonTraHang = ko.observable('BG0000014');
+    self.PhaiThanhToan_SauPhiVC = ko.observable('50,000');
+    self.MaNccVanChuyen = ko.observable('NCC003');
+    self.TenNccVanChuyen = ko.observable('Giao hàng nhanh');
+    self.DaTraNCC = ko.observable('100,000');
+    self.KhachDaTra = ko.observable('100,000');
 
     self.TongCong = ko.observable('0');
     self.TongSoLuongHang = ko.observable('40,000');
@@ -367,6 +372,7 @@ var dataMauIn = function () {
     self.GiaTriPhieu = ko.observable('40,000');
     self.TienBangChu = ko.observable('Bốn mươi nghìn đồng');
     self.KH_TienBangChu = ko.observable('Bốn mươi nghìn đồng');
+    self.TienKhachThieu_BangChu = ko.observable('Ba mươi nghìn đồng');
     self.NoiDungThu = ko.observable('Nội dung 1');
     self.ChiNhanhBanHang = ko.observable('Chi nhánh trung tâm');
     self.HoaDonLienQuan = ko.observable('HD0001, HD0002');
@@ -491,6 +497,7 @@ var dataMauIn = function () {
     self.BH_SDTLienHe = ko.observable('0962 122 456');
     self.BaoHiemDaTra = ko.observable('300,000');
     self.BH_TienBangChu = ko.observable('Ba trăm nghìn đồng');
+    self.BH_ConThieu_BangChu = ko.observable('Hai trăm nghìn đồng');
 
     self.TongTienBHDuyet = ko.observable('300,000');
     self.GiamTruThanhToanBaoHiem = ko.observable('100,000');
