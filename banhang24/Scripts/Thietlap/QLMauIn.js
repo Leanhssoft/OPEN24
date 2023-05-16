@@ -366,6 +366,7 @@ function ReplaceCTHD(content) {
             '{MaLoHang}': '<span data-bind=\"text: MaLoHang\"></span>',
             '{NgaySanXuat}': '<span data-bind=\"text: NgaySanXuat\"></span>',
             '{NgayHetHan}': '<span data-bind=\"text: NgayHetHan\"></span>',
+            '{BaoHanh}': '<span data-bind=\"text: BaoHanh\"></span>',
             '{TenHangHoa}': '<span data-bind=\"text: TenHangHoa\"></span>',
             '{TenHangHoaThayThe}': '<span data-bind=\"text: TenHangHoaThayThe\"></span>',
             '{GiaVonHienTai}': '<span data-bind=\"text: GiaVonHienTai\"></span>',

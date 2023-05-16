@@ -633,6 +633,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content = content.Replace("{TonLuyKe}", "<span data-bind=\"text: formatNumber(TonLuyKe)\"></span>");
             content = content.Replace("{NgaySanXuat}", "<span data-bind=\"text: NgaySanXuat\"></span>");
             content = content.Replace("{NgayHetHan}", "<span data-bind=\"text: NgayHetHan\"></span>");
+            content = content.Replace("{BaoHanh}", "<span data-bind=\"text: BaoHanh\"></span>");// 6 tháng, 1 năm...
 
             // sudung dv
             content = content.Replace("{SLDVDaSuDung}", "<span data-bind=\"text: formatNumber(SoLuongDVDaSuDung)\"></span>");

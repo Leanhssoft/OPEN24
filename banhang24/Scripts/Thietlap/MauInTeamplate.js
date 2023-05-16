@@ -11,11 +11,13 @@
         x["ThanhTienTruocCK"] = RoundDecimal(formatNumberToFloat(x.SoLuong) * formatNumberToFloat(x.DonGia), 3)
         x["TongChietKhau"] = RoundDecimal(formatNumberToFloat(x.SoLuong) * formatNumberToFloat(x.TienChietKhau), 3)
         x["HH_ThueTong"] = RoundDecimal(formatNumberToFloat(x.SoLuong) * formatNumberToFloat(x.TienThue), 3)
+        x["BaoHanh"] = ''.concat(x.ThoiGianBaoHanh, x.LoaiThoiGianBH == 1 ? ' ngày' : x.LoaiThoiGianBH == 2 ? ' tháng' : x.LoaiThoiGianBH == 3 ? ' năm' : '')
     });
     item2.map(function (x) {
         x["ThanhTienTruocCK"] = RoundDecimal(formatNumberToFloat(x.SoLuong) * formatNumberToFloat(x.DonGia), 3)
         x["TongChietKhau"] = RoundDecimal(formatNumberToFloat(x.SoLuong) * formatNumberToFloat(x.TienChietKhau), 3)
         x["HH_ThueTong"] = RoundDecimal(formatNumberToFloat(x.SoLuong) * formatNumberToFloat(x.TienThue), 3)
+        x["BaoHanh"] = ''.concat(x.ThoiGianBaoHanh, x.LoaiThoiGianBH == 1 ? ' ngày' : x.LoaiThoiGianBH == 2 ? ' tháng' : x.LoaiThoiGianBH == 3 ? ' năm' : '')
     });
 
     item3.TongTienHDSauGiamGia = formatNumberToFloat(item3.TongTienHang)
