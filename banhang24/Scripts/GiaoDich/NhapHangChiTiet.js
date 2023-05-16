@@ -6163,7 +6163,7 @@ var NhapHangChiTiet = function () {
                 let ex = [];
                 if (cacheCP !== null) {
                     cacheCP = JSON.parse(cacheCP);
-                    let ex = $.grep(cacheCP, function (x) {
+                     ex = $.grep(cacheCP, function (x) {
                         return x.IDRandomHD === idRanDomHD;
                     });
                     if (ex.length > 0) {
@@ -6171,6 +6171,8 @@ var NhapHangChiTiet = function () {
                             let forOut = cacheCP[i];
                             if (forOut.IDRandomHD === idRanDomHD) {
                                 forOut.ID_DoiTuong = self.ID_DoiTuong;
+                                forOut.MaDoiTuong = item.MaDoiTuong;
+                                forOut.TenDoiTuong = item.TenDoiTuong;
                                 break;
                             }
                         }
@@ -6219,13 +6221,10 @@ var NhapHangChiTiet = function () {
                 let cacheCP = localStorage.getItem('lcChiPhi_NhapHang');
                 if (cacheCP !== null) {
                     cacheCP = JSON.parse(cacheCP);
-                    for (let i = 0; i < cacheCP.length; i++) {
-                        let forOut = cacheCP[i];
-                        if (forOut.IDRandomHD === idRanDomHD) {
-                            forOut.ID_DoiTuong = null;
-                            break;
-                        }
-                    }
+                    // remove
+                    cacheCP = $.grep(cacheCP, function (x) {
+                        return x.IDRandomHD !== idRanDomHD;
+                    });
                     localStorage.setItem('lcChiPhi_NhapHang', JSON.stringify(cacheCP));
                 }
             },

@@ -577,8 +577,11 @@
                     self.inforHoaDon.ID_NhaCungCap = benVC[0].ID_DoiTuong;
                     cpVCbenthu3 = itemHD[0].TongChiPhi;
                 }
+                else {
+                    self.inforHoaDon.TongChiPhi = 0;
+                }
                 self.PhieuThuKhach.PhaiThanhToan = self.inforHoaDon.PhaiThanhToan - khachDaTra - cpVCbenthu3;
-                self.PhieuChiVanChuyen.PhaiThanhToan = self.inforHoaDon.TongChiPhi - dachiVC;
+                self.PhieuChiVanChuyen.PhaiThanhToan = cpVCbenthu3 > 0 ? self.inforHoaDon.TongChiPhi - dachiVC : 0;
 
                 self.GetLocalCacheThuChi(itemHD[0]);
 
@@ -1305,7 +1308,7 @@
                     let dataReturn = self.shareMoney_QuyHD(khach_PhieuThuTT, ptKhach.TTBangDiem,
                         formatNumberToFloat(ptKhach.TienMat), formatNumberToFloat(ptKhach.TienPOS),
                         formatNumberToFloat(ptKhach.TienCK), 0,
-                         formatNumberToFloat(ptKhach.HoanTraCoc) > 0 ? 0 : tiendatcoc);// nếu hoàn trả tiền: không gán tiền cọc ở đây
+                        formatNumberToFloat(ptKhach.HoanTraCoc) > 0 ? 0 : tiendatcoc);// nếu hoàn trả tiền: không gán tiền cọc ở đây
 
                     tiendatcoc = dataReturn.TienCoc;
                     tienmat = dataReturn.TienMat;
@@ -1466,7 +1469,7 @@
                     self.PhieuThuKhachPrint.TienDatCoc = tienCocX;
                     self.PhieuThuKhachPrint.DaThanhToan = tienCocX;
 
-                     let nowSeconds = (new Date()).getSeconds() + 1;
+                    let nowSeconds = (new Date()).getSeconds() + 1;
                     let quyhd = {
                         LoaiHoaDon: 12,
                         TongTienThu: tongthu,
