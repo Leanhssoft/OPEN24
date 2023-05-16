@@ -31,7 +31,7 @@ namespace Model
         public double GiaTri { get; set; } // Số km hoặc thời gian tính bảo dưỡng
 
         [Column(TypeName = "int")]
-        public int LoaiGiaTri { get; set; } //1. Ngày, 2. Tháng, 3. Năm, 4. Km
+        public int LoaiGiaTri { get; set; } //1. Ngày, 2. Tháng, 3. Năm, 4. Km, 5.Giờ
 
         [Column(TypeName = "int")]
         public int? BaoDuongLapDinhKy { get; set; } = 0;
