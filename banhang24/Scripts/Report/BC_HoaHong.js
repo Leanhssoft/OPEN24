@@ -1766,6 +1766,9 @@
                 break;
             case 22:
                 url = "/#/RechargeValueCard";
+                break; 
+            case 25:
+                url = "/#/HoaDonSuaChua";
                 break;
         }
         if (url !== '') {
