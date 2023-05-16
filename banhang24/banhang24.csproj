@@ -13008,6 +13008,7 @@
     <Content Include="Template\ExportExcel\Teamplate_DanhSachBaoGiaSuaChua.xlsx" />
     <Content Include="Template\ExportExcel\Gara\LeeAuto_Template_LichNhacBaoDuong.xlsx" />
     <Content Include="Views\Gara\QuanLySuaChua\_CaiDatNhacTienDoCongViec.cshtml" />
+    <Content Include="Views\Gara\_ThongTinThanhToanNCC2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppCache\CacheSubDomain\" />
