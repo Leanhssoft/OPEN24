@@ -838,33 +838,31 @@
 
                 let phaiTT = Math.abs(formatNumberToFloat(self.PhieuThuKhach.PhaiThanhToan));
                 var tienmat = 0;
-                var khachdatra = formatNumberToFloat(self.PhieuThuKhach.KhachDaTra);
-                var khachcantra = phaiTT - khachdatra;
                 var soduDatCoc = self.inforHoaDon.SoDuDatCoc;
                 var datcoc = formatNumberToFloat($this.val());
 
                 if (datcoc <= soduDatCoc) {
-                    if (datcoc <= khachcantra) {
-                        tienmat = khachcantra - datcoc;
+                    if (datcoc <= phaiTT) {
+                        tienmat = phaiTT - datcoc;
                     }
                     else {
-                        datcoc = khachcantra;
+                        datcoc = phaiTT;
                         tienmat = soduDatCoc - datcoc;// tra lai
                     }
                 }
                 else {
-                    if (soduDatCoc <= khachcantra) {
+                    if (soduDatCoc <= phaiTT) {
                         datcoc = soduDatCoc;
-                        tienmat = khachcantra - datcoc;
+                        tienmat = phaiTT - datcoc;
                     }
                     else {
-                        datcoc = khachcantra;
+                        datcoc = phaiTT;
                         tienmat = soduDatCoc - datcoc; // tralai
                     }
                 }
                 self.PhieuThuKhach.TienDatCoc = formatNumber3Digit(datcoc, 2);
 
-                if (datcoc === khachcantra) {
+                if (datcoc === phaiTT) {
                     // tra lai coc
                     self.PhieuThuKhach.HoanTraCoc = tienmat;
                 }
