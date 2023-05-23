@@ -987,13 +987,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
-                List<Quy_HoaDonDTO> listTon = new List<Quy_HoaDonDTO>();
+               List<Quy_HoaDonDTO> listTon = new List<Quy_HoaDonDTO>();
                 List<SqlParameter> paramlist = new List<SqlParameter>();
                 if (txtSearch != null & txtSearch != "" & txtSearch != "null")
                 {
                     var txtSearch1 = txtSearch.ToString().Normalize(System.Text.NormalizationForm.FormC).ToLower();
-                    var text = CommonStatic.ConvertToUnSign(txtSearch1.Trim());
-                    string Search = "%" + text + "%";
+                    string Search = "%" + txtSearch1.Trim() + "%";
                     paramlist.Add(new SqlParameter("LoaiDoiTuong", loaiDoiTuong));
                     paramlist.Add(new SqlParameter("Search", Search));
                     paramlist.Add(new SqlParameter("ID_DonVi", idDonVi ?? (object)DBNull.Value));
