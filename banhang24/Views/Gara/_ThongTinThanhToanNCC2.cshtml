@@ -728,6 +728,7 @@
                     IDRandomHD: idRandomHD,
                     IsCheckTraLaiCoc: false,
                     PhieuThuKhach: chiNCC,
+                    PhieuThuKhachPrint: chiNCC,
                     PhieuChiVanChuyen: chiVanChuyen,
                 };
                 lcThuChi.push(obj);
@@ -1241,6 +1242,7 @@
                     IDRandomHD: self.inforHoaDon.IDRandom,
                     IsCheckTraLaiCoc: self.isCheckTraLaiCoc,
                     PhieuThuKhach: self.PhieuThuKhach,
+                    PhieuThuKhachPrint: self.PhieuThuKhach,
                     PhieuChiVanChuyen: self.PhieuChiVanChuyen,
                 };
                 lcThuChi.push(obj);
@@ -1320,6 +1322,15 @@
                     self.PhieuThuKhachPrint.TienCK = tienck;
                     self.PhieuThuKhachPrint.TienPOS = tienpos;
                     self.PhieuThuKhachPrint.DaThanhToan = tongthu;
+
+                    // save again cache (used to print)
+                    for (let i = 0; i < lcThuChi.length; i++) {
+                        if (lcThuChi[i].IDRandomHD === idRandomHD) {
+                            lcThuChi[i].PhieuThuKhachPrint = self.PhieuThuKhachPrint;
+                            break;
+                        }
+                    }
+                    localStorage.setItem('lcThuChiNhapTra', JSON.stringify(lcThuChi));
 
                     // thu tiền cọc
                     if (tiendatcoc > 0 && loaiThuChi === 12) {

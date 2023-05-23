@@ -4745,7 +4745,7 @@ var NhapHangChiTiet = function () {
         let vc_tienmat = 0, vc_tienPos = 0, vc_tienCK = 0, vc_tiencoc = 0, vc_daThanhToan = 0;
 
         if (exThuChi.length > 0) {
-            let chiNCC = exThuChi[0].PhieuThuKhach;
+            let chiNCC = exThuChi[0].PhieuThuKhachPrint;
             ncc_tienmat = formatNumberToFloat(chiNCC.TienMat);
             ncc_tienPos = formatNumberToFloat(chiNCC.TienPOS);
             ncc_tienCK = formatNumberToFloat(chiNCC.TienCK);
@@ -4761,9 +4761,9 @@ var NhapHangChiTiet = function () {
             vc_daThanhToan = formatNumberToFloat(chiVC.DaThanhToan);
         }
         tienmat = ncc_tienmat + vc_tienmat;
-        tienPos = ncc_tienmat + vc_tienPos;
-        tienCK = ncc_tienmat + vc_tienCK;
-        tiencoc = ncc_tienmat + vc_tiencoc;
+        tienPos = ncc_tienPos + vc_tienPos;
+        tienCK = ncc_tienCK + vc_tienCK;
+        tiencoc = ncc_tiencoc + vc_tiencoc;
         daThanhToan = ncc_daThanhToan + vc_daThanhToan;
 
         hdPrint.TienMat = tienmat;
