@@ -3536,6 +3536,7 @@ var ViewModel = function () {
                     }
                 }
                 else if (_hinhthucKM == 22) {
+                      debugger
                     self.HH_MuaHangTangHang.replace(SaveItem, {
                         ID: SaveItem.ID,
                         SoLuongMua: SaveItem.SoLuongMua,
@@ -3811,10 +3812,10 @@ var ViewModel = function () {
                 })
                 console.log(self.HH_GiaBanTheoSL());
                 self.SaveHD_TangHang(self.HH_GiaBanTheoSL());
-                //self.HH_GiaBanTheoSL([]);
-                //for (var i = 0; i < self.SaveHD_TangHang().length; i++) {
-                //    self.HH_GiaBanTheoSL.push(self.SaveHD_TangHang()[i]);
-                //}
+                self.HH_GiaBanTheoSL([]);
+                for (var i = 0; i < self.SaveHD_TangHang().length; i++) {
+                    self.HH_GiaBanTheoSL.push(self.SaveHD_TangHang()[i]);
+                }
             }
         }
         else {
