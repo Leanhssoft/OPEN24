@@ -4451,6 +4451,7 @@ var NewModel_BanHangLe = function () {
         objPrint.TongKhach_BHThanhToan = formatNumber3Digit(khach_tt + bh_tt);
         objPrint.PhaiThanhToan = formatNumber3Digit(objHD.PhaiThanhToan);
         objPrint.PhaiThanhToan_TruCocBG = formatNumber3Digit(objHD.PhaiThanhToan - objHD.KhachDaTra);
+        objPrint.PhaiThanhToan_TruCoc = objHD.PhaiThanhToan - objHD.KhachDaTra - khach_coc;
         objPrint.PhaiThanhToanBaoHiem = formatNumber3Digit(objHD.PhaiThanhToanBaoHiem, 0);
         objPrint.TongTienHang = formatNumber3Digit(objPrint.TongTienHoaDonMua);
         objPrint.DiemGiaoDich = formatNumber3Digit(objHD.DiemGiaoDich);
@@ -4465,7 +4466,7 @@ var NewModel_BanHangLe = function () {
         objPrint.BH_ConThieu = formatNumber3Digit(bh_thieu);
         objPrint.HD_TienThua = formatNumber3Digit(hd_thieu);
         objPrint.HD_ConThieu = formatNumber3Digit(hd_thua);
-        objPrint.KH_TienBangChu = DocSo(objHD.PhaiThanhToan);
+        objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCoc);
         objPrint.TienKhachThieu_BangChu = DocSo(khachthieu);
         objPrint.BH_ConThieu_BangChu = DocSo(bh_thieu);
 

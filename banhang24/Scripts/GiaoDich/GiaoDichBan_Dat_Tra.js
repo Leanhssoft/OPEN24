@@ -3292,6 +3292,7 @@
         objPrint.TienATM = formatNumber3Digit(objPrint.TienATM);// in store: assign TienGui = TienATM
         objPrint.TienKhachThieu = formatNumber(conno);
         objPrint.PhaiThanhToan_TruCocBG = objHD.PhaiThanhToan - objHD.ThuDatHang;
+        objPrint.PhaiThanhToan_TruCoc = objHD.PhaiThanhToan - objHD.ThuDatHang - objHD.TienDatCoc;
         objPrint.TienKhachThieu_BangChu = DocSo(conno);
 
         // the gia tri
@@ -3369,7 +3370,7 @@
         objPrint.BHThanhToanTruocThue = formatNumber(objHD.BHThanhToanTruocThue);
         objPrint.TongTienThueBaoHiem = formatNumber3Digit(objHD.TongTienThueBaoHiem, 0);
         objPrint.BH_TienBangChu = DocSo(objHD.PhaiThanhToanBaoHiem);
-        objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCocBG);
+        objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCoc);
         objPrint.BH_ConThieu = formatNumber3Digit(objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra);
         objPrint.BH_ConThieu_BangChu = DocSo(objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra);
 

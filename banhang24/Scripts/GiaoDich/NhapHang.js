@@ -2500,9 +2500,10 @@
         hd.TienKhachThieu = formatNumber3Digit(hd.ConNo, 2);
 
         // thong tin thanhtoan NCC
-        hd.PhaiThanhToan_SauPhiVC = phaiThanhToan - hd.TongChiPhi;
+        hd.PhaiThanhToan_SauPhiVC = phaiTT - hd.TongChiPhi;
+        hd.PhaiThanhToan_TruCoc = hd.PhaiThanhToan_SauPhiVC - formatNumberToFloat(objHD.TienDatCoc);
         hd.DaTraNCC = daTT - hd.DaChi_BenVCKhac;
-        hd.KH_TienBangChu = DocSo(hd.PhaiThanhToan_SauPhiVC);
+        hd.KH_TienBangChu = DocSo(hd.PhaiThanhToan_TruCoc);
         hd.TienKhachThieu_BangChu = DocSo(hd.PhaiThanhToan_SauPhiVC - hd.DaTraNCC);
         // benVC
         hd.MaNccVanChuyen = hd.MaNCCVanChuyen;

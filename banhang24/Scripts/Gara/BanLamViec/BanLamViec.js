@@ -2037,7 +2037,8 @@ var workTable = new Vue({
             objPrint.HD_ConThieu = conno;
             objPrint.ThuDatHang = hdChosing.ThuDatHang;
             objPrint.PhaiThanhToan_TruCocBG = hdChosing.PhaiThanhToan - formatNumberToFloat(hdChosing.ThuDatHang);
-            objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCocBG);
+            objPrint.PhaiThanhToan_TruCoc = objPrint.PhaiThanhToan_TruCocBG - formatNumberToFloat(hdChosing.Khach_TienCoc);
+            objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCoc);
             if (hdChosing.LoaiHoaDon === 3) {
                 objPrint.KH_TienBangChu = DocSo(objPrint.TienKhachThieu);
             }

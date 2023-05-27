@@ -1180,6 +1180,7 @@ function SetConvertDataTest(strInput) {
                 '{TongChiPhi}': '<span data-bind=\"text: TongChiPhi\"></span>',
                 '{ThuDatHang}': '<span data-bind=\"text: ThuDatHang\"></span>',
                 '{PhaiThanhToan_TruCocBG}': '<span data-bind=\"text: PhaiThanhToan_TruCocBG\"></span>',
+                '{PhaiThanhToan_TruCoc}': '<span data-bind=\"text: PhaiThanhToan_TruCoc\"></span>',
                 '{TienKhachThieu_BangChu}': '<span data-bind=\"text: TienKhachThieu_BangChu\"></span>',
                 '{DaTraNCC}': '<span data-bind=\"text: DaTraNCC\"></span>',// used at nhaphang
                 '{KhachDaTra}': '<span data-bind=\"text: KhachDaTra\"></span>',

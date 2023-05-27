@@ -4809,9 +4809,11 @@ var NhapHangChiTiet = function () {
         // thong tin thanhtoan NCC
         hdPrint.PhaiThanhToan_SauPhiVC = phaiThanhToan - chiPhiVC;
         hdPrint.DaTraNCC = ncc_daThanhToan;
-        hdPrint.KH_TienBangChu = DocSo(hdPrint.PhaiThanhToan_SauPhiVC);
         hdPrint.TienKhachThieu = ncc_tienthieu;
         hdPrint.TienKhachThieu_BangChu = DocSo(ncc_tienthieu);
+        hdPrint.PhaiThanhToan_TruCoc = hdPrint.PhaiThanhToan_SauPhiVC - tiencoc;
+        hdPrint.KH_TienBangChu = DocSo(hdPrint.PhaiThanhToan_TruCoc);
+
         // benVC
         hdPrint.MaNccVanChuyen = maNCCVC;
         hdPrint.TenNccVanChuyen = tenNCCVC;

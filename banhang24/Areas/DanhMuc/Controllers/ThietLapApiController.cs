@@ -1476,7 +1476,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{KhachDaTra}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().KhachDaTra)\"></span>");
             content1 = content1.Replace("{ThuDatHang}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().ThuDatHang)\"></span>");
             content1 = content1.Replace("{PhaiThanhToan_TruCocBG}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().PhaiThanhToan_TruCocBG)\"></span>");
-            content1 = content1.Replace("{PhaiThanhToan_TruTienCoc}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().PhaiThanhToan_TruTienCoc)\"></span>");
+            content1 = content1.Replace("{PhaiThanhToan_TruCoc}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().PhaiThanhToan_TruCoc)\"></span>");// bao gom coc baogia + thutucoc
             content1 = content1.Replace("{ChietKhauHoaDon}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongGiamGia,2)\"></span>");
             content1 = content1.Replace("{DiaChiCuaHang}", "<span data-bind=\"text: InforHDprintf().DiaChiCuaHang\"></span>");
             content1 = content1.Replace("{PhiTraHang}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongChiPhiHangTra,2)\"></span>");
