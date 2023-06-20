@@ -37,6 +37,7 @@
     self.BH_HoaDonChiTiets = ko.observableArray();
     self.BH_HoaDonChiTietsThaoTac = ko.observableArray();
     self.ListTypeMauIn = ko.observableArray();
+    self.ListMauInNhapHang = ko.observableArray();
     self.ListLoHang = ko.observableArray();
     self.GiaBans = ko.observableArray();
     self.KhoanChis = ko.observableArray();
@@ -2385,7 +2386,7 @@
             dataType: 'json',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (result) {
-                self.ListTypeMauIn(result);
+                self.ListMauInNhapHang(result);
             }
         });
     }
@@ -2581,7 +2582,7 @@
         self.selectedGiaBan(undefined);
 
         $.getJSON('/api/DanhMuc/ThietLapApi/GetListMauIn?typeChungTu=IMV' + '&idDonVi=' + _IDchinhanh, function (result) {
-            self.ListMauInMaVach(result);
+            self.ListTypeMauIn(result);
         });
     }
 
