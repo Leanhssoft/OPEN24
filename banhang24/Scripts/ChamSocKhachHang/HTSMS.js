@@ -917,19 +917,19 @@ var ViewModel = function () {
                 var totalmes = messages * self.numtext;
                 $remaining.text(remaining + '/' + totalmes);
                 $messages.text(' (' + messages + ' tin nhắn)');
-                if (item.NoiDungTin.length > 100) {
-                    var tr = item.NoiDungTin.substr(0, 105);
-                    var mangTr = tr.split(" ");
-                    var chuoi = mangTr[0];
-                    for (var j = 1; j < mangTr.length - 1; j++) {
-                        chuoi = chuoi + " " + mangTr[j];
-                    }
-                    item.NoiDungTin = chuoi + "...";
-                    $('#txtMauTinChoose').html(item.NoiDungTin);
-                }
-                else {
-                    $('#txtMauTinChoose').html(item.NoiDungTin);
-                }
+                //if (item.NoiDungTin.length > 100) {
+                //    var tr = item.NoiDungTin.substr(0, 105);
+                //    var mangTr = tr.split(" ");
+                //    var chuoi = mangTr[0];
+                //    for (var j = 1; j < mangTr.length - 1; j++) {
+                //        chuoi = chuoi + " " + mangTr[j];
+                //    }
+                //    item.NoiDungTin = chuoi + "...";
+                //    $('#txtMauTinChoose').html(item.NoiDungTin);
+                //}
+                //else {
+                //    $('#txtMauTinChoose').html(item.NoiDungTin);
+                //}
                 $('#ChooseMauTin li').each(function () {
                     $(this).find('.fa-check').remove();
                 });

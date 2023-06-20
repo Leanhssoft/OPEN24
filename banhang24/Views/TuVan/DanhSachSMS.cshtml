@@ -11,6 +11,7 @@
         border: none !important;
     }
 </style>
+
 <div class="op-container">
     <div class="container-fluid nopadding">
         <div class="col-left">
@@ -884,7 +885,7 @@
                                     <ul data-bind="foreach: SMSMaus" id="ChooseMauTin">
                                         <li data-bind="click: $root.selectedMauTin, attr:{id: ID}">
                                             <a href="javascript:void(0)">
-                                                <span data-bind="text: NoiDungTin"></span>
+                                                <span data-bind="text: NoiDungTin.length > 100 ? NoiDungTin.substr(0, 100) + '...' : NoiDungTin"></span>
                                             </a>
                                         </li>
                                     </ul>
@@ -1140,7 +1141,8 @@
     var arrMessCount = [160, 306, 459, 612];
     var numtext = 0;
     $('#txtNoiDungTin').keyup(function () {
-        !(/^[A-z&#209;&#241;!-9-\s]*$/i).test(this.value) ? this.value = this.value.replace(/[^A-z&#209;&#241;!-9-\s]/ig, '') : null;
+        //!(/^[A-z&#209;&#241;!-9-\s]*$/i).test(this.value) ? this.value = this.value.replace(/[^A-z&#209;&#241;!-9-\s]/ig, '') : null;
+        this.value = commonStatisJs.removeVietnameseTones(this.value);
         var chars = this.value.length;
             //messages = Math.ceil(chars / numtext),
             //remaining = messages > 1 ? (messages - 1) * numtext + (chars % ((messages - 1) * numtext) || (messages - 1) * numtext) : (messages - 1) * numtext + (chars % (messages * numtext) || messages * numtext);
@@ -1159,7 +1161,8 @@
         $messagesSDT = $remainingSDT.next();
     
     $('#txtNoiDungTinSDT').keyup(function () {
-        !(/^[A-z&#209;&#241;!-9-\s]*$/i).test(this.value) ? this.value = this.value.replace(/[^A-z&#209;&#241;!-9-\s]/ig, '') : null;
+        //!(/^[A-z&#209;&#241;!-9-\s]*$/i).test(this.value) ? this.value = this.value.replace(/[^A-z&#209;&#241;!-9-\s]/ig, '') : null;
+        this.value = commonStatisJs.removeVietnameseTones(this.value);
         var chars = this.value.length;
         //    messages = Math.ceil(chars / numtext),
         //    remaining = messages > 1 ? (messages - 1) * numtext + (chars % ((messages - 1) * numtext) || (messages - 1) * numtext) : (messages - 1) * numtext + (chars % (messages * numtext) || messages * numtext);
