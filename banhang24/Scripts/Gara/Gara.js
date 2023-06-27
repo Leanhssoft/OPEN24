@@ -8948,6 +8948,9 @@ var NewModel_BanHangLe = function () {
 
                 // get maHDDatHang -> delete in cacheDatHang after save
                 var maHDDatHang = myData.objHoaDon.MaHoaDonTraHang;
+                if(commonStatisJs.CheckNull(maHDDatHang) && objHDAdd.LoaiHoaDon === 3 && !isInsert){
+                    maHDDatHang = objHDAdd.MaHoaDon;// nếu xử lý báo giá, nhưng không lưu hóa đơn mà lại cập nhật báo giá
+                }
                 // if updateHDDatHang --> don't remove (HD DatHang  + HD new create)
                 var lstHDafter = [];
                 if (updateHDDatHang === false) {
@@ -8962,6 +8965,16 @@ var NewModel_BanHangLe = function () {
                     lstHDafter = $.grep(lstHDafter, function (x) {
                         return x.MaHoaDon !== maHDDatHang;
                     });
+                    // remove hd dang xuly (if HD was creat from DatHang)
+                    let arrIDRandom_ofHDdangXuLy = $.grep(lstHDafter, function (x) {
+                        return x.MaHoaDonTraHang === maHDDatHang;
+                    }).map((o) => {
+                        return o.IDRandom;
+                    });
+                    lstHDafter = $.grep(lstHDafter, function (x) {
+                        return x.MaHoaDonTraHang !== maHDDatHang;
+                    });
+
                     localStorage.setItem(lcListHD, JSON.stringify(lstHDafter));
                     // remove CTHoaDon in Cache
                     var cthd = localStorage.getItem(lcListCTHD);
@@ -8973,6 +8986,10 @@ var NewModel_BanHangLe = function () {
                         // remove cthd DatHang (if HD was creat from DatHang)
                         cthd = $.grep(cthd, function (x) {
                             return x.MaHoaDon !== maHDDatHang;
+                        });
+                        // remove cthd of hd dang xuly from baogia (if HD was creat from DatHang)
+                        cthd = $.grep(cthd, function (x) {
+                            return $.inArray(x.IDRandomHD, arrIDRandom_ofHDdangXuLy ) === -1;
                         });
                         localStorage.setItem(lcListCTHD, JSON.stringify(cthd));
                     }
