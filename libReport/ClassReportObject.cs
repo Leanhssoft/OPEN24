@@ -1075,11 +1075,15 @@ namespace libReport
         public string NguoiGioiThieu { get; set; }
         public double SoLuong { get; set; }
         public double ThanhTien { get; set; }
+        public double? GiamGiaHD { get; set; }
+        public double? GiaTriMua { get; set; }// sau khi tru giamgia HD
         public double SoLuongTra { get; set; }
         public double GiaTriTra { get; set; }
         public double SoLuongSuDung { get; set; }
+        public double? GiaTriSD { get; set; }
         public double GiaVon { get; set; }
         public double SoLuongConLai { get; set; }
+        public double? GiaTriConLai { get; set; }
         public DateTime? NgayApDungGoiDV { get; set; }
         public DateTime? HanSuDungGoiDV { get; set; }
         public double SoNgayConHan { get; set; }
@@ -1113,8 +1117,10 @@ namespace libReport
         public double SoLuongTra { get; set; }
         public double GiaTriTra { get; set; }
         public double SoLuongSuDung { get; set; }
+        public double? GiaTriSD { get; set; }
         public double GiaVon { get; set; }
         public double SoLuongConLai { get; set; }
+        public double? GiaTriConLai { get; set; }
         public string NhanVienChietKhau { get; set; }
     }
 

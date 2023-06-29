@@ -1981,10 +1981,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double SoLuongTra = lst.Sum(x => x.SoLuongTra);
                 double GiaTriTra = lst.Sum(x => x.GiaTriTra);
                 double SoLuongSuDung = lst.Sum(x => x.SoLuongSuDung);
+                double? gtriSuDung = lst.Sum(x => x.GiaTriSD ?? 0);
+                double? gtriConLai = lst.Sum(x => x.GiaTriConLai);
                 double GiaVon = lst.Sum(x => x.GiaVon);
                 double SoLuongConLai = lst.Sum(x => x.SoLuongConLai);
                 int lstPages = getNumber_Page(Rown, 10);
-                JsonResultExampleTr<BaoCaoGoiDichVu_SoDuChiTietPRC> json = new JsonResultExampleTr<BaoCaoGoiDichVu_SoDuChiTietPRC>
+
+                return Json(new
                 {
                     LstData = lst,
                     Rowcount = Rown,
@@ -1996,9 +1999,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     a5 = Math.Round(GiaTriTra, 0, MidpointRounding.ToEven),
                     a6 = Math.Round(SoLuongSuDung, 3, MidpointRounding.ToEven),
                     a7 = Math.Round(GiaVon, 0, MidpointRounding.ToEven),
-                    a8 = Math.Round(SoLuongConLai, 3, MidpointRounding.ToEven)
-                };
-                return Json(json);
+                    a8 = Math.Round(SoLuongConLai, 3, MidpointRounding.ToEven),
+                    GtriSuDung = gtriSuDung,
+                    GtriConLai = gtriConLai,
+                });
             }
         }
         [AcceptVerbs("GET", "POST")]
@@ -2166,8 +2170,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double SoLuongSuDung = lst.Sum(x => x.SoLuongSuDung);
                 double GiaVon = lst.Sum(x => x.GiaVon);
                 double SoLuongConLai = lst.Sum(x => x.SoLuongConLai);
+                double? gtriMua = lst.Sum(x => x.GiaTriMua);
+                double? gtriSuDung = lst.Sum(x => x.GiaTriSD);
+                double? gtriConLai = lst.Sum(x => x.GiaTriConLai);
+                double? giamGiaHD = lst.Sum(x => x.GiamGiaHD);
                 int lstPages = getNumber_Page(Rown, 10);
-                JsonResultExampleTr<BaoCaoGoiDichVu_SoDuTongHopPRC> json = new JsonResultExampleTr<BaoCaoGoiDichVu_SoDuTongHopPRC>
+               
+                return Json(new
                 {
                     LstData = lst,
                     Rowcount = Rown,
@@ -2178,9 +2187,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     a4 = Math.Round(GiaTriTra, 0, MidpointRounding.ToEven),
                     a5 = Math.Round(SoLuongSuDung, 3, MidpointRounding.ToEven),
                     a6 = Math.Round(GiaVon, 0, MidpointRounding.ToEven),
-                    a7 = Math.Round(SoLuongConLai, 3, MidpointRounding.ToEven)
-                };
-                return Json(json);
+                    a7 = Math.Round(SoLuongConLai, 3, MidpointRounding.ToEven),
+                    GtriSuDung = gtriSuDung,
+                    GtriConLai = gtriConLai,
+                    GiamGiaHD = giamGiaHD,
+                    GiaTriMua = gtriMua,
+                });
             }
         }
         [AcceptVerbs("GET", "POST")]

@@ -379,16 +379,20 @@
                                                 <th class="@commonEnum.TypeRGoiDichVu.tenkhach  text-left">Tên khách</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nhomkhach   text-left">Nhóm khách</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nguonkhach   text-left">Nguồn khách</th>
-                                                <th class="@commonEnum.TypeRGoiDichVu.dienthoai   text-right">Điện thoại</th>
+                                                <th class="@commonEnum.TypeRGoiDichVu.dienthoai text-right">Điện thoại</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.gioitinh   text-center">Giới tính</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nguoigioithieu   text-left">Người giới thiệu</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.soluongban  text-right">Số lượng bán</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.thanhtien  text-right">Thành tiền</th>
+                                                <th class="@commonEnum.TypeRGoiDichVu.giamgiahd  text-right">Giảm giá HĐ</th>
+                                                <th class="@commonEnum.TypeRGoiDichVu.giatriban  text-right">Giá trị bán</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.soluongtra text-right">Số lượng trả</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.giatritra text-right">Giá trị trả</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.soluongsudung  text-right">Số lượng sử dụng</th>
+                                                <th class="@commonEnum.TypeRGoiDichVu.giatrisudung  text-right">Giá trị sử dụng</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.giavon  text-right">Giá vốn</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.soluongconlai  text-right">Số lượng còn lại</th>
+                                                <th class="@commonEnum.TypeRGoiDichVu.giatriconlai  text-right">Giá trị còn lại</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.ngayapdung  text-right">Ngày áp dụng</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.hansudung  text-right">Hạn sử dụng</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.songayconlai  text-right">Số ngày còn hạn</th>
@@ -415,11 +419,15 @@
                                                 <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu  bhmact cls1 text-left " data-bind="text: NguoiGioiThieu"></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongban  text-right" data-bind="text: formatNumber3Digit(SoLuong) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.thanhtien  text-right" data-bind="text: formatNumber3Digit(ThanhTien,2) "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giamgiahd  text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2) "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatriban  text-right" data-bind="text: formatNumber3Digit(GiaTriMua,2) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongtra  text-right" data-bind="text: formatNumber3Digit(SoLuongTra) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.giatritra  text-right" data-bind="text: formatNumber3Digit(GiaTriTra,2) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongsudung  text-right" data-bind="text: formatNumber3Digit(SoLuongSuDung) "></td>
-                                                <td class=" @commonEnum.TypeRGoiDichVu.giavon   text-right" data-bind="text: formatNumber3Digit(GiaVon,2) "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatrisudung  text-right" data-bind="text: formatNumber3Digit(GiaTriSD) "></td>
+                                                <td class=" @commonEnum.TypeRGoiDichVu.giavon text-right" data-bind="text: formatNumber3Digit(GiaVon,2) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongconlai  text-right" data-bind="text: formatNumber3Digit(SoLuongConLai) "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatriconlai  text-right" data-bind="text: formatNumber3Digit(GiaTriConLai) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.ngayapdung cls2 text-center">
                                                     <span data-bind="text: moment(NgayApDungGoiDV).format('DD/MM/YYYY')!='Invalid date'? moment(NgayApDungGoiDV).format('DD/MM/YYYY'):''"></span>
                                                 </td>
@@ -441,27 +449,31 @@
                                             </tr>
                                         </tfoot>
                                         <tfoot class="SD_TongHop" hidden>
-                                            <tr>
-                                                <td class="@commonEnum.TypeRGoiDichVu.magoi  bg12 text-left bold bhmact">Tổng cộng</td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.ngayban bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.makhach bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.tenkhach bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nhomkhach  bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nguonkhach  bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.dienthoai  bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.gioitinh  bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu  bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.soluongban bg12  text-right bold" data-bind="text: formatNumber3Digit(SDTH_SoLuong())"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.thanhtien bg12  text-right bold" data-bind="text: formatNumber3Digit(SDTH_ThanhTien(),2)"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.soluongtra bg12  text-right bold" data-bind="text: formatNumber3Digit(SDTH_SoLuongTra())"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.giatritra bg12  text-right bold" data-bind="text: formatNumber3Digit(SDTH_GiaTriTra(),2)"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.soluongsudung bg12  text-right bold" data-bind="text: formatNumber3Digit(SDTH_SoLuongSuDung())"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.giavon bg12  text-right bold" data-bind="text: formatNumber3Digit(SDTH_GiaVon(),2)"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.soluongconlai bg12  text-right bold" data-bind="text: formatNumber3Digit(SDTH_SoLuongConLai())"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.ngayapdung bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.hansudung bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.songayconlai bg12"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.songayquahan bg12"></td>
+                                            <tr class="bg12 bold">
+                                                <td class="@commonEnum.TypeRGoiDichVu.magoi   text-left bold bhmact">Tổng cộng</td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.ngayban "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.makhach "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.tenkhach "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nhomkhach  "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nguonkhach  "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.dienthoai  "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.gioitinh  "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu  "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.soluongban text-right " data-bind="text: formatNumber3Digit(SDTH_SoLuong())"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.thanhtien text-right bold" data-bind="text: formatNumber3Digit(SDTH_ThanhTien(),2)"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giamgiahd text-right bold" data-bind="text: formatNumber3Digit(SDCT_GiamGiaHD(),2)"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatriban text-right bold" data-bind="text: formatNumber3Digit(NXT_GiaTriBanGK(),2)"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.soluongtra text-right bold" data-bind="text: formatNumber3Digit(SDTH_SoLuongTra())"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatritra text-right bold" data-bind="text: formatNumber3Digit(SDTH_GiaTriTra(),2)"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.soluongsudung text-right bold" data-bind="text: formatNumber3Digit(SDTH_SoLuongSuDung())"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatrisudung text-right bold" data-bind="text: formatNumber3Digit(TCSD_GiaTriSuDung())"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giavon text-right bold" data-bind="text: formatNumber3Digit(SDTH_GiaVon(),2)"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.soluongconlai text-right bold" data-bind="text: formatNumber3Digit(SDTH_SoLuongConLai())"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatriconlai text-right bold" data-bind="text: formatNumber3Digit(TCSD_GiaTriConLai())"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.ngayapdung "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.hansudung "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.songayconlai "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.songayquahan "></td>
                                             </tr>
                                         </tfoot>
                                     </table>
@@ -480,7 +492,7 @@
                                                 <th class="@commonEnum.TypeRGoiDichVu.tenkhach  text-left">Tên khách</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nhomkhach   text-left">Nhóm khách</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nguonkhach   text-left">Nguồn khách</th>
-                                                <th class="@commonEnum.TypeRGoiDichVu.dienthoai   text-right">Điện thoại</th>
+                                                <th class="@commonEnum.TypeRGoiDichVu.dienthoai text-right">Điện thoại</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.gioitinh   text-center">Giới tính</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nguoigioithieu   text-left">Người giới thiệu</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.mahanghoa  text-left">Mã hàng hóa</th>
@@ -496,8 +508,10 @@
                                                 <th class="@commonEnum.TypeRGoiDichVu.soluongtra  text-right">Số lượng trả</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.giatritra  text-right">Giá trị trả</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.soluongsudung  text-right">Số lượng sử dụng</th>
+                                                <th class="@commonEnum.TypeRGoiDichVu.giatrisudung  text-right">Giá trị sử dụng</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.giavon  text-right">Giá vốn</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.soluongconlai  text-right">Số lượng còn lại</th>
+                                                <th class="@commonEnum.TypeRGoiDichVu.giatriconlai  text-right">Giá trị còn lại</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nhanvien  text-center">Nhân viên bán</th>
                                             </tr>
                                         </thead>
@@ -541,8 +555,10 @@
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongtra  text-right" data-bind="text: formatNumber3Digit(SoLuongTra,2) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.giatritra  text-right" data-bind="text: formatNumber3Digit(GiaTriTra,2) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongsudung  text-right" data-bind="text: formatNumber3Digit(SoLuongSuDung) "></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.giavon   text-right" data-bind="text: formatNumber3Digit(GiaVon,2) "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatrisudung  text-right" data-bind="text: formatNumber3Digit(GiaTriSD) "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giavon text-right" data-bind="text: formatNumber3Digit(GiaVon,2) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongconlai  text-right" data-bind="text: formatNumber3Digit(SoLuongConLai) "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatriconlai  text-right" data-bind="text: formatNumber3Digit(GiaTriConLai) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.nhanvien bhmact cls1 text-left" data-bind="text: NhanVienChietKhau"></td>
                                             </tr>
                                         </tbody>
@@ -580,8 +596,10 @@
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongtra  text-right " data-bind="text: formatNumber3Digit(SDCT_SoLuongTra())"></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.giatritra  text-right " data-bind="text: formatNumber3Digit(SDCT_GiaTriTra(),2)"></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongsudung  text-right " data-bind="text: formatNumber3Digit(SDCT_SoLuongSuDung())"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatrisudung  text-right " data-bind="text: formatNumber3Digit(TCSD_GiaTriSuDung())"></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.giavon  text-right " data-bind="text: formatNumber3Digit(SDCT_GiaVon(),2)"></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongconlai  text-right " data-bind="text: formatNumber3Digit(SDCT_SoLuongConLai())"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.giatriconlai  text-right " data-bind="text: formatNumber3Digit(TCSD_GiaTriConLai())"></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.nhanvien"></td>
                                             </tr>
                                         </tfoot>
@@ -607,7 +625,7 @@
                                                 <th class="@commonEnum.TypeRGoiDichVu.tenkhach text-left">Tên khách</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nhomkhach   text-left">Nhóm khách</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nguonkhach   text-left">Nguồn khách</th>
-                                                <th class="@commonEnum.TypeRGoiDichVu.dienthoai   text-right">Điện thoại</th>
+                                                <th class="@commonEnum.TypeRGoiDichVu.dienthoai text-right">Điện thoại</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.gioitinh   text-center">Giới tính</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nguoigioithieu   text-left">Người giới thiệu</th>
                                                 <th class="@commonEnum.TypeRGoiDichVu.nhomhanghoa text-left">Nhóm hàng hóa</th>
@@ -647,7 +665,7 @@
                                                     </a>
                                                 </td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongban  text-right" data-bind="text: formatNumber3Digit(SoLuongMua) "></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.soluongtra   text-right" data-bind="text: formatNumber3Digit(SoLuongTra) "></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.soluongtra text-right" data-bind="text: formatNumber3Digit(SoLuongTra) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongsudung  text-right" data-bind="text: formatNumber3Digit(SoLuongSuDung) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongconlai  text-right" data-bind="text: formatNumber3Digit(SoLuongConLai) "></td>
                                             </tr>

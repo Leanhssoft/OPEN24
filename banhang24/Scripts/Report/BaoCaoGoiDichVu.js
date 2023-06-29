@@ -1314,6 +1314,10 @@
                         self.SDTH_SoLuongSuDung(data.a5);
                         self.SDTH_GiaVon(data.a6);
                         self.SDTH_SoLuongConLai(data.a7);
+                        self.TCSD_GiaTriSuDung(data.GtriSuDung);
+                        self.TCSD_GiaTriConLai(data.GtriConLai);
+                        self.NXT_GiaTriBanGK(data.GiaTriMua);
+                        self.SDCT_GiamGiaHD(data.GiamGiaHD);
                         LoadingForm(false);
                     });
                 }
@@ -1342,6 +1346,8 @@
                         self.SDCT_SoLuongSuDung(data.a6);
                         self.SDCT_GiaVon(data.a7);
                         self.SDCT_SoLuongConLai(data.a8);
+                        self.TCSD_GiaTriSuDung(data.GtriSuDung);
+                        self.TCSD_GiaTriConLai(data.GtriConLai);
                         let sumTTChuaCK = data.LstData.reduce(function (x, item) {
                             return x + item.ThanhTienChuaCK;
                         }, 0);
