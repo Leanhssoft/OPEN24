@@ -2103,7 +2103,7 @@
                             </tr>
                             <!--/ko-->
                         </tbody>
-                        <!--ko if: $root.RoleXemTongDoanhThu() -->
+                        <!--ko if: $root.LaAdmin() || !$root.RoleXemTongDoanhThu() -->
                         <tfoot data-bind="visible: DoiTuongs().length > 0">
                             <tr class="border-bottom bold bg12">
                                 <td></td>

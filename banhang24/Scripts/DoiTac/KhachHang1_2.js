@@ -181,7 +181,8 @@
     self.Allow_ChangeTimeSoQuy = ko.observable(false);
     self.RoleDieuChinhSoDuThe = ko.observable(false);
     self.RoleThemMoiTheGiaTri = ko.observable(false);
-    self.RoleXemTongDoanhThu = ko.observable(false);
+    self.LaAdmin = ko.observable(VHeader.LaAdmin == 'Admin');
+    self.RoleXemTongDoanhThu = ko.observable(false);// quyền "Không" (ngược với bình thường)
     self.RoleXemDSTheGiaTri = ko.observable(false);
     self.RoleView_NhatKyGiaoDich = ko.observable(false);
     self.Allow_ChangeTimeTheGiaTri = ko.observable(false);
@@ -202,6 +203,7 @@
             SearchKhachHang();
         }
     }
+    
     switch (VHeader.IdNganhNgheKinhDoanh.toUpperCase()) {
         case 'C16EDDA0-F6D0-43E1-A469-844FAB143014':
             self.IsGara(true);
@@ -3493,7 +3495,7 @@
                 self.RoleThemMoiTheGiaTri(CheckQuyenExist('TheGiaTri_ThemMoi'));
                 self.Allow_ChangeTimeTheGiaTri(CheckQuyenExist('TheGiaTri_ThayDoiThoiGian'));
                 self.RoleXemDSTheGiaTri(CheckQuyenExist('TheGiaTri_XemDS'));
-                self.RoleXemTongDoanhThu(CheckQuyenExist('KhachHang_XemTongDoanhThu'));
+                self.RoleXemTongDoanhThu(CheckQuyenExist('KhachHang_KhongXemTongCong'));
                 self.RoleUpdateImg_Invoice(CheckQuyenExist('HoaDon_CapNhatAnh'));
                 self.RoleView_NhatKyGiaoDich(CheckQuyenExist('HoaDon_XemDS'));
 

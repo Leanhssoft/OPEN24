@@ -42,6 +42,8 @@
     self.RoleDelete_Invoice = ko.observable(false);
     self.RoleExport_Invoice = ko.observable(false);
     self.RoleUpdateImg_Invoice = ko.observable(false);
+    self.LaAdmin = ko.observable(VHeader.LaAdmin == 'Admin');
+    self.RoleXemTongDoanhThu = ko.observable(false);// quyền "Không" (ngược với bình thường)
     // hd dat
     self.RoleView_Order = ko.observable(false);
     self.RoleInsert_Order = ko.observable(false);
@@ -360,6 +362,7 @@
                 self.Role_NhapHangTuHoaDon(CheckQuyenExist('NhapHang_ThemMoi'))
                 self.Role_XuatKho(CheckQuyenExist('XuatHuy_ThemMoi'));
                 self.RoleUpdateImg_Invoice(CheckQuyenExist('HoaDon_CapNhatAnh'));
+                self.RoleXemTongDoanhThu(CheckQuyenExist('KhachHang_KhongXemTongCong'));
             }
             else {
                 ShowMessage_Danger('Không có quyền xem danh sách ' + sLoai);
