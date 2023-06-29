@@ -5656,7 +5656,7 @@
                         }
                         else {
                             // find hang tang kem of this HangHoa
-                            let hhTangKem = $.grep(cthd, function (x) {
+                            let hhTangKem = $.grep(arrCTsort, function (x) {
                                 return x.ID_TangKem === cthd.ID_DonViQuiDoi;
                             });
                             let txtKhuyenMai_Last = '';
