@@ -1866,7 +1866,7 @@
             quyhd.DiaChiKhachHang = '';
             quyhd.DienThoaiKhachHang = self.ddl_textVal.cusPhone;
             quyhd.NoiDungThu = quyhd.NoiDungThu;
-            var tongThu = formatNumberToInt(quyhd.TongTienThu);
+            var tongThu = formatNumberToFloat(obj.TongTienThu);
             quyhd.TienBangChu = DocSo(tongThu);
             quyhd.GiaTriPhieu = formatNumber3Digit(tongThu);
 
@@ -1877,6 +1877,10 @@
             quyhd.TTBangTienCoc = formatNumber3Digit(obj.TienCoc);
             quyhd.TienDoiDiem = formatNumber3Digit(obj.TTBangDiem);
             quyhd.KhoanMucThuChi = self.ddl_textVal.khoanthu;
+            quyhd.TienMat_BangChu = DocSo(obj.TienMat);
+            console.log(quyhd.TienMat_BangChu ,obj.TienMat)
+            quyhd.ChuyenKhoan_BangChu = DocSo(obj.TienChuyenKhoan);
+            quyhd.TienPOS_BangChu = DocSo(obj.TienPOS);
 
             ajaxHelper('/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + loaiCT + '&idDonVi='
                 + self.inforLogin.ID_DonVi, 'GET').done(function (result) {

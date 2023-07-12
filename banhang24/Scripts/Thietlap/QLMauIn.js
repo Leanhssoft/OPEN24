@@ -1252,6 +1252,10 @@ function SetConvertDataTest(strInput) {
                 '{ChietKhauNVHoaDon}': '<span data-bind=\"text: ChietKhauNVHoaDon\"></span>',
                 '{ChietKhauNVHoaDon_InGtriCK}': '<span data-bind=\"text: ChietKhauNVHoaDon_InGtriCK\"></span>',
                 '{PhuongThucTT}': '<span data-bind=\"text: PhuongThucTT\"></span>',
+                '{TienMat_BangChu}': '<span data-bind=\"text: TienMat_BangChu\"></span>',
+                '{TienPOS_BangChu}': '<span data-bind=\"text: TienPOS_BangChu\"></span>',
+                '{ChuyenKhoan_BangChu}': '<span data-bind=\"text: ChuyenKhoan_BangChu\"></span>',
+                '{TienCoc_BangChu}': '<span data-bind=\"text: TienCoc_BangChu\"></span>',
 
                 '{TenNganHangPOS}': '<span data-bind=\"text: TenNganHangPOS\"></span>',
                 '{TenChuThePOS}': '<span data-bind=\"text: TenChuThePOS\"></span>',

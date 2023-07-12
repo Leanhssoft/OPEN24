@@ -976,9 +976,10 @@
                 });
             },
 
-            InPhieuThu: function (quyhd) {
+            InPhieuThu: function (dataQuyHD) {
                 var self = this;
                 var loaiCT = 'SQPT'
+                let quyhd= {...dataQuyHD};
                 if (quyhd.LoaiHoaDon === 12) {
                     loaiCT = 'SQPC';
                 }
@@ -993,25 +994,26 @@
                 quyhd.DienThoaiChiNhanh = cn.DienThoaiChiNhanh;
                 quyhd.ChiNhanhBanHang = cn.TenChiNhanh;
 
-                let ngaylap = quyhd.NgayLapHoaDon;
+                let ngaylap = dataQuyHD.NgayLapHoaDon;
                 quyhd.MaPhieu = quyhd.MaHoaDon;
                 quyhd.NgayLapHoaDon = moment(ngaylap).format('DD/MM/YYYY HH:mm:ss');
                 quyhd.Ngay = moment(ngaylap).format('DD');
                 quyhd.Thang = moment(ngaylap).format('MM');
                 quyhd.Nam = moment(ngaylap).format('YYYY');
-                quyhd.NguoiNopTien = quyhd.NguoiNopTien;
-                quyhd.NguoiNhanTien = quyhd.NguoiNopTien;
+                quyhd.NguoiNhanTien = dataQuyHD.NguoiNopTien;
                 quyhd.DiaChiKhachHang = self.inforNguoiNop.DiaChi;
                 quyhd.DienThoaiKhachHang = self.inforNguoiNop.SoDienThoai;
-                quyhd.NoiDungThu = quyhd.NoiDungThu;
-                quyhd.TienBangChu = DocSo(formatNumberToFloat(quyhd.TongTienThu));
-                quyhd.ChuyenKhoan = formatNumber(quyhd.TienCK);
-                quyhd.TienMat = formatNumber(quyhd.TienMat);
-                quyhd.GiaTriPhieu = formatNumber(quyhd.TongTienThu);
+                quyhd.TienBangChu = DocSo(formatNumberToFloat(dataQuyHD.TongTienThu));
+                quyhd.ChuyenKhoan = formatNumber(dataQuyHD.TienCK);
+                quyhd.TienMat = formatNumber(dataQuyHD.TienMat);
+                quyhd.GiaTriPhieu = formatNumber(dataQuyHD.TongTienThu);
                 quyhd.TienDoiDiem = 0;
                 quyhd.TienTheGiaTri = 0;
                 quyhd.TTBangTienCoc = 0;
                 quyhd.KhoanMucThuChi = self.khoanthuchi.NoiDungThuChi;
+                quyhd.TienMat_BangChu = DocSo(dataQuyHD.TienMat);
+                quyhd.ChuyenKhoan_BangChu = DocSo(dataQuyHD.TienCK);
+                quyhd.TienPOS_BangChu = DocSo(dataQuyHD.TienATM);
 
                 $.ajax({
                     url: '/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + loaiCT + '&idDonVi=' + quyhd.ID_DonVi,

@@ -1335,12 +1335,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 content1 = content1.Replace("{Nhom_HangHoaDV}", "");
                                 content1 = content1.Replace("{TheoHangHoa}", "");
                                 content1 = content1.Replace("{TheoDichVu}", "");
-                                content1 = content1.Replace("{NhomDV_TruocCK}", "<span data-bind=\"text: formatNumber(itNhom.ListDichVus.NhomDV_TruocCK)\"></span>");
-                                content1 = content1.Replace("{NhomDV_TruocVAT}", "<span data-bind=\"text: formatNumber(itNhom.ListDichVus.NhomDV_TruocVAT)\"></span>");
-                                content1 = content1.Replace("{NhomDV_ThanhToan}", "<span data-bind=\"text: formatNumber(itNhom.ListDichVus.NhomDV_ThanhToan)\"></span>");
-                                content1 = content1.Replace("{NhomHH_TruocCK}", "<span data-bind=\"text: formatNumber(itNhom.ListHangHoas.NhomHH_TruocCK)\"></span>");
-                                content1 = content1.Replace("{NhomHH_TruocVAT}", "<span data-bind=\"text: formatNumber(itNhom.ListHangHoas.NhomHH_TruocVAT)\"></span>");
-                                content1 = content1.Replace("{NhomHH_ThanhToan}", "<span data-bind=\"text: formatNumber(itNhom.ListHangHoas.NhomHH_ThanhToan)\"></span>");
+                                content1 = content1.Replace("{NhomDV_TruocCK}", "<span data-bind=\"text: formatNumber(itNhom.ListDichVus.NhomDV_TruocCK,0)\"></span>");
+                                content1 = content1.Replace("{NhomDV_TruocVAT}", "<span data-bind=\"text: formatNumber(itNhom.ListDichVus.NhomDV_TruocVAT,0)\"></span>");
+                                content1 = content1.Replace("{NhomDV_ThanhToan}", "<span data-bind=\"text: formatNumber(itNhom.ListDichVus.NhomDV_ThanhToan,0)\"></span>");
+                                content1 = content1.Replace("{NhomHH_TruocCK}", "<span data-bind=\"text: formatNumber(itNhom.ListHangHoas.NhomHH_TruocCK,0)\"></span>");
+                                content1 = content1.Replace("{NhomHH_TruocVAT}", "<span data-bind=\"text: formatNumber(itNhom.ListHangHoas.NhomHH_TruocVAT,0)\"></span>");
+                                content1 = content1.Replace("{NhomHH_ThanhToan}", "<span data-bind=\"text: formatNumber(itNhom.ListHangHoas.NhomHH_ThanhToan,0)\"></span>");
 
                                 content1 = Replace_TheoNhom(content1);
                             }
@@ -1488,7 +1488,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
             content1 = content1.Replace("{TongTienTraHang}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongTienTraHang)\"></span>");
             content1 = content1.Replace("{TongTienTra}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongTienTra)\"></span>");
-            content1 = content1.Replace("{TongCong}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongCong,2)\"></span>");
+            content1 = content1.Replace("{TongCong}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongCong,0)\"></span>");
             content1 = content1.Replace("{TongSoLuongHang}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongSoLuongHang)\"></span>");
             content1 = content1.Replace("{ChiPhiNhap}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().ChiPhiNhap)\"></span>");
             content1 = content1.Replace("{NoTruoc}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().NoTruoc)\"></span>");
@@ -1555,6 +1555,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{HoaDonLienQuan}", "<span data-bind=\"text: InforHDprintf().HoaDonLienQuan\"></span>");
             content1 = content1.Replace("{PhuongThucTT}", "<span data-bind=\"text: InforHDprintf().PhuongThucTT\"></span>");
             content1 = content1.Replace("{KhoanMucThuChi}", "<span data-bind=\"text: InforHDprintf().KhoanMucThuChi\"></span>");
+            content1 = content1.Replace("{TienMat_BangChu}", "<span data-bind=\"text: InforHDprintf().TienMat_BangChu\"></span>");
+            content1 = content1.Replace("{TienPOS_BangChu}", "<span data-bind=\"text: InforHDprintf().TienPOS_BangChu\"></span>");
+            content1 = content1.Replace("{ChuyenKhoan_BangChu}", "<span data-bind=\"text: InforHDprintf().ChuyenKhoan_BangChu\"></span>");
             #endregion
             // Kiểm kho
             content1 = content1.Replace("{NguoiCanBang}", "<span data-bind=\"text: InforHDprintf().NguoiCanBang\"></span>");

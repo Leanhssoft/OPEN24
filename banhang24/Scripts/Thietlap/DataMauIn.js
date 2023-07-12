@@ -397,7 +397,7 @@ var dataMauIn = function () {
 
     self.TienThua = ko.observable('0');
     self.TienMat = ko.observable('5,000,000');
-    self.TienGui = ko.observable('5,000,000'); // POS
+    self.TienGui = ko.observable('4,500,000'); // POS
     self.TienATM = ko.observable('2,000,000'); // ChuyenKhoan
     self.TTBangTienCoc = ko.observable('800,000');
     self.SoDuDatCoc = ko.observable('1,000,000');
@@ -424,7 +424,7 @@ var dataMauIn = function () {
     // ValueCard
     self.TongTien = ko.observable('2,000,000');
     self.TienDoiDiem = ko.observable('20,000');
-    self.TienTheGiaTri = ko.observable('2,000,000');
+    self.TienTheGiaTri = ko.observable('1,050,300');
     self.Ngay = ko.observable('08');
     self.Thang = ko.observable('07');
     self.Nam = ko.observable('2019');
@@ -537,6 +537,11 @@ var dataMauIn = function () {
     self.ThanhToan = ko.observable('3,910,000');
     self.NguoiLapPhieu = ko.observable('Lê Thị Xuân');
     self.KhoanMucThuChi = ko.observable('Thu tiền khách nợ');
+    self.TienMat_BangChu = ko.observable('Năm triệu đồng');
+    self.TienPOS_BangChu = ko.observable('Hai triệu đồng');
+    self.ChuyenKhoan_BangChu = ko.observable('Bốn triệu năm trăm nghìn đồng');
+    self.TienTheGiaTri_BangChu = ko.observable('Một triệu không trăm năm mươi nghìn ba trăm đồng');
+    self.TienCoc_BangChu = ko.observable('Tám trăm nghìn đồng');
 
     self.CTHoaDonPrint_TheoNhom = ko.observableArray([
         {
