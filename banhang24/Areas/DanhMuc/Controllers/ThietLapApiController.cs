@@ -1558,7 +1558,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TienMat_BangChu}", "<span data-bind=\"text: InforHDprintf().TienMat_BangChu\"></span>");
             content1 = content1.Replace("{TienPOS_BangChu}", "<span data-bind=\"text: InforHDprintf().TienPOS_BangChu\"></span>");
             content1 = content1.Replace("{ChuyenKhoan_BangChu}", "<span data-bind=\"text: InforHDprintf().ChuyenKhoan_BangChu\"></span>");
-            #endregion
+            content1 = content1.Replace("{TienTheGiaTri_BangChu}", "<span data-bind=\"text: InforHDprintf().TienTheGiaTri_BangChu\"></span>");
+            content1 = content1.Replace("{TienCoc_BangChu}", "<span data-bind=\"text: InforHDprintf().TienCoc_BangChu\"></span>");
             // Kiểm kho
             content1 = content1.Replace("{NguoiCanBang}", "<span data-bind=\"text: InforHDprintf().NguoiCanBang\"></span>");
             content1 = content1.Replace("{TrangThaiKK}", "<span data-bind=\"text: InforHDprintf().TrangThaiKK\"></span>");
