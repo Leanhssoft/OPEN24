@@ -95,6 +95,7 @@ namespace libGara
         public string MaPhieuTiepNhan { get; set; }
         public DateTime NgayVaoXuong { get; set; }
         public int SoKmVao { get; set; }
+        public int? SoKmCu { get; set; }
         public DateTime? NgayXuatXuongDuKien { get; set; }
         public DateTime? NgayXuatXuong { get; set; }
         public int SoKmRa { get; set; }
