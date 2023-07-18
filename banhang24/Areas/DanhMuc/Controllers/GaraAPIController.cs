@@ -815,9 +815,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 try
                 {
                     ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
-                    var subDomain = CookieStore.GetCookieAes("SubDomain");
+                    var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+                    string[] arrSubDomain = { "leeauto", "0973474985", "autosonly" };
                     List<PhuTung_LichBaoDuong> data = new List<PhuTung_LichBaoDuong>();
-                    if (subDomain.ToLower() == "leeauto")
+                    if (arrSubDomain.Contains(subDomain))
                     {
                         data = classPhieuTiepNhan.GetLichBaoDuong_TheoXe(param);
                     }
