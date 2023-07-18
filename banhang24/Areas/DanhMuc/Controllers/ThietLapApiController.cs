@@ -1560,6 +1560,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{ChuyenKhoan_BangChu}", "<span data-bind=\"text: InforHDprintf().ChuyenKhoan_BangChu\"></span>");
             content1 = content1.Replace("{TienTheGiaTri_BangChu}", "<span data-bind=\"text: InforHDprintf().TienTheGiaTri_BangChu\"></span>");
             content1 = content1.Replace("{TienCoc_BangChu}", "<span data-bind=\"text: InforHDprintf().TienCoc_BangChu\"></span>");
+            #endregion
             // Kiểm kho
             content1 = content1.Replace("{NguoiCanBang}", "<span data-bind=\"text: InforHDprintf().NguoiCanBang\"></span>");
             content1 = content1.Replace("{TrangThaiKK}", "<span data-bind=\"text: InforHDprintf().TrangThaiKK\"></span>");
@@ -1591,6 +1592,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{SoKhung}", "<span data-bind=\"text: InforHDprintf().SoKhung\"></span>");
             content1 = content1.Replace("{SoKmVao}", "<span data-bind=\"text: InforHDprintf().SoKmVao\"></span>");
             content1 = content1.Replace("{SoKmRa}", "<span data-bind=\"text: InforHDprintf().SoKmRa\"></span>");
+            content1 = content1.Replace("{SoKmCu}", "<span data-bind=\"text: formatNumber(InforHDprintf().SoKmCu,2)\"></span>");
             content1 = content1.Replace("{NgayXuatXuong}", "<span data-bind=\"text: InforHDprintf().NgayXuatXuong\"></span>");
             content1 = content1.Replace("{TenMauXe}", "<span data-bind=\"text: InforHDprintf().TenMauXe\"></span>");
             content1 = content1.Replace("{TenLoaiXe}", "<span data-bind=\"text: InforHDprintf().TenLoaiXe\"></span>");
