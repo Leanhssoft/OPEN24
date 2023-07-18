@@ -552,7 +552,7 @@
                                 <td class="@commonEnum.ColumnInvoices.tiendoidiem text-right" data-bind="text: formatNumber3Digit(TienDoiDiem,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.thegiatri text-right" data-bind="text: formatNumber3Digit(ThuTuThe,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.conno text-right"
-                                    data-bind="text: formatNumber3Digit(ConNo,2) , style: {color: ConNo > 0?'red':'black'},
+                                    data-bind="text: formatNumber3Digit(ConNo,0) , style: {color: ConNo.toFixed() > 0?'red':'black'},
                                         click: $parent.LoadChiTietHD,
                                        "></td>
                                 <td class="@commonEnum.ColumnInvoices.ghichu" data-bind="text: commonStatisJs.SubStringContent(DienGiai,50), click: $parent.LoadChiTietHD"></td>
