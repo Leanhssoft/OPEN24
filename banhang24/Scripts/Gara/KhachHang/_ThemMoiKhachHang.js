@@ -14,16 +14,17 @@
         self.ImgHost = Open24FileManager.hostUrl;
         self.UrlDoiTuongAPI = '/api/DanhMuc/DM_DoiTuongAPI/';
         self.ToDay = new Date();
+        const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
         if (commonStatisJs.CheckNull(self.SubDomain)) {
             self.SubDomain = VHeader.SubDomain;
-            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === 'leeauto';
+            self.isLeeAuto =  $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain)> -1;
             self.inforLogin.ID_DonVi = VHeader.IdDonVi;
 
             self.role.KhachHang.ThemMoi = VHeader.Quyen.indexOf('KhachHang_ThemMoi') > -1;
             self.role.KhachHang.CapNhat = VHeader.Quyen.indexOf('KhachHang_CapNhat') > -1;
         }
         else {
-            self.isLeeAuto = self.SubDomain.toLowerCase() === 'leeauto';
+            self.isLeeAuto = $.inArray(self.SubDomain.toLowerCase(), arrSubDomain) > -1;
         }
 
         self.PageLoad();

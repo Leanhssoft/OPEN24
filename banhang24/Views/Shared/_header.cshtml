@@ -540,7 +540,7 @@
                 <li v-for="item in ListThongBao.data">
                     <div class="op-thongbao-item" v-bind:class="{ 'op-thongbao-dadoc':  !item.DaDoc }">
                         <div class="op-thongbao-image">
-                            <span v-if="SubDomain.toLowerCase() === 'leeauto'">
+                            <span v-if="$root.isLeeAuto">
                                 <i class="fal fa-cart-plus fa-2x" v-if="item.LoaiThongBao == 0"></i>
                                 <i class="fal fa-dolly-flatbed-alt fa-2x" v-if="item.LoaiThongBao == 1"></i>
                                 <i class="fal fa-birthday-cake fa-2x" v-if="item.LoaiThongBao == 3"></i>
@@ -719,6 +719,7 @@ var VHeader = new Vue({
         TenCongTy: '',
         Registered: false,
         roleXemGiaVon: false,
+        isLeeAuto: false,
         urlApi: {
             HTApi: '/api/DanhMuc/HT_API/',
             NguoiDungApi: '/api/DanhMuc/HT_NguoiDungAPI/',
@@ -1057,7 +1058,7 @@ var VHeader = new Vue({
         GetThongBao: function () {
             let self = this;
 
-            if (self.SubDomain.toLowerCase() === 'leeauto') {
+            if (self.isLeeAuto) {
                 let param = {
                     ID_DonVi: self.IdDonVi,
                     ID_NguoiDung: self.IdNguoiDung,
@@ -1195,6 +1196,7 @@ var VHeader = new Vue({
     },
     created: function () {
         let self = this;
+        const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
         self.IdDonVi = '@ViewBag.ID_DonVi';
         self.TenDonVi = "@Html.Raw(ViewBag.TenDonVi)";
         self.IdNguoiDung = '@ViewBag.ID';
@@ -1206,7 +1208,7 @@ var VHeader = new Vue({
         self.IdNganhNgheKinhDoanh = '@ViewBag.ID_NganhKinhDoanh'.toUpperCase();
         self.UserLogin = '@ViewBag.TenTaiKhoan';
         self.SubDomain = '@ViewBag.SubDomain';
-        console.log('self.SubDomain', self.SubDomain)
+        self.isLeeAuto = $.inArray(self.SubDomain.toLowerCase(), arrSubDomain) > -1;
         self.TenCongTy = '@ViewBag.TenCongTy';
         self.Registered = '@ViewBag.Registered';
         self.UserAvata = Open24FileManager.hostUrl + '@ViewBag.Avatar';

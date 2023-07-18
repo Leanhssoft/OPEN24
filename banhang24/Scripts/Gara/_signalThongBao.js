@@ -7,12 +7,13 @@
         self.isLeeAuto = false;
         self.tblSetUpThongBao = [];
 
+        const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
         if (commonStatisJs.CheckNull($('#subDomain').val())) {
-            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === 'leeauto';
+            self.isLeeAuto = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1;
         }
         else {
             self.hasHeader = false;
-            self.isLeeAuto = $('#subDomain').val().toLowerCase() === 'leeauto';
+            self.isLeeAuto = $.inArray($('#subDomain').val().toLowerCase(), arrSubDomain) > -1;
         }
 
         if (self.isLeeAuto) {

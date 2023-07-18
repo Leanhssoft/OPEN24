@@ -147,8 +147,8 @@ var ViewModel = function () {
     self.ThietLap = ko.observable(new CauHinhModel());
     self.selectedNKH = ko.observable();
     self.TodayCS = ko.observable();
-
-    self.isLeeAuto = ko.observable(VHeader.SubDomain.toLowerCase() === 'leeauto');
+    const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
+    self.isLeeAuto = ko.observable($.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1);
 
     var dt1 = new Date();
     self.TodayCS(moment(dt1).format("DD/MM/YYYY"));

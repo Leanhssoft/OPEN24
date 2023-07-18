@@ -12,8 +12,9 @@
         self.GuidEmpty = '00000000-0000-0000-0000-000000000000';
         self.isLeeAuto = false;
         let idDonVi = $('#txtDonVi').val();
+        const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
         if (commonStatisJs.CheckNull(idDonVi)) {
-            self.isLeeAuto = VHeader.SubDomain.toLowerCase() === 'leeauto'
+            self.isLeeAuto = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1;
         }
     },
     data: {

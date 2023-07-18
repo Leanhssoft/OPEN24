@@ -214,7 +214,8 @@ var NewModel_BanHangLe = function () {
     var tree = '';// use at treeview NhomHangHoa
     var tree2 = '';// use at treeview NhomHangHoa --> check KhuyenMai
     self.SubDomain = ko.observable(_subDomain.toLowerCase());
-    vmThemMoiXe.isLeeAuto = self.SubDomain() === 'leeauto';
+    const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
+    vmThemMoiXe.isLeeAuto = $.inArray(self.SubDomain(), arrSubDomain) > -1;
     vmTiepNhanXe.isLeeAuto = vmThemMoiXe.isLeeAuto;
     self.isLeeAuto = ko.observable(vmThemMoiXe.isLeeAuto);
 

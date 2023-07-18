@@ -1941,7 +1941,7 @@ var workTable = new Vue({
             let cus = await self.GetinforCus_byID(hdChosing.ID_DoiTuong);
             let baohiem = await self.GetinforCus_byID(hdChosing.ID_BaoHiem);
 
-            let cus_NoHienTai = 0, bh_NoHienTai = 0, cus_Email='';
+            let cus_NoHienTai = 0, bh_NoHienTai = 0, cus_Email = '';
             let bh_masothue = '';
             if (!$.isEmptyObject(cus)) {
                 cus_NoHienTai = cus.NoHienTai;
@@ -2981,8 +2981,8 @@ $(function () {
                     break;
                 }
             }
-
-            if (VHeader.SubDomain.toLowerCase() === 'leeauto') {
+            const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
+            if ($.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1) {
                 vmNhatKyBaoDuong.Insert_LichNhacBaoDuong_TheoXe(obj);
             }
 

@@ -63,7 +63,8 @@
         self.isLeeAuto = false;
         let idDonVi = $('#txtDonVi').val();
         if (commonStatisJs.CheckNull(idDonVi)) {
-            self.isLeeAuto = VHeader.SubDomain.toLowerCase() ==='leeauto'
+            const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
+            self.isLeeAuto = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1;
 
             self.inforLogin = {
                 ID_NhanVien: VHeader.IdNhanVien,
