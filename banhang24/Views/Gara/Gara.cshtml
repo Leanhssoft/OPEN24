@@ -1095,7 +1095,7 @@
 
                                 </div>
                                 <div class="op-hoadon-dongia">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
@@ -1103,13 +1103,13 @@
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: IDRandom},event:{keyup: $root.editPrice}" />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
-                                        <label class="input-simple height-24" data-bind="text: formatNumber3Digit(GiaBan),    attr:{id:IDRandom}"></label>
+                                        <label class="input-simple height-24" style="border:none!important" data-bind="text: formatNumber3Digit(GiaBan),    attr:{id:IDRandom}"></label>
                                         <!-- /ko-->
                                     </div>
                                 </div>
                                 <!-- ko if: $root.HoaDons().ID_BaoHiem() !==null && $root.HoaDons().LoaiHoaDon() === 25 -->
                                 <div class="op-hoadon-baohiem">
-                                    <div class="flex ">
+                                    <div class="flex " >
                                         <input class="input-simple height-24"
                                                onkeypress="return keypressNumber(event)"
                                                onclick="this.select()"
@@ -1120,7 +1120,7 @@
                                 </div>
                                 <!--/ko-->
                                 <div class="op-hoadon-thanhtoan">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!--ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24 bold"
                                                onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
@@ -1128,7 +1128,7 @@
                                                event:{keyup: $root.editSumPrice}" />
                                         <!-- /ko-->
                                         <!--ko if: !$root.roleChangePriceProduct()-->
-                                        <label class="input-simple height-24 bold" data-bind="text: formatNumber3Digit(ThanhToan),
+                                        <label class="input-simple height-24 bold" style="border:none!important" data-bind="text: formatNumber3Digit(ThanhToan),
                                                attr:{id: 'sum-f_'+ IDRandom}"></label>
                                         <!--/ko-->
                                     </div>
@@ -1357,7 +1357,7 @@
 
                                 </div>
                                 <div class="op-hoadon-dongia">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
@@ -1365,13 +1365,13 @@
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: IDRandom},event:{keyup: $root.editPrice}, " />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
-                                        <label class="input-simple height-24" data-bind="text: formatNumber3Digit(GiaBan),    attr:{id:IDRandom}"></label>
+                                        <label class="input-simple height-24" style="border:none!important" data-bind="text: formatNumber3Digit(GiaBan),    attr:{id:IDRandom}"></label>
                                         <!-- /ko-->
                                     </div>
                                 </div>
                                 <!-- ko if: $root.HoaDons().ID_BaoHiem() !==null && $root.HoaDons().LoaiHoaDon() === 25 -->
                                 <div class="op-hoadon-baohiem">
-                                    <div class="flex ">
+                                    <div class="flex " >
                                         <input class="input-simple height-24"
                                                onclick="this.select()"
                                                onkeypress="return keypressNumber(event)"
@@ -1382,7 +1382,7 @@
                                 </div>
                                 <!--/ko-->
                                 <div class="op-hoadon-thanhtoan">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!--ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24"
                                                onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
@@ -1685,7 +1685,7 @@
                                     </div>
                                 </div>
                                 <div class="op-hoadon-dongia">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!-- ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24" onclick="this.select()"
                                                onkeypress="return keypressNumber(event)"
@@ -1710,7 +1710,7 @@
                                 </div>
                                 <!--/ko-->
                                 <div class="op-hoadon-thanhtoan">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!-- ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24"
                                                onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
