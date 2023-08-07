@@ -4150,6 +4150,7 @@ var NewModel_BanHangLe = function () {
                 _maHoaDon = hdLast.MaHoaDon;
                 idRandom = hdLast.IDRandom;
                 self.IDPhongBan_Chosing(hdLast.ID_ViTri);
+                self.HoaDons().LoaiHoaDon(hdLast.LoaiHoaDon);// !important: used to get LoaiHoaDon (assign before await)
 
                 await GetInForCustomer_byID(hdLast.ID_DoiTuong);
                 BindLstBangGia_byNhanVien_andDoiTuong();
@@ -8974,15 +8975,19 @@ var NewModel_BanHangLe = function () {
                     lstHDafter = $.grep(lstHDafter, function (x) {
                         return x.MaHoaDon !== maHDDatHang;
                     });
-                    // remove hd dang xuly (if HD was creat from DatHang)
-                    let arrIDRandom_ofHDdangXuLy = $.grep(lstHDafter, function (x) {
-                        return x.MaHoaDonTraHang === maHDDatHang;
-                    }).map((o) => {
-                        return o.IDRandom;
-                    });
-                    lstHDafter = $.grep(lstHDafter, function (x) {
-                        return x.MaHoaDonTraHang !== maHDDatHang;
-                    });
+
+                    let arrIDRandom_ofHDdangXuLy =[];
+                    if (!commonStatisJs.CheckNull(maHDDatHang)){
+                       // remove hd dang xuly (if HD was creat from DatHang)
+                        arrIDRandom_ofHDdangXuLy = $.grep(lstHDafter, function (x) {
+                            return x.MaHoaDonTraHang === maHDDatHang;
+                        }).map((o) => {
+                            return o.IDRandom;
+                        });
+                        lstHDafter = $.grep(lstHDafter, function (x) {
+                            return x.MaHoaDonTraHang !== maHDDatHang;
+                        });
+                    }
 
                     localStorage.setItem(lcListHD, JSON.stringify(lstHDafter));
                     // remove CTHoaDon in Cache
@@ -14467,6 +14472,7 @@ var NewModel_BanHangLe = function () {
                     }, function () {
                         $('#modalPopuplgDelete').modal("hide");
                         _maHoaDon = maHDOld;
+                        self.HoaDons().LoaiHoaDon(loaiHDCurrent);
                         localStorage.setItem(lcMaHD, _maHoaDon);
                         Call_6Func();
                         ActiveTab_SoDoPhong();
@@ -23645,7 +23651,8 @@ var NewModel_BanHangLe = function () {
         if (_maHoaDon.indexOf('DV') > -1) {
             loaiHoaDon = 19;
         }
-        return loaiHoaDon;
+        return self.HoaDons().LoaiHoaDon();
+        //return loaiHoaDon;
     }
 
     function ChangeDonGia_CaculatorAgainCTHD(ctDoing, soluongNew, dongiaNew) {
@@ -26353,8 +26360,9 @@ var NewModel_BanHangLe = function () {
             var roleChangeSale = true;
             switch (loaiHD) {
                 case 1:
+                case 25:
                     roleChangeSale = self.roleChangePriceProduct_Invoice();
-                    break;
+                    break; 
                 case 3:
                     roleChangeSale = self.roleChangePriceProduct_Order();
                     break;
