@@ -1129,6 +1129,9 @@ function ViewModel() {
         objPrint.MaHoaDon = objPrint.MaHoaDon;
         objPrint.NhanVienBanHang = objPrint.TenNhanVien;
         objPrint.NgayLapHoaDon = moment(objPrint.NgayLapHoaDon, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY HH:mm:ss');
+        objPrint.Ngay = moment(objHD.NgayLapHoaDon).format('DD');
+        objPrint.Thang = moment(objHD.NgayLapHoaDon).format('MM');
+        objPrint.Nam = moment(objHD.NgayLapHoaDon).format('YYYY');
 
         objPrint.TongSoLuongHang = formatNumber3Digit(self.sum_SoLuongXuat());
         objPrint.TongTienHang = formatNumber3Digit(objPrint.TongTienHang, 2);
