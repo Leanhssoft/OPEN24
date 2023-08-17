@@ -423,7 +423,7 @@
                                         <th class="bg21 text-right" v-if="ListHeader.find(p=>p.colName === 'colCuoiKy').colShow">Phải trả</th>
                                     </tr>
                                 </thead>
-                                <tbody v-show=" && VHeader.Quyen.filter(p => p === 'BCTC_TongHopCongNo').length > 0">
+                                <tbody v-show="VHeader.Quyen.filter(p => p === 'BCTC_TongHopCongNo').length > 0">
                                     <tr v-for="item in BaoCaoTongHopCongNo.dataView">
                                         <td class="text-left" v-if="ListHeader.find(p=>p.colName === 'colNhomDoiTac').colShow"><span>{{item.NhomDoiTac}}</span></td>
                                         <td class="text-left" v-if="ListHeader.find(p=>p.colName === 'colMaDoiTac').colShow"><span>{{item.MaDoiTac}}</span></td>
