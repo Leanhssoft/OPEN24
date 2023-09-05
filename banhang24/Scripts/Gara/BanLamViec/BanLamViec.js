@@ -787,6 +787,7 @@ var workTable = new Vue({
 
                             // if duyetbaogia --> tbao
                             if (!type) {
+                                // baogia -> coc (1-->2)
                                 let tbao = {
                                     ID_DonVi: item.ID_DonVi,
                                     ID_PhieuTiepNhan: item.ID_PhieuTiepNhan,
@@ -797,6 +798,18 @@ var workTable = new Vue({
                                     ID_QuyTrinhSau: 2,
                                 }
                                 vmThongBao.Create_tblRequest(tbao);
+
+                                // baogia --> lenhSC
+                                let tbao2 = {
+                                    ID_DonVi: item.ID_DonVi,
+                                    ID_PhieuTiepNhan: item.ID_PhieuTiepNhan,
+                                    ID_Xe: self.listData.ThongTinXe.ID_Xe,
+                                    BienSo: item.BienSo,
+                                    ThoiGian: item.NgayLapHoaDon,
+                                    ID_QuyTrinhTruoc: 1,
+                                    ID_QuyTrinhSau: 3,
+                                }
+                                vmThongBao.Create_tblRequest(tbao2);
                             }
                         }
                         else {
@@ -1952,6 +1965,13 @@ var workTable = new Vue({
                 bh_NoHienTai = baohiem.NoHienTai;
                 bh_masothue = baohiem.MaSoThue;
             }
+            let chuxe_MST = '';
+            if (!commonStatisJs.CheckNull(objPrint.ID_ChuXe)) {
+                const chuxe = await self.GetinforCus_byID(objPrint.ID_ChuXe);
+                if (!$.isEmptyObject(chuxe)) {
+                    chuxe_MST = chuxe.MaSoThue;
+                }
+            }
 
             let cus_DebitOld = cus_NoHienTai - cus_DebitHD;
             cus_DebitOld = cus_DebitOld < 0 ? 0 : cus_DebitOld;
@@ -1960,6 +1980,7 @@ var workTable = new Vue({
             bh_DebitOld = bh_DebitOld < 0 ? 0 : bh_DebitOld;
 
             objPrint.Email = cus_Email;
+            objPrint.ChuXe_MST = chuxe_MST;
             objPrint.PhaiThanhToanBaoHiem = formatNumber3Digit(hdChosing.PhaiThanhToanBaoHiem, 0);
             objPrint.KhachDaTra = formatNumber(hdChosing.KhachDaTra);
             objPrint.TongTienDichVu = formatNumber(hdChosing.TongTienDichVu);
@@ -2039,10 +2060,10 @@ var workTable = new Vue({
             objPrint.PhaiThanhToan_TruCocBG = hdChosing.PhaiThanhToan - formatNumberToFloat(hdChosing.ThuDatHang);
             objPrint.PhaiThanhToan_TruCoc = objPrint.PhaiThanhToan_TruCocBG - formatNumberToFloat(hdChosing.Khach_TienCoc);
             objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCoc);
-            if (hdChosing.LoaiHoaDon === 3) {
-                objPrint.KH_TienBangChu = DocSo(objPrint.TienKhachThieu);
-            }
             objPrint.TienKhachThieu_BangChu = DocSo(hdChosing.PhaiThanhToan - daThanhToan);
+            objPrint.KH_DaThanhToan_BangChu = DocSo(daThanhToan);
+            objPrint.KH_DaThanhToan_TruCocBG = daThanhToan - hdChosing.ThuDatHang;
+            objPrint.KH_DaThanhToan_TruCocBG_BangChu = DocSo(objPrint.KH_DaThanhToan_TruCocBG);
 
             let mat = 0, pos = 0, ck = 0, tgt = 0, coc = 0, diem = 0;
             mat = hdChosing.Khach_TienMat + hdChosing.BH_TienMat;
@@ -2077,6 +2098,7 @@ var workTable = new Vue({
             objPrint.ChuyenKhoan = ck;
             objPrint.TienTheGiaTri = tgt;
             objPrint.TienDoiDiem = diem;
+            objPrint.TTBangTienCoc = coc;
 
             // nvien laphd
             let nvienban = '';
@@ -2187,6 +2209,10 @@ var workTable = new Vue({
                     data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
                     data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
                     data = data.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
+                    data = data.replace('{ChuXe_MST}', "<span data-bind=\"text: InforHDprintf().ChuXe_MST\"></span>");
+                    data = data.replace('{KH_DaThanhToan_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_BangChu\"></span>");
+                    data = data.replace('{KH_DaThanhToan_TruCocBG}', "<span data-bind=\"text: formatNumber(InforHDprintf().KH_DaThanhToan_TruCocBG,0)\"></span>");
+                    data = data.replace('{KH_DaThanhToan_TruCocBG_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_TruCocBG_BangChu\"></span>");
                     PrintExtraReport(data);
                 })
             }
