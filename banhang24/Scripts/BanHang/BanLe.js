@@ -10413,7 +10413,7 @@ var NewModel_BanHangLe = function () {
 
     // type: 1.soluong, 2.price, 3 giaBH
     function Enter_SoLuongPriceCTHD(itemCT, e, charStart, type) {
-        if (self.SubDomain() === 'huonghasalon') {
+        if (self.SubDomain() === 'huonghasalon' || self.SubDomain() === 'salonhuonghaphovong') {
             Huongha_Enter_SoLuongPriceCTHD(itemCT, e, charStart, type)
         }
         else {
@@ -24075,7 +24075,7 @@ var NewModel_BanHangLe = function () {
         }
 
         self.ItemHH_LoChosing(itemChose);
-        if (self.SubDomain() === 'huonghasalon') {
+        if (self.SubDomain() === 'huonghasalon' || self.SubDomain() === 'salonhuonghaphovong') {
             huonghasalon_AddHang(type);
         }
         else {
