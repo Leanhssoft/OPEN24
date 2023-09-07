@@ -3127,6 +3127,10 @@
                 data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
                 data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
                 data = data.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
+                data = data.replace('{ChuXe_MST}', "<span data-bind=\"text: InforHDprintf().ChuXe_MST\"></span>");
+                data = data.replace('{KH_DaThanhToan_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_BangChu\"></span>");
+                data = data.replace('{KH_DaThanhToan_TruCocBG_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_TruCocBG_BangChu\"></span>");
+                data = data.replace('{KH_DaThanhToan_TruCocBG}', "<span data-bind=\"text: formatNumber(InforHDprintf().KH_DaThanhToan_TruCocBG,0)\"></span>");
                 PrintExtraReport(data); // assign content HTML into frame
             }
         });
@@ -3294,10 +3298,14 @@
 
         objPrint.TienMat = formatNumber3Digit(objPrint.TienMat);
         objPrint.TienATM = formatNumber3Digit(objPrint.TienATM);// in store: assign TienGui = TienATM
+        objPrint.TTBangTienCoc = formatNumber3Digit(objHD.TienDatCoc);
         objPrint.TienKhachThieu = formatNumber(conno);
         objPrint.PhaiThanhToan_TruCocBG = objHD.PhaiThanhToan - objHD.ThuDatHang;
         objPrint.PhaiThanhToan_TruCoc = objHD.PhaiThanhToan - objHD.ThuDatHang - objHD.TienDatCoc;
         objPrint.TienKhachThieu_BangChu = DocSo(conno);
+        objPrint.KH_DaThanhToan_BangChu = DocSo(daThanhToan);
+        objPrint.KH_DaThanhToan_TruCocBG = daThanhToan - objHD.ThuDatHang;
+        objPrint.KH_DaThanhToan_TruCocBG_BangChu = DocSo(daThanhToan - objHD.ThuDatHang);
 
         // the gia tri
         objPrint.TongTaiKhoanThe = formatNumber(vmThanhToan.theGiaTriCus.TongNapThe);
@@ -3458,6 +3466,15 @@
                 objPrint.TenLoaiXe = tn.TenLoaiXe;
                 objPrint.TenMauXe = tn.TenMauXe;
                 objPrint.TenLienHe = tn.TenLienHe;
+
+                let chuxe_MST = '';
+                if (!commonStatisJs.CheckNull(tn.ID_ChuXe)) {
+                    const chuxe = await GetInforCus(tn.ID_ChuXe);
+                    if (!$.isEmptyObject(chuxe)) {
+                        chuxe_MST = chuxe.MaSoThue;
+                    }
+                }
+                objPrint.ChuXe_MST = chuxe_MST;
             }
         }
         return objPrint;
@@ -4659,6 +4676,10 @@
                 data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
                 data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
                 data = data.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
+                data = data.replace('{KH_DaThanhToan_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_BangChu\"></span>");
+                data = data.replace('{KH_DaThanhToan_TruCocBG_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_TruCocBG_BangChu\"></span>");
+                data = data.replace('{KH_DaThanhToan_TruCocBG}', "<span data-bind=\"text: formatNumber(InforHDprintf().KH_DaThanhToan_TruCocBG,0)\"></span>");
+                data = data.replace('{ChuXe_MST}', "<span data-bind=\"text: InforHDprintf().ChuXe_MST\"></span>");
                 PrintExtraReport(data);
             }
         });

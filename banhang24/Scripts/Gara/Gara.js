@@ -2724,6 +2724,9 @@ var NewModel_BanHangLe = function () {
             if (itGB.LoaiChungTuApDung !== null) {
                 let arrChungTu = itGB.LoaiChungTuApDung.split(',');
                 arrChungTu = RemoveItemEmpty(arrChungTu);
+                if($.inArray('1', arrChungTu) >-1){
+                    arrChungTu.push('25')
+                }
                 // push BG co loai chung tu = loaiHD
                 if ($.inArray(loaiHD, arrChungTu) > -1) {
                     arrBGLoaiChungTu.push(itGB);
@@ -3580,6 +3583,7 @@ var NewModel_BanHangLe = function () {
                     var rd = Math.floor(Math.random() * 1000000 + 1);
                     switch (itemHD[0].LoaiHoaDon) {
                         case 1:
+                        case 25:
                             maHDon = 'HDO' + rd;
                             break;
                         case 3:
@@ -4489,6 +4493,11 @@ var NewModel_BanHangLe = function () {
         objPrint.BHThanhToanTruocThue = formatNumber3Digit(objHD.BHThanhToanTruocThue, 0);
         objPrint.TongTienThueBaoHiem = formatNumber3Digit(objHD.TongTienThueBaoHiem, 0);
         objPrint.BH_TienBangChu = DocSo(objHD.PhaiThanhToanBaoHiem);
+        const kh_tongDaThanhToan = objHD.KhachDaTra + khach_tt;
+        objPrint.KH_DaThanhToan_BangChu = DocSo(khach_tt);
+        objPrint.ThuDatHang = formatNumber3Digit(objHD.KhachDaTra, 0);
+        objPrint.KH_DaThanhToan_TruCocBG = ptKhach.DaThanhToan;
+        objPrint.KH_DaThanhToan_TruCocBG_BangChu = DocSo(ptKhach.DaThanhToan);
 
         // nhanvienthuchien
         let nvHoaDon = '';
@@ -11312,6 +11321,7 @@ var NewModel_BanHangLe = function () {
         var role = false;
         switch (loaihd) {
             case 1:
+            case 25:
                 role = self.roleChangeSale_Invoice();
                 break;
             case 3:
@@ -12149,6 +12159,15 @@ var NewModel_BanHangLe = function () {
             self.InforHDprintf().SoDienThoaiLienHe = tn.SoDienThoaiLienHe;
             self.InforHDprintf().CoVanDichVu = tn.CoVanDichVu;
             self.InforHDprintf().CoVan_SDT = tn.CoVan_SDT;
+
+            let chuxe_MST = '';
+            if (!commonStatisJs.CheckNull(tn.ID_ChuXe)) {
+                const chuxe = await GetInforKhachHangFromDB_ByID(tn.ID_ChuXe);
+                if (chuxe !== null && chuxe.length > 0) {
+                    chuxe_MST = chuxe[0].MaSoThue;
+                }
+            }
+            self.InforHDprintf().ChuXe_MST = chuxe_MST;
         }
         else {
             // banxe
@@ -12382,6 +12401,10 @@ var NewModel_BanHangLe = function () {
                 temp = temp.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
                 temp = temp.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
                 temp = temp.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
+                temp = temp.replace('{ChuXe_MST}', "<span data-bind=\"text: InforHDprintf().ChuXe_MST\"></span>");
+                temp = temp.replace('{KH_DaThanhToan_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_BangChu\"></span>");
+                temp = temp.replace('{KH_DaThanhToan_TruCocBG_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_TruCocBG_BangChu\"></span>");
+                temp = temp.replace('{KH_DaThanhToan_TruCocBG}', "<span data-bind=\"text: formatNumber(InforHDprintf().KH_DaThanhToan_TruCocBG,0)\"></span>");
                 PrintExtraReport(temp, data, self.numberOfPrint(), isPrintDraft === true ? 0 : 1);
             }).fail(function () {
                 if (itemMauIn.length > 0) {
@@ -22166,6 +22189,7 @@ var NewModel_BanHangLe = function () {
                 switch (objAdd[0].LoaiHoaDon) {
                     case 0:
                     case 1:
+                    case 25:
                         maChungTu = 'HDBL';
                         break;
                     case 3:
@@ -22266,6 +22290,7 @@ var NewModel_BanHangLe = function () {
         // load again HangHoa, load after save cache
         switch (typeSet) {
             case 1:
+            case 25:
                 checkIsShowbtnSave();
                 break;
             case 4:// tonkho
@@ -23097,6 +23122,7 @@ var NewModel_BanHangLe = function () {
             var styleKhuyenMai = '';
             switch (objHD.LoaiHoaDon) {
                 case 1:
+                case 25:
                     tenChucNang = 'Bán hàng';
                     txtFirst = 'Tạo hóa đơn: ';
                     if (isTamLuu) txtFirst = 'Tạo hóa đơn tạm lưu: ';
@@ -26429,6 +26455,7 @@ var NewModel_BanHangLe = function () {
             var roleChangeSale = true;
             switch (loaiHD) {
                 case 1:
+                case 25:
                     roleChangeSale = self.roleChangePriceProduct_Invoice();
                     break;
                 case 3:
