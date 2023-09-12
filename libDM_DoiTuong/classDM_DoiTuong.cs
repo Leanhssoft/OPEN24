@@ -2098,6 +2098,7 @@ namespace libDM_DoiTuong
                               {
                                   hd.ID,
                                   hd.MaHoaDon,
+                                  hd.BienSo,
                                   hd.NgayLapHoaDon,
                                   hd.PhaiThanhToan,
                                   hd.TinhChietKhauTheo,
@@ -2110,6 +2111,7 @@ namespace libDM_DoiTuong
                               {
                                   g.Key.ID,
                                   g.Key.MaHoaDon,
+                                  g.Key.BienSo,
                                   g.Key.NgayLapHoaDon,
                                   g.Key.PhaiThanhToan,
                                   g.Key.TongThanhToan,
@@ -2128,6 +2130,7 @@ namespace libDM_DoiTuong
                     BH_HoaDonDTO dto = new BH_HoaDonDTO();
                     dto.ID = item.ID;
                     dto.MaHoaDon = item.MaHoaDon;
+                    dto.BienSo = item.BienSo;
                     dto.NgayLapHoaDon = item.NgayLapHoaDon;
                     dto.PhaiThanhToan = item.PhaiThanhToan;
                     dto.TongThanhToan = item.TongThanhToan;
@@ -3424,6 +3427,7 @@ namespace libDM_DoiTuong
     {
         public Guid? ID { get; set; }
         public string MaHoaDon { get; set; }
+        public string BienSo { get; set; }
         public DateTime NgayLapHoaDon { get; set; }
         public double PhaiThanhToan { get; set; }
         public double? TongThanhToan { get; set; }
