@@ -919,7 +919,7 @@
             maKH = '';
         }
         else {
-            maKH = locdau(maKH.trim());
+            maKH = maKH.trim();
         }
         // tongban 
         var tongBanFrom = $('#txtTongBanFrom').val();
