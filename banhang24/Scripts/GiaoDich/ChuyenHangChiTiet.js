@@ -221,15 +221,8 @@ var ChuyenHangChiTiet = function () {
             return x !== null;
         })
 
+        // luôn get tồn kho + giá vốn theo ngày lập hóa đơn
         var ngayKK = GetNgayLapHD_withTimeNow(self.newHoaDon().NgayLapHoaDon());
-        // if update phieuchuyen: get exacly NgaylapHD from DB
-        let cthdUpdate = localStorage.getItem('lcCH_EditOpen');
-        if (!commonStatisJs.CheckNull(cthdUpdate)) {
-            cthdUpdate = JSON.parse(cthdUpdate);
-            if (cthdUpdate.length > 0) {
-                ngayKK = GetNgayLapHD_withTimeNow(cthdUpdate[0].NgayLapHoaDon);
-            }
-        }
 
         var obj = {
             ID_ChiNhanh: _idDonVi,
