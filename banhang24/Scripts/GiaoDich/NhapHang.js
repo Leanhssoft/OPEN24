@@ -2500,8 +2500,12 @@
         hd.TienMat = formatNumber3Digit(hd.TienMat, 2);
         hd.TienKhachThieu = formatNumber3Digit(hd.ConNo, 2);
 
+        let cphiVC_benKhac = 0;
+        if (!commonStatisJs.CheckNull(objHD.ID_NhaCungCap) && objHD.ID_NhaCungCap !== objHD.ID_DoiTuong) {
+            cphiVC_benKhac = hd.TongChiPhi;
+        }
         // thong tin thanhtoan NCC
-        hd.PhaiThanhToan_SauPhiVC = phaiTT - hd.TongChiPhi;
+        hd.PhaiThanhToan_SauPhiVC = phaiTT - cphiVC_benKhac;
         hd.PhaiThanhToan_TruCoc = hd.PhaiThanhToan_SauPhiVC - formatNumberToFloat(objHD.TienDatCoc);
         hd.DaTraNCC = daTT - hd.DaChi_BenVCKhac;
         hd.KH_TienBangChu = DocSo(hd.PhaiThanhToan_TruCoc);
