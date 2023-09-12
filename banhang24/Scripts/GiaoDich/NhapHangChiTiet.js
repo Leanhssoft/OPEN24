@@ -4688,7 +4688,6 @@ var NhapHangChiTiet = function () {
     function GetCTHDPrint_Format(arrCTHD) {
         for (var i = 0; i < arrCTHD.length; i++) {
             arrCTHD[i].SoThuTu = i + 1;
-            arrCTHD[i].TenHangHoa = arrCTHD[i].TenHangHoa.split('(')[0] + (arrCTHD[i].TenDonViTinh !== "" && arrCTHD[i].TenDonViTinh !== null ? "(" + arrCTHD[i].TenDonViTinh + ")" : "") + (arrCTHD[i].ThuocTinh_GiaTri !== null ? arrCTHD[i].ThuocTinh_GiaTri : "") + (arrCTHD[i].MaLoHang !== "" && arrCTHD[i].MaLoHang !== null ? "(Lô: " + arrCTHD[i].MaLoHang + ")" : "");
             arrCTHD[i].DonGia = formatNumber3Digit(arrCTHD[i].DonGia);
             arrCTHD[i].GiaBan = formatNumber3Digit(formatNumberToFloat(arrCTHD[i].DonGia) - formatNumberToFloat(arrCTHD[i].TienChietKhau));
             arrCTHD[i].TienChietKhau = formatNumber3Digit(arrCTHD[i].TienChietKhau);
