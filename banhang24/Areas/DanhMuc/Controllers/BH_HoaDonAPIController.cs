@@ -9312,10 +9312,43 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
                         db.HT_NhatKySuDung.Add(nky);
                         db.SaveChanges();
-                        #endregion
                         trans.Commit();
+                        #endregion
 
-                        new SaveDiary().AddQueueJob(nky);
+                        try
+                        {
+                            new SaveDiary().AddQueueJob(nky);
+                        }
+                        catch (Exception ex)
+                        {
+                            return Json(new
+                            {
+                                res = true,
+                                data = new
+                                {
+                                    objHoaDon.ID,
+                                    MaHoaDon = sMaHoaDon,
+                                    NgayLapHoaDon = ngaylapHD,
+                                    NgayLapHoaDonOld = ngaylapHDOld,
+                                    BH_HoaDon_ChiTiet = objHoaDon.BH_HoaDon_ChiTiet
+                                .Select(x => new BH_HoaDon_ChiTietDTO
+                                {
+                                    ID = x.ID,
+                                    ID_DonViQuiDoi = x.ID_DonViQuiDoi,
+                                    ID_ChiTietDinhLuong = x.ID_ChiTietDinhLuong,
+                                    ID_ParentCombo = x.ID_ParentCombo,
+                                    ID_ChiTietGoiDV = x.ID_ChiTietGoiDV,
+                                    ID_LoHang = x.ID_LoHang,
+                                    SoLuong = x.SoLuong,
+                                    DonGia = x.DonGia,
+                                    ThanhTien = x.ThanhTien,
+                                    TenHangHoaThayThe = x.TenHangHoaThayThe,
+                                    ThanhPhanComBo = new List<BH_HoaDon_ChiTietDTO>(),
+                                }).ToList()
+                                }
+                            });
+                        }
+
                         //if (objHoaDon.LoaiHoaDon != 1 && objHoaDon.LoaiHoaDon != 25)
                         //{
                         // update id_chitietgdv if update again dathang
@@ -10113,7 +10146,53 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     };
                     db.HT_NhatKySuDung.Add(nky);
                     db.SaveChanges();
-                    new SaveDiary().AddQueueJob(nky);
+                    #endregion
+
+                    var cthd = db.BH_HoaDon_ChiTiet.Where(x => x.ID_HoaDon == objHoaDon.ID)
+                       .Select(x => new BH_HoaDon_ChiTietDTO
+                       {
+                           ID = x.ID,
+                           ID_DonViQuiDoi = x.ID_DonViQuiDoi,
+                           ID_ChiTietGoiDV = x.ID_ChiTietGoiDV,
+                           ID_LoHang = x.ID_LoHang,
+                           ID_ParentCombo = x.ID_ParentCombo,
+                           ID_ChiTietDinhLuong = x.ID_ChiTietDinhLuong,
+                           DonGia = x.DonGia,
+                           SoLuong = x.SoLuong,
+                           ThanhTien = x.ThanhTien,
+                           TenHangHoaThayThe = x.TenHangHoaThayThe,
+                       }).ToList();
+                    try
+                    {
+                        new SaveDiary().AddQueueJob(nky);
+                    }
+                    catch (Exception)
+                    {
+                        return Json(new
+                        {
+                            res = true,
+                            mes = string.Empty,
+                            data = new
+                            {
+                                objHoaDon.ID,
+                                objUpHD.MaHoaDon,
+                                objUpHD.ID_NhanVien,
+                                objUpHD.ID_DoiTuong,
+                                objHoaDon.ID_ViTri,
+                                objHoaDon.DienGiai,
+                                objHoaDon.PhaiThanhToan,
+                                objHoaDon.TongChietKhau,
+                                objHoaDon.TongGiamGia,
+                                objHoaDon.TongChiPhi,
+                                objHoaDon.TongTienHang,
+                                objHoaDon.ChoThanhToan,
+                                NgayLapHoaDon = ngaylapHD,
+                                NgayLapHoaDonOld = ngaylapOld,
+                                BH_HoaDon_ChiTiet = cthd,
+                                hangthaymoi,
+                            }
+                        });
+                    }
 
                     //if (objHoaDon.LoaiHoaDon == 19)
                     //{
@@ -10121,23 +10200,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     // gdv da sudung nhung muon capnhat lai
                     //classhoadonchitiet.UpdateIDCTNew_forCTOld(lstID_NewOld);
                     //}
-
-                    #endregion
-                    var cthd = db.BH_HoaDon_ChiTiet.Where(x => x.ID_HoaDon == objHoaDon.ID)
-                        .Select(x => new BH_HoaDon_ChiTietDTO
-                        {
-                            ID = x.ID,
-                            ID_DonViQuiDoi = x.ID_DonViQuiDoi,
-                            ID_ChiTietGoiDV = x.ID_ChiTietGoiDV,
-                            ID_LoHang = x.ID_LoHang,
-                            ID_ParentCombo = x.ID_ParentCombo,
-                            ID_ChiTietDinhLuong = x.ID_ChiTietDinhLuong,
-                            DonGia = x.DonGia,
-                            SoLuong = x.SoLuong,
-                            ThanhTien = x.ThanhTien,
-                            TenHangHoaThayThe = x.TenHangHoaThayThe,
-                        }).ToList();
-
                     return Json(new
                     {
                         res = true,
