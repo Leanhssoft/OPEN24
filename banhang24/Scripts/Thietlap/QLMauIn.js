@@ -97,6 +97,15 @@ var PrintModel_HoaDon = function () {
                 success: function (result) {
 
                     AjaxOnSuccess(result);
+
+                    const diary = {
+                        ID_DonVi: VHeader.IdDonVi,
+                        ID_NhanVien: VHeader.IdNhanVien,
+                        ChucNang:'Cài đặt mẫu in',
+                        NoiDung: 'Cập nhật mẫu in '.concat(self.TenMauInAddNew()),
+                        NoiDungChiTiet: 'Cập nhật mẫu in '.concat(self.TenMauInAddNew()),
+                    }
+                    Insert_NhatKyThaoTac_1Param(diary);
                 }
             });
         }
@@ -137,6 +146,15 @@ var PrintModel_HoaDon = function () {
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 success: function (result) {
                     AjaxOnSuccess(result);
+
+                     const diary = {
+                        ID_DonVi: VHeader.IdDonVi,
+                        ID_NhanVien: VHeader.IdNhanVien,
+                        ChucNang:'Cài đặt mẫu in',
+                        NoiDung: 'Thêm mới mẫu in '.concat(self.TenMauInAddNew()),
+                        NoiDungChiTiet: 'Thêm mới mẫu in '.concat(self.TenMauInAddNew()),
+                    }
+                    Insert_NhatKyThaoTac_1Param(diary);
                 }
             });
         }
@@ -1160,6 +1178,7 @@ function SetConvertDataTest(strInput) {
                 '{TenNhaCungCap}': '<span data-bind=\"text: TenDoiTuong\"></span>',
                 '{DiaChi}': '<span data-bind=\"text: DiaChiKhachHang\"></span>',
                 '{DienThoai}': '<span data-bind=\"text: DienThoaiKhachHang\"></span>',
+                '{Email}': '<span data-bind=\"text: Email\"></span>',
                 '{NhanVienBanHang}': '<span data-bind=\"text: NhanVienBanHang\"></span>',
                 '{NguoiTao}': '<span data-bind=\"text: NguoiTaoHD\"></span>',
                 '{TenPhongBan}': "<span data-bind=\"text: TenPhongBan\"></span>",
@@ -1184,6 +1203,9 @@ function SetConvertDataTest(strInput) {
                 '{TienKhachThieu_BangChu}': '<span data-bind=\"text: TienKhachThieu_BangChu\"></span>',
                 '{DaTraNCC}': '<span data-bind=\"text: DaTraNCC\"></span>',// used at nhaphang
                 '{KhachDaTra}': '<span data-bind=\"text: KhachDaTra\"></span>',
+                '{KH_DaThanhToan_BangChu}': '<span data-bind=\"text: KH_DaThanhToan_BangChu\"></span>',
+                '{KH_DaThanhToan_TruCocBG}': '<span data-bind=\"text: KH_DaThanhToan_TruCocBG\"></span>',
+                '{KH_DaThanhToan_TruCocBG_BangChu}': '<span data-bind=\"text: KH_DaThanhToan_TruCocBG_BangChu\"></span>',
 
                 // nhaphang - VC
                 '{PhaiThanhToan_SauPhiVC}': '<span data-bind=\"text: PhaiThanhToan_SauPhiVC\"></span>',
@@ -1319,11 +1341,13 @@ function SetConvertDataTest(strInput) {
                 '{PhaiThanhToanBaoHiem}': '<span data-bind=\"text: $root.PhaiThanhToanBaoHiem\"></span>',
                 '{TongThanhToan}': '<span data-bind=\"text: $root.TongThanhToan\"></span>',
                 '{PTN_GhiChu}': '<span data-bind=\"text: PTN_GhiChu\"></span>',
+                '{XuatXuong_GhiChu}': '<span data-bind=\"text: XuatXuong_GhiChu\"></span>',
 
                 '{ChuXe}': '<span data-bind=\"text: ChuXe\"></span>',
                 '{ChuXe_SDT}': '<span data-bind=\"text: ChuXe_SDT\"></span>',
                 '{ChuXe_DiaChi}': '<span data-bind=\"text: ChuXe_DiaChi\"></span>',
                 '{ChuXe_Email}': '<span data-bind=\"text: ChuXe_Email\"></span>',
+                '{ChuXe_MST}': '<span data-bind=\"text: ChuXe_MST\"></span>',
 
                 '{LH_Ten}': '<span data-bind=\"text: LH_Ten\"></span>',
                 '{LH_SDT}': '<span data-bind=\"text: LH_SDT\"></span>',

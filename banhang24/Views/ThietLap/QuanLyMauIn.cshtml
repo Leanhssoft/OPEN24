@@ -361,6 +361,7 @@
                                 <li><label onclick="CopyThisText(this)">{TenNhaCungCap}</label><span>Tên nhà cung cấp</span></li>
                                 <li><label onclick="CopyThisText(this)">{NgaySinhKH}</label><span>Ngày sinh của khách hàng</span></li>
                                 <li><label onclick="CopyThisText(this)">{DienThoai}</label><span>Điện thoại khách hàng</span></li>
+                                <li><label onclick="CopyThisText(this)">{Email}</label><span>Email khách hàng</span></li>
                                 <li><label onclick="CopyThisText(this)">{MaSoThue}</label><span>Mã số thuế của khách hàng</span></li>
                                 <li><label onclick="CopyThisText(this)">{TaiKhoanNganHang}</label><span>Số tài khoản của khách hàng</span></li>
                                 <li><label onclick="CopyThisText(this)">{DiaChi}</label><span>Địa chỉ khách hàng</span></li>
@@ -419,6 +420,7 @@
                                     <li><label onclick="CopyThisText(this)">{ChuXe}</label><span>Tên chủ xe</span></li>
                                     <li><label onclick="CopyThisText(this)">{ChuXe_SDT}</label><span>SĐT chủ xe</span></li>
                                     <li><label onclick="CopyThisText(this)">{ChuXe_Email}</label><span>Email của chủ xe </span></li>
+                                    <li><label onclick="CopyThisText(this)">{ChuXe_MST}</label><span>Mã số thuế của chủ xe </span></li>
                                     <li class="title"><p>Thông tin công ty bảo hiểm</p></li>
                                     <li><label onclick="CopyThisText(this)">{TenBaoHiem}</label><span>Tên công ty bảo hiểm</span></li>
                                     <li><label onclick="CopyThisText(this)">{BH_SDT}</label><span>SĐT của công ty bảo hiểm</span></li>
@@ -622,7 +624,6 @@
                                     <li><label onclick="CopyThisText(this)">{TongThanhToan}</label><span>Tổng quyết toán hóa đơn</span></li>
                                 }
                                 <li><label onclick="CopyThisText(this)">{TienBangChu}</label><span>Tổng tiền mua hàng (bằng chữ)</span></li>
-                                <li><label onclick="CopyThisText(this)">{KH_TienBangChu}</label><span>Tiền khách phải trả sau khi trừ tiền cọc</span></li>
                                 <li><label onclick="CopyThisText(this)">{TienMat}</label><span>Tiền mặt khách đưa</span></li>
                                 <li><label onclick="CopyThisText(this)">{TienPOS}</label><span>Tiền khách quẹt thẻ POS</span></li>
                                 <li><label onclick="CopyThisText(this)">{TienDoiDiem}</label><span>Tiền thanh toán qua quy đổi điểm</span></li>
@@ -634,7 +635,11 @@
                                 <li><label onclick="CopyThisText(this)">{ThuDatHang}</label><span>Tiền khách đặt cọc báo giá</span></li>
                                 <li><label onclick="CopyThisText(this)">{PhaiThanhToan_TruCocBG}</label><span>Tiền khách phải thanh toán sau khi trừ cọc báo giá</span></li>
                                 <li><label onclick="CopyThisText(this)">{PhaiThanhToan_TruCoc}</label><span>Tiền khách phải thanh toán sau khi trừ tiền cọc (cọc báo giá + cọc từ sổ quỹ)</span></li>
-                                <li><label onclick="CopyThisText(this)">{DaThanhToan}</label><span>Khách đã trả</span></li>
+                                <li><label onclick="CopyThisText(this)">{KH_TienBangChu}</label><span>Tiền khách cần thanh toán (sau khi trừ tiền cọc) (bằng chữ)</span></li>
+                                <li><label onclick="CopyThisText(this)">{DaThanhToan}</label><span>Tổng giá trị tiền khách trả</span></li>
+                                <li><label onclick="CopyThisText(this)">{KH_DaThanhToan_BangChu}</label><span>Tổng giá trị tiền khách trả (bằng chữ)</span></li>
+                                <li><label onclick="CopyThisText(this)">{KH_DaThanhToan_TruCocBG}</label><span>Giá trị tiền khách trả (không bao gồm tiền cọc báo giá)</span></li>
+                                <li><label onclick="CopyThisText(this)">{KH_DaThanhToan_TruCocBG_BangChu}</label><span>Tiền khách trả (không bao gồm tiền cọc báo giá) (bằng chữ)</span></li>
                                 <li><label onclick="CopyThisText(this)">{TienThuaTraKhach}</label><span>Tiền thừa trả khách</span></li>
                                 <li><label onclick="CopyThisText(this)">{TienKhachThieu}</label><span>Tiền khách nợ của hóa đơn hiện tại</span></li>
                                 <li><label onclick="CopyThisText(this)">{TienKhachThieu_BangChu}</label><span>Tiền khách nợ của hóa đơn hiện tại (bằng chữ)</span></li>
@@ -728,6 +733,7 @@
                                     <li><label onclick="CopyThisText(this)">{CoVanDichVu} </label><span>Tên cố vấn dịch vụ</span></li>
                                     <li><label onclick="CopyThisText(this)">{CoVan_SDT} </label><span>SĐT cố vấn dịch vụ</span></li>
                                     <li><label onclick="CopyThisText(this)">{PTN_GhiChu} </label><span>Ghi chú phiếu tiếp nhận</span></li>
+                                    <li><label onclick="CopyThisText(this)">{XuatXuong_GhiChu} </label><span>Ghi chú phiếu xuất xưởng</span></li>
                                     <li><label onclick="CopyThisText(this)">{BienSo}</label><span>Biển số xe</span></li>
                                     <li><label onclick="CopyThisText(this)">{SoKmVao} </label><span>Số Ki-lô-mét vào</span></li>
                                     <li><label onclick="CopyThisText(this)">{SoKmRa} </label><span>Số Ki-lô-mét ra</span></li>
