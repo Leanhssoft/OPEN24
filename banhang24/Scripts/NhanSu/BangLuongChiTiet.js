@@ -997,6 +997,7 @@
                 bangluongchitiet: self.bangluongchitiet,
             }
             console.log(myData);
+            if(self.loadding) return;
             self.loadding = true;
             self.ajaxHelper(self.urlAPINhanSu + "PostBangLuong", 'POST', myData).done(function (x) {
              
