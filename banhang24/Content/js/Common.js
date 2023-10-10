@@ -101,7 +101,7 @@ function InMaVach(mauin, ten, ma, gia, item, sobanghi, banggiaid, hanghoaid) {
         }
     });
 }
-function InListMaVach(objectmauin, banggiaId, idmauin, item) {
+function InListMaVach(objectmauin, banggiaId, idmauin, item, loaihoadon = 0) {
     var style = '<link href="/Content/StylePrint.css" rel="stylesheet" type="text/css" />';
     switch (parseInt(item)) {
         case 2:
@@ -117,7 +117,7 @@ function InListMaVach(objectmauin, banggiaId, idmauin, item) {
             MauInId: idmauin,
             TenSP: objectmauin[i].TenHangHoa,
             MaSP: objectmauin[i].MaHangHoa,
-            GiaSP: objectmauin[i].GiaBan,
+            GiaSP: loaihoadon === 0 ? objectmauin[i].GiaBan : objectmauin[i].GiaBanHH,
             SoBanGhi: objectmauin[i].TonKho,
             Item: item,
             ID_HangHoa: objectmauin[i].ID

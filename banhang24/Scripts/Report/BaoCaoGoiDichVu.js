@@ -230,8 +230,8 @@
     self.MoiQuanTam = ko.observable('Báo cáo tổng hợp số dư gói dịch vụ');
     var dt1 = new Date();
 
-    var _timeStart = moment().startOf('year').format('YYYY-MM-DD');
-    let newtime = new Date(moment().endOf('year'));
+    var _timeStart = moment().startOf('month').format('YYYY-MM-DD');
+    let newtime = new Date(moment().endOf('month'));
     var _timeEnd = moment(new Date(newtime.setDate(newtime.getDate() + 1))).format('YYYY-MM-DD');
     let dtBC = new Date(_timeEnd);
     let _timeBC = moment(new Date(dtBC.setDate(dtBC.getDate() - 1))).format('YYYY-MM-DD'); // end of week
@@ -268,7 +268,7 @@
     self.pageNumber_NXT = ko.observable(1);
     self.LoaiSP_HH = ko.observable(true);
     self.LoaiSP_DV = ko.observable(true);
-    $('.ip_TimeReport').val("Năm này");
+    $('.ip_TimeReport').val("Tháng này");
     self.Loc_TinhTrangKD = ko.observable('2');
     self.Loc_HanSuDungDV = ko.observable('2');
     var tk = null;

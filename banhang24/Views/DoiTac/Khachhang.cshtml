@@ -843,18 +843,24 @@
                                             <li onclick="LoadGetHeight()"><a data-toggle="tab" data-bind=" attr: { href: '#contact'+ ID }, click: $root.LoadTab_CongNo">Công nợ khách hàng</a></li>
                                             <!--/ko-->
                                             <li onclick="LoadGetHeight()"><a data-toggle="tab" data-bind=" attr: { href: '#point_'+ ID }, visible: $parent.ThietLap_TichDiem() != null && $parent.ThietLap_TichDiem().length > 0">Nhật ký tích điểm</a></li>
+                                            <!--ko if: $parent.tabLienHeShow -->
                                             <li onclick="LoadGetHeight()">
                                                 <a data-toggle="tab"
                                                    data-bind=" attr: { href: '#Conttact_'+ ID }, click: $root.LoadTab_UserContact">Người liên hệ</a>
                                             </li>
+                                            <!-- /ko -->
+                                            <!--ko if: $parent.tabLienHeShow -->
                                             <li onclick="LoadGetHeight()">
                                                 <a data-toggle="tab"
                                                    data-bind=" attr: { href: '#DiaryWork_'+ ID }, click: $root.LoadTab_CongViec">Nhật ký công việc</a>
                                             </li>
+                                            <!-- /ko -->
+                                            <!--ko if: !$root.IsGara()-->
                                             <li onclick="LoadGetHeight()">
                                                 <a data-toggle="tab"
                                                    data-bind=" attr: { href: '#naptien'+ ID }, click: $root.clickTheGiaTri">Thẻ giá trị</a>
                                             </li>
+                                            <!--/ko-->
                                             <!--ko if: $root.IsGara()-->
                                             <li onclick="LoadGetHeight()">
                                                 <a data-toggle="tab"

@@ -7251,6 +7251,10 @@ var NewModel_BanHangLe = function () {
                         lstHD[i].KhachDaTra = 0;
                     }
                 }
+                //20230919 - PhuongND - cập nhật bảng giá cũ để không bị cập nhật lại giá trong chi tiết báo giá khi chọn phiếu tiếp nhận
+                else {
+                    idBangGiaOld = lstHD[i].ID_BangGia;
+                }
                 break;
             }
         }

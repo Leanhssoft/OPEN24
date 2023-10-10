@@ -1993,7 +1993,8 @@
             }
         });
     }
-
+    self.tabLienHeShow = ko.observable(false);
+    self.tabCongViecShow = ko.observable(false);
     self.customerOld = ko.observable();
     self.GetLichSuBanTraHang = function (item) {
         self.customerOld(item);
@@ -2090,19 +2091,23 @@
             return x.MaQuyen.indexOf('LienHe_XemDS') > -1;
         });
         if (itemViewUserContact.length > 0) {
-            ulTab.children('li').eq(5).show();
+            //ulTab.children('li').eq(5).show();
+            self.tabLienHeShow(true);
         }
         else {
-            ulTab.children('li').eq(5).hide();
+            //ulTab.children('li').eq(5).hide();
+            self.tabLienHeShow(false);
         }
         var itemViewWork = $.grep(self.Quyen_NguoiDung(), function (x) {
             return x.MaQuyen.indexOf('CongViec_XemDS') > -1;
         });
         if (itemViewWork.length > 0) {
-            ulTab.children('li').eq(6).show();
+            //ulTab.children('li').eq(6).show();
+            self.tabCongViecShow(true);
         }
         else {
-            ulTab.children('li').eq(6).hide();
+            //ulTab.children('li').eq(6).hide();
+            self.tabCongViecShow(false);
         }
     }
     self.NhanViens_IsNguoiDung = ko.observableArray();

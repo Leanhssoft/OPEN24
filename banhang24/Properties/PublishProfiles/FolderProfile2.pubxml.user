@@ -5,8 +5,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
+<<<<<<< Updated upstream
     <_PublishTargetUrl>D:\SSOFT\BanHang24\Source\banhang24\banhang24\bin\Release\Publish</_PublishTargetUrl>
     <History>True|2023-06-20T01:58:10.6637385Z;True|2023-05-27T10:26:55.7825359+07:00;True|2023-05-23T08:35:16.8579639+07:00;True|2023-05-16T10:25:42.6187625+07:00;True|2023-04-24T16:53:11.6861300+07:00;True|2023-04-15T08:24:58.2161640+07:00;True|2023-04-12T17:21:10.9853266+07:00;True|2023-03-09T01:19:11.0979771+07:00;True|2023-02-16T21:12:29.1559623+07:00;True|2023-02-02T15:51:09.1137337+07:00;True|2022-07-23T14:59:58.3469990+07:00;True|2022-05-04T23:55:25.7033580+07:00;True|2022-04-05T23:03:17.2368397+07:00;True|2022-01-19T19:36:35.2651876+07:00;True|2022-01-07T22:50:52.2824992+07:00;True|2021-12-20T23:00:14.1925504+07:00;True|2021-11-08T14:01:11.1626024+07:00;True|2021-10-15T08:26:57.4555248+07:00;True|2021-10-10T17:03:21.2897876+07:00;True|2021-10-07T09:10:15.9820603+07:00;True|2021-10-04T23:55:29.3500522+07:00;True|2021-07-14T19:15:35.8194074+07:00;True|2021-07-14T08:55:25.1163052+07:00;True|2021-07-14T08:39:25.2995117+07:00;True|2021-07-13T21:51:55.6194850+07:00;True|2021-06-14T23:46:33.9866643+07:00;True|2021-05-25T15:02:11.3787965+07:00;True|2021-05-20T23:12:12.1237531+07:00;True|2021-04-15T00:18:04.7490328+07:00;True|2021-03-23T09:05:34.2334841+07:00;True|2021-03-18T16:22:20.3778476+07:00;True|2021-03-18T15:39:12.8255594+07:00;</History>
+=======
+    <_PublishTargetUrl>D:\Workspace\GitHub\banhang24\banhang24\bin\Release\Publish</_PublishTargetUrl>
+    <History>True|2023-06-21T01:42:33.7397081Z;True|2023-06-21T01:14:40.4287009+07:00;True|2023-06-20T16:12:39.1263094+07:00;True|2023-03-09T01:19:11.0979771+07:00;True|2023-02-16T21:12:29.1559623+07:00;True|2023-02-02T15:51:09.1137337+07:00;True|2022-07-23T14:59:58.3469990+07:00;True|2022-05-04T23:55:25.7033580+07:00;True|2022-04-05T23:03:17.2368397+07:00;True|2022-01-19T19:36:35.2651876+07:00;True|2022-01-07T22:50:52.2824992+07:00;True|2021-12-20T23:00:14.1925504+07:00;True|2021-11-08T14:01:11.1626024+07:00;True|2021-10-15T08:26:57.4555248+07:00;True|2021-10-10T17:03:21.2897876+07:00;True|2021-10-07T09:10:15.9820603+07:00;True|2021-10-04T23:55:29.3500522+07:00;True|2021-07-14T19:15:35.8194074+07:00;True|2021-07-14T08:55:25.1163052+07:00;True|2021-07-14T08:39:25.2995117+07:00;True|2021-07-13T21:51:55.6194850+07:00;True|2021-06-14T23:46:33.9866643+07:00;True|2021-05-25T15:02:11.3787965+07:00;True|2021-05-20T23:12:12.1237531+07:00;True|2021-04-15T00:18:04.7490328+07:00;True|2021-03-23T09:05:34.2334841+07:00;True|2021-03-18T16:22:20.3778476+07:00;True|2021-03-18T15:39:12.8255594+07:00;</History>
+>>>>>>> Stashed changes
     <LastFailureDetails />
   </PropertyGroup>
   <ItemGroup>
@@ -161,6 +166,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:33:14</publishTime>
     </File>
     <File Include="App_Data/jobs/continuous/WebJob1/WebJob1.exe">
+<<<<<<< Updated upstream
       <publishTime>04/12/2023 08:18:30</publishTime>
     </File>
     <File Include="App_Data/jobs/continuous/WebJob1/WebJob1.exe.config">
@@ -168,6 +174,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="App_Data/jobs/continuous/WebJob1/WebJob1.pdb">
       <publishTime>04/12/2023 08:18:30</publishTime>
+=======
+      <publishTime>06/20/2023 16:12:05</publishTime>
+    </File>
+    <File Include="App_Data/jobs/continuous/WebJob1/WebJob1.exe.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="App_Data/jobs/continuous/WebJob1/WebJob1.pdb">
+      <publishTime>06/20/2023 16:12:05</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="App_Data/jobs/continuous/WebJob1/zh-Hans/Microsoft.Data.Edm.resources.dll">
       <publishTime>09/14/2022 12:33:08</publishTime>
@@ -209,6 +224,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:59</publishTime>
     </File>
     <File Include="bin/AsposeCellsDocument.dll">
+<<<<<<< Updated upstream
       <publishTime>04/12/2023 08:18:28</publishTime>
     </File>
     <File Include="bin/AsposeCellsDocument.pdb">
@@ -219,6 +235,18 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/banhang24.pdb">
       <publishTime>06/20/2023 08:55:44</publishTime>
+=======
+      <publishTime>06/20/2023 16:11:33</publishTime>
+    </File>
+    <File Include="bin/AsposeCellsDocument.pdb">
+      <publishTime>06/20/2023 16:11:33</publishTime>
+    </File>
+    <File Include="bin/banhang24.dll">
+      <publishTime>06/21/2023 08:41:39</publishTime>
+    </File>
+    <File Include="bin/banhang24.pdb">
+      <publishTime>06/21/2023 08:41:39</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="bin/Common.Logging.Core.dll">
       <publishTime>09/14/2022 12:33:02</publishTime>
@@ -263,6 +291,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:33:04</publishTime>
     </File>
     <File Include="bin/HT.dll">
+<<<<<<< Updated upstream
       <publishTime>06/20/2023 08:55:21</publishTime>
     </File>
     <File Include="bin/HT.dll.config">
@@ -270,11 +299,21 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/HT.pdb">
       <publishTime>06/20/2023 08:55:21</publishTime>
+=======
+      <publishTime>06/21/2023 08:41:21</publishTime>
+    </File>
+    <File Include="bin/HT.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/HT.pdb">
+      <publishTime>06/21/2023 08:41:21</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="bin/itextsharp.dll">
       <publishTime>09/14/2022 12:33:16</publishTime>
     </File>
     <File Include="bin/libBH_NhanVienThucHien.dll">
+<<<<<<< Updated upstream
       <publishTime>06/20/2023 08:55:20</publishTime>
     </File>
     <File Include="bin/libBH_NhanVienThucHien.pdb">
@@ -459,6 +498,192 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/lib_ChamSocKhachHang.pdb">
       <publishTime>06/20/2023 08:55:23</publishTime>
+=======
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libBH_NhanVienThucHien.pdb">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libDM_DoiTuong.dll">
+      <publishTime>06/21/2023 08:41:26</publishTime>
+    </File>
+    <File Include="bin/libDM_DoiTuong.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_DoiTuong.pdb">
+      <publishTime>06/21/2023 08:41:26</publishTime>
+    </File>
+    <File Include="bin/libDM_DonVi.dll">
+      <publishTime>06/21/2023 08:41:23</publishTime>
+    </File>
+    <File Include="bin/libDM_DonVi.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_DonVi.pdb">
+      <publishTime>06/21/2023 08:41:23</publishTime>
+    </File>
+    <File Include="bin/libDM_GiaBan.dll">
+      <publishTime>06/21/2023 08:41:28</publishTime>
+    </File>
+    <File Include="bin/libDM_GiaBan.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_GiaBan.pdb">
+      <publishTime>06/21/2023 08:41:28</publishTime>
+    </File>
+    <File Include="bin/libDM_GiaBan_ApDung.dll">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libDM_GiaBan_ApDung.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_GiaBan_ApDung.pdb">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libDM_HangHoa.dll">
+      <publishTime>06/21/2023 08:41:28</publishTime>
+    </File>
+    <File Include="bin/libDM_HangHoa.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_HangHoa.pdb">
+      <publishTime>06/21/2023 08:41:28</publishTime>
+    </File>
+    <File Include="bin/libDM_Kho.dll">
+      <publishTime>06/21/2023 08:41:24</publishTime>
+    </File>
+    <File Include="bin/libDM_Kho.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_Kho.pdb">
+      <publishTime>06/21/2023 08:41:24</publishTime>
+    </File>
+    <File Include="bin/libDM_KhuVuc.dll">
+      <publishTime>06/21/2023 08:41:21</publishTime>
+    </File>
+    <File Include="bin/libDM_KhuVuc.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_KhuVuc.pdb">
+      <publishTime>06/21/2023 08:41:21</publishTime>
+    </File>
+    <File Include="bin/libDM_LoaiChungTu.dll">
+      <publishTime>06/21/2023 08:41:22</publishTime>
+    </File>
+    <File Include="bin/libDM_LoaiChungTu.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_LoaiChungTu.pdb">
+      <publishTime>06/21/2023 08:41:22</publishTime>
+    </File>
+    <File Include="bin/libDM_LoaiTuVanLichHen.dll">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libDM_LoaiTuVanLichHen.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_LoaiTuVanLichHen.pdb">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libDM_NhomDoiTuong.dll">
+      <publishTime>06/21/2023 08:41:24</publishTime>
+    </File>
+    <File Include="bin/libDM_NhomDoiTuong.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_NhomDoiTuong.pdb">
+      <publishTime>06/21/2023 08:41:24</publishTime>
+    </File>
+    <File Include="bin/libDM_NhomHangHoa.dll">
+      <publishTime>06/21/2023 08:41:22</publishTime>
+    </File>
+    <File Include="bin/libDM_NhomHangHoa.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_NhomHangHoa.pdb">
+      <publishTime>06/21/2023 08:41:22</publishTime>
+    </File>
+    <File Include="bin/libDM_ViTri.dll">
+      <publishTime>06/21/2023 08:41:22</publishTime>
+    </File>
+    <File Include="bin/libDM_ViTri.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDM_ViTri.pdb">
+      <publishTime>06/21/2023 08:41:22</publishTime>
+    </File>
+    <File Include="bin/libDonViQuiDoi.dll">
+      <publishTime>06/21/2023 08:41:24</publishTime>
+    </File>
+    <File Include="bin/libDonViQuiDoi.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libDonViQuiDoi.pdb">
+      <publishTime>06/21/2023 08:41:24</publishTime>
+    </File>
+    <File Include="bin/libGara.dll">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libGara.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libGara.pdb">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libHT_NguoiDung.dll">
+      <publishTime>06/21/2023 08:41:23</publishTime>
+    </File>
+    <File Include="bin/libHT_NguoiDung.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libHT_NguoiDung.pdb">
+      <publishTime>06/21/2023 08:41:23</publishTime>
+    </File>
+    <File Include="bin/libKho_HoaDon.dll">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libKho_HoaDon.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libKho_HoaDon.pdb">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libNS_NhanVien.dll">
+      <publishTime>06/21/2023 08:41:23</publishTime>
+    </File>
+    <File Include="bin/libNS_NhanVien.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libNS_NhanVien.pdb">
+      <publishTime>06/21/2023 08:41:23</publishTime>
+    </File>
+    <File Include="bin/libQuy_HoaDon.dll">
+      <publishTime>06/21/2023 08:41:32</publishTime>
+    </File>
+    <File Include="bin/libQuy_HoaDon.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libQuy_HoaDon.pdb">
+      <publishTime>06/21/2023 08:41:32</publishTime>
+    </File>
+    <File Include="bin/libReport.dll">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/libReport.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/libReport.pdb">
+      <publishTime>06/21/2023 08:41:20</publishTime>
+    </File>
+    <File Include="bin/lib_ChamSocKhachHang.dll">
+      <publishTime>06/21/2023 08:41:22</publishTime>
+    </File>
+    <File Include="bin/lib_ChamSocKhachHang.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/lib_ChamSocKhachHang.pdb">
+      <publishTime>06/21/2023 08:41:22</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="bin/Microsoft.AspNet.SignalR.Client.dll">
       <publishTime>09/14/2022 12:33:07</publishTime>
@@ -497,6 +722,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:33:07</publishTime>
     </File>
     <File Include="bin/Model.dll">
+<<<<<<< Updated upstream
       <publishTime>06/20/2023 08:55:17</publishTime>
     </File>
     <File Include="bin/Model.dll.config">
@@ -522,6 +748,33 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/Model_banhang24vn.pdb">
       <publishTime>04/12/2023 08:18:31</publishTime>
+=======
+      <publishTime>06/21/2023 08:41:19</publishTime>
+    </File>
+    <File Include="bin/Model.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/Model.pdb">
+      <publishTime>06/21/2023 08:41:19</publishTime>
+    </File>
+    <File Include="bin/Model.Service.dll">
+      <publishTime>06/21/2023 08:41:24</publishTime>
+    </File>
+    <File Include="bin/Model.Service.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/Model.Service.pdb">
+      <publishTime>06/21/2023 08:41:24</publishTime>
+    </File>
+    <File Include="bin/Model_banhang24vn.dll">
+      <publishTime>06/20/2023 16:11:33</publishTime>
+    </File>
+    <File Include="bin/Model_banhang24vn.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/Model_banhang24vn.pdb">
+      <publishTime>06/20/2023 16:11:33</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>09/14/2022 12:33:11</publishTime>
@@ -644,12 +897,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/28/2019 02:11:14</publishTime>
     </File>
     <File Include="bin/vi/banhang24.resources.dll">
+<<<<<<< Updated upstream
       <publishTime>06/20/2023 08:55:44</publishTime>
+=======
+      <publishTime>06/21/2023 08:41:39</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>09/14/2022 12:33:15</publishTime>
     </File>
     <File Include="bin/ZaloConnectApp.dll">
+<<<<<<< Updated upstream
       <publishTime>04/12/2023 08:18:28</publishTime>
     </File>
     <File Include="bin/ZaloConnectApp.dll.config">
@@ -657,6 +915,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/ZaloConnectApp.pdb">
       <publishTime>04/12/2023 08:18:28</publishTime>
+=======
+      <publishTime>06/20/2023 16:11:34</publishTime>
+    </File>
+    <File Include="bin/ZaloConnectApp.dll.config">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="bin/ZaloConnectApp.pdb">
+      <publishTime>06/20/2023 16:11:34</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="config.xml">
       <publishTime>09/14/2022 12:32:57</publishTime>
@@ -34148,7 +34415,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:46</publishTime>
     </File>
     <File Include="Content/js/Common.js">
+<<<<<<< Updated upstream
       <publishTime>11/12/2022 14:52:21</publishTime>
+=======
+      <publishTime>04/19/2023 10:06:34</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Content/js/dataprint.js">
       <publishTime>09/14/2022 12:32:46</publishTime>
@@ -34955,7 +35226,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/11/2021 17:54:52</publishTime>
     </File>
     <File Include="packages.config">
+<<<<<<< Updated upstream
       <publishTime>04/05/2023 09:16:41</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Properties/webjobs-list.json">
       <publishTime>09/14/2022 12:32:46</publishTime>
@@ -34967,7 +35242,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/17/2021 09:23:59</publishTime>
     </File>
     <File Include="Scripts/BanHang/BanLe.js">
+<<<<<<< Updated upstream
       <publishTime>03/13/2023 15:22:30</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/BanHang/BanLe_TraHang.js">
       <publishTime>03/07/2021 09:43:11</publishTime>
@@ -35081,7 +35360,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:46</publishTime>
     </File>
     <File Include="Scripts/ChamSocKhachHang/HTSMS.js">
+<<<<<<< Updated upstream
       <publishTime>03/16/2023 16:25:04</publishTime>
+=======
+      <publishTime>04/19/2023 09:09:31</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/ChamSocKhachHang/LichHen.js">
       <publishTime>09/14/2022 12:32:46</publishTime>
@@ -35093,7 +35376,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:46</publishTime>
     </File>
     <File Include="Scripts/ChamSocKhachHang/_CongViecLichHen.js">
+<<<<<<< Updated upstream
       <publishTime>05/03/2023 17:08:52</publishTime>
+=======
+      <publishTime>05/18/2023 08:42:23</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/ChamSocKhachHang/_ModalSMS.js">
       <publishTime>09/14/2022 12:32:46</publishTime>
@@ -35183,7 +35470,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 10:01:13</publishTime>
     </File>
     <File Include="Scripts/DoiTac/KhachHang1_2.js">
+<<<<<<< Updated upstream
       <publishTime>04/24/2023 17:18:29</publishTime>
+=======
+      <publishTime>05/18/2023 08:42:23</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/DoiTac/Lienhe-1.1.js">
       <publishTime>09/14/2022 12:32:47</publishTime>
@@ -35243,7 +35534,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:49</publishTime>
     </File>
     <File Include="Scripts/Gara/BanLamViec/BanLamViec.js">
+<<<<<<< Updated upstream
       <publishTime>06/10/2023 11:25:27</publishTime>
+=======
+      <publishTime>06/20/2023 11:32:17</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Gara/BanLamViec/vmHang_Loai_MauXe.js">
       <publishTime>03/04/2023 14:53:16</publishTime>
@@ -35267,6 +35562,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/19/2022 10:32:04</publishTime>
     </File>
     <File Include="Scripts/Gara/BanLamViec/_TiepNhanXe.js">
+<<<<<<< Updated upstream
       <publishTime>05/03/2023 16:48:34</publishTime>
     </File>
     <File Include="Scripts/Gara/BanLamViec/_XuatXuong.js">
@@ -35274,6 +35570,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/Gara/Gara.js">
       <publishTime>05/27/2023 09:39:13</publishTime>
+=======
+      <publishTime>05/18/2023 08:42:23</publishTime>
+    </File>
+    <File Include="Scripts/Gara/BanLamViec/_XuatXuong.js">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="Scripts/Gara/Gara.js">
+      <publishTime>06/20/2023 11:32:17</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Gara/HangXe.js">
       <publishTime>05/11/2021 09:45:45</publishTime>
@@ -35291,7 +35596,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/01/2023 16:38:40</publishTime>
     </File>
     <File Include="Scripts/Gara/HoaDon/_ThuTienNhapHang.js">
+<<<<<<< Updated upstream
       <publishTime>04/24/2023 10:49:18</publishTime>
+=======
+      <publishTime>04/27/2023 10:08:54</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Gara/KhachHang/vmTrangThai_NguonKhach.js">
       <publishTime>09/14/2022 12:32:47</publishTime>
@@ -35324,13 +35633,21 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/04/2023 11:42:12</publishTime>
     </File>
     <File Include="Scripts/Gara/_ThongTinThanhToanBaoHiem.js">
+<<<<<<< Updated upstream
       <publishTime>04/12/2023 14:02:30</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Gara/_ThongTinThanhToanKH.js">
       <publishTime>02/06/2023 11:45:52</publishTime>
     </File>
     <File Include="Scripts/Gara/_ThongTinThanhToanNCC.js">
+<<<<<<< Updated upstream
       <publishTime>05/13/2023 09:52:57</publishTime>
+=======
+      <publishTime>05/18/2023 08:42:23</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/GiaoDich/ChuyenHang.js">
       <publishTime>02/25/2021 10:01:13</publishTime>
@@ -35339,7 +35656,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/09/2023 15:34:03</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/ChuyenHangChiTiet.js">
+<<<<<<< Updated upstream
       <publishTime>04/10/2023 11:47:28</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/GiaoDich/DieuChinh.js">
       <publishTime>01/09/2023 16:07:31</publishTime>
@@ -35348,6 +35669,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 10:01:13</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/GiaoDichBan_Dat_Tra.js">
+<<<<<<< Updated upstream
       <publishTime>05/27/2023 10:17:36</publishTime>
     </File>
     <File Include="Scripts/GiaoDich/GoiDichVu.js">
@@ -35358,6 +35680,18 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/GiaoDich/NhapHangChiTiet.js">
       <publishTime>05/27/2023 09:36:25</publishTime>
+=======
+      <publishTime>06/20/2023 11:32:17</publishTime>
+    </File>
+    <File Include="Scripts/GiaoDich/GoiDichVu.js">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+    </File>
+    <File Include="Scripts/GiaoDich/NhapHang.js">
+      <publishTime>06/20/2023 11:32:17</publishTime>
+    </File>
+    <File Include="Scripts/GiaoDich/NhapHangChiTiet.js">
+      <publishTime>06/20/2023 11:32:17</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/GiaoDich/PhieuXuatKho.js">
       <publishTime>02/17/2021 09:24:01</publishTime>
@@ -35543,7 +35877,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:49</publishTime>
     </File>
     <File Include="Scripts/Report/BaoCaoBanHang.js">
+<<<<<<< Updated upstream
       <publishTime>04/12/2023 15:29:18</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Report/BaoCaoChietKhau.js">
       <publishTime>09/14/2022 12:32:48</publishTime>
@@ -35564,13 +35902,21 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:48</publishTime>
     </File>
     <File Include="Scripts/Report/BaoCaoNhapHang.js">
+<<<<<<< Updated upstream
       <publishTime>04/27/2023 09:31:57</publishTime>
+=======
+      <publishTime>05/18/2023 08:42:23</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Report/BaoCaoTaiChinh.js">
       <publishTime>09/14/2022 12:32:48</publishTime>
     </File>
     <File Include="Scripts/Report/BC_HoaHong.js">
+<<<<<<< Updated upstream
       <publishTime>05/12/2023 11:25:37</publishTime>
+=======
+      <publishTime>05/18/2023 08:42:23</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Report/BC_TheGiaTri.js">
       <publishTime>09/14/2022 12:32:48</publishTime>
@@ -35642,7 +35988,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:48</publishTime>
     </File>
     <File Include="Scripts/Thietlap/DataMauIn.js">
+<<<<<<< Updated upstream
       <publishTime>05/27/2023 08:41:49</publishTime>
+=======
+      <publishTime>06/20/2023 11:32:17</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Thietlap/LichSuThaoTac.js">
       <publishTime>09/14/2022 12:32:48</publishTime>
@@ -35651,7 +36001,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:48</publishTime>
     </File>
     <File Include="Scripts/Thietlap/MauInTeamplate.js">
+<<<<<<< Updated upstream
       <publishTime>05/27/2023 09:31:53</publishTime>
+=======
+      <publishTime>06/20/2023 11:32:17</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Thietlap/Modal_ThietLapMaChungTu.js">
       <publishTime>09/14/2022 12:32:48</publishTime>
@@ -35666,7 +36020,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:48</publishTime>
     </File>
     <File Include="Scripts/Thietlap/QLMauIn.js">
+<<<<<<< Updated upstream
       <publishTime>05/27/2023 08:42:13</publishTime>
+=======
+      <publishTime>06/20/2023 11:32:17</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Thietlap/QLMayChamCong.js">
       <publishTime>09/14/2022 12:32:48</publishTime>
@@ -35675,7 +36033,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:48</publishTime>
     </File>
     <File Include="Scripts/Thietlap/QuanLyKhuyenMai.js">
+<<<<<<< Updated upstream
       <publishTime>05/27/2023 09:14:44</publishTime>
+=======
+      <publishTime>06/20/2023 11:32:17</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Scripts/Thietlap/TaiDuLieuMayChamCong.js">
       <publishTime>09/14/2022 12:32:48</publishTime>
@@ -37532,7 +37894,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:55</publishTime>
     </File>
     <File Include="Template/ExportExcel/Gara/Template_DanhSachXe_LichSuSuaChua.xlsx">
+<<<<<<< Updated upstream
       <publishTime>04/24/2023 16:41:10</publishTime>
+=======
+      <publishTime>04/27/2023 10:08:54</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Template/ExportExcel/Gara/Template_LichNhacBaoDuong.xlsx">
       <publishTime>09/14/2022 12:32:55</publishTime>
@@ -37871,7 +38237,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:55</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_PhieuNhapHang.xlsx">
+<<<<<<< Updated upstream
       <publishTime>05/16/2023 08:55:27</publishTime>
+=======
+      <publishTime>05/18/2023 08:42:23</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Template/ExportExcel/Teamplate_PhieuNhapHang_ChiTiet.xlsx">
       <publishTime>09/14/2022 12:32:55</publishTime>
@@ -37892,7 +38262,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:55</publishTime>
     </File>
     <File Include="Template/ExportExcel/Teamplate_SoQuyNganHang.xlsx">
+<<<<<<< Updated upstream
       <publishTime>03/13/2023 17:16:20</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Template/ExportExcel/Teamplate_SoQuyTienMat.xlsx">
       <publishTime>09/14/2022 12:32:55</publishTime>
@@ -38564,7 +38938,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:56</publishTime>
     </File>
     <File Include="Views/Gara/HoaDon/_ThongTinHoaDon.cshtml">
+<<<<<<< Updated upstream
       <publishTime>04/24/2023 14:21:31</publishTime>
+=======
+      <publishTime>04/27/2023 10:08:54</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/Gara/HoaDon/_ThuTienHoaDon.cshtml">
       <publishTime>09/14/2022 12:32:56</publishTime>
@@ -38582,7 +38960,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/08/2023 16:20:42</publishTime>
     </File>
     <File Include="Views/Gara/KhachHang/_ThemMoiNCC.cshtml">
+<<<<<<< Updated upstream
       <publishTime>04/22/2023 09:05:20</publishTime>
+=======
+      <publishTime>04/27/2023 10:08:54</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/Gara/KhachHang/_ThemNhomKhachHang.cshtml">
       <publishTime>09/14/2022 12:32:56</publishTime>
@@ -38672,16 +39054,27 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:56</publishTime>
     </File>
     <File Include="Views/Gara/_ThongTinThanhToanBaoHiem.cshtml">
+<<<<<<< Updated upstream
       <publishTime>04/12/2023 11:26:38</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/Gara/_ThongTinThanhToanKH.cshtml">
       <publishTime>01/12/2023 17:24:06</publishTime>
     </File>
     <File Include="Views/Gara/_ThongTinThanhToanNCC.cshtml">
+<<<<<<< Updated upstream
       <publishTime>04/24/2023 09:15:36</publishTime>
     </File>
     <File Include="Views/Gara/_ThongTinThanhToanNCC2.cshtml">
       <publishTime>05/23/2023 08:25:00</publishTime>
+=======
+      <publishTime>04/27/2023 10:08:54</publishTime>
+    </File>
+    <File Include="Views/Gara/_ThongTinThanhToanNCC2.cshtml">
+      <publishTime>06/20/2023 11:32:17</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/Gara/_ThuTienHoaDon.cshtml">
       <publishTime>03/23/2021 08:55:27</publishTime>
@@ -38699,7 +39092,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/25/2021 10:01:14</publishTime>
     </File>
     <File Include="Views/GiaoDich/ChuyenHang.cshtml">
+<<<<<<< Updated upstream
       <publishTime>04/20/2023 10:15:51</publishTime>
+=======
+      <publishTime>04/27/2023 10:08:54</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/GiaoDich/ChuyenHangChiTiet.cshtml">
       <publishTime>07/12/2021 16:51:54</publishTime>
@@ -38711,10 +39108,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/28/2023 08:27:21</publishTime>
     </File>
     <File Include="Views/GiaoDich/DanhSachXe.cshtml">
+<<<<<<< Updated upstream
       <publishTime>04/24/2023 16:40:37</publishTime>
     </File>
     <File Include="Views/GiaoDich/DatHang.cshtml">
       <publishTime>04/05/2023 09:07:16</publishTime>
+=======
+      <publishTime>04/27/2023 10:08:54</publishTime>
+    </File>
+    <File Include="Views/GiaoDich/DatHang.cshtml">
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/GiaoDich/DonHangTra.cshtml">
       <publishTime>06/24/2021 15:19:46</publishTime>
@@ -38726,7 +39130,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/25/2022 16:38:06</publishTime>
     </File>
     <File Include="Views/GiaoDich/HoaDon.cshtml">
+<<<<<<< Updated upstream
       <publishTime>04/12/2023 13:43:54</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/GiaoDich/HoaDonSuaChua.cshtml">
       <publishTime>05/25/2021 15:00:32</publishTime>
@@ -38735,13 +39143,21 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:56</publishTime>
     </File>
     <File Include="Views/GiaoDich/NhapHang.cshtml">
+<<<<<<< Updated upstream
       <publishTime>06/14/2023 11:11:43</publishTime>
+=======
+      <publishTime>06/20/2023 11:32:17</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/GiaoDich/NhapHangItem.cshtml">
       <publishTime>06/24/2021 15:19:46</publishTime>
     </File>
     <File Include="Views/GiaoDich/NhapHangItem1_2.cshtml">
+<<<<<<< Updated upstream
       <publishTime>05/15/2023 16:31:18</publishTime>
+=======
+      <publishTime>05/18/2023 08:42:23</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/GiaoDich/NhapHangSanXuat.cshtml">
       <publishTime>06/28/2021 15:34:42</publishTime>
@@ -38831,7 +39247,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:56</publishTime>
     </File>
     <File Include="Views/HangHoa/phieudieuchinh.cshtml">
+<<<<<<< Updated upstream
       <publishTime>04/07/2023 16:44:53</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/HangHoa/tonkho.cshtml">
       <publishTime>09/14/2022 12:32:56</publishTime>
@@ -39119,7 +39539,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:56</publishTime>
     </File>
     <File Include="Views/NhanSu/_ThemMoiPhanCaPartial.cshtml">
+<<<<<<< Updated upstream
       <publishTime>05/15/2023 16:47:24</publishTime>
+=======
+      <publishTime>05/18/2023 08:42:23</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/PhongBan/Index.cshtml">
       <publishTime>09/14/2022 12:32:56</publishTime>
@@ -39137,7 +39561,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:56</publishTime>
     </File>
     <File Include="Views/Report/BanHang.cshtml">
+<<<<<<< Updated upstream
       <publishTime>04/12/2023 16:09:19</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/Report/BaoCaoHoatDongXe.cshtml">
       <publishTime>09/14/2022 12:32:56</publishTime>
@@ -39212,7 +39640,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>03/15/2021 14:24:44</publishTime>
     </File>
     <File Include="Views/SoQuy/SoQuy2.cshtml">
+<<<<<<< Updated upstream
       <publishTime>04/05/2023 15:52:49</publishTime>
+=======
+      <publishTime>04/14/2023 10:27:40</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/SoQuy/_editphieuchiHD.cshtml">
       <publishTime>09/14/2022 12:32:56</publishTime>
@@ -39302,7 +39734,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:56</publishTime>
     </File>
     <File Include="Views/ThietLap/QuanLyMauIn.cshtml">
+<<<<<<< Updated upstream
       <publishTime>05/27/2023 10:21:16</publishTime>
+=======
+      <publishTime>06/20/2023 11:32:17</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/ThietLap/QuanLyNguoiDung.cshtml">
       <publishTime>09/14/2022 12:32:56</publishTime>
@@ -39407,7 +39843,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:57</publishTime>
     </File>
     <File Include="Views/TuVan/DanhSachSMS.cshtml">
+<<<<<<< Updated upstream
       <publishTime>03/16/2023 16:24:36</publishTime>
+=======
+      <publishTime>04/19/2023 09:28:02</publishTime>
+>>>>>>> Stashed changes
     </File>
     <File Include="Views/TuVan/Datlich.cshtml">
       <publishTime>09/14/2022 12:32:57</publishTime>
@@ -39461,7 +39901,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/14/2022 12:32:57</publishTime>
     </File>
     <File Include="Web.config">
+<<<<<<< Updated upstream
       <publishTime>04/12/2023 17:16:47</publishTime>
+=======
+      <publishTime>06/20/2023 16:12:05</publishTime>
+>>>>>>> Stashed changes
     </File>
   </ItemGroup>
 </Project>
