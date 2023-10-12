@@ -785,6 +785,10 @@
                         phuongthucTT += 'Chuyển khoản, ';
                     }
 
+                    let idTKChuyenKhoan = ptKhach.ID_TaiKhoanChuyenKhoan;
+                    if (commonStatisJs.CheckNull(idTKChuyenKhoan) || idTKChuyenKhoan === self.GuidEmpty) {
+                        idTKChuyenKhoan = null;
+                    }
                     let qct = newQuyChiTiet({
                         ID_HoaDon: ptKhach.ID,
                         ID_KhoanThuChi: idKhoanThuChi,
@@ -795,7 +799,7 @@
                         HinhThucThanhToan: hinhthuc,
                         LoaiThanhToan: loaiThanhToan,
                         ID_NganHang: ptKhach.ID_NganHang,
-                        ID_TaiKhoanNganHang: ptKhach.ID_TaiKhoanChuyenKhoan,
+                        ID_TaiKhoanNganHang: idTKChuyenKhoan,
                     });
                     qct.ID_HoaDon = ptKhach.ID;
                     qct.TienGui = tienck;
@@ -979,7 +983,7 @@
             InPhieuThu: function (dataQuyHD) {
                 var self = this;
                 var loaiCT = 'SQPT'
-                let quyhd= {...dataQuyHD};
+                let quyhd = { ...dataQuyHD };
                 if (quyhd.LoaiHoaDon === 12) {
                     loaiCT = 'SQPC';
                 }
