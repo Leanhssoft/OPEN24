@@ -1202,7 +1202,7 @@ var NewModel_BanHangLe = function () {
             // PhiDichVu, LaPTPhiDichVu (get from DB store)
             arrCTsort[i].TongPhiDichVu = arrCTsort[i].SoLuong * arrCTsort[i].PhiDichVu;
             if (arrCTsort[i].LaPTPhiDichVu) {
-                arrCTsort[i].TongPhiDichVu = Math.round(arrCTsort[i].PhiDichVu * arrCTsort[i].SoLuong * arrCTsort[i].GiaBan / 100);
+                arrCTsort[i].TongPhiDichVu = Math.round(arrCTsort[i].PhiDichVu * arrCTsort[i].ThanhTien / 100);
             }
             // check exist in cacheCTHD
             if ($.inArray(arrCTsort[i].ID_DonViQuiDoi, arrIDQuiDoi) === -1) {
@@ -6214,7 +6214,7 @@ var NewModel_BanHangLe = function () {
             tongphiDV = ctDoing.PhiDichVu;
             if (ctDoing.LaPTPhiDichVu) {
                 // phidichvu: tinh truoc thue
-                tongphiDV = Math.round(ctDoing.PhiDichVu * soluong * price / 100);
+                tongphiDV = Math.round(ctDoing.PhiDichVu * soluong * (price - tienCK) / 100);
             }
         }
         var sophutTH = 0;
@@ -9157,7 +9157,7 @@ var NewModel_BanHangLe = function () {
             ResetPhieuThu_afterThanhToan();
         })
             .fail(function (jqXHR, textStatus, errorThrown) {
-                SaveDiary_WhenTimeOut(myData.objHoaDon, 'fail ' + jqXHR);
+                SaveDiary_WhenTimeOut(myData.objHoaDon, 'fail ' + objDB);
                 SaveHD_RemoveDisable();
                 if (notSaleOffline) {
                     ShowMessage_Danger('Kết nối mạng không ổn định. Thao tác thất bại');
@@ -11758,14 +11758,13 @@ var NewModel_BanHangLe = function () {
                         }
                         cthd[i].ThanhTien = cthd[i].SoLuong * (cthd[i].GiaBan - cthd[i].TienChietKhau);
                         cthd[i].ThanhToan = cthd[i].SoLuong * (cthd[i].GiaBan - cthd[i].TienChietKhau + cthd[i].TienThue);
-
-                        // phidichvu: tinh theo thanhtien
-                        if (cthd[i].LaPTPhiDichVu) {
-                            cthd[i].TongPhiDichVu = cthd[i].PhiDichVu * formatNumberToFloat(cthd[i].GiaBan) * cthd[i].SoLuong / 100;
-                        }
-                        else {
-                            cthd[i].TongPhiDichVu = cthd[i].PhiDichVu * cthd[i].SoLuong;
-                        }
+                    }
+                    // phidichvu: tinh theo thanhtien
+                    if (cthd[i].LaPTPhiDichVu) {
+                        cthd[i].TongPhiDichVu = cthd[i].PhiDichVu * (formatNumberToFloat(cthd[i].GiaBan) - cthd[i].TienChietKhau) * cthd[i].SoLuong / 100;
+                    }
+                    else {
+                        cthd[i].TongPhiDichVu = cthd[i].PhiDichVu * cthd[i].SoLuong;
                     }
 
                     for (let j = 0; j < cthd[i].DM_LoHang.length; j++) {
@@ -11780,13 +11779,12 @@ var NewModel_BanHangLe = function () {
                                 (cthd[i].DM_LoHang[j].GiaBan - cthd[i].DM_LoHang[j].TienChietKhau);
                             cthd[i].DM_LoHang[j].ThanhToan = cthd[i].DM_LoHang[j].SoLuong *
                                 (cthd[i].DM_LoHang[j].GiaBan - cthd[i].DM_LoHang[j].TienChietKhau + cthd[i].DM_LoHang[j].TienThue);
-
-                            if (cthd[i].DM_LoHang[j].LaPTPhiDichVu) {
-                                cthd[i].DM_LoHang[j].TongPhiDichVu = cthd[i].DM_LoHang[j].PhiDichVu * cthd[i].DM_LoHang[j].GiaBan * cthd[i].DM_LoHang[j].SoLuong / 100;
-                            }
-                            else {
-                                cthd[i].DM_LoHang[j].TongPhiDichVu = cthd[i].DM_LoHang[j].PhiDichVu * cthd[i].DM_LoHang[j].SoLuong;
-                            }
+                        }
+                        if (cthd[i].DM_LoHang[j].LaPTPhiDichVu) {
+                            cthd[i].DM_LoHang[j].TongPhiDichVu = cthd[i].DM_LoHang[j].PhiDichVu * (cthd[i].DM_LoHang[j].GiaBan - cthd[i].DM_LoHang[j].TienChietKhau) * cthd[i].DM_LoHang[j].SoLuong / 100;
+                        }
+                        else {
+                            cthd[i].DM_LoHang[j].TongPhiDichVu = cthd[i].DM_LoHang[j].PhiDichVu * cthd[i].DM_LoHang[j].SoLuong;
                         }
                     }
                     for (let j = 0; j < cthd[i].HangCungLoais.length; j++) {
@@ -11801,13 +11799,12 @@ var NewModel_BanHangLe = function () {
                                 * (cthd[i].HangCungLoais[j].GiaBan - cthd[i].HangCungLoais[j].TienChietKhau);
                             cthd[i].HangCungLoais[j].ThanhToan = cthd[i].HangCungLoais[j].SoLuong
                                 * (cthd[i].HangCungLoais[j].GiaBan - cthd[i].HangCungLoais[j].TienChietKhau + cthd[i].HangCungLoais[j].TienThue);
-
-                            if (cthd[i].HangCungLoais[j].LaPTPhiDichVu) {
-                                cthd[i].HangCungLoais[j].TongPhiDichVu = cthd[i].HangCungLoais[j].PhiDichVu * cthd[i].HangCungLoais[j].GiaBan * cthd[i].HangCungLoais[j].SoLuong / 100;
-                            }
-                            else {
-                                cthd[i].HangCungLoais[j].TongPhiDichVu = cthd[i].HangCungLoais[j].PhiDichVu * cthd[i].HangCungLoais[j].SoLuong;
-                            }
+                        }
+                        if (cthd[i].HangCungLoais[j].LaPTPhiDichVu) {
+                            cthd[i].HangCungLoais[j].TongPhiDichVu = cthd[i].HangCungLoais[j].PhiDichVu * (cthd[i].HangCungLoais[j].GiaBan - cthd[i].HangCungLoais[j].TienChietKhau) * cthd[i].HangCungLoais[j].SoLuong / 100;
+                        }
+                        else {
+                            cthd[i].HangCungLoais[j].TongPhiDichVu = cthd[i].HangCungLoais[j].PhiDichVu * cthd[i].HangCungLoais[j].SoLuong;
                         }
                     }
                 }
@@ -15018,7 +15015,7 @@ var NewModel_BanHangLe = function () {
 
                                     if (ctDatHangCopy[i].SoLuongConLai > 0) {
                                         if (ctDatHangCopy[i].LaPTPhiDichVu) {
-                                            ctDatHangCopy[i].TongPhiDichVu = RoundDecimal(ctDatHangCopy[i].PhiDichVu * ctDatHangCopy[i].GiaBan * ctDatHangCopy[i].SoLuong / 100);
+                                            ctDatHangCopy[i].TongPhiDichVu = RoundDecimal(ctDatHangCopy[i].PhiDichVu * ctDatHangCopy[i].ThanhTien / 100);
                                         }
                                         else {
                                             ctDatHangCopy[i].TongPhiDichVu = ctDatHangCopy[i].PhiDichVu * ctDatHangCopy[i].SoLuong;
@@ -15058,7 +15055,7 @@ var NewModel_BanHangLe = function () {
                                             }
 
                                             if (ctDatHangCopy[i].LaPTPhiDichVu) {
-                                                ctDatHangCopy[i].HangCungLoais[k].TongPhiDichVu = RoundDecimal(ctDatHangCopy[i].PhiDichVu * forIn.GiaBan * forIn.SoLuong / 100);
+                                                ctDatHangCopy[i].HangCungLoais[k].TongPhiDichVu = RoundDecimal(ctDatHangCopy[i].PhiDichVu * ctDatHangCopy[i].HangCungLoais[k].ThanhTien / 100);
                                             }
                                             else {
                                                 ctDatHangCopy[i].HangCungLoais[k].TongPhiDichVu = ctDatHangCopy[i].PhiDichVu * forIn.SoLuong;
@@ -15080,7 +15077,7 @@ var NewModel_BanHangLe = function () {
                                                 forIn.ThanhPhan_DinhLuong[m].SoLuong = forIn.ThanhPhan_DinhLuong[m].SoLuongMacDinh * forIn.SoLuongConLai;
                                             }
                                             if (forIn.LaPTPhiDichVu) {
-                                                ctDatHangCopy[i].ThanhPhanComBo[k].TongPhiDichVu = RoundDecimal(forIn.PhiDichVu * forIn.GiaBan * forIn.SoLuong / 100);
+                                                ctDatHangCopy[i].ThanhPhanComBo[k].TongPhiDichVu = RoundDecimal(forIn.PhiDichVu * ctDatHangCopy[i].ThanhPhanComBo[k].ThanhTien / 100);
                                             }
                                             else {
                                                 ctDatHangCopy[i].ThanhPhanComBo[k].TongPhiDichVu = forIn.PhiDichVu * forIn.SoLuong;
@@ -21313,7 +21310,7 @@ var NewModel_BanHangLe = function () {
                     }
                     // phidichvu: tinh theo thanhtien
                     if (arr[i].LaPTPhiDichVu) {
-                        arr[i].TongPhiDichVu = Math.round(arr[i].PhiDichVu * newSoLuong * newGiaBan / 100);
+                        arr[i].TongPhiDichVu = Math.round(arr[i].PhiDichVu * newSoLuong * (newGiaBan - tienGiam)  / 100);
                     }
                     else {
                         arr[i].TongPhiDichVu = arr[i].PhiDichVu * newSoLuong;
@@ -21357,7 +21354,7 @@ var NewModel_BanHangLe = function () {
                                 arr[i].DM_LoHang[j].ThanhToan = 0;
                             }
                             if (arr[i].DM_LoHang[j].LaPTPhiDichVu) {
-                                arr[i].DM_LoHang[j].TongPhiDichVu = Math.round(arr[i].DM_LoHang[j].PhiDichVu * newSoLuong * newGiaBan / 100);
+                                arr[i].DM_LoHang[j].TongPhiDichVu = Math.round(arr[i].DM_LoHang[j].PhiDichVu * newSoLuong * (newGiaBan - tienGiam) / 100);
                             }
                             else {
                                 arr[i].DM_LoHang[j].TongPhiDichVu = arr[i].DM_LoHang[j].PhiDichVu * newSoLuong;
@@ -21389,7 +21386,7 @@ var NewModel_BanHangLe = function () {
                                 arr[i].HangCungLoais[j].ThanhToan = 0;
                             }
                             if (arr[i].HangCungLoais[j].LaPTPhiDichVu) {
-                                arr[i].HangCungLoais[j].TongPhiDichVu = Math.round(arr[i].HangCungLoais[j].PhiDichVu * newSoLuong * newGiaBan / 100);
+                                arr[i].HangCungLoais[j].TongPhiDichVu = Math.round(arr[i].HangCungLoais[j].PhiDichVu * newSoLuong * (newGiaBan - tienGiam) / 100);
                             }
                             else {
                                 arr[i].HangCungLoais[j].TongPhiDichVu = arr[i].HangCungLoais[j].PhiDichVu * newSoLuong;
@@ -23698,7 +23695,7 @@ var NewModel_BanHangLe = function () {
         if (ctDoing.LoaiHoaDon === 1 || ctDoing.LoaiHoaDon === 25) {
             tongphiDV = ctDoing.PhiDichVu;
             if (ctDoing.LaPTPhiDichVu) {
-                tongphiDV = ctDoing.PhiDichVu * soluongNew * price / 100;
+                tongphiDV = ctDoing.PhiDichVu * soluongNew * (price - tienCK) / 100;
             }
         }
         ctDoing.SoLuong = soluongNew;
@@ -25015,7 +25012,7 @@ var NewModel_BanHangLe = function () {
                                     soluongnew = parseFloat(cthd[i].SoLuong) + 1;
                                     cthd[i].SoLuong = soluongnew;
                                     if (ob1.LaPTPhiDichVu) {
-                                        cthd[i].TongPhiDichVu = ob1.PhiDichVu * soluongnew * cthd[i].DonGia / 100;
+                                        cthd[i].TongPhiDichVu = ob1.PhiDichVu * soluongnew * (cthd[i].DonGia - cthd[i].TienChietKhau) / 100;
                                     }
                                     else {
                                         cthd[i].TongPhiDichVu = ob1.PhiDichVu * soluongnew;
@@ -25032,7 +25029,7 @@ var NewModel_BanHangLe = function () {
                                                 soluongnew = parseFloat(forIn.SoLuong) + 1;
                                                 cthd[i].DM_LoHang[j].SoLuong = soluongnew;
                                                 if (ob1.LaPTPhiDichVu) {
-                                                    cthd[i].DM_LoHang[j].TongPhiDichVu = Math.round(ob1.PhiDichVu * soluongnew * forIn.DonGia / 100);
+                                                    cthd[i].DM_LoHang[j].TongPhiDichVu = Math.round(ob1.PhiDichVu * soluongnew * (forIn.DonGia - forIn.TienChietKhau) / 100);
                                                 }
                                                 else {
                                                     cthd[i].DM_LoHang[j].TongPhiDichVu = ob1.PhiDichVu * soluongnew;
@@ -25050,7 +25047,7 @@ var NewModel_BanHangLe = function () {
                                                 soluongnew = parseFloat(cungloai.SoLuong) + 1;
                                                 cthd[i].HangCungLoais[j].SoLuong = soluongnew;
                                                 if (ob1.LaPTPhiDichVu) {
-                                                    cthd[i].HangCungLoais[j].TongPhiDichVu = Math.round(ob1.PhiDichVu * soluongnew * cungloai.DonGia / 100);
+                                                    cthd[i].HangCungLoais[j].TongPhiDichVu = Math.round(ob1.PhiDichVu * soluongnew * (cungloai.DonGia - cungloai.TienChietKhau) / 100);
                                                 }
                                                 else {
                                                     cthd[i].HangCungLoais[j].TongPhiDichVu = ob1.PhiDichVu * soluongnew;
@@ -28770,7 +28767,7 @@ var NewModel_BanHangLe = function () {
                             forIn.ThanhTien = slCombo * (forIn.DonGia - forIn.TienChietKhau);
                             forIn.ThanhToan = slCombo * (forIn.DonGia - forIn.TienChietKhau + forIn.TienThue);
                             if (forIn.LaPTPhiDichVu) {
-                                forIn.TongPhiDichVu = Math.round(forIn.PhiDichVu * forIn.DonGia * forIn.SoLuong / 100);
+                                forIn.TongPhiDichVu = Math.round(forIn.PhiDichVu * forIn.ThanhTien / 100);
                             }
                             else {
                                 forIn.TongPhiDichVu = forIn.PhiDichVu * forIn.SoLuong;
