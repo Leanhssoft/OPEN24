@@ -16,6 +16,7 @@
             self.role.PhieuThu.Update = VHeader.Quyen.indexOf('SoQuy_CapNhat') > -1;
             self.role.PhieuThu.Delete = VHeader.Quyen.indexOf('SoQuy_Xoa') > -1;
             self.role.PhieuThu.ChangeNgayLap = VHeader.Quyen.indexOf('SoQuy_ThayDoiThoiGian') > -1;
+            self.nganhNgheKinhDoanh = VHeader.IdNganhNgheKinhDoanh == 'C16EDDA0-F6D0-43E1-A469-844FAB143014';
 
             self.inforLogin = {
                 ID_NhanVien: VHeader.IdNhanVien,
@@ -27,6 +28,7 @@
 
             self.ThietLapCuaHang = VHeader.ThietLapCuaHang;
             self.ThietLapChotSo = VHeader.ThietLapChotSo;
+
         }
         else {
             self.inforLogin.ID_DonVi = idDonVi;
@@ -80,6 +82,7 @@
         isThuTienThua: false,
         showCheckHachToan: false,
         isKhoaSo: false,
+        nganhNgheKinhDoanh: 0,
         NgayChotSo: null,
 
         ThietLapCuaHang: [],
