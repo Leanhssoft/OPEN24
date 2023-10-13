@@ -77,8 +77,7 @@
                 });
             }
         },
-        Insert_LichNhacBaoDuong: function (idHoaDon, cthd, isPrint = true) {
-
+        Insert_LichNhacBaoDuong: async function (idHoaDon, cthd) {
             if (!commonStatisJs.CheckNull(idHoaDon) && idHoaDon !== const_GuidEmpty) {
                 let arrID = cthd.map(function (x) {
                     return x.ID_LichBaoDuong
@@ -88,24 +87,23 @@
                     status: 2,// daxuly
                 }
 
-                ajaxHelper('/api/DanhMuc/GaraAPI/LichNhacBaoDuong_updateStatus', 'POST', myData).done(function (x1) {
-                    ajaxHelper('/api/DanhMuc/GaraAPI/Insert_LichNhacBaoDuong?idHoaDon=' + idHoaDon, 'GET').done(function (x) {
-                        if (isPrint == false) {
-                            window.close();
-                        }
-                    });
-                });
+                await ajaxHelper('/api/DanhMuc/GaraAPI/LichNhacBaoDuong_updateStatus', 'POST', myData).done()
+                    .then(function () {
+                    })
+                await ajaxHelper('/api/DanhMuc/GaraAPI/Insert_LichNhacBaoDuong?idHoaDon=' + idHoaDon, 'GET').done()
+                    .then(function () {
+                    })
             }
         },
-        Upadate_LichBaoDuong: function (idHoaDon, hangthaymoi, ngaylapNew, ngaylapOld) {
+        Upadate_LichBaoDuong: async function (idHoaDon, hangthaymoi, ngaylapNew, ngaylapOld) {
             if (!commonStatisJs.CheckNull(hangthaymoi) && hangthaymoi.length > 0) {
                 var myData = {
                     ID_HoaDon: idHoaDon,
                     IDHangHoas: hangthaymoi,
                     NgayLapHoaDonOld: ngaylapOld,
                 }
-                ajaxHelper('/api/DanhMuc/GaraAPI/UpdateHD_UpdateBaoDuong', 'POST', myData)
-                    .done(function (x) {
+               await ajaxHelper('/api/DanhMuc/GaraAPI/UpdateHD_UpdateBaoDuong', 'POST', myData).done()
+                    .then(function () {
                         console.log('UpdateHD_UpdateBaoDuong ', x);
                     })
             }

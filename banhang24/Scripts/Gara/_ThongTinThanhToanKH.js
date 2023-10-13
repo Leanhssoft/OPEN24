@@ -1211,7 +1211,7 @@
                 }
             }
         },
-        UpdateIDQuyHoaDon_toBHThucHien: function (idHoaDon, idQuyHD) {
+        UpdateIDQuyHoaDon_toBHThucHien: async function (idHoaDon, idQuyHD) {
             var self = this;
             if (self.GridNVienBanGoi_Chosed.length > 0 && idHoaDon !== null) {
                 for (let i = 0; i < self.GridNVienBanGoi_Chosed.length; i++) {
@@ -1222,19 +1222,20 @@
                 let myData = {
                     lstObj: self.GridNVienBanGoi_Chosed
                 }
-                ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'Post_BHNhanVienThucHien', 'POST', myData).done(function (data) {
-                    if (data.res == false) {
-                        self.GridNVienBanGoi_Chosed = [];
-                    }
-                })
+                const xx = await ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'Post_BHNhanVienThucHien', 'POST', myData).done()
+                    .then(function (x) {
+                        return x;
+                    })
+                self.GridNVienBanGoi_Chosed = [];
             }
             else {
                 if (self.inforHoaDon.LoaiHoaDon === 6) {
-                    ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/InsertChietKhauTraHang_TheoThucThu?idHoaDonTra=' + idHoaDon
-                        + '&idPhieuChi=' + idQuyHD, 'GET').done(function (x) {
-                            console.log('x ', x)
-                            self.GridNVienBanGoi_Chosed = [];
-                        });
+                    const xx = await ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/InsertChietKhauTraHang_TheoThucThu?idHoaDonTra=' + idHoaDon
+                        + '&idPhieuChi=' + idQuyHD, 'GET').done()
+                        .then(function (x) {
+                            return x;
+                        })
+                    self.GridNVienBanGoi_Chosed = [];
                 }
             }
         },
@@ -1789,7 +1790,7 @@
             }
         },
 
-        SavePhieuThu: function (nvthHoaDon = []) {
+        SavePhieuThu: async function (nvthHoaDon = []) {
             var self = this;
             var hd = self.inforHoaDon;
             vmThemMoiKhach.inforLogin.ID_DonVi = hd.ID_DonVi;// used to check nangnhomkh
@@ -1968,33 +1969,34 @@
                     };
 
                     if (lstQuyCT.length > 0) {
-                        ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/PostQuy_HoaDon_DefaultIDDoiTuong', 'POST', myData).done(function (x) {
-                            if (x.res === true) {
+                        const x = await ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/PostQuy_HoaDon_DefaultIDDoiTuong', 'POST', myData).done()
+                            .then(function (xx) {
+                                return xx;
+                            });
+                        if (x.res) {
+                            quyhd.MaHoaDon = x.data.MaHoaDon;
+                            await self.UpdateIDQuyHoaDon_toBHThucHien(idHoaDon, x.data.ID);
 
-                                quyhd.MaHoaDon = x.data.MaHoaDon;
-                                self.UpdateIDQuyHoaDon_toBHThucHien(idHoaDon, x.data.ID);
-
-                                let diary = {
-                                    LoaiNhatKy: 1,
-                                    ID_DonVi: quyhd.ID_DonVi,
-                                    ID_NhanVien: quyhd.ID_NhanVien,
-                                    ChucNang: 'Phiếu ' + sLoai,
-                                    NoiDung: 'Tạo phiếu '.concat(sLoai, ' ', quyhd.MaHoaDon, ' cho hóa đơn ', hd.MaHoaDon,
-                                        ', Khách hàng: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber3Digit(quyhd.TongTienThu, 2),
-                                        ', Phương thức thanh toán:', phuongthucTT, chitracoc ? ' (Trả lại tiền cọc)' : '',
-                                        ', Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')),
-                                    NoiDungChiTiet: 'Tạo phiếu ' + sLoai + ' <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD('.concat(quyhd.MaHoaDon, ')" >', quyhd.MaHoaDon, '</a> ',
-                                        ' cho hóa đơn: <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', hd.MaHoaDon, ')" >', hd.MaHoaDon, '</a> ',
-                                        ', Khách hàng: <a style="cursor: pointer" onclick = "LoadKhachHang_byMaKH(', quyhd.NguoiNopTien, ')" >', quyhd.NguoiNopTien, '</a> ',
-                                        '<br /> Giá trị: ', formatNumber3Digit(quyhd.TongTienThu, 2),
-                                        '<br/ > Phương thức thanh toán: ', phuongthucTT, chitracoc ? ' (Trả lại tiền cọc)' : '',
-                                        '<br/ > Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')
-                                    )
-                                }
-                                Insert_NhatKyThaoTac_1Param(diary);
-                                vmThemMoiKhach.NangNhomKhachHang(idDoiTuong);
+                            let diary = {
+                                LoaiNhatKy: 1,
+                                ID_DonVi: quyhd.ID_DonVi,
+                                ID_NhanVien: quyhd.ID_NhanVien,
+                                ChucNang: 'Phiếu ' + sLoai,
+                                NoiDung: 'Tạo phiếu '.concat(sLoai, ' ', quyhd.MaHoaDon, ' cho hóa đơn ', hd.MaHoaDon,
+                                    ', Khách hàng: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber3Digit(quyhd.TongTienThu, 2),
+                                    ', Phương thức thanh toán:', phuongthucTT, chitracoc ? ' (Trả lại tiền cọc)' : '',
+                                    ', Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')),
+                                NoiDungChiTiet: 'Tạo phiếu ' + sLoai + ' <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD('.concat(quyhd.MaHoaDon, ')" >', quyhd.MaHoaDon, '</a> ',
+                                    ' cho hóa đơn: <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', hd.MaHoaDon, ')" >', hd.MaHoaDon, '</a> ',
+                                    ', Khách hàng: <a style="cursor: pointer" onclick = "LoadKhachHang_byMaKH(', quyhd.NguoiNopTien, ')" >', quyhd.NguoiNopTien, '</a> ',
+                                    '<br /> Giá trị: ', formatNumber3Digit(quyhd.TongTienThu, 2),
+                                    '<br/ > Phương thức thanh toán: ', phuongthucTT, chitracoc ? ' (Trả lại tiền cọc)' : '',
+                                    '<br/ > Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')
+                                )
                             }
-                        })
+                            Insert_NhatKyThaoTac_1Param(diary);
+                            vmThemMoiKhach.NangNhomKhachHang(idDoiTuong);
+                        }
                     }
                 }
 
@@ -2041,32 +2043,33 @@
 
                     if (lstQuyCT.length > 0) {
                         console.log('myData_quyKH ', myData);
-                        ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/PostQuy_HoaDon_DefaultIDDoiTuong', 'POST', myData).done(function (x) {
-                            if (x.res === true) {
-                                self.UpdateIDQuyHoaDon_toBHThucHien(lstQuyCT[0].ID_HoaDonLienQuan, x.data.ID);
-
-                                quyhd.MaHoaDon = x.data.MaHoaDon;
-                                let diary = {
-                                    LoaiNhatKy: 1,
-                                    ID_DonVi: quyhd.ID_DonVi,
-                                    ID_NhanVien: quyhd.ID_NhanVien,
-                                    ChucNang: 'Phiếu ' + sLoai2,
-                                    NoiDung: 'Tạo phiếu '.concat(sLoai2, ' ', quyhd.MaHoaDon, ' cho hóa đơn ', hd.MaHoaDon,
-                                        ', Khách hàng: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber3Digit(quyhd.TongTienThu, 2),
-                                        ', Phương thức thanh toán:', phuongthucTT2,
-                                        ', Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')),
-                                    NoiDungChiTiet: 'Tạo phiếu ' + sLoai2 + ' <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD('.concat(quyhd.MaHoaDon, ')" >', quyhd.MaHoaDon, '</a> ',
-                                        ' cho hóa đơn: <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', hd.MaHoaDon, ')" >', hd.MaHoaDon, '</a> ',
-                                        ', Khách hàng: <a style="cursor: pointer" onclick = "LoadKhachHang_byMaKH(', quyhd.NguoiNopTien, ')" >', quyhd.NguoiNopTien, '</a> ',
-                                        '<br /> Giá trị: ', formatNumber3Digit(quyhd.TongTienThu, 2),
-                                        '<br/ > Phương thức thanh toán: ', phuongthucTT2,
-                                        '<br/ > Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')
-                                    )
-                                }
-                                Insert_NhatKyThaoTac_1Param(diary);
-                                vmThemMoiKhach.NangNhomKhachHang(idDoiTuong);
+                        const xCoc = await ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/PostQuy_HoaDon_DefaultIDDoiTuong', 'POST', myData).done()
+                            .then(function (x) {
+                                return x;
+                            });
+                        if (xCoc.res) {
+                            await self.UpdateIDQuyHoaDon_toBHThucHien(lstQuyCT[0].ID_HoaDonLienQuan, xCoc.data.ID);
+                            quyhd.MaHoaDon = xCoc.data.MaHoaDon;
+                            let diary = {
+                                LoaiNhatKy: 1,
+                                ID_DonVi: quyhd.ID_DonVi,
+                                ID_NhanVien: quyhd.ID_NhanVien,
+                                ChucNang: 'Phiếu ' + sLoai2,
+                                NoiDung: 'Tạo phiếu '.concat(sLoai2, ' ', quyhd.MaHoaDon, ' cho hóa đơn ', hd.MaHoaDon,
+                                    ', Khách hàng: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber3Digit(quyhd.TongTienThu, 2),
+                                    ', Phương thức thanh toán:', phuongthucTT2,
+                                    ', Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')),
+                                NoiDungChiTiet: 'Tạo phiếu ' + sLoai2 + ' <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD('.concat(quyhd.MaHoaDon, ')" >', quyhd.MaHoaDon, '</a> ',
+                                    ' cho hóa đơn: <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', hd.MaHoaDon, ')" >', hd.MaHoaDon, '</a> ',
+                                    ', Khách hàng: <a style="cursor: pointer" onclick = "LoadKhachHang_byMaKH(', quyhd.NguoiNopTien, ')" >', quyhd.NguoiNopTien, '</a> ',
+                                    '<br /> Giá trị: ', formatNumber3Digit(quyhd.TongTienThu, 2),
+                                    '<br/ > Phương thức thanh toán: ', phuongthucTT2,
+                                    '<br/ > Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')
+                                )
                             }
-                        });
+                            Insert_NhatKyThaoTac_1Param(diary);
+                            vmThemMoiKhach.NangNhomKhachHang(idDoiTuong);
+                        }
                     }
                 }
 
@@ -2193,29 +2196,31 @@
                     };
                     if (lstQuyCT.length > 0) {
                         console.log('myData_quyBH ', myData);
-                        ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/PostQuy_HoaDon_DefaultIDDoiTuong', 'POST', myData).done(function (x) {
-                            if (x.res === true) {
-                                quyhd.MaHoaDon = x.data.MaHoaDon;
-                                let diary = {
-                                    LoaiNhatKy: 1,
-                                    ID_DonVi: quyhd.ID_DonVi,
-                                    ID_NhanVien: quyhd.ID_NhanVien,
-                                    ChucNang: 'Phiếu thu',
-                                    NoiDung: 'Tạo phiếu thu '.concat(quyhd.MaHoaDon, ' cho hóa đơn ', hd.MaHoaDon,
-                                        ', Khách hàng: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber3Digit(quyhd.TongTienThu, 2),
-                                        ', Phương thức thanh toán:', phuongthucTT,
-                                        ', Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')),
-                                    NoiDungChiTiet: 'Tạo phiếu thu <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD('.concat(quyhd.MaHoaDon, ')" >', quyhd.MaHoaDon, '</a> ',
-                                        ' cho hóa đơn: <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', hd.MaHoaDon, ')" >', hd.MaHoaDon, '</a> ',
-                                        ', Khách hàng: <a style="cursor: pointer" onclick = "LoadKhachHang_byMaKH(', quyhd.NguoiNopTien, ')" >', quyhd.NguoiNopTien, '</a> ',
-                                        '<br /> Giá trị:', formatNumber3Digit(quyhd.TongTienThu, 2),
-                                        '<br/ > Phương thức thanh toán:', phuongthucTT,
-                                        '<br/ > Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')
-                                    )
-                                }
-                                Insert_NhatKyThaoTac_1Param(diary);
+                        const xThuBaoHiem = await ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/PostQuy_HoaDon_DefaultIDDoiTuong', 'POST', myData).done()
+                            .then(function (x) {
+                                return x;
+                            });
+                        if (xThuBaoHiem.res) {
+                            quyhd.MaHoaDon = xThuBaoHiem.data.MaHoaDon;
+                            let diary = {
+                                LoaiNhatKy: 1,
+                                ID_DonVi: quyhd.ID_DonVi,
+                                ID_NhanVien: quyhd.ID_NhanVien,
+                                ChucNang: 'Phiếu thu',
+                                NoiDung: 'Tạo phiếu thu '.concat(quyhd.MaHoaDon, ' cho hóa đơn ', hd.MaHoaDon,
+                                    ', Cty bảo hiểm: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber3Digit(quyhd.TongTienThu, 2),
+                                    ', Phương thức thanh toán:', phuongthucTT,
+                                    ', Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')),
+                                NoiDungChiTiet: 'Tạo phiếu thu <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD('.concat(quyhd.MaHoaDon, ')" >', quyhd.MaHoaDon, '</a> ',
+                                    ' cho hóa đơn: <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', hd.MaHoaDon, ')" >', hd.MaHoaDon, '</a> ',
+                                    ', Cty bảo hiểm: <a style="cursor: pointer" onclick = "LoadKhachHang_byMaKH(', quyhd.NguoiNopTien, ')" >', quyhd.NguoiNopTien, '</a> ',
+                                    '<br /> Giá trị:', formatNumber3Digit(quyhd.TongTienThu, 2),
+                                    '<br/ > Phương thức thanh toán:', phuongthucTT,
+                                    '<br/ > Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')
+                                )
                             }
-                        })
+                            Insert_NhatKyThaoTac_1Param(diary);
+                        }
                     }
                 }
 
@@ -2230,7 +2235,7 @@
                 ) {
                     // only get cktheo doanhthu
                     self.GridNVienBanGoi_Chosed = nvthHoaDon.filter(x => x.TinhChietKhauTheo !== 1);
-                    self.UpdateIDQuyHoaDon_toBHThucHien(idHoaDon);
+                    await self.UpdateIDQuyHoaDon_toBHThucHien(idHoaDon);
                 }
             }
 

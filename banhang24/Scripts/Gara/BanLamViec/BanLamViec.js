@@ -1053,6 +1053,7 @@ var workTable = new Vue({
             obj.CreateTime = 0;
             obj.TenViTriHD = '';
             obj.BH_NhanVienThucHiens = [];
+            obj.BH_HoaDon_ChiTiet = [];
             obj.TienTheGiaTri = 0;
             obj.ThoiGianThucHien = 0;
             obj.StatusOffline = false;
@@ -1275,23 +1276,26 @@ var workTable = new Vue({
             return arrComBo;
         },
 
-        XuLyBaoGia: function (item) {
+        XuLyBaoGia: async function (item) {
             // chi get cthd chua duoc xuly
             var self = this;
-            var newObj = self.newHoaDon(item, 6);
-            newObj.NgayLapHoaDon = moment(item.NgayLapHoaDon).format('YYYY-MM-DD HH:mm');
+            const hdDB = await self.GetInforHD_fromDB(item.ID);
+            if ($.isEmptyObject(hdDB)) return;
+
+            var newObj = self.newHoaDon(hdDB, 6);
+            newObj.NgayLapHoaDon = moment(hdDB.NgayLapHoaDon).format('YYYY-MM-DD HH:mm');
             newObj.DaThanhToan = 0;
-            newObj.KhachDaTra = item.KhachDaTra;
+            newObj.KhachDaTra = hdDB.KhachDaTra;
             newObj.LoaiHoaDon = 3;
-            newObj.TongGiamGiaDB = item.TongGiamGia;// used to check if xulyhoadon lan 2
+            newObj.TongGiamGiaDB = hdDB.TongGiamGia;// used to check if xulyhoadon lan 2
             newObj.BienSo = self.listData.ThongTinXe.BienSo;
-            newObj.TongThueKhachHang = item.TongTienThue;
+            newObj.TongThueKhachHang = hdDB.TongTienThue;
             newObj.CongThucBaoHiem = 13;
-            newObj.DuyetBaoGia = (parseInt(item.TrangThai) === 0);
+            newObj.DuyetBaoGia = (parseInt(hdDB.TrangThai) === 0);
             newObj.ID_Xe = self.listData.ThongTinXe.ID_Xe;
 
             var tonggiamgiahang = 0, tongtienhangchuaCK = 0;
-            ajaxHelper(self.HoaDonAPI + 'GetCTHoaDon_afterDatHang?idHoaDon=' + item.ID).done(function (data) {
+            ajaxHelper(self.HoaDonAPI + 'GetCTHoaDon_afterDatHang?idHoaDon=' + hdDB.ID).done(function (data) {
                 if (data.length > 0) {
                     var cthd = data.sort(function (a, b) {
                         var x = a.SoThuTu,
@@ -1317,7 +1321,7 @@ var workTable = new Vue({
                         ctNew.NgaySanXuat = dateLot.NgaySanXuat;
                         ctNew.NgayHetHan = dateLot.NgayHetHan;
 
-                        ctNew.MaHoaDon = item.MaHoaDon;
+                        ctNew.MaHoaDon = hdDB.MaHoaDon;
                         ctNew.LoaiHoaDon = 3;
                         ctNew.SoLuongDaMua = 0;
                         ctNew.DVTinhGiam = 'VND';
@@ -1427,7 +1431,7 @@ var workTable = new Vue({
                     else {
                         hd_XLBG = JSON.parse(hd_XLBG);
                         hd_XLBG = $.grep(hd_XLBG, function (itemXL) {
-                            return itemXL.MaHoaDon !== item.MaHoaDon;
+                            return itemXL.MaHoaDon !== hdDB.MaHoaDon;
                         });
                     }
                     hd_XLBG.push(newObj);
@@ -1439,7 +1443,7 @@ var workTable = new Vue({
                     else {
                         cthd_XLBG = JSON.parse(cthd_XLBG);
                         cthd_XLBG = $.grep(cthd_XLBG, function (x) {
-                            return x.MaHoaDon !== item.MaHoaDon;
+                            return x.MaHoaDon !== hdDB.MaHoaDon;
                         })
                     }
 
@@ -1450,7 +1454,7 @@ var workTable = new Vue({
 
                     localStorage.setItem('lcCTDatHang', JSON.stringify(cthd_XLBG));
                     localStorage.setItem('lcXuLiDonHang', JSON.stringify(hd_XLBG));
-                    localStorage.setItem('maHDCache', item.MaHoaDon);// used to get at gara.js (phieu dang xuly)
+                    localStorage.setItem('maHDCache', hdDB.MaHoaDon);// used to get at gara.js (phieu dang xuly)
                     self.CheckExistCacheHD_atGara(item);
                     self.GotoGara('TN_xulyBG');
                 }
@@ -1493,6 +1497,20 @@ var workTable = new Vue({
                 localStorage.setItem('gara_lstCTHDLe', JSON.stringify(cthd));
             }
         },
+        GetInforHD_fromDB: async function (id) {
+            //const xx = await ;
+            if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
+                let xx = await ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + "Get_InforHoaDon_byID?id=" + id + '&getCTHD=false', 'GET').done()
+                    .then(function (data) {
+                        if (data !== null) {
+                            return data;
+                        }
+                        return {};
+                    })
+                return xx;
+            }
+            return {};
+        },
         CapNhatHoaDon: async function (item, loaiHD) {
             let self = this;
             let loaiCheck = loaiHD == 3 ? 25 : 8;
@@ -1522,20 +1540,25 @@ var workTable = new Vue({
                 }
             }
 
-            let newObj = self.newHoaDon(item, loaiHD === 3 ? 3 : 8);
+            const hdDB = await self.GetInforHD_fromDB(item.ID);
+            if ($.isEmptyObject(hdDB)) return;
+            // if empty: return
+            // else: always get HD from DB
+
+            let newObj = self.newHoaDon(hdDB, loaiHD === 3 ? 3 : 8);
             newObj.DaThanhToan = 0;
             newObj.SoDuDatCoc = 0;
-            newObj.DuyetBaoGia = (parseInt(item.TrangThai) === 0);
+            newObj.DuyetBaoGia = (parseInt(hdDB.TrangThai) === 0);
             newObj.LoaiHoaDon = loaiHD;
             newObj.BienSo = self.listData.ThongTinXe.BienSo;
             newObj.ID_Xe = self.listData.ThongTinXe.ID_Xe;
-            newObj.KhachDaTra = loaiHD === 3 ? 0 : item.KhachDaTra;
+            newObj.KhachDaTra = loaiHD === 3 ? 0 : hdDB.KhachDaTra;
 
-            let thueKH = item.TongThueKhachHang;
+            let thueKH = hdDB.TongThueKhachHang;
             if (commonStatisJs.CheckNull(thueKH)) {
                 newObj.TongThueKhachHang = newObj.TongTienThue;
             }
-            let congthuc = item.CongThucBaoHiem;
+            let congthuc = hdDB.CongThucBaoHiem;
             if (commonStatisJs.CheckNull(congthuc)) {
                 newObj.CongThucBaoHiem = 13;
             }
@@ -1565,7 +1588,7 @@ var workTable = new Vue({
                         ctNew.NgaySanXuat = dateLot.NgaySanXuat;
                         ctNew.NgayHetHan = dateLot.NgayHetHan;
 
-                        ctNew.MaHoaDon = item.MaHoaDon;
+                        ctNew.MaHoaDon = hdDB.MaHoaDon;
                         ctNew.LoaiHoaDon = loaiHD;
                         ctNew.SoLuongDaMua = 0;
                         ctNew.DVTinhGiam = 'VND';
@@ -1755,13 +1778,7 @@ var workTable = new Vue({
                         clearInterval(popupTick);
                         switch (cacheValue) {
                             case 'TN_taobaogia':
-                                workTable.Gara_GetListBaoGia(true);
-                                workTable.Gara_GetListHoaDonSuaChua(true);
-                                break;
                             case 'TN_taohoadon':
-                                workTable.Gara_GetListHoaDonSuaChua(true);
-                                workTable.Gara_GetListBaoGia(true);
-                                break;
                             case 'TN_xulyBG':
                             case 'TN_updateHD':
                                 workTable.Gara_GetListBaoGia(true);
@@ -1840,51 +1857,6 @@ var workTable = new Vue({
             vmHoaHongHoaDon.GetChietKhauHoaDon_byID(item, null, false);
 
             ajaxHelper(self.HoaDonAPI + 'SP_GetChiTietHD_byIDHoaDon_ChietKhauNV?idHoaDon=' + item.ID).done(function (data) {
-                let arrHH = data.filter(x => x.LaHangHoa);
-                let arrDV = data.filter(x => x.LaHangHoa === false);
-
-                let tongDV = 0, tongDV_truocVAT = 0, tongDV_truocCK = 0;
-                let tongHH = 0, tongHH_truocVAT = 0, tongHH_truocCK = 0;
-                let DV_tongthue = 0, DV_tongCK = 0, DV_tongSL = 0;
-                let HH_tongthue = 0, HH_tongCK = 0, HH_tongSL = 0;
-                for (let k = 0; k < arrHH.length; k++) {
-                    let itFor = arrHH[k];
-                    let soluong = formatNumberToFloat(itFor.SoLuong);
-                    HH_tongSL += soluong;
-                    tongHH += formatNumberToFloat(itFor.ThanhToan);
-                    tongHH_truocVAT += formatNumberToFloat(itFor.ThanhTien);
-                    tongHH_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
-                    HH_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
-                    HH_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
-                }
-                for (let k = 0; k < arrDV.length; k++) {
-                    let itFor = arrDV[k];
-                    let soluong = formatNumberToFloat(itFor.SoLuong);
-                    DV_tongSL += soluong;
-                    tongDV += formatNumberToFloat(itFor.ThanhToan);
-                    tongDV_truocVAT += formatNumberToFloat(itFor.ThanhTien);
-                    tongDV_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
-                    DV_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
-                    DV_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
-                }
-
-                self.itemChosing.TongGiamGiaHang = DV_tongCK + HH_tongCK;
-                self.itemChosing.TongTienHangChuaCK = tongDV_truocCK + tongHH_truocCK;
-
-                self.itemChosing.TongSL_DichVu = DV_tongSL;
-                self.itemChosing.TongTienDichVu = tongDV;
-                self.itemChosing.TongThue_DichVu = DV_tongthue;
-                self.itemChosing.TongCK_DichVu = DV_tongCK;
-                self.itemChosing.TongTienDichVu_TruocCK = tongDV_truocCK;
-                self.itemChosing.TongTienDichVu_TruocVAT = tongDV_truocVAT;
-
-                self.itemChosing.TongSL_PhuTung = HH_tongSL;
-                self.itemChosing.TongTienPhuTung = tongHH;
-                self.itemChosing.TongThue_PhuTung = HH_tongthue;
-                self.itemChosing.TongCK_PhuTung = HH_tongCK;
-                self.itemChosing.TongTienPhuTung_TruocCK = tongHH_truocCK;
-                self.itemChosing.TongTienPhuTung_TruocVAT = tongHH_truocVAT;
-
                 // get nvthuchien, tuvan
                 for (let i = 0; i < data.length; i++) {
                     let forIn = data[i];
@@ -1945,7 +1917,7 @@ var workTable = new Vue({
         GetInforHDPrint: async function () {
             let self = this;
             let objPrint = $.extend({}, self.listData.ThongTinXe);
-            let hdChosing = self.itemChosing;
+            let hdChosing = await self.GetInforHD_fromDB(self.itemChosing.ID);
             let phaiThanhToan = formatNumberToInt(hdChosing.PhaiThanhToan);
             let daThanhToan = formatNumberToInt(hdChosing.KhachDaTra);
             let tongcong = RoundDecimal(hdChosing.TongThanhToan, 0);
@@ -2127,13 +2099,56 @@ var workTable = new Vue({
             var self = this;
             var hd = await self.GetInforHDPrint();
             var cthd = self.listData.HoaDonChiTiets;
-            hd.TongGiamGia = formatNumber(self.itemChosing.TongGiamGia);
-            hd.KhuyeMai_GiamGia = self.itemChosing.KhuyeMai_GiamGia;
-            hd.TongTienHangChuaCK = formatNumber(self.itemChosing.TongTienHangChuaCK);
-            hd.TongGiamGiaHD_HH = formatNumber(formatNumberToFloat(self.itemChosing.TongGiamGia)
-                + formatNumberToFloat(self.itemChosing.KhuyeMai_GiamGia)
-                + self.itemChosing.TongGiamGiaHang);
 
+            let arrHH = cthd.filter(x => x.LaHangHoa);
+            let arrDV = cthd.filter(x => x.LaHangHoa === false);
+            let tongDV = 0, tongDV_truocVAT = 0, tongDV_truocCK = 0;
+            let tongHH = 0, tongHH_truocVAT = 0, tongHH_truocCK = 0;
+            let DV_tongthue = 0, DV_tongCK = 0, DV_tongSL = 0;
+            let HH_tongthue = 0, HH_tongCK = 0, HH_tongSL = 0;
+
+            for (let k = 0; k < arrHH.length; k++) {
+                let itFor = arrHH[k];
+                let soluong = formatNumberToFloat(itFor.SoLuong);
+                HH_tongSL += soluong;
+                tongHH += formatNumberToFloat(itFor.ThanhToan);
+                tongHH_truocVAT += formatNumberToFloat(itFor.ThanhTien);
+                tongHH_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
+                HH_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
+                HH_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
+            }
+            for (let k = 0; k < arrDV.length; k++) {
+                let itFor = arrDV[k];
+                let soluong = formatNumberToFloat(itFor.SoLuong);
+                DV_tongSL += soluong;
+                tongDV += formatNumberToFloat(itFor.ThanhToan);
+                tongDV_truocVAT += formatNumberToFloat(itFor.ThanhTien);
+                tongDV_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
+                DV_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
+                DV_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
+            }
+
+            hd.TongGiamGiaHang = DV_tongCK + HH_tongCK;
+            hd.TongTienHangChuaCK = tongDV_truocCK + tongHH_truocCK;
+
+            hd.TongSL_DichVu = DV_tongSL;
+            hd.TongTienDichVu = tongDV;
+            hd.TongThue_DichVu = DV_tongthue;
+            hd.TongCK_DichVu = DV_tongCK;
+            hd.TongTienDichVu_TruocCK = tongDV_truocCK;
+            hd.TongTienDichVu_TruocVAT = tongDV_truocVAT;
+
+            hd.TongSL_PhuTung = HH_tongSL;
+            hd.TongTienPhuTung = tongHH;
+            hd.TongThue_PhuTung = HH_tongthue;
+            hd.TongCK_PhuTung = HH_tongCK;
+            hd.TongTienPhuTung_TruocCK = tongHH_truocCK;
+            hd.TongTienPhuTung_TruocVAT = tongHH_truocVAT;
+
+            hd.TongGiamGiaHD_HH = formatNumberToFloat(hd.TongGiamGia)
+                + formatNumberToFloat(hd.KhuyeMai_GiamGia)
+                + hd.TongGiamGiaHang;
+           
             var lstCT = [];
             for (let i = 0; i < cthd.length; i++) {
                 let itFor = $.extend({}, true, cthd[i]);
