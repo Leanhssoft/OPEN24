@@ -1616,7 +1616,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         DM.KhachCanTra = item.PhaiThanhToan;
                         DM.KhachDaTra = item.KhachDaTra;
                         DM.GhiChu = item.DienGiai;
-                        DM.TrangThai = item.Gara_TrangThaiBG;
+                        DM.TrangThai = item.TrangThaiText;
                         lst.Add(DM);
                     }
                     DataTable excel = _classOFDCM.ToDataTable<Excel_BaoGiaSuaChua>(lst);
@@ -3182,12 +3182,19 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
 
         [HttpGet]
-        public BH_HoaDonDTO Get_InforHoaDon_byID(Guid id)
+        public BH_HoaDonDTO Get_InforHoaDon_byID(Guid id, bool? getCTHD = true)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
-                return classhoadon.SP_GetInforHoaDon_byID(id);
+                if (getCTHD ?? true)
+                {
+                    return classhoadon.SP_GetInforHoaDon_byID(id);
+                }
+                else
+                {
+                    return classhoadon.Only_GetInforHoaDon(id);
+                }
             }
         }
 
