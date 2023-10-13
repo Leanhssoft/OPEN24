@@ -430,88 +430,6 @@ namespace libDM_DoiTuong
             }
         }
 
-        public List<BH_HoaDonDTO> CountHoaDonByIDQuiDoiSauOld(Guid? iddv, DateTime? ngayOld)
-        {
-            try
-            {
-                var _ClassDVQD = new classDonViQuiDoi(db);
-                Guid idhanghoa = _ClassDVQD.Get(p => p.ID == iddv).ID_HangHoa;
-                var tbl = from hd in db.BH_HoaDon.Where(x => x.LoaiHoaDon != 3)
-                          join hdct in db.BH_HoaDon_ChiTiet on hd.ID equals hdct.ID_HoaDon
-                          join dvqd in db.DonViQuiDois on hdct.ID_DonViQuiDoi equals dvqd.ID
-                          where dvqd.ID_HangHoa == idhanghoa && hd.NgayLapHoaDon <= ngayOld && hd.ChoThanhToan == false
-                          orderby hd.NgayLapHoaDon, hd.LoaiHoaDon, hd.MaHoaDon
-                          select new BH_HoaDonDTO
-                          {
-                              TienChietKhau = hdct.TienChietKhau,
-                              LoaiHoaDon = hd.LoaiHoaDon,
-                              GiaVon = hdct.GiaVon,
-                              SoLuong = hdct.SoLuong,
-                              YeuCau = hd.YeuCau,
-                              ID_DonVi = hd.ID_DonVi,
-                              ID_CheckIn = hd.ID_CheckIn,
-                              ID_DonViQuiDoi = hdct.ID_DonViQuiDoi,
-                              NgayLapHoaDon = hd.NgayLapHoaDon,
-                              TyLeChuyenDoi = dvqd.TyLeChuyenDoi
-                          };
-                if (tbl != null)
-                {
-                    return tbl.ToList();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                CookieStore.WriteLog("CountHoaDonByIDQuiDoiSauOld " + ex.Message + ex.InnerException);
-                return null;
-            }
-        }
-
-        public List<BH_HoaDonDTO> CountHoaDonByIDQuiDoiCanUpdate(Guid? iddv, DateTime? ngayOld)
-        {
-            try
-            {
-                var _ClassDVQD = new classDonViQuiDoi(db);
-                Guid idhanghoa = _ClassDVQD.Get(p => p.ID == iddv).ID_HangHoa;
-                var tbl = from hd in db.BH_HoaDon.Where(x => x.LoaiHoaDon != 3)
-                          join hdct in db.BH_HoaDon_ChiTiet on hd.ID equals hdct.ID_HoaDon
-                          join dvqd in db.DonViQuiDois on hdct.ID_DonViQuiDoi equals dvqd.ID
-                          where dvqd.ID_HangHoa == idhanghoa && hd.NgayLapHoaDon >= ngayOld && hd.ChoThanhToan == false
-                          orderby hd.NgayLapHoaDon, hd.LoaiHoaDon, hd.MaHoaDon
-                          select new BH_HoaDonDTO
-                          {
-                              ID = hdct.ID,
-                              ID_DonViQuiDoi = hdct.ID_DonViQuiDoi,
-                              MaHoaDon = hd.MaHoaDon,
-                              ID_HoaDon = hd.ID,
-                              NgayLapHoaDon = hd.NgayLapHoaDon,
-                              TienChietKhau = hdct.TienChietKhau,
-                              TongGiamGia = hd.TongGiamGia,
-                              TongTienHang = hd.TongTienHang,
-                              LoaiHoaDon = hd.LoaiHoaDon,
-                              GiaVon = hdct.GiaVon,
-                              SoLuong = hdct.SoLuong,
-                              SoThuTu = hdct.SoThuTu
-                          };
-                if (tbl != null)
-                {
-                    return tbl.OrderByDescending(p => p.SoThuTu).ToList();
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                CookieStore.WriteLog("CountHoaDonByIDQuiDoiCanUpdate " + ex.Message + ex.InnerException);
-                return null;
-            }
-        }
-
         public bool BH_HoaDonExists(Guid id)
         {
             if (db == null)
@@ -1729,6 +1647,22 @@ namespace libDM_DoiTuong
                 {
                     return null;
                 }
+            }
+            catch (Exception e)
+            {
+                CookieStore.WriteLog("GetInforHoaDon_ByID " + e.InnerException + e.Message);
+                return null;
+            }
+        }
+
+        public BH_HoaDonDTO Only_GetInforHoaDon(Guid id)
+        {
+            try
+            {
+                SqlParameter param = new SqlParameter("ID_HoaDon", id);
+                var data = db.Database.SqlQuery<BH_HoaDonDTO>("EXEC GetInforHoaDon_ByID @ID_HoaDon", param).ToList();
+                if (data != null && data.Count > 0) return data.FirstOrDefault();
+                return new BH_HoaDonDTO();
             }
             catch (Exception e)
             {
@@ -5942,15 +5876,9 @@ namespace libDM_DoiTuong
     public class BH_HoaDonDTO
     {
         public Guid? ID { get; set; }
-        public Guid? ID_DonViQuiDoi { get; set; }//?
         public string MaHoaDon { get; set; }
         public string LoaiPhieu { get; set; }
-        public double TyLeChuyenDoi { get; set; }
         public Guid? ID_HoaDon { get; set; }
-        public double TonKho { get; set; }
-        public double TienChietKhau { get; set; }
-        public double SoLuong { get; set; }
-        public double? GiaVon { get; set; }
         public string MaHoaDonGoc { get; set; }
         public Guid? ID_PhieuChi { get; set; }
         public Guid? ID_CheckIn { get; set; }
@@ -6050,7 +5978,7 @@ namespace libDM_DoiTuong
         public string BH_SDT { get; set; }
         public string BH_DiaChi { get; set; }
         public string BH_Email { get; set; }
-        public string Gara_TrangThaiBG { get; set; }
+        public string TrangThaiText { get; set; }
         public double? ConNo { get; set; }
         public double? DaThanhToan { get; set; } // = khach + baohiem da tra
         public double? BaoHiemDaTra { get; set; }
