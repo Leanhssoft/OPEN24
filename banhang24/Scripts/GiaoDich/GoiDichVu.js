@@ -1417,6 +1417,26 @@
                         }, 0);
                         self.TongKhachNo(conno);
                     }
+                    //20230921 - PhuongND - Thêm trường hợp không có dữ liệu hiển thị  không có dữ liệu ở bảng
+                    else {
+                        self.HoaDons(x.dataSoure);
+                        self.TotalRecord(0);
+                        self.PageCount(0);
+
+                        self.TongTienThue(0);
+                        self.TongTienHang(0);
+                        self.TongThanhToan(0);
+                        self.TongGiamGia(0);
+                        self.TongGiamGiaKM(0);
+                        self.TongKhachTra(0);
+                        self.TongTienDoiDiem(0);
+                        self.TongTienTheGTri(0);
+                        self.TongTienMat(0);
+                        self.TongChuyenKhoan(0);
+                        self.TongPOS(0);
+
+                        self.TongKhachNo(0);
+                    }
                 });
             }
 

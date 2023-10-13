@@ -2606,7 +2606,7 @@
     self.InTheoMauInThaoTac = function () {
         var id_mauIn = self.selectedMauInMaVach();
         var sobanghi = self.selectedLoaIn();
-        InListMaVach(self.BH_HoaDonChiTietsThaoTac(), self.selectedGiaBan(), id_mauIn, sobanghi);
+        InListMaVach(self.BH_HoaDonChiTietsThaoTac(), self.selectedGiaBan(), id_mauIn, sobanghi, 4);
     };
 
     function inmavach(sobanghi) {
