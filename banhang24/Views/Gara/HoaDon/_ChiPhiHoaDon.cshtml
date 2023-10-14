@@ -267,28 +267,25 @@
             CTHD_inDB: [],
         },
         methods: {
-            CTHD_GetChiPhiDichVu: function (arrIDHoaDon, type = 1, arrVendor = []) {// 1.update, 2.view
+            CTHD_GetChiPhiDichVu: async function (arrIDHoaDon, arrVendor = []) {// 1.update, 2.view
                 let self = this;
                 let myData = {
                     arrID: arrIDHoaDon,
                     arrIDVendor: arrVendor,
                 }
-                ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'CTHD_GetChiPhiDichVu', 'POST', myData).done(function (x) {
-                    if (x.res) {
+                const xx= await ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'CTHD_GetChiPhiDichVu', 'POST', myData).done()
+                .then(function(x){
+                    if(x.res) {
                         x.dataSoure.map(function (x) {
                             x["IDRandom"] = x.ID_HoaDon_ChiTiet
                             x["IDRandomHD"] = x.ID_HoaDon
                         })
-                        if (type === 2) {
-                            x.dataSoure = x.dataSoure.filter(x => x.ID_NhaCungCap !== null);// chỉ show chi phí đã saveDB
-                        }
-                        self.ListProduct = x.dataSoure;
-                        self.GroupHoaDon();
-                        if (type === 2) {
-                            self.ShowModal(2);
-                        }
+                        return x.dataSoure;
                     }
-                })
+                    return [];
+                });
+                self.ListProduct = xx;
+                self.GroupHoaDon();
             },
             GroupHoaDon: function () {
                 let self = this;
