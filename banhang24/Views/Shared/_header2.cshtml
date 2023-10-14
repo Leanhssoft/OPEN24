@@ -1234,29 +1234,23 @@ var VHeader = new Vue({
     },
     methods:
     {
-        GetQuyenAndMenu: function () {
+        GetQuyenAndMenu: async function () {
             let self = this;
             let myData = {};
             myData.IdNguoiDung = self.IdNguoiDung;
             myData.IdDonVi = self.IdDonVi;
-            $.ajax({
-                url: self.urlApi.HTApi + "InitHeaderMenu",
-                type: 'POST',
-                dataType: 'json',
-                data: myData,
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                success: function (data) {
+            let xx = await ajaxHelper(self.urlApi.HTApi + "InitHeaderMenu", 'POST', myData).done()
+                .then(function (data) {
                     if (data.res === true) {
                         self.Menu = data.dataSoure.Menu;
                         self.Quyen = data.dataSoure.Quyen;
                         localStorage.setItem('lc_CTQuyen', JSON.stringify(self.Quyen));
                     }
                     else {
-                        commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
-                    };
-                    $("#op24-nav >div").css("opacity", "1");
-                }
-            });
+
+                    }
+                });
+            $("#op24-nav >div").css("opacity", "1");
         },
         LoadCaiDat: function () {
             let self = this;
