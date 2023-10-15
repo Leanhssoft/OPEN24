@@ -2226,6 +2226,63 @@
     self.RdoKhauTru = ko.observable(0);
     self.RdoCheTai = ko.observable(0);
     self.InVoiceChosing = ko.observable();
+
+    function Caculator_ChiTietHD(cthdDB = []) {
+        let tongsoluong = cthdDB.reduce(function (x, item) {
+            return x + item.SoLuong;
+        }, 0);
+        let tonggiamgiahang = cthdDB.reduce(function (x, item) {
+            return x + (item.TienChietKhau * item.SoLuong);
+        }, 0);
+        let tongtienhangchuaCK = cthdDB.reduce(function (x, item) {
+            return x + (item.SoLuong * item.DonGia);
+        }, 0);
+        let arrHH = cthdDB.filter(x => x.LaHangHoa);
+        let arrDV = cthdDB.filter(x => x.LaHangHoa === false);
+
+        let tongDV = 0, tongDV_truocVAT = 0, tongDV_truocCK = 0;
+        let tongHH = 0, tongHH_truocVAT = 0, tongHH_truocCK = 0;
+        let DV_tongthue = 0, DV_tongCK = 0, DV_tongSL = 0;
+        let HH_tongthue = 0, HH_tongCK = 0, HH_tongSL = 0;
+        for (let k = 0; k < arrHH.length; k++) {
+            let itFor = arrHH[k];
+            let soluong = formatNumberToFloat(itFor.SoLuong);
+            HH_tongSL += soluong;
+            tongHH += formatNumberToFloat(itFor.ThanhToan);
+            tongHH_truocVAT += RoundDecimal(formatNumberToFloat(itFor.ThanhTien), 3);
+            tongHH_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
+            HH_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
+            HH_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
+        }
+        for (let k = 0; k < arrDV.length; k++) {
+            let itFor = arrDV[k];
+            let soluong = formatNumberToFloat(itFor.SoLuong);
+            DV_tongSL += soluong;
+            tongDV += formatNumberToFloat(itFor.ThanhToan);
+            tongDV_truocVAT += RoundDecimal(formatNumberToFloat(itFor.ThanhTien), 3);
+            tongDV_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
+            DV_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
+            DV_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
+        }
+
+        self.TongSoLuongHang(tongsoluong);
+        self.TongGiamGiaHang(tonggiamgiahang);
+        self.TongTienHangChuaCK(RoundDecimal(tongtienhangchuaCK, 3));
+
+        self.TongTienPhuTung(tongHH);
+        self.TongTienDichVu(tongDV);
+        self.TongTienPhuTung_TruocCK(tongHH_truocCK);
+        self.TongTienDichVu_TruocCK(tongDV_truocCK);
+        self.TongTienPhuTung_TruocVAT(tongHH_truocVAT);
+        self.TongTienDichVu_TruocVAT(tongDV_truocVAT);
+
+        self.TongThue_PhuTung(HH_tongthue);
+        self.TongCK_PhuTung(HH_tongCK);
+        self.TongThue_DichVu(DV_tongthue);
+        self.TongCK_DichVu(DV_tongCK);
+        self.TongSL_DichVu(DV_tongSL);
+        self.TongSL_PhuTung(HH_tongSL);
+    }
     self.LoadChiTietHD = function (item, e) {
         self.InVoiceChosing(item);
         self.Enable_NgayLapHD(item.ChoThanhToan === null || !VHeader.CheckKhoaSo(moment(item.NgayLapHoaDon).format('YYYY-MM-DD'), item.ID_DonVi));
@@ -2294,123 +2351,10 @@
                     } else {
                         data[i].Del = "";
                     }
-                    // USE FOR SPA (add BH_NhanVienThucHien) (only BanHang, not (DatHang + TraHang))
-                    let lstNV_TH = '';
-                    let lstNV_TV = '';
-                    let listBH_NVienThucHienOld = data[i].BH_NhanVienThucHien;
-                    // remove BH_NhanVienThucHien old, and add again
-                    data[i].BH_NhanVienThucHien = [];
-                    for (let j = 0; j < listBH_NVienThucHienOld.length; j++) {
-                        let itemFor = listBH_NVienThucHienOld[j];
-                        // addNvienTuVan_ThucHien
-                        let isNVThucHien = itemFor.ThucHien_TuVan;
-                        let tienCK = itemFor.TienChietKhau;
-                        let gtriPtramCK = itemFor.PT_ChietKhau;
-                        let isPTram = gtriPtramCK > 0 ? true : false;
-                        let gtriCK_TH = 0;
-                        let gtriCK_TV = 0;
-                        let tacVu = 1;
-                        if (isNVThucHien) {
-                            if (isPTram) {
-                                gtriCK_TH = gtriPtramCK;
-                                lstNV_TH += itemFor.TenNhanVien + ', ';
-                            }
-                            else {
-                                gtriCK_TH = tienCK;
-                                lstNV_TH += itemFor.TenNhanVien + ', ';
-                            }
-                        }
-                        else {
-                            tacVu = 2;
-                            if (isPTram) {
-                                gtriCK_TV = gtriPtramCK;
-                                lstNV_TV += itemFor.TenNhanVien + ', ';
-                            }
-                            else {
-                                gtriCK_TV = tienCK;
-                                lstNV_TV += itemFor.TenNhanVien + ', ';
-                            }
-                        }
-                        // add to do fun SaoChep
-                        var idRandom = CreateIDRandom('CKNV_');
-                        var itemNV = {
-                            IDRandom: idRandom,
-                            ID_NhanVien: itemFor.ID_NhanVien,
-                            TenNhanVien: itemFor.TenNhanVien,
-                            ThucHien_TuVan: isNVThucHien,
-                            TacVu: tacVu,
-                            TienChietKhau: tienCK,
-                            TheoYeuCau: itemFor.TheoYeuCau,
-                            PT_ChietKhau: gtriPtramCK,
-                            HeSo: itemFor.HeSo,
-                            TinhChietKhauTheo: itemFor.TinhChietKhauTheo,
-                            TinhHoaHongTruocCK: itemFor.TinhHoaHongTruocCK,
-                        }
-                        data[i].BH_NhanVienThucHien.push(itemNV);
-                    }
-
-                    data[i].GhiChu_NVThucHien = (lstNV_TH === '' ? '' : '- Thực hiện: ' + Remove_LastComma(lstNV_TH));
-                    data[i].GhiChu_NVTuVan = (lstNV_TV === '' ? '' : '- Tư vấn: ' + Remove_LastComma(lstNV_TV));
-                    data[i].GhiChu_NVThucHienPrint = (lstNV_TH === '' ? '' : Remove_LastComma(lstNV_TH));
-                    data[i].GhiChu_NVTuVanPrint = (lstNV_TV === '' ? '' : Remove_LastComma(lstNV_TV));
+                    data[i] = AssignNVThucHien_toCTHD(data[i]);
                 }
                 self.BH_HoaDonChiTiets(data);
                 self.TongSLuong(sluong);
-
-                var tongsoluong = self.BH_HoaDonChiTiets().reduce(function (x, item) {
-                    return x + item.SoLuong;
-                }, 0);
-                var tonggiamgiahang = self.BH_HoaDonChiTiets().reduce(function (x, item) {
-                    return x + (item.TienChietKhau * item.SoLuong);
-                }, 0);
-                var tongtienhangchuaCK = self.BH_HoaDonChiTiets().reduce(function (x, item) {
-                    return x + (item.SoLuong * item.DonGia);
-                }, 0);
-                var arrHH = self.BH_HoaDonChiTiets().filter(x => x.LaHangHoa);
-                var arrDV = self.BH_HoaDonChiTiets().filter(x => x.LaHangHoa === false);
-
-                var tongDV = 0, tongDV_truocVAT = 0, tongDV_truocCK = 0;
-                var tongHH = 0, tongHH_truocVAT = 0, tongHH_truocCK = 0;
-                var DV_tongthue = 0, DV_tongCK = 0, DV_tongSL = 0;
-                var HH_tongthue = 0, HH_tongCK = 0, HH_tongSL = 0;
-                for (let k = 0; k < arrHH.length; k++) {
-                    let itFor = arrHH[k];
-                    let soluong = formatNumberToFloat(itFor.SoLuong);
-                    HH_tongSL += soluong;
-                    tongHH += formatNumberToFloat(itFor.ThanhToan);
-                    tongHH_truocVAT += RoundDecimal(formatNumberToFloat(itFor.ThanhTien), 3);
-                    tongHH_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
-                    HH_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
-                    HH_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
-                }
-                for (let k = 0; k < arrDV.length; k++) {
-                    let itFor = arrDV[k];
-                    let soluong = formatNumberToFloat(itFor.SoLuong);
-                    DV_tongSL += soluong;
-                    tongDV += formatNumberToFloat(itFor.ThanhToan);
-                    tongDV_truocVAT += RoundDecimal(formatNumberToFloat(itFor.ThanhTien), 3);
-                    tongDV_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
-                    DV_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
-                    DV_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
-                }
-
-                self.TongSoLuongHang(tongsoluong);
-                self.TongGiamGiaHang(tonggiamgiahang);
-                self.TongTienHangChuaCK(RoundDecimal(tongtienhangchuaCK, 3));
-
-                self.TongTienPhuTung(tongHH);
-                self.TongTienDichVu(tongDV);
-                self.TongTienPhuTung_TruocCK(tongHH_truocCK);
-                self.TongTienDichVu_TruocCK(tongDV_truocCK);
-                self.TongTienPhuTung_TruocVAT(tongHH_truocVAT);
-                self.TongTienDichVu_TruocVAT(tongDV_truocVAT);
-
-                self.TongThue_PhuTung(HH_tongthue);
-                self.TongCK_PhuTung(HH_tongCK);
-                self.TongThue_DichVu(DV_tongthue);
-                self.TongCK_DichVu(DV_tongCK);
-                self.TongSL_DichVu(DV_tongSL);
-                self.TongSL_PhuTung(HH_tongSL);
             }
             else {
                 self.BH_HoaDonChiTiets(data);
@@ -2426,7 +2370,7 @@
             case 0:
             case 1:
             case 25:
-               // khong lam gi ca
+                // khong lam gi ca
                 break;
             case 3:
                 GetLichSuThanhToan_ofDatHang(item.ID);
@@ -2452,8 +2396,6 @@
                 break;
         }
         GetInfor_PhieuTiepNhan(item.ID_PhieuTiepNhan);
-        GetInforKhachHangFromDB_ByID(item.ID_DoiTuong, 1);
-        GetInforKhachHangFromDB_ByID(item.ID_BaoHiem, 3);
     }
 
     async function GetChiTietHD_fromDB(idHoaDon) {
@@ -2538,7 +2480,7 @@
                 })
                 self.HoaDonDoiTra(data);
 
-               // vmThanhPhanCombo.GetAllCombo_byIDHoaDon(data.ID);
+                // vmThanhPhanCombo.GetAllCombo_byIDHoaDon(data.ID);
             }
             else {
                 self.HoaDonDoiTra([]);
@@ -2650,7 +2592,7 @@
                 });
 
                 if (arrCT.length > 0) {
-                    let objHD = await GetInforHDPrint(forHD, false, arrCT);
+                    let objHD = await GetInforHDPrint(forHD.ID, false, arrCT);
                     let cthdPrint = await GetCTHDPrint_Format(forHD.ID);
                     objHD.BH_HoaDon_ChiTiet = cthdPrint;
                     objHD.CTHoaDonPrintMH = [];
@@ -3097,43 +3039,25 @@
         }
     }
 
+    async function GetMauIn_ByMaLoaiChunghTu(maChungTu) {
+        const data = await ajaxHelper('/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + maChungTu + '&idDonVi=' + id_donvi, 'GET').done()
+            .then(function (result) {
+                return result;
+            });
+        return data;
+    }
+
     self.InHoaDon = async function (item) {
         var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
 
-        var itemHDFormat = await GetInforHDPrint(item, false);
+        var itemHDFormat = await GetInforHDPrint(item.ID, false);
         self.InforHDprintf(itemHDFormat);
 
-        GetMauIn_ByMaLoaiChunghTu(dathangTeamplate);
+        const dataMauIn = await GetMauIn_ByMaLoaiChunghTu(dathangTeamplate);
+        MauInHoaDon_CheckAndBind(dataMauIn);
     }
-    function GetMauIn_ByMaLoaiChunghTu(maChungTu) {
-        $.ajax({
-            url: '/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + maChungTu + '&idDonVi=' + id_donvi,
-            type: 'GET',
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            success: function (result) {
-                let data = result;
-                data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
-                data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
-                data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
-                    + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
-                    + ";var item3=" + JSON.stringify(self.InforHDprintf())
-                    + ";var item4=" + JSON.stringify(self.HangMucSuaChuas())
-                    + ";var item5=" + JSON.stringify(self.VatDungKemTheos())
-                    + "; </script>");
-                data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>"); // MauInTeamplate.js: used to bind data in knockout
-                data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
-                data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
-                data = data.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
-                data = data.replace('{ChuXe_MST}', "<span data-bind=\"text: InforHDprintf().ChuXe_MST\"></span>");
-                data = data.replace('{KH_DaThanhToan_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_BangChu\"></span>");
-                data = data.replace('{KH_DaThanhToan_TruCocBG_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_TruCocBG_BangChu\"></span>");
-                data = data.replace('{KH_DaThanhToan_TruCocBG}', "<span data-bind=\"text: formatNumber(InforHDprintf().KH_DaThanhToan_TruCocBG,0)\"></span>");
-                PrintExtraReport(data); // assign content HTML into frame
-            }
-        });
-    }
+
     self.InHoaDonDoiTra = async function (item) {
         var cthdTraHang = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdTraHang);
@@ -3165,7 +3089,7 @@
         var sumGiamGiaHang = cthdDoiTra.reduce(function (_this, val) {
             return formatNumberToFloat(_this) + formatNumberToFloat(val.TienChietKhau);
         }, 0);
-        var itemHDFormat = await GetInforHDPrint(item, true);
+        var itemHDFormat = await GetInforHDPrint(item.ID, true);
         itemHDFormat.TongGiamGiaHang = formatNumber(sumGiamGiaHang);
 
         self.InforHDprintf(itemHDFormat);
@@ -3208,33 +3132,29 @@
         return objHD;
     }
 
-    async function GetInforHDPrint(objHD, isDoiTraHang = false, arCT = null) {
-        var objPrint = $.extend({}, objHD);
-        var phaiThanhToan = formatNumberToFloat(objHD.PhaiThanhToan);
-        var daThanhToan = formatNumberToFloat(objHD.KhachDaTra);
+    async function GetInforHDPrint(id, isDoiTraHang = false, arCT = null) {
+        const hdDB = await GetInforHD_fromDB(id);
+        var objPrint = $.extend({}, hdDB);
+        var phaiThanhToan = formatNumberToFloat(hdDB.PhaiThanhToan);
+        var daThanhToan = formatNumberToFloat(hdDB.KhachDaTra);
         objPrint.MaHoaDonTraHang = objPrint.MaHoaDonGoc;
         objPrint.TenNhaCungCap = objPrint.TenDoiTuong;
         objPrint.DienThoaiKhachHang = objPrint.DienThoai;
         objPrint.TongTichDiem = formatNumber(objPrint.DiemSauGD);
         objPrint.NhanVienBanHang = objPrint.TenNhanVien;
-        objPrint.TongGiamGia = formatNumber(objHD.TongGiamGia + objHD.KhuyeMai_GiamGia);
+        objPrint.TongGiamGia = formatNumber(hdDB.TongGiamGia + hdDB.KhuyeMai_GiamGia);
         if (objPrint.NgaySinh_NgayTLap !== null) {
-            objPrint.NgaySinh_NgayTLap = moment(objPrint.NgaySinh_NgayTLap).format('DD/MM/YYYY');
+            objPrint.NgaySinh_NgayTLap = moment(hdDB.NgaySinh_NgayTLap).format('DD/MM/YYYY');
         }
-        //var tongcong = formatNumberToFloat(objPrint.TongTienHang) - formatNumberToFloat(objPrint.TongGiamGia)
-        //  - formatNumberToFloat(objPrint.KhuyeMai_GiamGia)
-        // + formatNumberToFloat(objPrint.TongTienThue);
         let tongcong = formatNumberToFloat(objPrint.TongThanhToan);
-
-        objPrint.NgayLapHoaDon = moment(objHD.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
-        objPrint.Ngay = moment(objHD.NgayLapHoaDon).format('DD');
-        objPrint.Thang = moment(objHD.NgayLapHoaDon).format('MM');
-        objPrint.Nam = moment(objHD.NgayLapHoaDon).format('YYYY');
+        objPrint.NgayLapHoaDon = moment(hdDB.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
+        objPrint.Ngay = moment(hdDB.NgayLapHoaDon).format('DD');
+        objPrint.Thang = moment(hdDB.NgayLapHoaDon).format('MM');
+        objPrint.Nam = moment(hdDB.NgayLapHoaDon).format('YYYY');
 
         objPrint.TongTienHang = formatNumber3Digit(objPrint.TongTienHang);
         objPrint.PhaiThanhToan = formatNumber(phaiThanhToan);
         objPrint.DaThanhToan = formatNumber(daThanhToan);
-        objPrint.PhaiThanhToanBaoHiem = formatNumber(objHD.PhaiThanhToanBaoHiem);
         objPrint.DiemGiaoDich = formatNumber(objPrint.DiemGiaoDich);
         objPrint.TienThua = 0;
         objPrint.TongTienThue = formatNumber(objPrint.TongTienThue);
@@ -3243,9 +3163,6 @@
         if (isDoiTraHang) {
             // doi tra hang
             tongcong = tongcong - formatNumberToFloat(objPrint.TongTienTraHang);
-            // {TienTraKhach} --> PhaiTraKhach
-            // {KhachCanTra} --> PhaiThanhToan
-            // {DaThanhToan} --> DaThanhToan
             if (tongcong < 0) {
                 // mua < tra
                 objPrint.PhaiTraKhach = formatNumber(-tongcong);
@@ -3258,9 +3175,9 @@
                 objPrint.PhaiThanhToan = formatNumber(tongcong);
                 objPrint.TongCong = formatNumber(tongcong);
             }
-            objPrint.TongTienTraHang = formatNumber3Digit(objHD.TongTienTraHang);
-            objPrint.TongChiPhi = formatNumber(objHD.PhiTraHang);
-            objPrint.TongTienTra = objHD.TongTienTraHang - objHD.TongTienThue;
+            objPrint.TongTienTraHang = formatNumber3Digit(hdDB.TongTienTraHang);
+            objPrint.TongChiPhi = formatNumber(hdDB.PhiTraHang);
+            objPrint.TongTienTra = hdDB.TongTienTraHang - hdDB.TongTienThue;
             objPrint.TongTienHoaDonMua = objPrint.TongTienHang;
         }
         else {
@@ -3271,10 +3188,13 @@
             objPrint.TongTienTra = formatNumber(tongcong);
         }
         var notruoc = 0, nosau = 0;
-        if (self.ChiTietDoiTuong() !== null && self.ChiTietDoiTuong().length > 0
-            && self.ChiTietDoiTuong()[0].ID !== "00000000-0000-0000-0000-000000000000") {
-            nosau = self.ChiTietDoiTuong()[0].NoHienTai;
-            notruoc = nosau - conno;
+        let customer = {};
+        if (!commonStatisJs.CheckNull(hdDB.ID_DoiTuong)) {
+            customer = await GetInforCus(hdDB.ID_DoiTuong);
+            if (!$.isEmptyObject(customer)) {
+                notruoc = customer.NoHienTai - conno;
+            }
+
             notruoc = notruoc < 0 ? 0 : notruoc;
         }
         else {
@@ -3297,14 +3217,14 @@
 
         objPrint.TienMat = formatNumber3Digit(objPrint.TienMat);
         objPrint.TienATM = formatNumber3Digit(objPrint.TienATM);// in store: assign TienGui = TienATM
-        objPrint.TTBangTienCoc = formatNumber3Digit(objHD.TienDatCoc);
+        objPrint.TTBangTienCoc = formatNumber3Digit(hdDB.TienDatCoc);
         objPrint.TienKhachThieu = formatNumber(conno);
-        objPrint.PhaiThanhToan_TruCocBG = objHD.PhaiThanhToan - objHD.ThuDatHang;
-        objPrint.PhaiThanhToan_TruCoc = objHD.PhaiThanhToan - objHD.ThuDatHang - objHD.TienDatCoc;
+        objPrint.PhaiThanhToan_TruCocBG = hdDB.PhaiThanhToan - hdDB.ThuDatHang;
+        objPrint.PhaiThanhToan_TruCoc = hdDB.PhaiThanhToan - hdDB.ThuDatHang - hdDB.TienDatCoc;
         objPrint.TienKhachThieu_BangChu = DocSo(conno);
         objPrint.KH_DaThanhToan_BangChu = DocSo(daThanhToan);
-        objPrint.KH_DaThanhToan_TruCocBG = daThanhToan - objHD.ThuDatHang;
-        objPrint.KH_DaThanhToan_TruCocBG_BangChu = DocSo(daThanhToan - objHD.ThuDatHang);
+        objPrint.KH_DaThanhToan_TruCocBG = daThanhToan - hdDB.ThuDatHang;
+        objPrint.KH_DaThanhToan_TruCocBG_BangChu = DocSo(daThanhToan - hdDB.ThuDatHang);
 
         // the gia tri
         objPrint.TongTaiKhoanThe = formatNumber(vmThanhToan.theGiaTriCus.TongNapThe);
@@ -3313,29 +3233,23 @@
         objPrint.TienDoiDiem = formatNumber(objPrint.TienDoiDiem);
         objPrint.TienTheGiaTri = formatNumber(objPrint.ThuTuThe);
 
-
-        objPrint.BH_MaSoThue = '';
-        if (!commonStatisJs.CheckNull(objHD.ID_BaoHiem)) {
-            let baohiem = await GetInforCus(objHD.ID_BaoHiem);
-            objPrint.BH_MaSoThue = baohiem.MaSoThue;
-        }
         let pthuc = '';
-        if (formatNumberToFloat(objHD.TienMat) > 0) {
+        if (formatNumberToFloat(hdDB.TienMat) > 0) {
             pthuc += 'Tiền mặt, ';
         }
-        if (formatNumberToFloat(objHD.TienATM) > 0) {
+        if (formatNumberToFloat(hdDB.TienATM) > 0) {
             pthuc += 'POS, ';
         }
-        if (formatNumberToFloat(objHD.ChuyenKhoan) > 0) {
+        if (formatNumberToFloat(hdDB.ChuyenKhoan) > 0) {
             pthuc += 'Chuyển khoản, ';
         }
-        if (formatNumberToFloat(objHD.ThuTuThe) > 0) {
+        if (formatNumberToFloat(hdDB.ThuTuThe) > 0) {
             pthuc += 'Thẻ giá trị, ';
         }
-        if (formatNumberToFloat(objHD.TienDoiDiem) > 0) {
+        if (formatNumberToFloat(hdDB.TienDoiDiem) > 0) {
             pthuc += 'Điểm, ';
         }
-        if (formatNumberToFloat(objHD.TienDatCoc) > 0) {
+        if (formatNumberToFloat(hdDB.TienDatCoc) > 0) {
             pthuc += 'Tiền cọc, ';
         }
         objPrint.PhuongThucTT = Remove_LastComma(pthuc);
@@ -3361,7 +3275,7 @@
         objPrint.TongTienPhuTung_TruocVAT = formatNumber(self.TongTienPhuTung_TruocVAT());
         objPrint.TongTienPhuTung_TruocCK = formatNumber(self.TongTienPhuTung_TruocCK());
         objPrint.TongTienHangChuaCK = formatNumber(self.TongTienHangChuaCK());
-        objPrint.TongGiamGiaHD_HH = formatNumber(self.TongGiamGiaHang() + objHD.TongGiamGia + objHD.KhuyeMai_GiamGia);
+        objPrint.TongGiamGiaHD_HH = formatNumber(self.TongGiamGiaHang() + hdDB.TongGiamGia + hdDB.KhuyeMai_GiamGia);
         objPrint.TongTienHDSauGiamGia = formatNumber3Digit(formatNumberToFloat(objPrint.TongTienHang) - objPrint.TongGiamGiaKM_HD);
 
         objPrint.TongThue_PhuTung = self.TongThue_PhuTung();
@@ -3372,29 +3286,20 @@
         objPrint.TongSL_PhuTung = self.TongSL_PhuTung();
 
         // gara
-        objPrint.BH_TenLienHe = objHD.LienHeBaoHiem;
-        objPrint.BH_SDTLienHe = objHD.SoDienThoaiLienHeBaoHiem;
+        objPrint.BH_TenLienHe = hdDB.LienHeBaoHiem;
+        objPrint.BH_SDTLienHe = hdDB.SoDienThoaiLienHeBaoHiem;
 
-        objPrint.TongTienBHDuyet = formatNumber(objHD.TongTienBHDuyet);
-        objPrint.KhauTruTheoVu = formatNumber(objHD.KhauTruTheoVu);
-        objPrint.GiamTruBoiThuong = formatNumber(objHD.GiamTruBoiThuong);
-        objPrint.BHThanhToanTruocThue = formatNumber(objHD.BHThanhToanTruocThue);
-        objPrint.TongTienThueBaoHiem = formatNumber3Digit(objHD.TongTienThueBaoHiem, 0);
-        objPrint.BH_TienBangChu = DocSo(objHD.PhaiThanhToanBaoHiem);
+        objPrint.TongTienBHDuyet = formatNumber(hdDB.TongTienBHDuyet);
+        objPrint.KhauTruTheoVu = formatNumber(hdDB.KhauTruTheoVu);
+        objPrint.GiamTruBoiThuong = formatNumber(hdDB.GiamTruBoiThuong);
+        objPrint.BHThanhToanTruocThue = formatNumber(hdDB.BHThanhToanTruocThue);
+        objPrint.TongTienThueBaoHiem = formatNumber3Digit(hdDB.TongTienThueBaoHiem, 0);
+        objPrint.BH_TienBangChu = DocSo(hdDB.PhaiThanhToanBaoHiem);
         objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCoc);
-        objPrint.BH_ConThieu = formatNumber3Digit(objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra);
-        objPrint.BH_ConThieu_BangChu = DocSo(objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra);
+        objPrint.BH_ConThieu = formatNumber3Digit(hdDB.PhaiThanhToanBaoHiem - hdDB.BaoHiemDaTra);
+        objPrint.BH_ConThieu_BangChu = DocSo(hdDB.PhaiThanhToanBaoHiem - hdDB.BaoHiemDaTra);
 
-        let bh_notruoc = 0, bh_nosau = 0;
-        if (self.InforBaoHiem() !== null && self.InforBaoHiem().length > 0) {
-            bh_nosau = self.InforBaoHiem()[0].NoHienTai;
-            bh_notruoc = bh_nosau - objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra;
-            bh_notruoc = bh_notruoc < 0 ? 0 : bh_notruoc;
-        }
-        objPrint.BH_NoTruoc = bh_notruoc;
-        objPrint.BH_NoSau = bh_nosau;
-
-        if (commonStatisJs.CheckNull(objHD.ID_PhieuTiepNhan)) {
+        if (commonStatisJs.CheckNull(hdDB.ID_PhieuTiepNhan)) {
             let cthd = [];
             if (arCT !== null) {
                 cthd = $.grep(arCT, function (x) {
@@ -3465,17 +3370,10 @@
                 objPrint.TenLoaiXe = tn.TenLoaiXe;
                 objPrint.TenMauXe = tn.TenMauXe;
                 objPrint.TenLienHe = tn.TenLienHe;
-
-                let chuxe_MST = '';
-                if (!commonStatisJs.CheckNull(tn.ID_ChuXe)) {
-                    const chuxe = await GetInforCus(tn.ID_ChuXe);
-                    if (!$.isEmptyObject(chuxe)) {
-                        chuxe_MST = chuxe.MaSoThue;
-                    }
-                }
-                objPrint.ChuXe_MST = chuxe_MST;
+                objPrint.ID_ChuXe = tn.ID_ChuXe;
             }
         }
+        console.log('objPrint ', objPrint.ID_DoiTuong, 'bhiem', objPrint.ID_BaoHiem, 'ptn', objPrint.ID_ChuXe)
         return objPrint;
     }
     function GetInforCongTy() {
@@ -3486,8 +3384,10 @@
         });
     }
     async function GetCTHDPrint_Format(idHoaDon) {
-        const cthdDB = await GetInforHD_fromDB(idHoaDon);
+        const cthdDB = await GetChiTietHD_fromDB(idHoaDon);
         const allCombo = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(idHoaDon);
+
+        Caculator_ChiTietHD(cthdDB);
 
         var arrCTHD = [];
         var thuocTinh = '';
@@ -3520,6 +3420,7 @@
             // nvthuchien, tuvan co in %ck 
             let th_CoCK = '';
             let tv_CoCK = '';
+            itFor = AssignNVThucHien_toCTHD(itFor);
             if (itFor.BH_NhanVienThucHien != null) {
                 for (let j = 0; j < itFor.BH_NhanVienThucHien.length; j++) {
                     let for2 = itFor.BH_NhanVienThucHien[j];
@@ -3547,11 +3448,11 @@
 
             itFor.NgaySanXuat = '';
             itFor.NgayHetHan = '';
-            if (!commonStatisJs.CheckNull(arr[i].NgaySanXuat)) {
-                itFor.NgaySanXuat = moment(arr[i].NgaySanXuat).format('DD/MM/YYYY');
+            if (!commonStatisJs.CheckNull(cthdDB[i].NgaySanXuat)) {
+                itFor.NgaySanXuat = moment(cthdDB[i].NgaySanXuat).format('DD/MM/YYYY');
             }
-            if (!commonStatisJs.CheckNull(arr[i].NgayHetHan)) {
-                itFor.NgayHetHan = moment(arr[i].NgayHetHan).format('DD/MM/YYYY');
+            if (!commonStatisJs.CheckNull(cthdDB[i].NgayHetHan)) {
+                itFor.NgayHetHan = moment(cthdDB[i].NgayHetHan).format('DD/MM/YYYY');
             }
             arrCTHD.push(itFor);
         }
@@ -3563,7 +3464,6 @@
         });
         return arrCTHD;
     }
-
 
     self.XuLiDonHang = async function (item) {
         localStorage.setItem('createHDfrom', 2);
@@ -4681,38 +4581,70 @@
             }
         });
     }
+
+    async function MauInHoaDon_CheckAndBind(dataMauIn) {
+        if (dataMauIn.includes('{ChuXe_MST}')) {
+            let chuxe_MST = '';
+            if (!commonStatisJs.CheckNull(self.InforHDprintf().ID_ChuXe)) {
+                const chuxe = await GetInforCus(self.InforHDprintf().ID_ChuXe);
+                if (!$.isEmptyObject(chuxe)) {
+                    chuxe_MST = chuxe.MaSoThue;
+                }
+            }
+            self.InforHDprintf().ChuXe_MST = chuxe_MST;
+        }
+
+        if (dataMauIn.includes('{BH_NoTruoc}') || dataMauIn.includes('{BH_NoSau}') || dataMauIn.includes('{BH_MaSoThue}')) {
+            let baohiem = {}, bh_notruoc = 0, bh_nosau = 0, bh_masothue = '';
+            if (!commonStatisJs.CheckNull(self.InforHDprintf().ID_BaoHiem)) {
+                baohiem = await GetInforCus(self.InforHDprintf().ID_BaoHiem);
+            }
+            if (!$.isEmptyObject(baohiem)) {
+                bh_masothue = baohiem.MaSoThue;
+                bh_nosau = baohiem.NoHienTai;
+                bh_notruoc = bh_nosau - self.InforHDprintf().PhaiThanhToanBaoHiem - self.InforHDprintf().BaoHiemDaTra;
+                bh_notruoc = bh_notruoc < 0 ? 0 : bh_notruoc;
+            }
+            self.InforHDprintf().BH_NoTruoc = bh_notruoc;
+            self.InforHDprintf().BH_NoSau = bh_nosau;
+            self.InforHDprintf().BH_MaSoThue = bh_masothue;
+        }
+
+        dataMauIn = dataMauIn.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+        dataMauIn = dataMauIn.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
+        dataMauIn = dataMauIn.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
+            + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
+            + "; var item3=" + JSON.stringify(self.InforHDprintf())
+            + "; var item4=" + JSON.stringify(self.HangMucSuaChuas())
+            + "; var item5=" + JSON.stringify(self.VatDungKemTheos())
+            + "; </script>");
+        dataMauIn = dataMauIn.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
+        dataMauIn = dataMauIn.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
+        dataMauIn = dataMauIn.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
+        dataMauIn = dataMauIn.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
+        dataMauIn = dataMauIn.replace('{KH_DaThanhToan_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_BangChu\"></span>");
+        dataMauIn = dataMauIn.replace('{KH_DaThanhToan_TruCocBG_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_TruCocBG_BangChu\"></span>");
+        dataMauIn = dataMauIn.replace('{KH_DaThanhToan_TruCocBG}', "<span data-bind=\"text: formatNumber(InforHDprintf().KH_DaThanhToan_TruCocBG,0)\"></span>");
+        dataMauIn = dataMauIn.replace('{ChuXe_MST}', "<span data-bind=\"text: InforHDprintf().ChuXe_MST\"></span>");
+        PrintExtraReport(dataMauIn);
+    }
+
+    async function GetMauIn_byID(id) {
+        const data = await ajaxHelper('/api/DanhMuc/ThietLapApi/GetContentFIlePrint?idMauIn=' + id, 'GET').done()
+            .then(function (result) {
+                return result;
+            });
+        return data;
+    }
     self.PrinDatHang = async function (item, key) {
         var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
 
-        var itemHDFormat = await GetInforHDPrint(item, false);
+        var itemHDFormat = await GetInforHDPrint(item.ID, false);
         self.InforHDprintf(itemHDFormat);
-        $.ajax({
-            url: '/api/DanhMuc/ThietLapApi/GetContentFIlePrint?idMauIn=' + key,
-            type: 'GET',
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            success: function (result) {
-                var data = result;
-                data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
-                data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
-                data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
-                    + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
-                    + "; var item3=" + JSON.stringify(itemHDFormat)
-                    + "; var item4=" + JSON.stringify(self.HangMucSuaChuas())
-                    + "; var item5=" + JSON.stringify(self.VatDungKemTheos())
-                    + "; </script>");
-                data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
-                data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
-                data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
-                data = data.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
-                data = data.replace('{KH_DaThanhToan_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_BangChu\"></span>");
-                data = data.replace('{KH_DaThanhToan_TruCocBG_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_TruCocBG_BangChu\"></span>");
-                data = data.replace('{KH_DaThanhToan_TruCocBG}', "<span data-bind=\"text: formatNumber(InforHDprintf().KH_DaThanhToan_TruCocBG,0)\"></span>");
-                data = data.replace('{ChuXe_MST}', "<span data-bind=\"text: InforHDprintf().ChuXe_MST\"></span>");
-                PrintExtraReport(data);
-            }
-        });
+
+        const dataMauIn = await GetMauIn_byID(key);
+        MauInHoaDon_CheckAndBind(dataMauIn);
     }
     self.Print_ListTempDoiTra = async function (item, key) {
         var cthdTraHang = await GetCTHDPrint_Format(item.ID);
@@ -4769,7 +4701,7 @@
         var sumGiamGiaHang = item.BH_HoaDon_ChiTiet.reduce(function (_this, val) {
             return formatNumberToFloat(_this) + formatNumberToFloat(val.TienChietKhau);
         }, 0);
-        var itemHDFormat = await GetInforHDPrint(item, true);
+        var itemHDFormat = await GetInforHDPrint(item.ID, true);
         item.TongGiamGiaHang = formatNumber(sumGiamGiaHang);
         self.InforHDprintf(itemHDFormat);
         $.ajax({
@@ -4821,34 +4753,6 @@
             return xx;
         }
         return {};
-    }
-
-    // used to get NoHienTai when pritn hoadon
-    function GetInforKhachHangFromDB_ByID(id, loaiDoiTuong = 1) {
-        var date = moment(new Date()).format('YYYY-MM-DD HH:mm');
-        if (navigator.onLine && id !== null && id !== const_GuidEmpty) {
-            ajaxHelper(DMDoiTuongUri + "GetInforKhachHang_ByID?idDoiTuong=" + id + '&idChiNhanh=' + id_donvi
-                + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function (data) {
-                    if (data !== null) {
-                        switch (loaiDoiTuong) {
-                            case 1:
-                                self.ChiTietDoiTuong(data);
-                                break;
-                            case 3:
-                                self.InforBaoHiem(data);
-                                break;
-                        }
-                    }
-                    else {
-                        self.InforBaoHiem([]);
-                        self.ChiTietDoiTuong([]);
-                    }
-                });
-        }
-        else {
-            self.InforBaoHiem([]);
-            self.ChiTietDoiTuong([]);
-        }
     }
 
     function Insert_ManyNhom(lstNhom) {
@@ -5161,7 +5065,7 @@
             self.KM_KMApDung(listKM);
         }
     }
-    function CheckKM_IsApDung(idNhanVien) {
+    function CheckKM_IsApDung(idNhanVien, itemHD) {
         var isApDung = false;
         var dtNow = new Date();
         var _month = (dtNow.getMonth() + 1).toString(); // 1-12 (+1 because getMoth() return 0-11)
@@ -5169,17 +5073,11 @@
         var _hours = (dtNow.getHours()).toString(); // 1-24
         var _day = (dtNow.getDay() + 1).toString(); // mon:2, tues:3, wed:4, thur:5, fri:6, sat: 7, sun: 8
         var _weekofMonth = Math.ceil(dtNow.getDate() / 7); // get week of Month ( 1- 5);
-        var idNhomKH = null;
-        var ngaysinhFull = 0;
+        var idNhomKH = itemHD.IDNhomDoiTuongs;
+        var ngaysinhFull = itemHD.NgaySinh_NgayTLap;
         var ngaysinh = 0;
         var thangsinh = 0;
         var tuansinh = 0;
-        var ctDoiTuong = self.ChiTietDoiTuong();
-        // if chose KH --> get idNhomKH + ngaysinh
-        if (ctDoiTuong !== null && ctDoiTuong.length > 0) {
-            idNhomKH = ctDoiTuong[0].ID_NhomDoiTuong.toLowerCase();
-            ngaysinhFull = ctDoiTuong[0].NgaySinh_NgayTLap;
-        }
         if (ngaysinhFull !== 0 && ngaysinhFull !== null) {
             var dtNgaySinh = new Date(moment(ngaysinhFull).format('YYYY-MM-DD')); // must format 'YYYY-MM-DD'
             // get day, moth from dayFull
@@ -5194,7 +5092,7 @@
             var xItem = self.KM_KMApDung()[i];
             if (xItem.ApDungNgaySinh !== 0) {
                 // if chose KH
-                if (ctDoiTuong !== null && ctDoiTuong.length > 0) {
+                if (!commonStatisJs.CheckNull(itemHD.ID_DoiTuong) && itemHD.ID_DoiTuong !== const_GuidEmpty) {
                     // check ID_NhanVien, ID_nhomKH
                     if ((xItem.Months.length === 0 || $.inArray(_month, xItem.Months) > -1)
                         && (xItem.Dates.length === 0 || $.inArray(_date, xItem.Dates) > -1)
@@ -5407,7 +5305,6 @@
     }
 
     async function GetInforHD_fromDB(id) {
-        //const xx = await ;
         if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
             let xx = await ajaxHelper(BH_HoaDonUri + "Get_InforHoaDon_byID?id=" + id + '&getCTHD=false', 'GET').done()
                 .then(function (data) {
@@ -5665,7 +5562,7 @@
                     let itemKM = $.grep(self.KM_KMApDung(), function (x) {
                         return x.ID_KhuyenMai === idKhuyenMai;
                     });
-                    if (self.ThietLap().KhuyenMai === true && CheckKM_IsApDung(hdDB.ID_NhanVien) && itemKM.length > 0) {
+                    if (self.ThietLap().KhuyenMai === true && CheckKM_IsApDung(hdDB.ID_NhanVien, hdDB) && itemKM.length > 0) {
                         // if TangKem of HoaDon (ID_TangKem = null, ID_KhuyenMai !=null)
                         // if TangKem of HangHoa (ID_TangKem = ID_QuiDoi of HangTang, ID_KhuyenMai == null)
                         // save cache KhuyenMai of HoaDon
@@ -5999,7 +5896,7 @@
                     return x.ID_KhuyenMai === hdDB.ID_KhuyenMai;
                 })
                 // if not exist KM in hangKM _HoaDon
-                if (exitsKM2.length === 0 && self.ThietLap().KhuyenMai === true && CheckKM_IsApDung(hdDB.ID_NhanVien) && itemKM.length > 0) {
+                if (exitsKM2.length === 0 && self.ThietLap().KhuyenMai === true && CheckKM_IsApDung(hdDB.ID_NhanVien, newHD) && itemKM.length > 0) {
                     // find CTKhuyenMai was ApDung in this HoaDon
                     let tongTienHang = 0;
                     let isGiamGiaPT = 0;
@@ -6334,7 +6231,7 @@
             DaThuTruoc: daTT,
             ConNo: tongTT - butruTra - daTT,
         }
-        vmHoaHongHoaDon.GetChietKhauHoaDon_byID(obj);
+        await vmHoaHongHoaDon.GetChietKhauHoaDon_byID(obj);
         vmHoaHongHoaDon.showModalUpdate(obj);
     }
 
@@ -6359,7 +6256,7 @@
     }
 
     self.NhapHang = async function (item) {
-        const cthdDB = await self.GetChiTietHD_fromDB(item.ID);
+        const cthdDB = await GetChiTietHD_fromDB(item.ID);
         if (cthdDB.length === 0) return;
         const allComboHD = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(item.ID);
 
