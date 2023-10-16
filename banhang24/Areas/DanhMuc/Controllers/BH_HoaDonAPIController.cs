@@ -1670,7 +1670,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
         #endregion
 
-        //Load all CT thao tác chi tiết phiếu
+        // used at nhaphang + trahangnhap
         public List<BH_HoaDon_ChiTietDTO> GetChiTietHD_byIDHoaDon(Guid idHoaDon, Guid iddonvi)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
