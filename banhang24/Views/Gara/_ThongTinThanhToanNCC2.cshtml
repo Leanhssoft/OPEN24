@@ -573,7 +573,7 @@
 
                 let cpVCbenthu3 = 0;
                 let benVC = self.Get_benVanChuyen(idRandom);
-                if (benVC.length > 0) {
+                if (benVC.length > 0 && benVC[0].ID_DoiTuong !==  itemHD[0].ID_DoiTuong) {
                     self.inforHoaDon.ID_NhaCungCap = benVC[0].ID_DoiTuong;
                     cpVCbenthu3 = itemHD[0].TongChiPhi;
                 }
