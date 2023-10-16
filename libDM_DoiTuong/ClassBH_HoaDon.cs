@@ -5950,7 +5950,8 @@ namespace libDM_DoiTuong
         public string HanSuDungGoiDV { get; set; }
         public double? TongThuHoaDon { get; set; } // use when XuLyHD nhung khong HoanTraTamUng
         public double? ThuTuThe { get; set; } // use when TraHang from HD (get Tien ThuTuTheGiaTri) + print HoaDon
-        public DateTime? NgaySinh_NgayTLap { get; set; } // use when printHoaDon
+        public DateTime? NgaySinh_NgayTLap { get; set; } // use when check KhuyenMai
+        public string IDNhomDoiTuongs { get; set; } // use when check KhuyenMai
         public double? TienDoiDiem { get; set; }
         public double? TienDatCoc { get; set; }
         public int? SoLuongKhachHang { get; set; }

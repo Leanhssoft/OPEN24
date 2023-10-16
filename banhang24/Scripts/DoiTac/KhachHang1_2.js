@@ -4510,7 +4510,7 @@
     self.NKyCoc_ShowPopupInforHD = function (item) {
         vmChiTietHoaDon.showModalChiTietHoaDon(item.ID_HoaDonGoc);
     }
-    self.ShowPopup_InforHD_PhieuThu = function (item) {
+    self.ShowPopup_InforHD_PhieuThu = async function (item) {
         self.LoaiHoaDon_MoPhieu(item.LoaiHoaDon);
         self.MaHoaDon_MoPhieu(item.MaHoaDon);
         switch (item.LoaiHoaDon) {
@@ -4539,7 +4539,8 @@
                 break;
             case 125: // chiphidichvu
                 if (loaiDoiTuong === 2) {
-                    VueChiPhi.CTHD_GetChiPhiDichVu([item.ID], 2, [self.IDDT()]);
+                   await  VueChiPhi.CTHD_GetChiPhiDichVu([item.ID], [self.IDDT()]);
+                   VueChiPhi.ShowModal(2);
                 }
                 break;
             case 124: // chiphi vanchuyen (ben thu3)

@@ -50,7 +50,7 @@ namespace Model_banhang24vn.DAL
         {
             var data = from brand in Query
                        join sms in _SupplierSmService.All() on brand.ID_SupplierSms equals sms.ID
-                       where brand.Status != 0 && brand.SoDienThoaiCuaHang == str
+                       where brand.Status != 0 //&& brand.SoDienThoaiCuaHang == str
                        orderby brand.CreateDate descending
                        select new RegisterServiceSmDTO()
                        {

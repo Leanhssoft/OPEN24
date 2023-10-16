@@ -1881,7 +1881,6 @@
             quyhd.TienDoiDiem = formatNumber3Digit(obj.TTBangDiem);
             quyhd.KhoanMucThuChi = self.ddl_textVal.khoanthu;
             quyhd.TienMat_BangChu = DocSo(obj.TienMat);
-            console.log(quyhd.TienMat_BangChu ,obj.TienMat)
             quyhd.ChuyenKhoan_BangChu = DocSo(obj.TienChuyenKhoan);
             quyhd.TienPOS_BangChu = DocSo(obj.TienPOS);
 
@@ -1953,12 +1952,13 @@
         },
 
         // hoahong nv hoadon
-        showModalDiscount: function (item) {
+        showModalDiscount: async function (item) {
             var self = this;
             self.UpdateThucThu_EachHoaDonDebit();
 
             if (self.typeUpdate === 1) {
-                vmHoaHongHoaDon.GetChietKhauHoaDon_byID(item, self.newPhieuThu);
+                await vmHoaHongHoaDon.GetChietKhauHoaDon_byID(item, self.newPhieuThu);
+                vmHoaHongHoaDon.showModalUpdate(item);
             }
             else {
                 for (let i = 0; i < self.listData.HoaDons.length; i++) {

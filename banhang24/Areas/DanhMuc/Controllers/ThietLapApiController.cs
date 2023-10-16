@@ -693,8 +693,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 temptable2 = Replace_ThongTinHangHoa(temptable2);
                 content1 = content1.Replace(temptableMH, temptable2);
 
-                content1 = content1.Replace("{TongTienTraHang}", "<span data-bind=\"text: InforHDprintf().TongTienTraHang\"></span>");
-                content1 = content1.Replace("{TongTienHoaDonMua}", "<span data-bind=\"text: InforHDprintf().TongTienHoaDonMua\"></span>");
+                content1 = content1.Replace("{TongTienTraHang}", "<span data-bind=\"text: formatNumber(InforHDprintf().TongTienTraHang)\"></span>");
+                content1 = content1.Replace("{TongTienHoaDonMua}", "<span data-bind=\"text: formatNumber(InforHDprintf().TongTienHoaDonMua)\"></span>");
                 content1 = content1.Replace("{TienTraKhach}", "<span data-bind=\"text: formatNumber(InforHDprintf().PhaiTraKhach)\"></span>");
             }
             else

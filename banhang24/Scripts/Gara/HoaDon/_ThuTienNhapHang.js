@@ -583,6 +583,7 @@
                 // ncc
                 let invoice = [];
                 if (item.ID === self.HoaDonChosing.ID_DoiTuong) {
+                    khachCanTra = khachCanTra + dachi_benVCKhac;
                     invoice = [{
                         ID: self.HoaDonChosing.ID,
                         MaHoaDon: self.HoaDonChosing.MaHoaDon,

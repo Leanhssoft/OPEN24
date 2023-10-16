@@ -1680,7 +1680,11 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 return lst;
             }
         }
-
+        /// <summary>
+        /// get cthd: donvitinh (not hoahong nv + tpdl)
+        /// </summary>
+        /// <param name="idHoaDon"></param>
+        /// <returns></returns>
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public List<BH_HoaDon_ChiTietDTO> SP_GetChiTietHD_byIDHoaDon(Guid idHoaDon)
         {
@@ -1691,7 +1695,11 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 return lst;
             }
         }
-
+        /// <summary>
+        /// get full cthd: hoahong nv + tpdl + donvitinh
+        /// </summary>
+        /// <param name="idHoaDon"></param>
+        /// <returns></returns>
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public List<BH_HoaDon_ChiTietDTO> SP_GetChiTietHD_byIDHoaDon_ChietKhauNV(Guid idHoaDon)
         {

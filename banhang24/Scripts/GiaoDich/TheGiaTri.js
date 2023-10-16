@@ -1494,7 +1494,8 @@
             DaThuTruoc: daTT,
             ConNo: phaiTT - daTT,
         }
-        vmHoaHongHoaDon.GetChietKhauHoaDon_byID(obj);
+      await vmHoaHongHoaDon.GetChietKhauHoaDon_byID(obj);
+        vmHoaHongHoaDon.showModalUpdate(obj);
     }
 
     self.ShowPopup_InforHD_PhieuThu = function (item, itHD) {
