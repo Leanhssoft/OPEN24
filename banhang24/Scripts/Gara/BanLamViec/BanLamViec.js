@@ -1479,7 +1479,6 @@ var workTable = new Vue({
             }
         },
         GetInforHD_fromDB: async function (id) {
-            //const xx = await ;
             if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
                 let xx = await ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + "Get_InforHoaDon_byID?id=" + id + '&getCTHD=false', 'GET').done()
                     .then(function (data) {
@@ -1788,7 +1787,6 @@ var workTable = new Vue({
                     TenChiNhanh: self.TenDonVi,
                 };
             }
-            item.DienThoai = item.DienThoaiKhachHang;
             vmThanhToan.listData.AccountBanks = self.listData.AccountBanks;
             vmThanhToan.listData.KhoanThuChis = self.listData.KhoanThuChis.filter(x => x.LaKhoanThu);
 
@@ -1844,14 +1842,14 @@ var workTable = new Vue({
             let cus_DebitHD = hdChosing.PhaiThanhToan - hdChosing.KhachDaTra;
 
             let cus = await self.GetinforCus_byID(hdChosing.ID_DoiTuong);
-            let cus_NoHienTai = 0, bh_NoHienTai = 0, cus_Email = '', cus_DienThoai= '';
+            let cus_NoHienTai = 0, bh_NoHienTai = 0, cus_Email = '', cus_DienThoai = '';
             let bh_masothue = '';
             if (!$.isEmptyObject(cus)) {
                 cus_NoHienTai = cus.NoHienTai;
                 cus_Email = cus.Email;
                 cus_DienThoai = cus.DienThoai;
             }
-           
+
             let cus_DebitOld = cus_NoHienTai - cus_DebitHD;
             cus_DebitOld = cus_DebitOld < 0 ? 0 : cus_DebitOld;
 
