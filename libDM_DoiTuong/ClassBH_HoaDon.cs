@@ -2058,68 +2058,94 @@ namespace libDM_DoiTuong
             var _ClassDVQD = new classDonViQuiDoi(db);
             SqlParameter param = new SqlParameter("ID_HoaDon", id);
             List<BH_HoaDon_ChiTietDTO> data = db.Database.SqlQuery<BH_HoaDon_ChiTietDTO>("EXEC GetChiTietHoaDon_ByIDHoaDon @ID_HoaDon", param).ToList();
-            data = data.Select(p => new BH_HoaDon_ChiTietDTO()
-            {
-                ID = p.ID,
-                ID_HoaDon = p.ID_HoaDon,
-                DonGia = p.DonGia,
-                GiaVon = p.GiaVon ?? 0,
-                SoLuong = p.SoLuong,
-                SoLuongConLai = p.SoLuongConLai,// used to check nhapmua from PO
-                SoThuTu = p.SoThuTu,
-                ThanhTien = p.ThanhTien,
-                TienChietKhau = p.GiamGia,
-                ThanhToan = p.ThanhToan,
-                TienThue = p.TienThue,
-                ID_DonViQuiDoi = p.ID_DonViQuiDoi,
-                ID_HangHoa = p.ID_HangHoa,
-                TenDonViTinh = p.TenDonViTinh,
-                MaHangHoa = p.MaHangHoa,
-                GiamGia = p.GiamGia,
-                PTChietKhau = p.PTChietKhau,
-                PTThue = p.PTThue,
-                GiaBan = p.DonGia - p.TienChietKhau,
-                GiaBanHH = p.GiaBanHH,
-                ThoiGian = p.ThoiGian,
-                GhiChu = p.GhiChu,
-                ID_KhuyenMai = p.ID_KhuyenMai, // use show/hide icon KMai in lstCTHD
-                ThuocTinh_GiaTri = p.ThuocTinh_GiaTri,
-                TenHangHoaFull = p.TenHangHoaFull,
-                TenHangHoaThayThe = p.TenHangHoaThayThe,
-                LaHangHoa = p.LaHangHoa,
-                QuanLyTheoLoHang = p.QuanLyTheoLoHang,
-                TenHangHoa = p.TenHangHoa,
-                TyLeChuyenDoi = p.TyLeChuyenDoi,
-                YeuCau = p.YeuCau,
-                ID_LoHang = p.ID_LoHang,
-                MaLoHang = p.MaLoHang,
-                TonKho = p.TonKho,
-                ID_DonVi = p.ID_DonVi,
-                GiaNhap = p.GiaNhap,
-                GiaBanMaVach = p.GiaBanMaVach,
-                LaDonViChuan = p.LaDonViChuan,
-                ID_NhomHangHoa = p.ID_NhomHangHoa,
-                QuyCach = p.QuyCach,
-                PhiDichVu = p.PhiDichVu,
-                LaPTPhiDichVu = p.LaPTPhiDichVu,
-                NgayHetHan = p.NgayHetHan,
-                NgaySanXuat = p.NgaySanXuat,
-                DuocTichDiem = p.DuocTichDiem,
-                DichVuTheoGio = p.DichVuTheoGio,
-                ID_LichBaoDuong = p.ID_LichBaoDuong,
-                LoaiHangHoa = p.LoaiHangHoa,
-                HoaHongTruocChietKhau = p.HoaHongTruocChietKhau,
-                ViTriKho = p.ViTriKho,
-                DonViTinh = _ClassDVQD.Gets(ct => ct.ID_HangHoa == p.ID_HangHoa && ct.Xoa != true).Select(x => new DonViTinh
+
+            var arrIDHangHoa = data.Select(x => x.ID_HangHoa).ToList();
+            List<DonViTinh> lstDVT = db.DonViQuiDois.Where(x => arrIDHangHoa.Contains(x.ID_HangHoa) && x.Xoa != true)
+                .Select(x => new DonViTinh
                 {
-                    ID_HangHoa = p.ID_HangHoa,
+                    ID = x.ID,
+                    ID_HangHoa = x.ID_HangHoa,
                     TenDonViTinh = x.TenDonViTinh,
                     ID_DonViQuiDoi = x.ID,
-                    QuanLyTheoLoHang = p.QuanLyTheoLoHang,
                     Xoa = false,
                     TyLeChuyenDoi = x.TyLeChuyenDoi
-                }).ToList(),
-            }).ToList();
+                }).ToList();
+
+            foreach (var item in data)
+            {
+                item.DonViTinh = lstDVT.Where(ct => ct.ID_HangHoa == item.ID_HangHoa)
+                            .Select(x => new DonViTinh
+                            {
+                                ID_HangHoa = item.ID_HangHoa,
+                                TenDonViTinh = x.TenDonViTinh,
+                                ID_DonViQuiDoi = x.ID,
+                                QuanLyTheoLoHang = item.QuanLyTheoLoHang,
+                                Xoa = false,
+                                TyLeChuyenDoi = x.TyLeChuyenDoi
+                            }).ToList();
+            }
+            //data = data.Select(p => new BH_HoaDon_ChiTietDTO()
+            //{
+            //    ID = p.ID,
+            //    ID_HoaDon = p.ID_HoaDon,
+            //    DonGia = p.DonGia,
+            //    GiaVon = p.GiaVon ?? 0,
+            //    SoLuong = p.SoLuong,
+            //    SoLuongConLai = p.SoLuongConLai,// used to check nhapmua from PO
+            //    SoThuTu = p.SoThuTu,
+            //    ThanhTien = p.ThanhTien,
+            //    TienChietKhau = p.GiamGia,
+            //    ThanhToan = p.ThanhToan,
+            //    TienThue = p.TienThue,
+            //    ID_DonViQuiDoi = p.ID_DonViQuiDoi,
+            //    ID_HangHoa = p.ID_HangHoa,
+            //    TenDonViTinh = p.TenDonViTinh,
+            //    MaHangHoa = p.MaHangHoa,
+            //    GiamGia = p.GiamGia,
+            //    PTChietKhau = p.PTChietKhau,
+            //    PTThue = p.PTThue,
+            //    GiaBan = p.DonGia - p.TienChietKhau,
+            //    GiaBanHH = p.GiaBanHH,
+            //    ThoiGian = p.ThoiGian,
+            //    GhiChu = p.GhiChu,
+            //    ID_KhuyenMai = p.ID_KhuyenMai, // use show/hide icon KMai in lstCTHD
+            //    ThuocTinh_GiaTri = p.ThuocTinh_GiaTri,
+            //    TenHangHoaFull = p.TenHangHoaFull,
+            //    TenHangHoaThayThe = p.TenHangHoaThayThe,
+            //    LaHangHoa = p.LaHangHoa,
+            //    QuanLyTheoLoHang = p.QuanLyTheoLoHang,
+            //    TenHangHoa = p.TenHangHoa,
+            //    TyLeChuyenDoi = p.TyLeChuyenDoi,
+            //    YeuCau = p.YeuCau,
+            //    ID_LoHang = p.ID_LoHang,
+            //    MaLoHang = p.MaLoHang,
+            //    TonKho = p.TonKho,
+            //    ID_DonVi = p.ID_DonVi,
+            //    GiaNhap = p.GiaNhap,
+            //    GiaBanMaVach = p.GiaBanMaVach,
+            //    LaDonViChuan = p.LaDonViChuan,
+            //    ID_NhomHangHoa = p.ID_NhomHangHoa,
+            //    QuyCach = p.QuyCach,
+            //    PhiDichVu = p.PhiDichVu,
+            //    LaPTPhiDichVu = p.LaPTPhiDichVu,
+            //    NgayHetHan = p.NgayHetHan,
+            //    NgaySanXuat = p.NgaySanXuat,
+            //    DuocTichDiem = p.DuocTichDiem,
+            //    DichVuTheoGio = p.DichVuTheoGio,
+            //    ID_LichBaoDuong = p.ID_LichBaoDuong,
+            //    LoaiHangHoa = p.LoaiHangHoa,
+            //    HoaHongTruocChietKhau = p.HoaHongTruocChietKhau,
+            //    ViTriKho = p.ViTriKho,
+            //    DonViTinh = _ClassDVQD.Gets(ct => ct.ID_HangHoa == p.ID_HangHoa && ct.Xoa != true).Select(x => new DonViTinh
+            //    {
+            //        ID_HangHoa = p.ID_HangHoa,
+            //        TenDonViTinh = x.TenDonViTinh,
+            //        ID_DonViQuiDoi = x.ID,
+            //        QuanLyTheoLoHang = p.QuanLyTheoLoHang,
+            //        Xoa = false,
+            //        TyLeChuyenDoi = x.TyLeChuyenDoi
+            //    }).ToList(),
+            //}).ToList();
             return data;
         }
 
