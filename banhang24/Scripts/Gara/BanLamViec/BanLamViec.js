@@ -1309,7 +1309,7 @@ var workTable = new Vue({
                     var arrIDQuiDoi = [];
                     var cthdLoHang = [];
                     var updatePrice = self.CheckRole('HoaDon_ThayDoiGia');
-                    
+
                     for (let i = 0; i < cthd.length; i++) {
                         let ctNew = $.extend({}, cthd[i]);
 
@@ -1844,35 +1844,19 @@ var workTable = new Vue({
             let cus_DebitHD = hdChosing.PhaiThanhToan - hdChosing.KhachDaTra;
 
             let cus = await self.GetinforCus_byID(hdChosing.ID_DoiTuong);
-            let baohiem = await self.GetinforCus_byID(hdChosing.ID_BaoHiem);
-
-            let cus_NoHienTai = 0, bh_NoHienTai = 0, cus_Email = '';
+            let cus_NoHienTai = 0, bh_NoHienTai = 0, cus_Email = '', cus_DienThoai= '';
             let bh_masothue = '';
             if (!$.isEmptyObject(cus)) {
                 cus_NoHienTai = cus.NoHienTai;
                 cus_Email = cus.Email;
+                cus_DienThoai = cus.DienThoai;
             }
-
-            if (!$.isEmptyObject(baohiem)) {
-                bh_NoHienTai = baohiem.NoHienTai;
-                bh_masothue = baohiem.MaSoThue;
-            }
-            let chuxe_MST = '';
-            if (!commonStatisJs.CheckNull(objPrint.ID_ChuXe)) {
-                const chuxe = await self.GetinforCus_byID(objPrint.ID_ChuXe);
-                if (!$.isEmptyObject(chuxe)) {
-                    chuxe_MST = chuxe.MaSoThue;
-                }
-            }
-
+           
             let cus_DebitOld = cus_NoHienTai - cus_DebitHD;
             cus_DebitOld = cus_DebitOld < 0 ? 0 : cus_DebitOld;
-            let bh_DebitHD = hdChosing.PhaiThanhToanBaoHiem - hdChosing.BaoHiemDaTra;
-            let bh_DebitOld = bh_NoHienTai - bh_DebitHD;
-            bh_DebitOld = bh_DebitOld < 0 ? 0 : bh_DebitOld;
 
             objPrint.Email = cus_Email;
-            objPrint.ChuXe_MST = chuxe_MST;
+            objPrint.DienThoaiKhachHang = cus_DienThoai;
             objPrint.PhaiThanhToanBaoHiem = formatNumber3Digit(hdChosing.PhaiThanhToanBaoHiem, 0);
             objPrint.KhachDaTra = formatNumber(hdChosing.KhachDaTra);
             objPrint.TongTienDichVu = formatNumber(hdChosing.TongTienDichVu);
@@ -1901,7 +1885,6 @@ var workTable = new Vue({
             objPrint.BH_TenLienHe = hdChosing.LienHeBaoHiem;
             objPrint.BH_SDTLienHe = hdChosing.SoDienThoaiLienHeBaoHiem;
             objPrint.MaSoThue = hdChosing.MaSoThue;
-            objPrint.BH_MaSoThue = bh_masothue;
             objPrint.TaiKhoanNganHang = hdChosing.TaiKhoanNganHang;
 
             objPrint.MaHoaDon = hdChosing.MaHoaDon;
@@ -1943,8 +1926,6 @@ var workTable = new Vue({
             let conno = formatNumberToInt(hdChosing.TongThanhToan) - daThanhToan - hdChosing.BaoHiemDaTra;
             objPrint.NoTruoc = formatNumber3Digit(cus_DebitOld);
             objPrint.NoSau = formatNumber(cus_NoHienTai);
-            objPrint.BH_NoTruoc = bh_DebitOld;
-            objPrint.BH_NoSau = bh_NoHienTai;
             objPrint.TienBangChu = DocSo(tongcong);
             objPrint.TienKhachThieu = formatNumber(hdChosing.PhaiThanhToan - daThanhToan);
             objPrint.HD_ConThieu = conno;
@@ -2015,11 +1996,59 @@ var workTable = new Vue({
             objPrint.DienThoaiChiNhanh = cn.DienThoaiChiNhanh;
             return objPrint;
         },
+        MauInHoaDon_CheckAndBind: async function (dataMauIn, hd, lstCT = []) {
+            let self = this;
+            let hdPrint = $.extend({}, true, hd);
+            if (dataMauIn.includes('ChuXe_MST')) {
+                let chuxe_MST = '';
+                if (!commonStatisJs.CheckNull(hd.ID_ChuXe)) {
+                    const chuxe = await self.GetinforCus_byID(hd.ID_ChuXe);
+                    if (!$.isEmptyObject(chuxe)) {
+                        chuxe_MST = chuxe.MaSoThue;
+                    }
+                }
+                hdPrint.ChuXe_MST = chuxe_MST;
+            }
+
+            if (dataMauIn.includes('BH_NoTruoc') || dataMauIn.includes('BH_NoSau') || dataMauIn.includes('BH_MaSoThue')) {
+                let baohiem = {}, bh_notruoc = 0, bh_nosau = 0, bh_masothue = '';
+                if (!commonStatisJs.CheckNull(hdPrint.ID_BaoHiem)) {
+                    baohiem = await self.GetinforCus_byID(hdPrint.ID_BaoHiem);
+                }
+                if (!$.isEmptyObject(baohiem)) {
+                    bh_masothue = baohiem.MaSoThue;
+                    bh_nosau = baohiem.NoHienTai;
+                    bh_notruoc = bh_nosau - hdPrint.PhaiThanhToanBaoHiem - hdPrint.BaoHiemDaTra;
+                    bh_notruoc = bh_notruoc < 0 ? 0 : bh_notruoc;
+                }
+                hdPrint.BH_NoTruoc = bh_notruoc;
+                hdPrint.BH_NoSau = bh_nosau;
+                hdPrint.BH_MaSoThue = bh_masothue;
+            }
+
+            dataMauIn = dataMauIn.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+            dataMauIn = dataMauIn.concat("<script > var item1=" + JSON.stringify(lstCT)
+                + "; var item2=[]"
+                + "; var item3=" + JSON.stringify(hdPrint)
+                + "; var item4=" + JSON.stringify(self.MauIn.ListData.HangMucSuaChua)
+                + "; var item5=" + JSON.stringify(self.MauIn.ListData.VatDungKemTheo)
+                + "; </script>");
+            dataMauIn = dataMauIn.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
+            dataMauIn = dataMauIn.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
+            dataMauIn = dataMauIn.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
+            dataMauIn = dataMauIn.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
+            dataMauIn = dataMauIn.replace('{KH_DaThanhToan_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_BangChu\"></span>");
+            dataMauIn = dataMauIn.replace('{KH_DaThanhToan_TruCocBG_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_TruCocBG_BangChu\"></span>");
+            dataMauIn = dataMauIn.replace('{KH_DaThanhToan_TruCocBG}', "<span data-bind=\"text: formatNumber(InforHDprintf().KH_DaThanhToan_TruCocBG,0)\"></span>");
+            dataMauIn = dataMauIn.replace('{ChuXe_MST}', "<span data-bind=\"text: InforHDprintf().ChuXe_MST\"></span>");
+            PrintExtraReport(dataMauIn);
+        },
+
         InHoaDon: async function (isPrintID, val) {
             var self = this;
             var hd = await self.GetInforHDPrint();
-            let cthd = await self.GetChiTietHD_fromDB(item.ID);
-            let allComboHD = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(item.ID);
+            let cthd = await self.GetChiTietHD_fromDB(self.itemChosing.ID);
+            let allComboHD = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(self.itemChosing.ID);
 
             let arrHH = cthd.filter(x => x.LaHangHoa);
             let arrDV = cthd.filter(x => x.LaHangHoa === false);
@@ -2128,30 +2157,22 @@ var workTable = new Vue({
                 }
                 lstCT.push(itFor);
             }
-            if (self.listData.HoaDonChiTiets.length > 0) {
-                var url = '/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + val + '&idDonVi=' + self.ID_DonVi;
-                if (isPrintID) {
-                    url = '/api/DanhMuc/ThietLapApi/GetContentFIlePrint?idMauIn=' + val;
-                }
-                ajaxHelper(url, 'GET').done(function (result) {
-                    let data = result;
-                    data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
-                    data = data.concat("<script > var item1=" + JSON.stringify(lstCT)
-                        + "; var item2=[];"
-                        + " var item4 =", JSON.stringify(self.MauIn.ListData.HangMucSuaChua) + ";"
-                    + " var item5 =", JSON.stringify(self.MauIn.ListData.VatDungKemTheo) + ";"
-                    + " var item3=" + JSON.stringify(hd) + "; </script>");
-                    data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
-                    data = data.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
-                    data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
-                    data = data.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
-                    data = data.replace('{ChuXe_MST}', "<span data-bind=\"text: InforHDprintf().ChuXe_MST\"></span>");
-                    data = data.replace('{KH_DaThanhToan_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_BangChu\"></span>");
-                    data = data.replace('{KH_DaThanhToan_TruCocBG}', "<span data-bind=\"text: formatNumber(InforHDprintf().KH_DaThanhToan_TruCocBG,0)\"></span>");
-                    data = data.replace('{KH_DaThanhToan_TruCocBG_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_TruCocBG_BangChu\"></span>");
-                    PrintExtraReport(data);
-                })
+
+            let dataMauIn = await self.GetFileMauIn(val, isPrintID);
+            self.MauInHoaDon_CheckAndBind(dataMauIn, hd, lstCT);
+        },
+
+        GetFileMauIn: async function (idMauIn, isPrintID = false) {
+            let self = this;
+            let url = '/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + idMauIn + '&idDonVi=' + self.ID_DonVi;
+            if (isPrintID) {
+                url = '/api/DanhMuc/ThietLapApi/GetContentFIlePrint?idMauIn=' + idMauIn;
             }
+            const data = await ajaxHelper(url, 'GET').done()
+                .then(function (result) {
+                    return result;
+                });
+            return data;
         },
 
         ChangeCheck_AllItem: function (loaiHD = 25) {
@@ -2569,7 +2590,7 @@ var workTable = new Vue({
                 };
             }
         },
-        NhapHang:async function (item) {
+        NhapHang: async function (item) {
             var self = this;
             const cthdDB = await self.GetChiTietHD_fromDB(item.ID);
             if (cthdDB.length === 0) return;
@@ -2765,7 +2786,7 @@ var workTable = new Vue({
         },
         CapNhatChiPhi: async function (item) {
             await VueChiPhi.CTHD_GetChiPhiDichVu([item.ID]);
-           VueChiPhi.ShowModal(1);
+            VueChiPhi.ShowModal(1);
         },
         //Start Đặt lịch
         ShowModalDanhSachDatLich: function () {
