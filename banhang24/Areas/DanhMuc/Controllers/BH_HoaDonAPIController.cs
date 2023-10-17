@@ -1071,59 +1071,57 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 try
                 {
                     List<BH_HoaDonDTO> lstAllHDs = classhoadon.GetListInvoice_Paging(listParams);
-                    List<BH_HoaDon_Excel> lst = new List<BH_HoaDon_Excel>();
-                    foreach (var item in lstAllHDs)
+                    List<BH_HoaDon_Excel> lst = lstAllHDs.Select(x => new BH_HoaDon_Excel
                     {
-                        BH_HoaDon_Excel DM = new BH_HoaDon_Excel();
-                        DM.MaHoaDon = item.MaHoaDon;
-                        DM.MaHoaDonGoc = item.MaHoaDonGoc;
-                        DM.MaPhieuTiepNhan = item.MaPhieuTiepNhan;
-                        DM.BienSo = item.BienSo;
-                        DM.NgayLapHoaDon = item.NgayLapHoaDon;
-                        DM.NgayApDungGoiDV = item.NgayApDungGoiDV;
-                        DM.HanSuDungGoiDV = item.HanSuDungGoiDV;
-                        DM.MaDoiTuong = item.MaDoiTuong;
-                        DM.TenDoiTuong = item.TenDoiTuong;
-                        DM.DienThoai = item.DienThoai;
-                        DM.DiaChiKhachHang = item.DiaChiKhachHang;
-                        DM.KhuVuc = item.KhuVuc;
-                        DM.MaBaoHiem = item.MaBaoHiem;
-                        DM.TenBaoHiem = item.TenBaoHiem;
-                        DM.TenDonVi = item.TenDonVi;
-                        DM.TenNhanVien = item.TenNhanVien;
-                        DM.NguoiTao = item.NguoiTaoHD;
-                        DM.DienGiai = item.DienGiai;
-                        DM.ThanhTienChuaCK = item.ThanhTienChuaCK;
-                        DM.GiamGiaCT = item.GiamGiaCT;
-                        DM.GiaTriSuDung = item.GiaTriSDDV;
-                        DM.TongTienHang = item.TongTienHang;
-                        DM.TongGiamGia = item.TongGiamGia + item.KhuyeMai_GiamGia ?? 0;
-                        DM.TongTienThue = item.TongTienThue;
-                        DM.TongChiPhi = item.TongChiPhi;
-                        DM.TongPhaiTra = item.TongThanhToan ?? 0;
+                        MaHoaDon = x.MaHoaDon,
+                        MaHoaDonGoc = x.MaHoaDonGoc,
+                        MaPhieuTiepNhan = x.MaPhieuTiepNhan,
+                        BienSo = x.BienSo,
+                        NgayLapHoaDon = x.NgayLapHoaDon,
+                        NgayApDungGoiDV = x.NgayApDungGoiDV,
+                        HanSuDungGoiDV = x.HanSuDungGoiDV,
+                        MaDoiTuong = x.MaDoiTuong,
+                        TenDoiTuong = x.TenDoiTuong,
+                        DienThoai = x.DienThoai,
+                        DiaChiKhachHang = x.DiaChiKhachHang,
+                        KhuVuc = x.KhuVuc,
+                        MaBaoHiem = x.MaBaoHiem,
+                        TenBaoHiem = x.TenBaoHiem,
+                        TenDonVi = x.TenDonVi,
+                        TenNhanVien = x.TenNhanVien,
+                        NguoiTao = x.NguoiTaoHD,
+                        DienGiai = x.DienGiai,
+                        ThanhTienChuaCK = x.ThanhTienChuaCK,
+                        GiamGiaCT = x.GiamGiaCT,
+                        GiaTriSuDung = x.GiaTriSDDV,
+                        TongTienHang = x.TongTienHang,
+                        TongGiamGia = x.TongGiamGia + x.KhuyeMai_GiamGia ?? 0,
+                        TongTienThue = x.TongTienThue,
+                        TongChiPhi = x.TongChiPhi,
+                        TongPhaiTra = x.TongThanhToan ?? 0,
 
-                        DM.TongTienBHDuyet = item.TongTienBHDuyet;
-                        DM.KhauTruTheoVu = item.KhauTruTheoVu;
-                        DM.GiamTruBoiThuong = item.GiamTruBoiThuong;
-                        DM.BHThanhToanTruocThue = item.BHThanhToanTruocThue;
-                        DM.TongTienThueBaoHiem = item.TongTienThueBaoHiem;
+                        TongTienBHDuyet = x.TongTienBHDuyet,
+                        GiamTruThanhToanBaoHiem = x.GiamTruThanhToanBaoHiem,
+                        KhauTruTheoVu = x.KhauTruTheoVu,
+                        GiamTruBoiThuong = x.GiamTruBoiThuong,
+                        BHThanhToanTruocThue = x.BHThanhToanTruocThue,
+                        TongTienThueBaoHiem = x.TongTienThueBaoHiem,
 
-                        DM.PhaiThanhToan = item.PhaiThanhToan;
-                        DM.BuTruTraHang = item.TongTienHDTra;
-                        DM.GiaTriSauTra = DM.PhaiThanhToan - DM.BuTruTraHang;
-                        DM.TienMat = item.TienMat;
-                        DM.ChuyenKhoan = item.ChuyenKhoan;
-                        DM.TienATM = item.TienATM;
-                        DM.TienDoiDiem = item.TienDoiDiem;
-                        DM.ThuTuCoc = item.TienDatCoc;
-                        DM.ThuTuThe = item.ThuTuThe;
-                        DM.KhachDaTra = item.KhachDaTra;
-                        DM.PhaiThanhToanBaoHiem = item.PhaiThanhToanBaoHiem ?? 0;
-                        DM.BaoHiemDaTra = item.BaoHiemDaTra ?? 0;
-                        DM.ConNo = item.ConNo ?? 0;
-                        DM.TrangThai = item.TrangThai;
-                        lst.Add(DM);
-                    }
+                        PhaiThanhToan = x.PhaiThanhToan,
+                        BuTruTraHang = x.TongTienHDTra,
+                        GiaTriSauTra = x.PhaiThanhToan - x.TongTienHDTra,
+                        TienMat = x.TienMat,
+                        ChuyenKhoan = x.ChuyenKhoan,
+                        TienATM = x.TienATM,
+                        TienDoiDiem = x.TienDoiDiem,
+                        ThuTuCoc = x.TienDatCoc,
+                        ThuTuThe = x.ThuTuThe,
+                        KhachDaTra = x.KhachDaTra,
+                        PhaiThanhToanBaoHiem = x.PhaiThanhToanBaoHiem ?? 0,
+                        BaoHiemDaTra = x.BaoHiemDaTra ?? 0,
+                        ConNo = x.ConNo ?? 0,
+                        TrangThai = x.TrangThai,
+                    }).ToList();
 
                     DataTable excel = _classOFDCM.ToDataTable<BH_HoaDon_Excel>(lst);
                     excel.Columns.Remove("NgayApDungGoiDV");
