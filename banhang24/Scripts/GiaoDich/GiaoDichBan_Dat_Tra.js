@@ -17,7 +17,7 @@
     self.ShopCookie = ko.observable($('#txtShopCookie').val());
     self.TenChiNhanh = ko.observableArray();
     self.HoaDons = ko.observableArray();
-    self.BH_HoaDon_ChiTiet = ko.observableArray();
+    self.BH_HoaDon_ChiTiet = ko.observableArray(); 
     self.NhanViens = ko.observableArray();
     self.PhongBans = ko.observableArray();
     self.GiaBans = ko.observableArray();
@@ -4590,7 +4590,7 @@
     }
 
     async function MauInHoaDon_CheckAndBind(dataMauIn) {
-        if (dataMauIn.includes('{ChuXe')) {
+        if (dataMauIn.includes('ChuXe_MST')) {
             let chuxe_MST = '';
             if (!commonStatisJs.CheckNull(self.InforHDprintf().ID_ChuXe)) {
                 const chuxe = await GetInforCus(self.InforHDprintf().ID_ChuXe);
@@ -4601,7 +4601,7 @@
             self.InforHDprintf().ChuXe_MST = chuxe_MST;
         }
 
-        if (dataMauIn.includes('{BH_NoTruoc}') || dataMauIn.includes('{BH_NoSau}') || dataMauIn.includes('{BH_MaSoThue}')) {
+        if (dataMauIn.includes('BH_NoTruoc') || dataMauIn.includes('BH_NoSau') || dataMauIn.includes('BH_MaSoThue')) {
             let baohiem = {}, bh_notruoc = 0, bh_nosau = 0, bh_masothue = '';
             if (!commonStatisJs.CheckNull(self.InforHDprintf().ID_BaoHiem)) {
                 baohiem = await GetInforCus(self.InforHDprintf().ID_BaoHiem);
@@ -6429,7 +6429,14 @@
                     }
                 }
             }
-        }
+        } 
+        if (cthdLoHang.length > 0) {
+                cthdLoHang[0].ID_HoaDonGoc = item.ID;
+                cthdLoHang[0].ID_PhieuTiepNhan = item.ID_PhieuTiepNhan;
+                cthdLoHang[0].MaPhieuTiepNhan = item.MaPhieuTiepNhan;
+                cthdLoHang[0].BienSo = item.BienSo;
+                cthdLoHang[0].MaHoaDonSuaChua = item.MaHoaDon;
+            }
 
         localStorage.setItem('lc_CTSaoChep', JSON.stringify(cthdLoHang));
         localStorage.setItem('typeCacheNhapHang', 3);
