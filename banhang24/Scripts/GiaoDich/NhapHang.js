@@ -521,7 +521,8 @@
     }
 
     self.GetLichSuThanhToan = function (item) {
-        ajaxHelper(Quy_HoaDonUri + 'GetQuyHoaDon_byIDHoaDon?idHoaDon=' + item.ID + '&idHoaDonParent=' + item.ID_HoaDon, 'GET').done(function (data) {
+        let idHoaDonGoc = item.LoaiHoaDonGoc === 31 ? item.ID_HoaDon : null;// 31. đặt hàng từ NCC 
+        ajaxHelper(Quy_HoaDonUri + 'GetQuyHoaDon_byIDHoaDon?idHoaDon=' + item.ID + '&idHoaDonParent=' + idHoaDonGoc, 'GET').done(function (data) {
             self.LichSuThanhToan(data);
         });
     }
