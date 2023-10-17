@@ -3863,7 +3863,7 @@ var NewModel_BanHangLe = function () {
                                             ID_LoHang: tpdl.ID_LoHang,
                                             LaHangHoa: tpdl.LaHangHoa,
                                             LoaiHangHoa: tpdl.LoaiHangHoa,
-                                            SoLuong: formatNumberToFloat(itFor.SoLuong) *  tpdl.SoLuongMacDinh,
+                                            SoLuong: formatNumberToFloat(itFor.SoLuong) * tpdl.SoLuongMacDinh,
                                         }
                                         arrCT.push(objDL);
                                     }
@@ -6660,6 +6660,10 @@ var NewModel_BanHangLe = function () {
             var idRandomHD = itemHD[0].IDRandom;
             newNumber = parseFloat(objNumber.val());
             var cthdDoing = FindCTHD_isDoing(item, false);
+            if (cthdDoing == null) {
+                ShowMessage_Danger('Chi tiết hóa đơn rỗng');
+                return;
+            }
             cthdDoing.SoLuong = newNumber;
             cthdDoing.ThanhToan = cthdDoing.SoLuong * (cthdDoing.DonGia - cthdDoing.TienChietKhau + cthdDoing.TienThue);
             cthdDoing.ThanhTien = cthdDoing.SoLuong * (cthdDoing.DonGia - cthdDoing.TienChietKhau);
@@ -6737,6 +6741,10 @@ var NewModel_BanHangLe = function () {
         var itemHD = GetHDOpening_byMaHoaDon(_maHoaDon, lstHD);
         if (itemHD[0].StatusOffline === false) {
             var cthdDoing = FindCTHD_isDoing(item, false);
+            if (cthdDoing == null) {
+                ShowMessage_Danger('Chi tiết hóa đơn rỗng');
+                return;
+            }
             var lstCTHD = localStorage.getItem(lcListCTHD);
             lstCTHD = JSON.parse(lstCTHD);
             // HD mua
@@ -15755,6 +15763,7 @@ var NewModel_BanHangLe = function () {
 
     self.GetListKM_ofHangHoa = function (item) {
         var ctDoing = FindCTHD_isDoing(item, false);
+        if (ctDoing == null) return;
         self.CTHD_ChosingKM(ctDoing);
         var idNhomHHMua = item.ID_NhomHangHoa;
         // if HD offline --> don't show modal KMai (because DHO, THO not have KMai)

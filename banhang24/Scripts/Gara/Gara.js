@@ -6533,6 +6533,10 @@ var NewModel_BanHangLe = function () {
             var idRandomHD = itemHD[0].IDRandom;
             newNumber = parseFloat(objNumber.val());
             var cthdDoing = FindCTHD_isDoing(item, false);
+            if (cthdDoing == null) {
+                ShowMessage_Danger('Chi tiết hóa đơn rỗng');
+                return;
+            }
             cthdDoing.SoLuong = newNumber;
             cthdDoing.ThanhToan = cthdDoing.SoLuong * (cthdDoing.DonGia - cthdDoing.TienChietKhau + cthdDoing.TienThue);
             cthdDoing.ThanhTien = cthdDoing.SoLuong * (cthdDoing.DonGia - cthdDoing.TienChietKhau);
@@ -6617,6 +6621,10 @@ var NewModel_BanHangLe = function () {
         var itemHD = GetHDOpening_byMaHoaDon(_maHoaDon, lstHD);
         if (itemHD[0].StatusOffline === false) {
             var cthdDoing = FindCTHD_isDoing(item, false);
+            if (cthdDoing == null) {
+                ShowMessage_Danger('Chi tiết hóa đơn rỗng');
+                return;
+            }
             var cthd = localStorage.getItem(lcListCTHD);
             cthd = JSON.parse(cthd);
             // HD mua
@@ -13347,6 +13355,7 @@ var NewModel_BanHangLe = function () {
         _maHoaDon = item.MaHoaDon;
 
         var cthdDoing = FindCTHD_isDoing(item, true);
+        if (cthdDoing == null) return;
         cthdDoing.SoLuong = numberTH;
         cthdDoing.ThanhTien = numberTH * (cthdDoing.GiaBan - cthdDoing.TienChietKhau);
         cthdDoing.ThanhToan = numberTH * (cthdDoing.GiaBan - cthdDoing.TienChietKhau + cthdDoing.TienThue);
@@ -16378,6 +16387,7 @@ var NewModel_BanHangLe = function () {
     self.CTHD_ChosingKM = ko.observableArray(); // used to assign IDRandomHD for HangTang (todo ) -- thay the cho self.ID_DonViQuiDoiMua, ID_NhomHHMua
     self.GetListKM_ofHangHoa = function (item) {
         var ctDoing = FindCTHD_isDoing(item, false);
+        if (ctDoing == null) return;
         self.CTHD_ChosingKM(ctDoing);
         var idNhomHHMua = item.ID_NhomHangHoa;
         // if HD offline --> don't show modal KMai (because DHO, THO not have KMai)
@@ -28065,6 +28075,9 @@ var NewModel_BanHangLe = function () {
                 }
                 Combo_FocusLiNext(ctDoing, idRandom, char, isDoiTra);
             }
+        }
+        else {
+            ShowMessage_Danger('Chi tiết hóa đơn rỗng');
         }
     }
     self.Combo_editSumPrice = function (item, itemPr, isDoiTra) {
