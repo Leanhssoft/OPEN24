@@ -126,6 +126,7 @@
     self.GiamTruBoiThuong = ko.observable(0);
     self.BHThanhToanTruocThue = ko.observable(0);
     self.TongTienThueBaoHiem = ko.observable(0);
+    self.TongGiamTruBaoHiem = ko.observable(0);
 
     self.TongTienHang = ko.observable();
     self.TongThanhToan = ko.observable();
@@ -312,11 +313,6 @@
                     data = $.grep(data, function (x) {
                         return $.inArray(x.Key, ['tongchiphi']) === -1;
                     })
-                    if (self.LoaiHoaDonMenu() === 0) {
-                        data = $.grep(data, function (x) {
-                            return $.inArray(x.Key, ['maphieutiepnhan', 'bienso']) === -1;
-                        })
-                    }
                 }
                 self.NumberColum_Div2(Math.ceil(data.length / 2));
             }
@@ -1423,6 +1419,7 @@
                         self.GiamTruBoiThuong(first.SumGiamTruBoiThuong);
                         self.BHThanhToanTruocThue(first.SumBHThanhToanTruocThue);
                         self.TongTienThueBaoHiem(first.SumTongTienThueBaoHiem);
+                        self.TongGiamTruBaoHiem(first.SumGiamTruThanhToanBaoHiem);
 
                         self.TongTienMat(first.SumTienMat);
                         self.TongChuyenKhoan(first.SumChuyenKhoan);
@@ -1828,6 +1825,9 @@
                 break;
             case "tongthueBH":
                 self.columsort("TongTienThueBaoHiem");
+                break;
+            case "GiamTruBaoHiem":
+                self.columsort("GiamTruThanhToanBaoHiem");
                 break;
         }
         SortGrid(id);
@@ -5405,7 +5405,7 @@
                 newHD.DiemQuyDoi = 0;
                 newHD.DiemGiaoDichDB = 0;
                 newHD.DaThanhToan = self.IsGara() ? 0 : phaiTT - khachdatra; // số tiền còn lại phaiTT --> bind at BanHang
-                newHD.TienMat = self.IsGara() ? 0 : hdDB.DaThanhToan;
+                newHD.TienMat = self.IsGara() ? 0 : phaiTT - khachdatra;
                 newHD.ID_TaiKhoanPos = null;
                 newHD.ID_TaiKhoanChuyenKhoan = null;
                 SetCache_ifGara('TN_updateHD');
@@ -5418,7 +5418,7 @@
                 newHD.DiemQuyDoi = 0;
                 newHD.DiemGiaoDichDB = hdDB.DiemGiaoDich; // tru diem giaodich HD cu
                 newHD.DaThanhToan = self.IsGara() ? 0 : phaiTT - khachdatra;
-                newHD.TienMat = self.IsGara() ? 0 : hdDB.DaThanhToan; // = số tiền còn lại phaiTT
+                newHD.TienMat = self.IsGara() ? 0 : phaiTT - khachdatra; // = số tiền còn lại phaiTT
                 newHD.ID_TaiKhoanPos = null;
                 newHD.ID_TaiKhoanChuyenKhoan = null;
 
@@ -5440,6 +5440,10 @@
 
         var note_KMaiHD = '';
         if (self.BH_HoaDonChiTiets() !== null) {
+            const cthdDB = await GetChiTietHD_fromDB(item.ID);
+            const allComboHD = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(item.ID);
+            Caculator_ChiTietHD(cthdDB);
+
             let giamgiaKM_HD = hdDB.KhuyeMai_GiamGia;
             newHD.Status = 1;
             newHD.MaHoaDonDB = maHD;
@@ -5489,9 +5493,7 @@
             }
             newHD.TenViTriHD = item.TenPhongBan;
             newHD.ChoThanhToan = false; // set default = false
-
-            const cthdDB = await GetChiTietHD_fromDB(item.ID);
-            const allComboHD = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(item.ID);
+          
 
             // order by SoThuTu ASC --> group Hang Hoa by LoHang
             var arrCTsort = cthdDB.sort(function (a, b) {
