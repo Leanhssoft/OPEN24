@@ -643,6 +643,7 @@ namespace banhang24.Hellper
               {TypeReportDetail.Detail_chietkhau.ToString(),"Chiết khấu" },
               {TypeReportTotal.Total_thanhtien.ToString(),"Thành tiền" },
               {TypeReportTotal.Total_giamgia.ToString(),"Giảm giá" },
+              {TypeReportDetail.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
               {TypeReportTotal.Total_doanhthuthuan.ToString(),"Doanh thu" },
               {TypeReportTotal.Total_tienthue.ToString(),"Tiền thuế" },
                 {TypeReportTotal.Total_tienvon.ToString(),"Tiền vốn" },
@@ -684,6 +685,7 @@ namespace banhang24.Hellper
             Detail_doanhthuthuan,
             Detail_tienthue,
             Detail_chiphi,
+            GiamTruBaoHiem
         }
 
         public static Dictionary<string, string> listNameReportDetail = new Dictionary<string, string>()
@@ -707,6 +709,7 @@ namespace banhang24.Hellper
                     { TypeReportDetail.Detail_chietkhau.ToString(),"Chiết khấu" },
               {TypeReportDetail.Detail_thanhtien.ToString(),"Thành tiền" },
               {TypeReportDetail.Detail_giamgiahd.ToString(),"Giảm giá HĐ" },
+              {TypeReportDetail.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
               {TypeReportDetail.Detail_doanhthuthuan.ToString(),"Doanh thu" },
               {TypeReportDetail.Detail_tienthue.ToString(),"Tiền thuế" },
                    {TypeReportDetail.Detail_giavon.ToString(),"Giá vốn" },
@@ -741,6 +744,7 @@ namespace banhang24.Hellper
               {TypeReportDetail.Detail_chietkhau.ToString(),"Chiết khấu" },
               {TypeReportGroupProduct.thanhtien.ToString(),"Thành tiền" },
                   { TypeReportGroupProduct.giamgia.ToString(),"Giảm giá" },
+              {TypeReportDetail.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
                   { TypeReportGroupProduct.doanhthuthuan.ToString(),"Doanh thu" },
                 {TypeReportGroupProduct.tienthue.ToString(),"Tiền thuế" },
            {TypeReportGroupProduct.tienvon.ToString(),"Tiền vốn" },
@@ -843,6 +847,7 @@ namespace banhang24.Hellper
                          {TypeReportUser.User_soluongtra.ToString(),"Số lượng trả" },
                          {TypeReportUser.User_giatritra.ToString(),"Giá trị trả" },
                         {TypeReportUser.User_giamgia.ToString(),"Giảm giá HĐ" },
+              {TypeReportDetail.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
                         {TypeReportGroupProduct.doanhthuthuan.ToString(),"Doanh thu" },
                         {TypeReportGroupProduct.tienthue.ToString(),"Tiền thuế" },
                      {TypeReportUser.User_tienvon.ToString(),"Tiền vốn" },
@@ -946,6 +951,7 @@ namespace banhang24.Hellper
                      {TypeReportprofit.profit_soluongtra.ToString(),"Số lượng trả" },
                         {TypeReportprofit.profit_giatritra.ToString(),"Giá trị trả" },
                          {TypeReportprofit.profit_giangiahd.ToString(),"Giảm giá HĐ" },
+              {TypeReportDetail.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
                      { TypeReportprofit.profit_doanhthu.ToString(),"Doanh thu (thuần)" },
                      { ColumnInvoices.tienthue.ToString(),"Tiền thuế" },
                             {TypeReportprofit.profit_tongtienvon.ToString(),"Tổng tiền vốn" },

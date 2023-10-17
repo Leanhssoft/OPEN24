@@ -2854,11 +2854,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 List<BaoCaoBanHang_TongHopPRC> lst = report.GetBaoCaoBanHang_TongHopPRC(param);
 
                 int Rown = 0;
-                double SoLuong = 0;
-                double ThanhTien = 0;
-                double GiamGiaHD = 0;
-                double LaiLo = 0;
-                double TienVon = 0;
+                double SoLuong = 0, ThanhTien = 0;
+                double GiamGiaHD = 0, sumGiamtruBaoHiem = 0;
+                double LaiLo = 0, TienVon = 0;
                 double? TongDoanhThuThuan = 0, SumTienThue = 0, sumChiPhi = 0;
                 if (lst.Count() > 0)
                 {
@@ -2871,6 +2869,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     TongDoanhThuThuan = lst.FirstOrDefault().TongDoanhThuThuan;
                     SumTienThue = lst.FirstOrDefault().SumTienThue;
                     sumChiPhi = lst.FirstOrDefault().TongChiPhi;
+                    sumGiamtruBaoHiem = lst.FirstOrDefault().TongGiamTruBaoHiem??0;
                 }
                 int lstPages = getNumber_Page(Rown, param.pageSize);
                 return Json(new
@@ -2886,6 +2885,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     TongDoanhThuThuan = Math.Round(TongDoanhThuThuan ?? 0, 0, MidpointRounding.ToEven),
                     SumTienThue = Math.Round(SumTienThue ?? 0, 0, MidpointRounding.ToEven),
                     SumChiPhi = Math.Round(sumChiPhi ?? 0, 0, MidpointRounding.ToEven),
+                    TongGiamTruBaoHiem = sumGiamtruBaoHiem
                 });
             }
         }
@@ -2916,6 +2916,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 excel.Columns.Remove("TongDoanhThuThuan");
                 excel.Columns.Remove("TongChietKhau");
                 excel.Columns.Remove("TongTienTruocCK");
+                excel.Columns.Remove("TongGiamTruBaoHiem");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoBanHang/Teamplate_BaoCaoBanHangTongHop.xlsx");
                 string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoBanHang/BaoCaoBanHangTongHop.xlsx");
                 fileSave = classOffice.createFolder_Download(fileSave);
@@ -2937,11 +2938,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 List<BaoCaoBanHang_ChiTietPRC> lst = report.GetBaoCaoBanHang_ChiTietPRC(param);
 
                 int Rown = 0;
-                double SoLuong = 0;
-                double ThanhTien = 0;
-                double GiamGiaHD = 0;
-                double LaiLo = 0;
-                double TienVon = 0;
+                double SoLuong = 0, ThanhTien = 0;
+                double GiamGiaHD = 0, sumGiamtruBaoHiem =0;
+                double LaiLo = 0, TienVon = 0;
                 double? TongDoanhThuThuan = 0, SumTienThue = 0, tongChiPhi = 0;
                 if (lst.Count() > 0)
                 {
@@ -2954,6 +2953,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     TongDoanhThuThuan = lst.FirstOrDefault().DoanhThuThuan;
                     SumTienThue = lst.FirstOrDefault().TongTienThue;
                     tongChiPhi = lst.FirstOrDefault().TongChiPhi;
+                    sumGiamtruBaoHiem = lst.FirstOrDefault().TongGiamTruBaoHiem??0;
                 }
                 int lstPages = getNumber_Page(Rown, param.pageSize);
                 return Json(new
@@ -2969,6 +2969,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     TongDoanhThuThuan = Math.Round(TongDoanhThuThuan ?? 0, 0, MidpointRounding.ToEven),
                     SumTienThue = Math.Round(SumTienThue ?? 0, 0, MidpointRounding.ToEven),
                     SumChiPhi = Math.Round(tongChiPhi ?? 0, 0, MidpointRounding.ToEven),
+                    TongGiamTruBaoHiem = sumGiamtruBaoHiem
                 });
             }
         }
@@ -3000,6 +3001,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 excel.Columns.Remove("LoaiHoaDon");
                 excel.Columns.Remove("TongChietKhau");
                 excel.Columns.Remove("TongTienTruocCK");
+                excel.Columns.Remove("TongGiamTruBaoHiem");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoBanHang/Teamplate_BaoCaoBanHangChiTiet.xlsx");
                 string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoBanHang/BaoCaoBanHangChiTiet.xlsx");
                 fileSave = classOffice.createFolder_Download(fileSave);
@@ -3031,6 +3033,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double? sumChiPhi = lst.Sum(x => x.ChiPhi);
                 double? sumCK = lst.Sum(x => x.TienChietKhau);
                 double? sumThanhTientruocCK = lst.Sum(x => x.ThanhTienTruocCK);
+                double? sumGiamTruBaoHiem = lst.Sum(x => x.GiamTruThanhToanBaoHiem);
 
                 int lstPages = getNumber_Page(Rown, param.pageSize);
                 return Json(new
@@ -3048,6 +3051,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     SumChiPhi = Math.Round(sumChiPhi ?? 0, 0, MidpointRounding.ToEven),
                     SumChietKhau = sumCK,
                     SumThanhTientruocCK = sumThanhTientruocCK,
+                    TongGiamTruBaoHiem = sumGiamTruBaoHiem,
                 });
             }
         }
@@ -3403,6 +3407,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double GiamGiaHD = lst.Sum(x => x.GiamGiaHD);
                 double LaiLo = lst.Sum(x => x.LaiLo);
                 double? chiphi = lst.Sum(x => x.ChiPhi);
+                double? sumGiamTruBaoHiem = lst.Sum(x => x.GiamTruThanhToanBaoHiem);
                 int lstPages = getNumber_Page(Rown, param.pageSize);
 
                 return Json(new
@@ -3420,6 +3425,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     TongDoanhThuThuan = Math.Round(TongDoanhThuThuan ?? 0, 0, MidpointRounding.ToEven),
                     SumTienThue = Math.Round(SumTienThue ?? 0, 0, MidpointRounding.ToEven),
                     SumChiPhi = Math.Round(chiphi ?? 0, 0, MidpointRounding.ToEven),
+                    TongGiamTruBaoHiem = sumGiamTruBaoHiem,
                 });
             }
         }
@@ -3655,6 +3661,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double LaiLo = lst.Sum(x => x.LaiLo);
                 double? tongThue = lst.Sum(x => x.TienThue);
                 double? tongChiPhi = lst.Sum(x => x.ChiPhi);
+                double? sumGiamTruBaoHiem = lst.Sum(x => x.GiamTruThanhToanBaoHiem);
                 double TySuat = (LaiLo / DoanhThuThuan) * 100;
                 int lstPages = getNumber_Page(Rown, param.pageSize);
 
@@ -3674,6 +3681,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     a9 = Math.Round(TySuat, 2, MidpointRounding.ToEven),
                     TongTienThue = tongThue,
                     SumChiPhi = tongChiPhi,
+                    TongGiamTruBaoHiem = sumGiamTruBaoHiem,
                 });
             }
         }

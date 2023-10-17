@@ -792,6 +792,7 @@
                                             <td class="@commonEnum.TypeReportDetail.Detail_chietkhau text-right " data-bind="text: formatNumber3Digit(TienChietKhau,2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_thanhtien text-right " data-bind="text: formatNumber3Digit(ThanhTien,2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_giamgia text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2) "></td>
+                                            <td class="@commonEnum.TypeReportDetail.GiamTruBaoHiem text-right" data-bind="text: formatNumber3Digit(GiamTruThanhToanBaoHiem,2) "></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_doanhthuthuan text-right" data-bind="text: formatNumber3Digit(DoanhThuThuan,2) "></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_tienthue text-right" data-bind="text: formatNumber3Digit(TongTienThue,2) "></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_tienvon text-right" data-bind="text: formatNumber3Digit(TienVon,2)"></td>
@@ -801,12 +802,12 @@
                                     </tbody>
                                     <tfoot class="PhanQuyen" hidden>
                                         <tr>
-                                            <td class="bg12 text-center" colspan="13"><i>Bạn không có quyền xem báo cáo này!</i></td>
+                                            <td class="bg12 text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
                                         </tr>
                                     </tfoot>
                                     <tfoot class="Report_Empty" hidden>
                                         <tr>
-                                            <td class="bg12 text-center" colspan="13"><i>Báo cáo không có dữ liệu</i></td>
+                                            <td class="bg12 text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
                                         </tr>
                                     </tfoot>
                                     <tfoot class="TC_TongHop" hidden>
@@ -821,6 +822,7 @@
                                             <td class="@commonEnum.TypeReportDetail.Detail_chietkhau text-right " data-bind="text: formatNumber3Digit($root.TH_TongChietKhau(),2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_thanhtien text-right " data-bind="text: formatNumber3Digit(TH_ThanhTien(),2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_giamgia text-right " data-bind="text: formatNumber3Digit(TH_GiamGiaHD(),2)"></td>
+                                            <td class="@commonEnum.TypeReportDetail.GiamTruBaoHiem text-right " data-bind="text: formatNumber3Digit($root.TongGiamTruBaoHiem(),2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_doanhthuthuan text-right " data-bind="text: formatNumber3Digit($root.TH_DoanhThuThuan(),2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_tienthue text-right " data-bind="text: formatNumber3Digit($root.TH_TienThue(),2)"></td>
                                             <td class="@commonEnum.TypeReportTotal.Total_tienvon text-right " data-bind="text: formatNumber3Digit(TH_TienVon(),2)"></td>
@@ -883,6 +885,7 @@
                                             <td class="@commonEnum.TypeReportDetail.Detail_chietkhau text-right" data-bind="text: formatNumber3Digit(TienChietKhau,2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_thanhtien text-right" data-bind="text: formatNumber3Digit(ThanhTien,2) "></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_giamgiahd text-right" data-bind="text: formatNumber3Digit(GiamGiaHD)"></td>
+                                            <td class="@commonEnum.TypeReportDetail.GiamTruBaoHiem text-right" data-bind="text: formatNumber3Digit(GiamTruThanhToanBaoHiem)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_doanhthuthuan text-right" data-bind="text: formatNumber3Digit(DoanhThu,2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_tienthue text-right" data-bind="text: formatNumber3Digit(TienThue,2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_giavon text-right" data-bind="text: formatNumber3Digit(GiaVon,2) "></td>
@@ -931,6 +934,7 @@
                                             <td class="@commonEnum.TypeReportDetail.Detail_chietkhau  text-right" data-bind="text: formatNumber3Digit($root.TH_TongChietKhau(),2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_thanhtien text-right" data-bind="text: formatNumber3Digit(CT_ThanhTien(),2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_giamgiahd text-right" data-bind="text: formatNumber3Digit(CT_GiamGiaHD(),2)"></td>
+                                            <td class="@commonEnum.TypeReportDetail.GiamTruBaoHiem text-right" data-bind="text: formatNumber3Digit($root.TongGiamTruBaoHiem(),2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_doanhthuthuan text-right" data-bind="text: formatNumber3Digit($root.TH_DoanhThuThuan(),2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_tienthue text-right" data-bind="text: formatNumber3Digit($root.TH_TienThue(),2)"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_giavon text-right"></td>
@@ -971,6 +975,7 @@
                                             <td class=" @commonEnum.TypeReportDetail.Detail_chietkhau text-right" data-bind="text: formatNumber3Digit(TienChietKhau,2) "></td>
                                             <td class=" @commonEnum.TypeReportGroupProduct.thanhtien text-right" data-bind="text: formatNumber3Digit(ThanhTien,2) "></td>
                                             <td class=" @commonEnum.TypeReportGroupProduct.giamgia text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2)"></td>
+                                            <td class=" @commonEnum.TypeReportDetail.GiamTruBaoHiem text-right" data-bind="text: formatNumber3Digit(GiamTruThanhToanBaoHiem)"></td>
                                             <td class=" @commonEnum.TypeReportGroupProduct.doanhthuthuan text-right" data-bind="text: formatNumber3Digit(DoanhThu,2) "></td>
                                             <td class=" @commonEnum.TypeReportGroupProduct.tienthue text-right" data-bind="text: formatNumber3Digit(TienThue,2)"></td>
                                             <td class=" @commonEnum.TypeReportGroupProduct.tienvon text-right" data-bind="text: formatNumber3Digit(TienVon,2) "></td>
@@ -996,6 +1001,7 @@
                                             <td data-bind="text: formatNumber3Digit($root.TH_TongChietKhau(),2)" class="@commonEnum.TypeReportDetail.Detail_chietkhau  text-right"></td>
                                             <td data-bind="text: formatNumber3Digit(TNH_ThanhTien(),2)" class="@commonEnum.TypeReportGroupProduct.thanhtien  text-right"></td>
                                             <td data-bind="text: formatNumber3Digit(TNH_GiamGiaHD(),2)" class="@commonEnum.TypeReportGroupProduct.giamgia  text-right"></td>
+                                            <td data-bind="text: formatNumber3Digit($root.TongGiamTruBaoHiem(),2)" class="@commonEnum.TypeReportDetail.GiamTruBaoHiem  text-right"></td>
                                             <td data-bind="text: formatNumber3Digit($root.TH_DoanhThuThuan(),2)" class="@commonEnum.TypeReportGroupProduct.doanhthuthuan  text-right"></td>
                                             <td data-bind="text: formatNumber3Digit($root.TH_TienThue(),2)" class="@commonEnum.TypeReportGroupProduct.tienthue  text-right"></td>
                                             <td data-bind="text: formatNumber3Digit(TNH_TienVon(),2)" class="@commonEnum.TypeReportGroupProduct.tienvon  text-right"></td>
@@ -1210,6 +1216,7 @@
                                             <td class="@commonEnum.TypeReportUser.User_soluongtra text-right" data-bind="text: formatNumber3Digit(SoLuongTra)"></td>
                                             <td class="@commonEnum.TypeReportUser.User_giatritra text-right" data-bind="text: formatNumber3Digit(GiaTriTra,2)"></td>
                                             <td class="@commonEnum.TypeReportUser.User_giamgia text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2)"></td>
+                                            <td class="@commonEnum.TypeReportDetail.GiamTruBaoHiem text-right" data-bind="text: formatNumber3Digit(GiamTruThanhToanBaoHiem,2)"></td>
                                             <td class="@commonEnum.TypeReportGroupProduct.doanhthuthuan text-right" data-bind="text: formatNumber3Digit(DoanhThu,2)"></td>
                                             <td class="@commonEnum.TypeReportGroupProduct.tienthue text-right" data-bind="text: formatNumber3Digit(TienThue,2)"></td>
                                             <td class="@commonEnum.TypeReportUser.User_tienvon text-right" data-bind="text: formatNumber3Digit(TienVon,2)"></td>
@@ -1302,16 +1309,17 @@
                                         <tr class="bg12 bold">
                                             <td class="@commonEnum.TypeReportUser.User_nhanvien" colspan="2">Tổng cộng</td>
                                             <td class="@commonEnum.TypeReportUser.MaNhanVien"></td>
-                                            <td data-bind="text: formatNumber3Digit(NV_SoLuongBan())" class="@commonEnum.TypeReportUser.User_soluong text-right bold"></td>
-                                            <td data-bind="text: formatNumber3Digit(NV_ThanhTien(),2)" class="@commonEnum.TypeReportUser.User_thanhtien text-right bold"></td>
-                                            <td data-bind="text: formatNumber3Digit(NV_SoLuongTra())" class="@commonEnum.TypeReportUser.User_soluongtra text-right bold"></td>
-                                            <td data-bind="text: formatNumber3Digit(NV_GiaTriTra(),2)" class="@commonEnum.TypeReportUser.User_giatritra text-right bold"></td>
-                                            <td data-bind="text: formatNumber3Digit(NV_GiamGiaHD(),2)" class="@commonEnum.TypeReportUser.User_giamgia border-bottom text-right bold"></td>
-                                            <td data-bind="text: formatNumber3Digit($root.TH_DoanhThuThuan(),2)" class="@commonEnum.TypeReportGroupProduct.doanhthuthuan  border-bottom text-right bold"></td>
-                                            <td data-bind="text: formatNumber3Digit($root.TH_TienThue(),2)" class="@commonEnum.TypeReportGroupProduct.tienthue border-bottom text-right bold"></td>
-                                            <td data-bind="text: formatNumber3Digit(NV_TienVon(),2)" class="@commonEnum.TypeReportUser.User_tienvon text-right bold"></td>
-                                            <td data-bind="text: formatNumber3Digit($root.TH_TongChiPhi(),2)" class="@commonEnum.TypeReportDetail.Detail_chiphi text-right bold"></td>
-                                            <td data-bind="text: formatNumber3Digit(NV_LaiLo(),2)" class="@commonEnum.TypeReportUser.User_lailo border-bottom text-right bold"></td>
+                                            <td data-bind="text: formatNumber3Digit(NV_SoLuongBan())" class="@commonEnum.TypeReportUser.User_soluong text-right "></td>
+                                            <td data-bind="text: formatNumber3Digit(NV_ThanhTien(),2)" class="@commonEnum.TypeReportUser.User_thanhtien text-right "></td>
+                                            <td data-bind="text: formatNumber3Digit(NV_SoLuongTra())" class="@commonEnum.TypeReportUser.User_soluongtra text-right "></td>
+                                            <td data-bind="text: formatNumber3Digit(NV_GiaTriTra(),2)" class="@commonEnum.TypeReportUser.User_giatritra text-right "></td>
+                                            <td data-bind="text: formatNumber3Digit(NV_GiamGiaHD(),2)" class="@commonEnum.TypeReportUser.User_giamgia text-right "></td>
+                                            <td data-bind="text: formatNumber3Digit($root.TongGiamTruBaoHiem(),2)" class="@commonEnum.TypeReportDetail.GiamTruBaoHiem text-right "></td>
+                                            <td data-bind="text: formatNumber3Digit($root.TH_DoanhThuThuan(),2)" class="@commonEnum.TypeReportGroupProduct.doanhthuthuan text-right "></td>
+                                            <td data-bind="text: formatNumber3Digit($root.TH_TienThue(),2)" class="@commonEnum.TypeReportGroupProduct.tienthue text-right "></td>
+                                            <td data-bind="text: formatNumber3Digit(NV_TienVon(),2)" class="@commonEnum.TypeReportUser.User_tienvon text-right "></td>
+                                            <td data-bind="text: formatNumber3Digit($root.TH_TongChiPhi(),2)" class="@commonEnum.TypeReportDetail.Detail_chiphi text-right "></td>
+                                            <td data-bind="text: formatNumber3Digit(NV_LaiLo(),2)" class="@commonEnum.TypeReportUser.User_lailo text-right "></td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -1523,6 +1531,7 @@
                                             <td class="@commonEnum.TypeReportprofit.profit_soluongtra text-right" data-bind="text: formatNumber3Digit(SoLuongTra) "></td>
                                             <td class="@commonEnum.TypeReportprofit.profit_giatritra text-right" data-bind="text: formatNumber3Digit(GiaTriTra,2) "></td>
                                             <td class="@commonEnum.TypeReportprofit.profit_giangiahd text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2) "></td>
+                                            <td class="@commonEnum.TypeReportDetail.GiamTruBaoHiem text-right" data-bind="text: formatNumber3Digit(GiamTruThanhToanBaoHiem,2) "></td>
                                             <td class="@commonEnum.TypeReportprofit.profit_doanhthu text-right" data-bind="text: formatNumber3Digit(DoanhThuThuan,2) "></td>
                                             <td class="@commonEnum.ColumnInvoices.tienthue text-right" data-bind="text: formatNumber3Digit(TienThue,2) "></td>
                                             <td class="@commonEnum.TypeReportprofit.profit_tongtienvon text-right" data-bind="text: formatNumber3Digit(TienVon,2) "></td>
@@ -1552,6 +1561,7 @@
                                             <td class="@commonEnum.TypeReportprofit.profit_soluongtra text-right" data-bind="text: formatNumber3Digit(LN_SoLuongTra())"></td>
                                             <td class="@commonEnum.TypeReportprofit.profit_giatritra text-right" data-bind="text: formatNumber3Digit(LN_GiaTriTra(),2)"></td>
                                             <td class="@commonEnum.TypeReportprofit.profit_giangiahd text-right" data-bind="text: formatNumber3Digit(LN_GiamGiaHD(),2)"></td>
+                                            <td class="@commonEnum.TypeReportDetail.GiamTruBaoHiem text-right" data-bind="text: formatNumber3Digit($root.TongGiamTruBaoHiem(),2)"></td>
                                             <td class="@commonEnum.TypeReportprofit.profit_doanhthu text-right" data-bind="text: formatNumber3Digit(LN_DoanhThuThuan(),2)"></td>
                                             <td class="@commonEnum.ColumnInvoices.tienthue text-right" data-bind="text: formatNumber3Digit(TH_TienThue(),2)"></td>
                                             <td class="@commonEnum.TypeReportprofit.profit_tongtienvon text-right" data-bind="text: formatNumber3Digit(LN_TienVon(),2)"></td>

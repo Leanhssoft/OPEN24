@@ -72,8 +72,18 @@
     self.loadCheckbox = function (type) {
         self.columnCheckType(type);
         $.getJSON("api/DanhMuc/ReportAPI/GetChecked?type=" + type + "&group=" + $('#ID_loaibaocao').val(), function (data) {
-            self.listCheckbox(data);
-            if (type === 2) {
+            switch (self.LoaiNganhNghe()) {
+                case 1:// gara
+                    self.listCheckbox(data);
+                    break;
+                default:
+                    data = $.grep(data, function (x) {
+                        return $.inArray(x.Key, ['GiamTruBaoHiem']) === -1;
+                    });
+                    self.listCheckbox(data);
+                    break;
+            }
+            if (type === 2) {// BC banhang chi tiet
                 loadHtmlGrid();
             }
         });
@@ -893,6 +903,7 @@
     self.TH_DoanhThuThuan = ko.observable();// dungchung truong nay cho all baocao
     self.TH_TienThue = ko.observable();
     self.TH_TongChiPhi = ko.observable();
+    self.TongGiamTruBaoHiem = ko.observable();
 
     self.TH_LaiLo = ko.observable();
     self.CT_SoLuong = ko.observable();
@@ -1158,6 +1169,7 @@
                         self.TH_DoanhThuThuan(data.TongDoanhThuThuan);
                         self.TH_TienThue(data.SumTienThue);
                         self.TH_TongChiPhi(data.SumChiPhi);
+                        self.TongGiamTruBaoHiem(data.TongGiamTruBaoHiem);
                         LoadingForm(false);
                     });
                 }
@@ -1206,6 +1218,7 @@
                         self.TH_DoanhThuThuan(data.TongDoanhThuThuan);
                         self.TH_TienThue(data.SumTienThue);
                         self.TH_TongChiPhi(data.SumChiPhi);
+                        self.TongGiamTruBaoHiem(data.TongGiamTruBaoHiem);
                         LoadingForm(false);
                     });
                 }
@@ -1236,6 +1249,7 @@
                         self.TH_TienThue(data.SumTienThue);
                         self.TH_TongChietKhau(data.SumChietKhau);
                         self.TH_ThanhTienTruocCK(data.SumThanhTientruocCK);
+                        self.TongGiamTruBaoHiem(data.TongGiamTruBaoHiem);
                         LoadingForm(false);
                     });
                 }
@@ -1349,6 +1363,7 @@
                         self.TH_DoanhThuThuan(data.TongDoanhThuThuan);
                         self.TH_TienThue(data.SumTienThue);
                         self.TH_TongChiPhi(data.SumChiPhi);
+                        self.TongGiamTruBaoHiem(data.TongGiamTruBaoHiem);
                         LoadingForm(false);
                     });
                 }
@@ -1407,6 +1422,7 @@
                         self.LN_LaiLo(data.a8);
                         self.LN_TySuat(data.a9);
                         self.TH_TongChiPhi(data.SumChiPhi);
+                        self.TongGiamTruBaoHiem(data.TongGiamTruBaoHiem);
                         LoadingForm(false);
                     });
                 }
@@ -2098,6 +2114,78 @@
             }
         });
         arrayColumn.sort();
+        const loaiBC = parseInt(self.check_MoiQuanTam());
+
+        let arrColumnHide = [];
+        if (self.LoaiNganhNghe() !== 1) {// != gara
+            switch (loaiBC) {
+                case 1:// tonghop
+                    for (let i = 0; i < arrayColumn.length; i++) {
+                        let itFor = arrayColumn[i];
+                        if (itFor > 9) {
+                            arrColumnHide.push(itFor + 1);
+                        }
+                        else {
+                            arrColumnHide.push(itFor);
+                        }
+                    }
+                    break;
+                case 2:// chi tiet
+                    for (let i = 0; i < arrayColumn.length; i++) {
+                        let itFor = arrayColumn[i];
+                        if (itFor > 19) {
+                            arrColumnHide.push(itFor + 1);
+                        }
+                        else {
+                            arrColumnHide.push(itFor);
+                        }
+                    }
+                    break;
+                case 3:// nhomhang
+                    for (let i = 0; i < arrayColumn.length; i++) {
+                        let itFor = arrayColumn[i];
+                        if (itFor > 5) {
+                            arrColumnHide.push(itFor + 1);
+                        }
+                        else {
+                            arrColumnHide.push(itFor);
+                        }
+                    }
+                    break;
+                case 6:// nhanvien
+                    for (let i = 0; i < arrayColumn.length; i++) {
+                        let itFor = arrayColumn[i];
+                        if (itFor > 6) {
+                            arrColumnHide.push(itFor + 1);
+                        }
+                        else {
+                            arrColumnHide.push(itFor);
+                        }
+                    }
+                    break;
+                case 8://loinhuan
+                    for (let i = 0; i < arrayColumn.length; i++) {
+                        let itFor = arrayColumn[i];
+                        if (itFor > 8) {
+                            arrColumnHide.push(itFor + 1);
+                        }
+                        else {
+                            arrColumnHide.push(itFor);
+                        }
+                    }
+                    break;
+                default:
+                    arrColumnHide = arrayColumn;
+                    break;
+            }
+        }
+        else {
+            arrColumnHide = arrayColumn;
+        }
+
+        arrayColumn = arrColumnHide;
+        arrayColumn.sort();
+
         for (var i = 0; i < arrayColumn.length; i++) {
             if (i == 0) {
                 columnHide = arrayColumn[i];
@@ -2154,13 +2242,10 @@
                     LoadingForm(false);
                     return false;
                 }
-                switch (parseInt(self.check_MoiQuanTam())) {
+                switch (loaiBC) {
                     case 1:
                         func = 'Export_BCBH_TongHop';
                         lenData = self.BaoCaoBanHang_TongHop().length;
-                        if (self.BaoCaoBanHang_TongHop().length > 0) {
-
-                        }
                         break;
                     case 2:
                         func = 'Export_BCBH_ChiTiet';
