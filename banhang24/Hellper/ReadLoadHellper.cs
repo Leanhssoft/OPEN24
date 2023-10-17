@@ -2481,7 +2481,8 @@ namespace banhang24.Hellper
             ghichu,
             trangthai,
             machuxe,
-            tenchuxe
+            tenchuxe,
+            GiamTruBaoHiem
         }
         public static Dictionary<string, string> ListColumnInvoices = new Dictionary<string, string>()
         {
@@ -2550,6 +2551,7 @@ namespace banhang24.Hellper
               { ColumnInvoices.khachdatra.ToString(),"Khách đã trả" },
 
                { ColumnInvoices.tongtienBHduyet.ToString(),"Tổng tiền BH duyệt" },
+              { ColumnInvoices.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
               { ColumnInvoices.khautrutheovu.ToString(),"Khấu trừ theo vụ" },
               { ColumnInvoices.giamtruboithuong.ToString(),"Chế tài" },
               { ColumnInvoices.BHchitratruocVAT.ToString(),"BH cần trả (trước VAT)" },

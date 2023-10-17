@@ -6056,6 +6056,7 @@ namespace libDM_DoiTuong
         public double? SumGiamTruBoiThuong { get; set; }
         public double? SumKhauTruTheoVu { get; set; }
         public double? SumTongTienThueBaoHiem { get; set; }
+        public double? SumGiamTruThanhToanBaoHiem { get; set; }
         public int? TotalRow { get; set; }
         public double? TotalPage { get; set; }
     }
@@ -6185,6 +6186,7 @@ namespace libDM_DoiTuong
         public double KhachDaTra { get; set; }
 
         public double? TongTienBHDuyet { get; set; }
+        public double? GiamTruThanhToanBaoHiem { get; set; }
         public double? KhauTruTheoVu { get; set; }
         public double? GiamTruBoiThuong { get; set; }
         public double? BHThanhToanTruocThue { get; set; }
