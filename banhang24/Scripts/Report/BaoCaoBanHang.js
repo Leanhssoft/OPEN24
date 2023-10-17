@@ -2129,6 +2129,7 @@
                             arrColumnHide.push(itFor);
                         }
                     }
+                    arrColumnHide.push(10);
                     break;
                 case 2:// chi tiet
                     for (let i = 0; i < arrayColumn.length; i++) {
@@ -2140,6 +2141,7 @@
                             arrColumnHide.push(itFor);
                         }
                     }
+                    arrColumnHide.push(20);
                     break;
                 case 3:// nhomhang
                     for (let i = 0; i < arrayColumn.length; i++) {
@@ -2151,6 +2153,7 @@
                             arrColumnHide.push(itFor);
                         }
                     }
+                    arrColumnHide.push(6);
                     break;
                 case 6:// nhanvien
                     for (let i = 0; i < arrayColumn.length; i++) {
@@ -2162,6 +2165,7 @@
                             arrColumnHide.push(itFor);
                         }
                     }
+                    arrColumnHide.push(7);
                     break;
                 case 8://loinhuan
                     for (let i = 0; i < arrayColumn.length; i++) {
@@ -2173,6 +2177,7 @@
                             arrColumnHide.push(itFor);
                         }
                     }
+                    arrColumnHide.push(9);
                     break;
                 default:
                     arrColumnHide = arrayColumn;
