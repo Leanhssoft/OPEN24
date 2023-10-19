@@ -216,21 +216,29 @@
                             <div class="css-form-detail">
                                 <div class="flex flex-row floatleft op-form-group" style="flex-wrap:nowrap">
                                     <div class=" dropdown op-tag-picker floatleft">
-                                        <div data-toggle="dropdown" aria-expanded="true" id="choose_ViTri">
-                                            <ul data-bind="foreach: $root.MangNhomViTriHH">
-                                                <li style="float:left;">
-                                                    <span data-bind="text: TenViTri">
-                                                    </span>
-                                                    <span data-bind="click: $parent.CloseViTriHH">
-                                                        <i class="fa fa-times" style="color: red"></i>
-                                                    </span>
-                                                </li>
-                                            </ul>
-                                            <input type="text" id="dllViTriHH" autocomplete="off" style="border:none !important" placeholder="Chọn vị trí hàng hóa">
+                                        <div data-toggle="dropdown" aria-expanded="true" id="choose_ViTri" class="flex flex-row">
+                                            <!-- ko foreach: $root.MangNhomViTriHH -->
+                                            <div class="flex "
+                                                 style="align-items:center;  padding:3px 7px;
+                                                  background:var(--color-primary); color:white; border-radius:3px; line-height:18px; margin:3px;">
+                                                <span data-bind="text: TenViTri">
+                                                </span>
+                                                <i class="material-icons font-14 " style="margin-left:5px; margin-right:-3px" data-bind="click: $root.CloseViTriHH">
+                                                    close
+                                                </i>
+                                            </div>
+                                            <!--/ko-->
+                                            <div style="position:relative; height:30px;" class="input-simple">
+                                                <input type="text" autocomplete="off" placeholder="Chọn vị trí hàng hóa"
+                                                       data-bind="value: $root.formAdd_txtViTri, valueUpdate:'afterkeydown'" ,>
+                                            </div>
+
                                         </div>
-                                        <ul data-bind="foreach: $root.ArrViTriHH" class=" dropdown-menu" id="selec-all-ViTri" style=" width: 100%;">
+                                        <ul data-bind="foreach: $root.formAdd_ArrViTri" class=" dropdown-menu" id="selec-all-ViTri" style=" width: 100%;">
                                             <li class="floatleft flex flex-between" data-bind="attr:{id: ID}, click: $parent.selectedViTri">
                                                 <a data-bind="text: TenViTri"></a>
+                                                <i class="fa fa-check check-after-li"
+                                                   data-bind="style:{display: $.inArray(ID,$root.formAdd_ArrIDViTriChosed())>-1?'block':'none'}"></i>
                                             </li>
                                         </ul>
                                     </div>

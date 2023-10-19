@@ -4045,13 +4045,6 @@ var ViewModel = function () {
 
                     if (!self.isMenuLeft()) {
                         self.MangNhomViTriHH.push(item);
-                        $('#choose_ViTri input').remove();
-                        $('#selec-all-ViTri li').each(function () {
-                            if ($(this).attr('id') === item.ID) {
-                                $(this).find('.fa-check').remove();
-                                $(this).append('<i class="fa fa-check check-after-li" style="display:block"></i>');
-                            }
-                        });
                     }
                 },
                 statusCode: {
@@ -4087,12 +4080,6 @@ var ViewModel = function () {
                     if (!self.isMenuLeft()) {
                         self.MangNhomViTriHH()[0].TenViTri = item.TenViTri;
                         self.MangNhomViTriHH.refresh();
-                        $('#selec-all-ViTri li').each(function () {
-                            if ($(this).attr('id') === item.ID) {
-                                $(this).find('.fa-check').remove();
-                                $(this).append('<i class="fa fa-check check-after-li" style="display:block"></i>');
-                            }
-                        });
                     }
                     else {
                         self.arrViTriChosed.refresh();
@@ -4116,7 +4103,20 @@ var ViewModel = function () {
         }
     }
 
+    self.formAdd_txtViTri = ko.observable();
     self.MangNhomViTriHH = ko.observableArray();
+
+    self.formAdd_ArrViTri = ko.computed(() => {
+        let txt = self.formAdd_txtViTri();
+        if (commonStatisJs.CheckNull(txt)) {
+            return self.ArrViTriHH();
+        }
+        txt = txt.trim();
+        return self.ArrViTriHH().filter(x => x.TenViTri.indexOf(txt) > -1
+            || locdau(x.TenViTri).indexOf(txt) > -1
+            || locdau(x.TenViTri).indexOf(locdau(txt)) > -1);
+    })
+
     self.selectedViTri = function (item) {
         var arrVT = [];
         for (var i = 0; i < self.MangNhomViTriHH().length; i++) {
@@ -4127,28 +4127,24 @@ var ViewModel = function () {
         if ($.inArray(item.ID, arrVT) === -1) {
             self.MangNhomViTriHH.push(item);
         }
-        //$('#choose_DonVi input').remove();
-        // thêm dấu check vào đối tượng được chọn
-        $('#selec-all-ViTri li').each(function () {
-            if ($(this).attr('id') === item.ID) {
-                $(this).find('.fa-check').remove();
-                $(this).append('<i class="fa fa-check check-after-li" style="display:block"></i>')
-            }
-        });
-        $('#choose_ViTri input').remove();
+        self.formAdd_txtViTri('');
     }
+
+    self.formAdd_ArrIDViTriChosed = ko.computed(() => {
+        let arr = [];
+        if (self.MangNhomViTriHH().length > 0) {
+            arr = self.MangNhomViTriHH().map(function (x) {
+                return x.ID;
+            })
+        }
+        else {
+            arr = [];
+        }
+        return arr;
+    });
 
     self.CloseViTriHH = function (item) {
         self.MangNhomViTriHH.remove(item);
-        if (self.MangNhomViTriHH().length === 0) {
-            $('#choose_ViTri').append('<input type="text" id="dllViTriHH"  placeholder="Chọn vị trí hàng hóa">');
-        }
-        // remove check
-        $('#selec-all-ViTri li').each(function () {
-            if ($(this).attr('id') === item.ID) {
-                $(this).find('.fa-check').remove();
-            }
-        });
     }
     self.MangNhomViTriHHComputed = ko.computed(function () {
         if (self.MangNhomViTriHH().length == 1) {
@@ -4788,23 +4784,6 @@ var ViewModel = function () {
                     }
                     self.selectedLoaiThoiGianBH(data.LoaiBaoHanh);
                     self.MangNhomViTriHH(data.DM_HangHoa_ViTri);
-                    $('#choose_ViTri input').remove();
-                    if (self.MangNhomViTriHH().length === 0) {
-                        $('#choose_ViTri').append('<input type="text" id="dllViTriHH" placeholder="Chọn vị trí hàng hóa">');
-                        $('#selec-all-ViTri li').each(function () {
-                            $(this).find('.fa-check').remove();
-                        });
-                    }
-                    else {
-                        for (var i = 0; i < self.MangNhomViTriHH().length; i++) {
-                            $('#selec-all-ViTri li').each(function () {
-                                if ($(this).attr('id') === self.MangNhomViTriHH()[i].ID) {
-                                    $(this).find('.fa-check').remove();
-                                    $(this).append('<i class="fa fa-check check-after-li" style="display:block"></i>')
-                                }
-                            });
-                        }
-                    }
 
                     let lstTP = self.ListThanhPhans();
                     let sumGV = lstTP.reduce(function (x, tp) {
@@ -4950,12 +4929,6 @@ var ViewModel = function () {
                     self.selectIDNhomHHAddHH(null);
                     self.selectedLoaiThoiGianBH("1");
                     self.MangNhomViTriHH([]);
-                    $('#choose_ViTri input').remove();
-                    $('#choose_ViTri').append('<input type="text" id="dllViTriHH" placeholder="Chọn vị trí hàng hóa">');
-
-                    $('#selec-all-ViTri li').each(function () {
-                        $(this).find('.fa-check').remove();
-                    });
 
                     $('#lstNhomHangAddHH span').each(function () {
                         $(this).empty();
@@ -6967,23 +6940,6 @@ var ViewModel = function () {
             });
 
             self.MangNhomViTriHH(data.DM_HangHoa_ViTri);
-            $('#choose_ViTri input').remove();
-            if (self.MangNhomViTriHH().length === 0) {
-                $('#choose_ViTri').append('<input type="text" id="dllViTriHH" placeholder="Chọn vị trí hàng hóa">');
-                $('#selec-all-ViTri li').each(function () {
-                    $(this).find('.fa-check').remove();
-                });
-            }
-            else {
-                for (var i = 0; i < self.MangNhomViTriHH().length; i++) {
-                    $('#selec-all-ViTri li').each(function () {
-                        if ($(this).attr('id') === self.MangNhomViTriHH()[i].ID) {
-                            $(this).find('.fa-check').remove();
-                            $(this).append('<i class="fa fa-check check-after-li" style="display:block"></i>')
-                        }
-                    });
-                }
-            }
 
             for (var i = 0; i < self.newHangHoa().DonViTinh().length; i++) {
                 $('#txtmadv' + self.newHangHoa().DonViTinh()[i].ID).val("");
