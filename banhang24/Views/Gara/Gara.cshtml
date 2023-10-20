@@ -2585,9 +2585,9 @@ visible: LoaiHoaDon !== 3">
                     <div class="gara-bill-type">
                         <!--ko if: RoleInsert_Invoice () && $root.HoaDons().LoaiHoaDon() !== 6-->
                         <!--ko if: !(
-                          $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-                        && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 19)
-                           ) -->
+      $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+    && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 19)
+       ) -->
                         <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 25},  click: clickHoaDon">
                             <img hidden="" class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1">
                             Hóa đơn
@@ -2597,8 +2597,8 @@ visible: LoaiHoaDon !== 3">
                         <!--/ko-->
                         <!--ko if: RoleInsert_Order() && $root.HoaDons().LoaiHoaDon() !== 6 -->
                         <!--ko if: !(
-                            $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-                        &&  ($root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 19 || $root.HoaDons().LoaiHoaDon() == 25)  ) -->
+        $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+    &&  ($root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 19 || $root.HoaDons().LoaiHoaDon() == 25)  ) -->
                         <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 3}, click: clickDatHang">
                             <img hidden="" class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1">
                             Báo giá
@@ -2613,11 +2613,11 @@ visible: LoaiHoaDon !== 3">
                             <img hidden="" class="act-r" src="/Content/images/conner-white.png" alt="" tabindex="-1">
                         </a>
                         <!--/ko-->
-                        <!--ko if: RoleInsert_Return() && $root.HoaDons().LoaiHoaDon() !== 6 -->
+                        <!--ko if: RoleInsert_Service() && $root.HoaDons().LoaiHoaDon() !== 6 -->
                         <!--ko if: !(
-                          $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-                        && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 1|| $root.HoaDons().LoaiHoaDon() == 25)
-                           ) -->
+      $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+    && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 1|| $root.HoaDons().LoaiHoaDon() == 25)
+       ) -->
                         <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 19},
                            click: clickGoiDichVu">
                             <img hidden="" class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1">
