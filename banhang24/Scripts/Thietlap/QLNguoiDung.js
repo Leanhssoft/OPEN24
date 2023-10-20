@@ -922,8 +922,17 @@ var ViewModel = function () {
                 $('.op-js-loadsuavt').gridLoader({ show: false });
                 bottomrightnotify('<i class="fa fa-check" aria-hidden="true"></i>' + "Cập nhật vai trò thành công", "success");
                 $('#modalPopuplg_EditVaiTro').modal('hide');
-                //SearchNguoiDung();
-                //location.reload();
+               
+                const autoApplyBG = $.inArray('ThietLapGia_TuDongApDungTheoChiNhanh',arrMaQuyen) >-1;
+                const diary ={
+                    ID_DonVi: _IDchinhanh,
+                    ID_NhanVien: _IDNhanVien,
+                    ChucNang: 'Quản lý người dùng',
+                    NoiDung: 'Cập nhật vai trò '.concat(self.newVaiTro().TenNhom()),
+                    NoiDungChiTiet: 'Cập nhật vai trò '.concat(self.newVaiTro().TenNhom(), 
+                    ' </br > Tự động áp dụng bảng giá theo chi nhánh: ', autoApplyBG?'có':'không'),
+                }
+                Insert_NhatKyThaoTac_1Param(diary);
             },
             statusCode: {
                 404: function () {
