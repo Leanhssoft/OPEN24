@@ -1154,17 +1154,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 HT_NhomNguoiDung ht_nhomnd = _classNND.Select_NhomNguoiDung(id);
                 ht_nhomnd.TenNhom = objVaiTro.TenNhom;
                 string strDel = _classNND.Update_NhomNguoiDung(ht_nhomnd);
-                //add lịch sử hđ
-                HT_NhatKySuDung hT_NhatKySuDung = new HT_NhatKySuDung();
-                hT_NhatKySuDung.ID = Guid.NewGuid();
-                hT_NhatKySuDung.ID_NhanVien = idnhanvien;
-                hT_NhatKySuDung.ChucNang = "Quản lý người dùng";
-                hT_NhatKySuDung.ThoiGian = DateTime.Now;
-                hT_NhatKySuDung.NoiDung = "Cập nhật vai trò: " + objVaiTro.TenNhom;
-                hT_NhatKySuDung.NoiDungChiTiet = "Cập nhật vai trò: " + objVaiTro.TenNhom;
-                hT_NhatKySuDung.LoaiNhatKy = 2;
-                hT_NhatKySuDung.ID_DonVi = iddonvi;
-                SaveDiary.add_Diary(hT_NhatKySuDung);
                 //Quyen
                 //con.AddRange(ong);
                 //con.AddRange(cha);
