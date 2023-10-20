@@ -312,7 +312,12 @@
                 if (loaiHoaDon === 3) {
                     data = $.grep(data, function (x) {
                         return $.inArray(x.Key, ['tongchiphi']) === -1;
-                    })
+                    });
+                    if (self.LoaiHoaDonMenu() === 0) {
+                        data = $.grep(data, function (x) {
+                            return $.inArray(x.Key, ['maphieutiepnhan', 'bienso']) === -1;
+                        })
+                    }
                 }
                 self.NumberColum_Div2(Math.ceil(data.length / 2));
             }
