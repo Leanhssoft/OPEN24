@@ -507,6 +507,7 @@ function SetConvertDataTest(strInput) {
         }
         else {
             if (strInput.indexOf("{Nhom_HangHoaDV}") == -1 && (strInput.indexOf("{TheoHangHoa}") > -1 || strInput.indexOf("{TheoDichVu}") > -1)) {
+               
                 var open = result.lastIndexOf("tbody", result.indexOf("{TenHangHoa")) - 1;
                 var close = result.indexOf("tbody", result.indexOf("{TenHangHoa")) + 6;
                 var temptable = result.substr(open, close - open);
@@ -515,94 +516,224 @@ function SetConvertDataTest(strInput) {
                 var strDV = "<!-- ko foreach:  $root.CTHoaDonPrint().filter(x=> x.LaHangHoa === false) -->";
                 var strHH = "<!-- ko foreach:  $root.CTHoaDonPrint().filter(x=> x.LaHangHoa) -->";
 
-                var indexHH = temptable1.indexOf("TheoHangHoa");
-                var indexDV = temptable1.indexOf("TheoDichVu");
+                let indexHH = temptable1.indexOf("TheoHangHoa");
+                let indexDV = temptable1.indexOf("TheoDichVu");
 
-                var row1From = temptable.indexOf("<tr");
-                var row1To = temptable.indexOf("/tr>");
-                var row1Str = temptable.substr(row1From, row1To);
-                var row1 = row1Str;
-                row1Str = row1Str.replace("<tr", " <tr data-bind=\"visible: $index()===0\"");
+                if (indexHH === -1 && indexDV === -1) {
+                    debugger;
 
-                if (indexHH < indexDV) {
-                    row1Str = ''.concat(strHH, row1Str);
-                }
-                else {
-                    row1Str = ''.concat(strDV, row1Str);
-                }
-
-                var row2From = temptable.indexOf("<tr", temptable.indexOf("<tr") + 1);
-                var row2To = temptable.indexOf("<tr", row2From + 1);
-                var row2Str = temptable.substr(row2From, row2To - row2From);
-                var row2 = row2Str;
-                row2Str = ''.concat(row2Str, "<!--/ko--> ");
-                // use other
-                if (temptable.indexOf("{TongTienPhuTung") == -1) {
-                    // find tr3
-                    var row3From = row2To;
-                    var row3To = temptable.indexOf("<tr", row3From + 1);
-                    var row3Str = temptable.substr(row3From, row3To - row3From);
-                    var row3 = row3Str;
-                    row3Str = row3Str.replace("<tr",
-                        " <tr data-bind=\"visible: $index()===0\"");
-
+                    // tách riêng 2 bảng: hàng hóa. dịch vụ
+                    // nếu tách như này, khách chịu khó căn chỉnh dộ rộng cột thì mới đẹp được
+                    indexHH = strInput.indexOf("{TheoHangHoa}");
+                    indexDV = strInput.indexOf("{TheoDichVu}");
+                 
                     if (indexHH < indexDV) {
-                        row3Str = ''.concat(strDV, row3Str);
+                        // hanghoa truoc - dv sau
+                        if (indexHH !== -1) {
+                            let row1HHFrom = temptable.indexOf("<tr");
+                            let row1HHTo = temptable.indexOf("/tr>");
+                            let row1HHStr = temptable.substr(row1HHFrom, row1HHTo - 3);
+                            let row1HH = row1HHStr;
+                            row1HHStr = ''.concat(strHH, row1HHStr);
+                            row1HHStr = ''.concat(row1HHStr, "<!--/ko--> ");
+
+                            if (indexDV !== -1) {
+                                let tblDVfrom = result.indexOf('<tbody', indexDV);
+                                let tblDVto = result.indexOf('</tbody', tblDVfrom);
+                                let tblDVstr = result.substr(tblDVfrom, tblDVto - tblDVfrom + 7);
+                                let tblDV = tblDVstr;
+
+                                let row1DVFrom = tblDV.indexOf("<tr");
+                                let row1DVTo = tblDV.indexOf("/tr>", row1DVFrom);
+                                let row1DVStr = tblDV.substr(row1DVFrom, row1DVTo - row1DVFrom + 4);
+                                let row1DV = row1DVStr;
+                                row1DVStr = ''.concat(strDV, row1DVStr);
+                                row1DVStr = ''.concat(row1DVStr, "<!--/ko--> ");
+
+                                temptable = temptable.replace(row1HH, row1HHStr);
+                                tblDVstr = tblDVstr.replace(row1DV, row1DVStr);
+                                tblDVstr = tblDVstr.replace(tblDV, tblDVstr);
+                                result = result.replace(tblDV, tblDVstr);
+                            }
+                            else {
+                                temptable = temptable.replace(row1HH, row1HHStr);
+                            }
+
+                            result = result.replace(temptable1, temptable);
+                            result = ReplaceCTHD(result);
+                            result = result.allReplace(
+                                {
+                                    '{STT}': '<span data-bind=\"text:SoThuTu\"></span>'
+                                });
+                        }
+                        else {
+                            // only dv
+                            if (indexDV !== -1) {
+                                let row1DVFrom = temptable.indexOf("<tr");
+                                let row1DVTo = temptable.indexOf("/tr>");
+                                let row1DVStr = temptable.substr(row1DVFrom, row1DVTo - 3);
+                                let row1DV = row1DVStr;
+                                row1DVStr = ''.concat(strDV, row1DVStr);
+                                row1DVStr = ''.concat(row1DVStr, "<!--/ko--> ");
+
+                                temptable = temptable.replace(row1DV, row1DVStr);
+                                result = result.replace(temptable1, temptable);
+                                result = ReplaceCTHD(result);
+                                result = result.allReplace(
+                                    {
+                                        '{STT}': '<span data-bind=\"text:SoThuTu\"></span>'
+                                    });
+                            }
+                        }
                     }
                     else {
-                        row3Str = ''.concat(strHH, row3Str);
-                    }
+                        // dichvu truoc - hanghoa sau
+                        if (indexDV !== -1) {
+                            let row1DVFrom = temptable.indexOf("<tr");
+                            let row1DVTo = temptable.indexOf("/tr>");
+                            let row1DVStr = temptable.substr(row1DVFrom, row1DVTo - 3);
+                            let row1DV = row1DVStr;
+                            row1DVStr = ''.concat(strDV, row1DVStr);
+                            row1DVStr = ''.concat(row1DVStr, "<!--/ko--> ");
+                              // todo check GhiChu_NVThucHien (row2)
 
-                    var row4From = row3To;
-                    var row4To = temptable.indexOf("<tr", row4From + 1);
-                    if (row4To == -1) {
-                        row4To = temptable.lastIndexOf("tr>") + 3;
-                    }
-                    var row4Str = temptable.substr(row4From, row4To - row4From);
-                    var row4 = row4Str;
-                    row4Str = ''.concat(row4Str, "<!--/ko--> ");
-                    temptable = replaceBetween(temptable, row4From, row4To, row4Str);
+                            if (indexHH !== -1) {
 
-                    temptable = temptable.replace(row1, row1Str);
-                    temptable = temptable.replace(row2, row2Str);
-                    temptable = temptable.replace(row3, row3Str);
+                                let tblHHfrom = result.indexOf('<tbody', indexHH);
+                                let tblHHto = result.indexOf('</tbody', tblHHfrom);
+                                let tblHHstr = result.substr(tblHHfrom, tblHHto - tblHHfrom + 7);
+                                let tblHH = tblHHstr;
+
+                                let row1HHFrom = tblHH.indexOf("<tr");
+                                let row1HHTo = tblHH.indexOf("/tr>", row1HHFrom);
+                                let row1HHStr = tblHH.substr(row1HHFrom, row1HHTo - row1HHFrom + 4);
+                                let row1HH = row1HHStr;
+                                row1HHStr = ''.concat(strHH, row1HHStr);
+                                row1HHStr = ''.concat(row1HHStr, "<!--/ko--> ");
+                             
+                                temptable = temptable.replace(row1DV, row1DVStr);
+                                tblHHstr = tblHHstr.replace(row1HH, row1HHStr);
+                                tblHHstr = tblHHstr.replace(tblHH, tblHHstr);
+                                result = result.replace(tblHH, tblHHstr);
+                            }
+                            else {
+                                temptable = temptable.replace(row1DV, row1DVStr);
+                            }
+                            result = result.replace(temptable1, temptable);
+                            result = ReplaceCTHD(result);
+                            result = result.allReplace(
+                                {
+                                    '{STT}': '<span data-bind=\"text:SoThuTu\"></span>'
+                                });
+                        }
+                        else {
+                            // only hh
+                            if (indexHH !== -1) {
+                                let row1HHFrom = temptable.indexOf("<tr");
+                                let row1HHTo = temptable.indexOf("/tr>");
+                                let row1HHStr = temptable.substr(row1HHFrom, row1HHTo - 3);
+                                let row1HH = row1HHStr;
+                                row1HHStr = ''.concat(strHH, row1HHStr);
+                                row1HHStr = ''.concat(row1HHStr, "<!--/ko--> ");
+
+                                temptable = temptable.replace(row1HH, row1HHStr);
+                                result = result.replace(temptable1, temptable);
+                                result = ReplaceCTHD(result);
+                                result = result.allReplace(
+                                    {
+                                        '{STT}': '<span data-bind=\"text:SoThuTu\"></span>'
+                                    });
+                            }
+                        }
+                    }
                 }
                 else {
-                    // row3: tongtienphutung
-                    var row3From = row2To;
-                    var row3To = temptable.indexOf("<tr", row3From + 1);
-                    var row3Str = temptable.substr(row3From, row3To - row3From);
-
-                    var row4From = row3To;
-                    var row4To = temptable.indexOf("<tr", row4From + 1);
-                    var row4Str = temptable.substr(row4From, row4To - row4From);
-                    var row4 = row4Str;
-                    row4Str = row4Str.replace("<tr", " <tr data-bind=\"visible: $index()===0\"");
-
-                    var row5From = row4To;
-                    var row5To = temptable.indexOf("<tr", row5From + 1);
-                    var row5Str = temptable.substr(row5From, row5To - row5From);
-                    var row5 = row5Str;
-                    row5Str = ''.concat(row5Str, "<!--/ko--> ");
+                    let row1From = temptable.indexOf("<tr");
+                    let row1To = temptable.indexOf("/tr>");
+                    let row1Str = temptable.substr(row1From, row1To);
+                    let row1 = row1Str;
+                    row1Str = row1Str.replace("<tr", " <tr data-bind=\"visible: $index()===0\"");
 
                     if (indexHH < indexDV) {
-                        row4Str = ''.concat(strDV, row4Str);
+                        row1Str = ''.concat(strHH, row1Str);
                     }
                     else {
-                        row4Str = ''.concat(strHH, row4Str);
+                        row1Str = ''.concat(strDV, row1Str);
                     }
-                    temptable = replaceBetween(temptable, row5From, row5To, row5Str);
-                    temptable = temptable.replace(row2, row2Str);
-                    temptable = temptable.replace(row1, row1Str);
-                    temptable = temptable.replace(row4, row4Str);
-                }
 
-                temptable = temptable.allReplace(
-                    {
-                        '{STT}': '<span data-bind=\"text: $index() + 1\"></span>'
-                    });
-                temptable = ReplaceCTHD(temptable);
-                result = result.replace(temptable1, temptable);
+                    let row2From = temptable.indexOf("<tr", temptable.indexOf("<tr") + 1);
+                    let row2To = temptable.indexOf("<tr", row2From + 1);
+                    let row2Str = temptable.substr(row2From, row2To - row2From);
+                    let row2 = row2Str;
+                    row2Str = ''.concat(row2Str, "<!--/ko--> ");
+                    // use other
+                    if (temptable.indexOf("{TongTienPhuTung") == -1) {
+                        // find tr3
+                        let row3From = row2To;
+                        let row3To = temptable.indexOf("<tr", row3From + 1);
+                        let row3Str = temptable.substr(row3From, row3To - row3From);
+                        let row3 = row3Str;
+                        row3Str = row3Str.replace("<tr",
+                            " <tr data-bind=\"visible: $index()===0\"");
+
+                        if (indexHH < indexDV) {
+                            row3Str = ''.concat(strDV, row3Str);
+                        }
+                        else {
+                            row3Str = ''.concat(strHH, row3Str);
+                        }
+
+                        let row4From = row3To;
+                        let row4To = temptable.indexOf("<tr", row4From + 1);
+                        if (row4To == -1) {
+                            row4To = temptable.lastIndexOf("tr>") + 3;
+                        }
+                        let row4Str = temptable.substr(row4From, row4To - row4From);
+                        let row4 = row4Str;
+                        row4Str = ''.concat(row4Str, "<!--/ko--> ");
+                        temptable = replaceBetween(temptable, row4From, row4To, row4Str);
+
+                        temptable = temptable.replace(row1, row1Str);
+                        temptable = temptable.replace(row2, row2Str);
+                        temptable = temptable.replace(row3, row3Str);
+                    }
+                    else {
+                        // row3: tongtienphutung
+                        let row3From = row2To;
+                        let row3To = temptable.indexOf("<tr", row3From + 1);
+                        let row3Str = temptable.substr(row3From, row3To - row3From);
+
+                        let row4From = row3To;
+                        let row4To = temptable.indexOf("<tr", row4From + 1);
+                        let row4Str = temptable.substr(row4From, row4To - row4From);
+                        let row4 = row4Str;
+                        row4Str = row4Str.replace("<tr", " <tr data-bind=\"visible: $index()===0\"");
+
+                        let row5From = row4To;
+                        let row5To = temptable.indexOf("<tr", row5From + 1);
+                        let row5Str = temptable.substr(row5From, row5To - row5From);
+                        let row5 = row5Str;
+                        row5Str = ''.concat(row5Str, "<!--/ko--> ");
+
+                        if (indexHH < indexDV) {
+                            row4Str = ''.concat(strDV, row4Str);
+                        }
+                        else {
+                            row4Str = ''.concat(strHH, row4Str);
+                        }
+                        temptable = replaceBetween(temptable, row5From, row5To, row5Str);
+                        temptable = temptable.replace(row2, row2Str);
+                        temptable = temptable.replace(row1, row1Str);
+                        temptable = temptable.replace(row4, row4Str);
+                    }
+
+                    temptable = temptable.allReplace(
+                        {
+                            '{STT}': '<span data-bind=\"text: $index() + 1\"></span>'
+                        });
+                    temptable = ReplaceCTHD(temptable);
+                    result = result.replace(temptable1, temptable);
+                }
 
                 result = result.replace("{TheoDichVu}", "");
                 result = result.replace("{TheoHangHoa}", "");
