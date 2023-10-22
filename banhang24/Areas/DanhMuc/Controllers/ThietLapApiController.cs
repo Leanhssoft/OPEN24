@@ -710,109 +710,241 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
                 var indexHH = temptable1.IndexOf("TheoHangHoa");
                 var indexDV = temptable1.IndexOf("TheoDichVu");
-
-                int row1From = temptable.IndexOf("<tr");
-                int row1To = temptable.IndexOf("/tr>");
-                string row1Str = temptable.Substring(row1From, row1To);
-                string row1 = row1Str;
-                row1Str = row1Str.Replace("<tr", " <tr data-bind=\"visible: $index()===0\"");
-
-                if (indexHH < indexDV)
+                if (indexHH == -1 && indexDV ==-1)
                 {
-                    row1Str = string.Concat(strHH, row1Str);
-                }
-                else
-                {
-                    row1Str = string.Concat(strDV, row1Str);
-                }
-
-                int row2From = temptable.IndexOf("<tr", temptable.IndexOf("<tr") + 1);
-                int row2To = temptable.IndexOf("<tr", row2From + 1);
-                string row2Str = temptable.Substring(row2From, row2To - row2From);
-                string row2 = row2Str;
-                row2Str = string.Concat(row2Str, "<!--/ko--> ");
-
-                // use other
-                if (temptable.IndexOf("{TongTienPhuTung") == -1)
-                {
-                    // find tr3
-                    int row3From = row2To;
-                    int row3To = temptable.IndexOf("<tr", row3From + 1);
-                    string row3Str = temptable.Substring(row3From, row3To - row3From);
-                    string row3 = row3Str;
-                    row3Str = row3Str.Replace("<tr",
-                        " <tr data-bind=\"visible: $index()===0\"");
+                    openTbl = content1.LastIndexOf("tbody", content1.IndexOf("{TenHangHoa")) - 1;
+                    closeTbl = content1.IndexOf("tbody", content1.IndexOf("{TenHangHoa")) + 6;
+                    temptable = content1.Substring(openTbl, closeTbl - openTbl);
+                    temptable1 = temptable;
+                    // tách riêng 2 bảng: hàng hóa. dịch vụ
+                    // nếu tách như này, khách chịu khó căn chỉnh độ rộng cột thì mới đẹp được
+                    indexHH = content1.IndexOf("{TheoHangHoa}");
+                    indexDV = content1.IndexOf("{TheoDichVu}");
 
                     if (indexHH < indexDV)
                     {
-                        row3Str = string.Concat(strDV, row3Str);
+                        // hanghoa truoc - dv sau
+                        if (indexHH != -1)
+                        {
+                            var row1HHFrom = temptable.IndexOf("<tr");
+                            var row1HHTo = temptable.IndexOf("/tr>");
+                            var row1HHStr = temptable.Substring(row1HHFrom, row1HHTo - 3);
+                            var row1HH = row1HHStr;
+                            row1HHStr = string.Concat(strHH, row1HHStr);
+                            row1HHStr = string.Concat(row1HHStr, "<!--/ko--> ");
+
+                            if (indexDV != -1)
+                            {
+                                var tblDVfrom = content1.IndexOf("<tbody", indexDV);
+                                var tblDVto = content1.IndexOf("</tbody", tblDVfrom);
+                                var tblDVstr = content1.Substring(tblDVfrom, tblDVto - tblDVfrom + 7);
+                                var tblDV = tblDVstr;
+
+                                var row1DVFrom = tblDV.IndexOf("<tr");
+                                var row1DVTo = tblDV.IndexOf("/tr>", row1DVFrom);
+                                var row1DVStr = tblDV.Substring(row1DVFrom, row1DVTo - row1DVFrom + 4);
+                                var row1DV = row1DVStr;
+                                row1DVStr = string.Concat(strDV, row1DVStr);
+                                row1DVStr = string.Concat(row1DVStr, "<!--/ko--> ");
+
+                                temptable = temptable.Replace(row1HH, row1HHStr);
+                                tblDVstr = tblDVstr.Replace(row1DV, row1DVStr);
+                                tblDVstr = tblDVstr.Replace(tblDV, tblDVstr);
+                                content1 = content1.Replace(tblDV, tblDVstr);
+                            }
+                            else
+                            {
+                                temptable = temptable.Replace(row1HH, row1HHStr);
+                            }
+
+                            content1 = content1.Replace(temptable1, temptable);
+                            //content1 = Replace_ThongTinHangHoa(content1);
+                        }
+                        else
+                        {
+                            // only dv
+                            if (indexDV != -1)
+                            {
+                                var row1DVFrom = temptable.IndexOf("<tr");
+                                var row1DVTo = temptable.IndexOf("/tr>");
+                                var row1DVStr = temptable.Substring(row1DVFrom, row1DVTo - 3);
+                                var row1DV = row1DVStr;
+                                row1DVStr = string.Concat(strDV, row1DVStr);
+                                row1DVStr = string.Concat(row1DVStr, "<!--/ko--> ");
+
+                                temptable = temptable.Replace(row1DV, row1DVStr);
+                                content1 = content1.Replace(temptable1, temptable);
+                                //content1 = Replace_ThongTinHangHoa(content1);
+                            }
+                        }
                     }
                     else
                     {
-                        row3Str = string.Concat(strHH, row3Str);
+                        // dichvu truoc - hanghoa sau
+                        if (indexDV != -1)
+                        {
+                            var row1DVFrom = temptable.IndexOf("<tr");
+                            var row1DVTo = temptable.IndexOf("/tr>");
+                            var row1DVStr = temptable.Substring(row1DVFrom, row1DVTo - 3);
+                            var row1DV = row1DVStr;
+                            row1DVStr = string.Concat(strDV, row1DVStr);
+                            row1DVStr = string.Concat(row1DVStr, "<!--/ko--> ");
+                            // todo check GhiChu_NVThucHien (row2)
+
+                            if (indexHH != -1)
+                            {
+
+                                var tblHHfrom = content1.IndexOf("<tbody", indexHH);
+                                var tblHHto = content1.IndexOf("</tbody", tblHHfrom);
+                                var tblHHstr = content1.Substring(tblHHfrom, tblHHto - tblHHfrom + 7);
+                                var tblHH = tblHHstr;
+
+                                var row1HHFrom = tblHH.IndexOf("<tr");
+                                var row1HHTo = tblHH.IndexOf("/tr>", row1HHFrom);
+                                var row1HHStr = tblHH.Substring(row1HHFrom, row1HHTo - row1HHFrom + 4);
+                                var row1HH = row1HHStr;
+                                row1HHStr = string.Concat(strHH, row1HHStr);
+                                row1HHStr = string.Concat(row1HHStr, "<!--/ko--> ");
+
+                                temptable = temptable.Replace(row1DV, row1DVStr);
+                                tblHHstr = tblHHstr.Replace(row1HH, row1HHStr);
+                                tblHHstr = tblHHstr.Replace(tblHH, tblHHstr);
+                                content1 = content1.Replace(tblHH, tblHHstr);
+                            }
+                            else
+                            {
+                                temptable = temptable.Replace(row1DV, row1DVStr);
+                            }
+                            content1 = content1.Replace(temptable1, temptable);
+                        }
+                        else
+                        {
+                            // only hh
+                            if (indexHH != -1)
+                            {
+                                var row1HHFrom = temptable.IndexOf("<tr");
+                                var row1HHTo = temptable.IndexOf("/tr>");
+                                var row1HHStr = temptable.Substring(row1HHFrom, row1HHTo - 3);
+                                var row1HH = row1HHStr;
+                                row1HHStr = string.Concat(strHH, row1HHStr);
+                                row1HHStr = string.Concat(row1HHStr, "<!--/ko--> ");
+
+                                temptable = temptable.Replace(row1HH, row1HHStr);
+                                content1 = content1.Replace(temptable1, temptable);
+                            }
+                        }
                     }
 
-                    int row4From = row3To;
-                    int row4To = temptable.IndexOf("<tr", row4From + 1);
-                    if (row4To == -1)
-                    {
-                        row4To = temptable.LastIndexOf("tr>") + 3;
-                    }
-                    string row4Str = temptable.Substring(row4From, row4To - row4From);
-                    string row4 = row4Str;
-                    row4Str = string.Concat(row4Str, "<!--/ko--> ");
+                    content1 = content1.Replace("{STT}", "<span data-bind=\"text: $index() + 1\"></span>");
+                    content1 = Replace_ThongTinHangHoa(content1);
+                    content1 = content1.Replace("{TheoDichVu}", "");
+                    content1 = content1.Replace("{TheoHangHoa}", "");
+                }
+                else
+                {
+                    int row1From = temptable.IndexOf("<tr");
+                    int row1To = temptable.IndexOf("/tr>");
+                    string row1Str = temptable.Substring(row1From, row1To);
+                    string row1 = row1Str;
+                    row1Str = row1Str.Replace("<tr", " <tr data-bind=\"visible: $index()===0\"");
 
-                    temptable = temptable.Replace(row1, row1Str);
-                    temptable = temptable.Replace(row2, row2Str);
-                    temptable = temptable.Replace(row3, row3Str);
-                    if (row2.Replace("\n", "") != row4.Replace("\n", ""))
+                    if (indexHH < indexDV)
                     {
+                        row1Str = string.Concat(strHH, row1Str);
+                    }
+                    else
+                    {
+                        row1Str = string.Concat(strDV, row1Str);
+                    }
+
+                    int row2From = temptable.IndexOf("<tr", temptable.IndexOf("<tr") + 1);
+                    int row2To = temptable.IndexOf("<tr", row2From + 1);
+                    string row2Str = temptable.Substring(row2From, row2To - row2From);
+                    string row2 = row2Str;
+                    row2Str = string.Concat(row2Str, "<!--/ko--> ");
+
+                    // use other
+                    if (temptable.IndexOf("{TongTienPhuTung") == -1)
+                    {
+                        // find tr3
+                        int row3From = row2To;
+                        int row3To = temptable.IndexOf("<tr", row3From + 1);
+                        string row3Str = temptable.Substring(row3From, row3To - row3From);
+                        string row3 = row3Str;
+                        row3Str = row3Str.Replace("<tr",
+                            " <tr data-bind=\"visible: $index()===0\"");
+
+                        if (indexHH < indexDV)
+                        {
+                            row3Str = string.Concat(strDV, row3Str);
+                        }
+                        else
+                        {
+                            row3Str = string.Concat(strHH, row3Str);
+                        }
+
+                        int row4From = row3To;
+                        int row4To = temptable.IndexOf("<tr", row4From + 1);
+                        if (row4To == -1)
+                        {
+                            row4To = temptable.LastIndexOf("tr>") + 3;
+                        }
+                        string row4Str = temptable.Substring(row4From, row4To - row4From);
+                        string row4 = row4Str;
+                        row4Str = string.Concat(row4Str, "<!--/ko--> ");
+
+                        temptable = temptable.Replace(row1, row1Str);
+                        temptable = temptable.Replace(row2, row2Str);
+                        temptable = temptable.Replace(row3, row3Str);
+                        if (row2.Replace("\n", "") != row4.Replace("\n", ""))
+                        {
+                            temptable = temptable.Replace(row4, row4Str);
+                        }
+                    }
+                    else
+                    {
+                        // row3: tongtienphutung
+                        int row3From = row2To;
+                        int row3To = temptable.IndexOf("<tr", row3From + 1);
+                        string row3Str = temptable.Substring(row3From, row3To - row3From);
+
+                        int row4From = row3To;
+                        int row4To = temptable.IndexOf("<tr", row4From + 1);
+                        string row4Str = temptable.Substring(row4From, row4To - row4From);
+                        string row4 = row4Str;
+                        row4Str = row4Str.Replace("<tr", " <tr data-bind=\"visible: $index()===0\"");
+
+                        int row5From = row4To;
+                        int row5To = temptable.IndexOf("<tr", row5From + 1);
+                        string row5Str = temptable.Substring(row5From, row5To - row5From);
+                        string row5 = row5Str;
+                        row5Str = string.Concat(row5Str, "<!--/ko--> ");
+
+                        if (indexHH < indexDV)
+                        {
+                            row4Str = string.Concat(strDV, row4Str);
+                        }
+                        else
+                        {
+                            row4Str = string.Concat(strHH, row4Str);
+                        }
+                        temptable = temptable.Replace(row1, row1Str);
+                        temptable = temptable.Replace(row2, row2Str);
                         temptable = temptable.Replace(row4, row4Str);
+                        // neu style hanghoa = dichvu: chi can replace 1 lan o row2
+                        if (row2.Replace("\n", "") != row5.Replace("\n", ""))
+                        {
+                            temptable = temptable.Replace(row5, row5Str);
+                        }
                     }
+
+                    temptable = temptable.Replace("{STT}", "<span data-bind=\"text: $index() + 1\"></span>");
+                    temptable = Replace_ThongTinHangHoa(temptable);
+
+                    temptable = temptable.Replace("{TheoDichVu}", "");
+                    temptable = temptable.Replace("{TheoHangHoa}", "");
+                    content1 = content1.Replace(temptable1, temptable);
                 }
-                else
-                {
-                    // row3: tongtienphutung
-                    int row3From = row2To;
-                    int row3To = temptable.IndexOf("<tr", row3From + 1);
-                    string row3Str = temptable.Substring(row3From, row3To - row3From);
-
-                    int row4From = row3To;
-                    int row4To = temptable.IndexOf("<tr", row4From + 1);
-                    string row4Str = temptable.Substring(row4From, row4To - row4From);
-                    string row4 = row4Str;
-                    row4Str = row4Str.Replace("<tr", " <tr data-bind=\"visible: $index()===0\"");
-
-                    int row5From = row4To;
-                    int row5To = temptable.IndexOf("<tr", row5From + 1);
-                    string row5Str = temptable.Substring(row5From, row5To - row5From);
-                    string row5 = row5Str;
-                    row5Str = string.Concat(row5Str, "<!--/ko--> ");
-
-                    if (indexHH < indexDV)
-                    {
-                        row4Str = string.Concat(strDV, row4Str);
-                    }
-                    else
-                    {
-                        row4Str = string.Concat(strHH, row4Str);
-                    }
-                    temptable = temptable.Replace(row1, row1Str);
-                    temptable = temptable.Replace(row2, row2Str);
-                    temptable = temptable.Replace(row4, row4Str);
-                    // neu style hanghoa = dichvu: chi can replace 1 lan o row2
-                    if (row2.Replace("\n", "") != row5.Replace("\n", ""))
-                    {
-                        temptable = temptable.Replace(row5, row5Str);
-                    }
-                }
-
-                temptable = temptable.Replace("{STT}", "<span data-bind=\"text: $index() + 1\"></span>");
-                temptable = Replace_ThongTinHangHoa(temptable);
-
-                temptable = temptable.Replace("{TheoDichVu}", "");
-                temptable = temptable.Replace("{TheoHangHoa}", "");
-                content1 = content1.Replace(temptable1, temptable);
             }
             else
             {
