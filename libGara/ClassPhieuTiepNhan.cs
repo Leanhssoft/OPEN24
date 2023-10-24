@@ -129,8 +129,13 @@ namespace libGara
             {
                 strTrangThai = string.Join(",", param.TrangThais);
             }
+
+            var idUserLogin = param.IdUserLogin;
+            if (idUserLogin == Guid.Empty) idUserLogin = null;
+
             List<SqlParameter> sql = new List<SqlParameter>();
             sql.Add(new SqlParameter("IdChiNhanhs", idChiNhanh));
+            sql.Add(new SqlParameter("IdUserLogin", idUserLogin ?? (object)DBNull.Value));
             sql.Add(new SqlParameter("NgayTiepNhan_From", param.NgayTiepNhan_From == null ? (object)DBNull.Value : param.NgayTiepNhan_From.Value));
             sql.Add(new SqlParameter("NgayTiepNhan_To", param.NgayTiepNhan_To == null ? (object)DBNull.Value : param.NgayTiepNhan_To.Value));
             sql.Add(new SqlParameter("NgayXuatXuongDuKien_From", param.NgayXuatXuongDuKien_From == null ? (object)DBNull.Value : param.NgayXuatXuongDuKien_From.Value));
@@ -143,7 +148,7 @@ namespace libGara
             sql.Add(new SqlParameter("PageSize", param.PageSize));
             sql.Add(new SqlParameter("BaoHiem", param.BaoHiem));
 
-            string sqlquery = "GetListPhieuTiepNhan_v2 @IdChiNhanhs, @NgayTiepNhan_From, @NgayTiepNhan_To, " +
+            string sqlquery = "GetListPhieuTiepNhan_v2 @IdChiNhanhs, @IdUserLogin, @NgayTiepNhan_From, @NgayTiepNhan_To, " +
                 "@NgayXuatXuongDuKien_From, @NgayXuatXuongDuKien_To, @NgayXuatXuong_From, @NgayXuatXuong_To, " +
                 "@TrangThais, @TextSearch, @CurrentPage, @PageSize, @BaoHiem";
             List<GetListPhieuTiepNhan_v2> xx = _db.Database.SqlQuery<GetListPhieuTiepNhan_v2>(sqlquery, sql.ToArray()).ToList();
@@ -266,7 +271,7 @@ namespace libGara
                      FileDinhKem = x.FileDinhKem,
                      TrangThai = x.TrangThai,
                      STT = x.STT ?? 0,
-                 }).OrderBy(x=>x.STT).ToList();
+                 }).OrderBy(x => x.STT).ToList();
         }
 
         public void AddPhieuTiepNhan(Gara_PhieuTiepNhan obj)

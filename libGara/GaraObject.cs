@@ -77,6 +77,7 @@ namespace libGara
     public class ParamGetListPhieuTiepNhan_v2
     {
         public List<string> IdChiNhanhs { get; set; } = new List<string>();
+        public Guid? IdUserLogin { get; set; } = Guid.Empty;
         public DateTime? NgayTiepNhan_From { get; set; } = null;
         public DateTime? NgayTiepNhan_To { get; set; } = null;
         public DateTime? NgayXuatXuongDuKien_From { get; set; } = null;
@@ -142,6 +143,7 @@ namespace libGara
         public string MaDonVi { get; set; }
         public string TenDonVi { get; set; }
         public DateTime NgayTao { get; set; }
+        public string NguoiTao { get; set; }
         public int TotalRow { get; set; }
         public double TotalPage { get; set; }
         public Guid? ID_DonVi { get; set; }
