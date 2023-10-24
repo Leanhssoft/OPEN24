@@ -148,7 +148,7 @@
                     </div>
                     <div class="form-group floatleft">
                         <label class="css-form-label ">Điện thoại
-                            <span class="red" v-if="$root.isLeeAuto"> (*) </span></label>
+                            <span class="red" v-if="$root.role.KhachHang.BatBuocNhapSDT"> (*) </span></label>
                         <div class="css-form-detail">
                             <input type="text" class="form-control" v-model="newCustomer.DienThoai" autocomplete="off"
                                    onkeypress="return chekPhone(event)" maxlength="13">

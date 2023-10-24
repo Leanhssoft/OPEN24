@@ -239,58 +239,58 @@
     }
 
     function GetHT_Quyen_ByNguoiDung() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
-                if (data !== "" && data.length > 0) {
-                    self.Quyen_NguoiDung(data);
-                    self.TraHangNhap_ThemMoi(CheckQuyenExist('TraHangNhap_ThemMoi'));
-                    self.ChuyenHang_ThemMoi(CheckQuyenExist('ChuyenHang_ThemMoi'));
-                    self.HoaDon_ThemMoi(CheckQuyenExist('HoaDon_ThemMoi'));
-                    self.Show_BtnUpdateSoQuy(CheckQuyenExist('SoQuy_CapNhat'));
-                    self.Show_BtnDeleteSoQuy(CheckQuyenExist('SoQuy_Xoa'));
-                    self.Allow_ChangeTimeSoQuy(CheckQuyenExist('SoQuy_ThayDoiThoiGian'));
 
-                    switch (self.LoaiHoaDonMenu()) {
-                        case 4:
-                            self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapHang_ThayDoiThoiGian'));
-                            self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapHang_ThayDoiNhanVien'));
-                            self.roleNhapHang_Insert(CheckQuyenExist('NhapHang_ThemMoi'));
-                            self.roleNhapHang_Export(CheckQuyenExist('NhapHang_XuatFile'));
-                            self.Show_BtnCopy(CheckQuyenExist('NhapHang_SaoChep'));
-                            self.Show_BtnEdit(CheckQuyenExist('NhapHang_CapNhat'));
-                            self.Show_BtnUpdate(CheckQuyenExist('NhapHang_CapNhat'));
-                            self.Show_BtnDelete(CheckQuyenExist('NhapHang_Xoa'));
-                            self.Show_BtnExcelDetail(CheckQuyenExist('NhapHang_XuatFile'));
-                            break;
-                        case 13:
-                            self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapNoiBo_ThayDoiThoiGian'));
-                            self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapNoiBo_ThayDoiNhanVien'));
-                            self.roleNhapHang_Insert(CheckQuyenExist('NhapNoiBo_ThemMoi'));
-                            self.roleNhapHang_Export(CheckQuyenExist('NhapNoiBo_XuatFile'));
-                            self.Show_BtnCopy(CheckQuyenExist('NhapNoiBo_SaoChep'));
-                            self.Show_BtnEdit(CheckQuyenExist('NhapNoiBo_CapNhat'));
-                            self.Show_BtnUpdate(CheckQuyenExist('NhapNoiBo_CapNhat'));
-                            self.Show_BtnDelete(CheckQuyenExist('NhapNoiBo_Xoa'));
-                            self.Show_BtnExcelDetail(CheckQuyenExist('NhapNoiBo_XuatFile'));
-                            break;
-                        case 31:
-                            self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('DatHangNCC_ThayDoiThoiGian'));
-                            self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('DatHangNCC_ThayDoiNhanVien'));
-                            self.roleNhapHang_Insert(CheckQuyenExist('DatHangNCC_ThemMoi'));
-                            self.roleNhapHang_Export(CheckQuyenExist('DatHangNCC_XuatFile'));
-                            self.Show_BtnCopy(CheckQuyenExist('DatHangNCC_SaoChep'));
-                            self.Show_BtnEdit(CheckQuyenExist('DatHangNCC_CapNhat'));
-                            self.Show_BtnUpdate(CheckQuyenExist('DatHangNCC_CapNhat'));
-                            self.Show_BtnDelete(CheckQuyenExist('DatHangNCC_Xoa'));
-                            self.Show_BtnExcelDetail(CheckQuyenExist('DatHangNCC_XuatFile'));
-                            break;
-                    }
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
+            if (data !== "" && data.length > 0) {
+                self.Quyen_NguoiDung(data);
+                self.TraHangNhap_ThemMoi(CheckQuyenExist('TraHangNhap_ThemMoi'));
+                self.ChuyenHang_ThemMoi(CheckQuyenExist('ChuyenHang_ThemMoi'));
+                self.HoaDon_ThemMoi(CheckQuyenExist('HoaDon_ThemMoi'));
+                self.Show_BtnUpdateSoQuy(CheckQuyenExist('SoQuy_CapNhat'));
+                self.Show_BtnDeleteSoQuy(CheckQuyenExist('SoQuy_Xoa'));
+                self.Allow_ChangeTimeSoQuy(CheckQuyenExist('SoQuy_ThayDoiThoiGian'));
+
+                switch (self.LoaiHoaDonMenu()) {
+                    case 4:
+                        self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapHang_ThayDoiThoiGian'));
+                        self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapHang_ThayDoiNhanVien'));
+                        self.roleNhapHang_Insert(CheckQuyenExist('NhapHang_ThemMoi'));
+                        self.roleNhapHang_Export(CheckQuyenExist('NhapHang_XuatFile'));
+                        self.Show_BtnCopy(CheckQuyenExist('NhapHang_SaoChep'));
+                        self.Show_BtnEdit(CheckQuyenExist('NhapHang_CapNhat'));
+                        self.Show_BtnUpdate(CheckQuyenExist('NhapHang_CapNhat'));
+                        self.Show_BtnDelete(CheckQuyenExist('NhapHang_Xoa'));
+                        self.Show_BtnExcelDetail(CheckQuyenExist('NhapHang_XuatFile'));
+                        break;
+                    case 13:
+                        self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapNoiBo_ThayDoiThoiGian'));
+                        self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapNoiBo_ThayDoiNhanVien'));
+                        self.roleNhapHang_Insert(CheckQuyenExist('NhapNoiBo_ThemMoi'));
+                        self.roleNhapHang_Export(CheckQuyenExist('NhapNoiBo_XuatFile'));
+                        self.Show_BtnCopy(CheckQuyenExist('NhapNoiBo_SaoChep'));
+                        self.Show_BtnEdit(CheckQuyenExist('NhapNoiBo_CapNhat'));
+                        self.Show_BtnUpdate(CheckQuyenExist('NhapNoiBo_CapNhat'));
+                        self.Show_BtnDelete(CheckQuyenExist('NhapNoiBo_Xoa'));
+                        self.Show_BtnExcelDetail(CheckQuyenExist('NhapNoiBo_XuatFile'));
+                        break;
+                    case 31:
+                        self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('DatHangNCC_ThayDoiThoiGian'));
+                        self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('DatHangNCC_ThayDoiNhanVien'));
+                        self.roleNhapHang_Insert(CheckQuyenExist('DatHangNCC_ThemMoi'));
+                        self.roleNhapHang_Export(CheckQuyenExist('DatHangNCC_XuatFile'));
+                        self.Show_BtnCopy(CheckQuyenExist('DatHangNCC_SaoChep'));
+                        self.Show_BtnEdit(CheckQuyenExist('DatHangNCC_CapNhat'));
+                        self.Show_BtnUpdate(CheckQuyenExist('DatHangNCC_CapNhat'));
+                        self.Show_BtnDelete(CheckQuyenExist('DatHangNCC_Xoa'));
+                        self.Show_BtnExcelDetail(CheckQuyenExist('DatHangNCC_XuatFile'));
+                        break;
                 }
-                else {
-                    ShowMessage_Danger('Không có quyền');
-                }
-            });
-        }
+            }
+            else {
+                ShowMessage_Danger('Không có quyền');
+            }
+        });
+
     }
 
     function LoadID_NhanVien() {
@@ -355,13 +355,12 @@
             timeChotSo = self.ChotSo_ChiNhanh()[0].NgayChotSo;
         }
 
-        if (navigator.onLine) {
-            ajaxHelper(DMHangHoaUri + "SP_GetAll_DMLoHang?iddonvi=" + _IDchinhanh + '&timeChotSo=' + timeChotSo, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.ListLoHang(data);
-                }
-            });
-        }
+        ajaxHelper(DMHangHoaUri + "SP_GetAll_DMLoHang?iddonvi=" + _IDchinhanh + '&timeChotSo=' + timeChotSo, 'GET').done(function (data) {
+            if (data !== null) {
+                self.ListLoHang(data);
+            }
+        });
+
     }
 
     function CheckNgayLapHD_format(valDate, idDonVi = null) {
@@ -2812,13 +2811,11 @@
     }
 
     function GetDM_TaiKhoanNganHang() {
-        if (navigator.onLine) {
-            ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + _IDchinhanh, 'GET').done(function (x) {
-                if (x.res === true) {
-                    vmThanhToanNCC.listData.AccountBanks = x.data;
-                }
-            })
-        }
+        ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + _IDchinhanh, 'GET').done(function (x) {
+            if (x.res === true) {
+                vmThanhToanNCC.listData.AccountBanks = x.data;
+            }
+        })
     }
 
     self.showPopThanhToan = function (hd) {

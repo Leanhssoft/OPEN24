@@ -2469,14 +2469,12 @@ var ViewModel = function () {
     self.ThietLap = ko.observableArray();
     self.NhomKHChosed = ko.observableArray();
     function GetCauHinhHeThong() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + idDonVi, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.ThietLap(data);
-                }
-                GetNhomDoiTuong_DonVi();
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + idDonVi, 'GET').done(function (data) {
+            if (data !== null) {
+                self.ThietLap(data);
+            }
+            GetNhomDoiTuong_DonVi();
+        });
     }
     function GetNhomDoiTuong_DonVi() {
         ajaxHelper(DMDoiTuongUri + 'GetNhomDoiTuong_DonVi?loaiDT=1', 'GET').done(function (obj) {

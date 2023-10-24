@@ -185,17 +185,15 @@
     }
 
     function GetTree_NhomHangHoa() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/' + 'GetTree_NhomHangHoa', 'GET').done(function (obj) {
-                if (obj.res === true) {
-                    let data = obj.data;
-                    if (data.length > 0) {
-                        data = data.sort((a, b) => a.text.localeCompare(b.text, undefined, { caseFirst: "upper" }));
-                    }
-                    self.NhomHangHoas(data);
+        ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/' + 'GetTree_NhomHangHoa', 'GET').done(function (obj) {
+            if (obj.res === true) {
+                let data = obj.data;
+                if (data.length > 0) {
+                    data = data.sort((a, b) => a.text.localeCompare(b.text, undefined, { caseFirst: "upper" }));
                 }
-            })
-        }
+                self.NhomHangHoas(data);
+            }
+        })
     }
 
     function AddCheckAfterLi(idChiNhanh) {
@@ -1766,7 +1764,7 @@
                 break;
             case 22:
                 url = "/#/RechargeValueCard";
-                break; 
+                break;
             case 25:
                 url = "/#/HoaDonSuaChua";
                 break;

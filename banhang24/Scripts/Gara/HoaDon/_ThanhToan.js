@@ -303,16 +303,14 @@
         },
         GetDebitCustomer_allBrands: function (idDoiTuong) {
             var self = this;
-            if (navigator.onLine) {
-                ajaxHelper('/api/DanhMuc/DM_DoiTuongAPI/' + 'GetDebitCustomer_allBrands?idDoiTuong='
-                    + idDoiTuong, 'GET').done(function (nohientai) {
-                        self.newPhieuThu.NoHienTai = nohientai;
-                        self.HoaDonChosing.PhaiThanhToan = nohientai;
-                        self.HoaDonChosing.DaThanhToan = nohientai;
+            ajaxHelper('/api/DanhMuc/DM_DoiTuongAPI/' + 'GetDebitCustomer_allBrands?idDoiTuong='
+                + idDoiTuong, 'GET').done(function (nohientai) {
+                    self.newPhieuThu.NoHienTai = nohientai;
+                    self.HoaDonChosing.PhaiThanhToan = nohientai;
+                    self.HoaDonChosing.DaThanhToan = nohientai;
 
-                        self.GetListHD_isDebitOfKH(idDoiTuong);
-                    });
-            }
+                    self.GetListHD_isDebitOfKH(idDoiTuong);
+                });
         },
         GetListHD_isDebitOfKH: function (idDoiTuong) {
             var self = this;

@@ -314,17 +314,15 @@ var ChuyenHangChiTiet = function () {
     }
 
     function GetHT_Quyen_ByNguoiDung() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
-                if (data !== "" && data.length > 0) {
-                    self.Quyen_NguoiDung(data);
-                    self.ChuyenHang_ThayDoiThoiGian(CheckQuyenExist('ChuyenHang_ThayDoiThoiGian'));
-                }
-                else {
-                    ShowMessage_Danger('Không có quyền');
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
+            if (data !== "" && data.length > 0) {
+                self.Quyen_NguoiDung(data);
+                self.ChuyenHang_ThayDoiThoiGian(CheckQuyenExist('ChuyenHang_ThayDoiThoiGian'));
+            }
+            else {
+                ShowMessage_Danger('Không có quyền');
+            }
+        });
     }
 
     function Check_QuyenXemGiaVon() {
@@ -357,13 +355,11 @@ var ChuyenHangChiTiet = function () {
     }
 
     function GetCauHinhHeThong() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + _idDonVi, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.ThietLap(data);
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + _idDonVi, 'GET').done(function (data) {
+            if (data !== null) {
+                self.ThietLap(data);
+            }
+        });
     }
 
     function newCTHD(itemHH, soluong) {

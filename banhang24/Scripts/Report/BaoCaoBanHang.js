@@ -2820,24 +2820,22 @@
     var treeDepartment = '';
 
     function GetTree_NhomHangHoa() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/NS_NhanVienAPI/' + 'GetTreePhongBan?chinhanhId=' + _id_DonVi, 'GET').done(function (data) {
-                if (data.length > 0) {
-                    data = data.sort((a, b) => a.text.localeCompare(b.text, undefined, { caseFirst: "upper" }));
-                }
-                self.PhongBans(data);
-                //  bind data on tree
-                treeDepartment = $('#treeDepartment').tree({
-                    primaryKey: 'id',
-                    uiLibrary: 'bootstrap',
-                    dataSource: data,
-                    checkboxes: false,
-                }).on('select', function (e, node, id) {
-                    reportSale.GetChildenID_Department(id);
-                    reportSale.LoadReport();
-                });
+        ajaxHelper('/api/DanhMuc/NS_NhanVienAPI/' + 'GetTreePhongBan?chinhanhId=' + _id_DonVi, 'GET').done(function (data) {
+            if (data.length > 0) {
+                data = data.sort((a, b) => a.text.localeCompare(b.text, undefined, { caseFirst: "upper" }));
+            }
+            self.PhongBans(data);
+            //  bind data on tree
+            treeDepartment = $('#treeDepartment').tree({
+                primaryKey: 'id',
+                uiLibrary: 'bootstrap',
+                dataSource: data,
+                checkboxes: false,
+            }).on('select', function (e, node, id) {
+                reportSale.GetChildenID_Department(id);
+                reportSale.LoadReport();
             });
-        }
+        });
     }
     GetTree_NhomHangHoa();
 

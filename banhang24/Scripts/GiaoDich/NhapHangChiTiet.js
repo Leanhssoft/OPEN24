@@ -831,45 +831,43 @@ var NhapHangChiTiet = function () {
     }
 
     function GetHT_Quyen_ByNguoiDung() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
-                if (data !== "" && data.length > 0) {
-                    self.Quyen_NguoiDung(data);
-                    self.HangHoa_GiaBan(CheckQuyenExist('HangHoa_GiaBan'));
-                    self.HangHoa_GiaNhap(CheckQuyenExist('HangHoa_GiaNhap'));
-                    self.role_InsertSoQuy(CheckQuyenExist('SoQuy_ThemMoi'));
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
+            if (data !== "" && data.length > 0) {
+                self.Quyen_NguoiDung(data);
+                self.HangHoa_GiaBan(CheckQuyenExist('HangHoa_GiaBan'));
+                self.HangHoa_GiaNhap(CheckQuyenExist('HangHoa_GiaNhap'));
+                self.role_InsertSoQuy(CheckQuyenExist('SoQuy_ThemMoi'));
 
-                    switch (self.LoaiHoaDonMenu()) {
-                        case 4:
-                            self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapHang_ThayDoiThoiGian'));
-                            self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapHang_ThayDoiNhanVien'));
-                            break;
-                        case 31:
-                            self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('DatHangNCC_ThayDoiThoiGian'));
-                            self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('DatHangNCC_ThayDoiNhanVien'));
-                            break;
-                        case 13:
-                            self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapNoiBo_ThayDoiThoiGian'));
-                            self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapNoiBo_ThayDoiNhanVien'));
-                            break;
-                    }
+                switch (self.LoaiHoaDonMenu()) {
+                    case 4:
+                        self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapHang_ThayDoiThoiGian'));
+                        self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapHang_ThayDoiNhanVien'));
+                        break;
+                    case 31:
+                        self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('DatHangNCC_ThayDoiThoiGian'));
+                        self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('DatHangNCC_ThayDoiNhanVien'));
+                        break;
+                    case 13:
+                        self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapNoiBo_ThayDoiThoiGian'));
+                        self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapNoiBo_ThayDoiNhanVien'));
+                        break;
+                }
 
-                    var insertNCC = CheckQuyenExist('NhaCungCap_ThemMoi');
-                    if (insertNCC) {
-                        $('#hiddenShowaddNCC,#btnLuuNhomDoiTuong').show();
+                var insertNCC = CheckQuyenExist('NhaCungCap_ThemMoi');
+                if (insertNCC) {
+                    $('#hiddenShowaddNCC,#btnLuuNhomDoiTuong').show();
 
-                    }
-                    else {
-                        $('#hiddenShowaddNCC,#btnLuuNhomDoiTuong').hide();
-                    }
-                    vmCus.role.ThemMoiNhaCungCap = insertNCC;
-                    vmCus.role.CapNhatNhaCungCap = CheckQuyenExist('NhaCungCap_CapNhat');
                 }
                 else {
-                    ShowMessage_Danger('Không có quyền');
+                    $('#hiddenShowaddNCC,#btnLuuNhomDoiTuong').hide();
                 }
-            });
-        }
+                vmCus.role.ThemMoiNhaCungCap = insertNCC;
+                vmCus.role.CapNhatNhaCungCap = CheckQuyenExist('NhaCungCap_CapNhat');
+            }
+            else {
+                ShowMessage_Danger('Không có quyền');
+            }
+        });
     }
 
     function Check_QuyenXemGiaVon() {
@@ -884,17 +882,15 @@ var NhapHangChiTiet = function () {
     }
 
     function GetTree_NhomHangHoa() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/' + 'GetTree_NhomHangHoa', 'GET').done(function (obj) {
-                if (obj.res === true) {
-                    let data = obj.data;
-                    if (data.length > 0) {
-                        data = data.sort((a, b) => a.text.localeCompare(b.text, undefined, { caseFirst: "upper" }));
-                    }
-                    self.NhomHangHoas(data);
+        ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/' + 'GetTree_NhomHangHoa', 'GET').done(function (obj) {
+            if (obj.res === true) {
+                let data = obj.data;
+                if (data.length > 0) {
+                    data = data.sort((a, b) => a.text.localeCompare(b.text, undefined, { caseFirst: "upper" }));
                 }
-            })
-        }
+                self.NhomHangHoas(data);
+            }
+        })
     }
     self.AllAccountBank = ko.observableArray();
 
@@ -3838,13 +3834,11 @@ var NhapHangChiTiet = function () {
     }
 
     function getChiTietNCCByID(id, firstLoad = true) {
-        if (navigator.onLine) {
-            ajaxHelper(DMDoiTuongUri + "GetDM_DoiTuong/" + id, 'GET').done(function (data) {
-                self.ChiTietDoiTuong(data);
-                SetIDDoiTuong_toCacheHD(data);
-                GetTienDatCoc(id, firstLoad);
-            });
-        }
+        ajaxHelper(DMDoiTuongUri + "GetDM_DoiTuong/" + id, 'GET').done(function (data) {
+            self.ChiTietDoiTuong(data);
+            SetIDDoiTuong_toCacheHD(data);
+            GetTienDatCoc(id, firstLoad);
+        });
     }
 
     function GetTienDatCoc(idDoiTuong, firstLoad) {
@@ -6164,7 +6158,7 @@ var NhapHangChiTiet = function () {
                 let ex = [];
                 if (cacheCP !== null) {
                     cacheCP = JSON.parse(cacheCP);
-                     ex = $.grep(cacheCP, function (x) {
+                    ex = $.grep(cacheCP, function (x) {
                         return x.IDRandomHD === idRanDomHD;
                     });
                     if (ex.length > 0) {

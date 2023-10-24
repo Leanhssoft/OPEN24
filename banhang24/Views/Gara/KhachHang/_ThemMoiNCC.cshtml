@@ -108,7 +108,7 @@
                     <i class="fa fa-ban"></i> Bỏ qua
                 </button>
                 <button type="button" class="btn btn-save"
-                         v-if="!isLoading"
+                        v-if="!isLoading"
                         v-on:click="SaveVendor">
                     <i class="fa fa-save"></i> Lưu
                 </button>
@@ -193,19 +193,19 @@
         },
         methods: {
             GetInforVendor_byID: async function (idCus) {// used to update cus at phieutiepnhan
-            let self = this;
-            let date = moment(new Date()).format('YYYY-MM-DD HH:mm');
-            if (!commonStatisJs.CheckNull(idCus)) {
-                let xx = await ajaxHelper('/api/DanhMuc/DM_DoituongAPI/' + "GetInforKhachHang_ByID?idDoiTuong=" + idCus
-                    + '&idChiNhanh=' + self.inforLogin.ID_DonVi
-                    + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function () {
-                    }).then(function (data) {// return arr
-                        return data;
-                    });
-                return xx;
-            }
-            return null;
-        },
+                let self = this;
+                let date = moment(new Date()).format('YYYY-MM-DD HH:mm');
+                if (!commonStatisJs.CheckNull(idCus)) {
+                    let xx = await ajaxHelper('/api/DanhMuc/DM_DoituongAPI/' + "GetInforKhachHang_ByID?idDoiTuong=" + idCus
+                        + '&idChiNhanh=' + self.inforLogin.ID_DonVi
+                        + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function () {
+                        }).then(function (data) {// return arr
+                            return data;
+                        });
+                    return xx;
+                }
+                return null;
+            },
             showModalAdd: function () {
                 var self = this;
                 self.isNew = true;
@@ -369,94 +369,93 @@
                 self.newVendor.TenDoiTuong_KhongDau = locdau(self.newVendor.TenDoiTuong);
 
                 self.isLoading = true;
-                if (navigator.onLine) {
-                    // insert Nha cung cap
-                    if (self.isNew) {
-                        ajaxHelper(self.UrlDoiTuongAPI + "PostDM_DoiTuong", 'POST', self.newVendor).done(function (obj) {
-                            if (obj.res === true) {
-                                ShowMessage_Success("Thêm mới nhà cung cấp thành công");
 
-                                self.saveOK = true;
-                                self.newVendor.ID = obj.data.ID;
-                                self.newVendor.MaDoiTuong = obj.data.MaDoiTuong;
+                // insert Nha cung cap
+                if (self.isNew) {
+                    ajaxHelper(self.UrlDoiTuongAPI + "PostDM_DoiTuong", 'POST', self.newVendor).done(function (obj) {
+                        if (obj.res === true) {
+                            ShowMessage_Success("Thêm mới nhà cung cấp thành công");
 
-                                if (_idNhomDT !== '00000000-0000-0000-0000-000000000000') {
-                                    var objDTNhom = {
-                                        ID_DoiTuong: self.newVendor.ID,
-                                        ID_NhomDoiTuong: _idNhomDT,
-                                    }
-                                    self.UpdateNhomKhachHang([objDTNhom]);
+                            self.saveOK = true;
+                            self.newVendor.ID = obj.data.ID;
+                            self.newVendor.MaDoiTuong = obj.data.MaDoiTuong;
+
+                            if (_idNhomDT !== '00000000-0000-0000-0000-000000000000') {
+                                var objDTNhom = {
+                                    ID_DoiTuong: self.newVendor.ID,
+                                    ID_NhomDoiTuong: _idNhomDT,
                                 }
+                                self.UpdateNhomKhachHang([objDTNhom]);
+                            }
 
-                                var diary = {
-                                    ID_DonVi: self.inforLogin.ID_DonVi,
-                                    ID_NhanVien: self.inforLogin.ID_NhanVien,
-                                    LoaiNhatKy: 1,
-                                    ChucNang: 'Nhà cung cấp',
-                                    NoiDung: 'Thêm mới nhà cung cấp '.concat(self.newVendor.TenDoiTuong, ' (', obj.data.MaDoiTuong, ')'),
-                                    NoiDungChiTiet: 'Thêm mới nhà cung cấp '.concat(self.newVendor.TenDoiTuong, ' (', self.newVendor.MaDoiTuong,
-                                        ') <br /> Điện thoại: ', self.newVendor.DienThoai ? self.newVendor.DienThoai : '',
-                                        ' <br /> Địa chỉ: ', self.newVendor.DiaChi,
-                                        ' <br /> Nhóm khách: ', self.newVendor.TenNhomKhachs)
+                            var diary = {
+                                ID_DonVi: self.inforLogin.ID_DonVi,
+                                ID_NhanVien: self.inforLogin.ID_NhanVien,
+                                LoaiNhatKy: 1,
+                                ChucNang: 'Nhà cung cấp',
+                                NoiDung: 'Thêm mới nhà cung cấp '.concat(self.newVendor.TenDoiTuong, ' (', obj.data.MaDoiTuong, ')'),
+                                NoiDungChiTiet: 'Thêm mới nhà cung cấp '.concat(self.newVendor.TenDoiTuong, ' (', self.newVendor.MaDoiTuong,
+                                    ') <br /> Điện thoại: ', self.newVendor.DienThoai ? self.newVendor.DienThoai : '',
+                                    ' <br /> Địa chỉ: ', self.newVendor.DiaChi,
+                                    ' <br /> Nhóm khách: ', self.newVendor.TenNhomKhachs)
+                            }
+                            Insert_NhatKyThaoTac_1Param(diary);
+                        }
+                        else {
+                            ShowMessage_Danger(obj.mes);
+                        }
+                        $("#vmThemMoiNCC").modal("hide");
+                        self.isLoading = false;
+                    })
+                }
+                // update Nha cung cap
+                else {
+                    self.newVendor.NguoiSua = self.inforLogin.UserLogin;
+                    var myData = {
+                        id: _id,
+                        objDoiTuong: self.newVendor,
+                    };
+                    ajaxHelper(self.UrlDoiTuongAPI + "PutDM_DoiTuong", 'PUT', myData).done(function (obj) {
+                        if (obj.res === true) {
+                            ShowMessage_Success("Cập nhật nhà cung cấp thành công");
+
+                            self.saveOK = true;
+                            if (_idNhomDT !== null && _idNhomDT !== undefined && _idNhomDT !== 0) {
+                                let objDTNhom = {
+                                    ID_DoiTuong: _id,
+                                    ID: _idNhomDT,
                                 }
-                                Insert_NhatKyThaoTac_1Param(diary);
+                                self.UpdateNhomKhachHang([objDTNhom]);
                             }
                             else {
-                                ShowMessage_Danger(obj.mes);
-                            }
-                            $("#vmThemMoiNCC").modal("hide");
-                            self.isLoading = false;
-                        })
-                    }
-                    // update Nha cung cap
-                    else {
-                        self.newVendor.NguoiSua = self.inforLogin.UserLogin;
-                        var myData = {
-                            id: _id,
-                            objDoiTuong: self.newVendor,
-                        };
-                        ajaxHelper(self.UrlDoiTuongAPI + "PutDM_DoiTuong", 'PUT', myData).done(function (obj) {
-                            if (obj.res === true) {
-                                ShowMessage_Success("Cập nhật nhà cung cấp thành công");
-
-                                self.saveOK = true;
-                                if (_idNhomDT !== null && _idNhomDT !== undefined && _idNhomDT !== 0) {
-                                    let objDTNhom = {
-                                        ID_DoiTuong: _id,
-                                        ID: _idNhomDT,
-                                    }
-                                    self.UpdateNhomKhachHang([objDTNhom]);
+                                // delete nhomold
+                                if (!commonStatisJs.CheckNull(self.customerOld.ID_NhomDoiTuong)) {
+                                    self.Delete_NhomOld_ofCus([_id]);
                                 }
-                                else {
-                                    // delete nhomold
-                                    if (!commonStatisJs.CheckNull(self.customerOld.ID_NhomDoiTuong)) {
-                                        self.Delete_NhomOld_ofCus([_id]);
-                                    }
-                                }
-                                var diary = {
-                                    ID_DonVi: self.inforLogin.ID_DonVi,
-                                    ID_NhanVien: self.inforLogin.ID_NhanVien,
-                                    LoaiNhatKy: 2,
-                                    ChucNang: 'Nhà cung cấp',
-                                    NoiDung: 'Cập nhật nhà cung cấp '.concat(self.newVendor.TenDoiTuong, ' (', obj.data.MaDoiTuong, ')'),
-                                    NoiDungChiTiet: 'Cập nhật nhà cung cấp '.concat(self.newVendor.TenDoiTuong, ' (', self.newVendor.MaDoiTuong
-                                        , ') <br /> Điện thoại: ', self.newVendor.DienThoai,
-                                        ' <br /> Địa chỉ: ', self.newVendor.DiaChi,
-                                        ' <br /> Nhóm khách: ', self.newVendor.TenNhomKhachs,
-                                        ' <br /> <b> Thông tin cũ: </b>',
-                                        ' <br /> - Tên đối tượng: ', self.customerOld.TenDoiTuong, ' ( ', self.customerOld.MaDoiTuong, ') ',
-                                        '<br /> - Điện thoại: ', self.customerOld.DienThoai,
-                                        ' <br /> - Nhóm cũ: ', self.customerOld.TenNhomDT)
-                                };
-                                Insert_NhatKyThaoTac_1Param(diary);
                             }
-                            else {
-                                ShowMessage_Danger(obj.mes);
-                            }
-                            $("#vmThemMoiNCC").modal("hide");
-                            self.isLoading = false;
-                        })
-                    }
+                            var diary = {
+                                ID_DonVi: self.inforLogin.ID_DonVi,
+                                ID_NhanVien: self.inforLogin.ID_NhanVien,
+                                LoaiNhatKy: 2,
+                                ChucNang: 'Nhà cung cấp',
+                                NoiDung: 'Cập nhật nhà cung cấp '.concat(self.newVendor.TenDoiTuong, ' (', obj.data.MaDoiTuong, ')'),
+                                NoiDungChiTiet: 'Cập nhật nhà cung cấp '.concat(self.newVendor.TenDoiTuong, ' (', self.newVendor.MaDoiTuong
+                                    , ') <br /> Điện thoại: ', self.newVendor.DienThoai,
+                                    ' <br /> Địa chỉ: ', self.newVendor.DiaChi,
+                                    ' <br /> Nhóm khách: ', self.newVendor.TenNhomKhachs,
+                                    ' <br /> <b> Thông tin cũ: </b>',
+                                    ' <br /> - Tên đối tượng: ', self.customerOld.TenDoiTuong, ' ( ', self.customerOld.MaDoiTuong, ') ',
+                                    '<br /> - Điện thoại: ', self.customerOld.DienThoai,
+                                    ' <br /> - Nhóm cũ: ', self.customerOld.TenNhomDT)
+                            };
+                            Insert_NhatKyThaoTac_1Param(diary);
+                        }
+                        else {
+                            ShowMessage_Danger(obj.mes);
+                        }
+                        $("#vmThemMoiNCC").modal("hide");
+                        self.isLoading = false;
+                    })
                 }
             },
             Delete_NhomOld_ofCus: function (arrIDCus = []) {

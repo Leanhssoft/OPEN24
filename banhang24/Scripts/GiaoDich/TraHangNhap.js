@@ -163,27 +163,25 @@
     }
 
     function GetHT_Quyen_ByNguoiDung() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
-                if (data !== "" && data.length > 0) {
-                    self.Quyen_NguoiDung(data);
-                    self.TraHangNhap_ThayDoiThoiGian(CheckQuyenExist('TraHangNhap_ThayDoiThoiGian'));
-                    self.TraHangNhap_ThayDoiNhanVien(CheckQuyenExist('TraHangNhap_ThayDoiNhanVien'));
-                    self.Show_BtnUpdateSoQuy(CheckQuyenExist('SoQuy_CapNhat'));
-                    self.Show_BtnDeleteSoQuy(CheckQuyenExist('SoQuy_Xoa'));
-                    self.Allow_ChangeTimeSoQuy(CheckQuyenExist('SoQuy_ThayDoiThoiGian'));
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
+            if (data !== "" && data.length > 0) {
+                self.Quyen_NguoiDung(data);
+                self.TraHangNhap_ThayDoiThoiGian(CheckQuyenExist('TraHangNhap_ThayDoiThoiGian'));
+                self.TraHangNhap_ThayDoiNhanVien(CheckQuyenExist('TraHangNhap_ThayDoiNhanVien'));
+                self.Show_BtnUpdateSoQuy(CheckQuyenExist('SoQuy_CapNhat'));
+                self.Show_BtnDeleteSoQuy(CheckQuyenExist('SoQuy_Xoa'));
+                self.Allow_ChangeTimeSoQuy(CheckQuyenExist('SoQuy_ThayDoiThoiGian'));
 
-                    self.Show_BtnUpdate(CheckQuyenExist('TraHangNhap_CapNhat'));
-                    self.Show_BtnCopy(CheckQuyenExist('TraHangNhap_SaoChep'));
-                    self.Show_BtnDelete(CheckQuyenExist('TraHangNhap_Xoa'));
-                    self.Show_BtnExport(CheckQuyenExist('TraHangNhap_XuatFile'));
-                    self.Show_BtnInsert(CheckQuyenExist('TraHangNhap_ThemMoi'));
-                }
-                else {
-                    ShowMessage_Danger('Không có quyền');
-                }
-            });
-        }
+                self.Show_BtnUpdate(CheckQuyenExist('TraHangNhap_CapNhat'));
+                self.Show_BtnCopy(CheckQuyenExist('TraHangNhap_SaoChep'));
+                self.Show_BtnDelete(CheckQuyenExist('TraHangNhap_Xoa'));
+                self.Show_BtnExport(CheckQuyenExist('TraHangNhap_XuatFile'));
+                self.Show_BtnInsert(CheckQuyenExist('TraHangNhap_ThemMoi'));
+            }
+            else {
+                ShowMessage_Danger('Không có quyền');
+            }
+        });
     }
 
     function GetAllQuy_KhoanThuChi() {
@@ -194,13 +192,11 @@
         });
     }
     function GetDM_TaiKhoanNganHang() {
-        if (navigator.onLine) {
-            ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + _IDchinhanh, 'GET').done(function (x) {
-                if (x.res === true) {
-                    vmThanhToanNCC.listData.AccountBanks = x.data;
-                }
-            })
-        }
+        ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + _IDchinhanh, 'GET').done(function (x) {
+            if (x.res === true) {
+                vmThanhToanNCC.listData.AccountBanks = x.data;
+            }
+        })
     }
 
     function LoadID_NhanVien() {
@@ -235,13 +231,11 @@
             timeChotSo = self.ChotSo_ChiNhanh()[0].NgayChotSo;
         }
 
-        if (navigator.onLine) {
-            ajaxHelper(DMHangHoaUri + "SP_GetAll_DMLoHang?iddonvi=" + _IDchinhanh + '&timeChotSo=' + timeChotSo, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.ListLoHang(data);
-                }
-            });
-        }
+        ajaxHelper(DMHangHoaUri + "SP_GetAll_DMLoHang?iddonvi=" + _IDchinhanh + '&timeChotSo=' + timeChotSo, 'GET').done(function (data) {
+            if (data !== null) {
+                self.ListLoHang(data);
+            }
+        });
     }
 
     function CheckNgayLapHD_format(valDate, idDonVi = null) {
@@ -861,7 +855,7 @@
 
                     let phaiTTSauTrahang = x.dataSoure.reduce(function (x, item) {
                         return x + item.TongTienHDTra;
-                    }, 0);                 
+                    }, 0);
                     self.TongThanhToan(phaiTTSauTrahang);
 
                     if (!isGoToNext) {

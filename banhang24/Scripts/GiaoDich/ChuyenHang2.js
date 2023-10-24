@@ -210,23 +210,21 @@ var ViewModelHD = function () {
     }
 
     function GetHT_Quyen_ByNguoiDung() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
-                if (data !== "" && data.length > 0) {
-                    self.Quyen_NguoiDung(data);
-                    localStorage.setItem('lc_CTQuyen', JSON.stringify(data));
-                    self.ChuyenHang_ThayDoiThoiGian(CheckQuyenExist('ChuyenHang_ThayDoiThoiGian'));
-                    self.ChuyenHang_ThayDoiNhanVien(CheckQuyenExist('ChuyenHang_ThayDoiNhanVien'));
-                    self.Show_BtnExcelDetail(CheckQuyenExist('ChuyenHang_XuatFile'));
-                    self.Show_BtnCopy(CheckQuyenExist('ChuyenHang_SaoChep'));
-                    self.Show_BtnDelete(CheckQuyenExist('ChuyenHang_Xoa'));
-                    self.Show_BtnInsert(CheckQuyenExist('ChuyenHang_ThemMoi'));
-                }
-                else {
-                    ShowMessage_Danger('Không có quyền');
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
+            if (data !== "" && data.length > 0) {
+                self.Quyen_NguoiDung(data);
+                localStorage.setItem('lc_CTQuyen', JSON.stringify(data));
+                self.ChuyenHang_ThayDoiThoiGian(CheckQuyenExist('ChuyenHang_ThayDoiThoiGian'));
+                self.ChuyenHang_ThayDoiNhanVien(CheckQuyenExist('ChuyenHang_ThayDoiNhanVien'));
+                self.Show_BtnExcelDetail(CheckQuyenExist('ChuyenHang_XuatFile'));
+                self.Show_BtnCopy(CheckQuyenExist('ChuyenHang_SaoChep'));
+                self.Show_BtnDelete(CheckQuyenExist('ChuyenHang_Xoa'));
+                self.Show_BtnInsert(CheckQuyenExist('ChuyenHang_ThemMoi'));
+            }
+            else {
+                ShowMessage_Danger('Không có quyền');
+            }
+        });
     }
 
     function Check_QuyenXemGiaVon() {

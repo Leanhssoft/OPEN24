@@ -10,11 +10,10 @@
     created: function () {
         let self = this;
         self.GuidEmpty = '00000000-0000-0000-0000-000000000000';
-        self.isLeeAuto = false;
         let idDonVi = $('#txtDonVi').val();
-        const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
         if (commonStatisJs.CheckNull(idDonVi)) {
-            self.isLeeAuto = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1;
+            self.role.PhieuTiepNhan.BatBuocNhapKmVao = self.CheckRole('PhieuTiepNhan_BatBuocNhapKmVao')
+            console.log(33, self.role.PhieuTiepNhan.BatBuocNhapKmVao)
         }
     },
     data: {
@@ -36,7 +35,7 @@
         },
         role: {
             Xe: {},
-            PhieuTiepNhan: {},
+            PhieuTiepNhan: {BatBuocNhapKmVao: false},
             KhachHang: {},
             BaoHiem: {},
         },
@@ -818,7 +817,7 @@
                 commonStatisJs.ShowMessageDanger('Vui lòng chọn khách hàng');
                 return;
             }
-            if (self.isLeeAuto && (commonStatisJs.CheckNull(self.newPhieuTiepNhan.SoKmVao) || self.newPhieuTiepNhan.SoKmVao ===0)) {
+            if (self.role.PhieuTiepNhan.BatBuocNhapKmVao && (commonStatisJs.CheckNull(self.newPhieuTiepNhan.SoKmVao) || self.newPhieuTiepNhan.SoKmVao ===0)) {
                 commonStatisJs.ShowMessageDanger('Vui lòng nhập số Km vào');
                 return;
             }

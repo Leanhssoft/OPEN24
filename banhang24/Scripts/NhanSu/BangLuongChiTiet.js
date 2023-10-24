@@ -571,7 +571,7 @@
         },
         showModalLuongChinh: function (item) {
             var self = this;
-            if (item.LuongChinh > 0 && navigator.onLine) {
+            if (item.LuongChinh > 0) {
                 self.listdata.LuongChinh = [];
 
                 let tungay = self.bangluong.TuNgayYYMMDD;
@@ -643,7 +643,7 @@
                 var myData = $.map(self.luongot.arrIDNhanVien, function (x) {
                     return x;
                 });
-                if (navigator.onLine && myData.length > 0) {
+                if (myData.length > 0) {
                     var tungay = self.bangluong.TuNgayYYMMDD;
                     var denngay = self.bangluong.DenNgayYYMMDD;
                     var ngaycongchuan = self.bangluong.NgayCongChuan;

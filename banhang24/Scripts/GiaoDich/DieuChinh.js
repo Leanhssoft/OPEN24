@@ -117,7 +117,7 @@
     $('.ip_DateReport').attr('disabled', 'false');
     self.filterSeach = function (item, inputString) {
 
-    }    
+    }
 
     function CheckQuyenExist(maquyen) {
         var role = $.grep(self.Quyen_NguoiDung(), function (x) {
@@ -127,22 +127,20 @@
     }
 
     function GetHT_Quyen_ByNguoiDung() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
-                if (data !== "" && data.length > 0) {
-                    self.Quyen_NguoiDung(data);
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
+            if (data !== "" && data.length > 0) {
+                self.Quyen_NguoiDung(data);
 
-                    self.PhieuDieuChinh_XuatFile(CheckQuyenExist('PhieuDieuChinh_XuatFile'));
-                    self.PhieuDieuChinh_ThemMoi(CheckQuyenExist('PhieuDieuChinh_ThemMoi'));
-                    self.PhieuDieuChinh_MoPhieu(CheckQuyenExist('PhieuDieuChinh_MoPhieu'));
-                    self.PhieuDieuChinh_Xoa(CheckQuyenExist('PhieuDieuChinh_Xoa'));
-                    self.DieuChinhGiaVon_ThayDoiThoiGian(CheckQuyenExist('DieuChinhGiaVon_ThayDoiThoiGian'));
-                }
-                else {
-                    ShowMessage_Danger('Không có quyền');
-                }
-            });
-        }
+                self.PhieuDieuChinh_XuatFile(CheckQuyenExist('PhieuDieuChinh_XuatFile'));
+                self.PhieuDieuChinh_ThemMoi(CheckQuyenExist('PhieuDieuChinh_ThemMoi'));
+                self.PhieuDieuChinh_MoPhieu(CheckQuyenExist('PhieuDieuChinh_MoPhieu'));
+                self.PhieuDieuChinh_Xoa(CheckQuyenExist('PhieuDieuChinh_Xoa'));
+                self.DieuChinhGiaVon_ThayDoiThoiGian(CheckQuyenExist('DieuChinhGiaVon_ThayDoiThoiGian'));
+            }
+            else {
+                ShowMessage_Danger('Không có quyền');
+            }
+        });
     }
 
     function getQuyen_XemGiaVon() {
@@ -473,7 +471,7 @@
             ShowMessage_Danger('Ngày lập hóa đơn vượt quá thời gian hiện tại');
             return false;
         }
-        let chotSo = VHeader.CheckKhoaSo(moment(ngayLapHD, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD'),_idDonVi);
+        let chotSo = VHeader.CheckKhoaSo(moment(ngayLapHD, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD'), _idDonVi);
         if (chotSo) {
             ShowMessage_Danger(VHeader.warning.ChotSo.Update);
             return false;
@@ -1523,7 +1521,7 @@
                 self.CongTy(data);
             }
         });
-    }    
+    }
 
     function loadMauIn() {
         $.ajax({
@@ -1593,7 +1591,7 @@
                 }
             }
         });
-    }  
+    }
 
     $(document).on('click', '.per_ac1 li', function () {
         var ch = $(this).index();
@@ -1746,7 +1744,7 @@
             }
         }
     }
-    
+
     function getAllHoaDon() {
         $('.phieu-dieu-chinh').gridLoader();
         $('.line-right').height(0).css("margin-top", "0px");
@@ -2479,7 +2477,7 @@
             self.ReserPage();
         }
     });
-  
+
     $('.choose_TimeReport input').on('click', function () {
         _rdTime = $(this).val()
         if ($(this).val() == 0) {
@@ -3102,13 +3100,13 @@
             }
         }
     }
-    
+
     var DMHangHoaUri = '/api/DanhMuc/DM_HangHoaAPI/';
     self.DownloadFileTeamplateXLS = function () {
         var url = DMHangHoaUri + "Download_TeamplateImport?fileSave=" + "FileImport_DanhSachHangDieuChinh.xls";
         window.location.href = url;
     }
-    
+
     self.DownloadFileTeamplateXLSX = function () {
         var url = DMHangHoaUri + "Download_TeamplateImport?fileSave=" + "FileImport_DanhSachHangDieuChinh.xlsx";
         window.location.href = url;
@@ -3131,7 +3129,7 @@
         $(".filterFileSelect").show();
         self.loiExcel([]);
     }
-    
+
     self.importDieuChinh = function () {
         LoadingForm(true);
         $('.phieu-dieu-chinh').gridLoader();

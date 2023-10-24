@@ -14,19 +14,15 @@
         self.ImgHost = Open24FileManager.hostUrl;
         self.UrlDoiTuongAPI = '/api/DanhMuc/DM_DoiTuongAPI/';
         self.ToDay = new Date();
-        const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
         if (commonStatisJs.CheckNull(self.SubDomain)) {
+            // if has header
             self.SubDomain = VHeader.SubDomain;
-            self.isLeeAuto =  $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain)> -1;
             self.inforLogin.ID_DonVi = VHeader.IdDonVi;
 
             self.role.KhachHang.ThemMoi = VHeader.Quyen.indexOf('KhachHang_ThemMoi') > -1;
             self.role.KhachHang.CapNhat = VHeader.Quyen.indexOf('KhachHang_CapNhat') > -1;
+            self.role.KhachHang.BatBuocNhapSDT = VHeader.Quyen.indexOf('KhachHang_BatBuocNhapSDT') > -1;
         }
-        else {
-            self.isLeeAuto = $.inArray(self.SubDomain.toLowerCase(), arrSubDomain) > -1;
-        }
-
         self.PageLoad();
     },
     data: {
@@ -37,7 +33,7 @@
         error: '',
         role: {
             // role nhom + nguon + trangthai = role customer
-            KhachHang: {},
+            KhachHang: {BatBuocNhapSDT:false},
             NhomKhach: {},
         },
         customerDoing: {},
@@ -623,7 +619,7 @@
                 ShowMessage_Danger('Vui lòng nhập tên khách hàng');
                 return false;
             }
-            if (self.isLeeAuto && commonStatisJs.CheckNull(cus.DienThoai)) {
+            if (self.role.KhachHang.BatBuocNhapSDT && commonStatisJs.CheckNull(cus.DienThoai)) {
                 ShowMessage_Danger('Vui lòng nhập số điện thoại khách hàng');
                 return false;
             }

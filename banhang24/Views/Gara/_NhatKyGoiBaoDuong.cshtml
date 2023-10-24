@@ -649,30 +649,28 @@
             },
             GetNhatKySuDung_GDV: function () {
                 let self = this;
-                if (navigator.onLine) {
-                    // xem all chinhanh (hadt)
-                    let param = {
-                        IDCars: [self.ID_Car],
-                        CurrentPage: self.filterNKy.currentPage,
-                        PageSize: self.filterNKy.pageSize,
-                    }
-                    // neu chua chon xe--> lay nky theo khachhang
-                    if (commonStatisJs.CheckNull(self.ID_Car)) {
-                        param.IDCustomers = [self.ID_Customer];
-                    }
-                    ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetNhatKySuDung_GDV', 'POST', param).done(function (x) {
-                        let dataS = x.dataSoure;
-                        if (x.res && dataS.data !== null) {
-                            self.listData.NhatKySuDung = dataS.data;
-                            self.filterNKy.ListFilter = dataS.data;
-                            self.filterNKy.ListPage = dataS.listpage;
-                            self.filterNKy.isPrev = dataS.isprev;
-                            self.filterNKy.isNext = dataS.isnext;
-                            self.filterNKy.totalPage = dataS.countpage;
-                            self.filterNKy.PageView = dataS.pageview;
-                        }
-                    });
+                // xem all chinhanh (hadt)
+                let param = {
+                    IDCars: [self.ID_Car],
+                    CurrentPage: self.filterNKy.currentPage,
+                    PageSize: self.filterNKy.pageSize,
                 }
+                // neu chua chon xe--> lay nky theo khachhang
+                if (commonStatisJs.CheckNull(self.ID_Car)) {
+                    param.IDCustomers = [self.ID_Customer];
+                }
+                ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetNhatKySuDung_GDV', 'POST', param).done(function (x) {
+                    let dataS = x.dataSoure;
+                    if (x.res && dataS.data !== null) {
+                        self.listData.NhatKySuDung = dataS.data;
+                        self.filterNKy.ListFilter = dataS.data;
+                        self.filterNKy.ListPage = dataS.listpage;
+                        self.filterNKy.isPrev = dataS.isprev;
+                        self.filterNKy.isNext = dataS.isnext;
+                        self.filterNKy.totalPage = dataS.countpage;
+                        self.filterNKy.PageView = dataS.pageview;
+                    }
+                });
             },
             ResetNhatKyGiaoDich: function () {
                 let self = this;
@@ -752,19 +750,17 @@
                     CurrentPage: self.filterThe.currentPage,
                     PageSize: self.filterThe.pageSize,
                 }
-                if (navigator.onLine) {
-                    ajaxHelper('/api/DanhMuc/DM_DoiTuongAPI/' + 'GetListHisUsed_ValueCard', 'POST', param).done(function (obj) {
-                        if (obj.res === true) {
-                            let dataS = obj.dataSoure;
-                            self.listData.NhatKySuDungThe = dataS.data;
-                            self.filterThe.ListPage = dataS.listpage;
-                            self.filterThe.isPrev = dataS.isprev;
-                            self.filterThe.isNext = dataS.isnext;
-                            self.filterThe.totalPage = dataS.countpage;
-                            self.filterThe.PageView = dataS.pageview;
-                        }
-                    })
-                }
+                ajaxHelper('/api/DanhMuc/DM_DoiTuongAPI/' + 'GetListHisUsed_ValueCard', 'POST', param).done(function (obj) {
+                    if (obj.res === true) {
+                        let dataS = obj.dataSoure;
+                        self.listData.NhatKySuDungThe = dataS.data;
+                        self.filterThe.ListPage = dataS.listpage;
+                        self.filterThe.isPrev = dataS.isprev;
+                        self.filterThe.isNext = dataS.isnext;
+                        self.filterThe.totalPage = dataS.countpage;
+                        self.filterThe.PageView = dataS.pageview;
+                    }
+                })
             },
 
             GetListImgInvoice_byCus: function () {

@@ -165,17 +165,15 @@
                     CurrentPage: self.filter.CurrentPage,
                     PageSize: self.filter.PageSize,
                 }
-                if (navigator.onLine) {
-                    ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetListHDTraHang_afterUseAndTra', 'POST', param).done(function (x) {
-                        if (x.res) {
-                            self.ListData = x.dataSoure.data;
-                            self.filter.PageView = x.dataSoure.pageview;
-                            self.filter.ListPage = x.dataSoure.listpage;
-                            self.filter.TotalPage = x.dataSoure.countpage;
-                        }
-                        $('#vmTraHang table').gridLoader({ show: false });
-                    });
-                }
+                ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetListHDTraHang_afterUseAndTra', 'POST', param).done(function (x) {
+                    if (x.res) {
+                        self.ListData = x.dataSoure.data;
+                        self.filter.PageView = x.dataSoure.pageview;
+                        self.filter.ListPage = x.dataSoure.listpage;
+                        self.filter.TotalPage = x.dataSoure.countpage;
+                    }
+                    $('#vmTraHang table').gridLoader({ show: false });
+                });
             },
             DateFrom_Change: function (e) {
                 let self = this;

@@ -48,10 +48,10 @@
                 idPhieuThu = objPhieuThu.ID;
                 self.inforPhieuThu = objPhieuThu;
             }
-            const xx = await   ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetChietKhauNV_byIDHoaDon?idHoaDon=' + objHoaDon.ID
+            const xx = await ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetChietKhauNV_byIDHoaDon?idHoaDon=' + objHoaDon.ID
                 + '&idPhieuThu=' + idPhieuThu, 'GET').done()
-                .then(function(x){
-                    if(x.res){
+                .then(function (x) {
+                    if (x.res) {
                         self.GridNVienBanGoi_Chosed = x.data;
                         for (let i = 0; i < self.GridNVienBanGoi_Chosed.length; i++) {
                             let itFor = self.GridNVienBanGoi_Chosed[i];
@@ -68,7 +68,7 @@
                     }
                     return self.GridNVienBanGoi_Chosed;
                 });
-                return xx;
+            return xx;
         },
         GetChietKhauHoaDon_ByDonVi: function () {
             var self = this;
@@ -77,13 +77,11 @@
                 CurrentPage: 0,
                 PageSize: 0,
             }
-            if (navigator.onLine) {
-                ajaxHelper('/api/DanhMuc/NS_NhanVienAPI/' + 'Get_ChietKhauHoaDon_byDonVi', 'POST', param).done(function (x) {
-                    if (x.res === true) {
-                        self.listData.ChietKhauHoaDons = x.DataSoure;
-                    }
-                })
-            }
+            ajaxHelper('/api/DanhMuc/NS_NhanVienAPI/' + 'Get_ChietKhauHoaDon_byDonVi', 'POST', param).done(function (x) {
+                if (x.res === true) {
+                    self.listData.ChietKhauHoaDons = x.DataSoure;
+                }
+            })
         },
         showModal: function (item) {
             var self = this;

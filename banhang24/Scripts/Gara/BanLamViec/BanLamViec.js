@@ -104,6 +104,7 @@ var workTable = new Vue({
                     self.role.PhieuTiepNhan.CapNhat = self.CheckRole('PhieuTiepNhan_CapNhat');
                     self.role.PhieuTiepNhan.Xoa = self.CheckRole('PhieuTiepNhan_Xoa');
                     self.role.PhieuTiepNhan.In = self.CheckRole('PhieuTiepNhan_In');
+                    self.role.PhieuTiepNhan.BatBuocNhapKmVao = self.CheckRole('PhieuTiepNhan_BatBuocNhapKmVao');
                     self.role.BaoGia.ThemMoi = self.CheckRole('DatHang_ThemMoi');
                     self.role.HoaDon.ThemMoi = self.CheckRole('HoaDon_ThemMoi');
 
@@ -320,6 +321,7 @@ var workTable = new Vue({
             self.role.PhieuTiepNhan.CapNhat = self.CheckRole('PhieuTiepNhan_CapNhat');
             self.role.PhieuTiepNhan.Xoa = self.CheckRole('PhieuTiepNhan_Xoa');
             self.role.PhieuTiepNhan.In = self.CheckRole('PhieuTiepNhan_In');
+            self.role.PhieuTiepNhan.BatBuocNhapKmVao = self.CheckRole('PhieuTiepNhan_BatBuocNhapKmVao');
             self.role.Xe.XuatXuong = self.CheckRole('XuatXuong');
 
             vmTiepNhanXe.role.Xe.ThemMoi = self.CheckRole('DanhMucXe_ThemMoi');
@@ -1853,6 +1855,7 @@ var workTable = new Vue({
             let cus_DebitOld = cus_NoHienTai - cus_DebitHD;
             cus_DebitOld = cus_DebitOld < 0 ? 0 : cus_DebitOld;
 
+            objPrint.NguoiTaoHD = hdChosing.NguoiTao;
             objPrint.Email = cus_Email;
             objPrint.DienThoaiKhachHang = cus_DienThoai;
             objPrint.PhaiThanhToanBaoHiem = formatNumber3Digit(hdChosing.PhaiThanhToanBaoHiem, 0);

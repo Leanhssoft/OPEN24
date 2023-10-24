@@ -719,11 +719,9 @@
         $("#fileLoader").click();
     }
     function GetDM_NguonKHang() {
-        if (navigator.onLine) {
             ajaxHelper(DMNguonKhachUri + 'GetDM_NguonKhach', 'GET').done(function (data) {
                 self.NguonKhachs(data);
             });
-        }
     }
     // sort when click header
     $('#tblList thead tr').on('click', 'th', function () {
@@ -2894,7 +2892,6 @@
     }
     // get infor CongTy --> get logo cong ty
     function GetInforCongTy() {
-        if (navigator.onLine) {
             ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CongTy', 'GET').done(function (data) {
                 if (data != null) {
                     self.CongTy(data);
@@ -2915,7 +2912,6 @@
                     }
                 }
             });
-        }
     }
     self.formatDateTime = function () {
         $('.datepicker_mask').datetimepicker(
@@ -3278,17 +3274,14 @@
         }
     }
     function GetHT_TichDiem() {
-        if (navigator.onLine) {
             ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CauHinh_TichDiem?idDonVi=' + idDonVi, 'GET').done(function (data) {
                 if (data != null) {
                     self.ThietLap_TichDiem(data);
                 }
             });
-        }
     }
     self.ThietLap = ko.observableArray();
     function GetCauHinhHeThong() {
-        if (navigator.onLine) {
             ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + idDonVi, 'GET').done(function (data) {
                 if (data !== null) {
                     self.ThietLap(data);
@@ -3298,7 +3291,6 @@
                     }
                 }
             });
-        }
     }
 
     self.DieuChinhDiem = function (item) {
@@ -3886,7 +3878,6 @@
     }
 
     function GetDM_TaiKhoanNganHang() {
-        if (navigator.onLine) {
             ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + idDonVi, 'GET').done(function (x) {
                 if (x.res === true) {
                     vmThemPhieuThuChi.listData.AccountBanks = x.data;
@@ -3900,7 +3891,6 @@
                     }
                 }
             })
-        }
     }
 
     $(window.document).on('shown.bs.modal', '.modal', function () {
@@ -4653,14 +4643,12 @@
         // reset SoDu
         self.SoDuTheGiaTri(0);
         var date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-        if (navigator.onLine) {
             ajaxHelper(DMDoiTuongUri + "Get_SoDuTheGiaTri_ofKhachHang_ByTime?idDoiTuong=" + idDoiTuong + '&datetime=' + date, 'GET').done(function (data) {
                 self.SoDuTheGiaTri(data);
                 if (loaiDoiTuong === 1) {
                     vmThanhToan.HoaDonChosing.SoDuTheGiaTri = data;
                 }
             });
-        }
     }
 
     self.SoDuDatCoc = ko.observable(0);

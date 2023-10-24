@@ -17,7 +17,7 @@
     self.ShopCookie = ko.observable($('#txtShopCookie').val());
     self.TenChiNhanh = ko.observableArray();
     self.HoaDons = ko.observableArray();
-    self.BH_HoaDon_ChiTiet = ko.observableArray(); 
+    self.BH_HoaDon_ChiTiet = ko.observableArray();
     self.NhanViens = ko.observableArray();
     self.PhongBans = ko.observableArray();
     self.GiaBans = ko.observableArray();
@@ -3070,7 +3070,7 @@
         self.CTHoaDonPrintMH(cthdDoiTra);
 
         // get infor from hdTra
-        let tongTienHDTra = 0, phiTraHang = 0, phaiTraKhach =0;
+        let tongTienHDTra = 0, phiTraHang = 0, phaiTraKhach = 0;
         for (let i = 0; i < self.HoaDons().length; i++) {
             let itFor = self.HoaDons()[i];
             if (itFor.ID === item.ID_HoaDon) {
@@ -3088,7 +3088,7 @@
             phaiTraKhach = Math.abs(phaiTT);
             phaiTT = 0;
         }
-       
+
         let itemHDFormat = await GetInforHDPrint(item.ID, true);
         itemHDFormat.TongTienTraHang = tongTienHDTra;
         itemHDFormat.PhiTraHang = phiTraHang;
@@ -4467,24 +4467,22 @@
     const txtTienGui = '#txtTienGui';
     const txtTienTheGiaTri = '#txtTienTheGiaTri_PhieuThu';
     function GetDM_TaiKhoanNganHang() {
-        if (navigator.onLine) {
-            ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + id_donvi, 'GET').done(function (x) {
-                if (x.res === true) {
-                    let data = x.data;
-                    self.AllAccountBank(data);
-                    vmThanhToan.listData.AccountBanks = data;
+        ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + id_donvi, 'GET').done(function (x) {
+            if (x.res === true) {
+                let data = x.data;
+                self.AllAccountBank(data);
+                vmThanhToan.listData.AccountBanks = data;
 
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].TaiKhoanPOS === true) {
-                            self.ListAccountPOS.push(data[i]);
-                        }
-                        else {
-                            self.ListAccountChuyenKhoan.push(data[i]);
-                        }
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].TaiKhoanPOS === true) {
+                        self.ListAccountPOS.push(data[i]);
+                    }
+                    else {
+                        self.ListAccountChuyenKhoan.push(data[i]);
                     }
                 }
-            })
-        }
+            }
+        })
     }
     function GetAllQuy_KhoanThuChi() {
         ajaxHelper(Quy_HoaDonUri + 'GetQuy_KhoanThuChi', 'GET').done(function (x) {
@@ -4736,14 +4734,12 @@
     // auto update NhomKhach(TraHang --> nâng nhóm , HuyHD --> hạ nhóm)
     self.DM_NhomDoiTuong_ChiTiets = ko.observableArray();
     function GetDM_NhomDoiTuong_ChiTiets() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/DM_NhomDoiTuongAPI/' + 'GetDM_NhomDoiTuong_ChiTiets?idDonVi=' + id_donvi, 'GET').done(function (x) {
-                let data = x.data;
-                if (data.length > 0) {
-                    self.DM_NhomDoiTuong_ChiTiets(data);
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/DM_NhomDoiTuongAPI/' + 'GetDM_NhomDoiTuong_ChiTiets?idDonVi=' + id_donvi, 'GET').done(function (x) {
+            let data = x.data;
+            if (data.length > 0) {
+                self.DM_NhomDoiTuong_ChiTiets(data);
+            }
+        });
     }
 
     async function GetInforCus(id) {
@@ -4938,24 +4934,20 @@
     }
     self.DM_MauIn = ko.observableArray();
     function GetAllMauIn_byChiNhanh() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/ThietLapApi/GetAllMauIn_ByChiNhanh?idChiNhanh=' + id_donvi, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.DM_MauIn(data);
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/ThietLapApi/GetAllMauIn_ByChiNhanh?idChiNhanh=' + id_donvi, 'GET').done(function (data) {
+            if (data !== null) {
+                self.DM_MauIn(data);
+            }
+        });
     }
     self.DMKhuyenMai = ko.observableArray();
     function GetKM_CTKhuyenMai() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/BH_KhuyenMaiAPI/' + 'GetKM_CTKhuyenMai?idDonVi=' + id_donvi, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.DMKhuyenMai(data);
-                    GetList_KMApDung();
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/BH_KhuyenMaiAPI/' + 'GetKM_CTKhuyenMai?idDonVi=' + id_donvi, 'GET').done(function (data) {
+            if (data !== null) {
+                self.DMKhuyenMai(data);
+                GetList_KMApDung();
+            }
+        });
     }
     function Check_KhuyenMai_Active(idKhuyenMai) {
         var itemKM = $.grep(self.DMKhuyenMai(), function (x) {
@@ -5143,45 +5135,43 @@
         return isApDung;
     }
     function GetAllNhomHangHoas() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/' + 'GetDM_NhomHangHoa', 'GET').done(function (data) {
-                if (data !== null) {
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].ID_Parent === null) {
-                            var objParent = {
-                                ID: data[i].ID,
-                                TenNhomHangHoa: data[i].TenNhomHangHoa,
-                                Childs: [],
-                            }
-                            for (let j = 0; j < data.length; j++) {
-                                if (data[j].ID !== data[i].ID && data[j].ID_Parent === data[i].ID) {
-                                    var objChild =
-                                    {
-                                        ID: data[j].ID,
-                                        TenNhomHangHoa: data[j].TenNhomHangHoa,
-                                        ID_Parent: data[i].ID,
-                                        Child2s: []
-                                    };
-                                    for (let k = 0; k < data.length; k++) {
-                                        if (data[k].ID_Parent !== null && data[k].ID_Parent === data[j].ID) {
-                                            var objChild2 =
-                                            {
-                                                ID: data[k].ID,
-                                                TenNhomHangHoa: data[k].TenNhomHangHoa,
-                                                ID_Parent: data[j].ID,
-                                            };
-                                            objChild.Child2s.push(objChild2);
-                                        }
-                                    }
-                                    objParent.Childs.push(objChild);
-                                }
-                            }
-                            self.NhomHangHoas.push(objParent);
+        ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/' + 'GetDM_NhomHangHoa', 'GET').done(function (data) {
+            if (data !== null) {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].ID_Parent === null) {
+                        var objParent = {
+                            ID: data[i].ID,
+                            TenNhomHangHoa: data[i].TenNhomHangHoa,
+                            Childs: [],
                         }
+                        for (let j = 0; j < data.length; j++) {
+                            if (data[j].ID !== data[i].ID && data[j].ID_Parent === data[i].ID) {
+                                var objChild =
+                                {
+                                    ID: data[j].ID,
+                                    TenNhomHangHoa: data[j].TenNhomHangHoa,
+                                    ID_Parent: data[i].ID,
+                                    Child2s: []
+                                };
+                                for (let k = 0; k < data.length; k++) {
+                                    if (data[k].ID_Parent !== null && data[k].ID_Parent === data[j].ID) {
+                                        var objChild2 =
+                                        {
+                                            ID: data[k].ID,
+                                            TenNhomHangHoa: data[k].TenNhomHangHoa,
+                                            ID_Parent: data[j].ID,
+                                        };
+                                        objChild.Child2s.push(objChild2);
+                                    }
+                                }
+                                objParent.Childs.push(objChild);
+                            }
+                        }
+                        self.NhomHangHoas.push(objParent);
                     }
                 }
-            });
-        }
+            }
+        });
     };
     function GetAll_IDNhomChild_ofNhomHH(arrIDNhomHang) {
         var arrNhomHHChilds = [];
@@ -5498,7 +5488,7 @@
             }
             newHD.TenViTriHD = item.TenPhongBan;
             newHD.ChoThanhToan = false; // set default = false
-          
+
 
             // order by SoThuTu ASC --> group Hang Hoa by LoHang
             var arrCTsort = cthdDB.sort(function (a, b) {
@@ -6175,13 +6165,11 @@
     }
 
     function GetHT_TichDiem() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CauHinh_TichDiemChiTiet?idDonVi=' + id_donvi, 'GET').done(function (obj) {
-                if (obj.res === true) {
-                    self.ThietLap_TichDiem(obj.data);
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CauHinh_TichDiemChiTiet?idDonVi=' + id_donvi, 'GET').done(function (obj) {
+            if (obj.res === true) {
+                self.ThietLap_TichDiem(obj.data);
+            }
+        });
     }
 
     self.ThongTinPhieuTiepNhan = ko.observable();
@@ -6436,14 +6424,14 @@
                     }
                 }
             }
-        } 
+        }
         if (cthdLoHang.length > 0) {
-                cthdLoHang[0].ID_HoaDonGoc = item.ID;
-                cthdLoHang[0].ID_PhieuTiepNhan = item.ID_PhieuTiepNhan;
-                cthdLoHang[0].MaPhieuTiepNhan = item.MaPhieuTiepNhan;
-                cthdLoHang[0].BienSo = item.BienSo;
-                cthdLoHang[0].MaHoaDonSuaChua = item.MaHoaDon;
-            }
+            cthdLoHang[0].ID_HoaDonGoc = item.ID;
+            cthdLoHang[0].ID_PhieuTiepNhan = item.ID_PhieuTiepNhan;
+            cthdLoHang[0].MaPhieuTiepNhan = item.MaPhieuTiepNhan;
+            cthdLoHang[0].BienSo = item.BienSo;
+            cthdLoHang[0].MaHoaDonSuaChua = item.MaHoaDon;
+        }
 
         localStorage.setItem('lc_CTSaoChep', JSON.stringify(cthdLoHang));
         localStorage.setItem('typeCacheNhapHang', 3);
