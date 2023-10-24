@@ -20128,6 +20128,8 @@ var NewModel_BanHangLe = function () {
             return x.MaQuyen.indexOf('BCCKHangHoa') > -1;
         });
         vmNKGoiBaoDuong.roleXemHoaHong = roleCKHangHoa.length > 0;
+        vmNKGoiBaoDuong.roleUpdateImg = self.roleUpdateImg();
+        vmNKGoiBaoDuong.roleGDV_DuocSuDungKhiHetHan = CheckQuyenExist('GoiDichVu_DuocSuDungKhiHetHan');
 
         self.Role_AutoApplyBangGia(CheckQuyenExist('ThietLapGia_TuDongApDungTheoChiNhanh'));
 
@@ -20141,7 +20143,6 @@ var NewModel_BanHangLe = function () {
         vmThemMoiKhach.role.KhachHang.CapNhat = CheckQuyenExist('KhachHang_CapNhat');
         vmThanhToanGara.RoleChange_ChietKhauNV = vmHoaHongDV.role.ThayDoiChietKhau;
         vmUpAnhHoaDon.roleUpdateImg = self.roleUpdateImg();
-        vmNKGoiBaoDuong.roleUpdateImg = self.roleUpdateImg();
 
         self.roleCustomer_Insert(CheckQuyenExist('KhachHang_ThemMoi'));
         self.roleCustomer_ThanhToanNo(CheckQuyenExist('KhachHang_ThanhToanNo'));

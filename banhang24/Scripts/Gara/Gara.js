@@ -215,9 +215,7 @@ var NewModel_BanHangLe = function () {
     var tree2 = '';// use at treeview NhomHangHoa --> check KhuyenMai
     self.SubDomain = ko.observable(_subDomain.toLowerCase());
     const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
-    vmThemMoiXe.isLeeAuto = $.inArray(self.SubDomain(), arrSubDomain) > -1;
-    vmTiepNhanXe.isLeeAuto = vmThemMoiXe.isLeeAuto;
-    self.isLeeAuto = ko.observable(vmThemMoiXe.isLeeAuto);
+    self.isLeeAuto = ko.observable($.inArray(self.SubDomain(), arrSubDomain) > -1);
 
     self.ShopCookies = ko.observable(shopCookies);
     self.selectedGiaBan = ko.observable();
@@ -20433,7 +20431,10 @@ var NewModel_BanHangLe = function () {
             return x.MaQuyen.indexOf('BCCKHangHoa') > -1;
         });
         vmNKGoiBaoDuong.roleXemHoaHong = roleCKHangHoa.length > 0;
+        vmNKGoiBaoDuong.roleGDV_DuocSuDungKhiHetHan = CheckQuyenExist('GoiDichVu_DuocSuDungKhiHetHan');
 
+        vmTiepNhanXe.role.PhieuTiepNhan.BatBuocNhapKmVao = CheckQuyenExist('PhieuTiepNhan_BatBuocNhapKmVao');
+        vmThemMoiXe.role.BatBuocNhapSoKhung = CheckQuyenExist('DanhMucXe_BatBuocNhapSoKhung');
         vmThanhToanGara.RoleChange_ChietKhauNV = CheckQuyenExist('HoaHong_ThayDoi');
         self.RoleChange_ChietKhauNV(CheckQuyenExist('HoaHong_ThayDoi'));
         self.RoleView_ChietKhauNV(CheckQuyenExist('BanHang_HoaDongDichVu_XemChietKhau'));
@@ -20493,6 +20494,7 @@ var NewModel_BanHangLe = function () {
         vmHoaHongDV.role.ThayDoiChietKhau = CheckQuyenExist('HoaHong_ThayDoi');
         vmThemMoiKhach.role.KhachHang.CapNhat = CheckQuyenExist('KhachHang_CapNhat');
         vmThemMoiKhach.role.KhachHang.ThemMoi = CheckQuyenExist('KhachHang_ThemMoi');
+        vmThemMoiKhach.role.KhachHang.BatBuocNhapSDT = CheckQuyenExist('KhachHang_BatBuocNhapSDT');
     }
 
     function DeleteHD_CTHD_ifNotRole() {
