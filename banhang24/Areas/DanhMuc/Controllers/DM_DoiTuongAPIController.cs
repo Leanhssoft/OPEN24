@@ -2510,6 +2510,19 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     ClassBH_HoaDon_ChiTiet classBHChiTiet = new ClassBH_HoaDon_ChiTiet(db);
                     List<GoiDichVu_KhachHang> lst = classBHChiTiet.GetDSGoiDichVu_ofKhachHang(param);
+                    // Mượn trường: LoaiHoaDon (1.Còn buổi sử dụng, 0. hết buổi sử dụng)
+                    if (!string.IsNullOrEmpty(param.LoaiHoaDons))
+                    {
+                        switch (param.LoaiHoaDons)
+                        {
+                            case "0":
+                                lst = lst.Where(x => x.SoLuongConLai == 0).ToList();
+                                break;
+                            case "1":
+                                lst = lst.Where(x => x.SoLuongConLai > 0).ToList();
+                                break;
+                        }
+                    }
                     var data = lst.GroupBy(x => new
                     {
                         x.SLChiNhanh,
