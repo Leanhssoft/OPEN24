@@ -1597,7 +1597,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TongDiemKhachHang}", "<span data-bind=\"text: InforHDprintf().TongTichDiem\"></span>");
             content1 = content1.Replace("{NhanVienBanHang}", "<span data-bind=\"text: InforHDprintf().NhanVienBanHang\"></span>");
             content1 = content1.Replace("{TenPhongBan}", "<span data-bind=\"text: InforHDprintf().TenPhongBan\"></span>");
-            content1 = content1.Replace("{NguoiTao}", "<span data-bind=\"text: $root.InforHDprintf().NguoiTaoHD\"></span>");
+            content1 = content1.Replace("{NguoiTao}", "<span data-bind=\"text: $root.InforHDprintf().NguoiTao\"></span>");
             content1 = content1.Replace("{KhachCanTra}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().PhaiThanhToan,0)\"></span>");
 
             content1 = content1.Replace("{DienGiai}", "<span style=\"white-space:pre-wrap\" data-bind=\"text: $root.InforHDprintf().DienGiai\"></span>");
