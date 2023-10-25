@@ -262,6 +262,7 @@
     <Compile Include="App_Start\App_API\SMSController.cs" />
     <Compile Include="App_Start\App_API\SubdomainRoute.cs" />
     <Compile Include="App_Start\App_API\VMGsms.cs" />
+    <Compile Include="App_Start\App_API\WebApiAuthorize.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Areas\DanhMuc\Controllers\ApiOpen24HRMController.cs" />
     <Compile Include="Areas\DanhMuc\Controllers\BaseApiController.cs" />

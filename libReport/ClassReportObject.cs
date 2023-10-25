@@ -1554,8 +1554,9 @@ namespace libReport
         public double TongChietKhau { get; set; }
         public double TongTienThue { get; set; }
         public double TongChiPhi { get; set; }
-        public double TongGiamGia { get; set; } 
-	    public double DoanhThu { get; set; }
+        public double TongGiamGia { get; set; }
+        public double TongGiamTruBH { get; set; }
+        public double DoanhThu { get; set; }
         public double TienVon { get; set; }
         public double LoiNhuan { get; set; }
         public string GhiChu { get; set; }
@@ -1566,6 +1567,7 @@ namespace libReport
 	    public double SThue { get; set; }
         public double SChiPhi { get; set; }
         public double SGiamGia { get; set; }
+        public double SGiamTruBH { get; set; }
         public double SDoanhThu { get; set; }
         public double STongTienVon { get; set; }
 	    public double SLoiNhuan { get; set; }
@@ -1584,6 +1586,7 @@ namespace libReport
         public double TongTienHang { get; set; }
         public double TongChietKhau { get; set; }
         public double TongGiamGia { get; set; }
+        public double TongGiamTruBH { get; set; }
         public double DoanhThu { get; set; }
         public double TongTienThue { get; set; }
         public double TienVon { get; set; }
@@ -1613,6 +1616,7 @@ namespace libReport
         public double TienThue { get; set; }
         public double ThanhTien { get; set; }
         public double GiamGia { get; set; }
+        public double GiamTruBH { get; set; }
         public double DoanhThu { get; set; }
         public double TienVon { get; set; }
         public double LoiNhuan { get; set; }
@@ -1624,6 +1628,7 @@ namespace libReport
         public double SChietKhau { get; set; }
         public double SThue { get; set; }
         public double SGiamGia { get; set; }
+        public double SGiamTruBH { get; set; }
         public double SDoanhThu { get; set; }
         public double STongTienVon { get; set; }
         public double SLoiNhuan { get; set; }
@@ -1649,6 +1654,7 @@ namespace libReport
         public double TienChietKhau { get; set; }
         public double ThanhTien { get; set; }
         public double GiamGia { get; set; }
+        public double GiamTruBH { get; set; }
         public double DoanhThu { get; set; }
         public double TienThue { get; set; }
         public double TienVon { get; set; }
@@ -1669,6 +1675,7 @@ namespace libReport
         public string DienThoai { get; set; }
         public double SoLanTiepNhan { get; set; }
         public double SoLuongHoaDon { get; set; }
+        public double TongGiamTruBH { get; set; }
         public double TongDoanhThu { get; set; }
         public double TongTienVon { get; set; }
         public double LoiNhuan { get; set; }
@@ -1678,6 +1685,7 @@ namespace libReport
         public double ChiPhi { get; set; }
         public double SSoLanTiepNhan { get; set; }
         public double SSoLuongHoaDon { get; set; }
+        public double STongGiamTruBH { get; set; }
         public double STongDoanhThu { get; set; }
         public double STienVon { get; set; }
         public double SLoiNhuan { get; set; }
@@ -1693,6 +1701,7 @@ namespace libReport
         public string DienThoai { get; set; }
         public double SoLanTiepNhan { get; set; }
         public double SoLuongHoaDon { get; set; }
+        public double TongGiamTruBH { get; set; }
         public double TongDoanhThu { get; set; }
         public double TongTienVon { get; set; }
         public double ChiPhi { get; set; }
@@ -1708,6 +1717,7 @@ namespace libReport
         public string TenNhanVien { get; set; }
         public double SoLanTiepNhan { get; set; }
         public double SoLuongHoaDon { get; set; }
+        public double TongGiamTruBH { get; set; }
         public double TongDoanhThu { get; set; }
         public double TongTienVon { get; set; }
         public double LoiNhuan { get; set; }
@@ -1717,6 +1727,7 @@ namespace libReport
         public double ChiPhi { get; set; }
         public double SSoLanTiepNhan { get; set; }
         public double SSoLuongHoaDon { get; set; }
+        public double STongGiamTruBH { get; set; }
         public double STongDoanhThu { get; set; }
         public double STienVon { get; set; }
         public double SLoiNhuan { get; set; }
@@ -1729,6 +1740,7 @@ namespace libReport
         public string TenNhanVien { get; set; }
         public double SoLanTiepNhan { get; set; }
         public double SoLuongHoaDon { get; set; }
+        public double TongGiamTruBH { get; set; }
         public double TongDoanhThu { get; set; }
         public double TongTienVon { get; set; }
         public double ChiPhi { get; set; }

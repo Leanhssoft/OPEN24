@@ -2430,6 +2430,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
+        //[App_Start.App_API.WebApiAuthorize]
         public bool GetThongTinKH()
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())

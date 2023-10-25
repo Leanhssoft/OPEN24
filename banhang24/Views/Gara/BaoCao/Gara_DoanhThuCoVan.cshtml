@@ -353,6 +353,9 @@
                                         <td v-if="BaoCaoTongHopHeader.find(p => p.colName === 'colGiamGia').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(itemBCTongHop.TongGiamGia, 0)}}
                                         </td>
+                                        <td v-if="BaoCaoTongHopHeader.find(p => p.colName === 'colGiamTruBH').colShow" style="text-align: right">
+                                            {{commonStatisJs.FormatNumber3Digit(itemBCTongHop.TongGiamTruBH, 0)}}
+                                        </td>
                                         <td v-if="BaoCaoTongHopHeader.find(p => p.colName === 'colDoanhThu').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(itemBCTongHop.DoanhThu, 0)}}
                                         </td>
@@ -388,6 +391,9 @@
                                         <td v-if="BaoCaoTongHopHeader.find(p => p.colName === 'colGiamGia').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoTongHop.dataAll[0].SGiamGia, 0)}}
                                         </td>
+                                        <td v-if="BaoCaoTongHopHeader.find(p => p.colName === 'colGiamTruBH').colShow" style="text-align: right">
+                                            {{commonStatisJs.FormatNumber3Digit(BaoCaoTongHop.dataAll[0].SGiamTruBH, 0)}}
+                                        </td>
                                         <td v-if="BaoCaoTongHopHeader.find(p => p.colName === 'colDoanhThu').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoTongHop.dataAll[0].SDoanhThu, 0)}}
                                         </td>
@@ -403,7 +409,7 @@
                                         <td v-if="BaoCaoTongHopHeader.find(p => p.colName === 'colLoiNhuan').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoTongHop.dataAll[0].SLoiNhuan, 0)}}
                                         </td>
-                                        <td v-bind:colspan="BaoCaoTongHopHeader.filter(p=>p.colShow === true && p.index >= 16).length"></td>
+                                        <td v-bind:colspan="BaoCaoTongHopHeader.filter(p=>p.colShow === true && p.index >= 17).length"></td>
                                     </tr>
                                 </tfoot>
                                 <tfoot v-show="BaoCaoTongHop.dataAll.length<=0">
@@ -477,6 +483,9 @@
                                         <td v-if="BaoCaoChiTietHeader.find(p => p.colName === 'colGiamGiaHD').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(itemBCChiTiet.GiamGia, 0)}}
                                         </td>
+                                        <td v-if="BaoCaoChiTietHeader.find(p => p.colName === 'colGiamTruBH').colShow" style="text-align: right">
+                                            {{commonStatisJs.FormatNumber3Digit(itemBCChiTiet.GiamTruBH, 0)}}
+                                        </td>
                                         <td v-if="BaoCaoChiTietHeader.find(p => p.colName === 'colDoanhThu').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(itemBCChiTiet.DoanhThu, 0)}}
                                         </td>
@@ -512,6 +521,9 @@
                                         <td v-if="BaoCaoChiTietHeader.find(p => p.colName === 'colGiamGiaHD').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoChiTiet.dataAll[0].SGiamGia, 0)}}
                                         </td>
+                                        <td v-if="BaoCaoChiTietHeader.find(p => p.colName === 'colGiamTruBH').colShow" style="text-align: right">
+                                            {{commonStatisJs.FormatNumber3Digit(BaoCaoChiTiet.dataAll[0].SGiamTruBH, 0)}}
+                                        </td>
                                         <td v-if="BaoCaoChiTietHeader.find(p => p.colName === 'colDoanhThu').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoChiTiet.dataAll[0].SDoanhThu, 0)}}
                                         </td>
@@ -527,7 +539,7 @@
                                         <td v-if="BaoCaoChiTietHeader.find(p => p.colName === 'colLoiNhuan').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoChiTiet.dataAll[0].SLoiNhuan, 0)}}
                                         </td>
-                                        <td v-bind:colspan="BaoCaoChiTietHeader.filter(p=>p.colShow === true && p.index >= 20).length"></td>
+                                        <td v-bind:colspan="BaoCaoChiTietHeader.filter(p=>p.colShow === true && p.index >= 21).length"></td>
                                     </tr>
                                 </tfoot>
                                 <tfoot v-show="BaoCaoChiTiet.dataAll.length<=0">
@@ -574,6 +586,9 @@
                                         <td v-if="BaoCaoTheoXeHeader.find(p => p.colName === 'colSoLuongHoaDon').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(itemBCTheoXe.SoLuongHoaDon, 0)}}
                                         </td>
+                                        <td v-if="BaoCaoTheoXeHeader.find(p => p.colName === 'colTongGiamTruBH').colShow" style="text-align: right">
+                                            {{commonStatisJs.FormatNumber3Digit(itemBCTheoXe.TongGiamTruBH, 0)}}
+                                        </td>
                                         <td v-if="BaoCaoTheoXeHeader.find(p => p.colName === 'colTongDoanhThu').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(itemBCTheoXe.TongDoanhThu, 0)}}
                                         </td>
@@ -603,6 +618,9 @@
                                         <td v-if="BaoCaoTheoXeHeader.find(p => p.colName === 'colSoLuongHoaDon').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoTheoXe.dataAll[0].SSoLuongHoaDon, 0)}}
                                         </td>
+                                        <td v-if="BaoCaoTheoXeHeader.find(p => p.colName === 'colTongGiamTruBH').colShow" style="text-align: right">
+                                            {{commonStatisJs.FormatNumber3Digit(BaoCaoTheoXe.dataAll[0].STongGiamTruBH, 0)}}
+                                        </td>
                                         <td v-if="BaoCaoTheoXeHeader.find(p => p.colName === 'colTongDoanhThu').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoTheoXe.dataAll[0].STongDoanhThu, 0)}}
                                         </td>
@@ -615,7 +633,7 @@
                                         <td v-if="BaoCaoTheoXeHeader.find(p => p.colName === 'colLoiNhuan').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoTheoXe.dataAll[0].SLoiNhuan, 0)}}
                                         </td>
-                                        <td v-bind:colspan="BaoCaoTheoXeHeader.filter(p=>p.colShow === true && p.index >= 10).length"></td>
+                                        <td v-bind:colspan="BaoCaoTheoXeHeader.filter(p=>p.colShow === true && p.index >= 11).length"></td>
                                     </tr>
                                 </tfoot>
                                 <tfoot v-show="BaoCaoTheoXe.dataAll.length<=0">
@@ -653,6 +671,9 @@
                                         <td v-if="BaoCaoTheoCoVanHeader.find(p => p.colName === 'colSoLuongHoaDon').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(itemBCTheoCoVan.SoLuongHoaDon, 0)}}
                                         </td>
+                                        <td v-if="BaoCaoTheoCoVanHeader.find(p => p.colName === 'colTongGiamTruBH').colShow" style="text-align: right">
+                                            {{commonStatisJs.FormatNumber3Digit(itemBCTheoCoVan.TongGiamTruBH, 0)}}
+                                        </td>
                                         <td v-if="BaoCaoTheoCoVanHeader.find(p => p.colName === 'colTongDoanhThu').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(itemBCTheoCoVan.TongDoanhThu, 0)}}
                                         </td>
@@ -682,6 +703,9 @@
                                         <td v-if="BaoCaoTheoCoVanHeader.find(p => p.colName === 'colSoLuongHoaDon').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoTheoCoVan.dataAll[0].SSoLuongHoaDon, 0)}}
                                         </td>
+                                        <td v-if="BaoCaoTheoCoVanHeader.find(p => p.colName === 'colTongGiamTruBH').colShow" style="text-align: right">
+                                            {{commonStatisJs.FormatNumber3Digit(BaoCaoTheoCoVan.dataAll[0].STongGiamTruBH, 0)}}
+                                        </td>
                                         <td v-if="BaoCaoTheoCoVanHeader.find(p => p.colName === 'colTongDoanhThu').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoTheoCoVan.dataAll[0].STongDoanhThu, 0)}}
                                         </td>
@@ -694,7 +718,7 @@
                                         <td v-if="BaoCaoTheoCoVanHeader.find(p => p.colName === 'colLoiNhuan').colShow" style="text-align: right">
                                             {{commonStatisJs.FormatNumber3Digit(BaoCaoTheoCoVan.dataAll[0].SLoiNhuan, 0)}}
                                         </td>
-                                        <td v-bind:colspan="BaoCaoTheoCoVanHeader.filter(p=>p.colShow === true && p.index >= 7).length"></td>
+                                        <td v-bind:colspan="BaoCaoTheoCoVanHeader.filter(p=>p.colShow === true && p.index >= 8).length"></td>
                                     </tr>
                                 </tfoot>
                                 <tfoot v-show="BaoCaoTheoCoVan.dataAll.length<=0">
@@ -1137,14 +1161,15 @@
                     { colName: 'colNgayLapHoaDon', colText: 'Ngày lập hóa đơn', colShow: true, index: 7 },
                     { colName: 'colTongTienHang', colText: 'Tổng tiền hàng', colShow: true, index: 8 },
                     { colName: 'colChietKhau', colText: 'Chiết khấu', colShow: true, index: 9 },
-                    { colName: 'colGiamGia', colText: 'Giảm giá', colShow: true, index: 10 },
-                        { colName: 'colDoanhThu', colText: 'Doanh thu', colShow: true, index: 11 },
-                        { colName: 'colThue', colText: 'Thuế', colShow: true, index: 12 },
-                        { colName: 'colTongTienVon', colText: 'Tổng tiền vốn', colShow: true, index: 13 },
-                        { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 14 },
-                    { colName: 'colLoiNhuan', colText: 'Lợi nhuận', colShow: true, index: 15 },
-                    { colName: 'colGhiChu', colText: 'Ghi chú', colShow: true, index: 16 },
-                    { colName: 'colTenChiNhanh', colText: 'Chi nhánh', colShow: true, index: 17 }];
+                        { colName: 'colGiamGia', colText: 'Giảm giá', colShow: true, index: 10 },
+                        { colName: 'colGiamTruBH', colText: 'Giảm trừ BH', colShow: true, index: 11 },
+                        { colName: 'colDoanhThu', colText: 'Doanh thu', colShow: true, index: 12 },
+                        { colName: 'colThue', colText: 'Thuế', colShow: true, index: 13 },
+                        { colName: 'colTongTienVon', colText: 'Tổng tiền vốn', colShow: true, index: 14 },
+                        { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 15 },
+                    { colName: 'colLoiNhuan', colText: 'Lợi nhuận', colShow: true, index: 16 },
+                    { colName: 'colGhiChu', colText: 'Ghi chú', colShow: true, index: 17 },
+                    { colName: 'colTenChiNhanh', colText: 'Chi nhánh', colShow: true, index: 18 }];
                 },
                 InitBaoCaoChiTietHeader: function () {
                     return [{ colName: 'colMaTiepNhan', colText: 'Mã tiếp nhận', colShow: true, index: 0 },
@@ -1162,14 +1187,15 @@
                     { colName: 'colGiaBan', colText: 'Giá bán', colShow: true, index: 12 },
                     { colName: 'colChietKhau', colText: 'Chiết khấu', colShow: true, index: 13 },
                     { colName: 'colThanhTien', colText: 'Thành tiền', colShow: true, index: 14 },
-                    { colName: 'colGiamGiaHD', colText: 'Giảm giá HĐ', colShow: true, index: 15 },
-                        { colName: 'colDoanhThu', colText: 'Doanh thu', colShow: true, index: 16 },
-                        { colName: 'colTienThue', colText: 'Tiền thuế', colShow: true, index: 17 },
-                        { colName: 'colTongTienVon', colText: 'Tổng tiền vốn', colShow: true, index: 18 },
-                        { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 19 },
-                    { colName: 'colLoiNhuan', colText: 'Lợi nhuận', colShow: true, index: 20 },
-                    { colName: 'colGhiChu', colText: 'Ghi chú', colShow: true, index: 21 },
-                    { colName: 'colTenChiNhanh', colText: 'Tên chi nhánh', colShow: true, index: 22 }];
+                        { colName: 'colGiamGiaHD', colText: 'Giảm giá HĐ', colShow: true, index: 15 },
+                        { colName: 'colGiamTruBH', colText: 'Giảm trừ BH', colShow: true, index: 16 },
+                        { colName: 'colDoanhThu', colText: 'Doanh thu', colShow: true, index: 17 },
+                        { colName: 'colTienThue', colText: 'Tiền thuế', colShow: true, index: 18 },
+                        { colName: 'colTongTienVon', colText: 'Tổng tiền vốn', colShow: true, index: 19 },
+                        { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 20 },
+                    { colName: 'colLoiNhuan', colText: 'Lợi nhuận', colShow: true, index: 21 },
+                    { colName: 'colGhiChu', colText: 'Ghi chú', colShow: true, index: 22 },
+                    { colName: 'colTenChiNhanh', colText: 'Tên chi nhánh', colShow: true, index: 23 }];
                 },
                 InitBaoCaoTheoXeHeader: function () {
                     return [{ colName: 'colBienSo', colText: 'Biển số', colShow: true, index: 0 },
@@ -1178,25 +1204,27 @@
                     { colName: 'colChuXe', colText: 'Chủ xe', colShow: true, index: 3 },
                     { colName: 'colSoDienThoai', colText: 'Số điện thoại', colShow: true, index: 4 },
                     { colName: 'colSoLanTiepNhan', colText: 'Số lần tiếp nhận', colShow: true, index: 5 },
-                    { colName: 'colSoLuongHoaDon', colText: 'Số lượng hóa đơn', colShow: true, index: 6 },
-                    { colName: 'colTongDoanhThu', colText: 'Tổng doanh thu', colShow: true, index: 7 },
-                        { colName: 'colTongTienVon', colText: 'Tổng tiền vốn', colShow: true, index: 8 },
-                        { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 9 },
-                    { colName: 'colLoiNhuan', colText: 'Lợi nhuận', colShow: true, index: 10 },
-                    { colName: 'colNgayGiaoDichGanNhat', colText: 'Giao dịch gần nhất', colShow: true, index: 11 },
-                    { colName: 'colTenChiNhanh', colText: 'Tên chi nhánh', colShow: true, index: 12 }];
+                        { colName: 'colSoLuongHoaDon', colText: 'Số lượng hóa đơn', colShow: true, index: 6 },
+                        { colName: 'colTongGiamTruBH', colText: 'Tổng giảm trừ BH', colShow: true, index: 7 },
+                    { colName: 'colTongDoanhThu', colText: 'Tổng doanh thu', colShow: true, index: 8 },
+                        { colName: 'colTongTienVon', colText: 'Tổng tiền vốn', colShow: true, index: 9 },
+                        { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 10 },
+                    { colName: 'colLoiNhuan', colText: 'Lợi nhuận', colShow: true, index: 11 },
+                    { colName: 'colNgayGiaoDichGanNhat', colText: 'Giao dịch gần nhất', colShow: true, index: 12 },
+                    { colName: 'colTenChiNhanh', colText: 'Tên chi nhánh', colShow: true, index: 13 }];
                 },
                 InitBaoCaoTheoCoVanHeader: function () {
                     return [{ colName: 'colMaCoVan', colText: 'Mã cố vấn', colShow: true, index: 0 },
                     { colName: 'colTenCoVan', colText: 'Tên cố vấn', colShow: true, index: 1 },
                     { colName: 'colSoLanTiepNhan', colText: 'Số lần tiếp nhận', colShow: true, index: 2 },
-                    { colName: 'colSoLuongHoaDon', colText: 'Số lượng hóa đơn', colShow: true, index: 3 },
-                    { colName: 'colTongDoanhThu', colText: 'Tổng doanh thu', colShow: true, index: 4 },
-                        { colName: 'colTongTienVon', colText: 'Tổng tiền vốn', colShow: true, index: 5 },
-                        { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 6 },
-                    { colName: 'colLoiNhuan', colText: 'Lợi nhuận', colShow: true, index: 7 },
-                    { colName: 'colNgayGiaoDichGanNhat', colText: 'Giao dịch gần nhất', colShow: true, index: 8 },
-                    { colName: 'colTenChiNhanh', colText: 'Tên chi nhánh', colShow: true, index: 9 }];
+                        { colName: 'colSoLuongHoaDon', colText: 'Số lượng hóa đơn', colShow: true, index: 3 },
+                        { colName: 'colTongGiamTruBH', colText: 'Tổng giảm trừ BH', colShow: true, index: 4 },
+                    { colName: 'colTongDoanhThu', colText: 'Tổng doanh thu', colShow: true, index: 5 },
+                        { colName: 'colTongTienVon', colText: 'Tổng tiền vốn', colShow: true, index: 6 },
+                        { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 7 },
+                    { colName: 'colLoiNhuan', colText: 'Lợi nhuận', colShow: true, index: 8 },
+                    { colName: 'colNgayGiaoDichGanNhat', colText: 'Giao dịch gần nhất', colShow: true, index: 9 },
+                    { colName: 'colTenChiNhanh', colText: 'Tên chi nhánh', colShow: true, index: 10 }];
                 },
                 GetListHeader: function () {
                     let self = this;
