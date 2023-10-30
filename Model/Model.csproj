@@ -925,6 +925,10 @@
     <Compile Include="Migrations\202306200739367_UpdateSP_20230630.Designer.cs">
       <DependentUpon>202306200739367_UpdateSP_20230630.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202310300800444_AddUpdateSP_20231030.cs" />
+    <Compile Include="Migrations\202310300800444_AddUpdateSP_20231030.Designer.cs">
+      <DependentUpon>202310300800444_AddUpdateSP_20231030.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NhomDoiTuong_DonVi.cs" />
     <Compile Include="NhomHangHoa_DonVi.cs" />
@@ -1540,6 +1544,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306200739367_UpdateSP_20230630.resx">
       <DependentUpon>202306200739367_UpdateSP_20230630.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310300800444_AddUpdateSP_20231030.resx">
+      <DependentUpon>202310300800444_AddUpdateSP_20231030.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
