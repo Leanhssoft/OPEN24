@@ -1481,7 +1481,7 @@
         });
     }
 
-    self.vm_showModalDiscount = function (item) {
+    self.vm_showModalDiscount = async function (item) {
         let phaiTT = formatNumberToFloat(item.PhaiThanhToan);
         let daTT = formatNumberToFloat(item.KhachDaTra);
         let obj = {
@@ -1494,7 +1494,7 @@
             DaThuTruoc: daTT,
             ConNo: phaiTT - daTT,
         }
-      await vmHoaHongHoaDon.GetChietKhauHoaDon_byID(obj);
+        await vmHoaHongHoaDon.GetChietKhauHoaDon_byID(obj);
         vmHoaHongHoaDon.showModalUpdate(obj);
     }
 
