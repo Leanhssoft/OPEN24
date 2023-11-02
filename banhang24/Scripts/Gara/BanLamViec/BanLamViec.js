@@ -1213,9 +1213,9 @@ var workTable = new Vue({
             }
 
             itemCT.GhiChu_NVThucHien = (nvTH === '' ? '' : 'Thực hiện: ' + Remove_LastComma(nvTH));
-            itemCT.GhiChu_NVThucHienPrint = (nvTH_Print === '' ? '' : + Remove_LastComma(nvTH_Print));
+            itemCT.GhiChu_NVThucHienPrint = (nvTH_Print === '' ? '' : Remove_LastComma(nvTH_Print));
             itemCT.GhiChu_NVTuVan = (nvTV === '' ? '' : 'Tư vấn: ' + Remove_LastComma(nvTV));
-            itemCT.GhiChu_NVTuVanPrint = (nvTV_Print === '' ? '' : + Remove_LastComma(nvTV_Print));
+            itemCT.GhiChu_NVTuVanPrint = (nvTV_Print === '' ? '' : Remove_LastComma(nvTV_Print));
             itemCT.HoaHongTruocChietKhau = arrNVien.length > 0 ? arrNVien[0].TinhHoaHongTruocCK : itemCT.HoaHongTruocChietKhau;
             return itemCT;
         },
@@ -2102,7 +2102,7 @@ var workTable = new Vue({
 
             var lstCT = [];
             for (let i = 0; i < cthd.length; i++) {
-                let itFor = $.extend({}, true, cthd[i]);
+                let itFor = $.extend({}, cthd[i]);
                 let price = formatNumberToInt(itFor.DonGia);
                 let sale = formatNumberToInt(itFor.GiamGia);
                 let giaban = formatNumberToInt(itFor.GiaBan);
@@ -2135,6 +2135,7 @@ var workTable = new Vue({
                         }
                     }
                 }
+                itFor = self.AssignNVThucHien_toCTHD(itFor);
                 itFor.NVThucHienDV_CoCK = Remove_LastComma(th_CoCK);
                 itFor.NVTuVanDV_CoCK = Remove_LastComma(tv_CoCK);
 
