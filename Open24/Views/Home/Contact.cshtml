@@ -85,6 +85,7 @@
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="txtHoTen" placeholder="Họ và tên" v-model="FullName">
                                 <label for="txtHoTen">Họ và tên</label>
+                                <span v-if="!FullName.trim() && submitted" class="text-danger">Vui lòng nhập họ và tên</span>
                             </div>
                             <div class="form-floating mb-3">
                                 <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com" v-model="Email">
@@ -93,6 +94,8 @@
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="txtDienThoai" placeholder="Số điện thoại" v-model="Phone">
                                 <label for="txtDienThoai">Số điện thoại</label>
+                                <span v-if="!Phone.trim() && submitted" class="text-danger">Vui lòng nhập số điện thoại</span>
+                                <span v-if="Phone.trim() && !phoneRegex.test(Phone.trim()) && submitted" class="text-danger">Số điện thoại không đúng dịnh dạng</span>
                             </div>
                             <div class="form-floating mb-3">
                                 <input type="text" class="form-control" id="txtDiaChi" placeholder="Địa chỉ" v-model="Address">
@@ -150,15 +153,29 @@
             Email: "",
             Phone: "",
             Address: "",
-            Noted: ""
+            Noted: "",
+            phoneRegex: /^\d{10,}$/,
+            submitted: false
         },
         methods: {
             ClickGuiYeuCau: function () {
                 let self = this;
+                self.submitted = true;
+                if (!self.FullName.trim()) {
+                    return;
+                }
+
+                if (!self.Phone.trim()) {
+                    return;
+                }
+
+                if (!self.phoneRegex.test(self.Phone.trim())) {
+                    return;
+                }
                 var model = {
                     FullName: self.FullName,
                     Phone: self.Phone,
-                    Noted: self.Noted,
+                    Noted: self.Noted + "(Trang liên hệ)",
                     Address: self.Address,
                     Email: self.Email
                 };
