@@ -31,7 +31,7 @@ namespace banhang24.App_API
             if (hostSubdomain != null)
             {
                 subdomain = hostSubdomain.domain;
-                //subdomain = "THEFIRSTBEAUTYCENTER";
+                //subdomain = "spa12112018";
             }
             else
             {

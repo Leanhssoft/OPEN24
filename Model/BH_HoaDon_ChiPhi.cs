@@ -25,7 +25,7 @@ namespace Model
         public Guid ID_HoaDon { get; set; } //ID trong bảng BH_HoaDon
 
         [Column(TypeName = "uniqueidentifier")]
-        public Guid ID_HoaDon_ChiTiet { get; set; } //ID trong bảng BH_HoaDon_ChiTiet
+        public Guid? ID_HoaDon_ChiTiet { get; set; } //ID trong bảng BH_HoaDon_ChiTiet
 
         [Column(TypeName = "uniqueidentifier")]
         public Guid ID_NhaCungCap { get; set; } //ID trong bảng DM_DoiTuong

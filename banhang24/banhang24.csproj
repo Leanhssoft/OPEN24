@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>banhang24</RootNamespace>
     <AssemblyName>banhang24</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>49876</IISExpressSSLPort>
@@ -30,6 +30,8 @@
     <TargetFrameworkProfile />
     <Use64BitIISExpress>true</Use64BitIISExpress>
     <TypeScriptToolsVersion>4.0</TypeScriptToolsVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,12 +44,14 @@
     <ExcludeGeneratedDebugSymbol>true</ExcludeGeneratedDebugSymbol>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
@@ -137,8 +141,8 @@
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.9\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
@@ -157,6 +161,9 @@
       <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net46\System.Security.Cryptography.X509Certificates.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web.Cors, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.9\lib\net45\System.Web.Cors.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData">
       <Private>True</Private>
     </Reference>
@@ -170,8 +177,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    <Reference Include="System.Web.Http, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.9\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.9\lib\net45\System.Web.Http.Cors.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
@@ -252,6 +262,7 @@
     <Compile Include="App_Start\App_API\SMSController.cs" />
     <Compile Include="App_Start\App_API\SubdomainRoute.cs" />
     <Compile Include="App_Start\App_API\VMGsms.cs" />
+    <Compile Include="App_Start\App_API\WebApiAuthorize.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="Areas\DanhMuc\Controllers\ApiOpen24HRMController.cs" />
     <Compile Include="Areas\DanhMuc\Controllers\BaseApiController.cs" />
@@ -318,6 +329,7 @@
     <Compile Include="Controllers\ThietLapController.cs" />
     <Compile Include="Controllers\TuVanController.cs" />
     <Compile Include="Compress\Compress.cs" />
+    <Compile Include="Cors\AllowCrossSiteAttribute.cs" />
     <Compile Include="Hellper\BarCodeHandler.cs" />
     <Compile Include="Hellper\contant.cs" />
     <Compile Include="Hellper\ReadLoadHellper.cs" />
@@ -360,7 +372,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="AppCache\BanLe.appcache" />
-    <Content Include="App_Data\log\logErrors_0973474985.txt" />
     <Content Include="config.xml" />
     <Content Include="Connected Services\VMGAPI\banhang24.VMGAPI.ApiAdsReturn.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -11718,7 +11729,6 @@
     <Content Include="Scripts\BanHang\FormModel_NewInvoice.js" />
     <Content Include="Scripts\BanHang\jqAutoProduct.js" />
     <Content Include="Scripts\BanHang\NhaHang.js" />
-    <Content Include="Scripts\BanHang\serviceWorker.js" />
     <Content Include="Scripts\BanHang\ssoft-server-time.js" />
     <Content Include="Scripts\BanHang\_LichHen.js" />
     <Content Include="Scripts\BanHang\_PopupTimeCTHD.js" />
@@ -11787,6 +11797,7 @@
     <Content Include="Scripts\Gara\LichNhacBaoDuong.js" />
     <Content Include="Scripts\Gara\_NapTienDatCoc.js" />
     <Content Include="Scripts\Gara\KhachHang\_NhatKyBaoDuong.js" />
+    <Content Include="Scripts\Gara\_signalThongBao.js" />
     <Content Include="Scripts\Gara\_ThongTinThanhToanBaoHiem.js" />
     <Content Include="Scripts\Gara\_ThongTinThanhToanKH.js" />
     <Content Include="Scripts\Gara\_ThongTinThanhToanNCC.js" />
@@ -11869,142 +11880,6 @@
     <Content Include="Scripts\Thietlap\ThietLapLuong_PhuCap.js" />
     <Content Include="Scripts\Thietlap\TaiDuLieuMayChamCong.js" />
     <Content Include="Scripts\Thietlap\_ThemMoiNguoiDung.js" />
-    <Content Include="Scripts\tinymce\icons\default\icons.js" />
-    <Content Include="Scripts\tinymce\icons\default\icons.min.js" />
-    <Content Include="Scripts\tinymce\jquery.tinymce.min.js" />
-    <Content Include="Scripts\tinymce\langs\vi.js" />
-    <Content Include="Scripts\tinymce\license.txt" />
-    <Content Include="Scripts\tinymce\Op-print-css.css" />
-    <Content Include="Scripts\tinymce\plugins\advlist\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\advlist\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\anchor\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\anchor\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\autolink\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\autolink\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\autoresize\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\autoresize\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\autosave\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\autosave\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\bbcode\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\bbcode\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\charmap\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\charmap\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\codesample\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\codesample\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\code\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\code\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\colorpicker\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\colorpicker\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\contextmenu\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\contextmenu\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\directionality\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\directionality\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\emoticons\js\emojiimages.js" />
-    <Content Include="Scripts\tinymce\plugins\emoticons\js\emojiimages.min.js" />
-    <Content Include="Scripts\tinymce\plugins\emoticons\js\emojis.js" />
-    <Content Include="Scripts\tinymce\plugins\emoticons\js\emojis.min.js" />
-    <Content Include="Scripts\tinymce\plugins\emoticons\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\emoticons\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\fullpage\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\fullpage\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\fullscreen\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\fullscreen\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\help\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\help\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\hr\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\hr\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\imagetools\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\imagetools\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\image\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\image\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\importcss\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\importcss\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\insertdatetime\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\insertdatetime\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\legacyoutput\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\legacyoutput\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\link\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\link\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\lists\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\lists\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\media\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\media\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\nonbreaking\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\nonbreaking\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\noneditable\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\noneditable\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\pagebreak\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\pagebreak\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\paste\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\paste\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\preview\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\preview\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\print\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\print\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\quickbars\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\quickbars\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\save\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\save\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\searchreplace\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\searchreplace\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\spellchecker\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\tabfocus\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\tabfocus\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\table\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\table\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\template\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\template\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\textcolor\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\textcolor\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\textpattern\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\textpattern\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\toc\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\toc\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\visualblocks\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\visualblocks\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\visualchars\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\visualchars\plugin.min.js" />
-    <Content Include="Scripts\tinymce\plugins\wordcount\plugin.js" />
-    <Content Include="Scripts\tinymce\plugins\wordcount\plugin.min.js" />
-    <Content Include="Scripts\tinymce\skins\content\dark\content.css" />
-    <Content Include="Scripts\tinymce\skins\content\dark\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\content\default\content.css" />
-    <Content Include="Scripts\tinymce\skins\content\default\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\content\document\content.css" />
-    <Content Include="Scripts\tinymce\skins\content\document\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\content\writer\content.css" />
-    <Content Include="Scripts\tinymce\skins\content\writer\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.inline.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.inline.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.mobile.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\content.mobile.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\skin.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\skin.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\skin.mobile.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\skin.mobile.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\skin.shadowdom.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\skin.shadowdom.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.inline.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.inline.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.mobile.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\content.mobile.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.mobile.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.mobile.min.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.shadowdom.css" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\skin.shadowdom.min.css" />
-    <Content Include="Scripts\tinymce\themes\mobile\theme.js" />
-    <Content Include="Scripts\tinymce\themes\mobile\theme.min.js" />
-    <Content Include="Scripts\tinymce\themes\silver\theme.js" />
-    <Content Include="Scripts\tinymce\themes\silver\theme.min.js" />
-    <Content Include="Scripts\tinymce\tinymce.js" />
-    <Content Include="Scripts\tinymce\tinymce.min.js" />
     <Content Include="Content\Framework\Vue.js\v2.6.14\vue.js" />
     <Content Include="Scripts\vue.min.js" />
     <Content Include="Scripts\itemsjs.js" />
@@ -13076,10 +12951,6 @@
     <Content Include="Views\Gara\KhachHang\_ThemMoiNCC.cshtml" />
     <Content Include="Template\ExportExcel\Report\BaoCaoBanHang\Teamplate_BaoCaoKhachHangTanSuat.xlsx" />
     <Content Include="Views\SoQuy\_ThemTaiKhoanNganHang.cshtml" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide\fonts\tinymce-mobile.woff" />
-    <Content Include="Scripts\tinymce\skins\ui\oxide-dark\fonts\tinymce-mobile.woff" />
-    <Content Include="Scripts\tinymce\langs\readme.md" />
-    <Content Include="Scripts\tinymce\tsconfig.json" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Shared\_header2.cshtml" />
     <Content Include="Views\Gara\_ThanhPhanDinhLuong.cshtml" />
@@ -13135,9 +13006,14 @@
     <Content Include="Template\ExportExcel\Teamplate_GiaoDichHoaDon_Gara.xlsx" />
     <Content Include="Views\Home\Init.cshtml" />
     <Content Include="Views\SoQuy\_QRCodeChuyenKhoanModal.cshtml" />
+    <Content Include="Template\ExportExcel\Teamplate_DanhSachBaoGiaSuaChua.xlsx" />
+    <Content Include="Template\ExportExcel\Gara\LeeAuto_Template_LichNhacBaoDuong.xlsx" />
+    <Content Include="Views\Gara\QuanLySuaChua\_CaiDatNhacTienDoCongViec.cshtml" />
+    <Content Include="Views\Gara\_ThongTinThanhToanNCC2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AppCache\CacheSubDomain\" />
+    <Folder Include="App_Data\log\" />
     <Folder Include="App_Data\progress\" />
     <Folder Include="Areas\DanhMuc\Models\" />
     <Folder Include="Areas\DanhMuc\Views\Shared\" />
@@ -13307,9 +13183,6 @@
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
-  <ItemGroup>
-    <TypeScriptCompile Include="Scripts\tinymce\tinymce.d.ts" />
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -13329,7 +13202,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>59381</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44381/</IISUrl>
+          <IISUrl>https://localhost:44368/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -13340,6 +13213,13 @@
     </VisualStudio>
   </ProjectExtensions>
   <Import Project="..\packages\Microsoft.Web.WebJobs.Publish.1.0.12\tools\webjobs.targets" Condition="Exists('..\packages\Microsoft.Web.WebJobs.Publish.1.0.12\tools\webjobs.targets')" />
+  <Import Project="..\packages\TinyMCE.6.4.1\build\TinyMCE.targets" Condition="Exists('..\packages\TinyMCE.6.4.1\build\TinyMCE.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\TinyMCE.6.4.1\build\TinyMCE.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\TinyMCE.6.4.1\build\TinyMCE.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

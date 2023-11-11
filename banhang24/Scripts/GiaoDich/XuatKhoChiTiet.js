@@ -57,7 +57,7 @@ var XuatKhoChiTiet = function () {
     var _idDonVi = $('#hd_IDdDonVi').val();
     var _tenDonVi = $('#hd_TenDonVi').val();
     var _idNhanVien = $('.idnhanvien').text();
-    var _IDNguoiDung = $('.idnguoidung').text();
+    var _IDNguoiDung = VHeader.IdNguoiDung;
     var _userLogin = $('#txtTenTaiKhoan').text().trim();
 
     $(".btnImportExcel").hide();
@@ -112,6 +112,9 @@ var XuatKhoChiTiet = function () {
                 if (commonStatisJs.CheckNull(cthd[i].CssWarning)) {
                     cthd[i].CssWarning = false;
                 }
+                if (commonStatisJs.CheckNull(cthd[i].ViTriKho)) {
+                    cthd[i].ViTriKho = '';
+                }
                 if (commonStatisJs.CheckNull(cthd[i].ThanhPhan_DinhLuong)) {
                     cthd[i].ThanhPhan_DinhLuong = [];
                     cthd[i].HasTPDinhLuong = false;
@@ -121,6 +124,12 @@ var XuatKhoChiTiet = function () {
                             cthd[i].DM_LoHang[j].ThanhPhan_DinhLuong = [];
                             cthd[i].DM_LoHang[j].HasTPDinhLuong = false;
                         }
+                    }
+                }
+
+                for (let j = 0; j < cthd[i].DM_LoHang.length; j++) {
+                    if (commonStatisJs.CheckNull(cthd[i].DM_LoHang[j].ViTriKho)) {
+                        cthd[i].DM_LoHang[j].ViTriKho = '';
                     }
                 }
             }
@@ -211,6 +220,7 @@ var XuatKhoChiTiet = function () {
                             ID_NhanVien: cthd[0].ID_NhanVien,
                             ID_HoaDon: cthd[0].ID_HoaDonSC,
                             ID_PhieuTiepNhan: cthd[0].ID_PhieuTiepNhan,
+                            ID_Xe: cthd[0].ID_Xe,
                             MaHoaDonSuaChua: cthd[0].MaHoaDonSuaChua,
                             DienGiai: cthd[0].DienGiai,
                             BienSo: cthd[0].BienSo,// bienso xe
@@ -229,6 +239,7 @@ var XuatKhoChiTiet = function () {
 
                         self.HangHoaAfterAdd(cthd);
                         Caculator_AmountProduct();
+                        GetTonKho_byIDQuyDois();
                     }
                 }
             }
@@ -287,17 +298,15 @@ var XuatKhoChiTiet = function () {
     }
 
     function GetHT_Quyen_ByNguoiDung() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
-                if (data !== "" && data.length > 0) {
-                    self.Quyen_NguoiDung(data);
-                    self.XuatKho_ThayDoiThoiGian(CheckQuyenExist('XuatHuy_ThayDoiThoiGian'));
-                }
-                else {
-                    ShowMessage_Danger('Không có quyền');
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
+            if (data !== "" && data.length > 0) {
+                self.Quyen_NguoiDung(data);
+                self.XuatKho_ThayDoiThoiGian(CheckQuyenExist('XuatHuy_ThayDoiThoiGian'));
+            }
+            else {
+                ShowMessage_Danger('Không có quyền');
+            }
+        });
     }
 
     function Check_QuyenXemGiaVon() {
@@ -326,13 +335,11 @@ var XuatKhoChiTiet = function () {
     }
 
     function GetCauHinhHeThong() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + _idDonVi, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.ThietLap(data);
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + _idDonVi, 'GET').done(function (data) {
+            if (data !== null) {
+                self.ThietLap(data);
+            }
+        });
     }
 
     function GetAllNhanVien() {
@@ -397,6 +404,7 @@ var XuatKhoChiTiet = function () {
             ThanhPhan_DinhLuong: [],
             HasTPDinhLuong: false,// used to check if hanghoa la TPdinhluong (at gara- hdsc)
             CssWarning: RoundDecimal(itemHH.TonKho, 3) < RoundDecimal(soluong),
+            ViTriKho: itemHH.ViTriKho,
         }
     }
 
@@ -445,6 +453,7 @@ var XuatKhoChiTiet = function () {
             ThanhPhan_DinhLuong: [],
             HasTPDinhLuong: false,
             CssWarning: RoundDecimal(itemHH.TonKho, 3) < RoundDecimal(itemHH.SoLuong, 3),
+            ViTriKho: itemHH.ViTriKho,
         }
     }
 
@@ -1659,6 +1668,7 @@ var XuatKhoChiTiet = function () {
             TongTienHang: 0,
             ID_HoaDon: null,
             ID_PhieuTiepNhan: null,
+            ID_Xe: null,
             MaHoaDonSuaChua: '',
             MaPhieuTiepNhan: '',
             BienSo: '',
@@ -1720,6 +1730,7 @@ var XuatKhoChiTiet = function () {
                 TongTienHang: 0,
                 ID_HoaDon: null,
                 ID_PhieuTiepNhan: null,
+                ID_Xe: null,
                 MaHoaDonSuaChua: '',
                 MaPhieuTiepNhan: '',
                 BienSo: '',
@@ -2008,6 +2019,28 @@ var XuatKhoChiTiet = function () {
 
                     ShowMessage_Success('Tạo phiếu xuất kho thành công');
 
+                    if (!myData.objHoaDon.ChoThanhToan) {
+                        let paramTB = {
+                            ID_NguoiDung: _IDNguoiDung,
+                            ID_PhieuTiepNhan: myData.objHoaDon.ID_PhieuTiepNhan,
+                            BienSo: myData.objHoaDon.BienSo,
+                            LoaiNhac: 5,
+                        }
+                        vmThongBao.UpdateThongBao_CongViecDaXuLy(paramTB);
+
+                        // xuatkho --> xuatxuong
+                        let tbao = {
+                            ID_DonVi: myData.objHoaDon.ID_DonVi,
+                            ID_PhieuTiepNhan: myData.objHoaDon.ID_PhieuTiepNhan,
+                            //ID_Xe: objHD.ID_Xe,
+                            BienSo: myData.objHoaDon.BienSo,
+                            ThoiGian: myData.objHoaDon.NgayLapHoaDon,
+                            ID_QuyTrinhTruoc: 5,
+                            ID_QuyTrinhSau: 6,
+                        }
+                        vmThongBao.Create_tblRequest(tbao);
+                    }
+
                     var cthdView = getcthd_atView();
                     SaveDiary(myData.objHoaDon, cthdView);
 
@@ -2162,6 +2195,9 @@ var XuatKhoChiTiet = function () {
             itFor.SoLuongHuy = formatNumber3Digit(itFor.SoLuong);
             itFor.GiaVon = formatNumber3Digit(itFor.GiaVon, 2);
             itFor.GiaTriHuy = formatNumber3Digit(itFor.ThanhTien, 2);
+            if (commonStatisJs.CheckNull(itFor.ViTriKho)) {
+                itFor.ViTriKho = '';
+            }
             arrReturn.push(itFor);
 
             for (let k = 1; k < itFor.DM_LoHang.length; k++) {
@@ -2172,6 +2208,9 @@ var XuatKhoChiTiet = function () {
                 forIn.SoLuongHuy = formatNumber3Digit(forIn.SoLuong);
                 forIn.GiaVon = formatNumber3Digit(forIn.GiaVon, 2);
                 forIn.GiaTriHuy = formatNumber3Digit(forIn.ThanhTien, 2);
+                if (commonStatisJs.CheckNull(forIn.ViTriKho)) {
+                    forIn.ViTriKho = '';
+                }
                 arrReturn.push(forIn);
             }
         }
@@ -2899,6 +2938,7 @@ var XuatKhoChiTiet = function () {
                     hd[0].MaHoaDonSuaChua = item.MaHoaDon;
                     hd[0].BienSo = item.BienSo;
                     hd[0].ID_HoaDon = item.ID;
+                    hd[0].ID_Xe = item.ID_Xe;
                     hd[0].HasTPDinhLuong = exTPDL.length > 0;
                     hd[0].NgayLapHoaDon = moment(new Date()).format('DD/MM/YYYY HH:mm');
 
@@ -2920,6 +2960,7 @@ var XuatKhoChiTiet = function () {
                         MaHoaDonSuaChua: item.MaHoaDon,
                         MaPhieuTiepNhan: item.MaPhieuTiepNhan,
                         BienSo: item.BienSo,
+                        ID_Xe: item.ID_Xe,
                         NguoiTao: _userLogin,
                         LoaiHoaDon: 8,
                         DienGiai: '',

@@ -1565,8 +1565,224 @@
     self.XDVDL_SoLuongChenhLech = ko.observable();
     self.XDVDL_GiaTriChenhLech = ko.observable();
 
+    self.ColumnSort = ko.observable();
+    self.TypeSort = ko.observable();
+    self.sort = ko.observable();
+
+    function sortByKeyTangDan(array, key) {
+        return array.sort(function (a, b) {
+            let x = a[key]; let y = b[key];
+            return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+        });
+    }
+    function sortByKeyGiamGian(array, key) {
+        return array.sort(function (a, b) {
+            let x = a[key]; let y = b[key];
+            return ((x > y) ? -1 : ((x < y) ? 1 : 0));
+        });
+    }
+
+    self.sortTable = function (array) {
+        let key = self.ColumnSort();
+        if (self.sort() === 0) {
+            array = sortByKeyTangDan(array, key);
+        }
+        else {
+            array = sortByKeyGiamGian(array, key);
+        }
+
+        let loaiBC = parseInt(self.check_MoiQuanTam());
+        switch (loaiBC) {
+            case 1:
+                if (tab_TonKho === 1) {
+                    self.BaoCaoKho_TonKho(array);
+                }
+                break;
+            case 2:
+                self.BaoCaoKho_NhapXuatTon(array);
+                break;
+            case 4:
+                if (dk_tab === 1) {
+                    self.BaoCaoKho_XuatDieuChuyen(array);
+                }
+                break;
+            case 5:
+                if (dk_tabtk === 1) {
+                    self.BaoCaoKho_TongHopHangNhap(array);
+                }
+                break;
+            case 6:
+                if (dk_tabxk === 1) {
+                    self.BaoCaoKho_TongHopHangXuat(array);
+                }
+                break;
+        }
+        loadHtmlGrid();
+    }
+
+    $('table thead tr').on('click', 'th', function () {
+        let id = $(this).attr('id');
+        if (id !== undefined) {
+            let $tbl = $(this).closest('table');
+            let $this = $($tbl).find('#' + id);
+
+            $("#iconSort").remove();
+            if (self.sort() === 0) {
+                self.sort(1);
+                self.TypeSort(2);
+                $($this).append(' ' + "<i id='iconSort' class='fa fa-caret-down' aria-hidden='true'></i>");
+            }
+            else {
+                self.sort(0);
+                self.TypeSort(1);
+                $($this).append(' ' + "<i id='iconSort' class='fa fa-caret-up' aria-hidden='true'></i>");
+            }
+
+            let loaiBC = parseInt(self.check_MoiQuanTam());
+            switch (loaiBC) {
+                case 1:// tonkho
+                    switch (id) {
+                        case "Warehouse_nhomhang":
+                            self.ColumnSort("TenNhomHang");
+                            break;
+                        case "Warehouse_mahang":
+                            self.ColumnSort("MaHangHoa");
+                            break;
+                        case "Warehouse_tenhang":
+                            self.ColumnSort("TenHangHoa");
+                            break;
+                        case "Warehouse_donvitinh":
+                            self.ColumnSort("TenDonViTinh");
+                            break;
+                        case "Warehouse_lohang":
+                            self.ColumnSort("TenLoHang");
+                            break;
+                        case "Warehouse_MaChiNhanh":
+                            self.ColumnSort("MaDonVi");
+                            break;
+                        case "Warehouse_TenChiNhanh":
+                            self.ColumnSort("TenDonVi");
+                            break;
+                        case "Warehouse_soluong":
+                            self.ColumnSort("TonCuoiKy");
+                            break;
+                        case "Warehouse_soluongquycach":
+                            self.ColumnSort("TonQuyCach");
+                            break;
+                        case "Warehouse_giatri":
+                            self.ColumnSort("GiaTriCuoiKy");
+                            break;
+                    }
+                    self.sortTable(self.BaoCaoKho_TonKho());
+                    break;
+                case 2:// bc nhapxuatton
+                    switch (id) {
+                        case "Warehouse_nhomhang":
+                            self.ColumnSort("TenNhomHang");
+                            break;
+                        case "Warehouse_mahang":
+                            self.ColumnSort("MaHangHoa");
+                            break;
+                        case "Warehouse_tenhang":
+                            self.ColumnSort("TenHangHoa");
+                            break;
+                        case "Warehouse_donvitinh":
+                            self.ColumnSort("TenDonViTinh");
+                            break;
+                        case "Warehouse_lohang":
+                            self.ColumnSort("TenLoHang");
+                            break;
+                        case "Warehouse_MaChiNhanh":
+                            self.ColumnSort("MaDonVi");
+                            break;
+                        case "Warehouse_TenChiNhanh":
+                            self.ColumnSort("TenDonVi");
+                            break;
+                        case "Warehouse_tondauky":
+                            self.ColumnSort("TonDauKy");
+                            break;
+                        case "Warehouse_giatridau":
+                            self.ColumnSort("GiaTriDauKy");
+                            break;
+                        case "Warehouse_soluong":
+                            self.ColumnSort("SoLuongNhap");
+                            break;
+                        case "Warehouse_giatri":
+                            self.ColumnSort("GiaTriNhap");
+                            break;
+                        case "Warehouse_soluongnhan":
+                            self.ColumnSort("SoLuongXuat");
+                            break;
+                        case "Warehouse_giatrixuat":
+                            self.ColumnSort("GiaTriXuat");
+                            break;
+                        case "Warehouse_toncuoiky":
+                            self.ColumnSort("TonCuoiKy");
+                            break;
+                        case "Warehouse_soluongquycach":
+                            self.ColumnSort("TonQuyCach");
+                            break;
+                        case "Warehouse_giatricuoi":
+                            self.ColumnSort("GiaTriCuoiKy");
+                            break;
+                    }
+                    self.sortTable(self.BaoCaoKho_NhapXuatTon());
+                    break;
+                case 5:// bc tonghop xuatkho
+                case 4:// bc dieuchuyen tonghop
+                case 6:// bc tonghop nhapkho
+                    switch (id) {
+                        case "Warehouse_nhomhang":
+                            self.ColumnSort("TenNhomHang");
+                            break;
+                        case "Warehouse_mahang":
+                            self.ColumnSort("MaHangHoa");
+                            break;
+                        case "Warehouse_tenhang":
+                            self.ColumnSort("TenHangHoa");
+                            break;
+                        case "Warehouse_donvitinh":
+                            self.ColumnSort("TenDonViTinh");
+                            break;
+                        case "Warehouse_lohang":
+                            self.ColumnSort("TenLoHang");
+                            break;
+                        case "Warehouse_MaChiNhanh":
+                            self.ColumnSort("MaDonVi");
+                            break;
+                        case "Warehouse_TenChiNhanh":
+                            self.ColumnSort("TenDonVi");
+                            break;
+                        case "Warehouse_soluong":
+                            self.ColumnSort("SoLuong");
+                            break;
+                        case "Warehouse_giatrixuat":
+                            self.ColumnSort("ThanhTien");
+                            break;
+                        case "Warehouse_giatri":
+                            self.ColumnSort("ThanhTien");
+                            break;
+                    }
+                    switch (loaiBC) {
+                        case 4:
+                            self.sortTable(self.BaoCaoKho_XuatDieuChuyen());
+                            break;
+                        case 5:
+                            self.sortTable(self.BaoCaoKho_TongHopHangNhap());
+                            break;
+                        case 6:
+                            self.sortTable(self.BaoCaoKho_TongHopHangXuat());
+                            break;
+                    }
+                    break;
+            }
+        }
+    });
+
     self.LoadReport = function () {
         $('.table-reponsive').css('display', 'none');
+        $("#iconSort").remove();
+
         LoadingForm(true);
         self.RefreshPrint();
         _pageNumber_CT = 1;
@@ -2451,7 +2667,7 @@
     };
 
     self.gotoDanhSachXe = function (item) {
-        window.open('/#/DanhSachXe?' + item.BienSo,'_blank');
+        window.open('/#/DanhSachXe?' + item.BienSo, '_blank');
     }
     self.LoadHoaDon_byMaHD = function (item) {
         var url = '';
@@ -2464,10 +2680,10 @@
             else {
                 localStorage.setItem('FindHD', maHD);
                 if (maHD.indexOf('HD') > -1) {
-                    url = "/#/Invoices"; 
+                    url = "/#/Invoices";
                 }
                 else if (maHD.indexOf('GDV') > -1) {
-                    url = "/#/ServicePackage"; 
+                    url = "/#/ServicePackage";
                 }
                 else if (maHD.indexOf('PNK') > -1) {
                     url = "/#/PurchaseOrder";

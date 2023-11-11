@@ -10,6 +10,11 @@
     created: function () {
         let self = this;
         self.GuidEmpty = '00000000-0000-0000-0000-000000000000';
+        let idDonVi = $('#txtDonVi').val();
+        if (commonStatisJs.CheckNull(idDonVi)) {
+            self.role.PhieuTiepNhan.BatBuocNhapKmVao = self.CheckRole('PhieuTiepNhan_BatBuocNhapKmVao')
+            console.log(33, self.role.PhieuTiepNhan.BatBuocNhapKmVao)
+        }
     },
     data: {
         saveOK: false,
@@ -30,7 +35,7 @@
         },
         role: {
             Xe: {},
-            PhieuTiepNhan: {},
+            PhieuTiepNhan: {BatBuocNhapKmVao: false},
             KhachHang: {},
             BaoHiem: {},
         },
@@ -205,7 +210,20 @@
             $("#TiepNhanXeModal").modal('show');
             console.log('tnx')
         },
-        UpdatePhieuTiepNhan: function (thongtin, hangmuc, vatdung) {
+        GetInforPhieuTiepNhan_byID: async function (id) {
+            if (!commonStatisJs.CheckNull(id)) {
+                let xx = await $.getJSON('/api/DanhMuc/GaraAPI/' + 'PhieuTiepNhan_GetThongTinChiTiet?id=' + id).done(function () {
+                }).then(function (x) {
+                    if (x.res && x.dataSoure.length > 0) {
+                        return x.dataSoure[0];
+                    }
+                    return {};
+                })
+                return xx;
+            }
+            return {};
+        },
+        UpdatePhieuTiepNhan: function (thongtin, hangmuc=[], vatdung=[]) {
             var self = this;
             self.isNew = false;
             self.saveOK = false;
@@ -751,6 +769,7 @@
                         vatdung[i].FileDinhKem = result[0];
                     }
                 }
+                vatdung[i].STT = i + 1;
             }
             self.Put_GiayToKemTheoUpload(vatdung);
             //Hạng mục sửa chữa
@@ -771,6 +790,7 @@
                         hangmuc[i].Anh = result[0];
                     }
                 }
+                hangmuc[i].STT = i + 1;
             }
             self.Put_HangMucSuaChuaUpload(hangmuc);
             //$.ajax({
@@ -786,12 +806,19 @@
         },
         AddNew_PhieuTiepNhan: function () {
             var self = this;
-            if (commonStatisJs.CheckNull(self.newPhieuTiepNhan.ID_KhachHang)) {
-                commonStatisJs.ShowMessageDanger('Vui lòng chọn khách hàng');
+            if (self.isLoading) {
                 return;
             }
             if (commonStatisJs.CheckNull(self.newPhieuTiepNhan.ID_Xe)) {
                 commonStatisJs.ShowMessageDanger('Vui lòng nhập biển số xe');
+                return;
+            }
+            if (commonStatisJs.CheckNull(self.newPhieuTiepNhan.ID_KhachHang)) {
+                commonStatisJs.ShowMessageDanger('Vui lòng chọn khách hàng');
+                return;
+            }
+            if (self.role.PhieuTiepNhan.BatBuocNhapKmVao && (commonStatisJs.CheckNull(self.newPhieuTiepNhan.SoKmVao) || self.newPhieuTiepNhan.SoKmVao ===0)) {
+                commonStatisJs.ShowMessageDanger('Vui lòng nhập số Km vào');
                 return;
             }
             if (self.newPhieuTiepNhan.SoKmRa === 0) {
@@ -836,6 +863,19 @@
                         diary.LoaiNhatKy = 1;
                         diary.NoiDung = diary.NoiDung.concat(x.dataSoure.MaPhieuTiepNhan);
                         Insert_NhatKyThaoTac_1Param(diary);
+
+                        let diaryDevice = {
+                            LoaiNhatKy: 1,
+                            ID_DonVi: self.inforLogin.ID_DonVi,
+                            ID_NhanVien: self.inforLogin.ID_NhanVien,
+                            ChucNang: 'Phiếu tiếp nhận',
+                            NoiDung: 'Check DeviceId',
+                            NoiDungChiTiet: 'Tạo phiếu tiếp nhận: '.concat(x.dataSoure.MaPhieuTiepNhan,
+                                ' <br /> - Người tạo: ', self.inforLogin.UserLogin,
+                                ' <br /> - Ngày tạo: ', moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+                                ' <br /> - DeviceId: ', getDeviceId())
+                        }
+                        Insert_NhatKyThaoTac_1Param(diaryDevice);
 
                         //self.Put_HangMucSuaChua();
                         //self.Put_GiayToKemTheo();

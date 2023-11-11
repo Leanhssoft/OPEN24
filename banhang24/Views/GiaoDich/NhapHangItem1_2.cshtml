@@ -236,7 +236,7 @@
                                       data-bind=" text: commonStatisJs.SubStringContent(MaHangHoa,15),
                                       attr:{title: MaHangHoa}"></span>
                             </td>
-                            <td class="_ten-hang-hoa" >
+                            <td class="_ten-hang-hoa">
                                 <div class="font-w-b">
                                     <span class="bold" data-bind="text:commonStatisJs.SubStringContent(TenHangHoa,30),attr:{title: TenHangHoa}"></span>
                                     <span data-bind="text: ThuocTinh_GiaTri" style="color: #ff6a00"></span>
@@ -244,7 +244,7 @@
                                 <input type="text" class="input-simple input-note"
                                        placeholder="Ghi chú" data-bind="value: GhiChu, event :{keyup: $root.UpdateGhiChu_CTHD}">
                             </td>
-                             <td>
+                            <td>
                                 <div data-bind="visible: TenDonViTinh!=='' && TenDonViTinh !==null" style="position:relative">
                                     <button class=" btn btn-link" type="button" data-toggle="dropdown" aria-expanded="true" title='Đơn vị tính'>
                                         <span class="notshow" data-bind="text: TenDonViTinh"></span>
@@ -900,7 +900,7 @@
                 </div>
 
             </div>
-           
+
             <div class="detail-infor floatleft " style="position:relative">
                 <div>
                     <div class="seach-supplier floatleft" style="position:relative">
@@ -945,14 +945,71 @@
                         event:{keyup: $root.editMaHoaDon},
                         valueUpdate: 'afterkeydown'">
             </div>
+
+            <!--ko if: $root.isGara() && !commonStatisJs.CheckNull(newHoaDon().ID_PhieuTiepNhan()) -->
+            <div class="form-group floatleft" style="display:none">
+                <label class="css-form-label" style="letter-spacing:-1px">Phiếu tiếp nhận</label>
+                <div class="css-form-detail" id="jqAutoPhieuTN" style="position:relative">
+                    <input style="width:100% !important" class="form-control" onclick="this.select()"
+                           data-bind="value: textSearchPhieuTN,
+ event: {keyup: searchPhieuTiepNhan}, valueUpdate: 'afterkeydown'" />
+                    <button class="btn btn-right" title="Thông tin phiếu tiếp nhận"
+                            data-bind="click: XemThongTinPhieuTiepNhan">
+                        <i class="fa fa-info"></i>
+                    </button>
+                    <div class="gara-search-dropbox" style="width:100% !important; top:30px;">
+                        <ul data-bind="foreach: ListPhieuTiepNhan">
+                            <li data-bind="click: $root.ChosePhieuTiepNhan,
+                                    style:{background: $root.indexFocus_phieuTN() === $index()?'#d9d9d9':'none'}">
+                                <div>
+                                    <span style="color:var(--color-main); line-height:18px; width:100%; "
+                                          class="text-ellipsis" data-bind="text: MaPhieuTiepNhan"></span>
+                                    <span style=" line-height:18px; width:100%; " class="text-ellipsis">
+                                        <span> Biển số xe:</span>
+                                        <span data-bind="text: BienSo"></span>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group floatleft" style="display:none">
+                <label class="css-form-label" style="letter-spacing:-1px">Hóa đơn/ báo giá</label>
+                <div class="css-form-detail" id="jqAutoHoaDonSC" style="position:relative">
+                    <input style="width:100% !important" class="form-control" onclick="this.select()"
+                           data-bind="value: textSearchHDSC,
+                               event: {keyup: searchHoaDonSC}, valueUpdate: 'afterkeydown'" />
+                    <button class="btn btn-right" title="Thông tin hóa đơn"
+                            data-bind="click: showModalChiTietHoaDon">
+                        <i class="fa fa-info"></i>
+                    </button>
+                    <div class="gara-search-dropbox" style="width:100% !important; top:30px;">
+                        <ul data-bind="foreach: ListHoaDonSC">
+                            <li data-bind="click: $root.ChoseBaoGia,
+                                    style:{background: $root.indexFocus_HDSC() === $index()?'#d9d9d9':'none'}">
+                                <div>
+                                    <span style="color:var(--color-main); line-height:18px; width:100%; " class="text-ellipsis" data-bind="text: MaHoaDon"></span>
+                                    <br />
+                                    <span style=" line-height:18px; width:100%; " class="text-ellipsis">
+                                        <span> Biển số xe:</span>
+                                        <span data-bind="text: BienSo"></span>
+                                    </span>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--/ko-->
             <div class="form-group floatleft replus">
                 <label class="css-form-label ">Ngày lập phiếu :</label>
                 <input class="form-control txtNgayLapHD" id="datetimepicker_mask"
                        data-bind="enable: $root.NhapHang_ThayDoiThoiGian(),
                        value: newHoaDon().NgayLapHoaDon() == null? $root.DateHDDefault(): newHoaDon().NgayLapHoaDon()" type="text">
             </div>
-           
-          
+
+
             <div class="form-group floatleft replus ">
                 <label class="css-form-label">Nhân viên:</label>
                 <div class="css-form-detail">
@@ -971,7 +1028,7 @@
                     </div>
                 </div>
             </div>
-          
+
             <div class="form-group floatleft replus ">
                 <label class="css-form-label">Ghi chú :</label>
                 <div class="css-form-detail">
@@ -1062,7 +1119,7 @@
                         </td>
                     </tr>
 
-                    <tr class="border-bottom bold " style="display:none">
+                    <tr class="border-bottom bold ">
                         <td>
                             Chi phí v/c
                         </td>
@@ -1074,6 +1131,34 @@
                         </td>
                     </tr>
 
+                    <tr id="vmCus">
+                        <td>
+                            Bên vận chuyển   &nbsp; &nbsp; &nbsp;
+                            <span class="commodity-note">
+                                <i class="fa fa-info-circle red"></i>
+                                <span href="javascript:void(0)" class="materiall red" style="right:unset!important">
+                                    Nếu vận chuyển là một bên khác.
+                                    <br /> Vui lòng tạo phiếu chi riêng cho bên này
+                                </span>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="detail-infor floatleft " style="position:relative">
+                                <customers :text-search="customerChosing.TenDoiTuong"
+                                           :loai-doi-tuong="2"
+                                           :showbutton="role.ThemMoiNhaCungCap && $root.ID_DoiTuong ==null"
+                                           :showbutton-update="role.CapNhatNhaCungCap  && $root.ID_DoiTuong!==null"
+                                           :disable-search="false"
+                                           :id-chi-nhanh="inforLogin.ID_DonVi"
+                                           v-on:show-modal-customer="showModalCustomer"
+                                           v-on:show-modal-update="$root.UpdateCustomer"
+                                           v-on:reset-customer-parent="$root.ResetCustomer"
+                                           v-on:change-customer-parent="ChangeCustomer">
+                                </customers>
+
+                            </div>
+                        </td>
+                    </tr>
                     <tr data-bind="visible: newHoaDon().PhaiThanhToan() > 0">
                         <td>
                             <span class="span_inline_block">
@@ -1242,14 +1327,20 @@
         </div>
     </div>
 </div>
+
 <script src="~/Scripts/Components/Input.js"></script>
 <script src="~/Scripts/Components/NhanVien_KhachHang.js"></script>
 <script src="~/Scripts/Components/TrangThai_NguonKhach.js"></script>
 <script src="~/Scripts/Components/dropdown-search.js"></script>
-@Html.Partial("~/Views/Gara/_ThongTinThanhToanNCC.cshtml")
+<script src="~/Scripts/Components/HangLoaiXe.js"></script>
+@Html.Partial("~/Views/Gara/_ThongTinThanhToanNCC2.cshtml")
 @Html.Partial("~/Views/Gara/KhachHang/_ThemNhomNCC.cshtml")
 @Html.Partial("~/Views/Gara/KhachHang/_ThemMoiNCC.cshtml")
 @Html.Partial("~/Views/GiaoDich/_vmErr.cshtml")
+@Html.Partial("~/Views/Gara/HoaDon/_ThongTinHoaDon.cshtml")
+@Html.Partial("~/Views/Gara/_DichVu_ofThanhPhanDL.cshtml")
+@Html.Partial("~/Views/Gara/QuanLySuaChua/_TiepNhanXe.cshtml")
+
 <script>
     var TeamplateMauIn = '@commonEnum.MauInTeamPlates.NhapHang';
     var funcName = '@RoleKey.NhapHang';

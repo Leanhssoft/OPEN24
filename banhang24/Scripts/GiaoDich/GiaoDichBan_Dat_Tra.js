@@ -12,6 +12,8 @@
     var _IDNguoiDung = $('.idnguoidung').text();
     var DiaryUri = '/api/DanhMuc/SaveDiary/';
     self.TodayBC = ko.observable('Toàn thời gian');
+    const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
+    self.isLeeAuto = ko.observable($.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1);
     self.ShopCookie = ko.observable($('#txtShopCookie').val());
     self.TenChiNhanh = ko.observableArray();
     self.HoaDons = ko.observableArray();
@@ -41,6 +43,8 @@
     self.RoleDelete_Invoice = ko.observable(false);
     self.RoleExport_Invoice = ko.observable(false);
     self.RoleUpdateImg_Invoice = ko.observable(false);
+    self.LaAdmin = ko.observable(VHeader.LaAdmin == 'Admin');
+    self.RoleXemTongDoanhThu = ko.observable(false);// quyền "Không" (ngược với bình thường)
     // hd dat
     self.RoleView_Order = ko.observable(false);
     self.RoleInsert_Order = ko.observable(false);
@@ -122,6 +126,7 @@
     self.GiamTruBoiThuong = ko.observable(0);
     self.BHThanhToanTruocThue = ko.observable(0);
     self.TongTienThueBaoHiem = ko.observable(0);
+    self.TongGiamTruBaoHiem = ko.observable(0);
 
     self.TongTienHang = ko.observable();
     self.TongThanhToan = ko.observable();
@@ -305,6 +310,9 @@
             }
             else {
                 if (loaiHoaDon === 3) {
+                    data = $.grep(data, function (x) {
+                        return $.inArray(x.Key, ['tongchiphi']) === -1;
+                    });
                     if (self.LoaiHoaDonMenu() === 0) {
                         data = $.grep(data, function (x) {
                             return $.inArray(x.Key, ['maphieutiepnhan', 'bienso']) === -1;
@@ -356,6 +364,7 @@
                 self.Role_NhapHangTuHoaDon(CheckQuyenExist('NhapHang_ThemMoi'))
                 self.Role_XuatKho(CheckQuyenExist('XuatHuy_ThemMoi'));
                 self.RoleUpdateImg_Invoice(CheckQuyenExist('HoaDon_CapNhatAnh'));
+                self.RoleXemTongDoanhThu(CheckQuyenExist('KhachHang_KhongXemTongCong'));
             }
             else {
                 ShowMessage_Danger('Không có quyền xem danh sách ' + sLoai);
@@ -627,14 +636,18 @@
     }
 
     function HuyHoaDon_UpdateLichBaoDuong(idHoaDon) {
-        ajaxHelper('/api/DanhMuc/GaraAPI/' + 'HuyHoaDon_UpdateLichBaoDuong?idHoaDon=' + idHoaDon, 'GET').done(function (x) {
-        });
+        if (!self.isLeeAuto()) {
+            ajaxHelper('/api/DanhMuc/GaraAPI/' + 'HuyHoaDon_UpdateLichBaoDuong?idHoaDon=' + idHoaDon, 'GET').done(function (x) {
+            });
+        }
     }
     function UpdateLichBD_whenChangeNgayLapHD(idHoaDon, ngaylapOld, ngaylapNew) {
-        ajaxHelper('/api/DanhMuc/GaraAPI/UpdateLichBD_whenChangeNgayLapHD?idHoaDon=' + idHoaDon +
-            '&ngaylapOld=' + ngaylapOld + '&ngaylapNew=' + ngaylapNew, 'GET')
-            .done(function (x) {
-            })
+        if (!self.isLeeAuto()) {
+            ajaxHelper('/api/DanhMuc/GaraAPI/UpdateLichBD_whenChangeNgayLapHD?idHoaDon=' + idHoaDon +
+                '&ngaylapOld=' + ngaylapOld + '&ngaylapNew=' + ngaylapNew, 'GET')
+                .done(function (x) {
+                })
+        }
     }
 
     // huy hdDoi, khong huy hdTra
@@ -1297,11 +1310,45 @@
                         funcName = 'ExportExcel_DatHang';
                         txtLoaiHD = 'Đặt hàng';
                         noidungNhatKy = "Xuất excel danh sách hóa đơn đặt hàng";
+
+                        // remove column {TongChiPhi}
+                        let allHide = columnHide.split('_');
+                        let arrNew = [];
+                        for (let i = 0; i < allHide.length; i++) {
+                            if (allHide[i] !== '') {
+                                let col = formatNumberToFloat(allHide[i]);
+                                if (col > 12) {
+                                    arrNew.push(col + 1);
+                                }
+                                else {
+                                    arrNew.push(col);
+                                }
+                            }
+                        }
+                        arrNew.push(13);
+                        columnHide = arrNew.join('_');
                     }
                     else {
                         funcName = 'ExportExcel_BaoGiaSuaChua';
                         txtLoaiHD = 'Báo giá sửa chữa';
                         noidungNhatKy = "Xuất excel danh sách báo giá sửa chữa";
+
+                        // remove column {TongChiPhi}
+                        let allHide = columnHide.split('_');
+                        let arrNew = [];
+                        for (let i = 0; i < allHide.length; i++) {
+                            if (allHide[i] !== '') {
+                                let col = formatNumberToFloat(allHide[i]);
+                                if (col > 14) {
+                                    arrNew.push(col + 1);
+                                }
+                                else {
+                                    arrNew.push(col);
+                                }
+                            }
+                        }
+                        arrNew.push(15);
+                        columnHide = arrNew.join('_');
                     }
                     break;
                 case 6:
@@ -1377,6 +1424,7 @@
                         self.GiamTruBoiThuong(first.SumGiamTruBoiThuong);
                         self.BHThanhToanTruocThue(first.SumBHThanhToanTruocThue);
                         self.TongTienThueBaoHiem(first.SumTongTienThueBaoHiem);
+                        self.TongGiamTruBaoHiem(first.SumGiamTruThanhToanBaoHiem);
 
                         self.TongTienMat(first.SumTienMat);
                         self.TongChuyenKhoan(first.SumChuyenKhoan);
@@ -1392,7 +1440,7 @@
                             return x + item.ConNo;
                         }, 0);
 
-                        self.TongKhachNo(conno);
+                        self.TongKhachNo(first.SumConNo);
                         self.TongNoKhach(conno);// trahang
 
                         switch (loaiHoaDon) {
@@ -1782,6 +1830,9 @@
                 break;
             case "tongthueBH":
                 self.columsort("TongTienThueBaoHiem");
+                break;
+            case "GiamTruBaoHiem":
+                self.columsort("GiamTruThanhToanBaoHiem");
                 break;
         }
         SortGrid(id);
@@ -2180,6 +2231,63 @@
     self.RdoKhauTru = ko.observable(0);
     self.RdoCheTai = ko.observable(0);
     self.InVoiceChosing = ko.observable();
+
+    function Caculator_ChiTietHD(cthdDB = []) {
+        let tongsoluong = cthdDB.reduce(function (x, item) {
+            return x + item.SoLuong;
+        }, 0);
+        let tonggiamgiahang = cthdDB.reduce(function (x, item) {
+            return x + (item.TienChietKhau * item.SoLuong);
+        }, 0);
+        let tongtienhangchuaCK = cthdDB.reduce(function (x, item) {
+            return x + (item.SoLuong * item.DonGia);
+        }, 0);
+        let arrHH = cthdDB.filter(x => x.LaHangHoa);
+        let arrDV = cthdDB.filter(x => x.LaHangHoa === false);
+
+        let tongDV = 0, tongDV_truocVAT = 0, tongDV_truocCK = 0;
+        let tongHH = 0, tongHH_truocVAT = 0, tongHH_truocCK = 0;
+        let DV_tongthue = 0, DV_tongCK = 0, DV_tongSL = 0;
+        let HH_tongthue = 0, HH_tongCK = 0, HH_tongSL = 0;
+        for (let k = 0; k < arrHH.length; k++) {
+            let itFor = arrHH[k];
+            let soluong = formatNumberToFloat(itFor.SoLuong);
+            HH_tongSL += soluong;
+            tongHH += formatNumberToFloat(itFor.ThanhToan);
+            tongHH_truocVAT += RoundDecimal(formatNumberToFloat(itFor.ThanhTien), 3);
+            tongHH_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
+            HH_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
+            HH_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
+        }
+        for (let k = 0; k < arrDV.length; k++) {
+            let itFor = arrDV[k];
+            let soluong = formatNumberToFloat(itFor.SoLuong);
+            DV_tongSL += soluong;
+            tongDV += formatNumberToFloat(itFor.ThanhToan);
+            tongDV_truocVAT += RoundDecimal(formatNumberToFloat(itFor.ThanhTien), 3);
+            tongDV_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
+            DV_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
+            DV_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
+        }
+
+        self.TongSoLuongHang(tongsoluong);
+        self.TongGiamGiaHang(tonggiamgiahang);
+        self.TongTienHangChuaCK(RoundDecimal(tongtienhangchuaCK, 3));
+
+        self.TongTienPhuTung(tongHH);
+        self.TongTienDichVu(tongDV);
+        self.TongTienPhuTung_TruocCK(tongHH_truocCK);
+        self.TongTienDichVu_TruocCK(tongDV_truocCK);
+        self.TongTienPhuTung_TruocVAT(tongHH_truocVAT);
+        self.TongTienDichVu_TruocVAT(tongDV_truocVAT);
+
+        self.TongThue_PhuTung(HH_tongthue);
+        self.TongCK_PhuTung(HH_tongCK);
+        self.TongThue_DichVu(DV_tongthue);
+        self.TongCK_DichVu(DV_tongCK);
+        self.TongSL_DichVu(DV_tongSL);
+        self.TongSL_PhuTung(HH_tongSL);
+    }
     self.LoadChiTietHD = function (item, e) {
         self.InVoiceChosing(item);
         self.Enable_NgayLapHD(item.ChoThanhToan === null || !VHeader.CheckKhoaSo(moment(item.NgayLapHoaDon).format('YYYY-MM-DD'), item.ID_DonVi));
@@ -2248,123 +2356,10 @@
                     } else {
                         data[i].Del = "";
                     }
-                    // USE FOR SPA (add BH_NhanVienThucHien) (only BanHang, not (DatHang + TraHang))
-                    let lstNV_TH = '';
-                    let lstNV_TV = '';
-                    let listBH_NVienThucHienOld = data[i].BH_NhanVienThucHien;
-                    // remove BH_NhanVienThucHien old, and add again
-                    data[i].BH_NhanVienThucHien = [];
-                    for (let j = 0; j < listBH_NVienThucHienOld.length; j++) {
-                        let itemFor = listBH_NVienThucHienOld[j];
-                        // addNvienTuVan_ThucHien
-                        let isNVThucHien = itemFor.ThucHien_TuVan;
-                        let tienCK = itemFor.TienChietKhau;
-                        let gtriPtramCK = itemFor.PT_ChietKhau;
-                        let isPTram = gtriPtramCK > 0 ? true : false;
-                        let gtriCK_TH = 0;
-                        let gtriCK_TV = 0;
-                        let tacVu = 1;
-                        if (isNVThucHien) {
-                            if (isPTram) {
-                                gtriCK_TH = gtriPtramCK;
-                                lstNV_TH += itemFor.TenNhanVien + ', ';
-                            }
-                            else {
-                                gtriCK_TH = tienCK;
-                                lstNV_TH += itemFor.TenNhanVien + ', ';
-                            }
-                        }
-                        else {
-                            tacVu = 2;
-                            if (isPTram) {
-                                gtriCK_TV = gtriPtramCK;
-                                lstNV_TV += itemFor.TenNhanVien + ', ';
-                            }
-                            else {
-                                gtriCK_TV = tienCK;
-                                lstNV_TV += itemFor.TenNhanVien + ', ';
-                            }
-                        }
-                        // add to do fun SaoChep
-                        var idRandom = CreateIDRandom('CKNV_');
-                        var itemNV = {
-                            IDRandom: idRandom,
-                            ID_NhanVien: itemFor.ID_NhanVien,
-                            TenNhanVien: itemFor.TenNhanVien,
-                            ThucHien_TuVan: isNVThucHien,
-                            TacVu: tacVu,
-                            TienChietKhau: tienCK,
-                            TheoYeuCau: itemFor.TheoYeuCau,
-                            PT_ChietKhau: gtriPtramCK,
-                            HeSo: itemFor.HeSo,
-                            TinhChietKhauTheo: itemFor.TinhChietKhauTheo,
-                            TinhHoaHongTruocCK: itemFor.TinhHoaHongTruocCK,
-                        }
-                        data[i].BH_NhanVienThucHien.push(itemNV);
-                    }
-
-                    data[i].GhiChu_NVThucHien = (lstNV_TH === '' ? '' : '- Thực hiện: ' + Remove_LastComma(lstNV_TH));
-                    data[i].GhiChu_NVTuVan = (lstNV_TV === '' ? '' : '- Tư vấn: ' + Remove_LastComma(lstNV_TV));
-                    data[i].GhiChu_NVThucHienPrint = (lstNV_TH === '' ? '' : Remove_LastComma(lstNV_TH));
-                    data[i].GhiChu_NVTuVanPrint = (lstNV_TV === '' ? '' : Remove_LastComma(lstNV_TV));
+                    data[i] = AssignNVThucHien_toCTHD(data[i]);
                 }
                 self.BH_HoaDonChiTiets(data);
                 self.TongSLuong(sluong);
-
-                var tongsoluong = self.BH_HoaDonChiTiets().reduce(function (x, item) {
-                    return x + item.SoLuong;
-                }, 0);
-                var tonggiamgiahang = self.BH_HoaDonChiTiets().reduce(function (x, item) {
-                    return x + (item.TienChietKhau * item.SoLuong);
-                }, 0);
-                var tongtienhangchuaCK = self.BH_HoaDonChiTiets().reduce(function (x, item) {
-                    return x + (item.SoLuong * item.DonGia);
-                }, 0);
-                var arrHH = self.BH_HoaDonChiTiets().filter(x => x.LaHangHoa);
-                var arrDV = self.BH_HoaDonChiTiets().filter(x => x.LaHangHoa === false);
-
-                var tongDV = 0, tongDV_truocVAT = 0, tongDV_truocCK = 0;
-                var tongHH = 0, tongHH_truocVAT = 0, tongHH_truocCK = 0;
-                var DV_tongthue = 0, DV_tongCK = 0, DV_tongSL = 0;
-                var HH_tongthue = 0, HH_tongCK = 0, HH_tongSL = 0;
-                for (let k = 0; k < arrHH.length; k++) {
-                    let itFor = arrHH[k];
-                    let soluong = formatNumberToFloat(itFor.SoLuong);
-                    HH_tongSL += soluong;
-                    tongHH += formatNumberToFloat(itFor.ThanhToan);
-                    tongHH_truocVAT += RoundDecimal(formatNumberToFloat(itFor.ThanhTien), 3);
-                    tongHH_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
-                    HH_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
-                    HH_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
-                }
-                for (let k = 0; k < arrDV.length; k++) {
-                    let itFor = arrDV[k];
-                    let soluong = formatNumberToFloat(itFor.SoLuong);
-                    DV_tongSL += soluong;
-                    tongDV += formatNumberToFloat(itFor.ThanhToan);
-                    tongDV_truocVAT += RoundDecimal(formatNumberToFloat(itFor.ThanhTien), 3);
-                    tongDV_truocCK += soluong * formatNumberToFloat(itFor.DonGia);
-                    DV_tongthue += soluong * formatNumberToFloat(itFor.TienThue);
-                    DV_tongCK += soluong * formatNumberToFloat(itFor.TienChietKhau);
-                }
-
-                self.TongSoLuongHang(tongsoluong);
-                self.TongGiamGiaHang(tonggiamgiahang);
-                self.TongTienHangChuaCK(RoundDecimal(tongtienhangchuaCK, 3));
-
-                self.TongTienPhuTung(tongHH);
-                self.TongTienDichVu(tongDV);
-                self.TongTienPhuTung_TruocCK(tongHH_truocCK);
-                self.TongTienDichVu_TruocCK(tongDV_truocCK);
-                self.TongTienPhuTung_TruocVAT(tongHH_truocVAT);
-                self.TongTienDichVu_TruocVAT(tongDV_truocVAT);
-
-                self.TongThue_PhuTung(HH_tongthue);
-                self.TongCK_PhuTung(HH_tongCK);
-                self.TongThue_DichVu(DV_tongthue);
-                self.TongCK_DichVu(DV_tongCK);
-                self.TongSL_DichVu(DV_tongSL);
-                self.TongSL_PhuTung(HH_tongSL);
             }
             else {
                 self.BH_HoaDonChiTiets(data);
@@ -2374,23 +2369,13 @@
             return x.MaQuyen.indexOf('SoQuy_ThemMoi') > -1;
         });
 
-        vmThanhPhanCombo.GetAllCombo_byIDHoaDon(item.ID);
         vmThanhToan.GetSoDuTheGiaTri(item.ID_DoiTuong);// used to get print
 
         switch (loaiHoaDon) {
             case 0:
             case 1:
             case 25:
-                // chietkhau NV --> use when SaoChep/MoPhieu
-                if (navigator.onLine) {
-                    ajaxHelper(BH_HoaDonUri + 'GetChietKhauNV_byIDHoaDon?idHoaDon=' + item.ID, 'GET').done(function (x) {
-                        if (x.res === true) {
-                            item.BH_NhanVienThucHiens = x.data;
-                        }
-                    });
-                }
-                VueChiPhi.CTHD_GetChiPhiDichVu([item.ID]);
-
+                // khong lam gi ca
                 break;
             case 3:
                 GetLichSuThanhToan_ofDatHang(item.ID);
@@ -2416,8 +2401,15 @@
                 break;
         }
         GetInfor_PhieuTiepNhan(item.ID_PhieuTiepNhan);
-        GetInforKhachHangFromDB_ByID(item.ID_DoiTuong, 1);
-        GetInforKhachHangFromDB_ByID(item.ID_BaoHiem, 3);
+    }
+
+    async function GetChiTietHD_fromDB(idHoaDon) {
+        const xx = await ajaxHelper(BH_HoaDonUri + 'SP_GetChiTietHD_byIDHoaDon_ChietKhauNV?idHoaDon=' + idHoaDon, 'GET').done()
+            .then(function (data) {
+                if (data != null) return data;
+                return [];
+            });
+        return xx;
     }
 
     function CheckQuyen_HoaDonMua() {
@@ -2430,13 +2422,7 @@
     }
 
     self.GetLichSuThanhToan = function (item) {
-        // neu hdDoiTra (tra > mua): khong get lichsu thanhtoan
-        if (item.PhaiThanhToan !== 0 || item.TongThanhToan !== 0) {
-            GetLichSuThanhToan(item.ID, item.ID_HoaDon);
-        }
-        else {
-            self.LichSuThanhToan([]);
-        }
+        GetLichSuThanhToan(item.ID, item.ID_HoaDon);
     }
     self.GetLichSuTraHang = function () {
         GetLichSuTraHang(item.ID);
@@ -2499,7 +2485,7 @@
                 })
                 self.HoaDonDoiTra(data);
 
-                vmThanhPhanCombo.GetAllCombo_byIDHoaDon(data.ID);
+                // vmThanhPhanCombo.GetAllCombo_byIDHoaDon(data.ID);
             }
             else {
                 self.HoaDonDoiTra([]);
@@ -2611,8 +2597,8 @@
                 });
 
                 if (arrCT.length > 0) {
-                    let objHD = await GetInforHDPrint(forHD, false, arrCT);
-                    let cthdPrint = GetCTHDPrint_Format(arrCT);
+                    let objHD = await GetInforHDPrint(forHD.ID, false, arrCT);
+                    let cthdPrint = await GetCTHDPrint_Format(forHD.ID);
                     objHD.BH_HoaDon_ChiTiet = cthdPrint;
                     objHD.CTHoaDonPrintMH = [];
                     arHD.push(objHD);
@@ -2628,6 +2614,7 @@
                 success: function (result) {
                     let data = result;
                     data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                    data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
                     data = data.concat(`<script> function formatNumber(number, decimalDot = 2) {
                                             if (number === undefined || number === null) {
                                                 return 0;
@@ -2837,7 +2824,7 @@
                             TenMauXe: '',
                             TenHangXe: '',
                             ChuXe: '',
-                            MaSoThue: '',
+                            MaSoThue: cus.MaSoThue,
                             TaiKhoanNganHang: '',
 
                             BH_SDT: '',
@@ -2845,6 +2832,7 @@
                             BH_DiaChi: '',
                             BH_TenLienHe: '',
                             BH_SDTLienHe: '',
+                            BH_MaSoThue: baohiem.MaSoThue,
 
                             ChiPhi_GhiChu: '',
                             PTChietKhauHH: 0,
@@ -3004,6 +2992,7 @@
                             success: function (result) {
                                 let data = result;
                                 data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                                data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
                                 data = data.concat("<script > var item1=", JSON.stringify(cthdPrint)
                                     , "; var item2= [] "
                                     , "; var item3=", JSON.stringify(objPrint)
@@ -3055,71 +3044,61 @@
         }
     }
 
+    async function GetMauIn_ByMaLoaiChunghTu(maChungTu) {
+        const data = await ajaxHelper('/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + maChungTu + '&idDonVi=' + id_donvi, 'GET').done()
+            .then(function (result) {
+                return result;
+            });
+        return data;
+    }
+
     self.InHoaDon = async function (item) {
-        var cthdFormat = GetCTHDPrint_Format(self.BH_HoaDonChiTiets());
+        var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
 
-        var itemHDFormat = await GetInforHDPrint(item, false);
+        var itemHDFormat = await GetInforHDPrint(item.ID, false);
         self.InforHDprintf(itemHDFormat);
 
-        GetMauIn_ByMaLoaiChunghTu(dathangTeamplate);
+        const dataMauIn = await GetMauIn_ByMaLoaiChunghTu(dathangTeamplate);
+        MauInHoaDon_CheckAndBind(dataMauIn);
     }
-    function GetMauIn_ByMaLoaiChunghTu(maChungTu) {
-        $.ajax({
-            url: '/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + maChungTu + '&idDonVi=' + id_donvi,
-            type: 'GET',
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            success: function (result) {
-                var data = result;
-                data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
-                data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
-                    + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
-                    + ";var item3=" + JSON.stringify(self.InforHDprintf())
-                    + ";var item4=" + JSON.stringify(self.HangMucSuaChuas())
-                    + ";var item5=" + JSON.stringify(self.VatDungKemTheos())
-                    + "; </script>");
-                data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>"); // MauInTeamplate.js: used to bind data in knockout
-                PrintExtraReport(data); // assign content HTML into frame
-            }
-        });
-    }
+
     self.InHoaDonDoiTra = async function (item) {
-        var cthdTraHang = GetCTHDPrint_Format(self.BH_HoaDonChiTiets());
+        var cthdTraHang = await GetCTHDPrint_Format(item.ID_HoaDon);
         self.CTHoaDonPrint(cthdTraHang);
-        var cthdDoiTra = GetCTHDPrint_Format(item.BH_HoaDon_ChiTiet);
+        var cthdDoiTra = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrintMH(cthdDoiTra);
-        var tongTienHDTra = 0;
-        var phiTraHang = 0;
-        // get tongTienTra, phiTraHang from HD Tra
+
+        // get infor from hdTra
+        let tongTienHDTra = 0, phiTraHang = 0, phaiTraKhach = 0;
         for (let i = 0; i < self.HoaDons().length; i++) {
             let itFor = self.HoaDons()[i];
             if (itFor.ID === item.ID_HoaDon) {
                 tongTienHDTra = itFor.TongThanhToan;
-                phiTraHang = self.HoaDons()[i].TongChiPhi;
+                phiTraHang = itFor.TongChiPhi;
                 break;
             }
         }
-        item.TongTienTraHang = tongTienHDTra;
-        item.PhiTraHang = phiTraHang;
+
         var phaiTT = formatNumberToFloat(item.PhaiThanhToan) - tongTienHDTra;
         if (phaiTT > 0) {
-            // khach phai tra them tien
-            item.TongCong = phaiTT;
-            item.PhaiTraKhach = 0;
+            phaiTraKhach = 0;
         }
         else {
-            item.TongCong = tongTienHDTra;
-            item.PhaiTraKhach = tongTienHDTra;
+            phaiTraKhach = Math.abs(phaiTT);
+            phaiTT = 0;
         }
-        var sumGiamGiaHang = cthdDoiTra.reduce(function (_this, val) {
-            return formatNumberToFloat(_this) + formatNumberToFloat(val.TienChietKhau);
-        }, 0);
-        var itemHDFormat = await GetInforHDPrint(item, true);
-        itemHDFormat.TongGiamGiaHang = formatNumber(sumGiamGiaHang);
 
+        let itemHDFormat = await GetInforHDPrint(item.ID, true);
+        itemHDFormat.TongTienTraHang = tongTienHDTra;
+        itemHDFormat.PhiTraHang = phiTraHang;
+        itemHDFormat.PhaiTraKhach = phaiTraKhach;
+        itemHDFormat.TongCong = phaiTT;
+        itemHDFormat.PhaiThanhToan = phaiTT;
         self.InforHDprintf(itemHDFormat);
-        GetMauIn_ByMaLoaiChunghTu('DTH');
+
+        const dataMauIn = await GetMauIn_ByMaLoaiChunghTu('DTH');
+        MauInHoaDon_CheckAndBind(dataMauIn);
     }
     self.InPhieuThu = function (item) {
         var temp = phieuThuTeamplate;
@@ -3158,32 +3137,29 @@
         return objHD;
     }
 
-    async function GetInforHDPrint(objHD, isDoiTraHang = false, arCT = null) {
-        var objPrint = $.extend({}, objHD);
-        var phaiThanhToan = formatNumberToFloat(objHD.PhaiThanhToan);
-        var daThanhToan = formatNumberToFloat(objHD.KhachDaTra);
+    async function GetInforHDPrint(id, isDoiTraHang = false, arCT = null) {
+        const hdDB = await GetInforHD_fromDB(id);
+        var objPrint = $.extend({}, hdDB);
+        var phaiThanhToan = formatNumberToFloat(hdDB.PhaiThanhToan);
+        var daThanhToan = formatNumberToFloat(hdDB.KhachDaTra);
         objPrint.MaHoaDonTraHang = objPrint.MaHoaDonGoc;
         objPrint.TenNhaCungCap = objPrint.TenDoiTuong;
         objPrint.DienThoaiKhachHang = objPrint.DienThoai;
         objPrint.TongTichDiem = formatNumber(objPrint.DiemSauGD);
         objPrint.NhanVienBanHang = objPrint.TenNhanVien;
-        objPrint.TongGiamGia = formatNumber(objHD.TongGiamGia + objHD.KhuyeMai_GiamGia);
+        objPrint.TongGiamGia = formatNumber(hdDB.TongGiamGia + hdDB.KhuyeMai_GiamGia);
         if (objPrint.NgaySinh_NgayTLap !== null) {
-            objPrint.NgaySinh_NgayTLap = moment(objPrint.NgaySinh_NgayTLap).format('DD/MM/YYYY');
+            objPrint.NgaySinh_NgayTLap = moment(hdDB.NgaySinh_NgayTLap).format('DD/MM/YYYY');
         }
-        var tongcong = formatNumberToFloat(objPrint.TongTienHang) - formatNumberToFloat(objPrint.TongGiamGia)
-            - formatNumberToFloat(objPrint.KhuyeMai_GiamGia)
-            + formatNumberToFloat(objPrint.TongTienThue);
-
-        objPrint.NgayLapHoaDon = moment(objHD.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
-        objPrint.Ngay = moment(objHD.NgayLapHoaDon).format('DD');
-        objPrint.Thang = moment(objHD.NgayLapHoaDon).format('MM');
-        objPrint.Nam = moment(objHD.NgayLapHoaDon).format('YYYY');
+        let tongcong = formatNumberToFloat(objPrint.TongThanhToan);
+        objPrint.NgayLapHoaDon = moment(hdDB.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
+        objPrint.Ngay = moment(hdDB.NgayLapHoaDon).format('DD');
+        objPrint.Thang = moment(hdDB.NgayLapHoaDon).format('MM');
+        objPrint.Nam = moment(hdDB.NgayLapHoaDon).format('YYYY');
 
         objPrint.TongTienHang = formatNumber3Digit(objPrint.TongTienHang);
         objPrint.PhaiThanhToan = formatNumber(phaiThanhToan);
         objPrint.DaThanhToan = formatNumber(daThanhToan);
-        objPrint.PhaiThanhToanBaoHiem = formatNumber(objHD.PhaiThanhToanBaoHiem);
         objPrint.DiemGiaoDich = formatNumber(objPrint.DiemGiaoDich);
         objPrint.TienThua = 0;
         objPrint.TongTienThue = formatNumber(objPrint.TongTienThue);
@@ -3192,9 +3168,6 @@
         if (isDoiTraHang) {
             // doi tra hang
             tongcong = tongcong - formatNumberToFloat(objPrint.TongTienTraHang);
-            // {TienTraKhach} --> PhaiTraKhach
-            // {KhachCanTra} --> PhaiThanhToan
-            // {DaThanhToan} --> DaThanhToan
             if (tongcong < 0) {
                 // mua < tra
                 objPrint.PhaiTraKhach = formatNumber(-tongcong);
@@ -3207,9 +3180,9 @@
                 objPrint.PhaiThanhToan = formatNumber(tongcong);
                 objPrint.TongCong = formatNumber(tongcong);
             }
-            objPrint.TongTienTraHang = formatNumber3Digit(objHD.TongTienTraHang);
-            objPrint.TongChiPhi = formatNumber(objHD.PhiTraHang);
-            objPrint.TongTienTra = objHD.TongTienTraHang - objHD.TongTienThue;
+            objPrint.TongTienTraHang = formatNumber3Digit(hdDB.TongTienTraHang);
+            objPrint.TongChiPhi = formatNumber(hdDB.PhiTraHang);
+            objPrint.TongTienTra = hdDB.TongTienTraHang - hdDB.TongTienThue;
             objPrint.TongTienHoaDonMua = objPrint.TongTienHang;
         }
         else {
@@ -3219,11 +3192,21 @@
             objPrint.TongCong = formatNumber(tongcong);
             objPrint.TongTienTra = formatNumber(tongcong);
         }
+
+        if (hdDB.LoaiHoaDon === 6) {
+            objPrint.TongTienTraHang = hdDB.TongTienHang;
+            objPrint.TongChiPhi = formatNumber(hdDB.TongChiPhi);
+            objPrint.TongChiPhiHangTra = formatNumber(hdDB.TongChiPhi);
+            objPrint.TongCong = tongcong;
+        }
         var notruoc = 0, nosau = 0;
-        if (self.ChiTietDoiTuong() !== null && self.ChiTietDoiTuong().length > 0
-            && self.ChiTietDoiTuong()[0].ID !== "00000000-0000-0000-0000-000000000000") {
-            nosau = self.ChiTietDoiTuong()[0].NoHienTai;
-            notruoc = nosau - conno;
+        let customer = {};
+        if (!commonStatisJs.CheckNull(hdDB.ID_DoiTuong)) {
+            customer = await GetInforCus(hdDB.ID_DoiTuong);
+            if (!$.isEmptyObject(customer)) {
+                notruoc = customer.NoHienTai - conno;
+            }
+
             notruoc = notruoc < 0 ? 0 : notruoc;
         }
         else {
@@ -3246,7 +3229,15 @@
 
         objPrint.TienMat = formatNumber3Digit(objPrint.TienMat);
         objPrint.TienATM = formatNumber3Digit(objPrint.TienATM);// in store: assign TienGui = TienATM
+        objPrint.TTBangTienCoc = formatNumber3Digit(hdDB.TienDatCoc);
         objPrint.TienKhachThieu = formatNumber(conno);
+        objPrint.PhaiThanhToan_TruCocBG = hdDB.PhaiThanhToan - hdDB.ThuDatHang;
+        objPrint.PhaiThanhToan_TruCoc = hdDB.PhaiThanhToan - hdDB.ThuDatHang - hdDB.TienDatCoc;
+        objPrint.TienKhachThieu_BangChu = DocSo(conno);
+        objPrint.KH_DaThanhToan_BangChu = DocSo(daThanhToan);
+        objPrint.KH_DaThanhToan_TruCocBG = daThanhToan - hdDB.ThuDatHang;
+        objPrint.KH_DaThanhToan_TruCocBG_BangChu = DocSo(daThanhToan - hdDB.ThuDatHang);
+
         // the gia tri
         objPrint.TongTaiKhoanThe = formatNumber(vmThanhToan.theGiaTriCus.TongNapThe);
         objPrint.TongSuDungThe = formatNumber(vmThanhToan.theGiaTriCus.SuDungThe);
@@ -3255,22 +3246,22 @@
         objPrint.TienTheGiaTri = formatNumber(objPrint.ThuTuThe);
 
         let pthuc = '';
-        if (formatNumberToFloat(objHD.TienMat) > 0) {
+        if (formatNumberToFloat(hdDB.TienMat) > 0) {
             pthuc += 'Tiền mặt, ';
         }
-        if (formatNumberToFloat(objHD.TienATM) > 0) {
+        if (formatNumberToFloat(hdDB.TienATM) > 0) {
             pthuc += 'POS, ';
         }
-        if (formatNumberToFloat(objHD.ChuyenKhoan) > 0) {
+        if (formatNumberToFloat(hdDB.ChuyenKhoan) > 0) {
             pthuc += 'Chuyển khoản, ';
         }
-        if (formatNumberToFloat(objHD.ThuTuThe) > 0) {
+        if (formatNumberToFloat(hdDB.ThuTuThe) > 0) {
             pthuc += 'Thẻ giá trị, ';
         }
-        if (formatNumberToFloat(objHD.TienDoiDiem) > 0) {
+        if (formatNumberToFloat(hdDB.TienDoiDiem) > 0) {
             pthuc += 'Điểm, ';
         }
-        if (formatNumberToFloat(objHD.TienDatCoc) > 0) {
+        if (formatNumberToFloat(hdDB.TienDatCoc) > 0) {
             pthuc += 'Tiền cọc, ';
         }
         objPrint.PhuongThucTT = Remove_LastComma(pthuc);
@@ -3296,7 +3287,7 @@
         objPrint.TongTienPhuTung_TruocVAT = formatNumber(self.TongTienPhuTung_TruocVAT());
         objPrint.TongTienPhuTung_TruocCK = formatNumber(self.TongTienPhuTung_TruocCK());
         objPrint.TongTienHangChuaCK = formatNumber(self.TongTienHangChuaCK());
-        objPrint.TongGiamGiaHD_HH = formatNumber(self.TongGiamGiaHang() + objHD.TongGiamGia + objHD.KhuyeMai_GiamGia);
+        objPrint.TongGiamGiaHD_HH = formatNumber(self.TongGiamGiaHang() + hdDB.TongGiamGia + hdDB.KhuyeMai_GiamGia);
         objPrint.TongTienHDSauGiamGia = formatNumber3Digit(formatNumberToFloat(objPrint.TongTienHang) - objPrint.TongGiamGiaKM_HD);
 
         objPrint.TongThue_PhuTung = self.TongThue_PhuTung();
@@ -3307,28 +3298,20 @@
         objPrint.TongSL_PhuTung = self.TongSL_PhuTung();
 
         // gara
-        objPrint.BH_TenLienHe = objHD.LienHeBaoHiem;
-        objPrint.BH_SDTLienHe = objHD.SoDienThoaiLienHeBaoHiem;
+        objPrint.BH_TenLienHe = hdDB.LienHeBaoHiem;
+        objPrint.BH_SDTLienHe = hdDB.SoDienThoaiLienHeBaoHiem;
 
-        objPrint.TongTienBHDuyet = formatNumber(objHD.TongTienBHDuyet);
-        objPrint.KhauTruTheoVu = formatNumber(objHD.KhauTruTheoVu);
-        objPrint.GiamTruBoiThuong = formatNumber(objHD.GiamTruBoiThuong);
-        objPrint.BHThanhToanTruocThue = formatNumber(objHD.BHThanhToanTruocThue);
-        objPrint.TongTienThueBaoHiem = formatNumber3Digit(objHD.TongTienThueBaoHiem, 0);
-        objPrint.BH_TienBangChu = DocSo(objHD.PhaiThanhToanBaoHiem);
-        objPrint.KH_TienBangChu = DocSo(objHD.PhaiThanhToan);
-        objPrint.BH_ConThieu = formatNumber3Digit(objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra);
+        objPrint.TongTienBHDuyet = formatNumber(hdDB.TongTienBHDuyet);
+        objPrint.KhauTruTheoVu = formatNumber(hdDB.KhauTruTheoVu);
+        objPrint.GiamTruBoiThuong = formatNumber(hdDB.GiamTruBoiThuong);
+        objPrint.BHThanhToanTruocThue = formatNumber(hdDB.BHThanhToanTruocThue);
+        objPrint.TongTienThueBaoHiem = formatNumber3Digit(hdDB.TongTienThueBaoHiem, 0);
+        objPrint.BH_TienBangChu = DocSo(hdDB.PhaiThanhToanBaoHiem);
+        objPrint.KH_TienBangChu = DocSo(objPrint.PhaiThanhToan_TruCoc);
+        objPrint.BH_ConThieu = formatNumber3Digit(hdDB.PhaiThanhToanBaoHiem - hdDB.BaoHiemDaTra);
+        objPrint.BH_ConThieu_BangChu = DocSo(hdDB.PhaiThanhToanBaoHiem - hdDB.BaoHiemDaTra);
 
-        let bh_notruoc = 0, bh_nosau = 0;
-        if (self.InforBaoHiem() !== null && self.InforBaoHiem().length > 0) {
-            bh_nosau = self.InforBaoHiem()[0].NoHienTai;
-            bh_notruoc = bh_nosau - objHD.PhaiThanhToanBaoHiem - objHD.BaoHiemDaTra;
-            bh_notruoc = bh_notruoc < 0 ? 0 : bh_notruoc;
-        }
-        objPrint.BH_NoTruoc = bh_notruoc;
-        objPrint.BH_NoSau = bh_nosau;
-
-        if (commonStatisJs.CheckNull(objHD.ID_PhieuTiepNhan)) {
+        if (commonStatisJs.CheckNull(hdDB.ID_PhieuTiepNhan)) {
             let cthd = [];
             if (arCT !== null) {
                 cthd = $.grep(arCT, function (x) {
@@ -3399,8 +3382,10 @@
                 objPrint.TenLoaiXe = tn.TenLoaiXe;
                 objPrint.TenMauXe = tn.TenMauXe;
                 objPrint.TenLienHe = tn.TenLienHe;
+                objPrint.ID_ChuXe = tn.ID_ChuXe;
             }
         }
+        console.log('objPrint ', objPrint.ID_DoiTuong, 'bhiem', objPrint.ID_BaoHiem, 'ptn', objPrint.ID_ChuXe)
         return objPrint;
     }
     function GetInforCongTy() {
@@ -3410,11 +3395,16 @@
             }
         });
     }
-    function GetCTHDPrint_Format(arr) {
+    async function GetCTHDPrint_Format(idHoaDon) {
+        const cthdDB = await GetChiTietHD_fromDB(idHoaDon);
+        const allCombo = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(idHoaDon);
+
+        Caculator_ChiTietHD(cthdDB);
+
         var arrCTHD = [];
         var thuocTinh = '';
-        for (let i = 0; i < arr.length; i++) {
-            let itFor = $.extend({}, arr[i]);
+        for (let i = 0; i < cthdDB.length; i++) {
+            let itFor = $.extend({}, cthdDB[i]);
             let price = formatNumberToFloat(itFor.DonGia);
             let sale = formatNumberToFloat(itFor.GiamGia);
             let giaban = formatNumberToFloat(itFor.GiaBan);
@@ -3442,6 +3432,7 @@
             // nvthuchien, tuvan co in %ck 
             let th_CoCK = '';
             let tv_CoCK = '';
+            itFor = AssignNVThucHien_toCTHD(itFor);
             if (itFor.BH_NhanVienThucHien != null) {
                 for (let j = 0; j < itFor.BH_NhanVienThucHien.length; j++) {
                     let for2 = itFor.BH_NhanVienThucHien[j];
@@ -3456,7 +3447,7 @@
             itFor.NVThucHienDV_CoCK = Remove_LastComma(th_CoCK);
             itFor.NVTuVanDV_CoCK = Remove_LastComma(tv_CoCK);
 
-            let lstCombo = $.grep(vmThanhPhanCombo.AllComBo_ofHD, function (x) {
+            let lstCombo = $.grep(allCombo, function (x) {
                 return x.ID_ParentCombo === itFor.ID_ParentCombo;
             });
             if (lstCombo.length > 0) {
@@ -3466,52 +3457,72 @@
             else {
                 itFor.ThanhPhanComBo = [];
             }
+
+            itFor.NgaySanXuat = '';
+            itFor.NgayHetHan = '';
+            if (!commonStatisJs.CheckNull(cthdDB[i].NgaySanXuat)) {
+                itFor.NgaySanXuat = moment(cthdDB[i].NgaySanXuat).format('DD/MM/YYYY');
+            }
+            if (!commonStatisJs.CheckNull(cthdDB[i].NgayHetHan)) {
+                itFor.NgayHetHan = moment(cthdDB[i].NgayHetHan).format('DD/MM/YYYY');
+            }
             arrCTHD.push(itFor);
         }
+
+        arrCTHD = arrCTHD.sort(function (a, b) {
+            let x = a.SoThuTu,
+                y = b.SoThuTu;
+            return x < y ? -1 : x > y ? 1 : 0;
+        });
         return arrCTHD;
     }
 
-
-    self.XuLiDonHang = function (item) {
+    self.XuLiDonHang = async function (item) {
         localStorage.setItem('createHDfrom', 2);
-        var phaiTT = item.PhaiThanhToan - item.KhachDaTra;
+
+        const hdDB = await GetInforHD_fromDB(item.ID);
+        if ($.isEmptyObject(hdDB)) return;
+
+        var phaiTT = hdDB.PhaiThanhToan - hdDB.KhachDaTra;
         var dvtGiam = 'VND';
         if (item.TongChietKhau > 0) {
             dvtGiam = '%';
         }
-        let objTax = GetPTChietKhauHang_HeaderBH(item);
+        let objTax = GetPTChietKhauHang_HeaderBH();
+        const ngayLapHD = self.NganhKinhDoanh() === 2 ? moment(hdDB.NgayLapHoaDon).format('YYYY-MM-DD HH:mm') : moment(hdDB.NgayLapHoaDon).format('YYYY-MM-DD HH:mm:ss');
         var itemNew = {
             ID: item.ID,
             ID_HoaDon: null,
-            ID_DonVi: item.ID_DonVi,
-            MaHoaDon: item.MaHoaDon,
-            MaHoaDonDB: item.MaHoaDon,
+            ID_DonVi: hdDB.ID_DonVi,
+            MaHoaDon: hdDB.MaHoaDon,
+            MaHoaDonDB: hdDB.MaHoaDon,
             LoaiHoaDon: loaiHoaDon,
-            ID_DoiTuong: item.ID_DoiTuong,
+            ID_DoiTuong: hdDB.ID_DoiTuong,
             NguoiTao: userLogin,
-            ID_BangGia: item.ID_BangGia,
-            ID_NhanVien: item.ID_NhanVien,
-            NgayLapHoaDon: moment(item.NgayLapHoaDon).format('YYYY-MM-DD HH:mm:ss'),
-            TongTienHang: item.TongTienHang,
-            PhaiThanhToan: item.PhaiThanhToan,
-            TongGiamGia: item.TongGiamGia,
-            KhachDaTra: item.KhachDaTra,
-            PTThueHoaDon: item.PTThueHoaDon,
-            TongTienThue: item.TongTienThue,
+            ID_BangGia: hdDB.ID_BangGia,
+            BangGiaWasChanged: false,
+            ID_NhanVien: hdDB.ID_NhanVien,
+            NgayLapHoaDon: ngayLapHD,
+            TongTienHang: hdDB.TongTienHang,
+            PhaiThanhToan: hdDB.PhaiThanhToan,
+            TongGiamGia: hdDB.TongGiamGia,
+            KhachDaTra: hdDB.KhachDaTra,
+            PTThueHoaDon: hdDB.PTThueHoaDon,
+            TongTienThue: hdDB.TongTienThue,
             PTThueBaoHiem: 0,
             TongTienThueBaoHiem: 0,
             ChoThanhToan: false,
-            DienGiai: item.DienGiai,
+            DienGiai: hdDB.DienGiai,
             TienGui: 0,
             TienThua: 0,
             Status: 1,
             StatusOffline: false,
             DVTinhGiam: dvtGiam,
-            TongChietKhau: item.TongChietKhau, // PTGiam
+            TongChietKhau: hdDB.TongChietKhau, // PTGiam
             // gan DaThanhToan : Tien con lai phai TT --> to do bind in BanLe.js
             DaThanhToan: self.IsGara() ? 0 : phaiTT,
             // tien khach con phai TT : tong PhaiTT - KhachDaTra
-            PhaiThanhToan: self.IsGara() ? item.PhaiThanhToan : phaiTT,
+            PhaiThanhToan: self.IsGara() ? hdDB.PhaiThanhToan : phaiTT,
             TienMat: self.IsGara() ? 0 : phaiTT,
             TienATM: 0,
             PhaiThanhToanBaoHiem: 0,
@@ -3520,13 +3531,13 @@
             PhaiThanhToanDB: 0,
             TongGiaGocHangTra: 0,
             TongChiPhiHangTra: 0,
-            TongChiPhi: item.TongChiPhi,
+            TongChiPhi: hdDB.TongChiPhi,
             HoanTraThuKhac: 0,
             TongTienTra: 0,
             PhaiTraKhach: 0,
             DaTraKhach: 0,
             GiaoHang: false,
-            TongGiamGiaDB: item.TongGiamGia,
+            TongGiamGiaDB: hdDB.TongGiamGia,
             DiemGiaoDichDB: 0,
             PTGiamDB: 0,
             TongTienMua: 0,
@@ -3535,13 +3546,13 @@
             // DatHang
             TrangThaiHD: 6, // HD DatHang dang xuly
             IsActive: '',
-            YeuCau: item.YeuCau,
+            YeuCau: hdDB.YeuCau,
             IsChose: true, // tức là đang thao tác với hóa đơn này
             HoanTraTamUng: 0,
             IsKhuyenMaiHD: false,
             IsOpeningKMaiHD: false,
             KhuyeMai_GiamGia: 0,
-            TongGiamGiaKM_HD: item.TongGiamGia + item.KhuyeMai_GiamGia, // to do bind GiamGia at BanHang
+            TongGiamGiaKM_HD: hdDB.TongGiamGia + hdDB.KhuyeMai_GiamGia, // to do bind GiamGia at BanHang
             // Tich Diem
             TTBangDiem: 0,
             DiemGiaoDich: 0,
@@ -3561,18 +3572,18 @@
             TienTheGiaTri: 0,
             ThoiGianThucHien: 0,
 
-            MaPhieuTiepNhan: item.MaPhieuTiepNhan,
-            BienSo: item.BienSo,
-            ID_PhieuTiepNhan: item.ID_PhieuTiepNhan,
-            ID_BaoHiem: item.ID_BaoHiem,
-            LienHeBaoHiem: item.LienHeBaoHiem,
-            SoDienThoaiLienHeBaoHiem: item.SoDienThoaiLienHeBaoHiem,
+            MaPhieuTiepNhan: hdDB.MaPhieuTiepNhan,
+            BienSo: hdDB.BienSo,
+            ID_PhieuTiepNhan: hdDB.ID_PhieuTiepNhan,
+            ID_BaoHiem: hdDB.ID_BaoHiem,
+            LienHeBaoHiem: hdDB.LienHeBaoHiem,
+            SoDienThoaiLienHeBaoHiem: hdDB.SoDienThoaiLienHeBaoHiem,
             PhaiThanhToanBaoHiem: 0,
-            ChiPhi_GhiChu: item.ChiPhi_GhiChu,
-            TongThanhToan: item.TongThanhToan,
-            TenBaoHiem: item.TenBaoHiem,
+            ChiPhi_GhiChu: hdDB.ChiPhi_GhiChu,
+            TongThanhToan: hdDB.TongThanhToan,
+            TenBaoHiem: hdDB.TenBaoHiem,
             XuatKhoAll: false,
-            DuyetBaoGia: !item.ChoThanhToan,
+            DuyetBaoGia: !hdDB.ChoThanhToan,
 
             PTChietKhauHH: objTax.PTChietKhauHH,
             TongGiamGiaHang: self.TongGiamGiaHang(),
@@ -3586,12 +3597,13 @@
             KhauTruTheoVu: 0,
             PTGiamTruBoiThuong: 0,
             BHThanhToanTruocThue: 0,
-            TongThueKhachHang: item.TongTienThue,
+            TongThueKhachHang: hdDB.TongTienThue,
             CongThucBaoHiem: 13,
             GiamTruThanhToanBaoHiem: 0,
             HeaderBH_GiaTriPtram: 0,
             HeaderBH_Type: 1,
         }
+
         // save cache lcXuLiDonHang to arrayJson --> xu li nhieu DH cung 1 luc
         var lcXuLiDonHang = localStorage.getItem('lcXuLiDonHang');
         if (lcXuLiDonHang === null) {
@@ -3601,21 +3613,13 @@
             lcXuLiDonHang = JSON.parse(lcXuLiDonHang);
             // remove and add new
             lcXuLiDonHang = $.grep(lcXuLiDonHang, function (x) {
-                return x.MaHoaDon !== item.MaHoaDon;
+                return x.MaHoaDon !== hdDB.MaHoaDon;
             });
         }
-        lcXuLiDonHang.push(itemNew);
+
+        const allComboHD = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(item.ID);
+
         ajaxHelper(BH_HoaDonUri + 'GetCTHoaDon_afterDatHang?idHoaDon=' + item.ID, 'GET').done(function (data) {
-            var lcCTDatHang = localStorage.getItem('lcCTDatHang');
-            if (lcCTDatHang === null) {
-                lcCTDatHang = [];
-            }
-            else {
-                lcCTDatHang = JSON.parse(lcCTDatHang);
-                lcCTDatHang = $.grep(lcCTDatHang, function (x) {
-                    return x.MaHoaDon !== item.MaHoaDon;
-                })
-            }
             if (data !== null) {
                 // order by SoThuTu ASC --> group Hang Hoa by LoHang
                 var arrCTsort = data.sort(function (a, b) {
@@ -3623,11 +3627,33 @@
                         y = b.SoThuTu;
                     return x < y ? -1 : x > y ? 1 : 0;
                 });
+
+                var lcCTDatHang = localStorage.getItem('lcCTDatHang');
+                if (lcCTDatHang === null) {
+                    lcCTDatHang = [];
+                }
+                else {
+                    lcCTDatHang = JSON.parse(lcCTDatHang);
+                    lcCTDatHang = $.grep(lcCTDatHang, function (x) {
+                        return x.MaHoaDon !== hdDB.MaHoaDon;
+                    })
+                }
+
+                var ctConLai = $.grep(arrCTsort, function (x) {
+                    return x.SoLuongConLai > 0;
+                });
+                if (ctConLai.length === 0) {
+                    commonStatisJs.ShowMessageDanger('Đã xử lý hết báo giá');
+                    return;
+                }
+
+                lcXuLiDonHang.push(itemNew);// chi luu cache neu soluongConLai > 0
+
                 var arrIDQuiDoi1 = [];
                 var cthdLoHang = [];
                 for (let i = 0; i < arrCTsort.length; i++) {
                     let ctNew = $.extend({}, arrCTsort[i]);
-                    ctNew = SetDefaultPropertiesCTHD(arrCTsort[i], item.MaHoaDon, item.LoaiHoaDon);
+                    ctNew = SetDefaultPropertiesCTHD(arrCTsort[i], hdDB.MaHoaDon, hdDB.LoaiHoaDon);
                     ctNew.SoLuongDaMua = 0;
                     ctNew.TienChietKhau = ctNew.GiamGia;
                     ctNew.DVTinhGiam = '%';
@@ -3665,7 +3691,7 @@
                     ctNew.NgayHetHan = dateLot.NgayHetHan;
 
                     // get tpcombo
-                    let combo = $.grep(vmThanhPhanCombo.AllComBo_ofHD, function (x) {
+                    let combo = $.grep(allComboHD, function (x) {
                         return x.ID_ParentCombo === ctNew.ID_ParentCombo;
                     });
                     if (combo.length > 0) {
@@ -3725,9 +3751,11 @@
 
                 localStorage.setItem('lcXuLiDonHang', JSON.stringify(lcXuLiDonHang));
                 localStorage.setItem('lcCTDatHang', JSON.stringify(lcCTDatHang));
+
+                CheckExistCacheHD_andRemove(item.ID);
                 SetCache_ifGara('TN_xulyBG');
                 if (self.IsGara()) {
-                    localStorage.setItem('maHDCache', item.MaHoaDon);// used to get at gara.js (phieu dang xuly)
+                    localStorage.setItem('maHDCache', hdDB.MaHoaDon);// used to get at gara.js (phieu dang xuly)
                 }
                 self.gotoGara();
             }
@@ -3769,53 +3797,56 @@
         })
     }
 
-    self.CopyDatHang = function (item) {
+    self.CopyDatHang = async function (item) {
         localStorage.setItem('createHDfrom', 1);
         SetCache_ifGara('TN_copyDH');
 
-        var phaiTT = item.PhaiThanhToan;
+        const hdDB = await GetInforHD_fromDB(item.ID);
+        if ($.isEmptyObject(hdDB)) return;
+
+        var phaiTT = hdDB.PhaiThanhToan;
         var dvtGiam = 'VND';
         if (item.TongChietKhau > 0) {
             dvtGiam = '%';
         }
 
-        var obj = GetPTChietKhauHang_HeaderBH(item);
+        var obj = GetPTChietKhauHang_HeaderBH();
         var itemNew = {
             ID: const_GuidEmpty,
             ID_HoaDon: null,
-            MaHoaDon: item.MaHoaDon,
-            MaHoaDonDB: 'Copy' + item.MaHoaDon,
+            MaHoaDon: hdDB.MaHoaDon,
+            MaHoaDonDB: 'Copy' + hdDB.MaHoaDon,
             LoaiHoaDon: loaiHoaDon,
-            ID_DonVi: item.ID_DonVi,
-            ID_DoiTuong: item.ID_DoiTuong,
-            ID_BangGia: item.ID_BangGia,
-            ID_NhanVien: item.ID_NhanVien,
+            ID_DonVi: hdDB.ID_DonVi,
+            ID_DoiTuong: hdDB.ID_DoiTuong,
+            ID_BangGia: hdDB.ID_BangGia,
+            ID_NhanVien: hdDB.ID_NhanVien,
             NguoiTao: userLogin,
             NgayLapHoaDon: null, // assign = null: auto update time
 
-            TongTienHang: item.TongTienHang,
-            TongGiamGia: item.TongGiamGia,
+            TongTienHang: hdDB.TongTienHang,
+            TongGiamGia: hdDB.TongGiamGia,
             KhachDaTra: 0,
-            PTThueHoaDon: item.PTThueHoaDon,
-            TongTienThue: item.TongTienThue,
+            PTThueHoaDon: hdDB.PTThueHoaDon,
+            TongTienThue: hdDB.TongTienThue,
             PTThueBaoHiem: 0,
             TongTienThueBaoHiem: 0,
             ChoThanhToan: false,
-            DienGiai: item.DienGiai,
+            DienGiai: hdDB.DienGiai,
             TienGui: 0,
             TienATM: 0,
             TienThua: 0,
             Status: 1,
             StatusOffline: false,
             DVTinhGiam: dvtGiam,
-            TongChietKhau: item.TongChietKhau, // PTGiam
+            TongChietKhau: hdDB.TongChietKhau, // PTGiam
             DaThanhToan: 0,
-            PhaiThanhToan: self.IsGara() ? item.PhaiThanhToan : phaiTT,
+            PhaiThanhToan: self.IsGara() ? hdDB.PhaiThanhToan : phaiTT,
             TienMat: self.IsGara() ? 0 : phaiTT,
             // Tra Hang
             TongGiaGocHangTra: 0,
             TongChiPhiHangTra: 0,
-            TongChiPhi: item.TongChiPhi,
+            TongChiPhi: hdDB.TongChiPhi,
             HoanTraThuKhac: 0,
             TongTienTra: 0,
             PhaiTraKhach: 0,
@@ -3837,7 +3868,7 @@
             IsKhuyenMaiHD: false,
             IsOpeningKMaiHD: false,
             KhuyeMai_GiamGia: 0,
-            TongGiamGiaKM_HD: item.TongGiamGia + item.KhuyeMai_GiamGia,
+            TongGiamGiaKM_HD: hdDB.TongGiamGia + hdDB.KhuyeMai_GiamGia,
             // TichDiem
             TTBangDiem: 0,
             DiemGiaoDich: 0,
@@ -3856,16 +3887,16 @@
             TienTheGiaTri: 0,
             ThoiGianThucHien: 0,
 
-            MaPhieuTiepNhan: item.MaPhieuTiepNhan,
-            BienSo: item.BienSo,
-            ID_PhieuTiepNhan: item.ID_PhieuTiepNhan,
-            ID_BaoHiem: item.ID_BaoHiem,
-            LienHeBaoHiem: item.LienHeBaoHiem,
-            SoDienThoaiLienHeBaoHiem: item.SoDienThoaiLienHeBaoHiem,
+            MaPhieuTiepNhan: hdDB.MaPhieuTiepNhan,
+            BienSo: hdDB.BienSo,
+            ID_PhieuTiepNhan: hdDB.ID_PhieuTiepNhan,
+            ID_BaoHiem: hdDB.ID_BaoHiem,
+            LienHeBaoHiem: hdDB.LienHeBaoHiem,
+            SoDienThoaiLienHeBaoHiem: hdDB.SoDienThoaiLienHeBaoHiem,
             PhaiThanhToanBaoHiem: 0,
-            ChiPhi_GhiChu: item.ChiPhi_GhiChu,
-            TongThanhToan: item.TongThanhToan,
-            TenBaoHiem: item.TenBaoHiem,
+            ChiPhi_GhiChu: hdDB.ChiPhi_GhiChu,
+            TongThanhToan: hdDB.TongThanhToan,
+            TenBaoHiem: hdDB.TenBaoHiem,
             XuatKhoAll: false,
             DuyetBaoGia: false,
 
@@ -3882,15 +3913,19 @@
             KhauTruTheoVu: 0,
             PTGiamTruBoiThuong: 0,
             BHThanhToanTruocThue: 0,
-            TongThueKhachHang: item.TongTienThue,
+            TongThueKhachHang: hdDB.TongTienThue,
             CongThucBaoHiem: 0,
             GiamTruThanhToanBaoHiem: 0,
             HeaderBH_GiaTriPtram: 0,
             HeaderBH_Type: 1,
         }
         localStorage.setItem('lcCopyDatHang', JSON.stringify(itemNew));
+
+        const cthdDB = await GetChiTietHD_fromDB(item.ID);
+        const allComboHD = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(item.ID);
+
         // order by SoThuTu ASC --> group Hang Hoa by LoHang
-        var arrCTsort = self.BH_HoaDonChiTiets().sort(function (a, b) {
+        var arrCTsort = cthdDB.sort(function (a, b) {
             var x = a.SoThuTu,
                 y = b.SoThuTu;
             return x < y ? -1 : x > y ? 1 : 0;
@@ -3899,7 +3934,7 @@
         var cthdLoHang = [];
         for (let i = 0; i < arrCTsort.length; i++) {
             let ctNew = $.extend({}, arrCTsort[i]);
-            ctNew = SetDefaultPropertiesCTHD(ctNew, item.MaHoaDon, 3);
+            ctNew = SetDefaultPropertiesCTHD(ctNew, hdDB.MaHoaDon, 3);
             ctNew.SoLuongDaMua = 0;
             ctNew.TienChietKhau = ctNew.GiamGia;
             ctNew.DVTinhGiam = '%';
@@ -3935,7 +3970,7 @@
             ctNew.NgayHetHan = dateLot.NgayHetHan;
 
             // get tpcombo
-            let combo = $.grep(vmThanhPhanCombo.AllComBo_ofHD, function (x) {
+            let combo = $.grep(allComboHD, function (x) {
                 return x.ID_ParentCombo === ctNew.ID_ParentCombo;
             });
             if (combo.length > 0) {
@@ -4003,7 +4038,6 @@
         itemCT.TenKhuyenMai = '';
         itemCT.HangHoa_KM = [];
         itemCT.DiemKhuyenMai = 0;
-        itemCT.ID_ChiTietDinhLuong = null;
         itemCT.UsingService = false;
         itemCT.ListDonViTinh = [];
         itemCT.ShowEditQuyCach = false;
@@ -4033,7 +4067,7 @@
             localStorage.setItem('createHDfrom', val);
         }
     }
-    self.SaoChepTraHang = function (item) {
+    self.SaoChepTraHang = async function (item) {
         if (item.TongTienHDDoiTra > 0) {
             ShowMessage_Danger('Hóa đơn có hàng đổi trả, không thể sao chép');
             return;
@@ -4067,6 +4101,7 @@
         hdNew.IsActive = '';
         hdNew.XuatKhoAll = false;
         hdNew.DuyetBaoGia = false;
+        hdNew.BangGiaWasChanged = false;
 
         hdNew.MaPhieuTiepNhan = '';
         hdNew.BienSo = '';
@@ -4190,7 +4225,7 @@
             hdNew.PTThueDB = item.PTThueHoaDon;
             hdNew.TongThueDB = item.TongTienThue;
 
-
+            const allComboHD = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(item.ID);
             ajaxHelper(BH_HoaDonUri + 'GetCTHoaDon_afterTraHang?idHoaDon=' + hdNew.ID_HoaDon, 'GET').done(function (data) {
                 if (data === null || (data !== null && data.length === 0)) {
                     ShowMessage_Danger('Không còn mặt hàng để hoàn trả cho hóa đơn');
@@ -4275,7 +4310,7 @@
                         ctNew.NgayHetHan = dateLot.NgayHetHan;
 
                         // get tpcombo
-                        let combo = $.grep(vmThanhPhanCombo.AllComBo_ofHD, function (x) {
+                        let combo = $.grep(allComboHD, function (x) {
                             return x.ID_ParentCombo === ctNew.ID_ParentCombo;
                         });
                         if (combo.length > 0) {
@@ -4432,24 +4467,22 @@
     const txtTienGui = '#txtTienGui';
     const txtTienTheGiaTri = '#txtTienTheGiaTri_PhieuThu';
     function GetDM_TaiKhoanNganHang() {
-        if (navigator.onLine) {
-            ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + id_donvi, 'GET').done(function (x) {
-                if (x.res === true) {
-                    let data = x.data;
-                    self.AllAccountBank(data);
-                    vmThanhToan.listData.AccountBanks = data;
+        ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + id_donvi, 'GET').done(function (x) {
+            if (x.res === true) {
+                let data = x.data;
+                self.AllAccountBank(data);
+                vmThanhToan.listData.AccountBanks = data;
 
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].TaiKhoanPOS === true) {
-                            self.ListAccountPOS.push(data[i]);
-                        }
-                        else {
-                            self.ListAccountChuyenKhoan.push(data[i]);
-                        }
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].TaiKhoanPOS === true) {
+                        self.ListAccountPOS.push(data[i]);
+                    }
+                    else {
+                        self.ListAccountChuyenKhoan.push(data[i]);
                     }
                 }
-            })
-        }
+            }
+        })
     }
     function GetAllQuy_KhoanThuChi() {
         ajaxHelper(Quy_HoaDonUri + 'GetQuy_KhoanThuChi', 'GET').done(function (x) {
@@ -4558,36 +4591,76 @@
             }
         });
     }
+
+    async function MauInHoaDon_CheckAndBind(dataMauIn) {
+        if (dataMauIn.includes('ChuXe_MST')) {
+            let chuxe_MST = '';
+            if (!commonStatisJs.CheckNull(self.InforHDprintf().ID_ChuXe)) {
+                const chuxe = await GetInforCus(self.InforHDprintf().ID_ChuXe);
+                if (!$.isEmptyObject(chuxe)) {
+                    chuxe_MST = chuxe.MaSoThue;
+                }
+            }
+            self.InforHDprintf().ChuXe_MST = chuxe_MST;
+        }
+
+        if (dataMauIn.includes('BH_NoTruoc') || dataMauIn.includes('BH_NoSau') || dataMauIn.includes('BH_MaSoThue')) {
+            let baohiem = {}, bh_notruoc = 0, bh_nosau = 0, bh_masothue = '';
+            if (!commonStatisJs.CheckNull(self.InforHDprintf().ID_BaoHiem)) {
+                baohiem = await GetInforCus(self.InforHDprintf().ID_BaoHiem);
+            }
+            if (!$.isEmptyObject(baohiem)) {
+                bh_masothue = baohiem.MaSoThue;
+                bh_nosau = baohiem.NoHienTai;
+                bh_notruoc = bh_nosau - self.InforHDprintf().PhaiThanhToanBaoHiem - self.InforHDprintf().BaoHiemDaTra;
+                bh_notruoc = bh_notruoc < 0 ? 0 : bh_notruoc;
+            }
+            self.InforHDprintf().BH_NoTruoc = bh_notruoc;
+            self.InforHDprintf().BH_NoSau = bh_nosau;
+            self.InforHDprintf().BH_MaSoThue = bh_masothue;
+        }
+
+        dataMauIn = dataMauIn.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+        dataMauIn = dataMauIn.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
+        dataMauIn = dataMauIn.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
+            + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
+            + "; var item3=" + JSON.stringify(self.InforHDprintf())
+            + "; var item4=" + JSON.stringify(self.HangMucSuaChuas())
+            + "; var item5=" + JSON.stringify(self.VatDungKemTheos())
+            + "; </script>");
+        dataMauIn = dataMauIn.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
+        dataMauIn = dataMauIn.replace('{Email}', "<span data-bind=\"text: InforHDprintf().Email\"></span>");
+        dataMauIn = dataMauIn.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
+        dataMauIn = dataMauIn.replace('{BH_ConThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().BH_ConThieu_BangChu\"></span>");
+        dataMauIn = dataMauIn.replace('{KH_DaThanhToan_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_BangChu\"></span>");
+        dataMauIn = dataMauIn.replace('{KH_DaThanhToan_TruCocBG_BangChu}', "<span data-bind=\"text: InforHDprintf().KH_DaThanhToan_TruCocBG_BangChu\"></span>");
+        dataMauIn = dataMauIn.replace('{KH_DaThanhToan_TruCocBG}', "<span data-bind=\"text: formatNumber(InforHDprintf().KH_DaThanhToan_TruCocBG,0)\"></span>");
+        dataMauIn = dataMauIn.replace('{ChuXe_MST}', "<span data-bind=\"text: InforHDprintf().ChuXe_MST\"></span>");
+        PrintExtraReport(dataMauIn);
+    }
+
+    async function GetMauIn_byID(id) {
+        const data = await ajaxHelper('/api/DanhMuc/ThietLapApi/GetContentFIlePrint?idMauIn=' + id, 'GET').done()
+            .then(function (result) {
+                return result;
+            });
+        return data;
+    }
     self.PrinDatHang = async function (item, key) {
-        var cthdFormat = GetCTHDPrint_Format(self.BH_HoaDonChiTiets());
+        var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
 
-        var itemHDFormat = await GetInforHDPrint(item, false);
+        var itemHDFormat = await GetInforHDPrint(item.ID, false);
         self.InforHDprintf(itemHDFormat);
-        $.ajax({
-            url: '/api/DanhMuc/ThietLapApi/GetContentFIlePrint?idMauIn=' + key,
-            type: 'GET',
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            success: function (result) {
-                var data = result;
-                data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
-                data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
-                    + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
-                    + "; var item3=" + JSON.stringify(itemHDFormat)
-                    + "; var item4=" + JSON.stringify(self.HangMucSuaChuas())
-                    + "; var item5=" + JSON.stringify(self.VatDungKemTheos())
-                    + "; </script>");
-                data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
-                PrintExtraReport(data);
-            }
-        });
+
+        const dataMauIn = await GetMauIn_byID(key);
+        MauInHoaDon_CheckAndBind(dataMauIn);
     }
     self.Print_ListTempDoiTra = async function (item, key) {
-        var cthdTraHang = GetCTHDPrint_Format(self.BH_HoaDonChiTiets());
+        var cthdTraHang = await GetCTHDPrint_Format(item.ID_HoaDon);
         self.CTHoaDonPrint(cthdTraHang);
-        var cthdDoiTra = GetCTHDPrint_Format(item.BH_HoaDon_ChiTiet);
 
+        var cthdDoiTra = await GetCTHDPrint_Format(item.ID);
         for (let i = 0; i < cthdDoiTra.length; i++) {
             let nvth = '';
             let nvtv = '';
@@ -4611,9 +4684,8 @@
         }
 
         self.CTHoaDonPrintMH(cthdDoiTra);
-        var tongTienHDTra = 0;
-        var phiTraHang = 0;
-        // get tongTienTra, phiTraHang from HD Tra
+
+        let tongTienHDTra = 0, phiTraHang = 0, phaiTraKhach = 0;
         for (let i = 0; i < self.HoaDons().length; i++) {
             let itFor = self.HoaDons()[i];
             if (itFor.ID === item.ID_HoaDon) {
@@ -4622,33 +4694,31 @@
                 break;
             }
         }
-        item.TongTienTraHang = tongTienHDTra;
-        item.PhiTraHang = phiTraHang;
-        item.TongTienTra = tongTienHDTra - phiTraHang;
         var phaiTT = formatNumberToFloat(item.PhaiThanhToan) - tongTienHDTra;
         if (phaiTT > 0) {
-            // khach phai tra them tien
-            item.TongCong = phaiTT;
-            item.PhaiTraKhach = 0;
+            phaiTraKhach = 0;
         }
         else {
-            item.TongCong = tongTienHDTra;
-            item.PhaiTraKhach = tongTienHDTra;
+            phaiTraKhach = Math.abs(phaiTT);
+            phaiTT = 0;
         }
-        var sumGiamGiaHang = item.BH_HoaDon_ChiTiet.reduce(function (_this, val) {
-            return formatNumberToFloat(_this) + formatNumberToFloat(val.TienChietKhau);
-        }, 0);
-        var itemHDFormat = await GetInforHDPrint(item, true);
-        item.TongGiamGiaHang = formatNumber(sumGiamGiaHang);
+        var itemHDFormat = await GetInforHDPrint(item.ID, true);
+        itemHDFormat.TongTienTraHang = tongTienHDTra;
+        itemHDFormat.PhiTraHang = phiTraHang;
+        itemHDFormat.PhaiTraKhach = phaiTraKhach;
+        itemHDFormat.TongCong = phaiTT;// ~ khach phai tra
+        itemHDFormat.PhaiThanhToan = phaiTT;// ~ khach phai tra
         self.InforHDprintf(itemHDFormat);
+
         $.ajax({
             url: '/api/DanhMuc/ThietLapApi/GetContentFIlePrint?idMauIn=' + key,
             type: 'GET',
             dataType: 'json',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (result) {
-                var data = result;
+                let data = result;
                 data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
                 data = data.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item4=[], item5=[]; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
                     + ";var item3=" + JSON.stringify(self.InforHDprintf()) + "; </script>");
@@ -4664,18 +4734,16 @@
     // auto update NhomKhach(TraHang --> nâng nhóm , HuyHD --> hạ nhóm)
     self.DM_NhomDoiTuong_ChiTiets = ko.observableArray();
     function GetDM_NhomDoiTuong_ChiTiets() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/DM_NhomDoiTuongAPI/' + 'GetDM_NhomDoiTuong_ChiTiets?idDonVi=' + id_donvi, 'GET').done(function (x) {
-                let data = x.data;
-                if (data.length > 0) {
-                    self.DM_NhomDoiTuong_ChiTiets(data);
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/DM_NhomDoiTuongAPI/' + 'GetDM_NhomDoiTuong_ChiTiets?idDonVi=' + id_donvi, 'GET').done(function (x) {
+            let data = x.data;
+            if (data.length > 0) {
+                self.DM_NhomDoiTuong_ChiTiets(data);
+            }
+        });
     }
 
     async function GetInforCus(id) {
-        if (!commonStatisJs.CheckNull(id)) {
+        if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
             var date = moment(new Date()).format('YYYY-MM-DD HH:mm');
             var xx = await ajaxHelper(DMDoiTuongUri + "GetInforKhachHang_ByID?idDoiTuong=" + id + '&idChiNhanh=' + VHeader.IdDonVi
                 + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function () {
@@ -4689,34 +4757,6 @@
             return xx;
         }
         return {};
-    }
-
-    // used to get NoHienTai when pritn hoadon
-    function GetInforKhachHangFromDB_ByID(id, loaiDoiTuong = 1) {
-        var date = moment(new Date()).format('YYYY-MM-DD HH:mm');
-        if (navigator.onLine && id !== null && id !== const_GuidEmpty) {
-            ajaxHelper(DMDoiTuongUri + "GetInforKhachHang_ByID?idDoiTuong=" + id + '&idChiNhanh=' + id_donvi
-                + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function (data) {
-                    if (data !== null) {
-                        switch (loaiDoiTuong) {
-                            case 1:
-                                self.ChiTietDoiTuong(data);
-                                break;
-                            case 3:
-                                self.InforBaoHiem(data);
-                                break;
-                        }
-                    }
-                    else {
-                        self.InforBaoHiem([]);
-                        self.ChiTietDoiTuong([]);
-                    }
-                });
-        }
-        else {
-            self.InforBaoHiem([]);
-            self.ChiTietDoiTuong([]);
-        }
     }
 
     function Insert_ManyNhom(lstNhom) {
@@ -4894,24 +4934,20 @@
     }
     self.DM_MauIn = ko.observableArray();
     function GetAllMauIn_byChiNhanh() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/ThietLapApi/GetAllMauIn_ByChiNhanh?idChiNhanh=' + id_donvi, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.DM_MauIn(data);
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/ThietLapApi/GetAllMauIn_ByChiNhanh?idChiNhanh=' + id_donvi, 'GET').done(function (data) {
+            if (data !== null) {
+                self.DM_MauIn(data);
+            }
+        });
     }
     self.DMKhuyenMai = ko.observableArray();
     function GetKM_CTKhuyenMai() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/BH_KhuyenMaiAPI/' + 'GetKM_CTKhuyenMai?idDonVi=' + id_donvi, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.DMKhuyenMai(data);
-                    GetList_KMApDung();
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/BH_KhuyenMaiAPI/' + 'GetKM_CTKhuyenMai?idDonVi=' + id_donvi, 'GET').done(function (data) {
+            if (data !== null) {
+                self.DMKhuyenMai(data);
+                GetList_KMApDung();
+            }
+        });
     }
     function Check_KhuyenMai_Active(idKhuyenMai) {
         var itemKM = $.grep(self.DMKhuyenMai(), function (x) {
@@ -5029,7 +5065,7 @@
             self.KM_KMApDung(listKM);
         }
     }
-    function CheckKM_IsApDung(idNhanVien) {
+    function CheckKM_IsApDung(idNhanVien, itemHD) {
         var isApDung = false;
         var dtNow = new Date();
         var _month = (dtNow.getMonth() + 1).toString(); // 1-12 (+1 because getMoth() return 0-11)
@@ -5037,17 +5073,11 @@
         var _hours = (dtNow.getHours()).toString(); // 1-24
         var _day = (dtNow.getDay() + 1).toString(); // mon:2, tues:3, wed:4, thur:5, fri:6, sat: 7, sun: 8
         var _weekofMonth = Math.ceil(dtNow.getDate() / 7); // get week of Month ( 1- 5);
-        var idNhomKH = null;
-        var ngaysinhFull = 0;
+        var idNhomKH = itemHD.IDNhomDoiTuongs;
+        var ngaysinhFull = itemHD.NgaySinh_NgayTLap;
         var ngaysinh = 0;
         var thangsinh = 0;
         var tuansinh = 0;
-        var ctDoiTuong = self.ChiTietDoiTuong();
-        // if chose KH --> get idNhomKH + ngaysinh
-        if (ctDoiTuong !== null && ctDoiTuong.length > 0) {
-            idNhomKH = ctDoiTuong[0].ID_NhomDoiTuong.toLowerCase();
-            ngaysinhFull = ctDoiTuong[0].NgaySinh_NgayTLap;
-        }
         if (ngaysinhFull !== 0 && ngaysinhFull !== null) {
             var dtNgaySinh = new Date(moment(ngaysinhFull).format('YYYY-MM-DD')); // must format 'YYYY-MM-DD'
             // get day, moth from dayFull
@@ -5062,7 +5092,7 @@
             var xItem = self.KM_KMApDung()[i];
             if (xItem.ApDungNgaySinh !== 0) {
                 // if chose KH
-                if (ctDoiTuong !== null && ctDoiTuong.length > 0) {
+                if (!commonStatisJs.CheckNull(itemHD.ID_DoiTuong) && itemHD.ID_DoiTuong !== const_GuidEmpty) {
                     // check ID_NhanVien, ID_nhomKH
                     if ((xItem.Months.length === 0 || $.inArray(_month, xItem.Months) > -1)
                         && (xItem.Dates.length === 0 || $.inArray(_date, xItem.Dates) > -1)
@@ -5105,45 +5135,43 @@
         return isApDung;
     }
     function GetAllNhomHangHoas() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/' + 'GetDM_NhomHangHoa', 'GET').done(function (data) {
-                if (data !== null) {
-                    for (let i = 0; i < data.length; i++) {
-                        if (data[i].ID_Parent === null) {
-                            var objParent = {
-                                ID: data[i].ID,
-                                TenNhomHangHoa: data[i].TenNhomHangHoa,
-                                Childs: [],
-                            }
-                            for (let j = 0; j < data.length; j++) {
-                                if (data[j].ID !== data[i].ID && data[j].ID_Parent === data[i].ID) {
-                                    var objChild =
-                                    {
-                                        ID: data[j].ID,
-                                        TenNhomHangHoa: data[j].TenNhomHangHoa,
-                                        ID_Parent: data[i].ID,
-                                        Child2s: []
-                                    };
-                                    for (let k = 0; k < data.length; k++) {
-                                        if (data[k].ID_Parent !== null && data[k].ID_Parent === data[j].ID) {
-                                            var objChild2 =
-                                            {
-                                                ID: data[k].ID,
-                                                TenNhomHangHoa: data[k].TenNhomHangHoa,
-                                                ID_Parent: data[j].ID,
-                                            };
-                                            objChild.Child2s.push(objChild2);
-                                        }
-                                    }
-                                    objParent.Childs.push(objChild);
-                                }
-                            }
-                            self.NhomHangHoas.push(objParent);
+        ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/' + 'GetDM_NhomHangHoa', 'GET').done(function (data) {
+            if (data !== null) {
+                for (let i = 0; i < data.length; i++) {
+                    if (data[i].ID_Parent === null) {
+                        var objParent = {
+                            ID: data[i].ID,
+                            TenNhomHangHoa: data[i].TenNhomHangHoa,
+                            Childs: [],
                         }
+                        for (let j = 0; j < data.length; j++) {
+                            if (data[j].ID !== data[i].ID && data[j].ID_Parent === data[i].ID) {
+                                var objChild =
+                                {
+                                    ID: data[j].ID,
+                                    TenNhomHangHoa: data[j].TenNhomHangHoa,
+                                    ID_Parent: data[i].ID,
+                                    Child2s: []
+                                };
+                                for (let k = 0; k < data.length; k++) {
+                                    if (data[k].ID_Parent !== null && data[k].ID_Parent === data[j].ID) {
+                                        var objChild2 =
+                                        {
+                                            ID: data[k].ID,
+                                            TenNhomHangHoa: data[k].TenNhomHangHoa,
+                                            ID_Parent: data[j].ID,
+                                        };
+                                        objChild.Child2s.push(objChild2);
+                                    }
+                                }
+                                objParent.Childs.push(objChild);
+                            }
+                        }
+                        self.NhomHangHoas.push(objParent);
                     }
                 }
-            });
-        }
+            }
+        });
     };
     function GetAll_IDNhomChild_ofNhomHH(arrIDNhomHang) {
         var arrNhomHHChilds = [];
@@ -5274,10 +5302,43 @@
         }
     }
 
-    self.SaoChepHD_KhuyenMai = function (item, type) {
-        var newHD = $.extend({}, item);
+    async function GetInforHD_fromDB(id) {
+        if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
+            let xx = await ajaxHelper(BH_HoaDonUri + "Get_InforHoaDon_byID?id=" + id + '&getCTHD=false', 'GET').done()
+                .then(function (data) {
+                    if (data !== null) {
+                        return data;
+                    }
+                    return {};
+                })
+            return xx;
+        }
+        return {};
+    }
 
-        var gtrisudung = formatNumberToFloat(newHD.GiaTriSDDV);
+    async function GetChietKhauNV_byIDHoaDon(id) {
+        if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
+            let xx = ajaxHelper(BH_HoaDonUri + 'GetChietKhauNV_byIDHoaDon?idHoaDon=' + id, 'GET').done()
+                .then(function (x) {
+                    if (x.res) {
+                        return x.data;
+                    }
+                    return [];
+                });
+            return xx;
+        }
+        return [];
+    }
+
+    self.SaoChepHD_KhuyenMai = async function (item, type) {
+        const hdDB = await GetInforHD_fromDB(item.ID);
+        if ($.isEmptyObject(hdDB)) return;
+
+        var newHD = $.extend({}, hdDB);
+        newHD.BH_NhanVienThucHiens = await GetChietKhauNV_byIDHoaDon(item.ID);
+        newHD.BH_HoaDon_ChiTiet = [];
+
+        var gtrisudung = formatNumberToFloat(item.GiaTriSDDV);
         if (gtrisudung > 0) {
             if (type === 0) {
                 ShowMessage_Danger('Vui lòng không sao chép hóa đơn sử dụng gói dịch vụ');
@@ -5285,18 +5346,18 @@
             }
         }
 
-        var maHD = 'Copy' + newHD.MaHoaDon;
-        var phaiTT = formatNumberToFloat(newHD.PhaiThanhToan);
-        var khachdatra = formatNumberToFloat(newHD.KhachDaTra);
+        var maHD = 'Copy' + hdDB.MaHoaDon;
+        var phaiTT = formatNumberToFloat(hdDB.PhaiThanhToan);
+        var khachdatra = formatNumberToFloat(hdDB.KhachDaTra);
         // nếu TT= điểm --> caculator DiemQuyDoi from TTBangDiem
         let diemquydoi = 0;
         let tiendoidiem = 0;
         if (self.ThietLap_TichDiem() !== null && self.ThietLap_TichDiem().length > 0) {
-            tiendoidiem = newHD.TienDoiDiem;
+            tiendoidiem = hdDB.TienDoiDiem;
             diemquydoi = Math.floor(tiendoidiem * self.ThietLap_TichDiem()[0].DiemThanhToan / self.ThietLap_TichDiem()[0].TienThanhToan);
         }
 
-        var obj = GetPTChietKhauHang_HeaderBH(item);
+        var obj = GetPTChietKhauHang_HeaderBH();
         newHD.PTChietKhauHH = obj.PTChietKhauHH;
         newHD.HeaderBH_GiaTriPtram = 0;
         newHD.HeaderBH_Type = 1;
@@ -5306,11 +5367,12 @@
         newHD.TienATM = 0;
         newHD.TienGui = 0;
         newHD.ChuyenKhoan = 0;
+        newHD.BangGiaWasChanged = false;
 
-        if (commonStatisJs.CheckNull(item.CongThucBaoHiem)) {
+        if (commonStatisJs.CheckNull(hdDB.CongThucBaoHiem)) {
             newHD.CongThucBaoHiem = 0;
         }
-        if (commonStatisJs.CheckNull(item.GiamTruThanhToanBaoHiem)) {
+        if (commonStatisJs.CheckNull(hdDB.GiamTruThanhToanBaoHiem)) {
             newHD.GiamTruThanhToanBaoHiem = 0;
         }
 
@@ -5320,13 +5382,13 @@
                 newHD.ID_HoaDon = null;
                 newHD.KhachDaTra = 0;
                 newHD.BaoHiemDaTra = 0;
-                newHD.DaThanhToan = self.IsGara() ? 0 : newHD.PhaiThanhToan;
+                newHD.DaThanhToan = self.IsGara() ? 0 : hdDB.PhaiThanhToan;
                 newHD.TTBangDiem = tiendoidiem;
                 newHD.DiemQuyDoi = diemquydoi;
                 newHD.DiemGiaoDichDB = 0;
-                newHD.DiemGiaoDich = item.DiemGiaoDich;
+                newHD.DiemGiaoDich = hdDB.DiemGiaoDich;
                 newHD.TrangThaiHD = 1;
-                newHD.TienMat = self.IsGara() ? 0 : newHD.PhaiThanhToan;
+                newHD.TienMat = self.IsGara() ? 0 : hdDB.PhaiThanhToan;
                 SetCache_ifGara('TN_copyHD');
                 SetCache_ifNotGara(3);
 
@@ -5338,7 +5400,7 @@
                 newHD.DiemQuyDoi = 0;
                 newHD.DiemGiaoDichDB = 0;
                 newHD.DaThanhToan = self.IsGara() ? 0 : phaiTT - khachdatra; // số tiền còn lại phaiTT --> bind at BanHang
-                newHD.TienMat = self.IsGara() ? 0 : newHD.DaThanhToan;
+                newHD.TienMat = self.IsGara() ? 0 : phaiTT - khachdatra;
                 newHD.ID_TaiKhoanPos = null;
                 newHD.ID_TaiKhoanChuyenKhoan = null;
                 SetCache_ifGara('TN_updateHD');
@@ -5349,9 +5411,9 @@
                 newHD.TrangThaiHD = 8;
                 newHD.TTBangDiem = 0;
                 newHD.DiemQuyDoi = 0;
-                newHD.DiemGiaoDichDB = newHD.DiemGiaoDich; // tru diem giaodich HD cu
+                newHD.DiemGiaoDichDB = hdDB.DiemGiaoDich; // tru diem giaodich HD cu
                 newHD.DaThanhToan = self.IsGara() ? 0 : phaiTT - khachdatra;
-                newHD.TienMat = self.IsGara() ? 0 : newHD.DaThanhToan; // = số tiền còn lại phaiTT
+                newHD.TienMat = self.IsGara() ? 0 : phaiTT - khachdatra; // = số tiền còn lại phaiTT
                 newHD.ID_TaiKhoanPos = null;
                 newHD.ID_TaiKhoanChuyenKhoan = null;
 
@@ -5373,7 +5435,11 @@
 
         var note_KMaiHD = '';
         if (self.BH_HoaDonChiTiets() !== null) {
-            var giamgiaKM_HD = newHD.KhuyeMai_GiamGia;
+            const cthdDB = await GetChiTietHD_fromDB(item.ID);
+            const allComboHD = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(item.ID);
+            Caculator_ChiTietHD(cthdDB);
+
+            let giamgiaKM_HD = hdDB.KhuyeMai_GiamGia;
             newHD.Status = 1;
             newHD.MaHoaDonDB = maHD;
             newHD.YeuCau = 1;
@@ -5394,7 +5460,7 @@
             newHD.IsKhuyenMaiHD = false;
             newHD.IsOpeningKMaiHD = false;
             newHD.KhuyeMai_GiamGia = 0;
-            newHD.TongGiamGiaKM_HD = newHD.TongGiamGia + giamgiaKM_HD;
+            newHD.TongGiamGiaKM_HD = hdDB.TongGiamGia + giamgiaKM_HD;
             newHD.PTThueDB = 0;
             newHD.TongThueDB = 0;
             newHD.TongTienHangChuaCK = self.TongTienHangChuaCK();
@@ -5420,10 +5486,12 @@
                 newHD.CreateTime = 0;
                 newHD.ID_ViTri = null;
             }
-            newHD.TenViTriHD = newHD.TenPhongBan;
+            newHD.TenViTriHD = item.TenPhongBan;
             newHD.ChoThanhToan = false; // set default = false
+
+
             // order by SoThuTu ASC --> group Hang Hoa by LoHang
-            var arrCTsort = self.BH_HoaDonChiTiets().sort(function (a, b) {
+            var arrCTsort = cthdDB.sort(function (a, b) {
                 var x = a.SoThuTu,
                     y = b.SoThuTu;
                 return x < y ? -1 : x > y ? 1 : 0;
@@ -5440,7 +5508,7 @@
                         continue;
                     }
                 }
-                cthd = SetDefaultPropertiesCTHD(cthd, newHD.MaHoaDon, newHD.LoaiHoaDon);
+                cthd = SetDefaultPropertiesCTHD(cthd, hdDB.MaHoaDon, hdDB.LoaiHoaDon);
                 cthd.SoLuongDaMua = 0;
                 cthd.TienChietKhau = cthd.GiamGia;
                 cthd.DVTinhGiam = '%';
@@ -5448,8 +5516,8 @@
                 if (cthd.TienChietKhau > 0 && cthd.PTChietKhau === 0) {
                     cthd.DVTinhGiam = 'VND';
                 }
-                cthd.ID_ViTri = newHD.ID_ViTri;
-                cthd.TenViTri = newHD.TenPhongBan;
+                cthd.ID_ViTri = hdDB.ID_ViTri;
+                cthd.TenViTri = item.TenPhongBan;
 
                 let quanLiTheoLo = cthd.QuanLyTheoLoHang;
                 cthd.QuanLyTheoLoHang = quanLiTheoLo;
@@ -5475,7 +5543,7 @@
                 }
 
                 // get tpcombo
-                let combo = $.grep(vmThanhPhanCombo.AllComBo_ofHD, function (x) {
+                let combo = $.grep(allComboHD, function (x) {
                     return x.ID_ParentCombo === cthd.ID_ParentCombo;
                 });
                 if (combo.length > 0) {
@@ -5494,7 +5562,7 @@
                     let itemKM = $.grep(self.KM_KMApDung(), function (x) {
                         return x.ID_KhuyenMai === idKhuyenMai;
                     });
-                    if (self.ThietLap().KhuyenMai === true && CheckKM_IsApDung(newHD.ID_NhanVien) && itemKM.length > 0) {
+                    if (self.ThietLap().KhuyenMai === true && CheckKM_IsApDung(hdDB.ID_NhanVien, hdDB) && itemKM.length > 0) {
                         // if TangKem of HoaDon (ID_TangKem = null, ID_KhuyenMai !=null)
                         // if TangKem of HangHoa (ID_TangKem = ID_QuiDoi of HangTang, ID_KhuyenMai == null)
                         // save cache KhuyenMai of HoaDon
@@ -5510,13 +5578,13 @@
                                 return x.ID_KhuyenMai === idKhuyenMai;
                             });
                             let exitsKM = $.grep(lstKMCTHD, function (x) {
-                                return x.ID_KhuyenMai === newHD.ID_KhuyenMai;
+                                return x.ID_KhuyenMai === hdDB.ID_KhuyenMai;
                             })
                             if (exitsKM.length === 0) {
                                 let noteDetail = '';
                                 for (let m = 0; m < hangTangHoaDon.length; m++) {
                                     // assign proprties hangTangHoaDon
-                                    hangTangHoaDon[m] = SetDefaultPropertiesCTHD(hangTangHoaDon[m], maHD, newHD.LoaiHoaDon);
+                                    hangTangHoaDon[m] = SetDefaultPropertiesCTHD(hangTangHoaDon[m], maHD, hdDB.LoaiHoaDon);
                                     hangTangHoaDon[m].SoLuongDaMua = 0;
                                     hangTangHoaDon[m].TienChietKhau = hangTangHoaDon[m].GiamGia;
                                     hangTangHoaDon[m].DVTinhGiam = '%';
@@ -5553,7 +5621,7 @@
                                     return x > y ? 1 : x < y ? -1 : 0;
                                 });
                                 for (let j = 0; j < itemKM[0].DM_KhuyenMai_ChiTiet.length; j++) {
-                                    if (itemKM[0].DM_KhuyenMai_ChiTiet[j].TongTienHang <= newHD.TongTienHang) {
+                                    if (itemKM[0].DM_KhuyenMai_ChiTiet[j].TongTienHang <= hdDB.TongTienHang) {
                                         gtriGiamGia = itemKM[0].DM_KhuyenMai_ChiTiet[j].GiamGia;
                                         tongTienHang = itemKM[0].DM_KhuyenMai_ChiTiet[j].TongTienHang;
                                         isGiamGiaPT = itemKM[0].DM_KhuyenMai_ChiTiet[j].GiamGiaTheoPhanTram;
@@ -5578,7 +5646,7 @@
                         }
                         else {
                             // find hang tang kem of this HangHoa
-                            let hhTangKem = $.grep(cthd, function (x) {
+                            let hhTangKem = $.grep(arrCTsort, function (x) {
                                 return x.ID_TangKem === cthd.ID_DonViQuiDoi;
                             });
                             let txtKhuyenMai_Last = '';
@@ -5589,7 +5657,7 @@
                                     // get all HangTang of this HangHoa
                                     for (let m = 0; m < hhTangKem.length; m++) {
                                         // assign proprties hhTangKem
-                                        hhTangKem[m] = SetDefaultPropertiesCTHD(hhTangKem[m], newHD.MaHoaDon, newHD.LoaiHoaDon);
+                                        hhTangKem[m] = SetDefaultPropertiesCTHD(hhTangKem[m], hdDB.MaHoaDon, hdDB.LoaiHoaDon);
                                         hhTangKem[m].SoLuongDaMua = 0;
                                         hhTangKem[m].TienChietKhau = hhTangKem[m].GiamGia;
                                         hhTangKem[m].DVTinhGiam = '%';
@@ -5770,6 +5838,7 @@
             else {
                 cacheCP = [];
             }
+            await VueChiPhi.CTHD_GetChiPhiDichVu([item.ID]);
             if (VueChiPhi.ListChiPhi.length > 0) {
                 let arrCP = $.extend([], true, VueChiPhi.ListChiPhi);
                 for (let m = 0; m < arrCP.length; m++) {
@@ -5819,15 +5888,15 @@
                 newHD.BH_NhanVienThucHiens = [];
             }
             // khuyenMai: hinhthuc 11, 14: giam gia HD, cong diem HD (todo 14: congdiem)
-            if (newHD.ID_KhuyenMai !== null && newHD.ID_KhuyenMai !== '00000000-0000-0000-0000-000000000000') {
+            if (newHD.ID_KhuyenMai !== null && hdDB.ID_KhuyenMai !== '00000000-0000-0000-0000-000000000000') {
                 let itemKM = $.grep(self.KM_KMApDung(), function (x) {
-                    return x.ID_KhuyenMai === newHD.ID_KhuyenMai;
+                    return x.ID_KhuyenMai === hdDB.ID_KhuyenMai;
                 });
                 var exitsKM2 = $.grep(lstKMCTHD, function (x) {
-                    return x.ID_KhuyenMai === newHD.ID_KhuyenMai;
+                    return x.ID_KhuyenMai === hdDB.ID_KhuyenMai;
                 })
                 // if not exist KM in hangKM _HoaDon
-                if (exitsKM2.length === 0 && self.ThietLap().KhuyenMai === true && CheckKM_IsApDung(newHD.ID_NhanVien) && itemKM.length > 0) {
+                if (exitsKM2.length === 0 && self.ThietLap().KhuyenMai === true && CheckKM_IsApDung(hdDB.ID_NhanVien, newHD) && itemKM.length > 0) {
                     // find CTKhuyenMai was ApDung in this HoaDon
                     let tongTienHang = 0;
                     let isGiamGiaPT = 0;
@@ -5838,7 +5907,7 @@
                         return x > y ? 1 : x < y ? -1 : 0;
                     });
                     for (let j = 0; j < itemKM[0].DM_KhuyenMai_ChiTiet.length; j++) {
-                        if (itemKM[0].DM_KhuyenMai_ChiTiet[j].TongTienHang <= newHD.TongTienHang) {
+                        if (itemKM[0].DM_KhuyenMai_ChiTiet[j].TongTienHang <= hdDB.TongTienHang) {
                             gtriGiamGia = itemKM[0].DM_KhuyenMai_ChiTiet[j].GiamGia;
                             tongTienHang = itemKM[0].DM_KhuyenMai_ChiTiet[j].TongTienHang;
                             isGiamGiaPT = itemKM[0].DM_KhuyenMai_ChiTiet[j].GiamGiaTheoPhanTram;
@@ -5864,6 +5933,8 @@
             // save cache HoaDon after check KhuyenMai
             localStorage.setItem('lcHDSaoChep', JSON.stringify(newHD));
             localStorage.setItem('lcCTHDSaoChep', JSON.stringify(cthdLoHang));
+
+            CheckExistCacheHD_andRemove(item.ID);
             self.gotoGara();
         }
         else {
@@ -5871,6 +5942,49 @@
             return false;
         }
     }
+
+    function CheckExistCacheHD_andRemove(idHoaDon) {
+        let hdCacheName = '', cthdCacheName = '';
+        switch (parseInt(self.NganhKinhDoanh())) {
+            case 1:
+                hdCacheName = 'lstHDLe';
+                cthdCacheName = 'lstCTHDLe';
+                break;
+            case 2:
+                hdCacheName = 'gara_lstHDLe';
+                cthdCacheName = 'gara_lstCTHDLe';
+                break;
+        }
+
+        var lstHD = localStorage.getItem(hdCacheName);
+        var cthd = localStorage.getItem(cthdCacheName);
+        if (lstHD !== null) {
+            lstHD = JSON.parse(lstHD);
+        }
+        else {
+            lstHD = [];
+        }
+        if (cthd !== null) {
+            cthd = JSON.parse(cthd);
+        }
+        else {
+            cthd = [];
+        }
+        let ex = $.grep(lstHD, function (x) {
+            return x.ID === idHoaDon;
+        });
+        if (ex.length > 0) {
+            lstHD = $.grep(lstHD, function (x) {
+                return x.ID !== idHoaDon;
+            });
+            cthd = $.grep(cthd, function (x) {
+                return x.IDRandomHD !== ex[0].IDRandom;
+            });
+            localStorage.setItem(hdCacheName, JSON.stringify(lstHD));
+            localStorage.setItem(cthdCacheName, JSON.stringify(cthd));
+        }
+    }
+
     function AssignNVThucHien_toCTHD(itemCT) {
         var listBH_NVienThucHienOld = itemCT.BH_NhanVienThucHien;
         itemCT.BH_NhanVienThucHien = [];// reset BH_NhanVienThucHien old, and add again
@@ -6051,13 +6165,11 @@
     }
 
     function GetHT_TichDiem() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CauHinh_TichDiemChiTiet?idDonVi=' + id_donvi, 'GET').done(function (obj) {
-                if (obj.res === true) {
-                    self.ThietLap_TichDiem(obj.data);
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CauHinh_TichDiemChiTiet?idDonVi=' + id_donvi, 'GET').done(function (obj) {
+            if (obj.res === true) {
+                self.ThietLap_TichDiem(obj.data);
+            }
+        });
     }
 
     self.ThongTinPhieuTiepNhan = ko.observable();
@@ -6102,7 +6214,7 @@
         }
     }
 
-    self.showModalEditCKHoaDon = function (item) {
+    self.showModalEditCKHoaDon = async function (item) {
         let tongTT = formatNumberToFloat(item.TongThanhToan);
         let butruTra = formatNumberToFloat(item.TongTienHDTra);
         let daTT = formatNumberToFloat(item.KhachDaTra) + formatNumberToFloat(item.BaoHiemDaTra)
@@ -6117,7 +6229,8 @@
             DaThuTruoc: daTT,
             ConNo: tongTT - butruTra - daTT,
         }
-        vmHoaHongHoaDon.GetChietKhauHoaDon_byID(obj);
+        await vmHoaHongHoaDon.GetChietKhauHoaDon_byID(obj);
+        vmHoaHongHoaDon.showModalUpdate(obj);
     }
 
     self.showModalEditCKDichVu = function (item) {
@@ -6140,12 +6253,15 @@
         }
     }
 
-    self.NhapHang = function (item) {
-        let cthd = self.BH_HoaDonChiTiets();
+    self.NhapHang = async function (item) {
+        const cthdDB = await GetChiTietHD_fromDB(item.ID);
+        if (cthdDB.length === 0) return;
+        const allComboHD = await vmThanhPhanCombo.GetAllCombo_byIDHoaDon(item.ID);
+
         // get tpdluong 
         var arr = [];
-        for (let i = 0; i < cthd.length; i++) {
-            let forOut = cthd[i];
+        for (let i = 0; i < cthdDB.length; i++) {
+            let forOut = cthdDB[i];
             switch (parseInt(forOut.LoaiHangHoa)) {
                 case 1:
                     arr.push(forOut);
@@ -6159,7 +6275,7 @@
                     }
                     break;
                 case 3:
-                    let combo = $.grep(vmThanhPhanCombo.AllComBo_ofHD, function (x) {
+                    let combo = $.grep(allComboHD, function (x) {
                         return x.ID_ParentCombo === forOut.ID_ParentCombo;
                     });
 
@@ -6309,13 +6425,21 @@
                 }
             }
         }
+        if (cthdLoHang.length > 0) {
+            cthdLoHang[0].ID_HoaDonGoc = item.ID;
+            cthdLoHang[0].ID_PhieuTiepNhan = item.ID_PhieuTiepNhan;
+            cthdLoHang[0].MaPhieuTiepNhan = item.MaPhieuTiepNhan;
+            cthdLoHang[0].BienSo = item.BienSo;
+            cthdLoHang[0].MaHoaDonSuaChua = item.MaHoaDon;
+        }
 
         localStorage.setItem('lc_CTSaoChep', JSON.stringify(cthdLoHang));
         localStorage.setItem('typeCacheNhapHang', 3);
         window.open('/#/PurchaseOrderItem2', '_blank');
     }
 
-    self.CapNhatChiPhi = function (item) {
+    self.CapNhatChiPhi = async function (item) {
+        await VueChiPhi.CTHD_GetChiPhiDichVu([item.ID]);
         VueChiPhi.ShowModal(1);
     }
 
@@ -6479,14 +6603,3 @@ function ConvertMinutes_ToHourMinutes(sophut) {
     }
     return minutes.toString().concat(' phút');
 }
-
-$('#vmChiPhiHoaDon').on('hidden.bs.modal', function () {
-    if (!commonStatisJs.CheckNull(modelGiaoDich.InVoiceChosing())) {
-        switch (modelGiaoDich.InVoiceChosing().LoaiHoaDon) {
-            case 1:
-            case 25:
-                VueChiPhi.CTHD_GetChiPhiDichVu([modelGiaoDich.InVoiceChosing().ID])
-                break;
-        }
-    }
-})

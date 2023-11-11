@@ -134,7 +134,7 @@ namespace libReport
             }
             catch (Exception ex)
             {
-                CookieStore.WriteLog("libReport - ClassReportTheGiaTri - ValueCard_GetListHisUsed: " + ex);
+                CookieStore.WriteLog("libReport - ClassReportTheGiaTri - TheGiaTri_GetLichSuNapTien: " + ex);
                 return new List<TheGiaTriDTO>();
             }
         }

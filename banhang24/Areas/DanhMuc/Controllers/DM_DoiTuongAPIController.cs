@@ -317,11 +317,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
                     var whereColumn = SearchColumn(lstParam.SearchColumns, string.Empty, ref lstParam);
                     lstParam.WhereSql = whereColumn;
-                    List<SP_DM_DoiTuong> data = classdoituong.SP_GetListKhachHang_Where_Paging(lstParam);
+                    List<SP_DM_DoiTuong> data = classdoituong.LoadDanhMuc_KhachHangNhaCungCap(lstParam);
                     DataTable excel = classOffice.ToDataTable<SP_DM_DoiTuong>(data);
 
                     excel.Columns.Remove("ID");
                     excel.Columns.Remove("ID_NhomDoiTuong");
+                    excel.Columns.Remove("LoaiDoiTuong");
                     excel.Columns.Remove("TenDoiTuong_KhongDau");
                     excel.Columns.Remove("TenDoiTuong_ChuCaiDau");
                     excel.Columns.Remove("ID_NguonKhach");
@@ -377,7 +378,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
                 var whereColumn = SearchColumn(lstParam.SearchColumns, string.Empty, ref lstParam);
                 lstParam.WhereSql = whereColumn;
-                List<SP_DM_DoiTuong> lstKhachhangs = classdoituong.SP_GetListKhachHang_Where_Paging(lstParam);
+                List<SP_DM_DoiTuong> lstKhachhangs = classdoituong.LoadDanhMuc_KhachHangNhaCungCap(lstParam);
 
                 List<DM_NhaCungCap_Excel> lst = new List<DM_NhaCungCap_Excel>();
                 foreach (var item in lstKhachhangs)
@@ -824,6 +825,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         idNhomKH = "%" + listParams.ID_NhomDoiTuong + "%";
                     }
 
+                    var txt = string.Empty;
+                    if (!string.IsNullOrEmpty(listParams.TextSearch))
+                    {
+                        txt = listParams.TextSearch.Trim();
+                        where1 = string.Concat(" ( DienThoai like N'%", txt, "%' or TenDoiTuong like N'%", txt,
+                            "%' or TenDoiTuong_KhongDau like N'%", txt, "%')");
+                        where = classDoiTuong.GetStringWhere(where, where1);
+                    }
+
                     var ngaySinhFrom = listParams.NgaySinh_TuNgay;
                     var ngaySinhTo = listParams.NgaySinh_DenNgay;
 
@@ -1156,6 +1166,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         idNhomKH = "%" + listParams.ID_NhomDoiTuong + "%";
                     }
 
+                    var txt = string.Empty;
+                    if (!string.IsNullOrEmpty(listParams.TextSearch))
+                    {
+                        txt = listParams.TextSearch.Trim();
+                        where1 = string.Concat(" ( DienThoai like N'%", txt, "%' or TenDoiTuong like N'%", txt,
+                            "%' or TenDoiTuong_KhongDau like N'%", txt, "%')");
+                        where = classDoiTuong.GetStringWhere(where, where1);
+                    }
+
                     switch (listParams.LoaiGiaoDich)
                     {
                         case 0:
@@ -1218,6 +1237,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         TotalPage = x.TotalPage,
                         TotalRow = x.TotalRow,
                         TrangThai = x.TrangThai,
+                        STrangThai = x.STrangThai,
                         LoaiGiaoDich = x.LoaiHoaDon == 1 ? "Bán lẻ" : "Gói dịch vụ",
                     }).ToList();
                     return Json(new { res = true, data = lst });
@@ -1468,6 +1488,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             case (int)commonEnum.ColumnKhachHang.ghichu:
                                 where = string.Concat(" GhiChu like N'%", value, "%'");
                                 break;
+                            case (int)commonEnum.ColumnKhachHang.laCaNhan:
+                                where = string.Concat(" LaCanhan = ", value);
+                                break;
                         }
                         whereSql = classDoiTuong.GetStringWhere(whereSql, where);
                     }
@@ -1664,6 +1687,54 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     res = false,
                     mes = string.Concat("GetListKhachHang_Where_PassObject_Paging", ex.InnerException, ex.Message)
+                });
+            }
+        }
+
+        [HttpGet, HttpPost]
+        public IHttpActionResult LoadDanhMuc_KhachHangNhaCungCap(Params_GetListKhachHang listParams)
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    var classdoituong = new classDM_DoiTuong(db);
+                    var whereColumn = SearchColumn(listParams.SearchColumns, string.Empty, ref listParams);
+                    listParams.WhereSql = whereColumn;
+                    List<SP_DM_DoiTuong> data = classdoituong.LoadDanhMuc_KhachHangNhaCungCap(listParams);
+
+                    if (data != null && data.Count() > 0)
+                    {
+                        var itFirst = data[0];
+                        return Json(new
+                        {
+                            res = true,
+                            data,
+                            itFirst.TotalRow,
+                            itFirst.TotalPage,
+                            itFirst.NoHienTaiAll,
+                            itFirst.TongBanAll,
+                            itFirst.TongBanTruTraHangAll,
+                            itFirst.TongTichDiemAll,
+                            itFirst.TongPhiDichVu,
+                        });
+                    }
+                    else
+                    {
+                        return Json(new
+                        {
+                            res = true,
+                            data = new List<SP_DM_DoiTuong>()
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    res = false,
+                    mes = string.Concat("LoadDanhMuc_KhachHangNhaCungCap ", ex.InnerException, ex.Message)
                 });
             }
         }
@@ -2439,6 +2510,19 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     ClassBH_HoaDon_ChiTiet classBHChiTiet = new ClassBH_HoaDon_ChiTiet(db);
                     List<GoiDichVu_KhachHang> lst = classBHChiTiet.GetDSGoiDichVu_ofKhachHang(param);
+                    // Mượn trường: LoaiHoaDon (1.Còn buổi sử dụng, 0. hết buổi sử dụng)
+                    if (!string.IsNullOrEmpty(param.LoaiHoaDons))
+                    {
+                        switch (param.LoaiHoaDons)
+                        {
+                            case "0":
+                                lst = lst.Where(x => x.SoLuongConLai == 0).ToList();
+                                break;
+                            case "1":
+                                lst = lst.Where(x => x.SoLuongConLai > 0).ToList();
+                                break;
+                        }
+                    }
                     var data = lst.GroupBy(x => new
                     {
                         x.SLChiNhanh,

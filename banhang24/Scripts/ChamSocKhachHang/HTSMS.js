@@ -42,7 +42,7 @@ var ViewModel = function () {
     var DMDoiTuongUri = '/api/DanhMuc/DM_DoiTuongAPI/';
 
     self.error = ko.observable();
-    self.TypeSMS = ko.observable(0);
+    self.TypeSMS = ko.observable(0);//1.tindagui, 2.ds giaodich, 3.ds sinhnhat, 4.ds lichhen (DS hiển thị)
     self.ArrKhachHangCoSDT = ko.observableArray();
     self.ArrKhachHangCoSDTSN = ko.observableArray();
     self.ArrKhachHangCoSDTGD = ko.observableArray();
@@ -58,7 +58,7 @@ var ViewModel = function () {
     self.MangKhachHangGuiTinGD = ko.observableArray();
     self.MangKhachHangSaveDB = ko.observableArray();
     self.ListAllDoiTuong = ko.observableArray();
-    self.LoaiTinNhanGui = ko.observable();
+    self.LoaiTinNhanGui = ko.observable();//1.giaodich, 2.sinhnhat, 3.tinthuong (Loại tin)
     self.NhomKhachHangChosed = ko.observableArray();
     self.JqAutoSelectKH = ko.observable();
     self.BrandNames = ko.observableArray();
@@ -78,6 +78,8 @@ var ViewModel = function () {
     self.LichHen_byDate = ko.observableArray();
     self.Popup_LichHenChosed = ko.observableArray();
     self.numtext = 160;
+    self.textSearch = ko.observable();
+    self.reportName = ko.observable('Tin nhắn đã gửi');
 
     function PageLoad() {
         loadHtmlGrid();
@@ -141,7 +143,7 @@ var ViewModel = function () {
             PhanLoai: '%%',// lichhen + cv
             FromDate: param.DateFrom,
             ToDate: param.DateTo,
-            TextSearch: '',
+            TextSearch: self.textSearch(),
             CurrentPage: self.currentPageKH(),
             PageSize: self.pageSizeKH(),
             TypeShow: 1,
@@ -206,7 +208,7 @@ var ViewModel = function () {
             self.Popup_LichHenChosed([]);
             if (x.res === true) {
                 self.LichHen_byDate(x.data);
-                console.log(2,x.data)
+                console.log(2, x.data)
             }
         });
     }
@@ -368,7 +370,7 @@ var ViewModel = function () {
     // paging lichhen
     self.TotalPage_LichHen = ko.observable(0);
     self.TotalRow_LichHen = ko.observable(0);
-    self.PageSizes_LichHen = ko.observableArray([10,20, 30, 50]);
+    self.PageSizes_LichHen = ko.observableArray([10, 20, 30, 50]);
     self.PageSize_LichHen = ko.observable(self.PageSizes_LichHen()[0]);
     self.currentPage_LichHen = ko.observable(0);
     self.fromitem_LichHen = ko.observable(0);
@@ -772,7 +774,7 @@ var ViewModel = function () {
             }
             // get all KH had chosed by id
             ajaxHelper(DMDoiTuongUri + 'GetListCustomer_byIDs', 'POST', obj).done(function (x) {
-             
+
                 if (x.res === true) {
                     switch (self.TypeSMS()) {
                         case 1:
@@ -782,7 +784,7 @@ var ViewModel = function () {
                             self.Popup_LichHenChosed(x.data);
                             break;
                     }
-                   
+
                 }
             })
             $('#exampleModal').modal('show');
@@ -915,19 +917,19 @@ var ViewModel = function () {
                 var totalmes = messages * self.numtext;
                 $remaining.text(remaining + '/' + totalmes);
                 $messages.text(' (' + messages + ' tin nhắn)');
-                if (item.NoiDungTin.length > 100) {
-                    var tr = item.NoiDungTin.substr(0, 105);
-                    var mangTr = tr.split(" ");
-                    var chuoi = mangTr[0];
-                    for (var j = 1; j < mangTr.length - 1; j++) {
-                        chuoi = chuoi + " " + mangTr[j];
-                    }
-                    item.NoiDungTin = chuoi + "...";
-                    $('#txtMauTinChoose').html(item.NoiDungTin);
-                }
-                else {
-                    $('#txtMauTinChoose').html(item.NoiDungTin);
-                }
+                //if (item.NoiDungTin.length > 100) {
+                //    var tr = item.NoiDungTin.substr(0, 105);
+                //    var mangTr = tr.split(" ");
+                //    var chuoi = mangTr[0];
+                //    for (var j = 1; j < mangTr.length - 1; j++) {
+                //        chuoi = chuoi + " " + mangTr[j];
+                //    }
+                //    item.NoiDungTin = chuoi + "...";
+                //    $('#txtMauTinChoose').html(item.NoiDungTin);
+                //}
+                //else {
+                //    $('#txtMauTinChoose').html(item.NoiDungTin);
+                //}
                 $('#ChooseMauTin li').each(function () {
                     $(this).find('.fa-check').remove();
                 });
@@ -1181,12 +1183,15 @@ var ViewModel = function () {
     $('.outselectmodalsms .input-khach-hang').on('click', function () {
         $(this).closest('div').next().show();
     });
+    self.DemSoTinGui = function (sokitu) {
+        return (arrMessCount.length - arrMessCount.filter(p => p >= sokitu).length) + 1;
+    }
     self.GuiTinNhan = function () {
         document.getElementById("btnGuiTinNhan").disabled = true;
         document.getElementById("btnGuiTinNhan").lastChild.data = " Đang lưu";
         var _noiDungTin = $('#txtNoiDungTin').val();
         var lenghtTinNhan = _noiDungTin.length;
-        var _soTinGui = Math.ceil(lenghtTinNhan / self.numtext);
+        var _soTinGui = self.DemSoTinGui(lenghtTinNhan);
         var _loaiTinNhan = self.LoaiTinNhanGui();
         var _idbrand = self.IDBrandNameChoose();
         if (_idbrand === undefined) {
@@ -1283,7 +1288,7 @@ var ViewModel = function () {
         document.getElementById("btnGuiTinNhanSN").lastChild.data = " Đang lưu";
         var _noiDungTin = $('#txtNoiDungTin').val();
         var lenghtTinNhan = _noiDungTin.length;
-        var _soTinGui = Math.ceil(lenghtTinNhan / self.numtext);
+        var _soTinGui = self.DemSoTinGui(lenghtTinNhan);
         var _loaiTinNhan = self.LoaiTinNhanGui();
         var _idbrand = self.IDBrandNameChoose();
         if (_idbrand === undefined) {
@@ -1375,7 +1380,7 @@ var ViewModel = function () {
         document.getElementById("btnGuiTinNhanGD").lastChild.data = " Đang lưu";
         var _noiDungTin = $('#txtNoiDungTin').val();
         var lenghtTinNhan = _noiDungTin.length;
-        var _soTinGui = Math.ceil(lenghtTinNhan / self.numtext);
+        var _soTinGui = self.DemSoTinGui(lenghtTinNhan);
         var _loaiTinNhan = self.LoaiTinNhanGui();
         var _idbrand = self.IDBrandNameChoose();
         if (_idbrand === undefined) {
@@ -1453,7 +1458,7 @@ var ViewModel = function () {
         var _soDienThoai = $('#txtSoDienThoai').val();
         var _noiDungTin = $('#txtNoiDungTinSDT').val();
         var lenghtTinNhan = _noiDungTin.length;
-        var _soTinGui = Math.ceil(lenghtTinNhan / self.numtext);
+        var _soTinGui = self.DemSoTinGui(lenghtTinNhan);
         var _loaiTinNhan = self.LoaiTinNhanGui();
         var _idbrand = self.IDBrandNameChoose();
         var _id_hoaDon = null;
@@ -1527,7 +1532,7 @@ var ViewModel = function () {
         document.getElementById("btnGuiTinLichHen").lastChild.data = " Đang lưu";
         var _noiDungTin = $('#txtNoiDungTin').val();
         var lenghtTinNhan = _noiDungTin.length;
-        var _soTinGui = Math.ceil(lenghtTinNhan / self.numtext);
+        var _soTinGui = self.DemSoTinGui(lenghtTinNhan);
         var _idbrand = self.IDBrandNameChoose();
         if (_idbrand === undefined) {
             ShowMessage_Danger("Vui lòng chọn BrandName gửi tin");
@@ -1584,7 +1589,7 @@ var ViewModel = function () {
     };
 
     //Phân trang list KH sinh nhật
-    self.pageSizesKH = [10,20, 30, 50];
+    self.pageSizesKH = [10, 20, 30, 50];
     self.pageSizeKH = ko.observable(self.pageSizesKH[0]);
     self.currentPageKH = ko.observable(0);
     self.fromitemKH = ko.observable(1);
@@ -1747,13 +1752,14 @@ var ViewModel = function () {
             NguoiTao: user.trim(),
             CurrentPage: self.currentPageKH(),
             PageSize: self.pageSizeKH(),
-            TrangThai: parseInt(self.Loc_TrangThaiGui())
+            TrangThai: parseInt(self.Loc_TrangThaiGui()),
+            TextSearch: self.textSearch(),
         };
         console.log('sn', listParams);
 
         $('.table-reponsive').gridLoader();
         ajaxHelper(DMDoiTuongUri + "SMS_KhachHangSinhNhat", 'POST', listParams).done(function (x) {
-         
+
             $('.table-reponsive').gridLoader({ show: false });
             if (x.res === true && x.data.length > 0) {
                 self.ListKhachHangSinhNhat(x.data);
@@ -1966,7 +1972,7 @@ var ViewModel = function () {
     };
     //------------------------------------end phân trang khách hàng SN
     // khách hàng giao dịch bán lẻ và gói dịch vụ
-    self.pageSizesGD = [10,20, 30, 50];
+    self.pageSizesGD = [10, 20, 30, 50];
     self.pageSizeGD = ko.observable(self.pageSizesGD[0]);
     self.currentPageGD = ko.observable(0);
     self.fromitemGD = ko.observable(1);
@@ -2008,7 +2014,8 @@ var ViewModel = function () {
             CurrentPage: self.currentPageGD(),
             PageSize: self.pageSizeGD(),
             TrangThai: parseInt(self.Loc_TrangThaiGui()),
-            iddonvi: idDonVi
+            iddonvi: idDonVi,
+            TextSearch: self.textSearch(),
         };
         console.log('gd ', listParams)
         $('.table-reponsive').gridLoader();
@@ -2177,26 +2184,20 @@ var ViewModel = function () {
     self.GetClassHDGD = function (page) {
         return ((page.pageNumberGD - 1) === self.currentPageGD()) ? "click" : "";
     };
+
+    self.SMS_LoaiBaoCao = ko.computed(() => {
+        return self.TypeSMS().toString();
+    })
     //end khách hàng giao dịch bán lẻ và gói dịch vụ
     $('.chose_kieubang').on('click', 'li', function () {
         var index = $(this).val();
-        $(".chose_kieubang li").each(function (i) {
-            $(this).find('a').removeClass('box-tab');
-        });
-        $(this).find('a').addClass('box-tab');
-        $('#danhsachtab .ct-tab-pane').each(function (i) {
-            $(this).removeClass('active');
-            if (index === (i + 1)) {
-                $(this).addClass('active');
-            }
-        });
         ResetCurrentPage();
         self.Loc_TrangThaiGui('0');
         self.customerBirthday_Quy(5);// default month
         $('#txtCusBirthDay').val('Tháng này');
 
         switch (index) {
-            case 1:
+            case 0:
                 self.TypeSMS(0);
                 self.LoaiTinNhanGui(3);
                 $('#loccotSMS').show();
@@ -2204,8 +2205,7 @@ var ViewModel = function () {
                 $('.timesinhnhat').hide();
                 $('._nhomkhachhang').hide();
                 $('#loctrangthai, #loaitin').show();
-                //$('.trangthai1').hide();
-                //$('.trangthai2').show();
+                self.reportName('Tin nhắn đã gửi');
                 SearchTinNhan();
                 break;
             case 2:
@@ -2215,33 +2215,30 @@ var ViewModel = function () {
                 $('#locloaichungtu, #locchinhanh').show();
                 $('.timesinhnhat').hide();
                 $('._nhomkhachhang').show();
-                //$('.trangthai1').show();
-                //$('.trangthai2').hide();
                 $('#loctrangthai, #loaitin').hide();
                 getKhachHangGD();
+                self.reportName('Danh sách giao dịch');
                 break;
-            case 3:
+            case 1:
                 self.TypeSMS(1);
                 self.LoaiTinNhanGui(2);
                 $('#loccotSMS').hide();
                 $('#locloaichungtu, #locchinhanh, #filterleft-typework').hide();
                 $('.timesinhnhat').show();
                 $('._nhomkhachhang').show();
-                //$('.trangthai1').show();
-                //$('.trangthai2').hide();
                 $('#loctrangthai, #loaitin').hide();
                 GetAllKhachHangSinhNhat();
+                self.reportName('Danh sách KH sinh nhật');
                 break;
-            case 4:
+            case 3:
                 self.TypeSMS(3);
                 self.LoaiTinNhanGui(4);
                 $('#loccotSMS').hide();
                 $('#locloaichungtu, #locchinhanh').hide();
                 $('.timesinhnhat, #filterleft-typework').show();
                 $('._nhomkhachhang').show();
-                //$('.trangthai1').show();
-                //$('.trangthai2').hide();
                 $('#loctrangthai, #loaitin').hide();
+                self.reportName('Danh sách KH có lịch hẹn');
                 SMS_LichHen();
                 break;
         }
@@ -2259,6 +2256,16 @@ var ViewModel = function () {
         self.currentPageKH(0);
         self.currentPage(0);
         self.ListRowChosed([]);
+    }
+
+    self.SearchList = function () {
+        if (event.keyCode === 13) {
+            GetListData_byType();
+        }
+    }
+
+    self.Click_IconSearch = function () {
+        GetListData_byType();
     }
 
     function GetListData_byType() {
@@ -2289,7 +2296,7 @@ var ViewModel = function () {
     });
     //Phân trang list tin nhắn
     self.ArrayTinNhans = ko.observableArray();
-    self.pageSizes = [10,20, 30, 50];
+    self.pageSizes = [10, 20, 30, 50];
     self.pageSize = ko.observable(self.pageSizes[0]);
     self.currentPage = ko.observable(0);
     self.fromitem = ko.observable(1);
@@ -2308,6 +2315,7 @@ var ViewModel = function () {
                 ToDate: param.DateTo,
                 Status: parseInt(self.Loc_TrangThaiGui()),
                 TypeSMS: parseInt(self.Loc_LoaiTin()),
+                TextSearch: self.textSearch()
             };
             console.log(1, model)
             $('.table-reponsive').gridLoader();
@@ -2461,14 +2469,12 @@ var ViewModel = function () {
     self.ThietLap = ko.observableArray();
     self.NhomKHChosed = ko.observableArray();
     function GetCauHinhHeThong() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + idDonVi, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.ThietLap(data);
-                }
-                GetNhomDoiTuong_DonVi();
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + idDonVi, 'GET').done(function (data) {
+            if (data !== null) {
+                self.ThietLap(data);
+            }
+            GetNhomDoiTuong_DonVi();
+        });
     }
     function GetNhomDoiTuong_DonVi() {
         ajaxHelper(DMDoiTuongUri + 'GetNhomDoiTuong_DonVi?loaiDT=1', 'GET').done(function (obj) {

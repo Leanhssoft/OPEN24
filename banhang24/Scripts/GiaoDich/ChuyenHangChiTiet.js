@@ -60,6 +60,7 @@ var ChuyenHangChiTiet = function () {
     self.fileNameExcel = ko.observable();
     self.selectedDonVi = ko.observable();
     self.DonVis = ko.observableArray();
+    self.ListCNNhan = ko.observableArray();
     self.IsChuyenHang = ko.observable(true); //true. ChuyenHang, false. NhanHang
 
     self.TongSoLuongHH = ko.observable(0);
@@ -220,7 +221,9 @@ var ChuyenHangChiTiet = function () {
             return x !== null;
         })
 
+        // luôn get tồn kho + giá vốn theo ngày lập hóa đơn
         var ngayKK = GetNgayLapHD_withTimeNow(self.newHoaDon().NgayLapHoaDon());
+
         var obj = {
             ID_ChiNhanh: _idDonVi,
             ToDate: ngayKK,
@@ -311,17 +314,15 @@ var ChuyenHangChiTiet = function () {
     }
 
     function GetHT_Quyen_ByNguoiDung() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
-                if (data !== "" && data.length > 0) {
-                    self.Quyen_NguoiDung(data);
-                    self.ChuyenHang_ThayDoiThoiGian(CheckQuyenExist('ChuyenHang_ThayDoiThoiGian'));
-                }
-                else {
-                    ShowMessage_Danger('Không có quyền');
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
+            if (data !== "" && data.length > 0) {
+                self.Quyen_NguoiDung(data);
+                self.ChuyenHang_ThayDoiThoiGian(CheckQuyenExist('ChuyenHang_ThayDoiThoiGian'));
+            }
+            else {
+                ShowMessage_Danger('Không có quyền');
+            }
+        });
     }
 
     function Check_QuyenXemGiaVon() {
@@ -346,18 +347,19 @@ var ChuyenHangChiTiet = function () {
     function GetListDonVi() {
         ajaxHelper("/api/DanhMuc/DM_DonViAPI/" + "GetListDonVi1", 'GET').done(function (data) {
             self.DonVis(data);
+            if (self.IsChuyenHang()) {
+                self.ListCNNhan(data.filter(x => x.ID !== VHeader.IdDonVi));
+            }
             CheckSaoChep_EditPhieuNhap();
         });
     }
 
     function GetCauHinhHeThong() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + _idDonVi, 'GET').done(function (data) {
-                if (data !== null) {
-                    self.ThietLap(data);
-                }
-            });
-        }
+        ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + _idDonVi, 'GET').done(function (data) {
+            if (data !== null) {
+                self.ThietLap(data);
+            }
+        });
     }
 
     function newCTHD(itemHH, soluong) {
@@ -652,6 +654,7 @@ var ChuyenHangChiTiet = function () {
 
                     if (self.IsNhapNhanh()) {
                         AddCTHD(item, 1);
+                        GetTonKho_byIDQuyDois();// update giavon by ngaychuyenhang
                     }
                     else {
                         $('#txtSoLuongHang').focus();
@@ -670,6 +673,7 @@ var ChuyenHangChiTiet = function () {
                         data[0].ID_HangHoa = data[0].ID;
                         self.ItemChosing(data[0]);
                         AddCTHD(data[0], 1);
+                        GetTonKho_byIDQuyDois();// update giavon by ngaychuyenhang
                     }
                 }
                 else {
@@ -1315,6 +1319,7 @@ var ChuyenHangChiTiet = function () {
         if (e.keyCode === 13) {
             if (self.IsNhapNhanh() === false) {
                 AddCTHD(self.ItemChosing(), formatNumberToFloat($(this).val()));
+                GetTonKho_byIDQuyDois();// update giavon by ngaychuyenhang
             }
         }
     })
@@ -1466,8 +1471,8 @@ var ChuyenHangChiTiet = function () {
             let ddMMyyyy = ngaylapHD.split('/');
             if (ddMMyyyy.length > 1) {
                 ngaylapHD = moment(ngaylapHD, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm');
+                ngaylapHD = moment(ngaylapHD).add(giay, 'seconds').add(miligiay, 'milliseconds').format('YYYY-MM-DD HH:mm:ss');
             }
-            ngaylapHD = moment(ngaylapHD).add(giay, 'seconds').add(miligiay, 'milliseconds').format('YYYY-MM-DD HH:mm:ss');
             // else keep value YYYY-MM-DD
         }
         return ngaylapHD;
@@ -1555,40 +1560,40 @@ var ChuyenHangChiTiet = function () {
                             err += itOut.TenHangHoa + ', ';
                         }
                         // check soluong > tonkho
-                        if (idHoaDon === const_GuidEmpty) {
-                            if (formatNumberToFloat(itOut.SoLuong) > itOut.TonKho) {
-                                errTonKho += itOut.TenHangHoa + ', ';
-                            }
-                            for (let j = 0; j < itOut.DM_LoHang.length; j++) {
-                                let itFor = itOut.DM_LoHang[j];
-                                if (j !== 0) {
-                                    if (formatNumberToFloat(itFor.SoLuong) === 0) {
-                                        err += itFor.TenHangHoa + ', ';
-                                    }
-                                    if (formatNumberToFloat(itFor.SoLuong) > itFor.TonKho) {
-                                        errTonKho += itFor.TenHangHoa + ' (Lô: ' + itFor.MaLoHang + ') ,';
-                                    }
+                        //if (idHoaDon === const_GuidEmpty) {
+                        if (formatNumberToFloat(itOut.SoLuong) > itOut.TonKho) {
+                            errTonKho += itOut.TenHangHoa + ', ';
+                        }
+                        for (let j = 0; j < itOut.DM_LoHang.length; j++) {
+                            let itFor = itOut.DM_LoHang[j];
+                            if (j !== 0) {
+                                if (formatNumberToFloat(itFor.SoLuong) === 0) {
+                                    err += itFor.TenHangHoa + ', ';
+                                }
+                                if (formatNumberToFloat(itFor.SoLuong) > itFor.TonKho) {
+                                    errTonKho += itFor.TenHangHoa + ' (Lô: ' + itFor.MaLoHang + ') ,';
                                 }
                             }
                         }
-                        else {
-                            // sua doi hoadonchuyenhang: cộng ngược lại số lượng chuyển trước đó
-                            if (formatNumberToFloat(itOut.SoLuong) > itOut.TonKho + itOut.SoLuongChuyen) {
-                                errTonKho += itOut.TenHangHoa + ', ';
-                            }
+                        //}
+                        //else {
+                        //    // sua doi hoadonchuyenhang: cộng ngược lại số lượng chuyển trước đó
+                        //    if (formatNumberToFloat(itOut.SoLuong) > itOut.TonKho + itOut.SoLuongChuyen) {
+                        //        errTonKho += itOut.TenHangHoa + ', ';
+                        //    }
 
-                            for (let j = 0; j < itOut.DM_LoHang.length; j++) {
-                                let itFor = itOut.DM_LoHang[j];
-                                if (j !== 0) {
-                                    if (formatNumberToFloat(itFor.SoLuong) === 0) {
-                                        err += itFor.TenHangHoa + ', ';
-                                    }
-                                    if (formatNumberToFloat(itFor.SoLuong) > itFor.TonKho + itFor.SoLuongChuyen) {
-                                        errTonKho += itFor.TenHangHoa + ' (Lô: ' + itFor.MaLoHang + ') ,';
-                                    }
-                                }
-                            }
-                        }
+                        //    for (let j = 0; j < itOut.DM_LoHang.length; j++) {
+                        //        let itFor = itOut.DM_LoHang[j];
+                        //        if (j !== 0) {
+                        //            if (formatNumberToFloat(itFor.SoLuong) === 0) {
+                        //                err += itFor.TenHangHoa + ', ';
+                        //            }
+                        //            if (formatNumberToFloat(itFor.SoLuong) > itFor.TonKho + itFor.SoLuongChuyen) {
+                        //                errTonKho += itFor.TenHangHoa + ' (Lô: ' + itFor.MaLoHang + ') ,';
+                        //            }
+                        //        }
+                        //    }
+                        //}
                     }
                 }
                 err = Remove_LastComma(err);

@@ -135,23 +135,22 @@ var modelThongTinCuaHang = function () {
 
 var ViewModel = function () {
     var self = this;
-    var _IDNhomNguoiDung = $('.idnhomnguoidung').text();
     var _IDNguoiDung = $('.idnguoidung').text();
     var _IDchinhanh = $('#hd_IDdDonVi').val();
     var _IDNhanVien = $('.idnhanvien').text();
     self.error = ko.observable();
     var ThietLapUri = '/api/DanhMuc/HT_ThietLapAPI/';
     var DonViUri = '/api/DanhMuc/DM_DonViAPI/';
-    var _TenDonVi = null;
     self.newTichDiem = ko.observable(new ModelTichDiem());
     self.newGioiHanTH = ko.observable(new Model_GioiHanTraHang);
     self.newThongTinCH = ko.observable(new modelThongTinCuaHang());
     self.ThietLap = ko.observable(new CauHinhModel());
     self.selectedNKH = ko.observable();
     self.TodayCS = ko.observable();
+    const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
+    self.isLeeAuto = ko.observable($.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1);
 
     var dt1 = new Date();
-    var _time = dt1.getFullYear() + "-" + (dt1.getMonth() + 1) + "-" + dt1.getDate();
     self.TodayCS(moment(dt1).format("DD/MM/YYYY"));
     function ajaxHelper(uri, method, data) {
         self.error(''); // Clear error message
@@ -1683,7 +1682,19 @@ var ViewModel = function () {
                             $('#PhieuTiepNhan').val(value.selected);
                             break;
                         case KeyDatHang:
+                      // case 'BG':
                             self.ListMauInDathang(value.ListSelectMauIn);
+                            //var arrMauIn = [];
+                            //var arr = $.grep(result, function (x) {
+                            //    return $.inArray(x.Key, ['DH', 'BG']) > -1;
+                            //})
+                            //for (let i = 0; i < arr.length; i++) {
+                            //    for (let j = 0; j < arr[i].ListSelectMauIn.length; j++) {
+                            //        arrMauIn.push(arr[i].ListSelectMauIn[j]);
+                            //    }
+                            //}
+                            //console.log('arrMauIn ', result)
+                            //self.ListMauInDathang(arrMauIn);
                             $('#DatHang').val(value.selected);
                             break;
                         case KeyHoaDon:
@@ -2067,6 +2078,10 @@ var ViewModel = function () {
 
     //self.GetTemplateDatLich();
     //End Template Đặt lịch
+
+    self.showModalNhacTienDo = function () {
+        _vmCaiDatNhacTienDo.showModal();
+    }
 };
 
 var FileModel = function (filef, srcf) {

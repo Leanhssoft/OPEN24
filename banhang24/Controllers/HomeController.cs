@@ -235,6 +235,7 @@ namespace banhang24.Controllers
                 
                 if (subdomain != null && subdomain.Trim() != "")
                 {
+                    CookieStore.SetCookieAes("SubDomain", subdomain, new TimeSpan(30, 0, 0, 0, 0), subdomain);
                     if (ConnectionStringSystem.CreateConnectionString(subdomain, server) == "")
                     {
                         if (CheckCreateDatabase(subdomain))
@@ -242,7 +243,6 @@ namespace banhang24.Controllers
                             classHT_NguoiDung classHTNguoiDung = new classHT_NguoiDung(db);
                             SystemDBContext.MigrationDatabase(subdomain);
 
-                            CookieStore.SetCookieAes("SubDomain", subdomain, new TimeSpan(30, 0, 0, 0, 0), subdomain);
                             userLogin objUser_Cookies = classHTNguoiDung.GetUserCookies(this);
                             if (objUser_Cookies != null)
                             {

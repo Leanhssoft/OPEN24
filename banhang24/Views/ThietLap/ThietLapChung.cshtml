@@ -158,7 +158,7 @@
                                         </div>
                                     </div>
                                 </li>
-                             
+
                                 <li>
                                     <div class="item-es">
                                         <div class="icon-es">
@@ -179,7 +179,7 @@
                                     </div>
                                     <a href="#" class="datail-TH tichdiem" data-bind="click: $root.clickShowTichDiem">Chi tiết</a>
                                 </li>
-                              
+
                                 <li style="display:none">
                                     <div class="item-es">
                                         <div class="icon-es">
@@ -384,9 +384,15 @@
                                     </div>
                                     <a href="javascript:void(0)" class="datail-TH machungtu" data-bind="click: showThietLapMaChungTu">Chi tiết</a>
                                 </li>
-                                <!-- ko if: $root.IsGara()-->
+                                <!-- ko if: $root.IsGara() && !$root.isLeeAuto()-->
                                 <li class="height-30" data-toggle="modal" data-target="#modalSetupBaoDuong" style="text-align: left; padding-left: 13px;">
                                     Cài đặt lịch nhắc bảo dưỡng
+                                </li>
+                                <!--/ko-->
+                                <!-- ko if: $root.isLeeAuto()-->
+                                <li class="height-30" data-toggle="modal" style="text-align: left; padding-left: 13px;"
+                                    data-bind="click: $root.showModalNhacTienDo">
+                                    Cài đặt nhắc tiến độ công việc
                                 </li>
                                 <!--/ko-->
                             </ul>
@@ -433,7 +439,7 @@
                                         </div>
                                     </div>
                                 </li>
-                              
+
                                 <li>
                                     <div class="item-es" data-bind="click:$root.ShowThongBaoLoHang">
                                         <div class="icon-es">
@@ -454,7 +460,7 @@
                                     </div>
                                     <a href="#" class="datail-TH lohang" data-toggle="modal" data-target="#modalPopup_lohanghoa">Chi tiết</a>
                                 </li>
-                               
+
                                 <li>
                                     <div class="item-es">
                                         <div class="icon-es">
@@ -493,7 +499,7 @@
                                         </div>
                                     </div>
                                 </li>
-                              
+
                             </ul>
                             <div style="" class="text-right">
                                 <button type="button" class="btn btn-save" data-bind="click: LuuThietLap"> <i class="fa fa-save"></i> Lưu</button>
@@ -1620,6 +1626,9 @@
 @Scripts.Render("~/bundles/ThietLap")
 <script src="@Url.ContentVersioned("~/Scripts/Thietlap/Modal_ThietLapMaChungTu.js")"></script>
 <script src="@Url.ContentVersioned("~/Scripts/Thietlap/CauHinhHeThong.js")"></script>
+<script src="@Url.ContentVersioned("~/Scripts/Components/NhanVien_KhachHang.js")"></script>
+@Html.Partial("~/Views/Gara/QuanLySuaChua/_CaiDatNhacTienDoCongViec.cshtml")
+
 
 <script>
     //Script thiết lập lịch nhắc bảo dưỡng using vuejs
@@ -1713,28 +1722,30 @@
 
     //iframe
     var frame = document.getElementById("Iframe");
+    if (frame !== undefined && frame !== null) {
+        // Adjusting the iframe height onload event
+        frame.onload = function () {
+            /*frame.contentWindow.document.documentElement.style.setProperty('--color-main', '#c97d39');*/
 
-    // Adjusting the iframe height onload event
-    frame.onload = function () {
-        /*frame.contentWindow.document.documentElement.style.setProperty('--color-main', '#c97d39');*/
+        }
 
+        frame.onload = setInterval(function ()
+        // function execute while load the iframe
+        {
+            // set the height of the iframe as
+            // the height of the iframe content
+            frame.style.height =
+                frame.contentWindow.document.body.scrollHeight + 'px';
+
+
+            // set the width of the iframe as the
+            // width of the iframe content
+            //frame.style.width =
+            //    frame.contentWindow.document.body.scrollWidth + 'px';
+
+        }, 500)
     }
 
-    frame.onload = setInterval(function ()
-    // function execute while load the iframe
-    {
-        // set the height of the iframe as
-        // the height of the iframe content
-        frame.style.height =
-            frame.contentWindow.document.body.scrollHeight + 'px';
-
-
-        // set the width of the iframe as the
-        // width of the iframe content
-        //frame.style.width =
-        //    frame.contentWindow.document.body.scrollWidth + 'px';
-
-    }, 500)
 </script>
 @*<script>
             (function (global) {

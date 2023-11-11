@@ -1292,63 +1292,6 @@ BEGIN
 
 END");
 
-			Sql(@"ALTER PROCEDURE [dbo].[ChangePTN_updateCus]
-    @ID_PhieuTiepNhan [uniqueidentifier],
-    @ID_KhachHangOld [uniqueidentifier],
-    @ID_BaoHiemOld [uniqueidentifier],
-    @Types [nvarchar](20)
-AS
-BEGIN
-    SET NOCOUNT ON;
-    
-    	declare @tblType table(Loai int)
-    	insert into @tblType select name from dbo.splitstring(@Types)
-    
-    	---- get PTN new
-    	declare @PTNNew_IDCusNew uniqueidentifier, @PTNNew_BaoHiem uniqueidentifier
-    	select @PTNNew_IDCusNew = ID_KhachHang, @PTNNew_BaoHiem = ID_BaoHiem from Gara_PhieuTiepNhan where ID= @ID_PhieuTiepNhan
-    
-    	---- get list hoadon of PTN
-    	select ID, ID_DoiTuong, ID_BaoHiem
-    	into #tblHoaDon
-    	from BH_HoaDon
-    	where ID_PhieuTiepNhan = @ID_PhieuTiepNhan
-    	and ChoThanhToan =0
-    	and LoaiHoaDon in (3,25)
-    
-    	---- update cus
-    	if (select count(*) from @tblType where Loai in ('1','3')) > 0
-    	begin
-    		update hd set ID_DoiTuong= @PTNNew_IDCusNew
-    		from BH_HoaDon hd
-    		join #tblHoaDon hdCheck on hd.ID= hdCheck.ID
-
-			---- update phieuthu khachhang
-				update qct set ID_DoiTuong= @PTNNew_IDCusNew
-    			from Quy_HoaDon_ChiTiet qct
-    			join #tblHoaDon hdCheck on qct.ID_HoaDonLienQuan= hdCheck.ID
-    			where qct.ID_DoiTuong = hdCheck.ID_DoiTuong
-    	end
-
-    
-    	---- update baohiem
-    	if (select count(*) from @tblType where Loai in ('2','4')) > 0
-    	begin
-    		update hd set ID_BaoHiem= @PTNNew_BaoHiem
-    		from BH_HoaDon hd
-    		join #tblHoaDon hdCheck on hd.ID= hdCheck.ID
-    	
-			
-				---- update phieuthu baohiem
-    		update qct set ID_DoiTuong= @PTNNew_BaoHiem
-    		from Quy_HoaDon_ChiTiet qct
-    		join #tblHoaDon hdCheck on qct.ID_HoaDonLienQuan= hdCheck.ID
-    		where qct.ID_DoiTuong = hdCheck.ID_BaoHiem
-    	end
-
-	
-END");
-
 			Sql(@"ALTER PROCEDURE [dbo].[GetChiTietCongThuCong]
     @IDChiNhanhs [nvarchar](max),
     @IDNhanViens [nvarchar](max),

@@ -830,19 +830,12 @@ var CTGiaViewModel = function () {
 
 
     self.modalDeleteGiaBan = function (GiaBans) {
-        var lc_CTQuyen = JSON.parse(localStorage.getItem('lc_CTQuyen'));
-        if ($.inArray('ThietLapGia_Xoa', lc_CTQuyen) > -1) {
-            self.deleteID(self.newGiaBan().ID());
-            self.deleteTenHangHoa(self.newGiaBan().TenGiaBan());
-            ajaxHelper(GiaBanUri + 'CheckBangGia_wasUse/' + self.deleteID(), 'GET').done(function (exist) {
-                if (exist) {
-                    ShowMessage_Danger('Có giao dịch liên quan đến bảng giá. Không thể xóa');
-                }
-                else {
-                    $('#modalpopup_deleteGB').modal('show');
-                }
-            })
-        }
+        self.deleteID(self.newGiaBan().ID());
+        self.deleteTenHangHoa(self.newGiaBan().TenGiaBan());
+
+        dialogConfirm('Xóa bảng giá ', 'Bạn có chắc chắn muốn xóa bảng giá <b>'.concat(self.newGiaBan().TenGiaBan(), ' </b> không?'), function () {
+            self.xoaGiaBan();
+        })
     };
 
     self.xoaGiaBan = function () {
@@ -2347,13 +2340,13 @@ var CTGiaViewModel = function () {
         ajaxHelper(GiaBanUri + 'GetListGiaBans_where?currentPage=' + self.currentPage() + '&pageSize=' + self.pageSize() + '&idnhomhang=' + self.arrIDNhomHang() +
             '&maHoaDon=' + txtMaHDon + '&_id=' + self.selectedGiaBan() + '&columsort=' + self.columsort() + '&sort=' + self.sort() + '&iddonvi=' + _IDchinhanh,
             'GET').done(function (data) {
-                $('.table_price').gridLoader({ show: false });
                 self.GiaBanChitiets(data.lstBG);
                 self.TotalRecord(data.Rowcount);
                 self.PageCount(data.pageCount);
                 LoadHtmlGrid();
+            }).always(() => {
+                $('.table_price').gridLoader({ show: false });
             });
-        //allGiaChiTiet();
     }
 
     self.clickiconSearchBG = function () {

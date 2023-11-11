@@ -1,4 +1,5 @@
-﻿using banhang24.Hellper;
+﻿using banhang24.Cors;
+using banhang24.Hellper;
 using HT;
 using libHT;
 using libHT_NguoiDung;
@@ -11,7 +12,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Mail;
+using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using ZaloConnectApp;
 
 namespace banhang24.Areas.DanhMuc.Controllers
@@ -150,12 +153,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
 
         #endregion
+        //[AllowCrossSite]
+        //[EnableCors(origins: "https://localhost:3000", headers: "*", methods: "GET")]
         public List<HT_CongTy> GetHT_CongTy()
         {
+            HttpCookie cookie = HttpContext.Current.Request.Cookies["SubDomain"];
             try
             {
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
+                    db.Database.CommandTimeout = 10 * 60;
                     ClassHT_CongTy _classHTCT = new ClassHT_CongTy(db);
                     var cty = _classHTCT.Gets(null);
                     if (cty != null)
@@ -181,12 +188,14 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     }
                     else
                     {
+                        CookieStore.WriteLog("HTAPIController - GetHT_CongTy: cty is null");
                         return null;
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                CookieStore.WriteLog("HTAPIController - GetHT_CongTy: " + ex.Message);
                 return null;
             }
         }
@@ -712,11 +721,11 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         UrlPage.Gara_LichNhacBaoDuong, "g/Gara_LichNhacBaoDuong", false, "fa fa-calendar", new List<HeaderMenu>()));
                     lstSubMenuKhachHangCheck = true;
                 }
-                if (lstQuyen.Where(p => p == "PhanHoi_XemDS").FirstOrDefault() != null)
-                {
-                    lstSubMenuKhachHang.Add(new HeaderMenu(7, "Phản hồi", "Phản hồi", UrlPage.PhanHoi, "s/PhanHoi", false, "fa fa-phone", new List<HeaderMenu>()));
-                    lstSubMenuKhachHangCheck = true;
-                }
+                //if (lstQuyen.Where(p => p == "PhanHoi_XemDS").FirstOrDefault() != null)
+                //{
+                //    lstSubMenuKhachHang.Add(new HeaderMenu(7, "Phản hồi", "Phản hồi", UrlPage.PhanHoi, "s/PhanHoi", false, "fa fa-phone", new List<HeaderMenu>()));
+                //    lstSubMenuKhachHangCheck = true;
+                //}
                 if (lstQuyen.Where(p => p == "GuiTinNhan_XemDS").FirstOrDefault() != null)
                 {
                     lstSubMenuKhachHang.Add(new HeaderMenu(8, "Quản lý SMS", "Quản lý SMS", UrlPage.DichVuSMS, "s/DanhSachSMS", false, "fa fa-comment", new List<HeaderMenu>()));

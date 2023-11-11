@@ -1145,3 +1145,16 @@ $(window.document).on('shown.bs.modal', '.modal', function () {
         $('[autofocus]').select();
     }.bind(this), 100);
 });
+
+// to do check status network
+//const statusNetwork = (status = navigator.onLine) => {
+//    return status;
+//}
+//window.addEventListener("load", statusNetwork);
+//window.addEventListener("online", function (e) {
+//    statusNetwork(true);
+//});
+
+//window.addEventListener("offline", function (e) {
+//    statusNetwork(false);
+//});

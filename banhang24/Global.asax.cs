@@ -71,6 +71,14 @@ namespace banhang24
                 System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("vi");
                 System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("vi");
             }
+            //HttpContext.Current.Response.AddHeader("Access-Control-Allow-Origin", "https://localhost:3000");
+            //if (HttpContext.Current.Request.HttpMethod == "OPTIONS")
+            //{
+            //    //These headers are handling the "pre-flight" OPTIONS call sent by the browser
+            //    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Methods", "POST, GET");
+            //    HttpContext.Current.Response.AddHeader("Access-Control-Allow-Headers", "content-type");
+            //    HttpContext.Current.Response.End();
+            //}
         }
     }
 }

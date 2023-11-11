@@ -14,10 +14,11 @@ namespace libReport
         public ClassReportGara(SsoftvnContext db)
         {
             _db = db;
+            _db.Database.CommandTimeout = 10 * 60;
         }
 
         public List<BaoCaoDoanhThuSuaChuaTongHop> GetBaoCaoDoanhThuSuaChuaTongHop(string IdChiNhanhs, DateTime? ThoiGianFrom,
-            DateTime ThoiGianTo, double? DoanhThuFrom, double? DoanhThuTo, double? LoiNhuanFrom, double? LoiNhuanTo, string TextSearch)
+            DateTime ThoiGianTo, double? DoanhThuFrom, double? DoanhThuTo, double? LoiNhuanFrom, double? LoiNhuanTo, string TextSearch, string TrangThai)
         {
             try
             {
@@ -30,9 +31,10 @@ namespace libReport
                 paramlist.Add(new SqlParameter("LoiNhuanFrom", LoiNhuanFrom == null ? (object)DBNull.Value : LoiNhuanFrom.Value));
                 paramlist.Add(new SqlParameter("LoiNhuanTo", LoiNhuanTo == null ? (object)DBNull.Value : LoiNhuanTo.Value));
                 paramlist.Add(new SqlParameter("TextSearch", TextSearch));
+                paramlist.Add(new SqlParameter("TrangThai", TrangThai));
                 string sqlQuery = "exec BaoCaoDoanhThuSuaChuaTongHop @IdChiNhanhs, " +
                     "@ThoiGianFrom, @ThoiGianTo, @DoanhThuFrom, @DoanhThuTo, " +
-                    "@LoiNhuanFrom, @LoiNhuanTo, @TextSearch";
+                    "@LoiNhuanFrom, @LoiNhuanTo, @TextSearch, @TrangThai";
                 return _db.Database.SqlQuery<BaoCaoDoanhThuSuaChuaTongHop>(sqlQuery, paramlist.ToArray()).ToList();
             }
             catch (Exception ex)
@@ -43,7 +45,7 @@ namespace libReport
         }
 
         public List<BaoCaoDoanhThuSuaChuaChiTiet> GetBaoCaoDoanhThuSuaChuaChiTiet(string IdChiNhanhs, DateTime? ThoiGianFrom,
-            DateTime ThoiGianTo, double? DoanhThuFrom, double? DoanhThuTo, double? LoiNhuanFrom, double? LoiNhuanTo, string TextSearch, Guid? IdNhomHangHoa)
+            DateTime ThoiGianTo, double? DoanhThuFrom, double? DoanhThuTo, double? LoiNhuanFrom, double? LoiNhuanTo, string TextSearch, Guid? IdNhomHangHoa, string TrangThai)
         {
             try
             {
@@ -57,9 +59,10 @@ namespace libReport
                 paramlist.Add(new SqlParameter("LoiNhuanTo", LoiNhuanTo == null ? (object)DBNull.Value : LoiNhuanTo.Value));
                 paramlist.Add(new SqlParameter("TextSearch", TextSearch));
                 paramlist.Add(new SqlParameter("IdNhomHangHoa", IdNhomHangHoa == null ? (object)DBNull.Value : IdNhomHangHoa.Value));
+                paramlist.Add(new SqlParameter("TrangThai", TrangThai));
                 string sqlQuery = "exec BaoCaoDoanhThuSuaChuaChiTiet @IdChiNhanhs, " +
                     "@ThoiGianFrom, @ThoiGianTo, @DoanhThuFrom, @DoanhThuTo, " +
-                    "@LoiNhuanFrom, @LoiNhuanTo, @TextSearch, @IdNhomHangHoa";
+                    "@LoiNhuanFrom, @LoiNhuanTo, @TextSearch, @IdNhomHangHoa, @TrangThai";
                 return _db.Database.SqlQuery<BaoCaoDoanhThuSuaChuaChiTiet>(sqlQuery, paramlist.ToArray()).ToList();
             }
             catch (Exception ex)
@@ -70,7 +73,7 @@ namespace libReport
         }
 
         public List<BaoCaoDoanhThuSuaChuaTheoXe> GetBaoCaoDoanhThuSuaChuaTheoXe(string IdChiNhanhs, DateTime? ThoiGianFrom,
-            DateTime ThoiGianTo, double? SoLanTiepNhanFrom, double? SoLanTiepNhanTo, double? SoLuongHoaDonFrom, double? SoLuongHoaDonTo, double? DoanhThuFrom, double? DoanhThuTo, double? LoiNhuanFrom, double? LoiNhuanTo, string TextSearch)
+            DateTime ThoiGianTo, double? SoLanTiepNhanFrom, double? SoLanTiepNhanTo, double? SoLuongHoaDonFrom, double? SoLuongHoaDonTo, double? DoanhThuFrom, double? DoanhThuTo, double? LoiNhuanFrom, double? LoiNhuanTo, string TextSearch, string TrangThai)
         {
             try
             {
@@ -87,11 +90,12 @@ namespace libReport
                 paramlist.Add(new SqlParameter("LoiNhuanFrom", LoiNhuanFrom == null ? (object)DBNull.Value : LoiNhuanFrom.Value));
                 paramlist.Add(new SqlParameter("LoiNhuanTo", LoiNhuanTo == null ? (object)DBNull.Value : LoiNhuanTo.Value));
                 paramlist.Add(new SqlParameter("TextSearch", TextSearch));
+                paramlist.Add(new SqlParameter("TrangThai", TrangThai));
                 string sqlQuery = "exec BaoCaoDoanhThuSuaChuaTheoXe @IdChiNhanhs, @ThoiGianFrom, @ThoiGianTo, " +
                     "@SoLanTiepNhanFrom, @SoLanTiepNhanTo, " +
                     "@SoLuongHoaDonFrom, @SoLuongHoaDonTo, " +
                     "@DoanhThuFrom, @DoanhThuTo, " +
-                    "@LoiNhuanFrom, @LoiNhuanTo, @TextSearch";
+                    "@LoiNhuanFrom, @LoiNhuanTo, @TextSearch, @TrangThai";
                 return _db.Database.SqlQuery<BaoCaoDoanhThuSuaChuaTheoXe>(sqlQuery, paramlist.ToArray()).ToList();
             }
             catch (Exception ex)
@@ -102,7 +106,7 @@ namespace libReport
         }
 
         public List<BaoCaoDoanhThuSuaChuaTheoCoVan> GetBaoCaoDoanhThuSuaChuaTheoCoVan(string IdChiNhanhs, DateTime? ThoiGianFrom,
-            DateTime ThoiGianTo, double? SoLanTiepNhanFrom, double? SoLanTiepNhanTo, double? SoLuongHoaDonFrom, double? SoLuongHoaDonTo, double? DoanhThuFrom, double? DoanhThuTo, double? LoiNhuanFrom, double? LoiNhuanTo, string TextSearch)
+            DateTime ThoiGianTo, double? SoLanTiepNhanFrom, double? SoLanTiepNhanTo, double? SoLuongHoaDonFrom, double? SoLuongHoaDonTo, double? DoanhThuFrom, double? DoanhThuTo, double? LoiNhuanFrom, double? LoiNhuanTo, string TextSearch, string TrangThai)
         {
             try
             {
@@ -119,11 +123,12 @@ namespace libReport
                 paramlist.Add(new SqlParameter("LoiNhuanFrom", LoiNhuanFrom == null ? (object)DBNull.Value : LoiNhuanFrom.Value));
                 paramlist.Add(new SqlParameter("LoiNhuanTo", LoiNhuanTo == null ? (object)DBNull.Value : LoiNhuanTo.Value));
                 paramlist.Add(new SqlParameter("TextSearch", TextSearch));
+                paramlist.Add(new SqlParameter("TrangThai", TrangThai));
                 string sqlQuery = "exec BaoCaoDoanhThuSuaChuaTheoCoVan @IdChiNhanhs, @ThoiGianFrom, @ThoiGianTo, " +
                     "@SoLanTiepNhanFrom, @SoLanTiepNhanTo, " +
                     "@SoLuongHoaDonFrom, @SoLuongHoaDonTo, " +
                     "@DoanhThuFrom, @DoanhThuTo, " +
-                    "@LoiNhuanFrom, @LoiNhuanTo, @TextSearch";
+                    "@LoiNhuanFrom, @LoiNhuanTo, @TextSearch, @TrangThai";
                 return _db.Database.SqlQuery<BaoCaoDoanhThuSuaChuaTheoCoVan>(sqlQuery, paramlist.ToArray()).ToList();
             }
             catch (Exception ex)

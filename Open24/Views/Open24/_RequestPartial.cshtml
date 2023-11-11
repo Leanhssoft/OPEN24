@@ -1,4 +1,18 @@
-﻿@*<div class="page-request">
+﻿<style>
+    /* Chrome, Safari, Edge, Opera */
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    /* Firefox */
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+</style>
+<div class="page-request" id="frmGuiYeuCauTuVan">
+@*<div class="page-request">
     <div class="container">
         <div class="list-introduces content-page-more">
             <h2 class="title title-page-more speed-animation">
@@ -7,39 +21,83 @@
         </div>
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <form>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="txtHoTen" placeholder="Họ và tên">
-                        <label for="txtHoTen">Họ và tên</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com">
-                        <label for="txtEmail">Email</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="txtDienThoai" placeholder="Số điện thoại">
-                        <label for="txtDienThoai">Số điện thoại</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="txtDiaChi" placeholder="Địa chỉ">
-                        <label for="txtDiaChi">Địa chỉ</label>
-                    </div>
-                </form>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="txtHoTen" placeholder="Họ và tên" v-model="FullName">
+                    <label for="txtHoTen">Họ và tên</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com" v-model="Email">
+                    <label for="txtEmail">Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="txtDienThoai" placeholder="Số điện thoại" v-model="Phone">
+                    <label for="txtDienThoai">Số điện thoại</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="txtDiaChi" placeholder="Địa chỉ" v-model="Address">
+                    <label for="txtDiaChi">Địa chỉ</label>
+                </div>
+                
             </div>
             <div class="col-lg-6 col-md-6  col-sm-6 col-12">
-                <form>
-                    <div class="form-floating mb-3">
-                        <textarea type="text" class="form-control" id="txtNoiDung" placeholder="Nội dung yêu cầu" style="height:205px"></textarea>
-                        <label for="txtNoiDung">Nội dung</label>
-                    </div>
-                    <button class="btn-submit" style="margin:10px 0">
-                        <i class="fa fa-hand-o-right" aria-hidden="true" style="font-size:22px"></i>
-                        Gửi yêu cầu
-                    </button>
-                </form>
+                <div class="form-floating mb-3">
+                    <textarea type="text" class="form-control" id="txtNoiDung" placeholder="Nội dung yêu cầu" style="height:205px" v-model="Noted"></textarea>
+                    <label for="txtNoiDung">Nội dung</label>
+                </div>
+                <button class="btn-submit" style="margin:10px 0" v-on:click="ClickGuiYeuCau">
+                    <i class="fa fa-hand-o-right" aria-hidden="true" style="font-size:22px"></i>
+                    Gửi yêu cầu
+                </button>
             </div>
         </div>
     </div>
+</div>
+
+<script>
+    var VYeuCauTuVan = new Vue({
+        el: "#frmGuiYeuCauTuVan",
+        data: {
+            FullName: "",
+            Email: "",
+            Phone: "",
+            Address: "",
+            Noted: ""
+        },
+        methods: {
+            ClickGuiYeuCau: function () {
+                let self = this;
+                var model = {
+                    FullName: self.FullName,
+                    Phone: self.Phone,
+                    Noted: self.Noted,
+                    Address: self.Address,
+                    Email: self.Email
+                };
+                $.ajax({
+                    data: model,
+                    url: '/Open24Api/ApiHome/GuiYeuCauTuVan',
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    success: function (item) {
+                        if (item.res === true) {
+                            alert("Yêu cầu của quý khách đã gửi thành công. Chúng tôi sẽ liên hệ lại với quý khách trong thời gian sớm nhất. Cảm ơn quý khách!")
+                            /*window.location.href = "/dang-ky-dung-thu-thanh-cong";*/
+                            self.FullName = '';
+                            self.Phone = '';
+                            self.Noted = '';
+                            self.Address = "";
+                            self.Email = "";
+                        }
+                        else {
+                            alert(item.mess);
+                        }
+                    }
+                });
+            }
+        }
+    });
+</script>
 </div>*@
 <style>
     .from-request {

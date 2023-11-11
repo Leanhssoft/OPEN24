@@ -33,6 +33,8 @@
             ID_NhanVien: VHeader.IdNhanVien,
         };
         self.onRefresh = true;
+        const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
+        self.isLeeAuto = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1;
         self.PageLoad();
     },
     data: {
@@ -118,8 +120,42 @@
         }
     },
     methods: {
+        Init_HeaderAll: function () {
+            let self = this;
+            if (self.isLeeAuto) {
+                self.ListHeaderAll = [{ colName: 'BienSo', colText: 'Biển số xe', colShow: true, index: 1, Css: '' },
+                { colName: 'MaDoiTuong', colText: 'Mã chủ xe', colShow: true, index: 2, Css: '' },
+                { colName: 'TenDoiTuong', colText: 'Tên chủ xe', colShow: true, index: 3, Css: '' },
+                { colName: 'DienThoai', colText: 'Điện thoại', colShow: true, index: 4, Css: '' },
+                { colName: 'Email', colText: 'Email', colShow: true, index: 5, Css: '' },
+                { colName: 'NgayBaoDuongDuKien', colText: 'Ngày bảo dưỡng dự kiến', colShow: true, index: 6, Css: '' },
+                { colName: 'GhiChu', colText: 'Ghi chú', colShow: true, index: 7, Css: '' },
+                { colName: 'TrangThai', colText: 'Trạng thái', colShow: true, index: 8, Css: '' },
+                ];
+            }
+            else {
+                self.ListHeaderAll = [{ colName: 'BienSo', colText: 'Biển số xe', colShow: true, index: 1, Css: '' },
+                { colName: 'MaDoiTuong', colText: 'Mã chủ xe', colShow: true, index: 2, Css: '' },
+                { colName: 'TenDoiTuong', colText: 'Tên chủ xe', colShow: true, index: 3, Css: '' },
+                { colName: 'DienThoai', colText: 'Điện thoại', colShow: true, index: 4, Css: '' },
+                { colName: 'Email', colText: 'Email', colShow: false, index: 5, Css: '' },
+                { colName: 'TenNhomHangHoa', colText: 'Tên nhóm hàng hóa', colShow: false, index: 6, Css: '' },
+                { colName: 'MaHangHoa', colText: 'Mã hàng hóa', colShow: true, index: 7, Css: '' },
+                { colName: 'TenHangHoa', colText: 'Tên hàng hóa', colShow: true, index: 8, Css: '' },
+                { colName: 'LanBaoDuong', colText: 'Lần bảo dưỡng', colShow: true, index: 9, Css: '' },
+                { colName: 'SoKmBaoDuong', colText: 'Số Km bảo dưỡng', colShow: true, index: 10, Css: '' },
+                { colName: 'NgayBaoDuongDuKien', colText: 'Ngày bảo dưỡng dự kiến', colShow: true, index: 11, Css: '' },
+                { colName: 'NgayNhacFrom', colText: 'Ngày nhắc bắt đầu', colShow: false, index: 12, Css: '' },
+                { colName: 'NgayNhacTo', colText: 'Ngày nhắc kết thúc', colShow: false, index: 13, Css: '' },
+                { colName: 'LanNhac', colText: 'Lần nhắc', colShow: false, index: 14, Css: '' },
+                { colName: 'GhiChu', colText: 'Ghi chú', colShow: true, index: 15, Css: '' },
+                { colName: 'TrangThai', colText: 'Trạng thái', colShow: true, index: 16, Css: '' },
+                ];
+            }
+        },
         PageLoad: function () {
             let self = this;
+            self.Init_HeaderAll();
             self.InitListHeader();
             self.GetListDonVi_User();
             self.GetListNhomHang();
@@ -196,7 +232,7 @@
         NhacBaoDuong_GetHTCaiDat: function () {
             let self = this;
             $.getJSON('/api/DanhMuc/HT_ThietLapAPI/' + 'GetCaiDatLichNhacBaoDuong').done(function (x) {
-                if (x.res) {
+                if (x.res && x.dataSoure !== null) {
                     let data = x.dataSoure;
                     for (let i = 0; i <= data.SoLanLapLai; i++) {
                         let obj = {}
@@ -290,18 +326,34 @@
             $('#tblLichBaoDuong').gridLoader();
             let param = self.GetParamSeach();
 
-            ajaxHelper(self.urlAPI.Gara + 'GetLichBaoDuong', 'POST', param).done(function (x) {
-                console.log('GetLichBaoDuong ', param, x)
-                $('#tblLichBaoDuong').gridLoader({ show: false });
-                if (x.res) {
-                    self.listData.LichBaoDuong = x.dataSoure.data;
-                    self.filter.PageView = x.dataSoure.PageView;
-                    self.filter.ListPage = x.dataSoure.ListPage;
-                    self.filter.TotalPage = x.dataSoure.TotalPage;
+            if (self.isLeeAuto) {
+                ajaxHelper(self.urlAPI.Gara + 'LeeAuto_GetLichBaoDuong', 'POST', param).done(function (x) {
+                    console.log('GetLichBaoDuong ', param, x)
+                    $('#tblLichBaoDuong').gridLoader({ show: false });
+                    if (x.res) {
+                        self.listData.LichBaoDuong = x.dataSoure.data;
+                        self.filter.PageView = x.dataSoure.PageView;
+                        self.filter.ListPage = x.dataSoure.ListPage;
+                        self.filter.TotalPage = x.dataSoure.TotalPage;
 
-                    self.Paging_SetCheckBox();
-                }
-            });
+                        self.Paging_SetCheckBox();
+                    }
+                });
+            }
+            else {
+                ajaxHelper(self.urlAPI.Gara + 'GetLichBaoDuong', 'POST', param).done(function (x) {
+                    console.log('GetLichBaoDuong ', param, x)
+                    $('#tblLichBaoDuong').gridLoader({ show: false });
+                    if (x.res) {
+                        self.listData.LichBaoDuong = x.dataSoure.data;
+                        self.filter.PageView = x.dataSoure.PageView;
+                        self.filter.ListPage = x.dataSoure.ListPage;
+                        self.filter.TotalPage = x.dataSoure.TotalPage;
+
+                        self.Paging_SetCheckBox();
+                    }
+                });
+            }
             self.onRefresh = false;
         },
         Paging_SetCheckBox: function () {
@@ -416,7 +468,7 @@
                 commonStatisJs.ShowMessageDanger('Trạng thái này chỉ được cập nhật tự động khi tạo hóa đơn');
                 return;
             }
-            if (status === 5 || status === 3) {
+            if (!self.isLeeAuto && (status === 5 || status === 3)) {
                 self.InsertLichNhac(item, 1);
             }
             var param = {
@@ -478,6 +530,10 @@
 
             ajaxHelper(self.urlAPI.Gara + 'LichNhacBaoDuong_Update', 'POST', item).done(function (x) {
                 if (x.res) {
+                    let pt = '';
+                    if (!self.isLeeAuto) {
+                        pt = ', Tên hàng hóa: '.concat(item.TenHangHoa, ' (', item.MaHangHoa, ')');
+                    }
                     let diary = {
                         ID_DonVi: self.inforLogin.ID_DonVi,
                         ID_NhanVien: self.inforLogin.ID_NhanVien,
@@ -485,7 +541,7 @@
                         ChucNang: 'Lịch nhắc bảo dưỡng',
                         NoiDung: 'Cập nhật lịch nhắc bảo dưỡng, Biển số xe:' + item.BienSo,
                         NoiDungChiTiet: 'Cập nhật lịch nhắc bảo dưỡng, Biển số xe: '.concat(item.BienSo,
-                            ', Tên hàng hóa: ', item.TenHangHoa, ' (', item.MaHangHoa, ')',
+                            pt,
                             '<br /> - Ngày nhắc dự kiến (cũ): ', moment(ngayBD).format('DD/MM/YYYY'),
                             '<br /> - Ngày nhắc dự kiến (mới): ', moment(item.NgayBaoDuongDuKien).format('DD/MM/YYYY'),
                             '<br /> - Lần nhắc (cũ): ', self.lichOld.LanNhac,
@@ -497,7 +553,7 @@
                     Insert_NhatKyThaoTac_1Param(diary);
                     commonStatisJs.ShowMessageSuccess('Cập nhật lịch nhắc thành công');
 
-                    if (type === 2) {
+                    if (type === 2 && !self.isLeeAuto) {
                         self.InsertLichNhac(item, 1);
                     }
                 }
@@ -568,6 +624,25 @@
 
             self.GetNhatKyBaoDuong_byCar(item.ID_Xe);
         },
+        gotoPage: function (item) {
+            window.open('#/DanhSachXe?' + item.BienSo, '_blank');
+        },
+        updateCus: async function (id) {
+            var self = this;
+            let cus = await vmThemMoiKhach.GetInforKhachHangFromDB_ByID(id);
+            if (cus != null && cus.length > 0) {
+                cus[0].TenTrangThai = '';
+                cus[0].TenNguoiGioiThieu = cus[0].NguoiGioiThieu;
+                vmThemMoiKhach.showModalUpdate(cus[0]);
+                vmThemMoiKhach.inforLogin = self.inforLogin;
+            }
+        },
+        updateCar: async function (item) {
+            let self = this;
+            vmThemMoiXe.inforLogin = self.inforLogin;
+            let car = await vmThemMoiXe.GetInforCar_byID(item.ID_Xe);
+            vmThemMoiXe.ShowModalUpdate(car);
+        },
         ExportExcel: function () {
             let self = this;
             if (self.listData.LichBaoDuong.length > 0) {
@@ -584,12 +659,22 @@
                 param.CurrentPage = 0;
                 param.PageSize = self.listData.LichBaoDuong[0].TotalRow;
 
-                ajaxHelper(self.urlAPI.Gara + 'ExportExcel_LichBaoDuong', 'POST', param).done(function (x) {
-                    $('.content-table').gridLoader({ show: false });
-                    if (x.res) {
-                        self.DownloadFileTeamplateXLSX(x.mess);
-                    }
-                })
+                if (self.isLeeAuto) {
+                    ajaxHelper(self.urlAPI.Gara + 'LeeAuto_ExportExcelLichBaoDuong', 'POST', param).done(function (x) {
+                        $('.content-table').gridLoader({ show: false });
+                        if (x.res) {
+                            self.DownloadFileTeamplateXLSX(x.mess);
+                        }
+                    })
+                }
+                else {
+                    ajaxHelper(self.urlAPI.Gara + 'ExportExcel_LichBaoDuong', 'POST', param).done(function (x) {
+                        $('.content-table').gridLoader({ show: false });
+                        if (x.res) {
+                            self.DownloadFileTeamplateXLSX(x.mess);
+                        }
+                    })
+                }
             }
         },
         DownloadFileTeamplateXLSX: function (pathFile) {

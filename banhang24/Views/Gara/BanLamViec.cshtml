@@ -64,7 +64,7 @@
                                 </button>
                             </li>
                             <li v-if="$root.role.Xe.XuatXuong">
-                                <button type="button" class="btn btn-main" 
+                                <button type="button" class="btn btn-main"
                                         v-on:click="showModalXuatXuong_Out">
                                     <i class="fa fa-reply-all"></i>
                                     Xuất xưởng
@@ -116,9 +116,9 @@
                         <div class="op-search" style="position:relative">
                             <input type="text" class="form-control"
                                    placeholder="Tìm kiếm" aria-label="Tìm kiếm xe"
-                                   v-model="textSearch" v-on:keyup.enter="Gara_GetListPhieuTiepNhan">
+                                   v-model="textSearch" v-on:keyup.enter="$root.filter_DanhSachPTN">
                             <button class="op-search-button">
-                                <i class="material-icons" style="font-size:18px; color:white;" v-on:click="Gara_GetListPhieuTiepNhan">search</i>
+                                <i class="material-icons" style="font-size:18px; color:white;" v-on:click="$root.filter_DanhSachPTN">search</i>
                             </button>
                         </div>
                     </div>
@@ -177,6 +177,10 @@
                                         <td v-if="CheckColShow('TenCongTyBaoHiem')"
                                             v-bind:title="item.TenBaoHiem">
                                             {{item.TenBaoHiem}}
+                                        </td>
+                                        <td v-if="CheckColShow('PTNGhiChu')"
+                                            v-bind:title="item.GhiChu">
+                                            {{item.GhiChu}}
                                         </td>
                                     </tr>
 
@@ -307,7 +311,12 @@
                                                 <i class="material-icons" style="display:none">gavel</i>
                                                 <p>Duyệt</p>
                                             </a>
-                                            <a title="Thanh toán" 
+                                            @*<a title="Nhập hàng"
+                                               v-on:click="NhapHang(item)"
+                                               v-if="$root.role.HoaDon.NhapHang && item.YeuCau!=='3' && item.TrangThai ==='0'">
+                                                <i class="fal fa-cart-plus"></i> Nhập hàng
+                                            </a>*@
+                                            <a title="Thanh toán"
                                                v-on:click="showModalThanhToan(item)"
                                                v-if="$root.role.HoaDon.ThanhToan && item.YeuCau!=='3' && item.TrangThai ==='0'">
                                                 <i class="fa fa-dollar"></i> Đặt cọc
@@ -417,7 +426,7 @@
                                                 </a>
                                             </li>
                                             <li onclick="expandbutton(this)">{{formatNumber3Digit(item.TongThanhToan)}}</li>
-                                            <li onclick="expandbutton(this)">{{formatNumber3Digit(item.ConNo,2)}}</li>
+                                            <li onclick="expandbutton(this)">{{formatNumber3Digit(item.ConNo,0)}}</li>
                                         </ul>
                                         <div class="gara-section-list-functions">
                                             <div class="btn-group dropdown-mauin">
@@ -550,6 +559,8 @@
     @Html.Partial("~/Views/Marketing/_GuiTinSmsModal.cshtml")
     @Html.Partial("~/Views/Gara/HoaDon/_ThanhPhanCombo.cshtml")
     @Html.Partial("~/Views/Gara/HoaDon/_ChiPhiHoaDon.cshtml")
+    @Html.Partial("~/Views/Gara/QuanLySuaChua/_NhatKyBaoDuong.cshtml")
+    @Html.Partial("~/Views/Gara/_ThanhPhanDinhLuong.cshtml")
 
     <div class="modal fade" id="modalPopuplgDelete">
         <div class="modal-dialog draggable" role="document">
@@ -790,7 +801,6 @@
 </body>
 </html>
 <script src="~/Scripts/Components/page-list.js"></script>
-<script src="@Url.ContentVersioned("~/Scripts/BanHang/Public.js")"></script>
 <script src="@Url.ContentVersioned("~/Scripts/Gara/BanLamViec/BanLamViec.js")"></script>
 <script>
     $(document).ready(function () {
@@ -807,7 +817,7 @@
             }
         });
     })
-  
+
 </script>
 <script>
     function checksection(options) {

@@ -25,7 +25,7 @@
                 <div class="mb-3">
                     <label class="form-label">Số điện thoại <span style="color:red">(*)</span>:</label>
                     <div>
-                        <input autocomplete="off" type="text" class="form-control" v-model="Phone">
+                        <input autocomplete="off" type="tel" class="form-control" v-model="Phone">
                     </div>
                 </div>
                 <div class="mb-3">
@@ -125,7 +125,7 @@
         methods: {
             Clickdangky: function () {
                 var self = this;
-                switch (self.TypeOpenSelected) {
+                switch (parseInt(self.TypeOpenSelected)) {
                     case 3:
                         self.SoftwareCODE = 'STMN';
                         break;

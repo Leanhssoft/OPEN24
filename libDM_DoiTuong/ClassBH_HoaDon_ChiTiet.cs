@@ -637,6 +637,13 @@ namespace libDM_DoiTuong
                     db.BH_NhanVienThucHien.RemoveRange(data);
                 IQueryable<BH_HoaDon_ChiTiet> lstCTHD = db.BH_HoaDon_ChiTiet.Where(p => p.ID_HoaDon == idHD);
 
+                // delete BH_HoaDon_ChiPhi
+                var lstCPDV = db.BH_HoaDon_ChiPhi.Where(x => x.ID_HoaDon == idHD && x.ID_HoaDon_ChiTiet != null);
+                if (lstCPDV != null)
+                {
+                    db.BH_HoaDon_ChiPhi.RemoveRange(lstCPDV);
+                }
+
                 db.BH_HoaDon_ChiTiet.RemoveRange(lstCTHD); //remove cthd
                 db.SaveChanges();
             }
@@ -741,6 +748,7 @@ namespace libDM_DoiTuong
         public List<BH_HoaDon_ChiTietDTO> ThanhPhanComBo { get; set; }
         public int? HoaHongTruocChietKhau { get; set; }// TinhHoaHongTruocCK (0,1)
         public Guid? ID_Xe { get; set; }// used to banxe (hanhhoa laxe)
+        public string ViTriKho { get; set; } = string.Empty;
     }
 
     public class ChiPhiDichVuDTO
@@ -842,6 +850,7 @@ namespace libDM_DoiTuong
         public int SoThuTu { get; set; }
         public List<SP_ThanhPhanDinhLuong> ThanhPhan_DinhLuong { get; set; }
         public List<DonViTinh> DonViTinh { get; set; }
+        public string ViTriKho { get; set; }
     }
 
     public class GoiDichVu_KhachHang
@@ -975,6 +984,7 @@ namespace libDM_DoiTuong
         public DateTime? NgaySanXuat { get; set; }
         public DateTime? NgayHetHan { get; set; }
         public double? GiaBanHH { get; set; } /// used to nhaphang from hoadon
+        public string ViTriKho { get; set; } // used to nhaphang from hoadon
     }
 
     public class SP_InvoiceNewest

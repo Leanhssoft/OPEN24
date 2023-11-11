@@ -1,0 +1,371 @@
+﻿@using banhang24.Hellper
+<style scoped>
+    #vmCaiDatNhacTienDoCV.verticalLine {
+        border-left: solid 1px #cccc;
+        height: 110px;
+        margin-left: 47%;
+    }
+
+    #vmCaiDatNhacTienDoCV.horizontalline {
+        border-bottom: 1px solid #be6c6ccc;
+        margin-left: 47%;
+        width: 275px;
+    }
+
+    #vmCaiDatNhacTienDoCV.input-time {
+        width: 80px;
+        padding: 20px;
+    }
+
+    #vmCaiDatNhacTienDoCV.select-time {
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    #vmCaiDatNhacTienDoCV table tr td {
+        height: 90px !important;
+    }
+
+    #vmCaiDatNhacTienDoCV .form-group {
+        padding-top: 10px;
+    }
+
+        #vmCaiDatNhacTienDoCV .form-group label {
+            width: 85px;
+        }
+
+    #vmCaiDatNhacTienDoCV .type-time {
+        width: 50px;
+    }
+
+    #vmCaiDatNhacTienDoCV .icon-delete {
+        width: 50px;
+        color: red;
+        text-align: right;
+        padding-top: 5px;
+        font-size: 20px;
+    }
+
+    #vmCaiDatNhacTienDoCV .btn {
+        border-radius: unset;
+    }
+</style>
+<div class="modal fade" id="vmCaiDatNhacTienDoCV">
+    <div class="modal-dialog draggable">
+        <div class="modal-content  ui-draggable">
+            <div class="modal-header ui-draggable-handle">
+                <h5 class="modal-title">
+                    {{isNew?'Thiết lập quy trình nhắc tiến độ công việc':'Cài đặt nhắc tiến độ công việc'}}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
+
+            </div>
+            <div class="modal-body" style="padding:15px;">
+                <div class="col-sm-12">
+                    <template v-for="(item,index) in QuyTrinh">
+                        <div class="form-group">
+                            <label>
+                                Bước {{index + 1}}
+                            </label>
+                            <div class="form-news flex" style="font-weight: 700;"
+                                 v-on:click="FocusRow(index)">
+                                <step placeholder="Chọn tên bước thực hiện"
+                                      :text-search="item.TenBuocThucHien"
+                                      :list-all="DM_QuyTrinh"
+                                      :list-search="DM_QuyTrinh"
+                                      v-on:on-select-item="ChoseItem"
+                                      readonly>
+                                </step>
+                                <span class="icon-delete" v-on:click="deleteStep(index)">
+                                    <i class="fal fa-times"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group" v-if="index !== QuyTrinh.length - 1">
+                            <label></label>
+                            <div class="form-news flex">
+                                <input class="form-control" v-model="item.ThoiGian"
+                                       v-on:keyup.13="gotoNext" />
+                                <div class="plus vnd1 type-time"
+                                     v-bind:class="{gb: item.LoaiThoiGian ===1}"
+                                     v-on:click="Change_LoaiThoiGian(index,1)">Phút</div>
+                                <div class="plus senter1 type-time"
+                                     v-bind:class="{gb: item.LoaiThoiGian ===2}"
+                                     v-on:click="Change_LoaiThoiGian(index,2)">
+                                    Giờ
+                                </div>
+                            </div>
+                        </div>
+
+                    </template>
+                    <div class="col-sm-12">
+                        <label>
+
+                        </label>
+                        <button type="button" class="btn btn-save" v-if="QuyTrinh.length < 7" v-on:click="AddStep">
+                            <i class="fa fa-plus"></i>
+                            Thêm bước
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn-cancel" data-dismiss="modal">
+                        <i class="fa fa-ban"></i>Hủy
+                    </button>
+                    <button type="button" class="btn btn-save" v-if="!$root.isLoading" v-on:click="Save">
+                        <i class="fa fa-save"></i>
+                        Lưu
+                    </button>
+                    <button type="button" class="btn btn-save"
+                            v-if="$root.isLoading">
+                        <i class="fa fa-save"></i>
+                        Đang lưu
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.ContentVersioned("~/Scripts/Components/Input.js")"></script>
+<script>
+    var _vmCaiDatNhacTienDo = new Vue({
+        el: '#vmCaiDatNhacTienDoCV',
+        components: {
+            'step': cmpDropdown1Item,
+        },
+        created: function () {
+            let self = this;
+            console.log('_vmCaiDatNhacTienDo');
+
+            self.DM_QuyTrinh = [
+                { ID: 0, Text1: 'PTN', Text2: 'Tiếp nhận xe' },
+                { ID: 1, Text1: 'BG', Text2: 'Báo giá' },
+                { ID: 2, Text1: 'Coc', Text2: 'Đặt cọc' },
+                { ID: 3, Text1: 'HD', Text2: 'Tạo lệnh sửa chữa' },
+                { ID: 4, Text1: 'TT', Text2: 'Thanh toán' },
+                { ID: 5, Text1: 'XK', Text2: 'Xuất kho' },
+                { ID: 6, Text1: 'XX', Text2: 'Xuất xưởng' },
+            ];
+
+            $.getJSON('/api/DanhMuc/HT_ThietLapAPI/LeeAuto_GetCaiDatNhacTienDo').done(function (obj) {
+                if (obj.res) {
+                    obj.dataSoure.map(function (x) {
+                        x['STT'] = x.LoaiThongBao
+                        x['ID_BuocThucHien'] = x.LoaiThoiGianLapLai
+                        x['TenBuocThucHien'] = self.DM_QuyTrinh.filter(o => o.ID == x.LoaiThoiGianLapLai)[0].Text2
+                        x['ThoiGian'] = x.NhacTruocThoiGian
+                        x['LoaiThoiGian'] = x.NhacTruocLoaiThoiGian
+                    });
+                    self.QuyTrinhOld = obj.dataSoure.sort(function (a, b) {
+                        let x = a.STT, y = b.STT;
+                        return x > y ? 1 : x < y ? -1 : 0;
+                    });
+                }
+            });
+        },
+        computed: {
+
+        },
+        data: {
+            isLoading: false,
+            isNew: true,
+            saveOK: true,
+            indexChosing: 0,
+
+            QuyTrinhOld: [],
+
+            LoaiThoiGian: [
+                { ID: 1, Text2: 'Phút' },
+                { ID: 2, Text2: 'Giờ' },
+            ],
+
+            QuyTrinh: [
+                { STT: 0, TenBuocThucHien: 'Tiếp nhận xe', ThoiGian: 10, LoaiThoiGian: 1, ID_BuocThucHien: 0 },
+                { STT: 1, TenBuocThucHien: 'Báo giá', ThoiGian: 5, LoaiThoiGian: 1, ID_BuocThucHien: 1 },
+                { STT: 2, TenBuocThucHien: 'Đặt cọc', ThoiGian: 15, LoaiThoiGian: 1, ID_BuocThucHien: 2 },
+                { STT: 3, TenBuocThucHien: 'Tạo lệnh sửa chữa', ThoiGian: 20, LoaiThoiGian: 1, ID_BuocThucHien: 3 },
+                { STT: 4, TenBuocThucHien: 'Thanh toán', ThoiGian: 20, LoaiThoiGian: 1, ID_BuocThucHien: 4 },
+                { STT: 5, TenBuocThucHien: 'Xuất kho', ThoiGian: 1, LoaiThoiGian: 2, ID_BuocThucHien: 5 },
+                { STT: 6, TenBuocThucHien: 'Xuất xưởng', ThoiGian: 1, LoaiThoiGian: 2, ID_BuocThucHien: 6 },
+            ],
+        },
+        methods: {
+            rowSpan: function (index) {
+                if (index % 2 === 0) {
+                    return 2;
+                }
+                if (index % 2 === 1) {
+                    return 1;
+                }
+                return 0;
+            },
+            showModal: function () {
+                let self = this;
+                if (self.QuyTrinhOld.length > 0) {
+                    self.QuyTrinh = $.extend([], true, self.QuyTrinhOld);
+                }
+                $('#vmCaiDatNhacTienDoCV').modal('show');
+            },
+            gotoNext: function () {
+                let elm = $(event.currentTarget);
+                elm.parents().next().next().find('input').focus().select();
+            },
+            AddStep: function () {
+                let self = this;
+                let obj = {
+                    STT: self.QuyTrinh.length,
+                    TenBuocThucHien: '',
+                    ThoiGian: 15,
+                    LoaiThoiGian: 1,
+                    ID_BuocThucHien: null,
+                };
+                self.QuyTrinh.push(obj);
+                self.updateSTT();
+            },
+            deleteStep: function (index) {
+                let self = this;
+                for (let i = 0; i < self.QuyTrinh.length; i++) {
+                    if (i === index) {
+                        self.QuyTrinh.splice(i, 1);
+                        break;
+                    }
+                }
+                self.updateSTT();
+            },
+            FocusRow: function (index) {
+                let self = this;
+                self.indexChosing = index;
+            },
+            ChoseItem: function (item) {
+                let self = this;
+                let stepEx = $.grep(self.QuyTrinh, (x, index) => {
+                    return x.ID_BuocThucHien === item.ID && self.indexChosing !== index;// chose again same location
+                });
+
+                if (stepEx.length > 0) {
+                    ShowMessage_Danger('Các bước thực hiện không được trùng nhau');
+                    return;
+                }
+                for (let i = 0; i < self.QuyTrinh.length; i++) {
+                    if (i === self.indexChosing) {
+                        self.QuyTrinh[i].ID_BuocThucHien = item.ID;
+                        self.QuyTrinh[i].TenBuocThucHien = item.Text2;
+                        break;
+                    }
+                }
+                self.updateSTT();
+                self.QuyTrinh = $.extend([], true, self.QuyTrinh);// refreh
+            },
+            updateSTT: function () {
+                let self = this;
+                for (let i = 0; i < self.QuyTrinh.length; i++) {
+                    if (i === self.indexChosing) {
+                        self.QuyTrinh[i].STT = i;
+                        break;
+                    }
+                }
+            },
+            Change_LoaiThoiGian: function (index, type) {
+                let self = this;
+                for (let i = 0; i < self.QuyTrinh.length; i++) {
+                    if (i === index) {
+                        self.QuyTrinh[i].LoaiThoiGian = type;
+                        break;
+                    }
+                }
+            },
+            CheckSave: function () {
+                let self = this;
+                let stepNull = $.grep(self.QuyTrinh, (x) => {
+                    return x.ID_BuocThucHien === null;
+                });
+                if (stepNull.length > 0) {
+                    ShowMessage_Danger('Vui lòng chọn bước thực hiện');
+                    return false;
+                }
+                return true;
+            },
+
+            Save: function () {
+                let self = this;
+                if (self.isLoading) {
+                    return;
+                }
+
+                let check = self.CheckSave();
+                if (!check) {
+                    return;
+                }
+
+                self.isLoading = true;
+
+                // sort by STT
+                let arrSort = self.QuyTrinh.sort(function (a, b) {
+                    let x = a.STT, y = b.STT;
+                    return x > y ? 1 : x < y ? -1 : 0;
+                });
+                let arr = [], sDetail = '';
+                for (let i = 0; i < arrSort.length; i++) {
+                    let itFor = arrSort[i];
+                    let itemNext = i < arrSort.length - 1 ? arrSort[i + 1] : itFor;
+                    let obj = {
+                        LoaiThongBao: itFor.STT,
+                        LoaiThoiGianLapLai: itFor.ID_BuocThucHien,
+                        SoLanLapLai: itemNext.ID_BuocThucHien,
+                        NhacTruocThoiGian: itFor.ThoiGian,
+                        NhacTruocLoaiThoiGian: itFor.LoaiThoiGian,
+                    }
+                    arr.push(obj);
+
+                    sDetail = sDetail.concat('<br /> ', itFor.STT, '. ', itFor.TenBuocThucHien, ' - ', itemNext.TenBuocThucHien,
+                        ': Thời gian ', itFor.ThoiGian, ' ', itFor.LoaiThoiGian == 1 ? 'phút' : 'giờ');
+                }
+
+                let sOld = '';
+                if (self.QuyTrinhOld.length > 0) {
+                    sOld = '<br /> <b> Quy trình cũ </b>:'
+                    for (let i = 0; i < self.QuyTrinhOld.length; i++) {
+                        let itFor = self.QuyTrinhOld[i];
+                        let itemNext = i < self.QuyTrinhOld.length - 1 ? self.QuyTrinhOld[i + 1] : itFor;
+                        sOld = sOld.concat('<br /> ', itFor.STT, '. ', itFor.TenBuocThucHien, ' - ', itemNext.TenBuocThucHien,
+                            ': Thời gian ', itFor.ThoiGian, ' ', itFor.LoaiThoiGian == 1 ? 'phút' : 'giờ');
+                    }
+                }
+                let myData = {
+                    LstCaiDat: arr
+                }
+                ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + 'LeeAuto_CaiDatNhacTienDo', 'POST', myData).done(function (x) {
+                    console.log(x)
+                    if (x.res) {
+                        self.saveOK = true;
+                        let diary = {
+                            ID_DonVi: VHeader.IdDonVi,
+                            ID_NhanVien: VHeader.IdNhanVien,
+                            LoaiNhatKy: 1,
+                            ChucNang: 'Cài đặt nhắc tiến độ công việc',
+                            NoiDung: 'Cài đặt nhắc tiến độ công việc, user cài đặt: ' + VHeader.UserLogin,
+                            NoiDungChiTiet: sDetail + sOld,
+                        }
+                        Insert_NhatKyThaoTac_1Param(diary);
+                        ShowMessage_Success('Cài đặt thành công');
+
+                        // assign agian quytrinh old
+                        self.QuyTrinhOld = self.QuyTrinh
+                    }
+                }).fail(function () {
+                    ShowMessage_Danger('Cài đặt thất bại');
+                }).always(function () {
+                    self.isLoading = false;
+                    $('#vmCaiDatNhacTienDoCV').modal('hide');
+                });
+            },
+        }
+    })
+
+</script>
+

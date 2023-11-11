@@ -655,16 +655,16 @@
                                 <td class="@commonEnum.ColumnKhachHang.dienthoai">
                                     <input type="text" class="form-control search-grid" data-id="@keyphone" onclick="this.select()">
                                 </td>
-                                <td class="@commonEnum.ColumnKhachHang.nhomkhach">
+                                <td class="@commonEnum.ColumnKhachHang.nhomkhach" id="filterHeader_NhomKhach">
                                     <select class="form-control" data-bind="options: NhomDoiTuongs,
                                                 optionsText: 'TenNhomDoiTuong', optionsValue: 'ID', optionsCaption: 'Chọn',
                                                 value: selectNhomDT"></select>
                                 </td>
-                                <td class="@commonEnum.ColumnKhachHang.gioitinh">
+                                <td class="@commonEnum.ColumnKhachHang.gioitinh" id="filterHeader_GioiTinh">
                                     <select class="form-control" data-id="@keygender">
                                         <option value="0">...</option>
                                         <option value="1">Nam</option>
-                                        <option value='2'>nữ</option>
+                                        <option value='2'>Nữ</option>
                                     </select>
                                 </td>
                                 <td class="@commonEnum.ColumnKhachHang.ngaysinh"></td>
@@ -677,7 +677,7 @@
                                     <input type="text" class="form-control search-grid" data-id="@keyaddr" onclick="this.select()">
                                 </td>
                                 <td class="@commonEnum.ColumnKhachHang.tinhthanh"></td>
-                                <td class="@commonEnum.ColumnKhachHang.quanhuyen">
+                                <td class="@commonEnum.ColumnKhachHang.quanhuyen" id="filterHeader_QuanHuyen">
                                     <div id="divSearchDistr">
                                         <nav>
                                             <input type="text" class="form-control search-grid" id="txtSearchDistr" data-id="@keydistr"
@@ -695,7 +695,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="@commonEnum.ColumnKhachHang.nguonkhach">
+                                <td class="@commonEnum.ColumnKhachHang.nguonkhach" id="filterHeader_NguonKhach">
                                     <select class="form-control" data-bind="options: NguonKhachs,
                                                 optionsText: 'TenNguonKhach', optionsValue: 'ID', optionsCaption: 'Chọn',
                                                  value: selectedNguonKhach"></select>
@@ -843,18 +843,24 @@
                                             <li onclick="LoadGetHeight()"><a data-toggle="tab" data-bind=" attr: { href: '#contact'+ ID }, click: $root.LoadTab_CongNo">Công nợ khách hàng</a></li>
                                             <!--/ko-->
                                             <li onclick="LoadGetHeight()"><a data-toggle="tab" data-bind=" attr: { href: '#point_'+ ID }, visible: $parent.ThietLap_TichDiem() != null && $parent.ThietLap_TichDiem().length > 0">Nhật ký tích điểm</a></li>
+                                            <!--ko if: $parent.tabLienHeShow -->
                                             <li onclick="LoadGetHeight()">
                                                 <a data-toggle="tab"
                                                    data-bind=" attr: { href: '#Conttact_'+ ID }, click: $root.LoadTab_UserContact">Người liên hệ</a>
                                             </li>
+                                            <!-- /ko -->
+                                            <!--ko if: $parent.tabLienHeShow -->
                                             <li onclick="LoadGetHeight()">
                                                 <a data-toggle="tab"
                                                    data-bind=" attr: { href: '#DiaryWork_'+ ID }, click: $root.LoadTab_CongViec">Nhật ký công việc</a>
                                             </li>
+                                            <!-- /ko -->
+                                            <!--ko if: !$root.IsGara()-->
                                             <li onclick="LoadGetHeight()">
                                                 <a data-toggle="tab"
                                                    data-bind=" attr: { href: '#naptien'+ ID }, click: $root.clickTheGiaTri">Thẻ giá trị</a>
                                             </li>
+                                            <!--/ko-->
                                             <!--ko if: $root.IsGara()-->
                                             <li onclick="LoadGetHeight()">
                                                 <a data-toggle="tab"
@@ -1004,6 +1010,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="op-object-detail-function">
+                                                        <!--ko if: $root.RoleView_NhatKyGiaoDich()-->
+                                                        <button class="btn"
+                                                                style=" background: sienna; color: white "
+                                                                data-bind="click: $root.ShowPopListDiary_ofCustomer">
+                                                            <i class="far fa-book"></i> Xem nhật ký giao dịch
+                                                        </button>
+                                                        <!--/ko-->
                                                         <!--ko if: $root.RoleUpdate_Cus() && !TheoDoi-->
                                                         <button class="btn btn-main" data-bind="click: $parent.editKH">
                                                             <i class="fa fa-check-square"></i> Sửa đổi
@@ -1756,13 +1769,7 @@
                                                                         <tr>
                                                                             <th>Mã hóa đơn </th>
                                                                             <th>Loại phiếu </th>
-                                                                            <th>Ngày nạp</th>
-                                                                            <th>
-                                                                                Khách hàng
-                                                                            </th>
-                                                                            <th>
-                                                                                Số điện thoại
-                                                                            </th>
+                                                                            <th>Ngày lập</th>
                                                                             <th>Mức nạp</th>
                                                                             <th>Khuyến mãi</th>
                                                                             <th>Tổng tiền nạp</th>
@@ -1773,11 +1780,12 @@
                                                                     </thead>
                                                                     <tbody data-bind="foreach: $root.ListLSNapThe">
                                                                         <tr class="tr-show">
-                                                                            <td data-bind="text: MaHoaDon"></td>
+                                                                            <td>
+                                                                                <a data-bind="text: MaHoaDon, click: $root.DieuChinhThe_showUpdate" href="javascript:void(0)">
+                                                                                </a>
+                                                                            </td>
                                                                             <td data-bind="text: LoaiHoaDon === 22 ? 'Phiếu nạp' : 'Phiếu điều chỉnh'"></td>
                                                                             <td data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss'):''"></td>
-                                                                            <td data-bind="text: TenKhachHang"></td>
-                                                                            <td data-bind="text: SoDienThoai"></td>
                                                                             <td data-bind="text: formatNumber3Digit(MucNap)"></td>
                                                                             <td data-bind="text: formatNumber3Digit(KhuyenMaiVND)"></td>
                                                                             <td data-bind="text: formatNumber3Digit(TongTienNap)"></td>
@@ -2101,7 +2109,7 @@
                             </tr>
                             <!--/ko-->
                         </tbody>
-                        <!--ko if: $root.RoleXemTongDoanhThu() -->
+                        <!--ko if: $root.LaAdmin() || !$root.RoleXemTongDoanhThu() -->
                         <tfoot data-bind="visible: DoiTuongs().length > 0">
                             <tr class="border-bottom bold bg12">
                                 <td></td>
@@ -2134,7 +2142,7 @@
                         <!--/ko-->
                         <tfoot class="Report_Empty" data-bind="visible: DoiTuongs().length === 0">
                             <tr class="text-center">
-                                <td colspan="20"><i>Không có dữ liệu </i></td>
+                                <td colspan="30"><i>Không có dữ liệu </i></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -2320,13 +2328,34 @@
                     <h4 class="modal-title">Điều chỉnh thẻ giá trị</h4>
                 </div>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group" data-bind="visible: $root.TGT_ID() == null ">
                         <label class="css-form-label">Số dư hiện tại:</label>
                         <div class="form-news">
                             <input type="text" id="txtSoDuPopup" autofocus onkeyup="return formatNumberObj(this)" class="form-control">
                         </div>
                     </div>
+                    <!-- ko if: $root.TGT_ID() !== null-->
                     <div class="form-group">
+                        <label class="css-form-label">Mã phiếu:</label>
+                        <div class="form-news">
+                            <input type="text" class="form-control" readonly data-bind="value: $root.MaDieuChinh()">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="css-form-label"
+                               data-bind="text: $root.GiaTriDieuChinh()>0?'Điều chỉnh tăng':'Điều chỉnh giảm'"></label>
+                        <div class="form-news">
+                            <input type="text" class="form-control" readonly data-bind="value: formatNumber3Digit(Math.abs($root.GiaTriDieuChinh()))">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="css-form-label">Ngày điều chỉnh:</label>
+                        <div class="form-news">
+                            <input type="text" class="form-control" readonly data-bind="value: $root.NgayDieuChinh()">
+                        </div>
+                    </div>
+                    <!--/ko-->
+                    <div class="form-group" data-bind="visible: $root.TGT_ID() == null ">
                         <label class="css-form-label">Trạng thái:</label>
                         <div class="form-news">
                             <select class="form-control" id="ddltrangthaithe" data-bind="options: TrangThaiTheGT,
@@ -2337,6 +2366,9 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-cancel" data-dismiss="modal"><i class="fa fa-ban"></i>Bỏ qua</button>
+                    <button type="button" class="btn btn-cancel" data-bind="click: $root.TGT_HuyPhieuDieuChinh, visible: $root.TGT_ID() != null">
+                        <i class="fa fa-times"></i>Xóa
+                    </button>
                     <button type="button" class="btn btn-save" data-bind="click: $root.LuuTrangThaiThe"><i class="fa fa-save" aria-hidden="true"></i> Lưu</button>
                 </div>
             </div>
@@ -2408,6 +2440,7 @@
 @Html.Partial("~/Views/SoQuy/_ThemPhieuThuChi.cshtml")
 @Html.Partial("~/Views/DoiTac/_UpAnhHoaDon.cshtml")
 @Html.Partial("~/Views/Gara/_NhatKyGoiBaoDuong.cshtml")
+
 
 <div class="modal " id="modalPopuplgDelete">
     <div class="modal-dialog modal-md draggable ui-draggable">

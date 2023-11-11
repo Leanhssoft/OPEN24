@@ -543,7 +543,7 @@
                 <div class="form-group floatleft replus">
                     <label class="css-form-label toichinhanh" data-bind="text: IsChuyenHang()?'Tới chi nhánh:':'Từ chi nhánh:'"></label>
                     <div class="css-form-detail">
-                        <select class="form-control nhanvien" id="txtAutoDoiTuong" data-bind="options: DonVis ? DonVis : [],
+                        <select class="form-control nhanvien" id="txtAutoDoiTuong" data-bind="options: ListCNNhan ? ListCNNhan : [],
                                                     optionsText: 'TenDonVi', optionsValue: 'ID', value: selectedDonVi, optionsCaption: '--- Chọn đơn vị ---',
                                                     enable: IsChuyenHang"></select>
                     </div>

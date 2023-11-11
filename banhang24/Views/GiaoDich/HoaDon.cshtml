@@ -538,6 +538,7 @@
                                 <td class="@commonEnum.ColumnInvoices.khachdatra text-right" data-bind="text: ChoThanhToan==null?0:formatNumber3Digit(KhachDaTra,2), click: $parent.LoadChiTietHD"></td>
                                 <!--ko if: $root.LoaiHoaDonMenu() === 25 -->
                                 <td class="@commonEnum.ColumnInvoices.tongtienBHduyet text-right" data-bind="text: formatNumber3Digit(TongTienBHDuyet,2), click: $parent.LoadChiTietHD"></td>
+                                <td class="@commonEnum.ColumnInvoices.GiamTruBaoHiem text-right" data-bind="text: formatNumber3Digit(GiamTruThanhToanBaoHiem,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.khautrutheovu text-right" data-bind="text: formatNumber3Digit(KhauTruTheoVu,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.giamtruboithuong text-right" data-bind="text: formatNumber3Digit(GiamTruBoiThuong,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.BHchitratruocVAT text-right" data-bind="text: formatNumber3Digit(BHThanhToanTruocThue,2), click: $parent.LoadChiTietHD"></td>
@@ -552,7 +553,7 @@
                                 <td class="@commonEnum.ColumnInvoices.tiendoidiem text-right" data-bind="text: formatNumber3Digit(TienDoiDiem,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.thegiatri text-right" data-bind="text: formatNumber3Digit(ThuTuThe,2), click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.conno text-right"
-                                    data-bind="text: formatNumber3Digit(ConNo,2) , style: {color: ConNo > 0?'red':'black'},
+                                    data-bind="text: formatNumber3Digit(ConNo,0) , style: {color: ConNo.toFixed() > 0?'red':'black'},
                                         click: $parent.LoadChiTietHD,
                                        "></td>
                                 <td class="@commonEnum.ColumnInvoices.ghichu" data-bind="text: commonStatisJs.SubStringContent(DienGiai,50), click: $parent.LoadChiTietHD"></td>
@@ -910,6 +911,15 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <div class="floatleft sum-prduct">
+                                                                    <div class="col-xs-5 col-sm-5  col-lg-7 text-right">
+                                                                        Giảm trừ BH :
+                                                                    </div>
+                                                                    <div class="col-xs-7 col-sm-7 col-lg-5 text-right">
+                                                                        <div class="row" data-bind="text: formatNumber3Digit(GiamTruThanhToanBaoHiem,2)">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                                 <!-- ko if: ID_BaoHiem !== null && ($root.RdoKhauTru() === 1 && ($root.RdoCheTai() === 5 || $root.RdoCheTai() === 6))-->
                                                                 <div class="floatleft sum-prduct">
                                                                     <div class="col-xs-5 col-sm-5  col-lg-7 text-right">
@@ -1251,6 +1261,7 @@
                                 </td>
                             </tr>
                         </tbody>
+                        <!--ko if: $root.LaAdmin() || !$root.RoleXemTongDoanhThu()-->
                         <tfoot data-bind="visible: HoaDons().length > 0">
                             <tr class="border-bottom bold">
                                 <td class="bg12 bold"></td>
@@ -1284,10 +1295,11 @@
                                 <td class="bg12 @commonEnum.ColumnInvoices.tongphaitra bold text-right" data-bind="text: formatNumber3Digit(TongThanhToan(),2)"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.khachcantra bold text-right" data-bind="text: formatNumber3Digit(KhachCanTra(),2)"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.butruTraHang bold text-right"></td>
-                                <td class="bg12 @commonEnum.ColumnInvoices.gtriSauTra bold text-right" ></td>
+                                <td class="bg12 @commonEnum.ColumnInvoices.gtriSauTra bold text-right"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.khachdatra bold text-right" data-bind="text: formatNumber3Digit(TongKhachTra(),2)"></td>
                                 <!--ko if: $root.LoaiHoaDonMenu() === 25 -->
                                 <td class="bg12 @commonEnum.ColumnInvoices.tongtienBHduyet bold text-right" data-bind="text: formatNumber3Digit($root.TongTienBHDuyet(),2)"></td>
+                                <td class="bg12 @commonEnum.ColumnInvoices.GiamTruBaoHiem bold text-right" data-bind="text: formatNumber3Digit($root.TongGiamTruBaoHiem(),2)"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.khautrutheovu bold text-right" data-bind="text: formatNumber3Digit($root.KhauTruTheoVu(),2)"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.giamtruboithuong bold text-right" data-bind="text: formatNumber3Digit($root.GiamTruBoiThuong(),2)"></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.BHchitratruocVAT bold text-right" data-bind="text: formatNumber3Digit($root.BHThanhToanTruocThue(),2)"></td>
@@ -1306,6 +1318,7 @@
                                 <td class="bg12 @commonEnum.ColumnInvoices.trangthai bold"></td>
                             </tr>
                         </tfoot>
+                        <!--/ko-->
                         <tfoot class="Report_Empty" data-bind="visible: HoaDons().length === 0">
                             <tr class="text-center">
                                 <td colspan="42">
@@ -1359,6 +1372,7 @@
 @Html.Partial("~/Views/Gara/HoaDon/_ThanhPhanCombo.cshtml")
 @Html.Partial("~/Views/Gara/HoaDon/_ChiPhiHoaDon.cshtml")
 @Html.Partial("~/Views/DoiTac/_UpAnhHoaDon.cshtml")
+@Html.Partial("~/Views/Gara/_ThanhPhanDinhLuong.cshtml")
 
 <div class="modal " id="modalPopuplgDelete">
     <div class="modal-dialog draggable">

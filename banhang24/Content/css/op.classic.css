@@ -426,7 +426,7 @@ ul.main-drop.op-menu-function {
 
 .op-thongbao-image {
     min-width: 60px;
-    height: 50px;
+    /*height: 50px;*/
     display: flex;
     justify-content: center;
     align-items: center;
@@ -437,7 +437,7 @@ ul.main-drop.op-menu-function {
 
 .op-thongbao li {
     border: none !important;
-    display: flex;
+    /*display: flex;*/
     padding: 0;
     margin: 5px;
 }

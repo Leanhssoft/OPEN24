@@ -49,7 +49,7 @@
                     {{LoaiNganhNghe==1?'Gói bảo dưỡng':'Gói dịch vụ'}}
                 </h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body modal-body-scroll">
                 <div class="col-md-12 nhat-ky-dv">
                     <div class="row tab-news-modal" id="tab-diary-service">
                         <ul class="nav nav-tabs" style="width:100%;">
@@ -88,6 +88,13 @@
                                                value="0"
                                                v-model="filterGDV.Status">
                                         <label class="form-check-label" for="goidichvu3">Tất cả</label>
+                                    </div>
+                                    <div class="form-check form-check-inline"
+                                         v-on:click="GDV_ChangeStatus(3)">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions"
+                                               value="3"
+                                               v-model="filterGDV.Status">
+                                        <label class="form-check-label" for="goidichvu3">Còn buổi sử dụng</label>
                                     </div>
                                 </div>
                                 <div class="container-fluid tab-col-12 ">
@@ -405,21 +412,21 @@
                                                         {{moment(item.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')}}
                                                     </td>
                                                     <td>
-                                                        {{item.SLoaiHoaDon}}
+                                                        {{Remove_LastComma(item.SLoaiHoaDon)}}
                                                     </td>
                                                     <td>
                                                         <span class="bold">
-                                                            {{item.MaHoaDon}}
+                                                            {{Remove_LastComma(item.MaHoaDon)}}
                                                         </span>
                                                     </td>
                                                     <td class="text-right">
                                                         {{formatNumber3Digit(item.SoDuTruoc)}}
                                                     </td>
                                                     <td class="text-right">
-                                                        {{item.LoaiHoaDonSQ== 11?formatNumber3Digit(item.TienThe):0}}
+                                                        {{formatNumber3Digit(item.PhatSinhGiam)}}
                                                     </td>
                                                     <td class="text-right">
-                                                        {{item.LoaiHoaDonSQ== 12?formatNumber3Digit(item.TienThe):0}}
+                                                        {{formatNumber3Digit(item.PhatSinhTang)}}
                                                     </td>
                                                     <td class="text-right">
                                                         {{formatNumber3Digit(item.SoDuSau)}}
@@ -561,6 +568,7 @@
         created: function () {
             let self = this;
             self.Today = moment(new Date()).format('YYYY-MM-DD');
+            console.log('dgvvvv')
         },
         data: {
             ID_DonVi: $('#txtDonVi').val(),
@@ -571,8 +579,10 @@
             ListDichVuChosed: [],
             ListIDCarChosed: [],
 
+            CallFrom: 0, //0 - Hóa đơn, 1 - Khác
             roleUpdateImg: false,
             roleXemHoaHong: false,
+            roleGDV_DuocSuDungKhiHetHan: false,// nếu tích: không được sử dụng
             soduTheGiaTri: false,
 
             filterGDV: {
@@ -637,8 +647,7 @@
                 LichSuNapThe: [],
                 NhatKySuDungThe: [],
                 GDV_ThanhPhanDinhLuong: [],
-            },
-            CallFrom: 0 //0 - Hóa đơn, 1 - Khác
+            }
         },
         methods: {
             GetGoiDichVu_ofKhachHang: function (idCus, idCar = null) {
@@ -649,30 +658,28 @@
             },
             GetNhatKySuDung_GDV: function () {
                 let self = this;
-                if (navigator.onLine) {
-                    // xem all chinhanh (hadt)
-                    let param = {
-                        IDCars: [self.ID_Car],
-                        CurrentPage: self.filterNKy.currentPage,
-                        PageSize: self.filterNKy.pageSize,
-                    }
-                    // neu chua chon xe--> lay nky theo khachhang
-                    if (commonStatisJs.CheckNull(self.ID_Car)) {
-                        param.IDCustomers = [self.ID_Customer];
-                    }
-                    ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetNhatKySuDung_GDV', 'POST', param).done(function (x) {
-                        let dataS = x.dataSoure;
-                        if (x.res && dataS.data !== null) {
-                            self.listData.NhatKySuDung = dataS.data;
-                            self.filterNKy.ListFilter = dataS.data;
-                            self.filterNKy.ListPage = dataS.listpage;
-                            self.filterNKy.isPrev = dataS.isprev;
-                            self.filterNKy.isNext = dataS.isnext;
-                            self.filterNKy.totalPage = dataS.countpage;
-                            self.filterNKy.PageView = dataS.pageview;
-                        }
-                    });
+                // xem all chinhanh (hadt)
+                let param = {
+                    IDCars: [self.ID_Car],
+                    CurrentPage: self.filterNKy.currentPage,
+                    PageSize: self.filterNKy.pageSize,
                 }
+                // neu chua chon xe--> lay nky theo khachhang
+                if (commonStatisJs.CheckNull(self.ID_Car)) {
+                    param.IDCustomers = [self.ID_Customer];
+                }
+                ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetNhatKySuDung_GDV', 'POST', param).done(function (x) {
+                    let dataS = x.dataSoure;
+                    if (x.res && dataS.data !== null) {
+                        self.listData.NhatKySuDung = dataS.data;
+                        self.filterNKy.ListFilter = dataS.data;
+                        self.filterNKy.ListPage = dataS.listpage;
+                        self.filterNKy.isPrev = dataS.isprev;
+                        self.filterNKy.isNext = dataS.isnext;
+                        self.filterNKy.totalPage = dataS.countpage;
+                        self.filterNKy.PageView = dataS.pageview;
+                    }
+                });
             },
             ResetNhatKyGiaoDich: function () {
                 let self = this;
@@ -752,19 +759,17 @@
                     CurrentPage: self.filterThe.currentPage,
                     PageSize: self.filterThe.pageSize,
                 }
-                if (navigator.onLine) {
-                    ajaxHelper('/api/DanhMuc/DM_DoiTuongAPI/' + 'GetListHisUsed_ValueCard', 'POST', param).done(function (obj) {
-                        if (obj.res === true) {
-                            let dataS = obj.dataSoure;
-                            self.listData.NhatKySuDungThe = dataS.data;
-                            self.filterThe.ListPage = dataS.listpage;
-                            self.filterThe.isPrev = dataS.isprev;
-                            self.filterThe.isNext = dataS.isnext;
-                            self.filterThe.totalPage = dataS.countpage;
-                            self.filterThe.PageView = dataS.pageview;
-                        }
-                    })
-                }
+                ajaxHelper('/api/DanhMuc/DM_DoiTuongAPI/' + 'GetListHisUsed_ValueCard', 'POST', param).done(function (obj) {
+                    if (obj.res === true) {
+                        let dataS = obj.dataSoure;
+                        self.listData.NhatKySuDungThe = dataS.data;
+                        self.filterThe.ListPage = dataS.listpage;
+                        self.filterThe.isPrev = dataS.isprev;
+                        self.filterThe.isNext = dataS.isnext;
+                        self.filterThe.totalPage = dataS.countpage;
+                        self.filterThe.PageView = dataS.pageview;
+                    }
+                })
             },
 
             GetListImgInvoice_byCus: function () {
@@ -778,7 +783,6 @@
 
                 ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetListImgInvoice_byCus', 'POST', param).done(function (x) {
                     if (x.res) {
-                        console.log(x)
                         let dataS = x.dataSoure;
                         self.filterImg.data = dataS.data;
                         self.filterImg.ListPage = dataS.listpage;
@@ -826,6 +830,7 @@
                 let filter = self.filterGDV.txtSearch;
                 let status = parseInt(self.filterGDV.Status);
                 let from = null, to = null;
+                let loaiHD = "";// mượn trường LoaiHoaDon (1.Còn buổi sử dụng, 0. hết buổi sử dụng)
                 switch (status) {
                     case 1:
                         from = self.Today;
@@ -833,12 +838,16 @@
                     case 2:
                         to = self.Today;
                         break;
+                    case 3:
+                        loaiHD = "1";
+                        break;
                 }
                 let param = {
                     IDCars: [self.ID_Car],
                     DateFrom: from,
                     DateTo: to,
                     TextSearch: filter,
+                    LoaiHoaDons: loaiHD,
                 }
                 // neu chua chon xe--> lay nky theo khachhang
                 if (commonStatisJs.CheckNull(self.ID_Car)) {
@@ -857,10 +866,10 @@
                     if (x.res) {
                         let data = x.dataSoure;
                         self.listData.GoiDichVu = data;
-                        if (self.CallFrom === 0) {
+                        self.GetTPDinhLuong_ofHoaDon();
+                        if (self.CallFrom == 0) {
                             newModelBanLe.TongGoiDV(data.length);
                         }
-                        self.GetTPDinhLuong_ofHoaDon();
                     }
                 });
             },
@@ -885,32 +894,51 @@
                 }
             },
 
+            CheckUseGDV: async function (gdv, itemCT = null) {
+                let self = this;
+                if (self.LoaiNganhNghe === 1) {
+                    let check = self.GDV_CheckUsefromOtherCar(gdv);
+                    if (check) {
+                        ShowMessage_Danger('Vui lòng chỉ sử gói bảo dưỡng trong cùng 1 xe');
+                        return false;
+                    }
+                    check = await self.CheckNotChosePTN(gdv);
+                    if (check === 1) {
+                        ShowMessage_Danger('Vui lòng chọn xe để thực hiện bảo dưỡng');
+                        return false;
+                    }
+                    if (check === 2) {
+                        ShowMessage_Danger('Xe ' + gdv.BienSo + ' hiện tại không có trong xưởng');
+                        return false;
+                    }
+                    if (check == 3) {
+                        ShowMessage_Danger('Gói ' + gdv.MaHoaDon + ' chưa khai báo xe');
+                        return false;
+                    }
+                }
+                if (gdv.HanSuDungGoiDV != null) {
+                    if (!self.roleGDV_DuocSuDungKhiHetHan) {
+                        const hansd = moment(gdv.HanSuDungGoiDV, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                        if (hansd < self.Today) {
+                            ShowMessage_Danger('Gói dịch vụ "' + gdv.MaHoaDon + '" đã hết hạn sử dụng');
+                            return false;
+                        }
+                    }
+                }
+                if (itemCT != null && itemCT.SoLuongConLai <= 0) {
+                    ShowMessage_Danger('Dịch vụ "' + itemCT.TenHangHoa + '" đã dùng hết số buổi');
+                    return false;
+                }
+                return true;
+            },
             GVD_ChangeCheckAll: async function (gdv) {
                 let self = this;
                 let $this = $(event.currentTarget);
                 let isCheck = $this.is(':checked');
 
                 if (isCheck) {
-                    if (self.LoaiNganhNghe === 1) {
-                        let check = self.GDV_CheckUsefromOtherCar(gdv);
-                        if (check) {
-                            ShowMessage_Danger('Vui lòng chỉ sử gói bảo dưỡng trong cùng 1 xe');
-                            return false;
-                        }
-                        check = await self.CheckNotChosePTN(gdv);
-                        if (check === 1) {
-                            ShowMessage_Danger('Vui lòng chọn xe để thực hiện bảo dưỡng');
-                            return false;
-                        }
-                        if (check === 2) {
-                            ShowMessage_Danger('Xe ' + gdv.BienSo + ' hiện tại không có trong xưởng');
-                            return false;
-                        }
-                        if (check == 3) {
-                            ShowMessage_Danger('Gói ' + gdv.MaHoaDon + ' chưa khai báo xe');
-                            return false;
-                        }
-                    }
+                    const check = await self.CheckUseGDV(gdv);
+                    if (!check) return;
                 }
 
                 let $tr = $this.closest('table').find('tbody tr');
@@ -928,31 +956,8 @@
                 let $this = $(event.currentTarget);
                 let isCheck = $this.is(':checked');
                 if (isCheck) {
-                    if (self.LoaiNganhNghe === 1) {
-                        let check = self.GDV_CheckUsefromOtherCar(gdv);
-                        if (check) {
-                            ShowMessage_Danger('Vui lòng chỉ sử gói bảo dưỡng trong cùng 1 xe');
-                            return false;
-                        }
-                        check = await self.CheckNotChosePTN(gdv);
-                        console.log('check ', check)
-                        if (check == 1) {
-                            ShowMessage_Danger('Vui lòng chọn xe để thực hiện bảo dưỡng');
-                            return false;
-                        }
-                        if (check == 2) {
-                            ShowMessage_Danger('Xe ' + gdv.BienSo + ' hiện tại không có trong xưởng');
-                            return false;
-                        }
-                        if (check == 3) {
-                            ShowMessage_Danger('Gói ' + gdv.MaHoaDon + ' chưa khai báo xe');
-                            return false;
-                        }
-                    }
-                    if (item.SoLuongConLai <= 0) {
-                        ShowMessage_Danger('Dịch vụ "' + item.TenHangHoa + '" đã dùng hết số buổi');
-                        return false;
-                    }
+                    const check = await self.CheckUseGDV(gdv, item);
+                    if (!check) return;
                 }
 
                 // count check in this gdv
@@ -1095,8 +1100,8 @@
 
             showModal: function (idCus, idCar = null, nganhnghe = 0, from = 0) {
                 let self = this;
-                self.CallFrom = from;
                 self.saveOK = false;
+                self.CallFrom = from;
                 self.LoaiNganhNghe = nganhnghe;
                 self.ID_Customer = idCus;
                 self.ID_Car = idCar;
@@ -1109,7 +1114,7 @@
                 self.GetListImgInvoice_byCus();
                 $('#vmNKGoiBaoDuong').modal('show');
             },
-            Agree: function () {
+            Agree: async function () {
                 let self = this;
                 self.saveOK = true;
                 let arrID = [];
@@ -1118,6 +1123,20 @@
                         arrID.push($(this).attr('id'));
                     }
                 });
+                for (let i = 0; i < self.listData.GoiDichVu.length; i++) {
+                    let for1 = self.listData.GoiDichVu[i];
+                    for (let j = 0; j < for1.lstDetail.length; j++) {
+                        let for2 = for1.lstDetail[j];
+                        for (let k = 0; k < for2.ComBo.length; k++) {
+                            let for3 = for2.ComBo[k];
+                            if ($.inArray(for3.ID_ChiTietGoiDV, arrID) > -1) {
+                                const check = await self.CheckUseGDV(for1, for3);
+                                if (!check) return;
+                            }
+                        }
+                    }
+                }
+
                 for (let i = 0; i < self.listData.GoiDichVu.length; i++) {
                     let for1 = self.listData.GoiDichVu[i];
                     for (let j = 0; j < for1.lstDetail.length; j++) {
@@ -1226,6 +1245,10 @@
                             }
                         }
                     }
+                }
+                if (self.ListDichVuChosed.length === 0) {
+                    ShowMessage_Danger('Vui lòng chọn dịch vụ sử dụng');
+                    return false;
                 }
                 $('#vmNKGoiBaoDuong').modal('hide');
             },

@@ -251,6 +251,8 @@ namespace banhang24.Hellper
         public const string DatHang_Insert = "DatHang_ThemMoi";
         public const string GoiDichVu_View = "GoiDichVu_XemDS";
         public const string GoiDichVu_Insert = "GoiDichVu_ThemMoi";
+        public const string TheGiaTri_View = "TheGiaTri_XemDS";
+        public const string TheGiaTri_Insert = "TheGiaTri_ThemMoi";
         public const string HoaDon_View = "HoaDon_XemDs";
         public const string HoaDon_Insert = "HoaDon_ThemMoi";
         public const string TraHang_View = "TraHang_XuatFile";
@@ -364,6 +366,7 @@ namespace banhang24.Hellper
         public static class MauInTeamPlates
         {
             public const string DatHang = "DH";
+            public const string BaoGia = "BG";
             public const string HoaDon = "HDBL";
             public const string GoiDV = "GDV";
             public const string TraHang = "TH";
@@ -386,6 +389,7 @@ namespace banhang24.Hellper
         public static Dictionary<string, string> DanhSachTenMauIn = new Dictionary<string, string>()
         {
             {MauInTeamPlates.DatHang.ToString(),"Đặt hàng" },
+            {MauInTeamPlates.BaoGia.ToString(),"Đặt hàng" },
             {MauInTeamPlates.HoaDon.ToString(),"Hóa đơn" },
             {MauInTeamPlates.TraHang.ToString(),"Trả hàng" },
             {MauInTeamPlates.DoiTraHang.ToString(),"Đổi trả hàng" },
@@ -407,6 +411,7 @@ namespace banhang24.Hellper
         public static Dictionary<string, string> DanhSachMauInA4 = new Dictionary<string, string>()
         {
             {MauInTeamPlates.DatHang.ToString(),"DatHang.txt" },
+            {MauInTeamPlates.BaoGia.ToString(),"DatHang.txt" },
             {MauInTeamPlates.HoaDon.ToString(),"HoaDonBanLe.txt" },
             {MauInTeamPlates.TraHang.ToString(),"TraHang.txt" },
             {MauInTeamPlates.DoiTraHang.ToString(),"DoiTraHang.txt" },
@@ -428,6 +433,7 @@ namespace banhang24.Hellper
         public static Dictionary<string, string> DanhSachMauInK80 = new Dictionary<string, string>()
         {
             {MauInTeamPlates.DatHang.ToString(),"K80_DatHang.txt" },
+            {MauInTeamPlates.BaoGia.ToString(),"K80_DatHang.txt" },
               {MauInTeamPlates.HoaDon.ToString(),"K80_HoaDonBanLe.txt" },
                 {MauInTeamPlates.TraHang.ToString(),"K80_TraHang.txt" },
                   {MauInTeamPlates.DoiTraHang.ToString(),"K80_DoiTraHang.txt" },
@@ -637,6 +643,7 @@ namespace banhang24.Hellper
               {TypeReportDetail.Detail_chietkhau.ToString(),"Chiết khấu" },
               {TypeReportTotal.Total_thanhtien.ToString(),"Thành tiền" },
               {TypeReportTotal.Total_giamgia.ToString(),"Giảm giá" },
+              {TypeReportDetail.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
               {TypeReportTotal.Total_doanhthuthuan.ToString(),"Doanh thu" },
               {TypeReportTotal.Total_tienthue.ToString(),"Tiền thuế" },
                 {TypeReportTotal.Total_tienvon.ToString(),"Tiền vốn" },
@@ -678,6 +685,7 @@ namespace banhang24.Hellper
             Detail_doanhthuthuan,
             Detail_tienthue,
             Detail_chiphi,
+            GiamTruBaoHiem
         }
 
         public static Dictionary<string, string> listNameReportDetail = new Dictionary<string, string>()
@@ -701,6 +709,7 @@ namespace banhang24.Hellper
                     { TypeReportDetail.Detail_chietkhau.ToString(),"Chiết khấu" },
               {TypeReportDetail.Detail_thanhtien.ToString(),"Thành tiền" },
               {TypeReportDetail.Detail_giamgiahd.ToString(),"Giảm giá HĐ" },
+              {TypeReportDetail.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
               {TypeReportDetail.Detail_doanhthuthuan.ToString(),"Doanh thu" },
               {TypeReportDetail.Detail_tienthue.ToString(),"Tiền thuế" },
                    {TypeReportDetail.Detail_giavon.ToString(),"Giá vốn" },
@@ -735,6 +744,7 @@ namespace banhang24.Hellper
               {TypeReportDetail.Detail_chietkhau.ToString(),"Chiết khấu" },
               {TypeReportGroupProduct.thanhtien.ToString(),"Thành tiền" },
                   { TypeReportGroupProduct.giamgia.ToString(),"Giảm giá" },
+              {TypeReportDetail.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
                   { TypeReportGroupProduct.doanhthuthuan.ToString(),"Doanh thu" },
                 {TypeReportGroupProduct.tienthue.ToString(),"Tiền thuế" },
            {TypeReportGroupProduct.tienvon.ToString(),"Tiền vốn" },
@@ -837,6 +847,7 @@ namespace banhang24.Hellper
                          {TypeReportUser.User_soluongtra.ToString(),"Số lượng trả" },
                          {TypeReportUser.User_giatritra.ToString(),"Giá trị trả" },
                         {TypeReportUser.User_giamgia.ToString(),"Giảm giá HĐ" },
+              {TypeReportDetail.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
                         {TypeReportGroupProduct.doanhthuthuan.ToString(),"Doanh thu" },
                         {TypeReportGroupProduct.tienthue.ToString(),"Tiền thuế" },
                      {TypeReportUser.User_tienvon.ToString(),"Tiền vốn" },
@@ -940,6 +951,7 @@ namespace banhang24.Hellper
                      {TypeReportprofit.profit_soluongtra.ToString(),"Số lượng trả" },
                         {TypeReportprofit.profit_giatritra.ToString(),"Giá trị trả" },
                          {TypeReportprofit.profit_giangiahd.ToString(),"Giảm giá HĐ" },
+              {TypeReportDetail.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
                      { TypeReportprofit.profit_doanhthu.ToString(),"Doanh thu (thuần)" },
                      { ColumnInvoices.tienthue.ToString(),"Tiền thuế" },
                             {TypeReportprofit.profit_tongtienvon.ToString(),"Tổng tiền vốn" },
@@ -1532,11 +1544,15 @@ namespace banhang24.Hellper
              { TypeRGoiDichVu.nguoigioithieu.ToString(),"Người giới thiệu" },
              { TypeRGoiDichVu.soluongban.ToString(),"Số lượng bán" },
              { TypeRGoiDichVu.thanhtien.ToString(),"Thành tiền" },
+             { TypeRGoiDichVu.giamgiahd.ToString(),"Giảm giá HĐ" },
+             { TypeRGoiDichVu.giatriban.ToString(),"Giá trị bán" },
              { TypeRGoiDichVu.soluongtra.ToString(),"Số lượng trả" },
              { TypeRGoiDichVu.giatritra.ToString(),"Giá trị trả" },
              { TypeRGoiDichVu.soluongsudung.ToString(),"Số lượng sử dụng" },
+             { TypeRGoiDichVu.giatrisudung.ToString(),"Giá trị sử dụng" },
              { TypeRGoiDichVu.giavon.ToString(),"Giá vốn" },
              { TypeRGoiDichVu.soluongconlai.ToString(),"Số lượng còn lại" },
+             { TypeRGoiDichVu.giatriconlai.ToString(),"Giá trị còn lại" },
              { TypeRGoiDichVu.ngayapdung.ToString(),"Ngày áp dụng" },
              { TypeRGoiDichVu.hansudung.ToString(),"Hạn sử dụng" },
              { TypeRGoiDichVu.songayconlai.ToString(),"Số ngày còn hạn" },
@@ -1567,8 +1583,10 @@ namespace banhang24.Hellper
              { TypeRGoiDichVu.soluongtra.ToString(),"Số lượng trả" },
              { TypeRGoiDichVu.giatritra.ToString(),"Giá trị trả" },
              { TypeRGoiDichVu.soluongsudung.ToString(),"Số lượng sử dụng" },
+            { TypeRGoiDichVu.giatrisudung.ToString(),"Giá trị sử dụng" },
              { TypeRGoiDichVu.giavon.ToString(),"Giá vốn" },
              { TypeRGoiDichVu.soluongconlai.ToString(),"Số lượng còn lại" },
+             { TypeRGoiDichVu.giatriconlai.ToString(),"Giá trị còn lại" },
              { TypeRGoiDichVu.nhanvien.ToString(),"Nhân viên bán" },
 
         };
@@ -1785,6 +1803,7 @@ namespace banhang24.Hellper
             ngaygiaodichgannhat,
             trangthaikhachhang,
             ghichu,
+            laCaNhan
         }
 
         public static Dictionary<string, string> ListKhachHang = new Dictionary<string, string>()
@@ -2462,7 +2481,8 @@ namespace banhang24.Hellper
             ghichu,
             trangthai,
             machuxe,
-            tenchuxe
+            tenchuxe,
+            GiamTruBaoHiem
         }
         public static Dictionary<string, string> ListColumnInvoices = new Dictionary<string, string>()
         {
@@ -2531,6 +2551,7 @@ namespace banhang24.Hellper
               { ColumnInvoices.khachdatra.ToString(),"Khách đã trả" },
 
                { ColumnInvoices.tongtienBHduyet.ToString(),"Tổng tiền BH duyệt" },
+              { ColumnInvoices.GiamTruBaoHiem.ToString(),"Giảm trừ bảo hiểm" },
               { ColumnInvoices.khautrutheovu.ToString(),"Khấu trừ theo vụ" },
               { ColumnInvoices.giamtruboithuong.ToString(),"Chế tài" },
               { ColumnInvoices.BHchitratruocVAT.ToString(),"BH cần trả (trước VAT)" },
@@ -2743,6 +2764,8 @@ namespace banhang24.Hellper
             datrakhach,
             ghichu,
             trangthai,
+            benVanChuyen,
+            dachiBenVC,
         }
         public static Dictionary<string, string> ListColumnPurchaseOrder = new Dictionary<string, string>()
         {
@@ -2759,7 +2782,9 @@ namespace banhang24.Hellper
               { ColumnPurchaseOrder.tongtienhang.ToString(),"Tổng tiền hàng" },
               { ColumnInvoices.tienthue.ToString(),"Tổng tiền thuế" },
               { ColumnPurchaseOrder.tonggiamgia.ToString(),"Tổng giảm giá" },
+              { ColumnPurchaseOrder.benVanChuyen.ToString(),"Bên vận chuyển" },
               { ColumnInvoices.tongchiphi.ToString(),"Chi phí v/c" },
+              { ColumnPurchaseOrder.dachiBenVC.ToString(),"Đã chi v/c" },
               { ColumnPurchaseOrder.cantrakhach.ToString(),"Cần trả NCC" },
               { ColumnInvoices.butruTraHang.ToString(),"Bù trừ trả hàng" },
               { ColumnInvoices.gtriSauTra.ToString(),"Giá trị sau trả" },

@@ -11,6 +11,86 @@ namespace Model
         public double? TonKho { get; set; }
     }
 
+    public class DMGiaBanDTO
+    {
+        public Guid ID { get; set; }
+        public string TenGiaBan { get; set; }
+        public DateTime? TuNgay { get; set; }
+        public DateTime? DenNgay { get; set; }
+        public bool? TatCaDoiTuong { get; set; }
+        public bool? TatCaDonVi { get; set; }
+        public bool? TatCaNhanVien { get; set; }
+        public string LoaiChungTuApDung { get; set; }
+        public string NgayTrongTuan { get; set; }
+        public List<DMGiaBan_ApDungDTO> DM_GiaBan_ApDung { get; set; }
+    } 
+    public class DMGiaBan_ApDungDTO
+    {
+        public Guid ID_GiaBan { get; set; }
+        public Guid? ID_DonVi { get; set; }
+        public Guid? ID_NhomKhachHang { get; set; }
+        public Guid? ID_NhanVien { get; set; }
+    }
+
+    public class ParamSearch_DMHangHoa : CommonParamSearch
+    {
+        public int? TrangThaiKho { get; set; }
+        public string ColumnSort { get; set; }
+        public string SortBy { get; set; }
+        public string WhereSql { get; set; }
+        public List<string> ListThuocTinh { get; set; }
+        public List<string> ListViTri { get; set; }
+        public List<ColumSearch> ListSearchColumn { get; set; }
+    }
+
+    public class DMHangHoaDTO
+    {
+        public Guid ID { get; set; }
+        public Guid? ID_DonViQuiDoi { get; set; }
+        public Guid? ID_HangHoaCungLoai { get; set; }
+        public bool? LaChaCungLoai { get; set; }
+        public int? CountCungLoai { get; set; }
+        public string TenHangHoa { get; set; }
+        public string MaHangHoa { get; set; }
+        public string TenDonViTinh { get; set; }
+        public string TenViTris { get; set; }
+        public string DonViTinhChuan { get; set; }
+        public string ThuocTinhGiaTri { get; set; }
+        public string NhomHangHoa { get; set; }
+        public Guid? ID_NhomHangHoa { get; set; }
+        public double? GiaBan { get; set; }
+        public double? GiaVon { get; set; }
+        public double? TonKho { get; set; }
+        public double? TonToiDa { get; set; }
+        public double? TonToiThieu { get; set; }
+        public bool? DuocBanTrucTiep { get; set; }
+        public bool? TheoDoi { get; set; }
+        public bool? TrangThai { get; set; }
+        public bool? Xoa { get; set; }
+        public string sLoaiHangHoa { get; set; }
+        public string GhiChu { get; set; }
+        public int? LoaiBaoDuong { get; set; }
+        public int? QuanLyBaoDuong { get; set; }
+        public bool? QuanLyTheoLoHang { get; set; }
+        public int? SoKmBaoHanh { get; set; }
+        public int? LoaiHangHoa { get; set; }
+        public bool? LaHangHoa { get; set; }
+        public int? SoPhutThucHien { get; set; }
+        public double? ChiPhiThucHien { get; set; }
+        public bool? ChiPhiTinhTheoPT { get; set; }
+        public int? DichVuTheoGio { get; set; }
+        public int? DuocTichDiem { get; set; }
+        public int? HoaHongTruocChietKhau { get; set; }
+        public Guid? ID_Xe { get; set; }
+        public string BienSo { get; set; }
+        public double? ChietKhauMD_NV { get; set; }
+        public bool? ChietKhauMD_NVTheoPT { get; set; }
+        public string TenNhomHoTro { get; set; }
+        public List<DonViTinh> DonViTinh { get; set; }
+        public double? SumTonKho { get; set; }
+        public int? TotalRow { get; set; }
+        public double? TotalPage { get; set; }
+    }
     public class DM_HangHoaDTO
     {
         public Guid ID { get; set; }
@@ -106,6 +186,7 @@ namespace Model
         public int? HoaHongTruocChietKhau { get; set; }
         public Guid? ID_Xe { get; set; }
         public string BienSo { get; set; }
+        public string ViTriKho { get; set; }
     }
 
     public class DM_DonViTinhClick
@@ -178,6 +259,7 @@ namespace Model
         public bool CheckDinhLuongDV { get; set; }
         public double? QuyCach { get; set; }
         public int? LoaiHangHoa { get; set; }
+        public string ViTriKho { get; set; }
     }
 
     public class BCDM_LoHangDTO
@@ -220,6 +302,7 @@ namespace Model
         public string MaHangHoa { get; set; }
         public string TenHangHoa { get; set; }
         public string TenDonViTinh { get; set; }
+        public string TenViTris { get; set; }
         public string NhomHangHoa { get; set; }
         public string LoaiHangHoa { get; set; }
         public double? GiaBan { get; set; }
@@ -262,7 +345,7 @@ namespace Model
         public double? GiaBan { get; set; }
         public double? GiamGia { get; set; }
         public double SoLuong { get; set; }
-        public int ThuTuHoaDon { get; set; } 
+        public int ThuTuHoaDon { get; set; }
         public Guid? ID_DonViQuiDoi { get; set; }
         public Guid? ID_LoHang { get; set; }
     }
@@ -397,6 +480,7 @@ namespace Model
         public int? DuocTichDiem { get; set; }
         public int? LoaiHangHoa { get; set; }
         public int? HoaHongTruocChietKhau { get; set; }
+        public string ViTriKho { get; set; }
     }
 
     public static class Comonndll

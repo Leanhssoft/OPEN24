@@ -342,17 +342,20 @@
             <div class="h-60 btn-function-right">
                 @if (Model.Insert)
                 {
-                    <button class="w-30 h-60  btn-save " v-on:click="SaveSalary(1)">
+                    <button class="w-30 h-60  btn-save " v-if="!loadding" v-on:click="SaveSalary(1)">
                         <i class="material-icons">save</i><p>Lưu tạm</p>
                     </button>
                 }
                 @if (Model.Update)
                 {
-                    <button class="w-30 h-60 btn-confirm " v-on:click="SaveSalary(3)">
+                    <button class="w-30 h-60 btn-confirm "  v-if="!loadding" v-on:click="SaveSalary(3)">
                         <i class="material-icons">done</i> <p>Chốt lương</p>
                     </button>
                 }
-                <button class="w-30 h-60 btn-confirm btn-pink " style="margin-right:0; background:#ff6464" v-on:click="GotoListBangLuong">
+                <button class="w-30 h-60 btn-confirm " v-if="loadding" >
+                    <i class="material-icons">done</i> <p>Đang lưu</p>
+                </button>
+                <button class="w-30 h-60 btn-confirm btn-pink " v-if="!loadding" style="margin-right:0; background:#ff6464" v-on:click="GotoListBangLuong">
                     <i class="material-icons">close</i> <p>Hủy</p>
                 </button>
             </div>

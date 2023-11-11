@@ -437,7 +437,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 try
                 {
                     classQuy_HoaDon classQuyHoaDon = new classQuy_HoaDon(db);
-                    var data = classQuyHoaDon.GetListCashFlow_Paging(lstParam);
+                    List<SP_GetListCashFlow> data = classQuyHoaDon.GetListCashFlow_Paging(lstParam);
                     double? tongthuMat = 0, tongchiMat = 0, tongthuCK = 0, tongchiCK = 0, totalPage = 0;
                     int? totalRow = 0;
                     if (data.Count > 0)
@@ -987,13 +987,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
-                List<Quy_HoaDonDTO> listTon = new List<Quy_HoaDonDTO>();
+               List<Quy_HoaDonDTO> listTon = new List<Quy_HoaDonDTO>();
                 List<SqlParameter> paramlist = new List<SqlParameter>();
                 if (txtSearch != null & txtSearch != "" & txtSearch != "null")
                 {
                     var txtSearch1 = txtSearch.ToString().Normalize(System.Text.NormalizationForm.FormC).ToLower();
-                    var text = CommonStatic.ConvertToUnSign(txtSearch1.Trim());
-                    string Search = "%" + text + "%";
+                    string Search = "%" + txtSearch1.Trim() + "%";
                     paramlist.Add(new SqlParameter("LoaiDoiTuong", loaiDoiTuong));
                     paramlist.Add(new SqlParameter("Search", Search));
                     paramlist.Add(new SqlParameter("ID_DonVi", idDonVi ?? (object)DBNull.Value));
@@ -1967,7 +1966,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 }
 
                 #region Quy_HoaDon
-                DateTime ngaylapHD = objQuyHD.NgayLapHoaDon.AddMilliseconds(1);
+                DateTime ngaylapHD = objQuyHD.NgayLapHoaDon.AddMilliseconds(2);
                 Quy_HoaDon itemQuy_HoaDon = new Quy_HoaDon();
                 itemQuy_HoaDon.ID = Guid.NewGuid();
                 itemQuy_HoaDon.ID_NhanVien = objQuyHD.ID_NhanVien;

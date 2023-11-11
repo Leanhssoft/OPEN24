@@ -341,6 +341,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     param.CurrentPage = objIn["CurrentPage"].ToObject<int>() - 1;
                 if (objIn["PageSize"] != null)
                     param.PageSize = objIn["PageSize"].ToObject<int>();
+                if (objIn["IdXe"] != null)
+                    param.IDXe = objIn["IdXe"].ToObject<string>();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
@@ -742,7 +744,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             PageView = "Hiển thị " + ((param.CurrentPage) * param.PageSize + 1) + " - " + (currentPage * param.PageSize + data.Count) + " trên tổng số " + count + " bản ghi",
                             TotalPage = page
                         });
-                        return ActionTrueData(data);
                     }
                     var xx = data.GroupBy(x => new { x.ID_HangHoa, x.MaHangHoa, x.TenHangHoa, x.HanBaoHanh, x.GhiChu })
                         .Select(x => new
@@ -774,6 +775,37 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 }
             }
         }
+        [HttpPost]
+        public IHttpActionResult LeeAuto_GetLichBaoDuong(ParamSeachLichBaoDuong param)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                try
+                {
+                    ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
+                    List<PhuTung_LichBaoDuong> data = classPhieuTiepNhan.GetLichBaoDuong_TheoXe(param);
+                    int count = 0;
+                    if (data.Count > 0)
+                    {
+                        count = data.FirstOrDefault().TotalRow ?? 0;
+                    }
+                    int page = 0;
+                    int currentPage = param.CurrentPage ?? 0;
+                    var listpage = GetListPage(count, param.PageSize ?? 10, currentPage + 1, ref page);
+                    return ActionTrueData(new
+                    {
+                        data,
+                        ListPage = listpage,
+                        PageView = "Hiển thị " + ((param.CurrentPage) * param.PageSize + 1) + " - " + (currentPage * param.PageSize + data.Count) + " trên tổng số " + count + " bản ghi",
+                        TotalPage = page
+                    });
+                }
+                catch (Exception ex)
+                {
+                    return ActionFalseNotData(ex.InnerException + ex.Message);
+                }
+            }
+        }
 
         [HttpPost]
         public IHttpActionResult GetKhachCoLichBaoDuong(ParamSeachLichBaoDuong param)
@@ -783,7 +815,17 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 try
                 {
                     ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
-                    List<PhuTung_LichBaoDuong> data = classPhieuTiepNhan.GetLichBaoDuong(param);
+                    var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+                    string[] arrSubDomain = { "leeauto", "0973474985", "autosonly" };
+                    List<PhuTung_LichBaoDuong> data = new List<PhuTung_LichBaoDuong>();
+                    if (arrSubDomain.Contains(subDomain))
+                    {
+                        data = classPhieuTiepNhan.GetLichBaoDuong_TheoXe(param);
+                    }
+                    else
+                    {
+                        data = classPhieuTiepNhan.GetLichBaoDuong(param);
+                    }
                     var xx = data.GroupBy(x => new { x.ID_DoiTuong, x.MaDoiTuong, x.TenDoiTuong, x.DienThoai, x.Email })
                         .Select(x => new
                         {
@@ -827,6 +869,25 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
                     classPhieuTiepNhan.Insert_LichNhacBaoDuong(idHoaDon);
+                    return ActionTrueData(string.Empty);
+                }
+                catch (Exception ex)
+                {
+                    return ActionFalseNotData(ex.InnerException + ex.Message);
+                }
+            }
+        }
+
+        // apply for database = LeeAuto
+        [HttpGet]
+        public IHttpActionResult Insert_LichNhacBaoDuong_TheoXe(Guid idPhieuTiepNhan)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                try
+                {
+                    ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
+                    classPhieuTiepNhan.Insert_LichNhacBaoDuong_TheoXe(idPhieuTiepNhan);
                     return ActionTrueData(string.Empty);
                 }
                 catch (Exception ex)
@@ -904,6 +965,55 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     excel.Columns.Remove("TotalRow");
 
                     string tempFile = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/Template_LichNhacBaoDuong.xlsx");
+                    string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/LichNhacBaoDuong.xlsx");
+                    fileSave = classOffice.createFolder_Download(fileSave);
+                    classOffice.listToOfficeExcel(tempFile, fileSave, excel, 3, 100, 97, true, columnsHide);
+
+                    var index = fileSave.IndexOf(@"\Template");
+                    fileSave = "~" + fileSave.Substring(index, fileSave.Length - index);
+                    fileSave = fileSave.Replace(@"\", "/");
+                    return ActionTrueNotData(fileSave);
+                }
+                catch (Exception ex)
+                {
+                    return ActionFalseNotData(ex.InnerException + ex.Message);
+                }
+            }
+        }
+        [HttpPost, HttpGet]
+        public IHttpActionResult LeeAuto_ExportExcelLichBaoDuong(ParamSeachLichBaoDuong param)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                try
+                {
+                    Class_officeDocument classOffice = new Class_officeDocument(db);
+                    ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
+                    var columnsHide = string.Empty;
+                    if (param.ColumnsHide != null && param.ColumnsHide.Count > 0)
+                    {
+                        columnsHide = string.Join("_", param.ColumnsHide);
+                    }
+                    List<PhuTung_LichBaoDuong> data = classPhieuTiepNhan.GetLichBaoDuong_TheoXe(param);
+                    DataTable excel = classOffice.ToDataTable<PhuTung_LichBaoDuong>(data);
+                    excel.Columns.Remove("ID");
+                    excel.Columns.Remove("ID_HangHoa");
+                    excel.Columns.Remove("ID_Xe");
+                    excel.Columns.Remove("ID_DoiTuong");
+                    excel.Columns.Remove("TrangThai");
+                    excel.Columns.Remove("sThoiGianBaoHanh");
+                    excel.Columns.Remove("HanBaoHanh");
+                    excel.Columns.Remove("TotalRow");
+                    excel.Columns.Remove("TenNhomHangHoa");
+                    excel.Columns.Remove("MaHangHoa");
+                    excel.Columns.Remove("TenHangHoa");
+                    excel.Columns.Remove("LanBaoDuong");
+                    excel.Columns.Remove("SoKmBaoDuong");
+                    excel.Columns.Remove("NgayNhacBatDau");
+                    excel.Columns.Remove("NgayNhacKetThuc");
+                    excel.Columns.Remove("LanNhac");
+
+                    string tempFile = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/LeeAuto_Template_LichNhacBaoDuong.xlsx");
                     string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/LichNhacBaoDuong.xlsx");
                     fileSave = classOffice.createFolder_Download(fileSave);
                     classOffice.listToOfficeExcel(tempFile, fileSave, excel, 3, 100, 97, true, columnsHide);
@@ -1710,6 +1820,23 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 return ActionFalseNotData(ex.ToString());
             }
         }
+        [HttpPost]
+        public IHttpActionResult GetHoaDonBaoGia_ofXeDangSua(ParamSearch param)
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    ClassPhieuTiepNhan classPhieuTN = new ClassPhieuTiepNhan(db);
+                    List<XuatKho_JqautoHDSC> data = classPhieuTN.GetHoaDonBaoGia_ofXeDangSua(param);
+                    return ActionTrueData(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                return ActionFalseNotData(ex.ToString());
+            }
+        }
 
         [HttpPost, HttpGet]
         public IHttpActionResult ImageUpload(string rootFolder, string subFolder = null)
@@ -1891,6 +2018,24 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
                     classPhieuTiepNhan.InsertLichNhacBaoDuong_whenQuaHan_orEnoughLanNhac(idLichNhac, typeUpdate);
                     return ActionTrueData(string.Empty);
+                }
+                catch (Exception ex)
+                {
+                    return ActionFalseNotData(ex.InnerException + ex.Message);
+                }
+            }
+        }
+
+        [HttpPost]
+        public IHttpActionResult ThongBao_TienDoCongViec(ParamThongBaoTienDo param)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                try
+                {
+                    ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
+                    bool data = classPhieuTiepNhan.CheckTienDo_CongViec(param);
+                    return ActionTrueData(data);
                 }
                 catch (Exception ex)
                 {
@@ -2084,6 +2229,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     List<Gara_BaoGia> xx = classPhieuTiepNhan.Gara_GetListHoaDonSuaChua(param);
                     List<LichSuSuaChua_Export> lst = xx.Select(p => new LichSuSuaChua_Export
                     {
+                        MaPhieuTiepNhan = p.MaPhieuTiepNhan,
+                        SoKmVao = p.SoKmVao, 
                         MaHoaDon = p.MaHoaDon,
                         MaBaoGia = p.MaBaoGia,
                         NgayLapHoaDon = p.NgayLapHoaDon.Value,

@@ -659,7 +659,7 @@ var ViewModel = function () {
         }
         else if (_hinhthucKM == 24) {
             _ID_theoSL = _ID_theoSL + 1;
-            var ob = {
+            let ob = {
                 ID: _ID_theoSL,
                 SoLuongMua: 1,
                 ID_DonViQuiDoiMua: null,
@@ -668,22 +668,32 @@ var ViewModel = function () {
                 TenNhomHangHoaMua: null,
                 GiaKhuyenMai: null,
             }
-            self.HH_GiaBanTheoSL.push(ob);
-            //thêm 1 đơn vị hàng
-            var ob1 = {
-                ID_addHH: _ID_theoSL,
+            let obAdd = {
+                ID: _ID_theoSL,
                 SoLuongMua: 1,
-                ID_DonViQuiDoi: null,
-                TenHangHoa: null,
-                ID_NhomHangHoa: null,
-                TenNhomHangHoa: null,
+                ID_DonViQuiDoiMua: null,
+                TenHangHoaMua: null,
+                ID_NhomHangHoaMua: null,
+                TenNhomHangHoaMua: null,
                 GiaKhuyenMai: null,
-                GiamGia: null,
-                GiamGiaTheoPhanTram: null,
-                IDRandom: CreateIDRandom('KM24_'),
-                TypeSelect: '1',
+                ThemHangHoa: ob
             }
-            self.ThemHangHoa.push(ob1);
+            self.HH_GiaBanTheoSL.push(obAdd);
+            //thêm 1 đơn vị hàng
+            //var ob1 = {
+            //    ID_addHH: _ID_theoSL,
+            //    SoLuongMua: 1,
+            //    ID_DonViQuiDoi: null,
+            //    TenHangHoa: null,
+            //    ID_NhomHangHoa: null,
+            //    TenNhomHangHoa: null,
+            //    GiaKhuyenMai: null,
+            //    GiamGia: null,
+            //    GiamGiaTheoPhanTram: null,
+            //    IDRandom: CreateIDRandom('KM24_'),
+            //    TypeSelect: '1',
+            //}
+            //self.ThemHangHoa.push(ob1);
         }
         else {
             _IDadd = self.HD_GiamGiaHD().length + 1;
@@ -3536,6 +3546,7 @@ var ViewModel = function () {
                     }
                 }
                 else if (_hinhthucKM == 22) {
+                      debugger
                     self.HH_MuaHangTangHang.replace(SaveItem, {
                         ID: SaveItem.ID,
                         SoLuongMua: SaveItem.SoLuongMua,
@@ -3595,10 +3606,10 @@ var ViewModel = function () {
                     })
                     console.log(self.HH_GiaBanTheoSL());
                     self.SaveHD_TangHang(self.HH_GiaBanTheoSL());
-                    self.HH_GiaBanTheoSL([]);
-                    for (var i = 0; i < self.SaveHD_TangHang().length; i++) {
-                        self.HH_GiaBanTheoSL.push(self.SaveHD_TangHang()[i]);
-                    }
+                    //self.HH_GiaBanTheoSL([]);
+                   // for (var i = 0; i < self.SaveHD_TangHang().length; i++) {
+                      //  self.HH_GiaBanTheoSL.push(self.SaveHD_TangHang()[i]);
+                    //}
                 }
             });
         }
@@ -4036,6 +4047,7 @@ var ViewModel = function () {
     self.ddlKM_byNumber = ko.observableArray([{ ID: 1, Text: 'Giá bán' }, { ID: 2, Text: 'Giảm giá' }]);
 
     self.ChangeType_24 = function (item) {
+        debugger
         var $this = event.currentTarget;
         var divNVD = $($this).parent().next().next();
         $($this).parent().next().val(0);// reset value for input
@@ -4068,6 +4080,7 @@ var ViewModel = function () {
     }
 
     self.ClickVND_24 = function (item) {
+        debugger
         var $this = event.currentTarget;
         $($this).prev().val(0);// reset input
         var idRandom = item.IDRandom;

@@ -1,0 +1,1729 @@
+﻿@using banhang24.Hellper
+<style>
+    .tttt-gara > div > div {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 5px 0
+    }
+
+        .tttt-gara > div > div > div {
+            padding-left: 0;
+            padding-right: 15px;
+        }
+
+            .tttt-gara > div > div > div:last-child {
+                padding-left: 0;
+                padding-right: 0;
+            }
+
+    @@media (max-width: 1024px) {
+        #ThongTinThanhToanKHNCC2 .table-frame.position-relative {
+            height: initial !important;
+            min-height: 230px;
+            max-height: 310px;
+        }
+    }
+</style>
+<div class="modal fade" id="ThongTinThanhToanNCC2">
+    <div class="modal-dialog draggable modal-lgmax">
+        <div class="modal-content ">
+            <div class="modal-header ">
+                <h5 class="modal-title">
+                    Thông tin thanh toán
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
+
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs " id="gara-detail-tab" role="tablist">
+                    <li class="nav-item" v-bind:class="{active: inforHoaDon.LoaiDoiTuong == 2}"
+                        v-on:click="changeTab(2)">
+                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
+                           href="#KhachHang" role="tab" aria-controls="pills-profile" aria-selected="false">
+                            {{PhieuThuKhach.HoanTraTamUng > 0?'Thông tin':'Thông tin thanh toán'}}
+                        </a>
+                    </li>
+                    <li class="nav-item"
+                        v-if="inforHoaDon.TongChiPhi > 0 && inforHoaDon.ID_NhaCungCap != null"
+                        v-bind:class="{active: inforHoaDon.LoaiDoiTuong == 3}"
+                        v-on:click="changeTab(3)">
+                        <a class="nav-link" data-toggle="pill" href="#BaoHiem" role="tab">
+                            Bên vận chuyển
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content ">
+                    <div class="tab-pane"
+                         v-bind:class="{active: inforHoaDon.LoaiDoiTuong == 2}"
+                         id="KhachHang" role="tabpanel">
+                        <div class="gara-tttt-thongtin" v-if="PhieuThuKhach.HoanTraTamUng <=0 || inforHoaDon.SoDuDatCoc > 0">
+                            <label style="width:200px;">Cần trả nhà cung cấp</label>
+                            <input class="gara-tttt-tienthu"
+                                   v-bind:value="formatNumber3Digit(inforHoaDon.PhaiThanhToan - inforHoaDon.TongChiPhi,2)" />
+                        </div>
+                        <div class="gara-tttt-thongtin"
+                             v-if="PhieuThuKhach.KhachDaTra > 0 && (PhieuThuKhach.HoanTraTamUng <=0 || inforHoaDon.SoDuDatCoc > 0) ">
+                            <label style="width:200px;">Đã thanh toán</label>
+                            <input class="gara-tttt-tienthu" readonly
+                                   v-bind:value="formatNumber3Digit(PhieuThuKhach.KhachDaTra,2)" />
+                        </div>
+                        <div class="gara-tttt-thongtin" v-if="PhieuThuKhach.HoanTraTamUng > 0 && inforHoaDon.SoDuDatCoc <=0">
+                            <label style="width:200px;">Nhà cung cấp trả lại</label>
+                            <input class="gara-tttt-tienthu"
+                                   v-bind:value="formatNumber3Digit(PhieuThuKhach.HoanTraTamUng,2)" />
+
+                        </div>
+                        <div class="gara-tttt-chuyenkhoan">
+                            <div class="container-fluid row " style="margin-bottom:5px">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>
+                                        Khoản mục {{$root.PhieuThuKhach.LaKhoanThu?'thu':'chi'}}
+                                    </label>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <khoan-thu-chi :text-search="khoanthuchi.NoiDungThuChi"
+                                                   :la-khoan-thu="$root.PhieuThuKhach.LaKhoanThu"
+                                                   :list-all="listData.KhoanThuChis"
+                                                   :id-chosing="newPhieuThu.ID_KhoanThuChi"
+                                                   v-on:change-khoan-thu="ChangeKhoanThu"
+                                                   v-on:reset-khoan-thu="ResetKhoanThu">
+                                    </khoan-thu-chi>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gara-tttt-chuyenkhoan" v-if="inforHoaDon.SoDuDatCoc > 0">
+                            <div class="container-fluid row" style="margin-bottom:5px"
+                                 v-if="inforHoaDon.TongThanhToan > PhieuThuKhach.KhachDaTra">
+                                <div class="col-lg-4 col-sm-12 col-xs-12 col-md-4"> <label class="bold">Chi từ cọc</label></div>
+                                <div class="col-lg-4 col-sm-12 col-xs-12 col-md-4">
+                                    <span style="line-height:30px">
+                                        <span>Đã đặt cọc: </span>
+                                        <span>{{formatNumber3Digit(inforHoaDon.SoDuDatCoc,2)}}</span>
+                                    </span>
+                                </div>
+                                <div class="col-lg-4 col-sm-12 col-xs-12 col-md-4">
+                                    <input type="text" class="form-control text-right "
+                                           onclick="this.select()"
+                                           onkeypress="return keypressNumber(event)"
+                                           v-model="PhieuThuKhach.TienDatCoc"
+                                           v-on:keyup="KH_EditTienCoc" />
+                                </div>
+
+                            </div>
+                            <div class="container-fluid row" style="margin-bottom:5px">
+                                <div class="col-lg-4 col-sm-12 col-xs-12 col-md-4">
+                                    <label class="bold" v-if="PhieuThuKhach.HoanTraTamUng > 0 && inforHoaDon.SoDuDatCoc > 0">
+                                        NCC cần trả
+                                    </label>
+                                    <label v-else>
+                                        Phải thanh toán
+                                    </label>
+                                </div>
+                                <div class="col-lg-4 col-sm-12 col-xs-12 col-md-4">
+                                    <label>&nbsp;</label>
+                                </div>
+                                <div class="col-lg-4 col-sm-12 col-xs-12 col-md-4">
+                                    <input type="text" class="form-control text-right " readonly v-if="PhieuThuKhach.PhaiThanhToan >= 0"
+                                           v-bind:value="formatNumber3Digit(PhieuThuKhach.PhaiThanhToan,2)" />
+                                    <input type="text" class="form-control text-right " readonly v-else
+                                           v-bind:value="formatNumber3Digit(PhieuThuKhach.HoanTraTamUng,2)" />
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="gara-tttt-thongtin"
+                             v-if="PhieuThuKhach.HoanTraCoc > 0 && inforHoaDon.SoDuDatCoc > PhieuThuKhach.PhaiThanhToan > 0">
+                            <label style="width:unset">
+                                <input type="checkbox" v-model="isCheckTraLaiCoc" v-on:change="$root.ChangeCheckTraLaiCoc" />
+                                <span>
+                                    Trả lại tiền cọc
+                                </span>
+                            </label>
+                        </div>
+
+                        <div class="gara-tttt-chuyenkhoan">
+                            <!--Tiền mặt-->
+                            <div class="container-fluid row" style="margin-bottom:5px">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>Tiền mặt</label>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <span>&nbsp;</span>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <input type="text" class="form-control text-right "
+                                           onclick="this.select()"
+                                           onkeypress="keypressNumber_limitNumber(event,this)"
+                                           v-model="PhieuThuKhach.TienMat"
+                                           v-on:keyup="KH_EditTienMat" />
+                                </div>
+
+                            </div>
+                            <!--POS-->
+                            <div class="container-fluid row" style="margin-bottom:5px">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <label>Tiền quẹt thẻ POS</label>
+
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <account-bank :text-search="PhieuThuKhach.TenTaiKhoanPos"
+                                                  :accounts="listData.AccountBanks.filter(x=>x.TaiKhoanPOS)"
+                                                  :search-list="listData.AccountBanks.filter(x=>x.TaiKhoanPOS)"
+                                                  :id-chosing="PhieuThuKhach.ID_TaiKhoanPos"
+                                                  v-on:change-account-parent="ChangeAccountPOS"
+                                                  v-on:reset-account="ResetAccountPOS">
+                                    </account-bank>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <input type="text" class="form-control text-right "
+                                           onkeypress="keypressNumber_limitNumber(event,this)"
+                                           onclick="this.select()"
+                                           v-model="PhieuThuKhach.TienPOS"
+                                           v-on:keyup="KH_EditTienPos"
+                                           v-bind:disabled="PhieuThuKhach.ID_TaiKhoanPos == null" />
+                                </div>
+                            </div>
+                            <!--Chuyển khoản-->
+                            <div class="container-fluid row" style="margin-bottom:5px">
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="display: flex; flex-direction: row; align-content: center; justify-content: space-between; align-items: center;">
+                                    <label>Tiền chuyển khoản</label>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <account-bank :text-search="PhieuThuKhach.TenTaiKhoanCK"
+                                                  :accounts="listData.AccountBanks.filter(x=>x.TaiKhoanPOS==false)"
+                                                  :search-list="listData.AccountBanks.filter(x=>x.TaiKhoanPOS==false)"
+                                                  :id-chosing="PhieuThuKhach.ID_TaiKhoanChuyenKhoan"
+                                                  v-on:change-account-parent="ChangeAccountCK"
+                                                  v-on:reset-account="ResetAccountCK">
+                                    </account-bank>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <input type="text" class="form-control text-right "
+                                           onkeypress="keypressNumber_limitNumber(event,this)"
+                                           onclick="this.select()"
+                                           v-model="PhieuThuKhach.TienCK"
+                                           v-on:keyup="KH_EditTienCK"
+                                           v-bind:disabled="PhieuThuKhach.ID_TaiKhoanChuyenKhoan==null" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="gara-tttt-thongtin">
+                            <label v-if="PhieuThuKhach.HoanTraTamUng <= 0">Tổng trả</label>
+                            <label v-if="PhieuThuKhach.HoanTraTamUng > 0">Tổng NCC trả</label>
+                            <input class="gara-tttt-tienthu" readonly
+                                   v-bind:value="formatNumber3Digit(PhieuThuKhach.DaThanhToan,2)" />
+                        </div>
+                        <div class="gara-tttt-thongtin">
+                            <label>
+                                {{PhieuThuKhach.TienThua > 0?'Tiền thừa':'Tiền thiếu'}}
+                            </label>
+                            <input class="gara-tttt-tienthu" readonly
+                                   v-bind:value="formatNumber3Digit(Math.abs(PhieuThuKhach.TienThua,2))" />
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="BaoHiem"
+                         v-bind:class="{active: inforHoaDon.LoaiDoiTuong == 3}"
+                         role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <div class="gara-tttt-thongtin">
+                            <label style="width:200px;">Cần chi bên vận chuyển</label>
+                            <input class="gara-tttt-tienthu" readonly
+                                   v-bind:value="formatNumber3Digit(inforHoaDon.TongChiPhi,2)" />
+                        </div>
+                        <div class="gara-tttt-thongtin"
+                             v-if="PhieuChiVanChuyen.KhachDaTra > 0">
+                            <label style="width:200px;">Đã chi</label>
+                            <input class="gara-tttt-tienthu" readonly
+                                   v-bind:value="formatNumber3Digit(PhieuChiVanChuyen.KhachDaTra,2)" />
+                        </div>
+                        <div class="gara-tttt-thongtin" v-if="formatNumberToFloat(PhieuChiVanChuyen.HoanTraTamUng) > 0">
+                            <label style="width:200px;">Bên vc trả lại tiền</label>
+                            <input class="gara-tttt-tienthu" readonly
+                                   v-bind:value="formatNumber3Digit(PhieuChiVanChuyen.HoanTraTamUng,2)" />
+                        </div>
+                        <div class="gara-tttt-chuyenkhoan">
+                            <div class="container-fluid row " style="margin-bottom:5px">
+                                <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+                                    <label>
+                                        Khoản mục {{$root.PhieuChiVanChuyen.LaKhoanThu?'thu':'chi'}}
+                                    </label>
+                                </div>
+                                <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                    <khoan-thu-chi :text-search="bh_khoanthuchi.NoiDungThuChi"
+                                                   :la-khoan-thu="$root.PhieuChiVanChuyen.LaKhoanThu"
+                                                   :list-all="listData.KhoanThuChis"
+                                                   :id-chosing="PhieuChiVanChuyen.ID_KhoanThuChi"
+                                                   v-on:change-khoan-thu="BH_ChangeKhoanThu"
+                                                   v-on:reset-khoan-thu="BH_ResetKhoanThu">
+                                    </khoan-thu-chi>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gara-tttt-chuyenkhoan">
+                            <!--Tiền mặt-->
+                            <div class="floatleft" style="margin-bottom:5px">
+                                <div class="col-lg-4 col-md-4 col-xs-12">
+                                    <label>Tiền mặt</label>
+
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-xs-12"></div>
+                                <div class="col-lg-4 col-md-4 col-xs-12">
+                                    <input type="text" class="form-control text-right "
+                                           onkeypress="return keypressNumber(event)"
+                                           onclick="this.select()"
+                                           v-model="PhieuChiVanChuyen.TienMat"
+                                           v-on:keyup="BH_EditTienMat" />
+                                </div>
+                            </div>
+                            <!--thẻ POS-->
+                            <div class="floatleft" style="margin-bottom:5px">
+                                <div class="col-lg-4 col-md-4 col-xs-12">
+                                    <label>Tiền quẹt thẻ POS</label>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-xs-12">
+
+                                    <account-bank :text-search="PhieuChiVanChuyen.TenTaiKhoanPos"
+                                                  :accounts="listData.AccountBanks.filter(x=>x.TaiKhoanPOS)"
+                                                  :search-list="listData.AccountBanks.filter(x=>x.TaiKhoanPOS)"
+                                                  :id-chosing="PhieuChiVanChuyen.ID_TaiKhoanPos"
+                                                  v-on:change-account-parent="BH_ChangeAccountPOS"
+                                                  v-on:reset-account="BH_ResetAccountPOS">
+                                    </account-bank>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-xs-12">
+                                    <input type="text" class="form-control text-right "
+                                           onclick="this.select()"
+                                           onkeypress="return keypressNumber(event)"
+                                           v-bind:disabled="PhieuChiVanChuyen.ID_TaiKhoanPos ==null"
+                                           v-model="PhieuChiVanChuyen.TienPOS"
+                                           v-on:keyup="BH_EditTienPos" />
+                                </div>
+                            </div>
+                            <!--Chuyển khoản-->
+                            <div class="floatleft" style="margin-bottom:5px">
+                                <div class="col-lg-4 col-md-4 col-xs-12" style="display: flex; flex-direction: row; align-content: center; justify-content: space-between; align-items: center;">
+                                    <label>Tiền chuyển khoản</label>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-xs-12">
+                                    <account-bank :text-search="PhieuChiVanChuyen.TenTaiKhoanCK"
+                                                  :accounts="listData.AccountBanks.filter(x=>x.TaiKhoanPOS==false)"
+                                                  :search-list="listData.AccountBanks.filter(x=>x.TaiKhoanPOS==false)"
+                                                  :id-chosing="PhieuChiVanChuyen.ID_TaiKhoanChuyenKhoan"
+                                                  v-on:change-account-parent="BH_ChangeAccountCK"
+                                                  v-on:reset-account="BH_ResetAccountCK">
+                                    </account-bank>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-xs-12">
+                                    <input type="text" class="form-control text-right "
+                                           onclick="this.select()"
+                                           onkeypress="return keypressNumber(event)"
+                                           v-bind:disabled="PhieuChiVanChuyen.ID_TaiKhoanChuyenKhoan ==null"
+                                           v-model="PhieuChiVanChuyen.TienCK"
+                                           v-on:keyup="BH_EditTienCK" />
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div class="gara-tttt-thongtin">
+                            <label>Tổng trả bên vận chuyển</label>
+                            <input class="gara-tttt-tienthu" readonly
+                                   v-bind:value="formatNumber3Digit(PhieuChiVanChuyen.DaThanhToan,2)" />
+                        </div>
+                        <div class="gara-tttt-thongtin">
+                            <label>
+                                {{PhieuChiVanChuyen.TienThua> 0?'Tiền thừa trả lại':'Tiền thiếu'}}
+                            </label>
+                            <input class="gara-tttt-tienthu" readonly
+                                   v-bind:value="formatNumber3Digit(Math.abs(PhieuChiVanChuyen.TienThua),2)" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-cancel" data-dismiss="modal" v-if="formType ===1">
+                    <i class="fa fa-ban"></i> Hủy
+                </button>
+                <button type="button" class="btn btn-save" v-if="formType === 1" v-on:click="AgreeThanhToan">
+                    <i class="fa fa-save"></i>
+                    Lưu
+                </button>
+
+                <button type="button" class="btn btn-save" v-if="formType !==1" v-on:click="AgreeThanhToan">
+                    <i class="fa fa-check"></i>
+                    Đồng ý
+                </button>
+                <button type="button" class="btn btn-cancel" data-dismiss="modal" v-if="formType !==1">
+                    <i class="fa fa-ban"></i> Bỏ qua
+                </button>
+            </div>
+
+
+        </div>
+        <script>
+            $('.infor-popup a').click(function () {
+                $(this).siblings().toggle();
+            })
+        </script>
+    </div>
+</div>
+
+<script>
+    var vmThanhToan = new Vue({
+        el: '#ThongTinThanhToanNCC2',
+        components: {
+            'account-bank': cmpChoseAccountBank,
+            'khoan-thu-chi': cmpChoseKhoanThu,
+            'nvien-hoadon-search': cmpSearchNVDisscount,
+        },
+        created: function () {
+            this.GuidEmpty = '00000000-0000-0000-0000-000000000000';
+            this.khoanthuchi = {
+                ID: null,
+                NoiDungThuChi: '',
+            };
+        },
+        data: {
+            saveOK: false,
+            isNew: true,
+            isGara: false,
+            isCheckTraLaiCoc: false,
+            formType: 1,
+            itemChosing: {},
+            khoanthuchi: {
+                ID: null,
+                NoiDungThuChi: '',
+            },
+
+            bh_khoanthuchi: {
+                ID: null,
+                NoiDungThuChi: '',
+            },
+
+            inforHoaDon: {
+                ID: null,
+                IDRandom: null,
+                LoaiDoiTuong: 2,// 1.kh, 2.ncc, 3.benvc
+                LoaiHoaDon: 1,
+                ID_DoiTuong: null,
+                ID_BaoHiem: null,
+                SoDuDatCoc: 0,
+                HoanTra: 0,
+                PhaiThanhToan: 0,
+                TongThanhToan: 0,
+                TongTichDiem: 0,
+                ThucThu: 0,
+                ConNo: 0,
+                DienGiai: '',
+                MaDoiTuong: '',
+                TenDoiTuong: '',
+                MaHoaDon: '',
+                ID_DonVi: null,
+                ID_NhanVien: null,
+                NgayLapHoaDon: null,
+                ID_PhieuTiepNhan: null,
+                ID_NhaCungCapg: null,
+                TongChiPhi: 0,
+            },
+            PhieuThuKhach: {},
+            PhieuChiVanChuyen: {},
+            listData: {
+                AccountBanks: [],
+                KhoanThuChis: [],
+                NhanViens: [],
+            },
+            PhieuThuKhachPrint: {},
+            PhieuChiVanChuyenPrint: {},
+        },
+        methods: {
+            changeTab: function (loaiDT) {
+                let self = this;
+                self.inforHoaDon.LoaiDoiTuong = loaiDT;
+            },
+            newPhieuThu: function () {
+                return {
+                    MaHoaDon: '',
+                    NgayLapHoaDon: moment(new Date()).format('YYYY-MM-DD HH:mm'),
+                    TienDatCoc: 0,
+                    TienMat: 0,
+                    TienPOS: 0,
+                    TienCK: 0,
+                    TienTheGiaTri: 0,
+                    DiemQuyDoi: 0,
+                    TTBangDiem: 0,
+                    ID_TaiKhoanPos: null,
+                    ID_TaiKhoanChuyenKhoan: null,
+                    ID_NhanVien: null,
+                    ID_KhoanThuChi: null,
+                    TenKhoanThuChi: '',
+                    NoHienTai: 0,
+                    PhaiThanhToan: 0,// sotien phaitt sau khi tru khachdatra (update phieunhap)
+                    DaThanhToan: 0,// tổng tienmat + pó + ck
+                    TienThua: 0,
+                    ThucThu: 0,
+                    TenTaiKhoanPos: '',//= ten chu the
+                    TenTaiKhoanCK: '',
+                    SoTaiKhoanPos: '',
+                    SoTaiKhoanCK: '',
+                    TenNganHangPos: '',
+                    TenNganHangCK: '',
+                    HoanTraTamUng: 0,// sotien ncc phaitra (khong tinh tiencoc)
+                    HoanTraCoc: 0,
+                    MaDoiTuong: '',
+                    TenDoiTuong: '',
+                    KhachDaTra: 0,// if update phieunhap
+                    LaKhoanThu: false,// update phieunhap (thu lai tien ncc/benVC)
+                };
+            },
+            Get_benVanChuyen: function (idRandom) {
+                // check ben vanchuyen thu3
+                let cpVC = localStorage.getItem('lcChiPhi_NhapHang');
+                if (cpVC !== null) {
+                    cpVC = JSON.parse(cpVC);
+                    let exCP = $.grep(cpVC, function (x) {
+                        return x.IDRandomHD === idRandom;
+                    });
+                    if (cpVC.length > 0) {
+                        return cpVC;
+                    }
+                }
+                return [];
+            },
+            showModalThanhToan: function (idRandom, loaiHoaDon = 7) {
+                let self = this;
+                self.saveOK = false;
+
+                let cacheName = 'lcHDNhapHang'
+                if (loaiHoaDon === 7) {
+                    cacheName = 'lcHDTraHangNhap';
+                }
+                let lstHD = localStorage.getItem(cacheName);
+                let itemHD = [];
+                if (lstHD !== null) {
+                    lstHD = JSON.parse(lstHD);
+                    itemHD = $.grep(lstHD, function (x) {
+                        return x.IDRandom === idRandom;
+                    });
+                }
+                else {
+                    lstHD = [];
+                }
+                if (itemHD.length === 0) {
+                    // reset all
+                    self.PhieuThuKhach = self.newPhieuThu();
+                    self.PhieuChiVanChuyen = self.newPhieuThu();
+                    self.ResetKhoanThu();
+                    self.BH_ResetKhoanThu();
+
+                    self.inforHoaDon = {
+                        ID: null,
+                        IDRandom: null,
+                        LoaiDoiTuong: 2,// 1.kh, 2.ncc, 3.benvc
+                        LoaiHoaDon: 1,
+                        ID_DoiTuong: null,
+                        ID_BaoHiem: null,
+                        SoDuDatCoc: 0,
+                        HoanTra: 0,
+                        PhaiThanhToan: 0,
+                        TongThanhToan: 0,
+                        TongTichDiem: 0,
+                        ThucThu: 0,
+                        ConNo: 0,
+                        DienGiai: '',
+                        MaDoiTuong: '',
+                        TenDoiTuong: '',
+                        MaHoaDon: '',
+                        ID_DonVi: null,
+                        ID_NhanVien: null,
+                        NgayLapHoaDon: null,
+                        ID_PhieuTiepNhan: null,
+                        ID_NhaCungCapg: null,
+                        TongChiPhi: 0,
+                    };
+
+                    $('#ThongTinThanhToanNCC2').modal('show');
+                    return;
+                }
+                console.log('hd ', itemHD[0])
+
+                // KhachDaTra = datraNCC + datra benVC (when update nhaphang)
+                let dachiVC = formatNumberToFloat(itemHD[0].DaChi_BenVCKhac);
+                let khachDaTra = formatNumberToFloat(itemHD[0].KhachDaTra) - dachiVC;
+                khachDaTra = khachDaTra < 0 ? 0 : khachDaTra;// if update NCC, khachDaTra =0, but dachiVC > 0
+
+                self.inforHoaDon = itemHD[0];
+                self.inforHoaDon.LoaiDoiTuong = 2;
+                self.isCheckTraLaiCoc = commonStatisJs.CheckNull(itemHD[0].isCheckTraLaiCoc) ? false : itemHD[0].isCheckTraLaiCoc;
+
+                self.PhieuThuKhach = self.newPhieuThu();
+                self.PhieuThuKhach.KhachDaTra = khachDaTra;
+
+                self.PhieuChiVanChuyen = self.newPhieuThu();
+                self.PhieuChiVanChuyen.KhachDaTra = dachiVC;
+
+                let cpVCbenthu3 = 0;
+                let benVC = self.Get_benVanChuyen(idRandom);
+                if (benVC.length > 0 && benVC[0].ID_DoiTuong !==  itemHD[0].ID_DoiTuong) {
+                    self.inforHoaDon.ID_NhaCungCap = benVC[0].ID_DoiTuong;
+                    cpVCbenthu3 = itemHD[0].TongChiPhi;
+                }
+                else {
+                    self.inforHoaDon.TongChiPhi = 0;
+                }
+                self.PhieuThuKhach.PhaiThanhToan = self.inforHoaDon.PhaiThanhToan - khachDaTra - cpVCbenthu3;
+                self.PhieuChiVanChuyen.PhaiThanhToan = cpVCbenthu3 > 0 ? self.inforHoaDon.TongChiPhi - dachiVC : 0;
+
+                self.GetLocalCacheThuChi(itemHD[0]);
+
+                $('#ThongTinThanhToanNCC2').modal('show');
+            },
+            GetLocalCacheThuChi: function (hd) {
+                let self = this;
+                // check cache thu/chi
+                let lcThuChi = localStorage.getItem('lcThuChiNhapTra');
+                if (lcThuChi !== null) {
+                    lcThuChi = JSON.parse(lcThuChi);
+                }
+                else {
+                    lcThuChi = [];
+                }
+                let exThuChi = $.grep(lcThuChi, function (x) {
+                    return x.IDRandomHD === hd.IDRandom;
+                });
+
+                let tiendatcoc = 0, tienmat = 0, tienPOS = 0, tienCK = 0;
+                let dathanhtoanNCC = 0;
+                let hoantraHD = hd.HoanTra;
+                let soduDatCoc = hd.SoDuDatCoc;
+                let phaiTTNCC = self.PhieuThuKhach.PhaiThanhToan;
+                let phaiTTBenVC = self.PhieuChiVanChuyen.PhaiThanhToan;
+
+                if (exThuChi.length > 0) {
+                    let sqNCC = exThuChi[0].PhieuThuKhach;
+                    let sqVanChuyen = exThuChi[0].PhieuChiVanChuyen;
+
+                    // if exists cache, sau do cap nhat lai ttHoaDon, ctHD  --> reset
+                    if (sqNCC.PhaiThanhToan !== phaiTTNCC) {
+                        let thuchiNew = self.ResetPhieuThuChi_whenEditThanhToan(hd.IDRandom);
+                        self.PhieuThuKhach = thuchiNew.PhieuThuKhach;
+                        self.PhieuChiVanChuyen = thuchiNew.PhieuChiVanChuyen;
+                    }
+                    else {
+                        self.PhieuThuKhach = sqNCC;
+                        self.PhieuChiVanChuyen = sqVanChuyen;
+                    }
+
+                    self.khoanthuchi = {
+                        ID: self.PhieuThuKhach.ID_KhoanThuChi,
+                        NoiDungThuChi: self.PhieuThuKhach.TenKhoanThuChi
+                    };
+                    self.bh_khoanthuchi = {
+                        ID: self.PhieuChiVanChuyen.ID_KhoanThuChi,
+                        NoiDungThuChi: self.PhieuChiVanChuyen.TenKhoanThuChi
+                    };
+                    dathanhtoanNCC = self.PhieuThuKhach.DaThanhToan;
+                }
+                else {
+                    self.ResetKhoanThu();
+                    self.BH_ResetKhoanThu();
+
+                    if (phaiTTNCC > 0) {
+                        if (soduDatCoc > phaiTTNCC) {
+                            tiendatcoc = phaiTTNCC;
+                            tienmat = soduDatCoc - tiendatcoc;// tra lai coc
+                            self.PhieuThuKhach.HoanTraCoc = tienmat;
+                        }
+                        else {
+                            tiendatcoc = soduDatCoc;
+                            tienmat = phaiTTNCC - tiendatcoc;
+                        }
+                        self.PhieuThuKhach.TienMat = formatNumber3Digit(tienmat, 2);
+                        self.PhieuThuKhach.DaThanhToan = tienmat;
+                    }
+                    else {
+                        self.PhieuThuKhach.TienMat = formatNumber3Digit(Math.abs(phaiTTNCC), 2);
+                        self.PhieuThuKhach.HoanTraTamUng = Math.abs(phaiTTNCC);
+                        self.PhieuThuKhach.DaThanhToan = Math.abs(phaiTTNCC);
+                    }
+
+                    if (phaiTTBenVC < 0) {
+                        // ben VC hoantra
+                        self.PhieuChiVanChuyen.TienMat = formatNumber3Digit(Math.abs(phaiTTBenVC));
+                        self.PhieuChiVanChuyen.HoanTraTamUng = Math.abs(phaiTTBenVC);
+                    }
+                }
+
+                self.PhieuThuKhach.LaKhoanThu = formatNumberToFloat(self.PhieuThuKhach.HoanTraTamUng) > 0;;
+                self.PhieuChiVanChuyen.LaKhoanThu = formatNumberToFloat(self.PhieuChiVanChuyen.HoanTraTamUng) > 0;;
+            },
+            ResetPhieuThuChi_whenEditThanhToan: function (idRandomHD) {
+                let self = this;
+
+                // get inforhd
+                let cacheName = 'lcHDNhapHang'
+                if (loaiHoaDon === 7) {
+                    cacheName = 'lcHDTraHangNhap';
+                }
+                let itemHD = [];
+                let lstHD = localStorage.getItem(cacheName);
+                if (lstHD !== null) {
+                    lstHD = JSON.parse(lstHD);
+                    itemHD = $.grep(lstHD, function (x) {
+                        return x.IDRandom === idRandomHD;
+                    });
+                }
+                else {
+                    lstHD = [];
+                }
+                if (itemHD.length === 0) {
+                    return;
+                }
+
+                let cpVCbenthu3 = 0;
+                let benVC = self.Get_benVanChuyen(idRandomHD);
+                if (benVC.length > 0) {
+                    self.inforHoaDon.ID_NhaCungCap = benVC[0].ID_DoiTuong;
+                    cpVCbenthu3 = itemHD[0].TongChiPhi;
+                }
+
+                // save cache thu/chi
+                let lcThuChi = localStorage.getItem('lcThuChiNhapTra');
+                if (lcThuChi !== null) {
+                    lcThuChi = JSON.parse(lcThuChi);
+                    // remove & add again
+                    lcThuChi = $.grep(lcThuChi, function (x) {
+                        return x.IDRandomHD !== idRandomHD;
+                    });
+                }
+                else {
+                    lcThuChi = [];
+                }
+                let chiNCC = self.newPhieuThu();
+                let chiVanChuyen = self.newPhieuThu();
+                let phaitraNCC = itemHD[0].PhaiThanhToan - cpVCbenthu3 - formatNumberToFloat(itemHD[0].KhachDaTra) - formatNumberToFloat(itemHD[0].DaChi_BenVCKhac);
+
+                // set defaul tienmat
+                if (itemHD[0].DaThanhToan > phaitraNCC) {
+                    chiNCC.TienMat = formatNumber3Digit(phaitraNCC);
+                    chiNCC.DaThanhToan = phaitraNCC;
+                }
+                else {
+                    chiNCC.TienMat = formatNumber3Digit(itemHD[0].DaThanhToan, 2);
+                    chiNCC.DaThanhToan = itemHD[0].DaThanhToan;
+                }
+                chiNCC.PhaiThanhToan = phaitraNCC;
+                chiVanChuyen.PhaiThanhToan = cpVCbenthu3;
+
+                let obj = {
+                    IDRandomHD: idRandomHD,
+                    IsCheckTraLaiCoc: false,
+                    PhieuThuKhach: chiNCC,
+                    PhieuThuKhachPrint: chiNCC,
+                    PhieuChiVanChuyen: chiVanChuyen,
+                };
+                lcThuChi.push(obj);
+                localStorage.setItem('lcThuChiNhapTra', JSON.stringify(lcThuChi));
+
+                // used to bind again when show modal
+                return {
+                    PhieuThuKhach: chiNCC,
+                    PhieuChiVanChuyen: chiVanChuyen,
+                }
+            },
+            ChangeCheckTraLaiCoc: function () {
+                let self = this;
+                if (self.isCheckTraLaiCoc) {
+                    self.PhieuThuKhach.TienMat = formatNumber3Digit(self.PhieuThuKhach.HoanTraTamUng);
+                }
+                else {
+                    self.PhieuThuKhach.TienMat = 0;
+                }
+                self.PhieuThuKhach.TienPOS = 0;
+                self.PhieuThuKhach.TienCK = 0;
+                self.CaculatorDaThanhToan();
+            },
+            CaculatorDaThanhToan: function () {
+                var self = this;
+                var tiencoc = formatNumberToFloat(self.PhieuThuKhach.TienDatCoc);
+                if (self.PhieuThuKhach.HoanTraTamUng > 0 && self.inforHoaDon.SoDuDatCoc > 0) {
+                    // neu chi tra tien: khong tinh tiencoc
+                    tiencoc = 0;
+                }
+                self.PhieuThuKhach.DaThanhToan = formatNumberToFloat(self.PhieuThuKhach.TienMat)
+                    + tiencoc
+                    + formatNumberToFloat(self.PhieuThuKhach.TienPOS)
+                    + formatNumberToFloat(self.PhieuThuKhach.TienCK)
+                    + formatNumberToFloat(self.PhieuThuKhach.TienTheGiaTri)
+                    + formatNumberToFloat(self.PhieuThuKhach.TTBangDiem);
+                self.PhieuThuKhach.ThucThu = formatNumberToFloat(self.PhieuThuKhach.TienMat)
+                    + formatNumberToFloat(self.PhieuThuKhach.TienPOS)
+                    + formatNumberToFloat(self.PhieuThuKhach.TienCK);
+
+                self.PhieuThuKhach.TienThua = self.PhieuThuKhach.DaThanhToan - Math.abs(self.PhieuThuKhach.PhaiThanhToan);
+            },
+            ResetAccountPOS: function () {
+                var self = this;
+                self.PhieuThuKhach.TenTaiKhoanPos = '';
+                self.PhieuThuKhach.SoTaiKhoanPos = '';
+                self.PhieuThuKhach.TenNganHangPos = '';
+                self.PhieuThuKhach.ID_TaiKhoanPos = null;
+                self.PhieuThuKhach.TienPOS = 0;
+                self.CaculatorDaThanhToan();
+            },
+            ChangeAccountPOS: function (item) {
+                var self = this;
+                self.PhieuThuKhach.TenTaiKhoanPos = item.TenChuThe;
+                self.PhieuThuKhach.SoTaiKhoanPos = item.SoTaiKhoan;
+                self.PhieuThuKhach.TenNganHangPos = item.TenNganHang;
+                self.PhieuThuKhach.ID_TaiKhoanPos = item.ID;
+            },
+            ChangeAccountCK: function (item) {
+                var self = this;
+                self.PhieuThuKhach.TenTaiKhoanCK = item.TenChuThe;
+                self.PhieuThuKhach.SoTaiKhoanCK = item.SoTaiKhoan;
+                self.PhieuThuKhach.TenNganHangCK = item.TenNganHang;
+                self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan = item.ID;
+            },
+            ResetAccountCK: function () {
+                var self = this;
+                self.PhieuThuKhach.TenTaiKhoanCK = '';
+                self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan = null;
+                self.PhieuThuKhach.SoTaiKhoanCK = '';
+                self.PhieuThuKhach.TenNganHangCK = '';
+                self.PhieuThuKhach.TienCK = 0;
+                self.CaculatorDaThanhToan();
+            },
+            ChangeKhoanThu: function (item) {
+                var self = this;
+                self.PhieuThuKhach.ID_KhoanThuChi = item.ID;
+                self.PhieuThuKhach.TenKhoanThuChi = item.NoiDungThuChi;
+                self.khoanthuchi.ID = item.ID;
+                self.khoanthuchi.NoiDungThuChi = item.NoiDungThuChi;
+            },
+            ResetKhoanThu: function () {
+                var self = this;
+                self.PhieuThuKhach.ID_KhoanThuChi = null;
+                self.PhieuThuKhach.TenKhoanThuChi = '';
+                self.khoanthuchi.ID = null;
+                self.khoanthuchi.NoiDungThuChi = '';
+            },
+            BH_ChangeKhoanThu: function (item) {
+                var self = this;
+                self.PhieuChiVanChuyen.ID_KhoanThuChi = item.ID;
+                self.PhieuChiVanChuyen.TenKhoanThuChi = item.NoiDungThuChi;
+                self.bh_khoanthuchi.ID = item.ID;
+                self.bh_khoanthuchi.NoiDungThuChi = item.NoiDungThuChi;
+            },
+            BH_ResetKhoanThu: function () {
+                var self = this;
+                self.PhieuChiVanChuyen.ID_KhoanThuChi = null;
+                self.PhieuChiVanChuyen.TenKhoanThuChi = '';
+                self.bh_khoanthuchi.ID = null;
+                self.bh_khoanthuchi.NoiDungThuChi = '';
+            },
+
+            KH_EditTienCoc: function () {
+                var self = this;
+                var $this = $(event.currentTarget);
+                formatNumberObj($this);
+
+                let phaiTT = Math.abs(formatNumberToFloat(self.PhieuThuKhach.PhaiThanhToan));
+                var tienmat = 0;
+                var soduDatCoc = self.inforHoaDon.SoDuDatCoc;
+                var datcoc = formatNumberToFloat($this.val());
+
+                if (datcoc <= soduDatCoc) {
+                    if (datcoc <= phaiTT) {
+                        tienmat = phaiTT - datcoc;
+                    }
+                    else {
+                        datcoc = phaiTT;
+                        tienmat = soduDatCoc - datcoc;// tra lai
+                    }
+                }
+                else {
+                    if (soduDatCoc <= phaiTT) {
+                        datcoc = soduDatCoc;
+                        tienmat = phaiTT - datcoc;
+                    }
+                    else {
+                        datcoc = phaiTT;
+                        tienmat = soduDatCoc - datcoc; // tralai
+                    }
+                }
+                self.PhieuThuKhach.TienDatCoc = formatNumber3Digit(datcoc, 2);
+
+                if (datcoc === phaiTT) {
+                    // tra lai coc
+                    self.PhieuThuKhach.HoanTraCoc = tienmat;
+                }
+                else {
+                    self.PhieuThuKhach.HoanTraCoc = 0;
+                    self.isCheckTraLaiCoc = false;
+                }
+
+                self.PhieuThuKhach.TienDatCoc = formatNumber3Digit(datcoc, 2);
+                self.PhieuThuKhach.TienMat = formatNumber3Digit(tienmat, 2);
+
+                self.PhieuThuKhach.TienPOS = 0;
+                self.PhieuThuKhach.TienCK = 0;
+                self.PhieuThuKhach.TienTheGiaTri = 0;
+                self.CaculatorDaThanhToan();
+
+                var key = event.keyCode || event.which;
+                if (key === 13) {
+                    $this.parent().next().find('input').focus();
+                }
+            },
+
+            KH_EditTienMat: function () {
+                var self = this;
+                var $this = $(event.currentTarget);
+                formatNumberObj($this);
+
+                var tienmat = formatNumberToFloat($this.val());
+                self.PhieuThuKhach.TienMat = formatNumber3Digit(tienmat, 2);
+                let phaiTT = Math.abs(formatNumberToFloat(self.PhieuThuKhach.PhaiThanhToan));
+
+                var tienpos = 0, tienck = 0;
+                if (self.PhieuThuKhach.ID_TaiKhoanPos !== null) {
+                    tienpos = phaiTT - tienmat;
+                    tienpos = tienpos > 0 ? tienpos : 0;
+                    tienck = 0;
+                }
+                else {
+                    if (self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan !== null) {
+                        tienck = phaiTT - tienmat;
+                        tienck = tienck > 0 ? tienck : 0;
+                    }
+                    else {
+
+                    }
+                }
+                self.PhieuThuKhach.TienPOS = formatNumber3Digit(tienpos, 2);
+                self.PhieuThuKhach.TienCK = formatNumber3Digit(tienck, 2);
+                self.CaculatorDaThanhToan();
+
+                var key = event.keyCode || event.which;
+                if (key === 13) {
+                    if (self.PhieuThuKhach.ID_TaiKhoanPos !== null) {
+                        $this.closest('.container-fluid').next().find('input').select();
+                    }
+                    else {
+                        if (self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan !== null) {
+                            $this.closest('.container-fluid').next().next().find('input').select();
+                        }
+                        else {
+
+                        }
+                    }
+                }
+            },
+            KH_EditTienPos: function () {
+                var self = this;
+                var $this = $(event.currentTarget);
+                formatNumberObj($this);
+
+                var tienpos = formatNumberToFloat($this.val());
+                self.PhieuThuKhach.TienPOS = $this.val();
+
+                var tienck = 0;
+                let phaiTT = Math.abs(formatNumberToFloat(self.PhieuThuKhach.PhaiThanhToan));
+                var tienmat = formatNumberToFloat(self.PhieuThuKhach.TienMat);
+                if (self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan !== null) {
+                    tienck = phaiTT - tienmat - tienpos;
+                    tienck = tienck < 0 ? 0 : tienck;
+                }
+                self.PhieuThuKhach.TienCK = formatNumber3Digit(tienck, 2);
+                self.CaculatorDaThanhToan();
+
+                var key = event.keyCode || event.which;
+                if (key === 13) {
+                    if (self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan !== null) {
+                        $this.closest('.container-fluid').next().find('input').select();
+                    }
+                    else {
+                    }
+                }
+            },
+            KH_EditTienCK: function () {
+                var self = this;
+                var $this = $(event.currentTarget);
+                formatNumberObj($this);
+
+                self.PhieuThuKhach.TienCK = $this.val();
+                self.CaculatorDaThanhToan();
+
+                var key = event.keyCode || event.which;
+                if (key === 13) {
+                }
+            },
+
+            BH_ResetAccountPOS: function () {
+                var self = this;
+                self.PhieuChiVanChuyen.TenTaiKhoanPos = '';
+                self.PhieuChiVanChuyen.ID_TaiKhoanPos = null;
+                self.PhieuChiVanChuyen.TenNganHangPos = '';
+                self.PhieuChiVanChuyen.SoTaiKhoanPos = null;
+                self.PhieuChiVanChuyen.TienPOS = 0;
+                self.CaculatorDaThanhToan();
+            },
+            BH_ChangeAccountPOS: function (item) {
+                var self = this;
+                self.PhieuChiVanChuyen.TenTaiKhoanPos = item.TenChuThe;
+                self.PhieuChiVanChuyen.ID_TaiKhoanPos = item.ID;
+                self.PhieuChiVanChuyen.SoTaiKhoanPos = item.SoTaiKhoan;
+                self.PhieuChiVanChuyen.TenNganHangPos = item.TenNganHang;
+            },
+            BH_ChangeAccountCK: function (item) {
+                var self = this;
+                self.PhieuChiVanChuyen.TenTaiKhoanCK = item.TenChuThe;
+                self.PhieuChiVanChuyen.ID_TaiKhoanChuyenKhoan = item.ID;
+                self.PhieuChiVanChuyen.SoTaiKhoanCK = item.SoTaiKhoan;
+                self.PhieuChiVanChuyen.TenNganHangCK = item.TenNganHang;
+            },
+            BH_ResetAccountCK: function () {
+                var self = this;
+                self.PhieuChiVanChuyen.TenTaiKhoanCK = '';
+                self.PhieuChiVanChuyen.ID_TaiKhoanPos = null;
+                self.PhieuChiVanChuyen.SoTaiKhoanCK = '';
+                self.PhieuChiVanChuyen.TenNganHangCK = '';
+                self.PhieuChiVanChuyen.TienCK = 0;
+                self.BH_CaculatorDaThanhToan();
+            },
+            BH_EditTienMat: function () {
+                let self = this;
+                let $this = $(event.currentTarget);
+                formatNumberObj($this);
+
+                // update nhaphang - if benVC tralaitien thi PhaiThanhToan < 0, HoanTraTamUng >0
+                let phaiTT = Math.abs(self.PhieuChiVanChuyen.PhaiThanhToan);
+
+                let tienmat = formatNumberToFloat($this.val());
+                self.PhieuChiVanChuyen.TienMat = formatNumber3Digit(tienmat, 2);
+
+                let tienpos = 0, tienck = 0;
+                if (self.PhieuChiVanChuyen.ID_TaiKhoanPos !== null) {
+                    tienpos = phaiTT - tienmat;
+                    tienck = 0;
+                }
+                else {
+                    if (self.PhieuChiVanChuyen.ID_TaiKhoanChuyenKhoan !== null) {
+                        tienck = phaiTT - tienmat;
+                    }
+                    else {
+
+                    }
+                }
+                self.PhieuChiVanChuyen.TienPOS = formatNumber3Digit(tienpos, 2);
+                self.PhieuChiVanChuyen.TienCK = formatNumber3Digit(tienck, 2);
+                self.BH_CaculatorDaThanhToan();
+
+                let key = event.keyCode || event.which;
+                if (key === 13) {
+                    if (self.PhieuChiVanChuyen.ID_TaiKhoanPos !== null) {
+                        $this.parent().next().find('input').focus();
+                    }
+                    else {
+                        if (self.PhieuChiVanChuyen.ID_TaiKhoanChuyenKhoan !== null) {
+                            $this.parent().next().find('input').focus();
+                        }
+                        else {
+
+                        }
+                    }
+                }
+            },
+            BH_EditTienPos: function () {
+                var self = this;
+                var $this = $(event.currentTarget);
+                formatNumberObj($this);
+
+                var tienpos = formatNumberToFloat($this.val());
+                self.PhieuChiVanChuyen.TienPOS = formatNumber3Digit(tienpos, 2);
+
+                var tienck = 0;
+                var tienmat = formatNumberToFloat(self.PhieuChiVanChuyen.TienMat);
+                if (self.PhieuChiVanChuyen.ID_TaiKhoanChuyenKhoan !== null) {
+                    tienck = Math.abs(self.PhieuChiVanChuyen.PhaiThanhToan) - tienmat - tienpos;
+                }
+                self.PhieuChiVanChuyen.TienCK = formatNumber3Digit(tienck, 2);
+                self.BH_CaculatorDaThanhToan();
+
+                var key = event.keyCode || event.which;
+                if (key === 13) {
+                    if (self.PhieuChiVanChuyen.ID_TaiKhoanChuyenKhoan !== null) {
+                        $this.parent().next().find('input').focus();
+                    }
+                    else {
+                        if (self.PhieuChiVanChuyen.SoDuTheGiaTri > 0) {
+                            $this.parent().next().next().find('input').focus();
+                        }
+                    }
+                }
+            },
+            BH_EditTienCK: function () {
+                var self = this;
+                var $this = $(event.currentTarget);
+                formatNumberObj($this);
+
+                self.PhieuChiVanChuyen.TienCK = $this.val();
+                self.BH_CaculatorDaThanhToan();
+
+                var key = event.keyCode || event.which;
+                if (key === 13) {
+                    if (self.PhieuChiVanChuyen.SoDuTheGiaTri > 0) {
+                        $this.parent().next().find('input').focus();
+                    }
+                }
+            },
+            BH_CaculatorDaThanhToan: function () {
+                var self = this;
+                self.PhieuChiVanChuyen.DaThanhToan = formatNumberToFloat(self.PhieuChiVanChuyen.TienMat)
+                    + formatNumberToFloat(self.PhieuChiVanChuyen.TienPOS)
+                    + formatNumberToFloat(self.PhieuChiVanChuyen.TienCK)
+                    + formatNumberToFloat(self.PhieuChiVanChuyen.TienTheGiaTri)
+                self.PhieuChiVanChuyen.ThucThu = formatNumberToFloat(self.PhieuChiVanChuyen.TienMat)
+                    + formatNumberToFloat(self.PhieuChiVanChuyen.TienPOS)
+                    + formatNumberToFloat(self.PhieuChiVanChuyen.TienCK);
+                self.PhieuChiVanChuyen.TienThua = self.PhieuChiVanChuyen.DaThanhToan - Math.abs(self.PhieuChiVanChuyen.PhaiThanhToan);
+                self.Caculator_ThucThu();
+            },
+            Caculator_ThucThu: function () {
+                var self = this;
+                var kh_tiencoc = formatNumberToFloat(self.PhieuThuKhach.TienDatCoc);
+                var kh_tienmat = formatNumberToFloat(self.PhieuThuKhach.TienMat);
+                var kh_tienpos = formatNumberToFloat(self.PhieuThuKhach.TienPOS);
+                var kh_tienck = formatNumberToFloat(self.PhieuThuKhach.TienCK);
+                var kh_tienthe = formatNumberToFloat(self.PhieuThuKhach.TienTheGiaTri);
+                var kh_tiendiem = formatNumberToFloat(self.PhieuThuKhach.TTBangDiem);
+                var kh_tienthua = self.PhieuThuKhach.TienThua;
+                kh_tienthua = kh_tienthua > 0 ? kh_tienthua : 0;
+
+                var bh_tienmat = formatNumberToFloat(self.PhieuChiVanChuyen.TienMat);
+                var bh_tienpos = formatNumberToFloat(self.PhieuChiVanChuyen.TienPOS);
+                var bh_tienck = formatNumberToFloat(self.PhieuChiVanChuyen.TienCK);
+                var bh_tienthe = formatNumberToFloat(self.PhieuChiVanChuyen.TienTheGiaTri);
+                var bh_tienthua = self.PhieuChiVanChuyen.TienThua;
+                bh_tienthua = bh_tienthua > 0 ? bh_tienthua : 0;
+
+                var khachtt = kh_tiencoc + kh_tienmat + kh_tienpos + kh_tienck + kh_tienthe + kh_tiendiem;
+                var baohiemtt = bh_tienmat + bh_tienpos + bh_tienck + bh_tienthe;
+                var thucthuHD = 0;
+                if (self.PhieuThuKhach.HoanTraTamUng > 0) {
+                    thucthuHD = kh_tiencoc + baohiemtt - bh_tienthua;
+                }
+                else {
+                    thucthuHD = khachtt + baohiemtt - kh_tienthua - bh_tienthua;
+                }
+                self.inforHoaDon.ThucThu = thucthuHD;
+                if (self.inforHoaDon.LoaiHoaDon === 6) {
+                    self.inforHoaDon.ConNo = self.inforHoaDon.PhaiThanhToan - thucthuHD;
+                }
+                else {
+                    self.inforHoaDon.ConNo = self.inforHoaDon.TongThanhToan - thucthuHD - self.inforHoaDon.KhachDaTra;
+                }
+            },
+            shareMoney_QuyHD: function (phaiTT, tienDiem, tienmat, tienPOS, chuyenkhoan, thegiatri, tiencoc) {
+                if (tiencoc >= phaiTT) {
+                    return {
+                        TienCoc: phaiTT,
+                        TTBangDiem: 0,
+                        TienMat: 0,
+                        TienPOS: 0,
+                        TienChuyenKhoan: 0,
+                        TienTheGiaTri: 0,
+                    }
+                }
+                else {
+                    phaiTT = phaiTT - tiencoc;
+                    if (tienDiem >= phaiTT) {
+                        return {
+                            TienCoc: tiencoc,
+                            TTBangDiem: phaiTT,
+                            TienMat: 0,
+                            TienPOS: 0,
+                            TienChuyenKhoan: 0,
+                            TienTheGiaTri: 0,
+                        }
+                    }
+                    else {
+                        phaiTT = phaiTT - tienDiem;
+                        if (thegiatri >= phaiTT) {
+                            return {
+                                TienCoc: tiencoc,
+                                TTBangDiem: tienDiem,
+                                TienMat: 0,
+                                TienPOS: 0,
+                                TienChuyenKhoan: 0,
+                                TienTheGiaTri: Math.abs(phaiTT),
+                            }
+                        }
+                        else {
+                            phaiTT = phaiTT - thegiatri;
+                            if (tienPOS >= phaiTT) {
+                                return {
+                                    TienCoc: tiencoc,
+                                    TTBangDiem: tienDiem,
+                                    TienMat: 0,
+                                    TienPOS: Math.abs(phaiTT),
+                                    TienChuyenKhoan: 0,
+                                    TienTheGiaTri: thegiatri,
+                                }
+                            }
+                            else {
+                                phaiTT = phaiTT - tienPOS;
+                                if (chuyenkhoan >= phaiTT) {
+                                    return {
+                                        TienCoc: tiencoc,
+                                        TTBangDiem: tienDiem,
+                                        TienMat: 0,
+                                        TienPOS: tienPOS,
+                                        TienChuyenKhoan: Math.abs(phaiTT),
+                                        TienTheGiaTri: thegiatri,
+                                    }
+                                }
+                                else {
+                                    phaiTT = phaiTT - chuyenkhoan;
+                                    if (tienmat >= phaiTT) {
+                                        return {
+                                            TienCoc: tiencoc,
+                                            TTBangDiem: tienDiem,
+                                            TienMat: Math.abs(phaiTT),
+                                            TienPOS: tienPOS,
+                                            TienChuyenKhoan: chuyenkhoan,
+                                            TienTheGiaTri: thegiatri,
+                                        }
+                                    }
+                                    else {
+                                        phaiTT = phaiTT - tienmat;
+                                        return {
+                                            TienCoc: tiencoc,
+                                            TTBangDiem: tienDiem,
+                                            TienMat: tienmat,
+                                            TienPOS: tienPOS,
+                                            TienChuyenKhoan: chuyenkhoan,
+                                            TienTheGiaTri: thegiatri,
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            // use gara
+            AgreeThanhToan: function () {
+                let self = this;
+
+                // save cache thu/chi
+                let lcThuChi = localStorage.getItem('lcThuChiNhapTra');
+                if (lcThuChi !== null) {
+                    lcThuChi = JSON.parse(lcThuChi);
+                    // remove & add again
+                    lcThuChi = $.grep(lcThuChi, function (x) {
+                        return x.IDRandomHD !== self.inforHoaDon.IDRandom;
+                    });
+                }
+                else {
+                    lcThuChi = [];
+                }
+                let obj = {
+                    IDRandomHD: self.inforHoaDon.IDRandom,
+                    IsCheckTraLaiCoc: self.isCheckTraLaiCoc,
+                    PhieuThuKhach: self.PhieuThuKhach,
+                    PhieuThuKhachPrint: self.PhieuThuKhach,
+                    PhieuChiVanChuyen: self.PhieuChiVanChuyen,
+                };
+                lcThuChi.push(obj);
+                localStorage.setItem('lcThuChiNhapTra', JSON.stringify(lcThuChi));
+                self.saveOK = true;;
+                $('#ThongTinThanhToanNCC2').modal('hide');
+            },
+
+            SavePhieuThu: function (hdDB) {
+                let self = this;
+                let idRandomHD = hdDB.IDRandom;;
+                let idHoaDon = hdDB.ID;
+                let mahoadon = hdDB.MaHoaDon;
+                let ghichu = hdDB.DienGiai;
+                let hd = hdDB;
+
+                if (commonStatisJs.CheckNull(ghichu)) {
+                    ghichu = ''.concat(hd.TenDoiTuong, ' - ', mahoadon);
+                }
+                else {
+                    ghichu = ghichu.concat('/ ', hd.TenDoiTuong, ' - ', mahoadon);
+                }
+
+                // get cache from thuchi
+                let itemThuChi = [];
+                let lcThuChi = localStorage.getItem('lcThuChiNhapTra');
+                if (lcThuChi !== null) {
+                    lcThuChi = JSON.parse(lcThuChi);
+                    itemThuChi = $.grep(lcThuChi, function (x) {
+                        return x.IDRandomHD === idRandomHD;
+                    });
+                }
+                if (itemThuChi.length === 0) { return; }
+
+                let ptKhach = itemThuChi[0].PhieuThuKhach;
+                let chiVC = itemThuChi[0].PhieuChiVanChuyen;
+
+                let idKhoanThuChi = ptKhach.ID_KhoanThuChi;
+                let idDoiTuong = hd.ID_DoiTuong;
+                idDoiTuong = idDoiTuong ? idDoiTuong : '00000000-0000-0000-0000-000000000002';
+                let tenDoiTuong = hd.TenDoiTuong;
+
+                let loaiThuChi = hd.LoaiHoaDon === 7 ? 11 : 12;
+                let sLoai = hd.LoaiHoaDon === 7 ? 'thu' : 'chi';
+                let tiendatcoc = formatNumberToFloat(ptKhach.TienDatCoc), soduDatCoc = hd.SoDuDatCoc;
+                let maPhieuThuChi = 'TT' + mahoadon;
+                let chitracoc = itemThuChi[0].IsCheckTraLaiCoc;
+                let khach_PhieuThuTT = Math.abs(ptKhach.PhaiThanhToan);
+                console.log('ptKhach ', ptKhach, itemThuChi)
+
+                if (ptKhach.HoanTraTamUng > 0 || (chitracoc && soduDatCoc > 0)) {
+                    sLoai = 'thu';
+                    loaiThuChi = 11;
+                }
+                if (chitracoc && soduDatCoc > 0) {
+                    idHoaDon = null;
+                }
+
+                //  used to get save diary
+                if (ptKhach.DaThanhToan > 0) {
+                    let lstQuyCT = [];
+                    let phuongthucTT = '';
+                    let dataReturn = self.shareMoney_QuyHD(khach_PhieuThuTT, ptKhach.TTBangDiem,
+                        formatNumberToFloat(ptKhach.TienMat), formatNumberToFloat(ptKhach.TienPOS),
+                        formatNumberToFloat(ptKhach.TienCK), 0,
+                        formatNumberToFloat(ptKhach.HoanTraCoc) > 0 ? 0 : tiendatcoc);// nếu hoàn trả tiền: không gán tiền cọc ở đây
+
+                    tiendatcoc = dataReturn.TienCoc;
+                    tienmat = dataReturn.TienMat;
+                    tienpos = dataReturn.TienPOS;
+                    tienck = dataReturn.TienChuyenKhoan;
+                    tongthu = tienmat + tienpos + tienck + tiendatcoc;
+
+                    //todo: gán lai tiền khách đã trả/ tiền trả khách --> use when print
+                    self.PhieuThuKhachPrint.TienDatCoc = tiendatcoc;
+                    self.PhieuThuKhachPrint.TienMat = tienmat;
+                    self.PhieuThuKhachPrint.TienCK = tienck;
+                    self.PhieuThuKhachPrint.TienPOS = tienpos;
+                    self.PhieuThuKhachPrint.DaThanhToan = tongthu;
+
+                    // save again cache (used to print)
+                    for (let i = 0; i < lcThuChi.length; i++) {
+                        if (lcThuChi[i].IDRandomHD === idRandomHD) {
+                            lcThuChi[i].PhieuThuKhachPrint = self.PhieuThuKhachPrint;
+                            break;
+                        }
+                    }
+                    localStorage.setItem('lcThuChiNhapTra', JSON.stringify(lcThuChi));
+
+                    // thu tiền cọc
+                    if (tiendatcoc > 0 && loaiThuChi === 12) {
+                        let qct = newQuyChiTiet({
+                            ID_HoaDonLienQuan: idHoaDon,
+                            ID_KhoanThuChi: idKhoanThuChi,
+                            ID_DoiTuong: idDoiTuong,
+                            GhiChu: ghichu,
+                            TienThu: tiendatcoc,
+                            TienCoc: tiendatcoc,
+                            HinhThucThanhToan: 6,
+                        });
+                        lstQuyCT.push(qct);
+                        phuongthucTT = 'Tiền cọc, ';
+                    }
+
+                    if (tienmat > 0) {
+                        let qct = newQuyChiTiet({
+                            ID_HoaDonLienQuan: idHoaDon,
+                            ID_KhoanThuChi: idKhoanThuChi,
+                            ID_DoiTuong: idDoiTuong,
+                            GhiChu: ghichu,
+                            TienThu: tienmat,
+                            TienMat: tienmat,
+                            HinhThucThanhToan: 1,
+                            LoaiThanhToan: chitracoc ? 1 : 0,
+                        });
+                        lstQuyCT.push(qct);
+                        phuongthucTT += 'Tiền mặt, ';
+                    }
+
+                    if (tienpos > 0) {
+                        khach_idPos = ptKhach.ID_TaiKhoanPos;
+                        let qct = newQuyChiTiet({
+                            ID_HoaDonLienQuan: idHoaDon,
+                            ID_KhoanThuChi: idKhoanThuChi,
+                            ID_DoiTuong: idDoiTuong,
+                            GhiChu: ''.concat(ptKhach.TenTaiKhoanPos, ' - ', ptKhach.TenNganHangPos),
+                            TienThu: tienpos,
+                            TienPOS: tienpos,
+                            HinhThucThanhToan: 2,
+                            ID_TaiKhoanNganHang: ptKhach.ID_TaiKhoanPos,
+                            LoaiThanhToan: chitracoc ? 1 : 0,
+                        });
+                        lstQuyCT.push(qct);
+                        phuongthucTT += 'POS, ';
+                        ghichu += '/ '.concat(qct.GhiChu, ', ');
+                    }
+                    if (tienck > 0) {
+                        khach_idCK = ptKhach.ID_TaiKhoanChuyenKhoan;
+                        let qct = newQuyChiTiet({
+                            ID_HoaDonLienQuan: idHoaDon,
+                            ID_KhoanThuChi: idKhoanThuChi,
+                            ID_DoiTuong: idDoiTuong,
+                            GhiChu: ' /'.concat(ptKhach.TenTaiKhoanCK, ' - ', ptKhach.TenNganHangCK),
+                            TienThu: tienck,
+                            TienChuyenKhoan: tienck,
+                            HinhThucThanhToan: 3,
+                            ID_TaiKhoanNganHang: ptKhach.ID_TaiKhoanChuyenKhoan,
+                            LoaiThanhToan: chitracoc ? 1 : 0,
+                        });
+                        lstQuyCT.push(qct);
+                        phuongthucTT += 'Chuyển khoản, ';
+                        ghichu += '/ ' + qct.GhiChu;
+                    }
+
+                    let nowSeconds = (new Date()).getSeconds() + 1;
+                    let quyhd = {
+                        LoaiHoaDon: loaiThuChi,
+                        TongTienThu: tongthu,
+                        MaHoaDon: maPhieuThuChi,
+                        NgayLapHoaDon: moment(hd.NgayLapHoaDon).add(nowSeconds, 'seconds').format('YYYY-MM-DD HH:mm:ss'),
+                        NguoiNopTien: tenDoiTuong,
+                        NguoiTao: hd.NguoiTao,
+                        NoiDungThu: ghichu,
+                        ID_NhanVien: hd.ID_NhanVien,
+                        ID_DonVi: hd.ID_DonVi,
+                        // used to get save diary
+                        MaHoaDonTraHang: mahoadon,
+                        ID_DoiTuong: idDoiTuong,
+                    }
+                    phuongthucTT = Remove_LastComma(phuongthucTT);
+                    quyhd.PhuongThucTT = phuongthucTT;
+
+                    let myData = {
+                        objQuyHoaDon: quyhd,
+                        lstCTQuyHoaDon: lstQuyCT
+                    };
+
+                    if (lstQuyCT.length > 0) {
+                        console.log('myData_quyKH ', myData);
+                        ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/PostQuy_HoaDon_DefaultIDDoiTuong', 'POST', myData).done(function (x) {
+                            console.log(x)
+                            if (x.res === true) {
+                                quyhd.MaHoaDon = x.data.MaHoaDon;
+                                let diary = {
+                                    LoaiNhatKy: 1,
+                                    ID_DonVi: quyhd.ID_DonVi,
+                                    ID_NhanVien: quyhd.ID_NhanVien,
+                                    ChucNang: 'Phiếu ' + sLoai,
+                                    NoiDung: 'Tạo phiếu '.concat(sLoai, ' ', quyhd.MaHoaDon, ' cho hóa đơn ', mahoadon,
+                                        ', Nhà cung cấp: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber3Digit(quyhd.TongTienThu),
+                                        ', Phương thức thanh toán: ', phuongthucTT, chitracoc ? ' (NCC trả lại tiền cọc)' : '',
+                                        ', Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')),
+                                    NoiDungChiTiet: 'Tạo phiếu ' + sLoai + ' <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD('.concat(quyhd.MaHoaDon, ')" >', quyhd.MaHoaDon, '</a> ',
+                                        ' cho hóa đơn: <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', mahoadon, ')" >', mahoadon, '</a> ',
+                                        '<br /> Nhà cung cấp: <a style="cursor: pointer" onclick = "LoadKhachHang_byMaKH(', quyhd.NguoiNopTien, ')" >', quyhd.NguoiNopTien, '</a> ',
+                                        '<br /> Giá trị: ', formatNumber3Digit(quyhd.TongTienThu),
+                                        '<br /> Khoản ', sLoai, ': ', self.khoanthuchi.NoiDungThuChi,
+                                        '<br/ > Phương thức thanh toán: ', phuongthucTT, chitracoc ? ' (NCC trả lại tiền cọc)' : '',
+                                        '<br/ > Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')
+                                    )
+                                }
+                                Insert_NhatKyThaoTac_1Param(diary);
+
+                                if (chiVC.DaThanhToan === 0) {
+                                    lcThuChi = $.grep(lcThuChi, function (x) {
+                                        return x.IDRandomHD !== idRandomHD;
+                                    });
+                                    console.log('lcThuChi ', lcThuChi)
+                                    localStorage.setItem('lcThuChiNhapTra', JSON.stringify(lcThuChi));
+                                }
+                            }
+                        })
+                    }
+                }
+
+                // 'Chi từ cọc';
+                let tienCocX = formatNumberToFloat(ptKhach.TienDatCoc);
+                if (chitracoc && tienCocX > 0) {
+                    let qct = newQuyChiTiet({
+                        ID_HoaDonLienQuan: hd.ID,
+                        ID_KhoanThuChi: idKhoanThuChi,
+                        ID_DoiTuong: idDoiTuong,
+                        GhiChu: ghichu,
+                        TienThu: tienCocX,
+                        TienCoc: tienCocX,
+                        HinhThucThanhToan: 6,
+                    });
+                    lstQuyCT = [qct];
+                    let phuongthucTT2 = 'Chi từ cọc';
+                    let sLoai2 = 'chi';
+                    tongthu = tienCocX;
+
+                    self.PhieuThuKhachPrint.TienDatCoc = tienCocX;
+                    self.PhieuThuKhachPrint.DaThanhToan = tienCocX;
+
+                    let nowSeconds = (new Date()).getSeconds() + 1;
+                    let quyhd = {
+                        LoaiHoaDon: 12,
+                        TongTienThu: tongthu,
+                        MaHoaDon: maPhieuThuChi,
+                        NgayLapHoaDon: moment(hd.NgayLapHoaDon).add(nowSeconds, 'seconds').format('YYYY-MM-DD HH:mm:ss'),
+                        NguoiNopTien: tenDoiTuong,
+                        NguoiTao: hd.NguoiTao,
+                        NoiDungThu: ghichu,
+                        ID_NhanVien: hd.ID_NhanVien,
+                        ID_DonVi: hd.ID_DonVi,
+                        // used to get save diary
+                        MaHoaDonTraHang: mahoadon,
+                        ID_DoiTuong: idDoiTuong,
+                    }
+                    quyhd.PhuongThucTT = phuongthucTT2;
+
+                    let myData = {
+                        objQuyHoaDon: quyhd,
+                        lstCTQuyHoaDon: lstQuyCT
+                    };
+
+                    if (lstQuyCT.length > 0) {
+                        console.log('myData_quyKH ', myData);
+                        ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/PostQuy_HoaDon_DefaultIDDoiTuong', 'POST', myData).done(function (x) {
+                            if (x.res === true) {
+                                quyhd.MaHoaDon = x.data.MaHoaDon;
+                                let diary = {
+                                    LoaiNhatKy: 1,
+                                    ID_DonVi: quyhd.ID_DonVi,
+                                    ID_NhanVien: quyhd.ID_NhanVien,
+                                    ChucNang: 'Phiếu ' + sLoai2,
+                                    NoiDung: 'Tạo phiếu '.concat(sLoai2, ' ', quyhd.MaHoaDon, ' cho hóa đơn ', mahoadon,
+                                        ', Nhà cung cấp: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber3Digit(quyhd.TongTienThu),
+                                        ', Phương thức thanh toán: ', phuongthucTT2,
+                                        ', Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')),
+                                    NoiDungChiTiet: 'Tạo phiếu ' + sLoai2 + ' <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD('.concat(quyhd.MaHoaDon, ')" >', quyhd.MaHoaDon, '</a> ',
+                                        ' cho hóa đơn: <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', mahoadon, ')" >', mahoadon, '</a> ',
+                                        ', Nhà cung cấp: <a style="cursor: pointer" onclick = "LoadKhachHang_byMaKH(', quyhd.NguoiNopTien, ')" >', quyhd.NguoiNopTien, '</a> ',
+                                        '<br /> Giá trị: ', formatNumber3Digit(quyhd.TongTienThu),
+                                        '<br /> Khoản ', sLoai2, ': ', self.khoanthuchi.NoiDungThuChi,
+                                        '<br/ > Phương thức thanh toán: ', phuongthucTT2,
+                                        '<br/ > Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')
+                                    )
+                                }
+                                Insert_NhatKyThaoTac_1Param(diary);
+                            }
+                        });
+                    }
+                }
+
+                $('#ThongTinThanhToanNCC2').modal('hide');
+            },
+
+            SavePhieuChiVanChuyen: function (hd) {// call after post_chiphiVC
+                let self = this;
+                let itemThuChi = [];
+                let lcThuChi = localStorage.getItem('lcThuChiNhapTra');
+                if (lcThuChi !== null) {
+                    lcThuChi = JSON.parse(lcThuChi);
+                    itemThuChi = $.grep(lcThuChi, function (x) {
+                        return x.IDRandomHD === hd.IDRandom;
+                    });
+                }
+                console.log('itemThuChi ', itemThuChi)
+                if (itemThuChi.length === 0) { return; }
+                let phieuChiVC = itemThuChi[0].PhieuChiVanChuyen;
+
+                if (phieuChiVC.DaThanhToan > 0) {
+                    let idKhoanThuChi = phieuChiVC.ID_KhoanThuChi;;
+                    let idDoiTuong = hd.ID_DoiTuong;// được gán khi lưu chi phí VC
+                    let ghichu = hd.DienGiai;
+                    let idHoaDon = hd.ID;
+                    let mahoadon = hd.MaHoaDon;
+
+                    let chitracoc = false;
+                    let tienmat = 0, tienpos = 0, tienck = 0, tiendatcoc = 0, tongthu = 0;
+                    let benVChoantra = formatNumberToFloat(phieuChiVC.HoanTraTamUng);
+
+                    let loaiThuChi = benVChoantra > 0 ? 11 : 12;
+                    let sLoai = loaiThuChi === 11 ? 'thu' : 'chi';
+
+                    if (commonStatisJs.CheckNull(ghichu)) {
+                        ghichu = ''.concat(hd.TenDoiTuong, ' (', hd.MaDoiTuong, ') / ', mahoadon);
+                    }
+                    else {
+                        ghichu = ghichu.concat('/ ', hd.TenDoiTuong, ' (', hd.MaDoiTuong, ') / ', mahoadon);
+                    }
+
+                    let lstQuyCT = [];
+                    let phuongthucTT = '';
+                    let dataReturn = self.shareMoney_QuyHD(benVChoantra > 0 ? benVChoantra : hd.TongChiPhi, phieuChiVC.TTBangDiem,
+                        formatNumberToFloat(phieuChiVC.TienMat), formatNumberToFloat(phieuChiVC.TienPOS),
+                        formatNumberToFloat(phieuChiVC.TienCK), 0,
+                        phieuChiVC.HoanTraTamUng > 0 ? 0 : tiendatcoc);// nếu hoàn trả tiền: không gán tiền cọc ở đây
+
+                    tiendatcoc = dataReturn.TienCoc;
+                    tienmat = dataReturn.TienMat;
+                    tienpos = dataReturn.TienPOS;
+                    tienck = dataReturn.TienChuyenKhoan;
+                    tongthu = tienmat + tienpos + tienck + tiendatcoc;
+
+                    //todo: gán lai tiền khách đã trả/ tiền trả khách --> use when print
+                    self.PhieuThuKhachPrint.TienDatCoc = tiendatcoc;
+                    self.PhieuThuKhachPrint.TienMat = tienmat;
+                    self.PhieuThuKhachPrint.TienCK = tienck;
+                    self.PhieuThuKhachPrint.TienPOS = tienpos;
+                    self.PhieuThuKhachPrint.DaThanhToan = tongthu;
+
+                    // thu tiền cọc
+                    if (tiendatcoc > 0 && loaiThuChi === 12) {
+                        let qct = newQuyChiTiet({
+                            ID_HoaDonLienQuan: idHoaDon,
+                            ID_KhoanThuChi: idKhoanThuChi,
+                            ID_DoiTuong: idDoiTuong,
+                            GhiChu: ghichu,
+                            TienThu: tiendatcoc,
+                            TienCoc: tiendatcoc,
+                            HinhThucThanhToan: 6,
+                        });
+                        lstQuyCT.push(qct);
+                        phuongthucTT = 'Tiền cọc, ';
+                    }
+
+                    if (tienmat > 0) {
+                        let qct = newQuyChiTiet({
+                            ID_HoaDonLienQuan: idHoaDon,
+                            ID_KhoanThuChi: idKhoanThuChi,
+                            ID_DoiTuong: idDoiTuong,
+                            GhiChu: ghichu,
+                            TienThu: tienmat,
+                            TienMat: tienmat,
+                            HinhThucThanhToan: 1,
+                            LoaiThanhToan: chitracoc ? 1 : 0,
+                        });
+                        lstQuyCT.push(qct);
+                        phuongthucTT += 'Tiền mặt, ';
+                    }
+
+                    if (tienpos > 0) {
+                        khach_idPos = phieuChiVC.ID_TaiKhoanPos;
+                        let qct = newQuyChiTiet({
+                            ID_HoaDonLienQuan: idHoaDon,
+                            ID_KhoanThuChi: idKhoanThuChi,
+                            ID_DoiTuong: idDoiTuong,
+                            GhiChu: ''.concat(phieuChiVC.TenTaiKhoanPos, ' - ', phieuChiVC.TenNganHangPos),
+                            TienThu: tienpos,
+                            TienPOS: tienpos,
+                            HinhThucThanhToan: 2,
+                            ID_TaiKhoanNganHang: phieuChiVC.ID_TaiKhoanPos,
+                            LoaiThanhToan: chitracoc ? 1 : 0,
+                        });
+                        lstQuyCT.push(qct);
+                        phuongthucTT += 'POS, ';
+                        ghichu += '/ '.concat(qct.GhiChu, ', ');
+                    }
+                    if (tienck > 0) {
+                        khach_idCK = phieuChiVC.ID_TaiKhoanChuyenKhoan;
+                        let qct = newQuyChiTiet({
+                            ID_HoaDonLienQuan: idHoaDon,
+                            ID_KhoanThuChi: idKhoanThuChi,
+                            ID_DoiTuong: idDoiTuong,
+                            GhiChu: ' /'.concat(phieuChiVC.TenTaiKhoanCK, ' - ', phieuChiVC.TenNganHangCK),
+                            TienThu: tienck,
+                            TienChuyenKhoan: tienck,
+                            HinhThucThanhToan: 3,
+                            ID_TaiKhoanNganHang: phieuChiVC.ID_TaiKhoanChuyenKhoan,
+                            LoaiThanhToan: chitracoc ? 1 : 0,
+                        });
+                        lstQuyCT.push(qct);
+                        phuongthucTT += 'Chuyển khoản, ';
+                        ghichu += '/ ' + qct.GhiChu;
+                    }
+
+                    let nowSeconds = (new Date()).getSeconds() + 1;
+                    let quyhd = {
+                        LoaiHoaDon: loaiThuChi,
+                        TongTienThu: tongthu,
+                        MaHoaDon: 'TT' + hd.MaHoaDon + '_2',
+                        NgayLapHoaDon: moment(hd.NgayLapHoaDon).add(nowSeconds, 'seconds').format('YYYY-MM-DD HH:mm:ss'),
+                        NguoiNopTien: hd.TenDoiTuong,// todo benvanchuyen
+                        NguoiTao: hd.NguoiTao,
+                        NoiDungThu: ghichu,
+                        ID_NhanVien: hd.ID_NhanVien,
+                        ID_DonVi: hd.ID_DonVi,
+                        // used to get save diary
+                        MaHoaDonTraHang: hd.MaHoaDon,
+                        ID_DoiTuong: idDoiTuong,
+                    }
+                    phuongthucTT = Remove_LastComma(phuongthucTT);
+                    quyhd.PhuongThucTT = phuongthucTT;
+
+                    let myData = {
+                        objQuyHoaDon: quyhd,
+                        lstCTQuyHoaDon: lstQuyCT
+                    };
+
+                    if (lstQuyCT.length > 0) {
+                        console.log('myData_quyKH ', myData);
+                        ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/PostQuy_HoaDon_DefaultIDDoiTuong', 'POST', myData).done(function (x) {
+                            console.log(x)
+                            if (x.res === true) {
+                                quyhd.MaHoaDon = x.data.MaHoaDon;
+                                let diary = {
+                                    LoaiNhatKy: 1,
+                                    ID_DonVi: quyhd.ID_DonVi,
+                                    ID_NhanVien: quyhd.ID_NhanVien,
+                                    ChucNang: 'Phiếu ' + sLoai,
+                                    NoiDung: 'Tạo phiếu '.concat(sLoai, ' ', quyhd.MaHoaDon, ' cho hóa đơn ', hd.MaHoaDon,
+                                        ', Nhà cung cấp: ', quyhd.NguoiNopTien, ', với giá trị ', formatNumber3Digit(quyhd.TongTienThu),
+                                        ', Phương thức thanh toán: ', phuongthucTT, chitracoc ? ' (NCC trả lại tiền cọc)' : '',
+                                        ', Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')),
+                                    NoiDungChiTiet: 'Tạo phiếu ' + sLoai + ' <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD('.concat(quyhd.MaHoaDon, ')" >', quyhd.MaHoaDon, '</a> ',
+                                        ' cho hóa đơn: <a style="cursor: pointer" onclick = "LoadHoaDon_byMaHD(', hd.MaHoaDon, ')" >', hd.MaHoaDon, '</a> ',
+                                        '<br /> Nhà cung cấp: <a style="cursor: pointer" onclick = "LoadKhachHang_byMaKH(', quyhd.NguoiNopTien, ')" >', quyhd.NguoiNopTien, '</a> ',
+                                        '<br /> Giá trị: ', formatNumber3Digit(quyhd.TongTienThu),
+                                        '<br /> Khoản ', sLoai, ': ', self.khoanthuchi.NoiDungThuChi,
+                                        '<br/ > Phương thức thanh toán: ', phuongthucTT, chitracoc ? ' (NCC trả lại tiền cọc)' : '',
+                                        '<br/ > Thời gian: ', moment(quyhd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')
+                                    )
+                                }
+                                Insert_NhatKyThaoTac_1Param(diary);
+                            }
+                        }).always(function () {
+
+                            let lcThuChi = localStorage.getItem('lcThuChiNhapTra');
+                            if (lcThuChi !== null) {
+                                lcThuChi = JSON.parse(lcThuChi);
+                                console.log('lcThuChi ', lcThuChi, hd.IDRandom)
+
+                                lcThuChi = $.grep(lcThuChi, function (x) {
+                                    return x.IDRandomHD !== hd.IDRandom;
+                                });
+                                localStorage.setItem('lcThuChiNhapTra', JSON.stringify(lcThuChi));
+                            }
+                        })
+                    }
+                }
+            },
+
+            // used to spa/banle.. (not gara)
+            AgreePay: function () {// chỉ đồng ý các hình thức thah toán và đóng modal(chưa lưu)
+                var self = this;
+                self.saveOK = true;
+                $('#ThongTinThanhToanNCC2').modal('hide');
+            }
+        },
+    })
+</script>

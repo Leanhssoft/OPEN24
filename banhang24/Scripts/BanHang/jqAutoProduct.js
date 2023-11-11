@@ -147,7 +147,10 @@ var modelTypeSearchProduct = new Model_TypeSearch(0);
         this.processOptions = function (valueAccessor, filter, data, request, response) {
             clearTimeout(timer);
             var propname = this.getPropertyNames(valueAccessor);
-            let txtS = commonStatisJs.URLEncoding(locdau(request.term));
+            let txtS = request.term;
+            if (!commonStatisJs.CheckNull(txtS)) {
+                txtS = txtS.trim();
+            }
             timer = setTimeout(function () {
                 $.ajax({
                     type: "GET",

@@ -28,6 +28,7 @@ namespace libHT
         public string NoiDungThongBao { get; set; }
         public string NgayTao { get; set; }
         public string Image { get; set; }
+        public int? LoaiThongBao { get; set; }
     }
 
     public class GetListThongBao

@@ -105,16 +105,16 @@ namespace banhang24.Controllers
                 HT_CongTy cty = db.HT_CongTy.FirstOrDefault();
                 bool checkkichhoatsms = cty.DangHoatDong;
                 string strIDDonVi = CookieStore.GetCookieAes("IdDonVi");
-                if(strIDDonVi == null || strIDDonVi == "")
+                if (strIDDonVi == null || strIDDonVi == "")
                 {
                     strIDDonVi = objUser_Cookies.ID_DonVi.ToString();
                 }
-                else if(selectListItems1.Where(p=>p.Value == strIDDonVi).Count() == 0)
+                else if (selectListItems1.Where(p => p.Value == strIDDonVi).Count() == 0)
                 {
                     strIDDonVi = objUser_Cookies.ID_DonVi.ToString();
-                }    
+                }
                 CuaHangDangKy shop = M_DangKySuDung.Get(p => p.SubDomain.Trim().ToLower() == str);
-                ViewBag.Registered = shop.version == 1? true: false;
+                ViewBag.Registered = shop.version == 1 ? true : false;
                 ViewBag.TenCongTy = cty.TenCongTy;
                 ViewBag.CheckSMS = checkkichhoatsms;
                 ViewBag.TenTaiKhoan = objUser_Cookies.TaiKhoan.ToString();
@@ -130,14 +130,14 @@ namespace banhang24.Controllers
                 ViewBag.NS_NhanVien = selectListItems1;
                 ViewBag.ID_NganhKinhDoanh = CookieStore.GetCookieAes("shop").ToUpper();
                 ViewBag.LoadOk = true;
-                ViewBag.SubDomain =  str;
+                ViewBag.SubDomain = str;
                 ViewBag.IsHRM = new CommonService().CheckIsHRM(CookieStore.GetCookieAes("SubDomain"));
                 ViewBag.IsChiTietNhanVien = db.HT_CauHinhPhanMem.Any(o => o.ID_DonVi == result.ID_DonVi) ? db.HT_CauHinhPhanMem.FirstOrDefault(o => o.ID_DonVi == result.ID_DonVi).ThongTinChiTietNhanVien : false;
                 //ViewBag.TenDon = selectListItems[0];
                 string Avatar = "/Content/images/images-user.png";
                 NS_NhanVien_Anh NVAnh = new NS_NhanVien_Anh();
                 NVAnh = db.NS_NhanVien_Anh.Where(p => p.ID_NhanVien == objUser_Cookies.ID_NhanVien).FirstOrDefault();
-                if(NVAnh != null)
+                if (NVAnh != null)
                 {
                     Avatar = NVAnh.URLAnh;
                 }
@@ -360,94 +360,74 @@ namespace banhang24.Controllers
                         db.SaveChanges();
                     }
 
-                    List<HT_ThongBaoDTO> lstTB = new List<HT_ThongBaoDTO>();
-                    List<HT_ThongBao> lstThongBao = new List<HT_ThongBao>();
                     var count = 0;
-                    if (notifyBirth == true && notifyTonKho == true && notifyDieuChuyen == true && notifyLoHang == true)
+
+                    List<HT_ThongBaoDTO> lstTB = new List<HT_ThongBaoDTO>();
+
+                    List<HT_ThongBaoDTO> tbKho = new List<HT_ThongBaoDTO>();
+                    List<HT_ThongBaoDTO> tbDieuChuyen = new List<HT_ThongBaoDTO>();
+                    List<HT_ThongBaoDTO> tbSinhNhat = new List<HT_ThongBaoDTO>();
+                    List<HT_ThongBaoDTO> tbLoHetHan = new List<HT_ThongBaoDTO>();
+
+                    var tbChiNhanh = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi).ToList();
+                    if (notifyTonKho == true)
                     {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString())).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi).OrderByDescending(p => p.NgayTao).Take(100).ToList();
+                        tbKho = tbChiNhanh.Where(x => x.LoaiThongBao == 0).Select(x => new HT_ThongBaoDTO
+                        {
+                            ID = x.ID,
+                            LoaiThongBao = x.LoaiThongBao,
+                            NguoiDungDaDoc = x.NguoiDungDaDoc,
+                            DaDoc = !string.IsNullOrEmpty(x.NguoiDungDaDoc),
+                            NoiDungThongBao = x.NoiDungThongBao,
+                            ThoiGian = x.NgayTao,
+                        }).ToList();
                     }
-                    if (notifyBirth == true && notifyTonKho == false && notifyDieuChuyen == false && notifyLoHang == true)
+                    if (notifyDieuChuyen == true)
                     {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao == 3 || p.LoaiThongBao == 4).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao == 3 || p.LoaiThongBao == 4).OrderByDescending(p => p.NgayTao).Take(100).ToList();
+                        tbDieuChuyen = tbChiNhanh.Where(x => x.LoaiThongBao == 1).Select(x => new HT_ThongBaoDTO
+                        {
+                            ID = x.ID,
+                            LoaiThongBao = x.LoaiThongBao,
+                            NguoiDungDaDoc = x.NguoiDungDaDoc,
+                            DaDoc = !string.IsNullOrEmpty(x.NguoiDungDaDoc),
+                            NoiDungThongBao = x.NoiDungThongBao,
+                            ThoiGian = x.NgayTao,
+                        }).ToList();
                     }
-                    if (notifyBirth == false && notifyTonKho == true && notifyDieuChuyen == false && notifyLoHang == true)
+                    if (notifyLoHang == true)
                     {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao == 0 || p.LoaiThongBao == 4).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao == 0 || p.LoaiThongBao == 4).OrderByDescending(p => p.NgayTao).Take(100).ToList();
+                        tbLoHetHan = tbChiNhanh.Where(x => x.LoaiThongBao == 2).Select(x => new HT_ThongBaoDTO
+                        {
+                            ID = x.ID,
+                            LoaiThongBao = x.LoaiThongBao,
+                            NguoiDungDaDoc = x.NguoiDungDaDoc,
+                            DaDoc = !string.IsNullOrEmpty(x.NguoiDungDaDoc),
+                            NoiDungThongBao = x.NoiDungThongBao,
+                            ThoiGian = x.NgayTao,
+                        }).ToList();
                     }
-                    if (notifyBirth == false && notifyTonKho == false && notifyDieuChuyen == true && notifyLoHang == true)
+                    if (notifyBirth == true)
                     {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao == 1 || p.LoaiThongBao == 4).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao == 1 || p.LoaiThongBao == 4).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == true && notifyTonKho == true && notifyDieuChuyen == false && notifyLoHang == true)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao != 1).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao != 1).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == true && notifyTonKho == false && notifyDieuChuyen == true && notifyLoHang == true)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao != 0).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao != 0).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == false && notifyTonKho == true && notifyDieuChuyen == true && notifyLoHang == true)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao != 3).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao != 3).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == false && notifyTonKho == false && notifyDieuChuyen == false && notifyLoHang == true)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao == 4).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao == 4).OrderByDescending(p => p.NgayTao).Take(100).ToList();
+                        tbSinhNhat = tbChiNhanh.Where(x => x.LoaiThongBao == 3).Select(x => new HT_ThongBaoDTO
+                        {
+                            ID = x.ID,
+                            LoaiThongBao = x.LoaiThongBao,
+                            NguoiDungDaDoc = x.NguoiDungDaDoc,
+                            DaDoc = !string.IsNullOrEmpty(x.NguoiDungDaDoc),
+                            NoiDungThongBao = x.NoiDungThongBao,
+                            ThoiGian = x.NgayTao,
+                        }).ToList();
                     }
 
-                    if (notifyBirth == true && notifyTonKho == true && notifyDieuChuyen == true && notifyLoHang == false)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao != 4).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao != 4).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == true && notifyTonKho == false && notifyDieuChuyen == false && notifyLoHang == false)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao == 3).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao == 3).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == false && notifyTonKho == true && notifyDieuChuyen == false && notifyLoHang == false)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao == 0).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao == 0).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == false && notifyTonKho == false && notifyDieuChuyen == true && notifyLoHang == false)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao == 1).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao == 1).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == true && notifyTonKho == true && notifyDieuChuyen == false && notifyLoHang == false)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao != 1 && p.LoaiThongBao != 4).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao != 1 && p.LoaiThongBao != 4).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == true && notifyTonKho == false && notifyDieuChuyen == true && notifyLoHang == false)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao != 0 && p.LoaiThongBao != 4).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao != 0 && p.LoaiThongBao != 4).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == false && notifyTonKho == true && notifyDieuChuyen == true && notifyLoHang == false)
-                    {
-                        count = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && !p.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) && p.LoaiThongBao != 3 && p.LoaiThongBao != 4).Count();
-                        lstThongBao = db.HT_ThongBao.Where(p => p.ID_DonVi == objUser_Cookies.ID_DonVi && p.LoaiThongBao != 3 && p.LoaiThongBao != 4).OrderByDescending(p => p.NgayTao).Take(100).ToList();
-                    }
-                    if (notifyBirth == false && notifyTonKho == false && notifyDieuChuyen == false && notifyLoHang == false)
-                    {
-                        lstThongBao = new List<HT_ThongBao>();
-                    }
 
-                    foreach (var item in lstThongBao)
+                    lstTB = tbKho.Union(tbDieuChuyen).Union(tbLoHetHan).Union(tbSinhNhat).OrderByDescending(p => p.ThoiGian).ToList();
+                    count = lstTB.Where(x => !x.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString())).Count();
+
+                    lstTB = lstTB.Take(100).ToList();
+                    foreach (var item in lstTB)
                     {
                         item.NoiDungThongBao = item.NoiDungThongBao.Replace("key", item.ID.ToString());
-                        System.DateTime ngaytao = item.NgayTao;
+                        System.DateTime ngaytao = item.ThoiGian ?? DateTime.Now;
                         System.DateTime now = DateTime.Now;
                         System.TimeSpan diff = now.Subtract(ngaytao);
                         string date = "";
@@ -468,22 +448,15 @@ namespace banhang24.Controllers
                                 date = Math.Floor(diff.TotalMinutes) + " phút trước";
                             }
                         }
-                        if (tonggio > 24 && (item.NgayTao.Day + 1) == now.Day)
+                        if (tonggio > 24 && (ngaytao.Day + 1) == now.Day)
                         {
-                            date = "Hôm qua lúc " + item.NgayTao.ToString("HH:ss");
+                            date = "Hôm qua lúc " + ngaytao.ToString("HH:ss");
                         }
-                        if (tonggio > 24 && (item.NgayTao.Day + 1) != now.Day)
+                        if (tonggio > 24 && (ngaytao.Day + 1) != now.Day)
                         {
-                            date = item.NgayTao.Day + " Tháng " + item.NgayTao.Month + " lúc " + item.NgayTao.ToString("HH:ss");
+                            date = ngaytao.Day + " Tháng " + ngaytao.Month + " lúc " + ngaytao.ToString("HH:ss");
                         }
-                        HT_ThongBaoDTO thongbao = new HT_ThongBaoDTO
-                        {
-                            NoiDungThongBao = item.NoiDungThongBao.ToString(),
-                            NgayTao = date,
-                            DaDoc = item.NguoiDungDaDoc != "" ? (item.NguoiDungDaDoc.Contains(objUser_Cookies.ID.ToString()) ? true : false) : false,
-                            Image = item.LoaiThongBao == 3 ? "<img src=\"/Content/images/anhhh/gato.png\" height=\"30\"/>" : (item.LoaiThongBao == 1 ? "<img src=\"/Content/images/anhhh/trao.png\" height=\"30\"/>" : "<img src=\"/Content/images/anhhh/hetkho.png\" height=\"30\"/>"),
-                        };
-                        lstTB.Add(thongbao);
+                        item.NgayTao = date;
                     }
                     return Json(new { res = true, data = lstTB, CountTB = count }, JsonRequestBehavior.AllowGet);
                 }

@@ -355,6 +355,7 @@ namespace libQuy_HoaDon
         public double? TienDoiDiem { get; set; }
         public double? TTBangTienCoc { get; set; }
         public double? TienTheGiaTri { get; set; }
+        public string BienSoXe { get; set; }
     }
     public class Excel_SoQuy
     {

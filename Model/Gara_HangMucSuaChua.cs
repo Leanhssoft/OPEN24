@@ -37,6 +37,9 @@ namespace Model
         [Column(TypeName = "nvarchar(max)")]
         public string Anh { get; set; } = "";
 
+        [Column(TypeName = "int")]
+        public int? STT { get; set; } = 0;
+
         public virtual Gara_PhieuTiepNhan Gara_PhieuTiepNhan { get; set; }
     }
 }

@@ -63,7 +63,9 @@
                                 <th>Tên hàng</th>
                                 <th>Số lượng chuyển</th>
                                 <th>Số lượng nhận</th>
+                                <!--ko if: $root.HangHoa_GiaVon() == 'HangHoa_GiaVon' -->
                                 <th>Giá chuyển/nhận</th>
+                                <!--/ko-->
                             </tr>
                         </thead>
                         <tbody data-bind="foreach: $root.BH_HoaDonChiTiets">
@@ -85,7 +87,9 @@
                                 </td>
                                 <td data-bind="text: formatNumber(SoLuong)"></td>
                                 <td data-bind="text: (YeuCau == '1' || YeuCau == '2')? 0 : formatNumber(GiamGia), style: { color: (SoLuong > GiamGia) && GiamGia !==0 ? 'red' : 'black' }"></td>
+                                <!--ko if: $root.HangHoa_GiaVon() == 'HangHoa_GiaVon' -->
                                 <td class="text-right" data-bind="text: formatNumber(DonGia)"></td>
+                                <!--/ko-->
                             </tr>
                         </tbody>
                     </table>

@@ -129,26 +129,24 @@
 
 
     function GetTree_NhomHangHoa() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/' + 'GetTree_NhomHangHoa', 'GET').done(function (obj) {
-                if (obj.res === true) {
-                    let data = obj.data;
-                    if (data.length > 0) {
-                        data = data.sort((a, b) => a.text.localeCompare(b.text, undefined, { caseFirst: "upper" }));
-                    }
-                    self.TreeNhomHangHoa(data);
-                    //  bind data on tree
-                    tree = $('#treeProductGroup').tree({
-                        primaryKey: 'id',
-                        uiLibrary: 'bootstrap',
-                        dataSource: data,
-                        checkboxes: false,
-                    }).on('select', function (e, node, id) {
-                        newModelDiscount.GetAll_IDNhomChild_ofNhomHH(id);
-                    })
+        ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/' + 'GetTree_NhomHangHoa', 'GET').done(function (obj) {
+            if (obj.res === true) {
+                let data = obj.data;
+                if (data.length > 0) {
+                    data = data.sort((a, b) => a.text.localeCompare(b.text, undefined, { caseFirst: "upper" }));
                 }
-            });
-        }
+                self.TreeNhomHangHoa(data);
+                //  bind data on tree
+                tree = $('#treeProductGroup').tree({
+                    primaryKey: 'id',
+                    uiLibrary: 'bootstrap',
+                    dataSource: data,
+                    checkboxes: false,
+                }).on('select', function (e, node, id) {
+                    newModelDiscount.GetAll_IDNhomChild_ofNhomHH(id);
+                })
+            }
+        });
     }
 
     function GetAllNhomHangHoas() {

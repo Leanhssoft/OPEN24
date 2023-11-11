@@ -129,8 +129,13 @@ namespace libGara
             {
                 strTrangThai = string.Join(",", param.TrangThais);
             }
+
+            var idUserLogin = param.IdUserLogin;
+            if (idUserLogin == Guid.Empty) idUserLogin = null;
+
             List<SqlParameter> sql = new List<SqlParameter>();
             sql.Add(new SqlParameter("IdChiNhanhs", idChiNhanh));
+            sql.Add(new SqlParameter("IdUserLogin", idUserLogin ?? (object)DBNull.Value));
             sql.Add(new SqlParameter("NgayTiepNhan_From", param.NgayTiepNhan_From == null ? (object)DBNull.Value : param.NgayTiepNhan_From.Value));
             sql.Add(new SqlParameter("NgayTiepNhan_To", param.NgayTiepNhan_To == null ? (object)DBNull.Value : param.NgayTiepNhan_To.Value));
             sql.Add(new SqlParameter("NgayXuatXuongDuKien_From", param.NgayXuatXuongDuKien_From == null ? (object)DBNull.Value : param.NgayXuatXuongDuKien_From.Value));
@@ -143,7 +148,7 @@ namespace libGara
             sql.Add(new SqlParameter("PageSize", param.PageSize));
             sql.Add(new SqlParameter("BaoHiem", param.BaoHiem));
 
-            string sqlquery = "GetListPhieuTiepNhan_v2 @IdChiNhanhs, @NgayTiepNhan_From, @NgayTiepNhan_To, " +
+            string sqlquery = "GetListPhieuTiepNhan_v2 @IdChiNhanhs, @IdUserLogin, @NgayTiepNhan_From, @NgayTiepNhan_To, " +
                 "@NgayXuatXuongDuKien_From, @NgayXuatXuongDuKien_To, @NgayXuatXuong_From, @NgayXuatXuong_To, " +
                 "@TrangThais, @TextSearch, @CurrentPage, @PageSize, @BaoHiem";
             List<GetListPhieuTiepNhan_v2> xx = _db.Database.SqlQuery<GetListPhieuTiepNhan_v2>(sqlquery, sql.ToArray()).ToList();
@@ -152,18 +157,23 @@ namespace libGara
 
         public List<Gara_BaoGia> Gara_GetListBaoGia(ParamSearch param)
         {
-            var idChiNhanh = string.Join(",", param.LstIDChiNhanh);
+            var idChiNhanh = string.Empty;
+            if (param.LstIDChiNhanh != null && param.LstIDChiNhanh.Count > 0)
+            {
+                idChiNhanh = string.Join(",", param.LstIDChiNhanh);
+            }
             List<SqlParameter> sql = new List<SqlParameter>();
             sql.Add(new SqlParameter("IDChiNhanhs", idChiNhanh));
             sql.Add(new SqlParameter("FromDate", param.FromDate));
             sql.Add(new SqlParameter("ToDate", param.ToDate));
             sql.Add(new SqlParameter("ID_PhieuSuaChua", param.ID_HangXe));// muon tam truong
+            sql.Add(new SqlParameter("IDXe", param.IDXe == "" ? (object)DBNull.Value : new Guid(param.IDXe)));
             sql.Add(new SqlParameter("TrangThais", param.TrangThai));
             sql.Add(new SqlParameter("TextSearch", param.TextSearch));
             sql.Add(new SqlParameter("CurrentPage", param.CurrentPage));
             sql.Add(new SqlParameter("PageSize", param.PageSize));
             List<Gara_BaoGia> xx = _db.Database.SqlQuery<Gara_BaoGia>("exec Gara_GetListBaoGia @IDChiNhanhs, @FromDate, @ToDate, @ID_PhieuSuaChua," +
-                " @TrangThais, @TextSearch, @CurrentPage, @PageSize", sql.ToArray()).ToList();
+                " @IDXe, @TrangThais, @TextSearch, @CurrentPage, @PageSize", sql.ToArray()).ToList();
             return xx;
         }
         public List<Gara_BaoGia> Gara_GetListHoaDonSuaChua(ParamSearch param)
@@ -245,8 +255,9 @@ namespace libGara
                     TinhTrang = x.TinhTrang,
                     PhuongAnSuaChua = x.PhuongAnSuaChua,
                     TrangThai = x.TrangThai,
-                    Anh = x.Anh
-                }).ToList();
+                    Anh = x.Anh,
+                    STT = x.STT ?? 0,
+                }).OrderBy(x => x.STT).ToList();
         }
         public List<PhieuTiepNhan_VatDungDinhKem> PhieuTiepNhan_GetVatDungKemTheo(Guid id)
         {
@@ -259,7 +270,8 @@ namespace libGara
                      SoLuong = x.SoLuong,
                      FileDinhKem = x.FileDinhKem,
                      TrangThai = x.TrangThai,
-                 }).ToList();
+                     STT = x.STT ?? 0,
+                 }).OrderBy(x => x.STT).ToList();
         }
 
         public void AddPhieuTiepNhan(Gara_PhieuTiepNhan obj)
@@ -374,6 +386,17 @@ namespace libGara
             List<XuatKho_JqautoHDSC> xx = _db.Database.SqlQuery<XuatKho_JqautoHDSC>(" exec JqAuto_HoaDonSC @IDChiNhanhs, @ID_PhieuTiepNhan, @TextSearch ", sql.ToArray()).ToList();
             return xx;
         }
+        public List<XuatKho_JqautoHDSC> GetHoaDonBaoGia_ofXeDangSua(ParamSearch param)
+        {
+            var idChiNhanh = string.Join(",", param.LstIDChiNhanh);
+            var txt = "%" + param.TextSearch + "%";
+            List<SqlParameter> sql = new List<SqlParameter>();
+            sql.Add(new SqlParameter("IDChiNhanhs", idChiNhanh));
+            sql.Add(new SqlParameter("ID_PhieuTiepNhan", param.ID_HangXe));// muontam truong
+            sql.Add(new SqlParameter("TextSearch", txt));
+            List<XuatKho_JqautoHDSC> xx = _db.Database.SqlQuery<XuatKho_JqautoHDSC>(" exec GetHoaDonBaoGia_ofXeDangSua @IDChiNhanhs, @ID_PhieuTiepNhan, @TextSearch ", sql.ToArray()).ToList();
+            return xx;
+        }
 
         public bool CheckBaoGia_DaTaoHoaDonSuaChua_VaXuatKho(Guid idDatHang)
         {
@@ -426,6 +449,31 @@ namespace libGara
                 "@NgayBaoDuongTo, @NgayNhacFrom, @NgayNhacTo, @IDNhanVienPhuTrachs, @IDNhomHangs," +
                 "@ID_Xe, @ID_PhieuTiepNhan, @LanNhacs, @TrangThais, @CurrentPage, @PageSize", sql.ToArray()).ToList();
         }
+        /// <summary>
+        /// use for subDomain = LeeAuto
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public List<PhuTung_LichBaoDuong> GetLichBaoDuong_TheoXe(ParamSeachLichBaoDuong param)
+        {
+            var idChiNhanhs = string.Empty;
+            if (param.IDChiNhanhs != null && param.IDChiNhanhs.Count > 0)
+            {
+                idChiNhanhs = string.Join(",", param.IDChiNhanhs);
+            }
+            List<SqlParameter> sql = new List<SqlParameter>();
+            sql.Add(new SqlParameter("IDChiNhanhs", idChiNhanhs ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("ID_Xe", param.ID_Xe ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("TextSearch", param.TextSeach ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("NgayBaoDuongFrom", param.NgayBaoDuongFrom ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("NgayBaoDuongTo", param.NgayBaoDuongTo ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("TrangThais", param.TrangThais ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("CurrentPage", param.CurrentPage ?? (object)DBNull.Value));
+            sql.Add(new SqlParameter("PageSize", param.PageSize ?? (object)DBNull.Value));
+            return _db.Database.SqlQuery<PhuTung_LichBaoDuong>("exec dbo.GetLichNhacBaoDuong_TheoXe @IDChiNhanhs,@ID_Xe, @TextSearch, @NgayBaoDuongFrom," +
+                "@NgayBaoDuongTo, " +
+                "@TrangThais, @CurrentPage, @PageSize", sql.ToArray()).ToList();
+        }
         public List<NhatKyBaoDuong> GetNhatKyBaoDuong_byCar(Guid idCar)
         {
             SqlParameter param = new SqlParameter("ID_Xe", idCar);
@@ -435,6 +483,11 @@ namespace libGara
         {
             SqlParameter param = new SqlParameter("ID_HoaDon", idHoaDon);
             _db.Database.ExecuteSqlCommand("exec Insert_LichNhacBaoDuong @ID_HoaDon", param);
+        }
+        public void Insert_LichNhacBaoDuong_TheoXe(Guid idPhieuTiepNhan)
+        {
+            SqlParameter param = new SqlParameter("ID_PhieuTiepNhan", idPhieuTiepNhan);
+            _db.Database.ExecuteSqlCommand("exec Insert_LichNhacBaoDuong_TheoXe @ID_PhieuTiepNhan", param);
         }
 
         public void UpdateLichBD_whenChangeNgayLapHD(Guid idHoaDon, DateTime ngaylapOld, DateTime ngaylapNew)
@@ -475,11 +528,24 @@ namespace libGara
                 _db.Database.ExecuteSqlCommand("exec SuDungBaoDuong_UpdateStatus @IDLichNhacs, @Status", sql.ToArray());
             }
         }
+
+        public bool CheckTienDo_CongViec(ParamThongBaoTienDo param)
+        {
+            List<SqlParameter> sql = new List<SqlParameter>();
+            sql.Add(new SqlParameter("ID_DonVi", param.ID_DonVi));
+            sql.Add(new SqlParameter("ID_PhieuTiepNhan", param.ID_PhieuTiepNhan));
+            sql.Add(new SqlParameter("BienSo", param.BienSo));
+            sql.Add(new SqlParameter("TimeCompare", param.ThoiGian));
+            sql.Add(new SqlParameter("TimeSetup", param.TimeSetup));
+            sql.Add(new SqlParameter("LoaiNhac", param.LoaiNhac));
+            return _db.Database.SqlQuery<bool>("exec Gara_CheckTienDoCongViec @ID_DonVi, @ID_PhieuTiepNhan, @BienSo, @TimeCompare, @TimeSetup, @LoaiNhac", sql.ToArray()).FirstOrDefault();
+        }
     }
     public class XuatKho_JqautoHDSC
     {
         public Guid ID { get; set; }
         public Guid ID_PhieuTiepNhan { get; set; }
+        public Guid? ID_Xe { get; set; }
         public string MaHoaDon { get; set; }
         public string BienSo { get; set; }
         public string MaPhieuTiepNhan { get; set; }
@@ -574,10 +640,12 @@ namespace libGara
         public double? TongThueKhachHang { get; set; }
         public int? CongThucBaoHiem { get; set; }
         public string MaPhieuTiepNhan { get; set; }
+        public int? SoKmVao { get; set; }
         public string ChiPhi_GhiChu { get; set; }
         public string BienSo { get; set; }
         public string YeuCau { get; set; }// used to check trangthai hddathang (1:Phieu tam, 2: Dang giao hang, 3: HoanThanh, 4: Huy)
         public double? DiemGiaoDich { get; set; }
+        public double? GiamTruThanhToanBaoHiem { get; set; }
         public int? TotalRow { get; set; }
         public double? TotalPage { get; set; }
 
@@ -600,6 +668,7 @@ namespace libGara
     }
     public class PhieuTiepNhan_TinhTrang
     {
+        public int? STT { get; set; }
         public Guid ID { get; set; }
         public Guid? ID_PhieuTiepNhan { get; set; }
         public string TenHangMuc { get; set; }
@@ -610,6 +679,7 @@ namespace libGara
     }
     public class PhieuTiepNhan_VatDungDinhKem
     {
+        public int? STT { get; set; }
         public Guid ID { get; set; }
         public Guid? ID_PhieuTiepNhan { get; set; }
         public string TieuDe { get; set; }

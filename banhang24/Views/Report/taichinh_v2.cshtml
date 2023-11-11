@@ -423,7 +423,7 @@
                                         <th class="bg21 text-right" v-if="ListHeader.find(p=>p.colName === 'colCuoiKy').colShow">Phải trả</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody v-show="VHeader.Quyen.filter(p => p === 'BCTC_TongHopCongNo').length > 0">
                                     <tr v-for="item in BaoCaoTongHopCongNo.dataView">
                                         <td class="text-left" v-if="ListHeader.find(p=>p.colName === 'colNhomDoiTac').colShow"><span>{{item.NhomDoiTac}}</span></td>
                                         <td class="text-left" v-if="ListHeader.find(p=>p.colName === 'colMaDoiTac').colShow"><span>{{item.MaDoiTac}}</span></td>
@@ -436,7 +436,7 @@
                                         <td class="text-right" v-if="ListHeader.find(p=>p.colName === 'colCuoiKy').colShow"><span>{{commonStatisJs.FormatNumber3Digit(item.PhaiTraCuoiKy, 0)}}</span></td>
                                     </tr>
                                 </tbody>
-                                <tfoot v-show="BaoCaoTongHopCongNo.data.length>0">
+                                <tfoot v-show="BaoCaoTongHopCongNo.data.length>0 && VHeader.Quyen.filter(p => p === 'BCTC_TongHopCongNo').length > 0">
                                     <tr class="bold">
                                         <td v-bind:colspan="ListHeader.filter(p=>p.index < 3 && p.colShow).length" class="bg12" v-if="ListHeader.filter(p=>p.index < 3 && p.colShow).length > 0">Tổng cộng</td>
                                         <td class="bg12 text-right" v-if="ListHeader.find(p=>p.colName === 'colDauKy').colShow">{{commonStatisJs.FormatNumber3Digit(BaoCaoTongHopCongNo.sPhaiThuDauKy, 0)}}</td>
@@ -447,9 +447,14 @@
                                         <td class="bg12 text-right" v-if="ListHeader.find(p=>p.colName === 'colCuoiKy').colShow">{{commonStatisJs.FormatNumber3Digit(BaoCaoTongHopCongNo.sPhaiTraCuoiKy, 0)}}</td>
                                     </tr>
                                 </tfoot>
-                                <tfoot v-show="BaoCaoTongHopCongNo.data.length<=0 || isLoading">
+                                <tfoot v-show="(BaoCaoTongHopCongNo.data.length<=0 || isLoading)  && VHeader.Quyen.filter(p => p === 'BCTC_TongHopCongNo').length > 0">
                                     <tr>
                                         <td v-show="!isLoading" class=" text-center" v-bind:colspan="ListHeader.filter(p=>p.colShow === true).length"><i>Không có dữ liệu</i></td>
+                                    </tr>
+                                </tfoot>
+                                 <tfoot v-if="VHeader.Quyen.filter(p => p === 'BCTC_TongHopCongNo').length == 0">
+                                    <tr>
+                                        <td class=" text-center" v-bind:colspan="ListHeader.filter(p=>p.colShow === true).length"><i>Không có quyền xem báo cáo</i></td>
                                     </tr>
                                 </tfoot>
                             </table>

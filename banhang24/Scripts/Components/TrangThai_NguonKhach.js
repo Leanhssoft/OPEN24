@@ -112,7 +112,9 @@ var cmpNhomKhach = {
       
                 <div class="op-tag-picker dropdown nopadding">
                     <div class=" " data-toggle="dropdown" aria-expanded="false">
-                        <input type="text" class="form-control"  placeholder="Chọn nhóm">
+                        <input type="text" class="form-control"  placeholder="Chọn nhóm" autocomplete="off"
+                                v-model="textSearch"
+                                v-on:keyup="search">
                         <ul >
                             <li class="" v-for="(item,index) in listChosed">
                                 <span> {{item.TenNhomDoiTuong}}
@@ -129,7 +131,7 @@ var cmpNhomKhach = {
                    <i class="material-icons">add</i>
                     </button>
                     <ul   class="dropdown-menu  "style="width:100%">
-                            <li class="flex flex-between"style="width:100%" v-on:click="OnSelect(item)" v-for="(item,index) in listAll">
+                            <li class="flex flex-between"style="width:100%" v-on:click="OnSelect(item)" v-for="(item,index) in listSearch">
                                <a >  {{item.TenNhomDoiTuong}}</a>
                             </li>
                     </ul>
@@ -142,11 +144,24 @@ var cmpNhomKhach = {
         return {
             listChosed: [],
             listAll: [],
+            textSearch:'',
         }
     },
     methods: {
         showList: function () {
            /* $(event.currentTarget).next().show();*/
+        },
+        search: function () {
+            let self = this;
+            let txt = self.textSearch;
+            if (commonStatisJs.CheckNull(txt)) {
+                self.listSearch = self.listAll;
+                return;
+            }
+            self.listSearch = self.listAll.filter(e =>
+                commonStatisJs.convertVieToEng(e.TenNhomDoiTuong).indexOf(txt) >= 0
+                || e.TenNhomDoiTuong.indexOf(txt) >= 0
+            );
         },
         OnSelect: function (item) {
             var self = this;

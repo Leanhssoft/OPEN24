@@ -1,4 +1,5 @@
-﻿using log4net;
+﻿using DocumentFormat.OpenXml.EMMA;
+using log4net;
 using Model_banhang24vn;
 using Model_banhang24vn.Common;
 using Model_banhang24vn.CustomView;
@@ -1326,20 +1327,24 @@ namespace Open24.Areas.AdminPage.ApiControllers
                         model.Browser = Request.Headers.UserAgent.ToArray()[4].ToString();
                     }
                     _ContactService.Insert(model);
-                    string body = "<h3> Thông tin đăng ký phần mềm open24</h3><br>"
-                         + "<span>Họ tên: " + model.FullName + "</span><br>"
-                         + "<span>Số điện thoại: " + model.Phone + "</span><br>"
-                         + "<span>Email: " + model.Email + "</span><br>"
-                         + "<span>Địa chỉ: " + model.Address + "</span><br>"
-                         + "<span>Gói sản phẩm: " + model.Software + "</span><br><br>"
-                         + "<span>Thiết bị: " + model.Devicess + "</span><br>"
-                         + "<span>Hệ điều hành: " + model.System + "</span><br>"
-                         + "<span>Trình duyệt: " + model.Browser + "</span><br>"
-                         + "<span>IPV4: " + ip4 + "</span><br>"
-                         + "<span>Khu vực: " + ipAdress + "</span><br><br>"
-                         + "<span style='text-align: center'>--- Ghi chú --- </span>"
-                         + "<p>  " + model.Note + "</p>";
-                    MailHellper.SendThreadEmail(WebConfigurationManager.AppSettings["SPGmail"].ToString(), "[open24] KH: " + model.FullName + (model.Type == 1 ? "đặt mua" : "muốn dùng thử"), body);
+                    //string body = "<h3> Thông tin đăng ký phần mềm open24</h3><br>"
+                    //     + "<span>Họ tên: " + model.FullName + "</span><br>"
+                    //     + "<span>Số điện thoại: " + model.Phone + "</span><br>"
+                    //     + "<span>Email: " + model.Email + "</span><br>"
+                    //     + "<span>Địa chỉ: " + model.Address + "</span><br>"
+                    //     + "<span>Gói sản phẩm: " + model.Software + "</span><br><br>"
+                    //     + "<span>Thiết bị: " + model.Devicess + "</span><br>"
+                    //     + "<span>Hệ điều hành: " + model.System + "</span><br>"
+                    //     + "<span>Trình duyệt: " + model.Browser + "</span><br>"
+                    //     + "<span>IPV4: " + ip4 + "</span><br>"
+                    //     + "<span>Khu vực: " + ipAdress + "</span><br><br>"
+                    //     + "<span style='text-align: center'>--- Ghi chú --- </span>"
+                    //     + "<p>  " + model.Note + "</p>";
+                    //MailHellper.SendThreadEmail(WebConfigurationManager.AppSettings["SPGmail"].ToString(), "[open24] KH: " + model.FullName + (model.Type == 1 ? "đặt mua" : "muốn dùng thử"), body);
+                    TelegramBot telegram = new TelegramBot();
+                    string TelegramMessage = "Đăng ký dùng thử\n" + "Họ tên: " + model.FullName + "\n" + "Số điện thoại: " + model.Phone + "\n" +
+                        "Email: " + model.Email + "\n" + "Gói sản phẩm: " + model.Software;
+                    telegram.SendMessage(TelegramMessage);
                     return InsertSuccess();
                 }
                 return ActionFalseNotData("Không thể lấy được thông tin, vui lòng thử lại sau.");
@@ -1430,22 +1435,26 @@ namespace Open24.Areas.AdminPage.ApiControllers
                         model.Browser = Request.Headers.UserAgent.ToArray()[4].ToString();
                     }
                     _ContactService.Insert(model);
-                    string body = "<h3> Thông tin đăng ký phần mềm open24</h3><br>"
-                         + "<span>Họ tên: " + model.FullName + "</span><br>"
-                         + "<span>Số điện thoại: " + model.Phone + "</span><br>"
-                         + "<span>Email: " + model.Email + "</span><br>"
-                         + "<span>Địa chỉ: " + model.Address + "</span><br>"
-                         + "<span>Gói sản phẩm: " + model.Software + "</span><br><br>"
-                         + "<span>Thiết bị: " + model.Devicess + "</span><br>"
-                         + "<span>Hệ điều hành: " + model.System + "</span><br>"
-                         + "<span>Trình duyệt: " + model.Browser + "</span><br>"
-                         + "<span>IPV4: " + model.Ipv4 + "</span><br>"
-                         + "<span>Khu vực: " + model.IpAdress + "</span><br><br>"
-                         + "<span>Công ty: " +Company + "</span><br><br>"
-                         + "<span style='text-align: center'>--- Ghi chú --- </span>"
-                         + "<p>  " + model.Note + "</p>";
+                    //string body = "<h3> Thông tin đăng ký phần mềm open24</h3><br>"
+                    //     + "<span>Họ tên: " + model.FullName + "</span><br>"
+                    //     + "<span>Số điện thoại: " + model.Phone + "</span><br>"
+                    //     + "<span>Email: " + model.Email + "</span><br>"
+                    //     + "<span>Địa chỉ: " + model.Address + "</span><br>"
+                    //     + "<span>Gói sản phẩm: " + model.Software + "</span><br><br>"
+                    //     + "<span>Thiết bị: " + model.Devicess + "</span><br>"
+                    //     + "<span>Hệ điều hành: " + model.System + "</span><br>"
+                    //     + "<span>Trình duyệt: " + model.Browser + "</span><br>"
+                    //     + "<span>IPV4: " + model.Ipv4 + "</span><br>"
+                    //     + "<span>Khu vực: " + model.IpAdress + "</span><br><br>"
+                    //     + "<span>Công ty: " +Company + "</span><br><br>"
+                    //     + "<span style='text-align: center'>--- Ghi chú --- </span>"
+                    //     + "<p>  " + model.Note + "</p>";
 
-                    MailHellper.SendThreadEmail(WebConfigurationManager.AppSettings["SPGmail"].ToString(), "[open24] KH: " + model.FullName + (model.Type == 1 ? "đặt mua" : "muốn dùng thử"), body);
+                    //MailHellper.SendThreadEmail(WebConfigurationManager.AppSettings["SPGmail"].ToString(), "[open24] KH: " + model.FullName + (model.Type == 1 ? "đặt mua" : "muốn dùng thử"), body);
+                    TelegramBot telegram = new TelegramBot();
+                    string TelegramMessage = "Đăng ký dùng thử\n" + "Họ tên: " +model.FullName + "\n" + "Số điện thoại: " + model.Phone + "\n" +
+                        "Email: " + model.Email + "\n" + "Gói sản phẩm: " + model.Software;
+                    telegram.SendMessage(TelegramMessage);
                     return InsertSuccess();
                 }
                 else
@@ -1458,6 +1467,35 @@ namespace Open24.Areas.AdminPage.ApiControllers
             }
             catch (Exception ex) { return Exeption(ex); }
 
+        }
+
+        [HttpPost]
+        public IHttpActionResult GuiYeuCauTuVan([FromBody] JObject objIn)
+        {
+            string FullName = "";
+            if (objIn["FullName"] != null)
+                FullName = objIn["FullName"].ToObject<string>();
+
+            string Address = "";
+            if (objIn["Address"] != null)
+                Address = objIn["Address"].ToObject<string>();
+
+            string Noted = "";
+            if (objIn["Noted"] != null)
+                Noted = objIn["Noted"].ToObject<string>();
+
+            string Phone = "";
+            if (objIn["Phone"] != null)
+                Phone = objIn["Phone"].ToObject<string>();
+
+            string Email = "";
+            if (objIn["Email"] != null)
+                Email = objIn["Email"].ToObject<string>();
+            TelegramBot telegram = new TelegramBot();
+            string TelegramMessage = "Gửi yêu cầu tư vấn\n" + "Họ tên: " + FullName + "\n" + "Số điện thoại: " + Phone + "\n" +
+                "Email: " + Email + "\n" + "Nội dung: " + Noted;
+            telegram.SendMessage(TelegramMessage);
+            return InsertSuccess();
         }
 
         [HttpPost]

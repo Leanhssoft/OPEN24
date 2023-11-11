@@ -929,41 +929,35 @@
                 },
                 // modal thanhtoan
                 getListNhanVien: function (idDonVi) {
-                    if (navigator.onLine) {
-                        ajaxHelper("/api/DanhMuc/NS_NhanVienAPI/" + "GetNS_NhanVien_InforBasic?idDonVi=" + idDonVi, 'GET').done(function (data) {
-                            vmThanhToan.listData.NhanViens = data;
-                            vmHoaHongHoaDon.listData.NhanViens = data;
-                            vmThemPhieuThuChi.listData.NhanViens = data;
-                            vmNapTienDatCoc.listData.NhanViens = data;
-                        });
-                    }
+                    ajaxHelper("/api/DanhMuc/NS_NhanVienAPI/" + "GetNS_NhanVien_InforBasic?idDonVi=" + idDonVi, 'GET').done(function (data) {
+                        vmThanhToan.listData.NhanViens = data;
+                        vmHoaHongHoaDon.listData.NhanViens = data;
+                        vmThemPhieuThuChi.listData.NhanViens = data;
+                        vmNapTienDatCoc.listData.NhanViens = data;
+                    });
                 },
                 GetInforCongTy: function () {
-                    if (navigator.onLine) {
-                        ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CongTy', 'GET').done(function (data) {
-                            if (data != null) {
-                                vmThanhToan.inforCongTy = {
-                                    TenCongTy: data.TenCongTy,
-                                    DiaChiCuaHang: data.DiaChi,
-                                    LogoCuaHang: Open24FileManager.hostUrl + data.DiaChiNganHang,
-                                    TenChiNhanh: $('#_txtTenDonVi').text(),
-                                };
-                                vmThemPhieuThuChi.inforCongTy = vmThanhToan.inforCongTy;
-                                vmNapTienDatCoc.inforCongTy = vmThanhToan.inforCongTy;
-                            }
-                        });
-                    }
+                    ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CongTy', 'GET').done(function (data) {
+                        if (data != null) {
+                            vmThanhToan.inforCongTy = {
+                                TenCongTy: data.TenCongTy,
+                                DiaChiCuaHang: data.DiaChi,
+                                LogoCuaHang: Open24FileManager.hostUrl + data.DiaChiNganHang,
+                                TenChiNhanh: $('#_txtTenDonVi').text(),
+                            };
+                            vmThemPhieuThuChi.inforCongTy = vmThanhToan.inforCongTy;
+                            vmNapTienDatCoc.inforCongTy = vmThanhToan.inforCongTy;
+                        }
+                    });
                 },
                 GetDM_TaiKhoanNganHang: function (idDonVi) {
-                    if (navigator.onLine) {
-                        ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/' + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + idDonVi, 'GET').done(function (x) {
-                            if (x.res === true) {
-                                vmThanhToan.listData.AccountBanks = x.data;
-                                vmThemPhieuThuChi.listData.AccountBanks = x.data;
-                                vmNapTienDatCoc.listData.AccountBanks = x.data;
-                            }
-                        })
-                    }
+                    ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/' + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + idDonVi, 'GET').done(function (x) {
+                        if (x.res === true) {
+                            vmThanhToan.listData.AccountBanks = x.data;
+                            vmThemPhieuThuChi.listData.AccountBanks = x.data;
+                            vmNapTienDatCoc.listData.AccountBanks = x.data;
+                        }
+                    })
                 },
 
                 GetAllQuy_KhoanThuChi: function () {

@@ -20,6 +20,7 @@
             LoaiXe: {},
             MauXe: {},
             KhachHang: {},
+            BatBuocNhapSoKhung: false,
         },
         inforLogin: {
             ID_NhanVien: null,
@@ -60,7 +61,6 @@
         var self = this;
         self.GaraAPI = '/api/DanhMuc/GaraAPI/';
         self.Guid_Empty = '00000000-0000-0000-0000-000000000000';
-
         let idDonVi = $('#txtDonVi').val();
         if (commonStatisJs.CheckNull(idDonVi)) {
             self.inforLogin = {
@@ -69,6 +69,7 @@
                 UserLogin: VHeader.UserLogin,
                 ID_DonVi: VHeader.IdDonVi,
             };
+
         }
         self.role.ThemMoi = self.CheckRole('DanhMucXe_ThemMoi');
         self.role.CapNhat = self.CheckRole('DanhMucXe_CapNhat');
@@ -78,6 +79,7 @@
         self.role.KhachHang.ThemMoi = self.CheckRole('KhachHang_ThemMoi');
         self.role.KhachHang.CapNhat = self.CheckRole('KhachHang_CapNhat');
         self.role.NhatKyHoatDongXe = self.CheckRole('HoatDongXe');
+        self.role.BatBuocNhapSoKhung = self.CheckRole('DanhMucXe_BatBuocNhapSoKhung');
 
         self.GetAllModelCar();
         self.GetAllHangXes();
@@ -405,10 +407,10 @@
         },
         CheckSave: function () {
             let self = this;
-            //if (commonStatisJs.CheckNull(self.newCar.ID_MauXe)) {
-            //    commonStatisJs.ShowMessageDanger('Vui lòng chọn mẫu xe');
-            //    return;
-            //}
+            if (self.role.BatBuocNhapSoKhung && commonStatisJs.CheckNull(self.newCar.SoKhung)) {
+                commonStatisJs.ShowMessageDanger('Vui lòng nhập số khung');
+                return;
+            }
             if (commonStatisJs.CheckNull(self.newCar.BienSo)) {
                 commonStatisJs.ShowMessageDanger('Vui lòng nhập biển số xe');
                 return;
@@ -543,7 +545,8 @@ $(function () {
             }
             vmThemMoiXe.manufacturerName = newObj.TenHangXe;
             vmThemMoiXe.newCar.ID_HangXe = newObj.ID;
-            if (!vmHangXe.isNew && newObj.ID !== null && newObj.ID !== Guid_Empty) {
+
+            if (newObj.ID !== null && newObj.ID !== const_GuidEmpty) {
                 for (let i = 0; i < vmThemMoiXe.listData.HangXe.length; i++) {
                     if (vmThemMoiXe.listData.HangXe[i].ID === vmHangXe.ID) {
                         vmThemMoiXe.listData.HangXe.splice(i, 1);
@@ -563,7 +566,8 @@ $(function () {
             }
             vmThemMoiXe.typeCarName = vmLoaiXe.TenLoaiXe;
             vmThemMoiXe.newCar.ID_LoaiXe = vmLoaiXe.ID;
-            if (!vmLoaiXe.isNew && newObj.ID !== null && newObj.ID !== Guid_Empty) {
+
+            if (newObj.ID !== null && newObj.ID !== const_GuidEmpty) {
                 for (let i = 0; i < vmThemMoiXe.listData.LoaiXe.length; i++) {
                     if (vmThemMoiXe.listData.LoaiXe[i].ID === vmLoaiXe.ID) {
                         vmThemMoiXe.listData.LoaiXe.splice(i, 1);

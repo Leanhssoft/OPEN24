@@ -336,10 +336,10 @@ var PartialView_CongViec = function () {
     });
 
     self.JqAutoSelectKH_LH.subscribe(function (newVal) {
-        if (newVal !== undefined && newVal.length === 36) {
+        if (!commonStatisJs.CheckNull(newVal)) {
             SearchKhachHang(newVal);
-            self.newCongViec().ID_KhachHang(newVal);
         }
+        self.newCongViec().ID_KhachHang(newVal);
     });
 
     self.JqAutoSelectItem = function (item) {
@@ -706,6 +706,7 @@ var PartialView_CongViec = function () {
     }
 
     function Enable_btnSaveCongViec() {
+        self.JqAutoSelectKH_LH(null);
         document.getElementById("btnLuuCongViec").disabled = false;
         document.getElementById("btnLuuCongViec").lastChild.data = "Lưu";
     }
@@ -800,7 +801,7 @@ var PartialView_CongViec = function () {
         }
         else {
             sLoai = ' lịch hẹn';
-            if (idKhachHang === undefined) {
+            if (commonStatisJs.CheckNull(idKhachHang)) {
                 ShowMessage_Danger('Vui lòng chọn khách hàng');
                 Enable_btnSaveCongViec();
                 return false;

@@ -61,7 +61,6 @@
     self.TongTichDiemAll = ko.observable();
     self.ContinueImport = ko.observable(false);
     self.GhiChuQuyHD = ko.observable();
-    self.NgayDieuChinh = ko.observable(moment(today).format('DD/MM/YYYY'));
     self.TongThuDieuChinh = ko.observable();
     self.NguoiNopTien = ko.observable();
     self.ID_NguoiNopTien = ko.observable();
@@ -182,8 +181,10 @@
     self.Allow_ChangeTimeSoQuy = ko.observable(false);
     self.RoleDieuChinhSoDuThe = ko.observable(false);
     self.RoleThemMoiTheGiaTri = ko.observable(false);
-    self.RoleXemTongDoanhThu = ko.observable(false);
+    self.LaAdmin = ko.observable(VHeader.LaAdmin == 'Admin');
+    self.RoleXemTongDoanhThu = ko.observable(false);// quyền "Không" (ngược với bình thường)
     self.RoleXemDSTheGiaTri = ko.observable(false);
+    self.RoleView_NhatKyGiaoDich = ko.observable(false);
     self.Allow_ChangeTimeTheGiaTri = ko.observable(false);
     self.ShopCookie = ko.observable($('#shopCookies').val());
     self.IsGara = ko.observable(false);
@@ -202,6 +203,7 @@
             SearchKhachHang();
         }
     }
+    
     switch (VHeader.IdNganhNgheKinhDoanh.toUpperCase()) {
         case 'C16EDDA0-F6D0-43E1-A469-844FAB143014':
             self.IsGara(true);
@@ -596,6 +598,7 @@
                 NhomDT_DonVi: [],
             }
             self.NhomDoiTuongs.unshift(newObj);
+            self.AllNhomDoiTuongs.unshift(newObj);
             LoadSearchNhomDT();
         });
     }
@@ -716,14 +719,9 @@
         $("#fileLoader").click();
     }
     function GetDM_NguonKHang() {
-        if (navigator.onLine) {
             ajaxHelper(DMNguonKhachUri + 'GetDM_NguonKhach', 'GET').done(function (data) {
                 self.NguonKhachs(data);
-                if (loaiDoiTuong === 1) {
-                    vmThemMoiKhach.listData.NguonKhachs = data;
-                }
             });
-        }
     }
     // sort when click header
     $('#tblList thead tr').on('click', 'th', function () {
@@ -731,32 +729,32 @@
         if (id !== undefined) {
             switch (id) {
                 case "madoituong":
-                    self.columsort("MaDoiTac");
+                    self.columsort("MaDoiTuong");
                     break;
                 case "tendoituong":
-                    self.columsort("MaDoiTac");
+                    self.columsort("TenDoiTuong");
                     break;
                 case "dienthoai":
-                    self.columsort("MaDoiTac");
+                    self.columsort("DienThoai");
                     break;
                 case "gioitinh":
-                    self.columsort("TenDoiTac");
+                    self.columsort("GioiTinhNam");
                     break;
                 case "nhomkhach":
-                    self.columsort("NhomDoiTac");
+                    self.columsort("TenNhomDT");
                     break;
                 case "ngaysinh":
-                    self.columsort("NgaySinh");
+                    self.columsort("NgaySinh_NgayTLap");
                     break;
                 case "email":
                     self.columsort("Email");
                     break;
-                case "tinhthanh":
-                    self.columsort("TinhThanh");
-                    break;
-                case "quanhuyen":
-                    self.columsort("QuanHuyen");
-                    break;
+                //case "tinhthanh":
+                //    self.columsort("TinhThanh");
+                //    break;
+                //case "quanhuyen":
+                //    self.columsort("QuanHuyen");
+                //    break;
                 case "diachi":
                     self.columsort("DiaChi");
                     break;
@@ -766,12 +764,12 @@
                 case "ngaytao":
                     self.columsort("NgayTao");
                     break;
-                case "nguoigioithieu":
-                    self.columsort("NguoiGioiThieu");
-                    break;
-                case "nguonkhach":
-                    self.columsort("NguonKhach");
-                    break;
+                //case "nguoigioithieu":
+                //    self.columsort("NguoiGioiThieu");
+                //    break;
+                //case "nguonkhach":
+                //    self.columsort("NguonKhach");
+                //    break;
                 case "nohientai":
                     self.columsort("NoHienTai");
                     break;
@@ -795,6 +793,9 @@
                     break;
                 case "cpDichvu":
                     self.columsort("PhiDichVu");
+                    break;
+                default:
+                    self.columsort("");
                     break;
             }
             SortGrid(id);
@@ -916,7 +917,7 @@
             maKH = '';
         }
         else {
-            maKH = locdau(maKH.trim());
+            maKH = maKH.trim();
         }
         // tongban 
         var tongBanFrom = $('#txtTongBanFrom').val();
@@ -952,22 +953,15 @@
         else {
             debitTo = null;
         }
-        // loai khach
+
         var loaiKhach = self.customerType();
         var gioiTinh = parseInt(self.customerSex());
-        // nguonKhach
         var idNguonKhach = self.selectedNguonKhach();
-        if (idNguonKhach == undefined) {
-            idNguonKhach = null;
-        }
+
         // tinhThanh
-        var arrIDTinhThanh = [];
-        for (var i = 0; i < self.ProvinceChosed().length; i++) {
-            arrIDTinhThanh.push(self.ProvinceChosed()[i].ID);
-        }
-        if (arrIDTinhThanh.length === 0) {
-            arrIDTinhThanh = null;
-        }
+        var arrIDTinhThanh = $.map(self.ProvinceChosed(), function (x) {
+            return x.ID
+        })
         var arrIDManager = [];
         if (self.ManagerChosed().length > 0) {
             for (var i = 0; i < self.ManagerChosed().length; i++) {
@@ -1000,8 +994,8 @@
             switch (parseInt(self.filterNgayTao_Quy())) {
                 case 0:
                     // all
-                    dayStart = '2016-01-01';
-                    dayEnd = moment(_now).add('days', 1).format('YYYY-MM-DD');
+                    //dayStart = '2016-01-01';
+                    //dayEnd = moment(_now).add('days', 1).format('YYYY-MM-DD');
                     break;
                 case 1:
                     // hom nay
@@ -1073,8 +1067,8 @@
             switch (parseInt(self.filterDateTongBan_Quy())) {
                 case 0:
                     // all
-                    dateSellStart = '2010-01-01';
-                    dateSellEnd = moment(_now).add('days', 1).format('YYYY-MM-DD');
+                    //dateSellStart = '2010-01-01';
+                    //dateSellEnd = moment(_now).add('days', 1).format('YYYY-MM-DD');
                     break;
                 case 1:
                     // hom nay
@@ -1288,6 +1282,19 @@
             }
         }
 
+        let typeSort = self.sort();
+        if (typeSort === 0) {
+            typeSort = 2;
+        }
+        if (loaiDoiTuong === 2) {
+            switch (self.columsort()) {
+                case 'NoHienTai':
+                    typeSort = typeSort == 1 ? 2 : 1;// nhacungcap sắp xếp ngược với khách hàng
+                    break;
+            }
+        }
+        let sortBy = typeSort == 2 ? 'DESC' : 'ASC';
+
         var Params_GetListKhachHang = {
             ID_DonVis: arrDV,
             LoaiDoiTuong: loaiDoiTuong,
@@ -1318,6 +1325,8 @@
             CurrentPage: self.currentPage(),
             PageSize: self.pageSize(),
             SearchColumns: self.ListFilterColumn(),
+            ColumnSort: self.columsort(),
+            SortBy: sortBy
         }
         console.log(1, Params_GetListKhachHang)
         if (isXuatExcel) {
@@ -1351,7 +1360,7 @@
             }
             if (hasPermisson) {
                 $('.content-table').gridLoader();
-                ajaxHelper(DMDoiTuongUri + 'GetListKhachHang_Where_PassObject_Paging', 'POST', Params_GetListKhachHang)
+                ajaxHelper(DMDoiTuongUri + 'LoadDanhMuc_KhachHangNhaCungCap', 'POST', Params_GetListKhachHang)
                     .done(function (x) {
                         $('.content-table').gridLoader({ show: false });
                         if (x.res === true) {
@@ -1982,7 +1991,8 @@
             }
         });
     }
-
+    self.tabLienHeShow = ko.observable(false);
+    self.tabCongViecShow = ko.observable(false);
     self.customerOld = ko.observable();
     self.GetLichSuBanTraHang = function (item) {
         self.customerOld(item);
@@ -2079,19 +2089,23 @@
             return x.MaQuyen.indexOf('LienHe_XemDS') > -1;
         });
         if (itemViewUserContact.length > 0) {
-            ulTab.children('li').eq(5).show();
+            //ulTab.children('li').eq(5).show();
+            self.tabLienHeShow(true);
         }
         else {
-            ulTab.children('li').eq(5).hide();
+            //ulTab.children('li').eq(5).hide();
+            self.tabLienHeShow(false);
         }
         var itemViewWork = $.grep(self.Quyen_NguoiDung(), function (x) {
             return x.MaQuyen.indexOf('CongViec_XemDS') > -1;
         });
         if (itemViewWork.length > 0) {
-            ulTab.children('li').eq(6).show();
+            //ulTab.children('li').eq(6).show();
+            self.tabCongViecShow(true);
         }
         else {
-            ulTab.children('li').eq(6).hide();
+            //ulTab.children('li').eq(6).hide();
+            self.tabCongViecShow(false);
         }
     }
     self.NhanViens_IsNguoiDung = ko.observableArray();
@@ -2878,7 +2892,6 @@
     }
     // get infor CongTy --> get logo cong ty
     function GetInforCongTy() {
-        if (navigator.onLine) {
             ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CongTy', 'GET').done(function (data) {
                 if (data != null) {
                     self.CongTy(data);
@@ -2899,7 +2912,6 @@
                     }
                 }
             });
-        }
     }
     self.formatDateTime = function () {
         $('.datepicker_mask').datetimepicker(
@@ -3191,7 +3203,7 @@
             ShowMessage_Danger("Vui lòng chọn " + sLoai + " cần chuyển nhóm");
             return;
         }
-        if (idNhomNew === 0 || idNhomNew === undefined) {
+        if (idNhomNew === 0 || commonStatisJs.CheckNull(idNhomNew) || idNhomNew === const_GuidEmpty) {
             ajaxHelper(DMDoiTuongUri + 'DeleteAllNhom_ofDoiTuong?lstIDDoiTuong=' + arrIDDoiTuong, 'POST', arrIDDoiTuong).done(function (x) {
                 console.log('deleteDT in nhom ', x.res)
             });
@@ -3262,17 +3274,14 @@
         }
     }
     function GetHT_TichDiem() {
-        if (navigator.onLine) {
             ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CauHinh_TichDiem?idDonVi=' + idDonVi, 'GET').done(function (data) {
                 if (data != null) {
                     self.ThietLap_TichDiem(data);
                 }
             });
-        }
     }
     self.ThietLap = ko.observableArray();
     function GetCauHinhHeThong() {
-        if (navigator.onLine) {
             ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + "GetCauHinhHeThong/" + idDonVi, 'GET').done(function (data) {
                 if (data !== null) {
                     self.ThietLap(data);
@@ -3282,7 +3291,6 @@
                     }
                 }
             });
-        }
     }
 
     self.DieuChinhDiem = function (item) {
@@ -3484,8 +3492,9 @@
                 self.RoleThemMoiTheGiaTri(CheckQuyenExist('TheGiaTri_ThemMoi'));
                 self.Allow_ChangeTimeTheGiaTri(CheckQuyenExist('TheGiaTri_ThayDoiThoiGian'));
                 self.RoleXemDSTheGiaTri(CheckQuyenExist('TheGiaTri_XemDS'));
-                self.RoleXemTongDoanhThu(CheckQuyenExist('KhachHang_XemTongDoanhThu'));
+                self.RoleXemTongDoanhThu(CheckQuyenExist('KhachHang_KhongXemTongCong'));
                 self.RoleUpdateImg_Invoice(CheckQuyenExist('HoaDon_CapNhatAnh'));
+                self.RoleView_NhatKyGiaoDich(CheckQuyenExist('HoaDon_XemDS'));
 
                 if (loaiDoiTuong == 2) {
                     HideShowButton_Vendor();
@@ -3532,10 +3541,10 @@
         if (self.RoleView_Cus() === true && itemInsert.length > 0) {
             self.RoleInsert_Cus(true);
         }
-        // xuat file
+      
         self.RoleExport_Cus(CheckQuyenExist('KhachHang_XuatFile'));
-        // import file
         self.RoleImport_Cus(CheckQuyenExist('KhachHang_Import'));
+
         // update
         var itemUpdate = $.grep(arrRoleCus, function (x) {
             return x.MaQuyen.indexOf('KhachHang_CapNhat') > -1;
@@ -3869,7 +3878,6 @@
     }
 
     function GetDM_TaiKhoanNganHang() {
-        if (navigator.onLine) {
             ajaxHelper(Quy_HoaDonUri + 'GetAllTaiKhoanNganHang_ByDonVi?idDonVi=' + idDonVi, 'GET').done(function (x) {
                 if (x.res === true) {
                     vmThemPhieuThuChi.listData.AccountBanks = x.data;
@@ -3883,7 +3891,6 @@
                     }
                 }
             })
-        }
     }
 
     $(window.document).on('shown.bs.modal', '.modal', function () {
@@ -4483,7 +4490,7 @@
                 vmThemMoiTheNap.showModalUpdate(item.ID, 1);
                 break;
             case 32:
-               
+
                 break;
             default:
                 vmChiTietHoaDon.showModalChiTietHoaDon(item.ID);
@@ -4493,7 +4500,7 @@
     self.NKyCoc_ShowPopupInforHD = function (item) {
         vmChiTietHoaDon.showModalChiTietHoaDon(item.ID_HoaDonGoc);
     }
-    self.ShowPopup_InforHD_PhieuThu = function (item) {
+    self.ShowPopup_InforHD_PhieuThu = async function (item) {
         self.LoaiHoaDon_MoPhieu(item.LoaiHoaDon);
         self.MaHoaDon_MoPhieu(item.MaHoaDon);
         switch (item.LoaiHoaDon) {
@@ -4522,14 +4529,21 @@
                 break;
             case 125: // chiphidichvu
                 if (loaiDoiTuong === 2) {
-                    VueChiPhi.CTHD_GetChiPhiDichVu([item.ID], 2, [self.IDDT()]);
+                   await  VueChiPhi.CTHD_GetChiPhiDichVu([item.ID], [self.IDDT()]);
+                   VueChiPhi.ShowModal(2);
+                }
+                break;
+            case 124: // chiphi vanchuyen (ben thu3)
+                if (loaiDoiTuong === 2) {
+                    let copy = { ...item };
+                    copy.LoaiHoaDon = 4;
+                    vmChiTietHoaDon.showModalChiTietHoaDon(copy.ID);
                 }
                 break;
             case 22: // nap thegiatri
                 vmThemMoiTheNap.showModalUpdate(item.ID, 1);
                 break;
             case 32: // hoan tra thegiatri
-                
                 break;
             default:
                 vmChiTietHoaDon.showModalChiTietHoaDon(item.ID);
@@ -4591,9 +4605,6 @@
                 var lst = data.dataSoure.ttkhachhang;
                 self.TrangThaiKhachHang(lst);
                 partialWork.LoaiKhachHang(lst);
-                if (loaiDoiTuong === 1) {
-                    vmThemMoiKhach.listData.TrangThaiKhachs = lst;
-                }
             }
         });
     };
@@ -4632,14 +4643,12 @@
         // reset SoDu
         self.SoDuTheGiaTri(0);
         var date = moment(new Date()).format('YYYY-MM-DD HH:mm:ss');
-        if (navigator.onLine) {
             ajaxHelper(DMDoiTuongUri + "Get_SoDuTheGiaTri_ofKhachHang_ByTime?idDoiTuong=" + idDoiTuong + '&datetime=' + date, 'GET').done(function (data) {
                 self.SoDuTheGiaTri(data);
                 if (loaiDoiTuong === 1) {
                     vmThanhToan.HoaDonChosing.SoDuTheGiaTri = data;
                 }
             });
-        }
     }
 
     self.SoDuDatCoc = ko.observable(0);
@@ -4744,6 +4753,7 @@
     self.loaiNKSD = ko.observable(1);
     self.loaiLSNT = ko.observable(1);
     self.TenKhachHangNapThe = ko.observable();
+
     self.clickTheGiaTri = function (item) {
         self.typeTab('thegiatri');
         ResetTime_TheGiaTri();
@@ -4761,6 +4771,9 @@
         SearchLichSuNapTien();
     };
     self.DieuChinhSoDu = function (item) {
+        self.TGT_ID(null);
+        self.GiaTriDieuChinh(0);
+        self.TenKhachHangNapThe(item.TenDoiTuong);
         self.TrangThaiTheGiaTriChoose(item.TrangThai_TheGiaTri);
         $('#modalPopup_thegiatri').modal('show');
         $('#txtSoDuPopup').val(formatNumber(self.SoDuTheGiaTri()));
@@ -4772,6 +4785,55 @@
         { TrangThai: "Đang hoạt động", value: "1" },
         { TrangThai: "Ngừng hoạt động", value: "2" }
     ]);
+
+    self.GiaTriDieuChinh = ko.observable('');
+    self.MaDieuChinh = ko.observable('');
+    self.NgayDieuChinh = ko.observable(moment(today).format('DD/MM/YYYY'));
+    self.TGT_ID = ko.observable(null);
+
+    self.DieuChinhThe_showUpdate = function (item) {
+        switch (item.LoaiHoaDon) {
+            case 22:// napthe
+                vmThemMoiTheNap.showModalUpdate(item.ID, 1);
+                break;
+            case 42:// tattoan congno
+                vmTatToanTGT.getData_andShowModalUpdate(item.ID);
+                break;
+            case 23:// dieuchinh
+                self.TGT_ID(item.ID);
+                self.MaDieuChinh(item.MaHoaDon);
+                self.GiaTriDieuChinh(item.MucNap);
+                self.NgayDieuChinh(moment(item.NgayLapHoaDon).format('DD/MM/YYYY HH:mm'));
+                $('#modalPopup_thegiatri').modal('show');
+                break;
+        }
+    }
+
+    self.TGT_HuyPhieuDieuChinh = function () {
+        // todo check sudung vuot TGT
+        $.getJSON('/api/DanhMuc/BH_HoaDonAPI/' + 'TGT_HuyPhieuDieuChinh?id=' + self.TGT_ID()).done(function (x) {
+            console.log(x)
+            if (x.res) {
+                ShowMessage_Success('Hủy phiếu điều chỉnh thành công');
+
+                $('#modalPopup_thegiatri').modal('hide');
+
+                let diary = {
+                    LoaiNhatKy: 3,
+                    ID_DonVi: VHeader.IdDonVi,
+                    ID_NhanVien: VHeader.IdNhanVien,
+                    ChucNang: 'Hủy phiếu điều chỉnh thẻ giá trị',
+                    NoiDung: 'Hủy phiếu điều chỉnh thẻ giá trị '.concat(self.MaDieuChinh()),
+                    NoiDungChiTiet: 'Thông tin hủy:'.concat('<br /> Mã phiếu: ', self.MaDieuChinh(),
+                        '<br /> Khách hàng: ', self.TenKhachHangNapThe(),
+                        '<br /> Giá trị điều chỉnh: ', formatNumber3Digit(self.GiaTriDieuChinh()),
+                        '<br /> Ngày điều chỉnh: ', self.NgayDieuChinh(),
+                        '<br /> User hủy phiếu: ', VHeader.UserLogin),
+                }
+                Insert_NhatKyThaoTac_1Param(diary);
+            }
+        })
+    }
     self.TrangThaiTheGiaTriChoose = ko.observable("1");
     self.showpopupNapTien = function (item) {
         vmThemMoiTheNap.showModalAddNew(1);
@@ -4832,12 +4894,26 @@
         var trangthai = self.TrangThaiTheGiaTriChoose();
         var nguoitao = $('#txtTenTaiKhoan').text();
         self.SoDuTheGiaTri(sodu);
+        let sDieuChinh = chenhlech > 0 ? 'Điều chỉnh tăng' : 'Điều chỉnh giảm';
+
         ajaxHelper(DMDoiTuongUri + 'UpdateDieuChinhSoDu?chenhlech=' + chenhlech + '&trangthai=' + trangthai + '&iddt=' + self.IDDT() + '&iddonvi=' + idDonVi + '&idnhanvien=' + idNhanVien + '&nguoitao=' + nguoitao + '&sodusaunap=' + sodu, 'GET').done(function (data) {
             if (data === "") {
                 bottomrightnotify('<i class="fa fa-check" aria-hidden="true"></i>' + 'Điều chỉnh thành công thẻ giá trị', 'success');
                 $('#modalPopup_thegiatri').modal('hide');
                 SearchNhatKySDThe();
                 SearchLichSuNapTien();
+                let diary = {
+                    ID_DonVi: VHeader.IdDonVi,
+                    ID_NhanVien: VHeader.IdNhanVien,
+                    ChucNang: 'Điều chỉnh số dư thẻ giá trị',
+                    LoaiNhatKy: 1,
+                    NoiDung: sDieuChinh,
+                    NoiDungChiTiet: 'Khách hàng: '.concat(self.TenKhachHangNapThe(),
+                        '<br /> ', sDieuChinh, ': ', formatNumber3Digit(chenhlech),
+                        '<br /> User điều chỉnh: ', VHeader.UserLogin
+                    ),
+                }
+                Insert_NhatKyThaoTac_1Param(diary);
             }
         });
     };
@@ -5305,12 +5381,12 @@
         })
     }
 
-    self.ShowPopListDiary_ofCustomer = function () {
-        if (self.IsGara) {
-            vmNKGoiBaoDuong.ID_DonVi = idDonVi;
-            vmNKGoiBaoDuong.GetGoiDichVu_ofKhachHang(self.selectIDDoiTuong(), null);
-            vmNKGoiBaoDuong.showModal(self.selectIDDoiTuong(), null, 0, 1);
-        }
+    self.ShowPopListDiary_ofCustomer = function (item) {
+        let id = item.ID;
+        vmNKGoiBaoDuong.ID_DonVi = VHeader.IdDonVi;
+        vmNKGoiBaoDuong.GetGoiDichVu_ofKhachHang(id);
+        vmThanhToanGara.GetSoDuTheGiaTri(id);
+        vmNKGoiBaoDuong.showModal(id, null, 0, 1);
     }
 
     $('#modalMoveGroup').on('hidden.bs.modal', function () {

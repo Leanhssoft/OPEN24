@@ -176,7 +176,7 @@ namespace Model
         public int? SoVuBaoHiem { get; set; } = 0;
 
         [Column(TypeName = "float")]
-        public double? KhauTruTheoVu { get; set; } = 0;
+        public double? KhauTruTheoVu { get; set; } = 0;// khách hàng chịu
 
         [Column(TypeName = "float")]
         public double? GiamTruBoiThuong { get; set; } = 0; //Chế tài
@@ -206,7 +206,7 @@ namespace Model
         public int? CongThucBaoHiem { get; set; } = 0;
 
         [Column(TypeName = "float")]
-        public double? GiamTruThanhToanBaoHiem { get; set; } = 0; //Giảm trừ thanh toán bảo hiểm sau khi tính thuế
+        public double? GiamTruThanhToanBaoHiem { get; set; } = 0; //Gara giảm trừ cho bên BH (gara chịu, khách hàng không phải chịu)
 
         [Column(TypeName = "uniqueidentifier")]
         public Guid? ID_Xe { get; set; } //Gara_DanhMucXe

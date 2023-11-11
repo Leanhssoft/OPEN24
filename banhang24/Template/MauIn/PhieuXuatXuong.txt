@@ -1,0 +1,64 @@
+﻿<table style="border-collapse: collapse; width: 100%;" border="0" cellspacing="0" cellpadding="0">
+<tbody>
+<tr style="height: 22px;">
+<td style="height: 22px; width: 90%; text-align: center;"><strong><span style="font-size: 12px;"><span style="font-family: Tahoma;"><span style="font-size: 12pt;">CỘNG H&Ograve;A X&Atilde; HỘI CHỦ NGHĨA VIỆT NAM</span><br /><span style="font-size: 10pt;">Độc lập - Tự do - Hạnh ph&uacute;c<br />-----------------------</span></span></span></strong></td>
+</tr>
+</tbody>
+</table>
+<div style="text-align: center;"><br /><strong>BI&Ecirc;N BẢN B&Agrave;N GIAO XE<br /></strong><span style="font-size: 10pt;"><em>Ng&agrave;y: {NgayXuatXuong}</em></span></div>
+<table style="width: 100%; height: 174px;" cellspacing="1" cellpadding="1">
+<thead>
+<tr style="height: 22px;">
+<th style="text-align: left; height: 22px;" colspan="2" scope="col"><strong>B&ecirc;n nhận</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr style="height: 22px;">
+<td style="width: 25%; height: 22px;"><span style="font-size: 11pt;">Đại diện b&ecirc;n giao:</span></td>
+<td style="height: 22px;"><span style="font-size: 11pt;">{TenKhachHang}</span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="width: 25%; height: 22px;"><span style="font-size: 11pt;">SĐT:</span></td>
+<td style="height: 22px;"><span style="font-size: 11pt;">{DienThoai}</span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="width: 25%; height: 22px;"><span style="font-size: 11pt;">Địa điểm giao xe:</span></td>
+<td style="height: 22px;"><span style="font-size: 11pt;">{DiaChi}</span></td>
+</tr>
+<tr>
+<td style="width: 25%;"><span style="font-size: 11pt;">Biển số xe:</span></td>
+<td><strong><span style="font-size: 11pt;">{BienSo}</span></strong></td>
+</tr>
+<tr style="height: 22px;">
+<td style="width: 25%; height: 20px;"><strong>B&ecirc;n giao</strong></td>
+<td style="height: 20px;">&nbsp;</td>
+</tr>
+<tr style="height: 22px;">
+<td style="width: 25%; height: 22px;"><span style="font-size: 11pt;">Đại diện b&ecirc;n nhận:</span></td>
+<td style="height: 22px;"><strong><span style="font-size: 11pt;">{CoVanDichVu}</span></strong></td>
+</tr>
+<tr style="height: 22px;">
+<td style="width: 25%; height: 22px;"><span style="font-size: 11pt;">SĐT:</span></td>
+<td style="height: 22px;"><span style="font-size: 11pt;">{DienThoaiChiNhanh}</span></td>
+</tr>
+<tr style="height: 22px;">
+<td style="width: 25%; height: 22px;"><span style="font-size: 11pt;">Địa chỉ:</span></td>
+<td style="height: 22px;"><span style="font-size: 11pt;">{DiaChiChiNhanh}</span></td>
+</tr>
+</tbody>
+</table>
+<p><em><span style="font-family: 'times new roman', times, serif; text-align: justify;">C&ugrave;ng nhau nghiệm thu việc sửa chữa xe &ocirc; t&ocirc; Biển số: {BienSo} với khối lượng c&ocirc;ng việc:<br /><br /></span></em><span style="font-family: 'times new roman', times, serif; text-align: justify;">1. Tr&ecirc;n cơ sở b&aacute;o gi&aacute; quyết to&aacute;n để ho&agrave;n thiện c&ocirc;ng việc sửa chữa.<br />2. Sau khi sửa chữa xong đạt y&ecirc;u cầu về kỹ thuật v&agrave; chất lượng đảm bảo cho xe xuất xưởng.<br />3. </span><span style="font-family: 'times new roman', times, serif; text-align: justify;">Bi&ecirc;n bản nghiệm thu n&agrave;y được lập th&agrave;nh 02 bản, mỗi b&ecirc;n giữ 01 bản c&oacute; gi&aacute; trị ph&aacute;p l&yacute; như nhau.</span></p>
+<div>
+<table style="border-collapse: collapse; width: 100%; height: 44px;">
+<tbody>
+<tr style="height: 22px;">
+<td style="width: 47.4453%; height: 22px; text-align: center;"><strong style="text-align: justify;">ĐẠI DIỆN B&Ecirc;N A&nbsp;</strong></td>
+<td style="width: 47.4453%; height: 22px; text-align: center;"><strong style="text-align: justify;">ĐẠI DIỆN B&Ecirc;N B</strong></td>
+</tr>
+<tr style="height: 22px;">
+<td style="width: 47.4453%; height: 22px;">&nbsp;</td>
+<td style="width: 47.4453%; height: 22px;">&nbsp;</td>
+</tr>
+</tbody>
+</table>
+</div>

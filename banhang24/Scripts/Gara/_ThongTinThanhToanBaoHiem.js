@@ -92,7 +92,7 @@
             self.PTGiamTruBoiThuong = hd.PTGiamTruBoiThuong();
             self.GiamTruBoiThuong = formatNumber3Digit(hd.GiamTruBoiThuong());
             self.BHThanhToanTruocThue = hd.BHThanhToanTruocThue();
-            self.GiamTruThanhToanBaoHiem = hd.GiamTruThanhToanBaoHiem();
+            self.GiamTruThanhToanBaoHiem = formatNumber3Digit(hd.GiamTruThanhToanBaoHiem());
             self.PhaiThanhToanBaoHiem = hd.PhaiThanhToanBaoHiem();
             self.TongGiaTriSauThue = hd.BHThanhToanTruocThue() + hd.TongTienThueBaoHiem();
 
@@ -193,6 +193,9 @@
         Caculator: function () {
             var self = this;
             var tongBHduyet = formatNumberToFloat(self.TongTienBHDuyet);
+            var giamtruBH = formatNumberToFloat(self.GiamTruThanhToanBaoHiem);
+            let tongBH_sauGiamTru= tongBHduyet -giamtruBH;
+
             var chetai = formatNumberToFloat(self.GiamTruBoiThuong);
             var khautru = formatNumberToFloat(self.KhauTruTheoVu);
             var thueBH = formatNumberToFloat(self.TongTienThueBaoHiem);
@@ -202,10 +205,10 @@
                     switch (parseInt(self.RdoCheTai)) {
                         case 3:// KhauTru truoc VAT, CheTai truoc KhauTru, CheTai truoc VAT
                             if (self.isPtramGiamTru) {
-                                chetai = tongBHduyet * self.PTGiamTruBoiThuong / 100;
+                                chetai = tongBH_sauGiamTru * self.PTGiamTruBoiThuong / 100;
                                 self.GiamTruBoiThuong = formatNumber3Digit(chetai);
                             }
-                            self.BHThanhToanTruocThue = tongBHduyet - chetai - khautru;
+                            self.BHThanhToanTruocThue = tongBH_sauGiamTru - chetai - khautru;
                             if (self.PTThueBaoHiem > 0) {
                                 thueBH = self.PTThueBaoHiem * self.BHThanhToanTruocThue / 100;
                                 self.TongTienThueBaoHiem = formatNumber3Digit(thueBH);
@@ -216,7 +219,7 @@
                         case 4: // 14. KhauTru truoc VAT, CheTai truoc KhauTru, CheTai sau VAT 
                             break;
                         case 5: // KhauTru truoc VAT, CheTai truoc VAT, CheTai sau KhauTru (da tru khautru),
-                            var gtritinhKhauTru = tongBHduyet - khautru;
+                            var gtritinhKhauTru = tongBH_sauGiamTru - khautru;
                             if (self.PTGiamTruBoiThuong > 0) {
                                 chetai = self.PTGiamTruBoiThuong * gtritinhKhauTru / 100;
                                 self.GiamTruBoiThuong = formatNumber3Digit(chetai);
@@ -230,7 +233,7 @@
                             self.TongGiaTriSauThue = self.PhaiThanhToanBaoHiem;
                             break;
                         case 6: // KhauTru truoc VAT, CheTai sau VAT, CheTai sau KhauTru,
-                            self.BHThanhToanTruocThue = tongBHduyet - khautru;
+                            self.BHThanhToanTruocThue = tongBH_sauGiamTru - khautru;
                             if (self.PTThueBaoHiem > 0) {
                                 thueBH = self.PTThueBaoHiem * self.BHThanhToanTruocThue / 100;
                                 self.TongTienThueBaoHiem = formatNumber3Digit(thueBH);
@@ -249,10 +252,10 @@
                     switch (parseInt(self.RdoCheTai)) {
                         case 3: // KhauTru sau VAT,  CheTai truoc VAT, CheTai truoc KhauTru (chua tru khautru)
                             if (self.PTGiamTruBoiThuong > 0) {
-                                chetai = tongBHduyet * self.PTGiamTruBoiThuong / 100;
+                                chetai = tongBH_sauGiamTru * self.PTGiamTruBoiThuong / 100;
                                 self.GiamTruBoiThuong = formatNumber3Digit(chetai);
                             }
-                            self.BHThanhToanTruocThue = tongBHduyet - chetai;
+                            self.BHThanhToanTruocThue = tongBH_sauGiamTru - chetai;
                             if (self.PTThueBaoHiem > 0) {
                                 thueBH = self.PTThueBaoHiem * self.BHThanhToanTruocThue / 100;
                                 self.TongTienThueBaoHiem = formatNumber3Digit(thueBH);
@@ -261,12 +264,12 @@
                             self.PhaiThanhToanBaoHiem = self.TongGiaTriSauThue - khautru;
                             break;
                         case 4:// KhauTru sau VAT, CheTai sau VAT, CheTai truoc KhauTru,
-                            self.BHThanhToanTruocThue = tongBHduyet;
+                            self.BHThanhToanTruocThue = tongBH_sauGiamTru;
                             if (self.PTThueBaoHiem > 0) {
-                                thueBH = self.PTThueBaoHiem * tongBHduyet / 100;
+                                thueBH = self.PTThueBaoHiem * tongBH_sauGiamTru / 100;
                                 self.TongTienThueBaoHiem = formatNumber3Digit(thueBH);
                             }
-                            var tongsauVAT = tongBHduyet + thueBH;
+                            var tongsauVAT = tongBH_sauGiamTru + thueBH;
                             self.TongGiaTriSauThue = tongsauVAT;
                             if (self.PTGiamTruBoiThuong > 0) {
                                 chetai = tongsauVAT * self.PTGiamTruBoiThuong / 100;
@@ -277,12 +280,12 @@
                         case 5:// khong xayra
                             break;
                         case 6:// KhauTru sau VAT, CheTai sau VAT, CheTai sau KhauTru
-                            self.BHThanhToanTruocThue = tongBHduyet;
+                            self.BHThanhToanTruocThue = tongBH_sauGiamTru;
                             if (self.PTThueBaoHiem > 0) {
-                                thueBH = self.PTThueBaoHiem * tongBHduyet / 100;
+                                thueBH = self.PTThueBaoHiem * tongBH_sauGiamTru / 100;
                                 self.TongTienThueBaoHiem = formatNumber3Digit(thueBH);
                             }
-                            var tongsauVAT = tongBHduyet + thueBH;
+                            var tongsauVAT = tongBH_sauGiamTru + thueBH;
                             self.TongGiaTriSauThue = tongsauVAT;
                             var gtritinhKhauTru = tongsauVAT - khautru;
                             if (self.PTGiamTruBoiThuong > 0) {
@@ -300,6 +303,13 @@
             var self = this;
             var $this = $(event.currentTarget);
             self.TongTienBHDuyet = formatNumber3Digit($this.val());
+            self.Caculator();
+        },
+
+         editGiamTruBaoHiem: function () {
+            var self = this;
+            var $this = $(event.currentTarget);
+            self.GiamTruThanhToanBaoHiem = formatNumber3Digit($this.val());
             self.Caculator();
         },
 

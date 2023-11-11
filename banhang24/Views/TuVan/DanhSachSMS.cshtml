@@ -11,6 +11,7 @@
         border: none !important;
     }
 </style>
+
 <div class="op-container">
     <div class="container-fluid nopadding">
         <div class="col-left">
@@ -22,27 +23,31 @@
                         </h3>
                         <aside class="op-filter-container">
                             <ul class="chose_kieubang ul-radius">
-                                <li value="1" class="active">
+                                <li value="0" class="active">
                                     <a href="#smsdagui" data-toggle="tab" class="box-tab">
-                                        <input type="radio" name="kieubang1" value="1">
+                                        <input type="radio" name="kieubang1" value="0"
+                                               data-bind="checked: $root.SMS_LoaiBaoCao()">
                                         <label>Tin nhắn đã gửi</label>
                                     </a>
                                 </li>
                                 <li value="2">
                                     <a href="#smsgiaodich" data-toggle="tab">
-                                        <input type="radio" name="kieubang1" value="2">
+                                        <input type="radio" name="kieubang1" value="2"
+                                               data-bind="checked: $root.SMS_LoaiBaoCao()">
                                         <label>Danh sách giao dịch</label>
                                     </a>
                                 </li>
-                                <li value="3">
+                                <li value="1">
                                     <a href="#smssinhnhat" data-toggle="tab">
-                                        <input type="radio" name="kieubang1" value="3">
+                                        <input type="radio" name="kieubang1" value="1"
+                                               data-bind="checked: $root.SMS_LoaiBaoCao()">
                                         <label>Danh sách KH sinh nhật</label>
                                     </a>
                                 </li>
-                                <li value="4">
+                                <li value="3">
                                     <a href="#smslichhen" data-toggle="tab">
-                                        <input type="radio" name="kieubang1" value="4">
+                                        <input type="radio" name="kieubang1" value="3"
+                                               data-bind="checked: $root.SMS_LoaiBaoCao()">
                                         <label>Danh sách KH có lịch hẹn</label>
                                     </a>
                                 </li>
@@ -276,19 +281,21 @@
         <div class="col-right">
             <div class="op-header">
                 <div class="op-header-title" >
-                    <h2 class="pull-left title">@banhang24.Resources.ResourceTexts.Partner / Danh sách sms</h2>
+                    <h2 class="pull-left title" data-bind="text: $root.reportName()"></h2>
                 </div>
-                <div class="op-header-button">
-                    <div class=" header-button-left">
-                        <button class="btn btn-main btn-send-sms btn-main  txtCongViecThemMoi" name="btnExport" data-bind="click: $root.showpopupSMS" style=" background-color:var(--color-main)">
-                            <i class="fa fa-paper-plane-o" aria-hidden="true"></i>Thêm mới
-                        </button>
-                        <button class="btn-link shownhapxuat pull-right" id="shownhapxuat" title="Chức năng nhập xuất" style="width:30px;">
-                            <i class="material-icons"> more_vert</i>
-                        </button>
-                        <div class="btn-dropdown pull-right" id="selected-column">
-                                <button type="button" class="btn btn-main dropdown-toggle" onclick="showCollumnFilter(this)"  id="loccotSMS" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                     <i class="fa fa-angle-double-down"></i>
+                <div class="flex flex-between">
+
+                    <div class="op-header-button">
+                        <div class=" header-button-left">
+                            <button class="btn btn-main btn-send-sms btn-main  txtCongViecThemMoi" name="btnExport" data-bind="click: $root.showpopupSMS" style=" background-color:var(--color-main)">
+                                <i class="fa fa-paper-plane-o" aria-hidden="true"></i>Thêm mới
+                            </button>
+                            <button class="btn-link shownhapxuat pull-right" id="shownhapxuat" title="Chức năng nhập xuất" style="width:30px;">
+                                <i class="material-icons"> more_vert</i>
+                            </button>
+                            <div class="btn-dropdown pull-right" id="selected-column">
+                                <button type="button" class="btn btn-main dropdown-toggle" onclick="showCollumnFilter(this)" id="loccotSMS" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-angle-double-down"></i>
                                 </button>
                                 <div class="dropdown-list" style="display: none;right:0">
                                     <ul>
@@ -319,35 +326,43 @@
                                         </li>
                                     </ul>
                                 </div>
-                        </div>
-                    </div>
-                    <div class="btn-group operation" id="divThaoTac">
-                        <div class=" choose-commodity">
-                            <button type="button" class="btn btn-main no-magrin"  data-bind="click: showpopupSMS_Many">
-                                <i class="fa fa-paper-plane-o"></i><font>Gửi nhiều khách</font> 
-                            </button>
-                            <div style="display: inline-block;padding: 5px 0;">
-                                Có&nbsp;
-                                <span>
-                                    <a href="javascript:void(0)"
-                                       data-bind="click:">
-                                        <span id="count"></span>&nbsp;
-                                        <span data-bind="text: TypeSMS()===1?'khách hàng':'lịch hẹn'"></span>
-                                    </a>
-                                </span>được chọn <span onclick="RemoveAllCheck()">
-                                    <a href="javascript:void(0)">
-                                        &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-times icon-del">
-                                        </i>Bỏ chọn tất cả
-                                    </a>
-                                </span>
                             </div>
                         </div>
+                        <div class="btn-group operation" id="divThaoTac">
+                            <div class=" choose-commodity">
+                                <button type="button" class="btn btn-main no-magrin" data-bind="click: showpopupSMS_Many">
+                                    <i class="fa fa-paper-plane-o"></i><font>Gửi nhiều khách</font>
+                                </button>
+                                <div style="display: inline-block;padding: 5px 0;">
+                                    Có&nbsp;
+                                    <span>
+                                        <a href="javascript:void(0)"
+                                           data-bind="click:">
+                                            <span id="count"></span>&nbsp;
+                                            <span data-bind="text: TypeSMS()===1?'khách hàng':'lịch hẹn'"></span>
+                                        </a>
+                                    </span>được chọn <span onclick="RemoveAllCheck()">
+                                        <a href="javascript:void(0)">
+                                            &nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-times icon-del">
+                                            </i>Bỏ chọn tất cả
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                       
                     </div>
-                    <div class="col-md-5 nopadding pull-right input-search-filter" style="display:none">
-                        <button type="button" class=" btn-search-icon">
-                            <i class="fa fa-search"></i>
-                        </button>
-                        <input type="text" class="form-control" placeholder="Theo mã, tên hàng" id="txtFilterTinNhan">
+                    <div class="flex ">
+                        <div class="op-search">
+                            <input type="text" class="form-control"
+                                   style="min-width:400px"
+                                   placeholder="Theo mã, tên, điện thoại" 
+                                   data-bind="value: $root.textSearch, event: {keyup: $root.SearchList}" autocomplete="off">
+                            <button type="button" class=" op-search-button" data-bind="click: $root.Click_IconSearch">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -477,6 +492,7 @@
                                             <th>Mã giao dịch</th>
                                             <th>Loại giao dịch</th>
                                             <th>Ngày lập hóa đơn</th>
+                                            <th>Trạng thái</th>
                                         </tr>
                                     </thead>
                                     <tbody data-bind="foreach: ListKhachHangGD">
@@ -490,6 +506,8 @@
                                             <td data-bind="text: MaHoaDon"></td>
                                             <td data-bind="text: LoaiGiaoDich"></td>
                                             <td data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></td>
+                                            <td data-bind="text: STrangThai">
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -529,6 +547,7 @@
                                             <th>Tên khách hàng</th>
                                             <th>Điện thoại</th>
                                             <th>Ngày sinh</th>
+                                            <th>Trạng thái</th>
                                         </tr>
                                     </thead>
                                     <tbody data-bind="foreach: ListKhachHangSinhNhat">
@@ -543,6 +562,8 @@
                                                 <a style="cursor: pointer" data-bind="text: DienThoai, click: $parent.showpopupGuiTinSN">11042019KH02</a>
                                             </td>
                                             <td data-bind="text: moment(NgaySinh_NgayTLap).format('DD/MM/YYYY')!='Invalid date'? moment(NgaySinh_NgayTLap).format('DD/MM/YYYY'):''"></td>
+                                            <td data-bind="text: STrangThai">
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -864,7 +885,7 @@
                                     <ul data-bind="foreach: SMSMaus" id="ChooseMauTin">
                                         <li data-bind="click: $root.selectedMauTin, attr:{id: ID}">
                                             <a href="javascript:void(0)">
-                                                <span data-bind="text: NoiDungTin"></span>
+                                                <span data-bind="text: NoiDungTin.length > 100 ? NoiDungTin.substr(0, 100) + '...' : NoiDungTin"></span>
                                             </a>
                                         </li>
                                     </ul>
@@ -875,7 +896,7 @@
                     <div class="form-group floatleft">
                         <label>Nội dung</label>
                         <div class="form-news">
-                            <textarea type="text" rows="4" id="txtNoiDungTin"></textarea>
+                            <textarea type="text" rows="4" id="txtNoiDungTin" maxlength="612"></textarea>
                             <span id="remaining"></span><span id="messages"></span>
                         </div>
                     </div>
@@ -900,7 +921,7 @@
 @*end model*@
 @*start popup gửi tin sdt*@
 <div class="modal fade in" id="exampleModalSDT" tabindex="-1"  aria-labelledby="exampleModalLabel" aria-hidden="false">
-    <div class="modal-dialog draggable modal-sm">
+    <div class="modal-dialog draggable modal-lg">
         <div class="modal-content ">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
@@ -972,7 +993,7 @@
                     <div class="form-group floatleft">
                         <label>Nội dung</label>
                         <div class="form-news">
-                            <textarea type="text" rows="4" id="txtNoiDungTinSDT"></textarea>
+                            <textarea type="text" rows="4" id="txtNoiDungTinSDT" maxlength="612"></textarea>
                             <span id="remainingSDT"></span><span id="messages"></span>
                         </div>
                     </div>
@@ -1088,8 +1109,8 @@
     var heigth = 0;
     var heightold = 0;
     var setTop = 0;
-    $('#table-reponsive').on('click', '.prev-tr-hide', function () {
-        setTop = $('#table-reponsive thead').height() + parseInt($(this).height() * ($(this).index() / 2));
+    $('#table-congviec').on('click', '.prev-tr-hide', function () {
+        setTop = $('#table-congviec thead').height() + parseInt($(this).height() * ($(this).index() / 2));
         $(this).parents(".table-reponsive").toggleClass("table_re");
         $(".prev-tr-hide td").not($(this).find("td")).removeClass("bor");
         $("td").not($(this).find("td")).removeClass("bg-gray");
@@ -1117,15 +1138,18 @@
     });
     var $remaining = $('#remaining'),
         $messages = $remaining.next();
-    var numtext = 160;
+    var arrMessCount = [160, 306, 459, 612];
+    var numtext = 0;
     $('#txtNoiDungTin').keyup(function () {
         //!(/^[A-z&#209;&#241;!-9-\s]*$/i).test(this.value) ? this.value = this.value.replace(/[^A-z&#209;&#241;!-9-\s]/ig, '') : null;
-        var chars = this.value.length,
-            messages = Math.ceil(chars / numtext),
-            remaining = messages > 1 ? (messages - 1) * numtext + (chars % ((messages - 1) * numtext) || (messages - 1) * numtext) : (messages - 1) * numtext + (chars % (messages * numtext) || messages * numtext);
-        var totalmes = messages * numtext;
+        this.value = commonStatisJs.removeVietnameseTones(this.value);
+        var chars = this.value.length;
+            //messages = Math.ceil(chars / numtext),
+            //remaining = messages > 1 ? (messages - 1) * numtext + (chars % ((messages - 1) * numtext) || (messages - 1) * numtext) : (messages - 1) * numtext + (chars % (messages * numtext) || messages * numtext);
+        var totalmes = arrMessCount.filter(p => p >= chars).length > 0 ? arrMessCount.filter(p => p >= chars)[0] : arrMessCount[3],
+            messages = (arrMessCount.length - arrMessCount.filter(p => p >= totalmes).length) + 1;
         if (messages !== 0) {
-            $remaining.text(remaining + '/' + totalmes);
+            $remaining.text(chars + '/' + totalmes);
             $messages.text(' (' + messages + ' tin nhắn)');
         }
         else {
@@ -1137,13 +1161,16 @@
         $messagesSDT = $remainingSDT.next();
     
     $('#txtNoiDungTinSDT').keyup(function () {
-        !(/^[A-z&#209;&#241;!-9-\s]*$/i).test(this.value) ? this.value = this.value.replace(/[^A-z&#209;&#241;!-9-\s]/ig, '') : null;
-        var chars = this.value.length,
-            messages = Math.ceil(chars / numtext),
-            remaining = messages > 1 ? (messages - 1) * numtext + (chars % ((messages - 1) * numtext) || (messages - 1) * numtext) : (messages - 1) * numtext + (chars % (messages * numtext) || messages * numtext);
-        var totalmes = messages * numtext;
+        //!(/^[A-z&#209;&#241;!-9-\s]*$/i).test(this.value) ? this.value = this.value.replace(/[^A-z&#209;&#241;!-9-\s]/ig, '') : null;
+        this.value = commonStatisJs.removeVietnameseTones(this.value);
+        var chars = this.value.length;
+        //    messages = Math.ceil(chars / numtext),
+        //    remaining = messages > 1 ? (messages - 1) * numtext + (chars % ((messages - 1) * numtext) || (messages - 1) * numtext) : (messages - 1) * numtext + (chars % (messages * numtext) || messages * numtext);
+        //var totalmes = messages * numtext;
+        var totalmes = arrMessCount.filter(p => p >= chars).length > 0 ? arrMessCount.filter(p => p >= chars)[0] : arrMessCount[3],
+            messages = (arrMessCount.length - arrMessCount.filter(p => p >= totalmes).length) + 1;
         if (messages !== 0) {
-            $remainingSDT.text(remaining + '/' + totalmes);
+            $remainingSDT.text(chars + '/' + totalmes);
             $messagesSDT.text(' (' + messages + ' tin nhắn)');
         }
         else {

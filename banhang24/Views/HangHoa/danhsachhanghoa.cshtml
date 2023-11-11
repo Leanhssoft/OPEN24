@@ -16,7 +16,7 @@
         }
         if ($.inArray('HangHoa_Import', lc_CTQuyen) > -1 && $.inArray('HangHoa_ThemMoi', lc_CTQuyen) > -1 && $.inArray('HangHoa_CapNhat', lc_CTQuyen) > -1) {
             $('.btnImport').show();
-        } modalViTriKho
+        }
         $(".dshh1 a").click(function () {
             $('#txtTenHangHoa1').focus();
         });
@@ -35,6 +35,7 @@
     jqauto-car ._jsInput {
         font-weight: 600 !important;
     }
+
     .bx-viewport {
         overflow-x: scroll;
         overflow-y: hidden;
@@ -213,15 +214,12 @@
                                     </ul>
                                 </li>
                             </ul>
-                            @*<div class="close-goods">
-                                    <a class="add-goods" href="javascript:void(0)"><em>Xem thêm </em><i class="fa fa-caret-down "></i></a>
-                                    <a class="c-goods" href="javascript:void(0)"><em>Thu gọn</em> <i class="fa fa-caret-up "></i></a>
-                                </div>*@
+
                         </aside>
                     </article>
                     <article class="boxLeft">
                         <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
-                            <img src="~/Content/images/icon/Iconbanhanggg-03.png" /> Loại hàng
+                            <i class="fas fa-project-diagram"></i> Loại hàng
                         </h3>
                         <aside class="op-filter-container">
                             <div class="menuCheckbox">
@@ -239,6 +237,49 @@
                             </div>
                         </aside>
                     </article>
+                    <article class="boxLeft" data-bind="visible: $root.ArrViTriHH().length > 0">
+                        <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
+                            <i class="fa fa-location"></i>    Vị trí kho
+                        </h3>
+                        <button title="Thêm vị trí" class="op-filter-add"
+                                data-bind="click: $root.showPopupAddViTri">
+                            <i class="fa fa-plus" style="font-size:15px"></i>
+                        </button>
+                        <aside class="op-filter-container">
+                            <div class="outselect">
+                                <div class=" choose-person floatleft " data-toggle="dropdown" aria-expanded="false">
+                                    <ul data-bind="foreach: arrViTriChosed">
+                                        <li class="li-input-span" style="width:100%!important">
+                                            <span style="width:70%" data-bind="text: TenViTri">
+                                            </span>&nbsp;
+                                            <div class="pull-right">
+                                                <span style="width:40px"
+                                                      data-bind="click: $root.menuleft_EditViTri">
+                                                    <i class="fa fa-edit"></i>
+                                                </span>
+                                                <span style="width:40px" data-bind="click: $root.menuleft_CloseViTri">
+                                                    <i class="fa fa-close"></i>
+                                                </span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <!--ko if: $root.arrViTriChosed().length == 0-->
+                                    <input type="text" class="dropdown form-control" placeholder="Chọn vị trí"
+                                           data-bind="value: $root.menuleft_txtViTri, valueUpdate:'afterkeydown'"
+                                           autocomplete="off">
+                                    <!--/ko-->
+                                </div>
+                                <div class="selec-person dropdown-menu">
+                                    <ul data-bind="foreach: menuleft_ArrViTri">
+                                        <li data-bind="text: TenViTri, event:{click: $parent.menuleft_ChoseViTri}">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </aside>
+
+                    </article>
+
                     <article class="boxLeft" data-bind="visible: $root.arrThuocTinh().length > 0">
                         <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
                             <i class="fa fa-list"></i>     Thuộc tính
@@ -272,11 +313,9 @@
                                 </li>
                             </ul>
                         </aside>
-                        @*<div class="close-goods">
-                                <a class="add-goods" href="javascript:void(0)"><em>Xem thêm </em><i class="fa fa-caret-down "></i></a>
-                                <a class="c-goods" href="javascript:void(0)"><em>Thu gọn</em> <i class="fa fa-caret-up "></i></a>
-                            </div>*@
+
                     </article>
+
                     <article class="boxLeft">
                         <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
                             <img src="~/Content/images/icon/Iconbanhanggg-04.png" />       Tồn kho
@@ -296,9 +335,7 @@
                                     <li>
                                         <label><input type="radio" name="rdTonKho" data-bind="checked: Loc_TonKho, checkedvalue: true" value="1" /> Còn hàng trong kho</label>
                                     </li>
-                                    <li>
-                                        <label><input type="radio" name="rdTonKho" data-bind="checked: Loc_TonKho, checkedvalue: true" value="2" /> Hết hàng trong kho</label>
-                                    </li>
+
                                     <li>
                                         <label><input type="radio" name="rdTonKho" data-bind="checked: Loc_TonKho" value="5" /> Hàng âm kho</label>
                                     </li>
@@ -422,52 +459,100 @@
                                     <ul>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbmahang" checked="checked" value="0" /><span></span>Mã hàng hóa</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbmahang"
+                                                           checked="checked"
+                                                           value="0" /><span></span>Mã hàng hóa
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox cbtenhang" id="cbtenhang" checked="checked" value="1" /><span></span>Tên hàng</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox cbtenhang" id="cbtenhang"
+                                                           checked="checked"
+                                                           value="1" /><span></span>Tên hàng
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox cbdvt" id="cbdvt" checked="checked" value="2" /><span></span>Đvt</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox cbdvt" id="cbdvt"
+                                                           checked="checked"
+                                                           value="2" /><span></span>Đvt
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbnhomhang" checked="checked" value="3" /><span></span>Nhóm hàng</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox cbTenViTri"
+                                                           checked="checked"
+                                                           id="cbTenViTri" value="3" /><span></span>Vị trí kho
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbloaihang" checked="checked" value="4" /><span></span>Loại hàng</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbnhomhang"
+                                                           checked="checked"
+                                                           value="4" /><span></span>Nhóm hàng
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbgiaban" checked="checked" value="5" /><span></span>Giá bán</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbloaihang"
+                                                           checked="checked"
+                                                           value="5" /><span></span>Loại hàng
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbgiavon" checked="checked" value="6" /><span></span>Giá vốn</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbgiaban"
+                                                           checked="checked"
+                                                           value="6" /><span></span>Giá bán
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbtonkho" checked="checked" value="7" /><span></span>Tồn kho</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbgiavon"
+                                                           checked="checked"
+                                                           value="7" /><span></span>Giá vốn
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbghichu" checked="checked" value="8" /><span></span>Ghi chú</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbtonkho"
+                                                           checked="checked"
+                                                           value="8" /><span></span>Tồn kho
+                                                </label>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" id="cbtrangthai" checked="checked" value="9" /><span></span>Trạng thái</label>
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbghichu"
+                                                           value="9" /><span></span>Ghi chú
+                                                </label>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" class="checkbox" id="cbtrangthai"
+                                                           checked="checked"
+                                                           value="10" /><span></span>Trạng thái
+                                                </label>
                                             </div>
                                         </li>
                                     </ul>
@@ -507,7 +592,7 @@
                             <!--ko if: $root.role_UpdateProduct()-->
                             <li id="chokinhdoanh">
                                 <a href="#" data-toggle="modal" data-target="#modalpopup_ChoKinhDoanh">
-                                    <i class="fa fa-lock"></i> Cho phép kinh doanh
+                                    <i class="fas fa-unlock"></i> Cho phép kinh doanh
                                 </a>
                             </li>
                             <li id="ngungkinhdoanh">
@@ -519,7 +604,7 @@
                             <!--ko if: $root.role_DeleteProduct()-->
                             <li class="xoaHH" style="display:none">
                                 <a href="#" data-toggle="modal" data-target="#modalpopup_deleteTTHH">
-                                    <i class="fa fa-sign-out"></i> Xóa hàng hóa
+                                    <i class="fas fa-trash"></i> Xóa hàng hóa
                                 </a>
                             </li>
                             <!--/ko-->
@@ -537,6 +622,11 @@
                 <div class="Content-add-dich-vu" id="modalPopuplg_DVNew" style="max-height: calc(100vh - 150px);overflow: auto;" hidden>
                     @Html.Partial("_themmoidichvuPatial")
                 </div>
+                <style>
+                    #danhsachhanghoa .width-number {
+                        width: 5% !important;
+                    }
+                </style>
                 <div class="Content-table-hang-hoa" id="danhsachhanghoa">
                     <div class="table-reponsive table-HH banghh table-frame" id="table-reponsive">
                         <table class=" table-hover" id="myTable">
@@ -545,12 +635,12 @@
                                     <th class="check-group check-group-main" data-type="number">
                                         <input class="checkboxsetHH" type="checkbox" onclick="SetCheckAllHH(this)" />
                                     </th>
-                                    <!--ko if: ColumnsExcel().indexOf('0') < 0-->
+                                    <!--ko if: ColumnsExcel().indexOf('0') != 0-->
                                     <th class="mahang" id="txtMaHang">
                                         <a href="javascript:void(0)" style="color: black; text-decoration:none">Mã hàng hóa</a>
                                     </th>
                                     <!--/ko-->
-                                    <!--ko if: ColumnsExcel().indexOf('1') < 0-->
+                                    <!--ko if: ColumnsExcel().indexOf('1') < 0 -->
                                     <th class="tenhang" id="txttenhang" data-bind="style: { display: ColumnsExcel().indexOf('1') > -1 ? 'none' : 'table-cell' }">
                                         <a href="javascript:void(0)" style="color: black; text-decoration:none">Tên hàng</a>
                                     </th>
@@ -560,38 +650,43 @@
                                         <a href="javascript:void(0)" style="color: black; text-decoration:none">Đvt</a>
                                     </th>
                                     <!--/ko-->
-                                    <!--ko if: ColumnsExcel().indexOf('3') < 0-->
-                                    <th class="nhomhang" id="txtnhomhang" data-bind="style: { display: ColumnsExcel().indexOf('3') > -1 ? 'none' : 'table-cell' }">
-                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Nhóm hàng</a>
+                                    <!--ko if: ColumnsExcel().indexOf('3') < 0 -->
+                                    <th class="vitrikho" id="txtTenViTri">
+                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Vị trí kho</a>
                                     </th>
                                     <!--/ko-->
                                     <!--ko if: ColumnsExcel().indexOf('4') < 0-->
-                                    <th class="loaihang" id="txtloaiHang" data-bind="style: { display: ColumnsExcel().indexOf('4') > -1 ? 'none' : 'table-cell' }">
-                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Loại hàng</a>
+                                    <th class="nhomhang" id="txtnhomhang" data-bind="style: { display: ColumnsExcel().indexOf('4') > -1 ? 'none' : 'table-cell' }">
+                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Nhóm hàng</a>
                                     </th>
                                     <!--/ko-->
                                     <!--ko if: ColumnsExcel().indexOf('5') < 0-->
-                                    <th class="giaban op-number" id="txtgiaban" data-bind="style: { display: ColumnsExcel().indexOf('5') > -1 ? 'none' : 'table-cell' }">
-                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Giá bán</a>
+                                    <th class="loaihang" id="txtloaiHang" data-bind="style: { display: ColumnsExcel().indexOf('5') > -1 ? 'none' : 'table-cell' }">
+                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Loại hàng</a>
                                     </th>
                                     <!--/ko-->
                                     <!--ko if: ColumnsExcel().indexOf('6') < 0-->
-                                    <th class="giavon text-right" id="txtgiavon" data-bind="style: { display: ColumnsExcel().indexOf('6') > -1 ? 'none' : 'table-cell' }">
-                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Giá vốn</a>
+                                    <th class="giaban op-number" id="txtgiaban" data-bind="style: { display: ColumnsExcel().indexOf('6') > -1 ? 'none' : 'table-cell' }">
+                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Giá bán</a>
                                     </th>
                                     <!--/ko-->
                                     <!--ko if: ColumnsExcel().indexOf('7') < 0-->
-                                    <th class="tonkho text-right" id="txttonkho" data-bind="style: { display: ColumnsExcel().indexOf('7') > -1 ? 'none' : 'table-cell' }">
-                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Tồn kho</a>
+                                    <th class="giavon text-right" id="txtgiavon" data-bind="style: { display: ColumnsExcel().indexOf('7') > -1 ? 'none' : 'table-cell' }">
+                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Giá vốn</a>
                                     </th>
                                     <!--/ko-->
                                     <!--ko if: ColumnsExcel().indexOf('8') < 0-->
-                                    <th class="ghichu" id="txtghichu" data-bind="style: { display: ColumnsExcel().indexOf('8') > -1 ? 'none' : 'table-cell' }">
-                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Ghi chú</a>
+                                    <th class="tonkho text-right" id="txttonkho" data-bind="style: { display: ColumnsExcel().indexOf('8') > -1 ? 'none' : 'table-cell' }">
+                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Tồn kho</a>
                                     </th>
                                     <!--/ko-->
                                     <!--ko if: ColumnsExcel().indexOf('9') < 0-->
-                                    <th class="trangthai" id="txttrangthai" data-bind="style: { display: ColumnsExcel().indexOf('9') > -1 ? 'none' : 'table-cell' }">
+                                    <th class="ghichu" id="txtghichu" data-bind="style: { display: ColumnsExcel().indexOf('9') > -1 ? 'none' : 'table-cell' }">
+                                        <a href="javascript:void(0)" style="color: black; text-decoration:none">Ghi chú</a>
+                                    </th>
+                                    <!--/ko-->
+                                    <!--ko if: ColumnsExcel().indexOf('10') < 0-->
+                                    <th class="trangthai" id="txttrangthai" data-bind="style: { display: ColumnsExcel().indexOf('10') > -1 ? 'none' : 'table-cell' }">
                                         <a href="javascript:void(0)" style="color: black; text-decoration:none">Trạng thái</a>
                                     </th>
                                     <!--/ko-->
@@ -612,7 +707,7 @@
                                             var keytrangthai = (int)GridHellper.ColumnHangHoa.trangthai;
                                         }
                                     </td>
-                                    <!--ko if: ColumnsExcel().indexOf('0') < 0-->
+                                    <!--ko if: ColumnsExcel().indexOf('0') != 0-->
                                     <td class="mahang">
                                         <input type="text" class="form-control search-grid" data-id="@keymahang">
                                     </td>
@@ -623,14 +718,19 @@
                                     </td>
                                     <!--/ko-->
                                     <!--ko if: ColumnsExcel().indexOf('2') < 0-->
-                                    <td class="donvitinh"></td>
+                                    <td></td>
                                     <!--/ko-->
                                     <!--ko if: ColumnsExcel().indexOf('3') < 0-->
-                                    <td class="nhomhang">
-                                        <input type="text" class="form-control search-grid" data-id="@keynhomhang">
-                                    </td>
+                                    <td class="vitrikho"></td>
                                     <!--/ko-->
                                     <!--ko if: ColumnsExcel().indexOf('4') < 0-->
+                                    <td class="nhomhang">
+                                        <select data-id="@keynhomhang" class="form-control" data-bind="options: NhomHangHoas,
+                                                optionsText: 'TenNhomHangHoa', optionsValue: 'ID', optionsCaption: 'Chọn',
+                                                value: $root.header_filterNhomHang"></select>
+                                    </td>
+                                    <!--/ko-->
+                                    <!--ko if: ColumnsExcel().indexOf('5') < 0-->
                                     <td class="loaihang">
                                         <select class="form-control" id="exampleFormControlSelect2" data-id="@keyloaihang">
                                             <option value="0">Tất cả</option>
@@ -640,7 +740,7 @@
                                         </select>
                                     </td>
                                     <!--/ko-->
-                                    <!--ko if: ColumnsExcel().indexOf('5') < 0-->
+                                    <!--ko if: ColumnsExcel().indexOf('6') < 0-->
                                     <td class="giaban">
                                         <div class="col-md-3">
                                             <div class="inport-kv fl kv1">
@@ -657,7 +757,7 @@
                                         </div>
                                     </td>
                                     <!--/ko-->
-                                    <!--ko if: ColumnsExcel().indexOf('6') < 0-->
+                                    <!--ko if: ColumnsExcel().indexOf('7') < 0-->
                                     <td class="giavon">
                                         <div class="col-md-3">
                                             <div class="inport-kv fl kv1">
@@ -674,7 +774,7 @@
                                         </div>
                                     </td>
                                     <!--/ko-->
-                                    <!--ko if: ColumnsExcel().indexOf('7') < 0-->
+                                    <!--ko if: ColumnsExcel().indexOf('8') < 0-->
                                     <td class="tonkho">
                                         <div class="col-md-3">
                                             <div class="inport-kv fl kv1">
@@ -691,43 +791,38 @@
                                         </div>
                                     </td>
                                     <!--/ko-->
-                                    <!--ko if: ColumnsExcel().indexOf('8') < 0-->
+                                    <!--ko if: ColumnsExcel().indexOf('9') < 0-->
                                     <td class="ghichu"></td>
                                     <!--/ko-->
-                                    <!--ko if: ColumnsExcel().indexOf('9') < 0-->
+                                    <!--ko if: ColumnsExcel().indexOf('10') < 0-->
                                     <td class="trangthai">
                                         <select class="form-control" id="exampleFormControlSelect1" data-id="@keytrangthai">
-                                            <option value=""></option>
+                                            <option value="">Tất cả</option>
                                             <option value="true">Đang kinh doanh</option>
                                             <option value='false'>Ngừng kinh doanh</option>
                                         </select>
                                     </td>
                                     <!--/ko-->
                                 </tr>
-                                <!--ko foreach: HangHoas -->
+
+
+                                <!--ko foreach: {data: HangHoas, as: 'itemHH'}  -->
                                 <tr class="prev-tr-hide" data-bind="css:{bggray : $index()%2 == 1}, attr:{id: ID_HangHoaCungLoai}">
                                     <td class="check-group hideCheck chacungloai">
-                                        <!-- ko if: ListChildren.length === 1-->
-                                        <input id="inputGetIDHH" type="checkbox" data-bind="attr:{id: ID_DonViQuiDoi}" onclick="getIDHHConCungLoai(this)" />
-                                        <!--/ko-->
-                                        <!-- ko if: ListChildren.length > 1-->
                                         <input id="inputGetIDHH" type="checkbox" data-bind="attr:{id: ID_DonViQuiDoi}" onclick="getIDHH(this)" />
-                                        <!--/ko-->
                                     </td>
-                                    <!--ko if: $root.ColumnsExcel().indexOf('0') < 0-->
-                                    <td class="ch mahang cmmh" style="width:150px  !important;min-width:150px  !important" data-bind="text: commonStatisJs.SubStringContent(MaHangHoa,15), click: $parent.loadTheKho"></td>
+                                    <!--ko if: $root.ColumnsExcel().indexOf('0') != 0-->
+                                    <td class="ch mahang" style="min-width:150px  !important" data-bind="text: commonStatisJs.SubStringContent(MaHangHoa,30), click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('1') < 0-->
-                                    <td class="ch tenhang cmth" style="width:150px  !important;min-width:355px  !important" data-bind="click: $parent.loadTheKho">
-                                        <span data-bind="text: commonStatisJs.SubStringContent(TenHangHoa,60)"></span>
-                                        <!-- ko if: ListChildren.length === 1-->
+                                    <td class="ch tenhang" style="min-width:355px  !important" data-bind="click: $parent.loadTheKho">
+                                        <span data-bind="text: commonStatisJs.SubStringContent(TenHangHoa,100)"></span>
                                         <span data-bind="text: ThuocTinhGiaTri" style="color:#ff6a00"></span>
-                                        <!-- /ko -->
                                     </td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('2') < 0-->
-                                    <td class="ch tendvt">
-                                        <!-- ko if: ListChildren.length === 1-->
+                                    <td class="ch tendvt"  style="width:4%  !important">
+                                        <!--ko if: CountCungLoai == 1-->
                                         <span data-bind="if: (DonViTinh.length == 1 && DonViTinhChuan != ''&& DonViTinhChuan!= null)">
                                             <span data-bind="text: DonViTinhChuan"></span>
                                         </span>
@@ -744,33 +839,37 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                        <!-- /ko -->
+                                        <!--/ko-->
                                     </td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('3') < 0-->
-                                    <td class="ch nhomhang cmnh w190" data-bind="text: NhomHangHoa, click: $parent.loadTheKho"></td>
+                                    <td class="ch vitrikho  width-number" data-bind="text: Remove_LastComma(TenViTris), click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('4') < 0-->
-                                    <td class="ch loaihang cmlh" data-bind="text: sLoaiHangHoa, click: $parent.loadTheKho"></td>
+                                    <td class="ch nhomhang " style="width:15%  !important" data-bind="text: NhomHangHoa, click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('5') < 0-->
-                                    <td class="ch giaban cmgb text-right" data-bind="text: formatNumber3Digit(GiaBan), click: $parent.loadTheKho"></td>
+                                    <td class="ch loaihang width-number cmlh" data-bind="text: sLoaiHangHoa, click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('6') < 0-->
-                                    <td class="ch giavon cmgb text-right" data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === true ? 'Theo Lô Hàng' : formatNumber3Digit(GiaVon,2)): 0, click: $parent.loadTheKho"></td>
+                                    <td class="ch giaban width-number text-right" data-bind="text: formatNumber3Digit(GiaBan), click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('7') < 0-->
-                                    <td class="ch tonkho cmtk text-right" data-bind="text: formatNumber3Digit(TonKho), click: $parent.loadTheKho"></td>
+                                    <td class="ch giavon width-number text-right" data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === true ? 'Theo Lô Hàng' : formatNumber3Digit(GiaVon,2)): 0, click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('8') < 0-->
-                                    <td class="ch ghichu cmtt" data-bind="text: GhiChu, click: $parent.loadTheKho"></td>
+                                    <td class="ch tonkho width-number text-right" data-bind="text: formatNumber3Digit(TonKho), click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('9') < 0-->
-                                    <td class="ch trangthai cmtt" data-bind="text: TrangThai ? 'Đang kinh doanh': 'Ngừng kinh doanh', click: $parent.loadTheKho"></td>
+                                    <td class="ch ghichu " data-bind="text: GhiChu, click: $parent.loadTheKho"></td>
+                                    <!--/ko-->
+                                    <!--ko if: $root.ColumnsExcel().indexOf('10') < 0-->
+                                    <td class="ch trangthai" data-bind="text: TrangThai ? 'Đang kinh doanh': 'Ngừng kinh doanh', click: $parent.loadTheKho"></td>
                                     <!--/ko-->
                                 </tr>
                                 <tr class="op-js-tr-hide">
                                     <td data-bind="attr: { colspan: 11- $root.ColumnsExcel().length }">
+                                        <!--ko if: CountCungLoai > 1 && !QuanLyTheoLoHang-->
                                         <div class="op-object-detail same-product">
                                             <table class="table-hover " data-bind="foreach: $root.HangHoaCungLoai, attr:{id: 'cungl'+ ID_HangHoaCungLoai}">
                                                 <tr class="prev-tr-hide1">
@@ -788,34 +887,30 @@
                                                     <!--/ko-->
                                                     <!--ko if: $root.ColumnsExcel().indexOf('2') < 0-->
                                                     <td style="min-width: 21px;">
-                                                        <span data-bind="if: (DonViTinh.length == 1 && DonViTinhChuan != '' && DonViTinhChuan!= null)"><span data-bind="text: DonViTinhChuan"></span></span>
-                                                        <div class="dropdown proDropdown blue" data-bind="if: DonViTinh.length != 1">
-                                                            <button type="button" data-toggle="dropdown" style="    background: white; border: none;outline: none;"><span data-bind="text: DonViTinhChuan"></span> <i class="fa fa-angle-down" aria-hidden="true"></i></button>
-                                                            <ul class="dropdown-menu" data-bind="foreach: DonViTinh">
-                                                                <li data-toggle="dropdown"><a href="javascript:void(0);" data-bind="text: TenDonViTinh, visible: TenDonViTinh!=DonViTinhChuan, click: $root.getChiTietHangHoaCungLoaiByID"></a></li>
-                                                            </ul>
-                                                        </div>
+                                                        <span>
+                                                            <span data-bind="text: TenDonViTinh"></span>
+                                                        </span>
                                                     </td>
                                                     <!--/ko-->
-                                                    <!--ko if: $root.ColumnsExcel().indexOf('3') < 0-->
+                                                    <!--ko if: $root.ColumnsExcel().indexOf('4') < 0-->
                                                     <td onclick="loadshowdetail($(this))" class="ch1 nhomhang cmnh w190" data-bind="text: NhomHangHoa, click: $root.loadTheKhoCungLoai"></td>
                                                     <!--/ko-->
-                                                    <!--ko if: $root.ColumnsExcel().indexOf('4') < 0-->
+                                                    <!--ko if: $root.ColumnsExcel().indexOf('5') < 0-->
                                                     <td onclick="loadshowdetail($(this))" class="ch1 loaihang cmlh" data-bind="text: sLoaiHangHoa, click: $root.loadTheKhoCungLoai"></td>
                                                     <!--/ko-->
-                                                    <!--ko if: $root.ColumnsExcel().indexOf('5') < 0-->
+                                                    <!--ko if: $root.ColumnsExcel().indexOf('6') < 0-->
                                                     <td onclick="loadshowdetail($(this))" class="ch1 giaban cmgb text-right" data-bind="text: formatNumber3Digit(GiaBan), click: $root.loadTheKhoCungLoai"></td>
                                                     <!--/ko-->
-                                                    <!--ko if: $root.ColumnsExcel().indexOf('6') < 0-->
+                                                    <!--ko if: $root.ColumnsExcel().indexOf('7') < 0-->
                                                     <td onclick="loadshowdetail($(this))" class="ch1 giavon cmgb text-right" data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === true ? 'Theo Lô Hàng' : formatNumber3Digit(GiaVon,2)): 0, click: $parent.loadTheKhoCungLoai"></td>
                                                     <!--/ko-->
-                                                    <!--ko if: $root.ColumnsExcel().indexOf('7') < 0-->
+                                                    <!--ko if: $root.ColumnsExcel().indexOf('8') < 0-->
                                                     <td onclick="loadshowdetail($(this))" class="ch1 tonkho cmtk text-right" data-bind="text: formatNumber3Digit(TonKho), click: $root.loadTheKhoCungLoai"></td>
                                                     <!--/ko-->
-                                                    <!--ko if: $root.ColumnsExcel().indexOf('8') < 0-->
+                                                    <!--ko if: $root.ColumnsExcel().indexOf('9') < 0-->
                                                     <td onclick="loadshowdetail($(this))" class="ch1 ghichu cmtt" data-bind="text: GhiChu, click: $root.loadTheKhoCungLoai"></td>
                                                     <!--/ko-->
-                                                    <!--ko if: $root.ColumnsExcel().indexOf('9') < 0-->
+                                                    <!--ko if: $root.ColumnsExcel().indexOf('10') < 0-->
                                                     <td onclick="loadshowdetail($(this))" class="ch1 trangthai cmtt" data-bind="text: TrangThai ? 'Đang kinh doanh': 'Ngừng kinh doanh', click: $root.loadTheKhoCungLoai"></td>
                                                     <!--/ko-->
                                                 </tr>
@@ -889,7 +984,7 @@
                                                                                         </div>
                                                                                         <div class="form-group floatleft">
                                                                                             <label class="css-form-label">Định mức tồn:</label>
-                                                                                            <div class="css-form-detail">
+                                                                                            <div class="css-form-label">
                                                                                                 <span data-bind="text: formatNumber3Digit(TonToiThieu) + ' > '"></span>
                                                                                                 <span data-bind="text: formatNumber3Digit(TonToiDa)"></span>
                                                                                             </div>
@@ -905,15 +1000,9 @@
                                                                                 <div class="col-xs-12 col-sm-12 col-md-6">
                                                                                     <div class="detail-content">
                                                                                         <div class="form-group floatleft">
-                                                                                            <label class="css-form-label">Mô tả:</label>
+                                                                                            <label class="css-form-label">Ghi chú:</label>
                                                                                             <div class="css-form-detail">
-                                                                                                <span data-bind="text:MaHangHoa"></span>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                        <div class="form-group floatleft">
-                                                                                            <label class="css-form-label">Ghi chú đặt hàng:</label>
-                                                                                            <div class="css-form-detail">
-                                                                                                <span data-bind="text:MaHangHoa"></span>
+                                                                                                <span data-bind="text:GhiChu"></span>
                                                                                             </div>
                                                                                         </div>
                                                                                         <div class="form-group floatleft">
@@ -1058,7 +1147,14 @@
                                                                                     <td data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === true ? 'Theo Lô Hàng' : formatNumber3Digit(GiaVon,2)): 0"></td>
                                                                                     <td data-bind="text: SoLuong > 0 ? formatNumber3Digit(SoLuong) : 0"></td>
                                                                                     <td data-bind="text: SoLuong > 0 ? 0 :formatNumber3Digit(SoLuong)"></td>
-                                                                                    <td data-bind="text: formatNumber3Digit(TonKho),visible: $parent.LaHangHoa === true"></td>
+                                                                                    <td>
+                                                                                        <span data-bind="text: formatNumber3Digit(TonKho),visible: $parent.LaHangHoa === true">
+                                                                                        </span>
+                                                                                        &nbsp; &nbsp;
+                                                                                        <span data-bind="visible: $index()===0 && LuyKeTonKho !== TonKho,">
+                                                                                            <button class="btn btn-main" data-bind="click: function(){$root.CapNhatTonKho($parent)}">Cập nhật tồn kho</button>
+                                                                                        </span>
+                                                                                    </td>
                                                                                 </tr>
                                                                             </tbody>
                                                                         </table>
@@ -1463,7 +1559,10 @@
                                                 </a>
                                             </div>
                                         </div>
-                                        <div class="op-object-detail js-thongtinkhicothanhphan" style="width:100%">
+                                        <!--/ko-->
+
+                                        <div class="op-object-detail js-thongtinkhicothanhphan" style="width:100%"
+                                             data-bind="visible: CountCungLoai == 1 || QuanLyTheoLoHang">
                                             <ul class="nav nav-tabs" style="width:100%;">
                                                 <li class="active" onclick="LoadGetHeight()"
                                                     data-bind="click: function(){$root.ChangeTab_HangHoa(0)}"><a data-toggle="tab" data-bind="attr:{href:'#home' + ID}">Thông tin</a></li>
@@ -1563,12 +1662,6 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-xs-12 col-sm-12 col-md-6">
-                                                                    <div class="form-group floatleft">
-                                                                        <label class="css-form-label">Mô tả:</label>
-                                                                        <div class=" css-form-detail">
-                                                                            <div class="css-form-detail" data-bind="text:MaHangHoa"></div>
-                                                                        </div>
-                                                                    </div>
                                                                     <div class="form-group floatleft">
                                                                         <label class="css-form-label">Ghi chú :</label>
                                                                         <div class="css-form-detail">
@@ -2132,15 +2225,43 @@
                                 <!--/ko-->
                             </tbody>
                             <tfoot id="tongton">
-                                <tr class="border-bottom">
-                                    <td class="bg12"></td>
-                                    <td class="bg12 mahang bold" data-bind="attr: { colspan: 7 - $root.ColumnsExcel().filter(p=> p < 7).length }">Tổng cộng</td>
+                                <tr class="border-bottom bg12 bold">
+                                    <td class=""></td>
+                                    <!--ko if: $root.ColumnsExcel().indexOf('0') !=0-->
+                                    <td class="mahang">Tổng cộng</td>
+                                    <!--/ko-->
+                                    <!--ko if: $root.ColumnsExcel().indexOf('1') < 0-->
+                                    <td class="tenhang"></td>
+                                    <!--/ko-->
+                                    <!--ko if: $root.ColumnsExcel().indexOf('2') < 0-->
+                                    <td class="tendvt"></td>
+                                    <!--/ko-->
+                                    <!--ko if: $root.ColumnsExcel().indexOf('3') < 0-->
+                                    <td class="vitrikho"></td>
+                                    <!--/ko-->
+                                    <!--ko if: $root.ColumnsExcel().indexOf('4') < 0-->
+                                    <td class="nhomhang"></td>
+                                    <!--/ko-->
+                                    <!--ko if: $root.ColumnsExcel().indexOf('5') < 0-->
+                                    <td class="loaihang"></td>
+                                    <!--/ko-->
+                                    <!--ko if: $root.ColumnsExcel().indexOf('6') < 0-->
+                                    <td class="giaban"></td>
+                                    <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('7') < 0-->
-                                    <td class="bg12  bold text-right">
-                                        <span data-bind="text: $root.TongTon"></span>
+                                    <td class="giavon"></td>
+                                    <!--/ko-->
+                                    <!--ko if: $root.ColumnsExcel().indexOf('8') < 0-->
+                                    <td class="tonkho text-right">
+                                        <span data-bind="text: formatNumber3Digit($root.TongTon())"></span>
                                     </td>
                                     <!--/ko-->
-                                    <td class="bg12" data-bind="attr: { colspan: 2 - $root.ColumnsExcel().filter(p=> p > 7).length }"></td>
+                                    <!--ko if: $root.ColumnsExcel().indexOf('9') < 0-->
+                                    <td class="ghichu"></td>
+                                    <!--/ko-->
+                                    <!--ko if: $root.ColumnsExcel().indexOf('10') < 0-->
+                                    <td class="trangthai"></td>
+                                    <!--/ko-->
                                 </tr>
                             </tfoot>
                         </table>

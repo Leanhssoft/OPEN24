@@ -215,7 +215,7 @@
                                     </span>
                                 </td>
                                 <td class="tennhomhang" data-bind="text: TenNhomHangHoa"></td>
-                                <td class="giavon text-right" data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === false ? formatNumber(GiaVon) : 'Theo Lô Hàng'): 0, attr: {id : 'giavon_' + ID}"></td>
+                                <td class="text-right" data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === false ? formatNumber(GiaVon) : 'Theo Lô Hàng'): 0, attr: {id : 'giavon_' + ID}"></td>
                                 <td class="gianhapcuoi text-right" data-bind="text: formatNumber(GiaNhapCuoi), attr: {id: 'gianhapcuoi_' + ID}"></td>
                                 <td class="giachung text-right" data-bind="text: formatNumber(GiaChung), style: { display: $root.selectedGiaBan() === undefined ? 'none' : 'table-cell' }, attr: {id: 'giachung_' + ID}"></td>
                                 <td class="giamoi">
@@ -312,6 +312,11 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="modal fade" id="modalPopuplgDelete">
+    <div class="modal-dialog draggable modal-md ">
+        @Html.Action("_modalDelete", new { area = "", Controller = "GiaoDich" })
     </div>
 </div>
 <div class="modal fade" id="modalpopup_deleteAllCT">

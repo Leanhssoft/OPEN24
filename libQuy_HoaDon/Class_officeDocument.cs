@@ -962,7 +962,7 @@ namespace libQuy_HoaDon
         {
             Aspose.Cells.Workbook wbook = new Aspose.Cells.Workbook(strFileTemplatePath);
             Aspose.Cells.Worksheet wSheet = wbook.Worksheets[sheet];
-          
+
             int dkrange = (tblDuLieu.Rows.Count) / rowNumber;
             if (dkrange >= 1)
             {
@@ -3240,42 +3240,32 @@ namespace libQuy_HoaDon
                     sqlPRM.Add(new SqlParameter("MaLoHang", dt.Rows[i][0].ToString().Trim()));
                     sqlPRM.Add(new SqlParameter("SoLuong", Math.Round(float.Parse(dt.Rows[i][2].ToString().Trim()), 3, MidpointRounding.ToEven)));
                     sqlPRM.Add(new SqlParameter("ID_ChiNhanh", ID_ChiNhanh));
-                    //var tbl_timeCSt = from cs in db.ChotSo
-                    //                  where cs.ID_DonVi == ID_ChiNhanh
-                    //                  select new
-                    //                  {
-                    //                      cs.NgayChotSo
-                    //                  };
-                    //string timeCS = string.Empty;
-                    //try
-                    //{
-                    //    timeCS = tbl_timeCSt.FirstOrDefault().NgayChotSo.ToString("yyyy-MM-dd");
-                    //    lst = db.Database.SqlQuery<Report_HangHoa_XuatHuy_Import>("exec getListXuatKho_Import_ChotSo @MaHangHoa, @MaLoHang, @SoLuong, @ID_ChiNhanh", sqlPRM.ToArray()).ToList();
-                    //}
-                    //catch
-                    //{
                     lst = db.Database.SqlQuery<Report_HangHoa_XuatHuy_Import>("exec getListXuatKho_Import @MaHangHoa, @MaLoHang, @SoLuong, @ID_ChiNhanh", sqlPRM.ToArray()).ToList();
-                    //}
+
                     Report_HangHoa_XuatHuy_Import DM1 = new Report_HangHoa_XuatHuy_Import();
-                    DM1.ID_DonViQuiDoi = lst.FirstOrDefault().ID_DonViQuiDoi;
-                    DM1.ID_LoHang = dt.Rows[i][0].ToString().Trim() == "" ? new Guid() : lst.FirstOrDefault().ID_LoHang;
-                    DM1.MaHangHoa = lst.FirstOrDefault().MaHangHoa;
-                    DM1.TenHangHoa = lst.FirstOrDefault().TenHangHoa;
-                    DM1.ThuocTinh_GiaTri = lst.FirstOrDefault().ThuocTinh_GiaTri;
-                    DM1.TenDonViTinh = lst.FirstOrDefault().TenDonViTinh;
-                    DM1.QuanLyTheoLoHang = lst.FirstOrDefault().QuanLyTheoLoHang;
-                    DM1.GiaVon = lst.FirstOrDefault().GiaVon;
-                    DM1.GiaBan = lst.FirstOrDefault().GiaBan;
-                    DM1.SoLuong = lst.FirstOrDefault().SoLuong;
-                    DM1.SoLuongXuatHuy = lst.FirstOrDefault().SoLuongXuatHuy;
-                    DM1.TonKho = lst.FirstOrDefault().TonKho;
-                    DM1.GiaTriHuy = lst.FirstOrDefault().GiaTriHuy;
-                    DM1.TrangThaiMoPhieu = lst.FirstOrDefault().TrangThaiMoPhieu;
-                    DM1.TenLoHang = lst.FirstOrDefault().TenLoHang;
-                    DM1.NgaySanXuat = lst.FirstOrDefault().NgaySanXuat;
-                    DM1.NgayHetHan = lst.FirstOrDefault().NgayHetHan;
-                    DM1.SoThuTu = i + 1;
-                    lstCT.Add(DM1);
+                    if (lst != null && lst.Count > 0)
+                    {
+                        DM1.ID_DonViQuiDoi = lst.FirstOrDefault().ID_DonViQuiDoi;
+                        DM1.ID_LoHang = dt.Rows[i][0].ToString().Trim() == "" ? new Guid() : lst.FirstOrDefault().ID_LoHang;
+                        DM1.MaHangHoa = lst.FirstOrDefault().MaHangHoa;
+                        DM1.TenHangHoa = lst.FirstOrDefault().TenHangHoa;
+                        DM1.ThuocTinh_GiaTri = lst.FirstOrDefault().ThuocTinh_GiaTri;
+                        DM1.TenDonViTinh = lst.FirstOrDefault().TenDonViTinh;
+                        DM1.QuanLyTheoLoHang = lst.FirstOrDefault().QuanLyTheoLoHang;
+                        DM1.GiaVon = lst.FirstOrDefault().GiaVon;
+                        DM1.GiaBan = lst.FirstOrDefault().GiaBan;
+                        DM1.SoLuong = lst.FirstOrDefault().SoLuong;
+                        DM1.SoLuongXuatHuy = lst.FirstOrDefault().SoLuongXuatHuy;
+                        DM1.TonKho = lst.FirstOrDefault().TonKho;
+                        DM1.GiaTriHuy = lst.FirstOrDefault().GiaTriHuy;
+                        DM1.TrangThaiMoPhieu = lst.FirstOrDefault().TrangThaiMoPhieu;
+                        DM1.TenLoHang = lst.FirstOrDefault().TenLoHang;
+                        DM1.NgaySanXuat = lst.FirstOrDefault().NgaySanXuat;
+                        DM1.NgayHetHan = lst.FirstOrDefault().NgayHetHan;
+                        DM1.SoThuTu = i + 1;
+                        DM1.ViTriKho = lst.FirstOrDefault().ViTriKho;
+                        lstCT.Add(DM1);
+                    }
                 }
             }
             return lstCT;
@@ -3644,6 +3634,7 @@ namespace libQuy_HoaDon
                     DM1.NgayHetHan = itemFirst.ID_LoHang == null ? (ngayhethan != "" ? DateTime.Parse(ngayhethan) : (DateTime?)null) : itemFirst.NgayHetHan;
                     DM1.TonKho = itemFirst.TonKho;
                     DM1.ThuocTinh_GiaTri = itemFirst.ThuocTinh_GiaTri;
+                    DM1.ViTriKho = itemFirst.ViTriKho;
                     DM1.DonViTinh = _classDVQD.Gets(ct => ct.ID_HangHoa == DM1.ID && ct.Xoa != true).Select(x => new DonViTinh
                     {
                         ID_HangHoa = DM1.ID,
@@ -12375,7 +12366,7 @@ namespace libQuy_HoaDon
                             var nocanthu = dataTable.Rows[i][12].ToString().Trim();
                             var nocantra = dataTable.Rows[i][13].ToString().Trim();
 
-                            List <SqlParameter> sqlparamt = new List<SqlParameter>();
+                            List<SqlParameter> sqlparamt = new List<SqlParameter>();
                             sqlparamt.Add(new SqlParameter("MaNhomDoiTuong", sMaNhom));
                             sqlparamt.Add(new SqlParameter("TenNhomDoiTuong", dataTable.Rows[i][0].ToString()));
                             sqlparamt.Add(new SqlParameter("TenNhomDoiTuong_KhongDau", ""));
@@ -12403,7 +12394,7 @@ namespace libQuy_HoaDon
                             sqlparamt.Add(new SqlParameter("ID_NhanVien", ID_NhanVien));
                             sqlparamt.Add(new SqlParameter("NguoiTao", nguoitao));
                             sqlparamt.Add(new SqlParameter("ID_DonVi", ID_DonVi));
-                            sqlparamt.Add(new SqlParameter("NoCanThu", string.IsNullOrEmpty(nocanthu)? 0 : double.Parse(nocanthu)));
+                            sqlparamt.Add(new SqlParameter("NoCanThu", string.IsNullOrEmpty(nocanthu) ? 0 : double.Parse(nocanthu)));
                             sqlparamt.Add(new SqlParameter("NoCanTra", string.IsNullOrEmpty(nocantra) ? 0 : double.Parse(nocantra)));
                             sqlparamt.Add(new SqlParameter("TongTichDiem", string.Empty));
                             sqlparamt.Add(new SqlParameter("MaDieuChinhDiem", string.Empty));
@@ -13700,6 +13691,7 @@ namespace libQuy_HoaDon
         public DateTime? NgaySanXuat { get; set; }
         public DateTime? NgayHetHan { get; set; }
         public int SoThuTu { get; set; }
+        public string ViTriKho { get; set; }
     }
 
     public class Report_HangHoa_Chuyenhang_Import

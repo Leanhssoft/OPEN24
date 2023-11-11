@@ -364,7 +364,6 @@
             }
 
                 .op-hoadon-infor > .op-hoadon-name > div > span {
-                    overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
                     max-width: 250px;
@@ -392,7 +391,6 @@
             }
 
         .op-hoadon-infor > .op-hoadon-name > div > span {
-            overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
             max-width: 250px;
@@ -658,8 +656,10 @@
                     <div class="gara-fast-input" style="min-width:175px" hidden>
                         <input type="text" class="form-control text-right" placeholder="Số lượng"
                                data-bind="value: $root.txtSoLuong">
+                        <!--ko if: $root.roleChangePriceProduct()-->
                         <input type="text" class="form-control text-right" placeholder="Đơn giá"
                                data-bind="value: $root.txtDonGia">
+                        <!--/ko-->
                     </div>
                     <a style="padding:3px 12px; display:none" onclick="togglefastInput(this)">
                         <img src="/Content/images/print-min.png" alt="nhập nhanh" />
@@ -920,6 +920,7 @@
                     <div class="op-hoadon-quanlity">
                         <div class="op-hoadon-soluong">
                             Số lượng
+                            <span data-bind="text: SumQuantity() ===0?'':'(' +formatNumber3Digit(SumQuantity()) + ')' ">(1)</span>
                         </div>
                         <div class="op-hoadon-dongia">
                             Đơn giá
@@ -1092,21 +1093,21 @@
 
                                 </div>
                                 <div class="op-hoadon-dongia">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: IDRandom},event:{keyup: $root.editPrice}" />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
-                                        <label class="input-simple height-24" data-bind="text: formatNumber3Digit(GiaBan),    attr:{id:IDRandom}"></label>
+                                        <label class="input-simple height-24" style="border:none!important" data-bind="text: formatNumber3Digit(GiaBan),    attr:{id:IDRandom}"></label>
                                         <!-- /ko-->
                                     </div>
                                 </div>
                                 <!-- ko if: $root.HoaDons().ID_BaoHiem() !==null && $root.HoaDons().LoaiHoaDon() === 25 -->
                                 <div class="op-hoadon-baohiem">
-                                    <div class="flex ">
+                                    <div class="flex " >
                                         <input class="input-simple height-24"
                                                onkeypress="return keypressNumber(event)"
                                                onclick="this.select()"
@@ -1117,7 +1118,7 @@
                                 </div>
                                 <!--/ko-->
                                 <div class="op-hoadon-thanhtoan">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!--ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24 bold"
                                                onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
@@ -1125,7 +1126,7 @@
                                                event:{keyup: $root.editSumPrice}" />
                                         <!-- /ko-->
                                         <!--ko if: !$root.roleChangePriceProduct()-->
-                                        <label class="input-simple height-24 bold" data-bind="text: formatNumber3Digit(ThanhToan),
+                                        <label class="input-simple height-24 bold" style="border:none!important" data-bind="text: formatNumber3Digit(ThanhToan),
                                                attr:{id: 'sum-f_'+ IDRandom}"></label>
                                         <!--/ko-->
                                     </div>
@@ -1354,21 +1355,21 @@
 
                                 </div>
                                 <div class="op-hoadon-dongia">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: IDRandom},event:{keyup: $root.editPrice}, " />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
-                                        <label class="input-simple height-24" data-bind="text: formatNumber3Digit(GiaBan),    attr:{id:IDRandom}"></label>
+                                        <label class="input-simple height-24" style="border:none!important" data-bind="text: formatNumber3Digit(GiaBan),    attr:{id:IDRandom}"></label>
                                         <!-- /ko-->
                                     </div>
                                 </div>
                                 <!-- ko if: $root.HoaDons().ID_BaoHiem() !==null && $root.HoaDons().LoaiHoaDon() === 25 -->
                                 <div class="op-hoadon-baohiem">
-                                    <div class="flex ">
+                                    <div class="flex " >
                                         <input class="input-simple height-24"
                                                onclick="this.select()"
                                                onkeypress="return keypressNumber(event)"
@@ -1379,7 +1380,7 @@
                                 </div>
                                 <!--/ko-->
                                 <div class="op-hoadon-thanhtoan">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!--ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24"
                                                onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
@@ -1510,7 +1511,7 @@
                                         <!--ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) ,
                                                attr:{id: IDRandom},
                                                event:{keyup: function(){$root.Combo_editPrice($data,$parent,false)}}, " />
@@ -1682,7 +1683,7 @@
                                     </div>
                                 </div>
                                 <div class="op-hoadon-dongia">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!-- ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24" onclick="this.select()"
                                                onkeypress="return keypressNumber(event)"
@@ -1707,7 +1708,7 @@
                                 </div>
                                 <!--/ko-->
                                 <div class="op-hoadon-thanhtoan">
-                                    <div class="flex">
+                                    <div class="flex" data-bind="style: {float: !$root.roleChangePriceProduct()?'right':''}">
                                         <!-- ko if: $root.roleChangePriceProduct() -->
                                         <input class="input-simple height-24"
                                                onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
@@ -1963,7 +1964,7 @@
                                     <!--ko if: $root.roleChangePriceProduct()  -->
                                     <input class="input-simple height-24"
                                            autocomplete="off"
-                                           onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                           onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                            data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: 'priceTH_'+ IDRandom},event:{keyup: $root.editPrice_DoiTra}," />
                                     <!-- /ko-->
                                     <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -2120,7 +2121,7 @@ visible: LoaiHoaDon !==3 ">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: 'priceTH_'+ IDRandom},event:{keyup: $root.editPrice_DoiTra}, " />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -2300,7 +2301,7 @@ visible: LoaiHoaDon !== 3">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) , attr:{id: 'priceTH_'+ IDRandom},event:{keyup: $root.editPrice_DoiTra}, " />
                                         <!-- /ko-->
                                         <!-- ko if: !$root.roleChangePriceProduct()-->
@@ -2468,7 +2469,7 @@ visible: LoaiHoaDon !==3">
                                         <!--ko if: $root.roleChangePriceProduct()  -->
                                         <input class="input-simple height-24"
                                                autocomplete="off"
-                                               onkeypress="return keypressNumber(event)" onclick="this.select()" maxlength="12"
+                                               onkeypress="keypressNumber_limitNumber(event,this)" onclick="this.select()" maxlength="12"
                                                data-bind="value: formatNumber3Digit(GiaBan) ,
                                                attr:{id: 'priceTH_'+ IDRandom},
                                                event:{keyup: function(){$root.Combo_editPrice($data,$parent,true)}} " />
@@ -2584,9 +2585,9 @@ visible: LoaiHoaDon !== 3">
                     <div class="gara-bill-type">
                         <!--ko if: RoleInsert_Invoice () && $root.HoaDons().LoaiHoaDon() !== 6-->
                         <!--ko if: !(
-                          $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-                        && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 19)
-                           ) -->
+      $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+    && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 19)
+       ) -->
                         <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 25},  click: clickHoaDon">
                             <img hidden="" class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1">
                             Hóa đơn
@@ -2596,8 +2597,8 @@ visible: LoaiHoaDon !== 3">
                         <!--/ko-->
                         <!--ko if: RoleInsert_Order() && $root.HoaDons().LoaiHoaDon() !== 6 -->
                         <!--ko if: !(
-                            $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-                        &&  ($root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 19 || $root.HoaDons().LoaiHoaDon() == 25)  ) -->
+        $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+    &&  ($root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 19 || $root.HoaDons().LoaiHoaDon() == 25)  ) -->
                         <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 3}, click: clickDatHang">
                             <img hidden="" class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1">
                             Báo giá
@@ -2612,11 +2613,11 @@ visible: LoaiHoaDon !== 3">
                             <img hidden="" class="act-r" src="/Content/images/conner-white.png" alt="" tabindex="-1">
                         </a>
                         <!--/ko-->
-                        <!--ko if: RoleInsert_Return() && $root.HoaDons().LoaiHoaDon() !== 6 -->
+                        <!--ko if: RoleInsert_Service() && $root.HoaDons().LoaiHoaDon() !== 6 -->
                         <!--ko if: !(
-                          $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-                        && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 1|| $root.HoaDons().LoaiHoaDon() == 25)
-                           ) -->
+      $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+    && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 1|| $root.HoaDons().LoaiHoaDon() == 25)
+       ) -->
                         <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 19},
                            click: clickGoiDichVu">
                             <img hidden="" class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1">
@@ -3389,31 +3390,32 @@ event:{change: ChangeNgayLapHD}" tabindex="0" title="Nhập giờ" />
     <script>
         if (location.hostname.indexOf("open24.vn") > 0 || location.hostname === "localhost") {
             var boxloading = `<div class="loading-box">
-                                                        <div class="loading-bg">
-                                                            <div class="loading-obj">
-                                                                <img src="/Content/images/logo-open24-min.png" />
-                                                                <div class="inicator-loading">
-                                                                    <div>
+                                                                <div class="loading-bg">
+                                                                    <div class="loading-obj">
+                                                                        <img src="/Content/images/logo-open24-min.png" />
+                                                                        <div class="inicator-loading">
+                                                                            <div>
+                                                                    </div>
                                                             </div>
-                                                    </div>
-                                                </div>`;
+                                                        </div>`;
             document.getElementById('btnGoHome').style.display = "block";
         }
         else {
             var boxloading = `<div class="loading-box">
-                                                        <div class="loading-bg">
-                                                            <div class="loading-obj">
-                                                                <div class="inicator-loading">
-                                                                    <div>
+                                                                <div class="loading-bg">
+                                                                    <div class="loading-obj">
+                                                                        <div class="inicator-loading">
+                                                                            <div>
+                                                                    </div>
                                                             </div>
-                                                    </div>
-                                                </div>`;
+                                                        </div>`;
             document.getElementById('btnGoHome').style.display = "none";
         }
 
         //Thay đổi loading box trên điện thoại nhưng vẫn giữ nguyên trên máy tính
         $('body').gridLoader({ show: true, morewidthheight: 0, iconloading: boxloading });
     </script>
+    <script src="/signalr/hubs"></script>
     <script src="@Url.ContentVersioned("~/Scripts/Components/Input.js")"></script>
     <script src="@Url.ContentVersioned("~/Scripts/Components/NhanVien_KhachHang.js")"></script>
     <script src="@Url.ContentVersioned("~/Scripts/Components/HangLoaiXe.js")"></script>
@@ -3442,6 +3444,7 @@ event:{change: ChangeNgayLapHD}" tabindex="0" title="Nhập giờ" />
     @Html.Partial("~/Views/Gara/HoaDon/_ChiPhiHoaDon.cshtml")
     @Html.Partial("~/Views/SoQuy/_QRCodeChuyenKhoanModal.cshtml")
     <script src="@Html.WriteRenderFile(Scripts.Url("~/bundles/Gara"))" type="text/javascript"></script>
+    <script src="~/Scripts/Gara/_signalThongBao.js"></script>
 
     <script>
         function openListHoaDon(elm) {

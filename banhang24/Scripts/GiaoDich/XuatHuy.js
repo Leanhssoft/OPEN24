@@ -829,6 +829,7 @@ function ViewModel() {
                 ctNew.ID_DonVi = hd.ID_DonVi;
                 ctNew.TongTienHang = hd.TongTienHang;
                 ctNew.ID_PhieuTiepNhan = hd.ID_PhieuTiepNhan;
+                ctNew.ID_Xe = hd.ID_Xe;
                 ctNew.ID_HoaDon = loai === 1 ? '00000000-0000-0000-0000-000000000000' : hd.ID;
                 ctNew.ID_HoaDonSC = hd.ID_HoaDon;
                 ctNew.MaHoaDonSuaChua = hd.MaHoaDonGoc;
@@ -1080,7 +1081,7 @@ function ViewModel() {
             dataType: 'json',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             success: function (result) {
-                var data1 = '<script src="/Scripts/knockout-3.4.2.js"></script>';
+                let data1 = '<script src="/Scripts/knockout-3.4.2.js"></script>';
                 data1 = data1.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
                     + "; var item4=[], item5=[]; var item2=" + JSON.stringify(self.CTHoaDonPrint())
                     + " ;var item3=" + JSON.stringify(itemHDFormat) + "; </script>");
@@ -1128,6 +1129,9 @@ function ViewModel() {
         objPrint.MaHoaDon = objPrint.MaHoaDon;
         objPrint.NhanVienBanHang = objPrint.TenNhanVien;
         objPrint.NgayLapHoaDon = moment(objPrint.NgayLapHoaDon, 'YYYY-MM-DD HH:mm:ss').format('DD/MM/YYYY HH:mm:ss');
+        objPrint.Ngay = moment(objHD.NgayLapHoaDon).format('DD');
+        objPrint.Thang = moment(objHD.NgayLapHoaDon).format('MM');
+        objPrint.Nam = moment(objHD.NgayLapHoaDon).format('YYYY');
 
         objPrint.TongSoLuongHang = formatNumber3Digit(self.sum_SoLuongXuat());
         objPrint.TongTienHang = formatNumber3Digit(objPrint.TongTienHang, 2);
@@ -1162,6 +1166,14 @@ function ViewModel() {
             itFor.SoLuongHuy = formatNumber3Digit(itFor.SoLuong);
             itFor.GiaTriHuy = formatNumber3Digit(itFor.GiaTriHuy, 2);
             itFor.MaLoHang = itFor.TenLoHang;
+            itFor.NgaySanXuat = '';
+            itFor.NgayHetHan = '';
+            if (!commonStatisJs.CheckNull(arrCTHD[i].NgaySanXuat)) {
+                itFor.NgaySanXuat = moment(arrCTHD[i].NgaySanXuat).format('DD/MM/YYYY');
+            }
+            if (!commonStatisJs.CheckNull(arrCTHD[i].NgayHetHan)) {
+                itFor.NgayHetHan = moment(arrCTHD[i].NgayHetHan).format('DD/MM/YYYY');
+            }
             arr.push(itFor);
         }
         return arr;

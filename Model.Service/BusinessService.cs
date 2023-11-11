@@ -60,8 +60,8 @@ namespace Model.Service
                 HT_ThongBao httbCH = new HT_ThongBao();
                 httbCH.ID = Guid.NewGuid();
                 httbCH.ID_DonVi = item.ID_DonVi;
-                httbCH.LoaiThongBao = 4; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật, 4: hết hạn lô hàng
-                httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\">Hàng hóa <a onclick=\"loadthongbao('4', '" + item.MaHangHoa + "','" + httbCH.ID + "')\">" + "<span class=\"blue\">" + item.MaHangHoa + " </span>" + " có lô hàng " + item.MaLoHang + " </a> đã hết hạn </p>";
+                httbCH.LoaiThongBao = 2; //loai = 0 thông báo hết hàng, 1: thông báo có đơn chuyển hàng, 3: thông báo ngày sinh nhật, 4: hết hạn lô hàng
+                httbCH.NoiDungThongBao = "<p onclick=\"loaddadoc('" + httbCH.ID + "')\">Hàng hóa <a onclick=\"loadthongbao('2', '" + item.MaHangHoa + "','" + httbCH.ID + "')\">" + "<span class=\"blue\">" + item.MaHangHoa + " </span>" + " có lô hàng " + item.MaLoHang + " </a> đã hết hạn </p>";
                 httbCH.NgayTao = DateTime.Now;
                 httbCH.NguoiDungDaDoc = "";
                 db.HT_ThongBao.Add(httbCH);

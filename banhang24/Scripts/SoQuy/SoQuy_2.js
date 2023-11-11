@@ -1742,6 +1742,9 @@ var ViewModelQuyHD = function () {
         hd.TienMat = formatNumber3Digit(objHD.TienMat, 2);
         hd.TienATM = formatNumber3Digit(objHD.TienPOS, 2);
         hd.KhoanMucThuChi = hd.NoiDungThuChi;
+        hd.TienMat_BangChu = DocSo(objHD.TienMat);
+        hd.TienPOS_BangChu = DocSo(objHD.TienPOS);
+        hd.ChuyenKhoan_BangChu = DocSo(objHD.ChuyenKhoan);
 
         let pthucTT = '';
         if (objHD.TienMat > 0) {

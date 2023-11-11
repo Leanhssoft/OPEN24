@@ -152,6 +152,77 @@
             var self = this;
             return ((page.pageNumber - 1) === self.LichSuNapTien.CurrentPage) ? "click" : "";
         },
+        showModalUpdate: function (idThe, formType = 0) {
+            let self = this;
+            self.saveOk = false;
+            self.isLoading = false;
+            self.typeUpdate = 2;
+            self.formType = formType;
+
+            ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/GetInforTheGiaTri_byID?id=' + idThe).done(function (x) {
+                if (x.res && x.dataSoure.length > 0) {
+                    let data = x.dataSoure[0];
+                    self.tgtOld = $.extend({}, true, data);
+
+                    self.newHoaDon = {
+                        ID: data.ID,
+                        MaHoaDon: data.MaHoaDon,
+                        LoaiHoaDon: data.LoaiHoaDon,
+                        ChoThanhToan: data.ChoThanhToan,
+                        NgayLapHoaDon: moment(data.NgayLapHoaDon).format('YYYY-MM-DD HH:mm'),
+                        ID_DonVi: data.ID_DonVi,
+                        ID_NhanVien: data.ID_NhanVien,
+                        NguoiTao: data.NguoiTao,
+                        ID_DoiTuong: data.ID_DoiTuong,
+                        TongChiPhi: formatNumber3Digit(data.MucNap),
+                        TongChietKhau: formatNumber3Digit(data.KhuyenMaiVND),
+                        TongTienHang: data.TongTienNap,
+                        TongGiamGia: formatNumber3Digit(data.ChietKhauVND),
+                        TongTienThue: data.SoDuSauNap,
+                        PhaiThanhToan: data.PhaiThanhToan,
+                        TongThanhToan: data.PhaiThanhToan,
+                        KhachDaTra: data.KhachDaTra,
+                        DienGiai: data.GhiChu,
+
+                        PTKhuyenMai: data.KhuyenMaiPT,
+                        PTChietKhau: data.ChietKhauPT,
+
+                        DaThanhToan: formatNumber3Digit(data.KhachDaTra),
+                        ThucThu: 0,
+                        TienThua: 0,
+                        NoHienTai: 0,
+                        TenLoaiTien: '(Tiền mặt)',
+                        BH_NhanVienThucHiens: [],
+                        TongCong: data.PhaiThanhToan - data.KhachDaTra
+                    };
+                    let sLoaiTien = '';
+                    if (data.TienMat > 0) {
+                        sLoaiTien ='Tiền mặt, '
+                    }
+                    if (data.TienATM > 0) {
+                        sLoaiTien += 'POS, ';
+                    }
+                    if (data.TienGui > 0) {
+                        sLoaiTien += 'Chuyển khoản, ';
+                    }
+                    sLoaiTien = Remove_LastComma(sLoaiTien);
+                    self.newHoaDon.TenLoaiTien = sLoaiTien;
+
+                    self.cusChosing = {
+                        ID: data.ID_DoiTuong,
+                        MaDoiTuong: data.MaKhachHang,
+                        TenDoiTuong: data.TenKhachHang,
+                        DienThoai: data.SoDienThoai,
+                        DiaChi: data.DiaChiKhachHang,
+                    }
+
+                    self.ChangeCustomer(self.cusChosing)
+
+                    $('#vmThemMoiTheNap').modal('show');
+                }
+            })
+
+        },
 
         showModalAddNew: function (formType = 0) {
             var self = this;
@@ -330,6 +401,9 @@
 
         SaveTheNap: function (print) {
             var self = this;
+            if (self.isLoading) {
+                return;
+            }
             var hd = self.newHoaDon;
             if (hd.ID_DoiTuong === null) {
                 commonStatisJs.ShowMessageDanger('Vui lòng chọn người nộp tiền');
@@ -417,7 +491,11 @@
             hd.NgayLapHoaDon = moment(hd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');;
             hd.MucNap = hd.TongChiPhi;
             hd.KhuyenMai = hd.TongChietKhau;
-            hd.NoSau = formatNumber(Math.abs(hd.TienThua));
+            let khachthieu = 0;
+            if (hd.TienThua < 0) {
+                khachthieu = Math.abs(hd.TienThua);
+            }
+            hd.NoSau = khachthieu;
             hd.PhaiThanhToan = formatNumber(hd.PhaiThanhToan);
             hd.DaThanhToan = hd.DaThanhToan;
             hd.TienBangChu = DocSo(formatNumberToFloat(hd.DaThanhToan));

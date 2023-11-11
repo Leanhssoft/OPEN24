@@ -267,8 +267,8 @@ var TraHangNhapChiTiet = function () {
                     case 4:// update again phieu trahang
                         idHoaDon = cthd[0].ID_PhieuNhapHang;
                         break;
-                } 
-               
+                }
+
                 var objHD = [{
                     ID: type === 3 ? const_GuidEmpty : cthd[0].ID_HoaDon,
                     ID_HoaDon: idHoaDon,
@@ -398,26 +398,24 @@ var TraHangNhapChiTiet = function () {
     }
 
     function GetHT_Quyen_ByNguoiDung() {
-        if (navigator.onLine) {
-            ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
-                if (data !== "" && data.length > 0) {
-                    self.Quyen_NguoiDung(data);
-                    self.TraHangNhap_ThayDoiThoiGian(CheckQuyenExist('TraHangNhap_ThayDoiThoiGian'));
-                    self.TraHangNhap_ThayDoiNhanVien(CheckQuyenExist('TraHangNhap_ThayDoiNhanVien'));
-                    var insertNCC = CheckQuyenExist('NhaCungCap_ThemMoi');
-                    if (insertNCC) {
-                        $('#hiddenShowaddNCC,#btnLuuNhomDoiTuong').show();
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
+            if (data !== "" && data.length > 0) {
+                self.Quyen_NguoiDung(data);
+                self.TraHangNhap_ThayDoiThoiGian(CheckQuyenExist('TraHangNhap_ThayDoiThoiGian'));
+                self.TraHangNhap_ThayDoiNhanVien(CheckQuyenExist('TraHangNhap_ThayDoiNhanVien'));
+                var insertNCC = CheckQuyenExist('NhaCungCap_ThemMoi');
+                if (insertNCC) {
+                    $('#hiddenShowaddNCC,#btnLuuNhomDoiTuong').show();
 
-                    }
-                    else {
-                        $('#hiddenShowaddNCC,#btnLuuNhomDoiTuong').hide();
-                    }
                 }
                 else {
-                    ShowMessage_Danger('Không có quyền');
+                    $('#hiddenShowaddNCC,#btnLuuNhomDoiTuong').hide();
                 }
-            });
-        }
+            }
+            else {
+                ShowMessage_Danger('Không có quyền');
+            }
+        });
     }
 
     function Check_QuyenXemGiaVon() {
@@ -2169,7 +2167,14 @@ var TraHangNhapChiTiet = function () {
         self.isLoading(false);
     }
 
-    self.SaveInvoice = function (status) {
+    async function GetTonKho_byIDQuyDoi(param) {
+        let xx = await ajaxHelper(DMHangHoaUri + 'GetTonKho_byIDQuyDois', 'POST', param).done(function (x) { }).then(function (x) {
+            if (x.res) return x.data;
+        });
+        return xx;
+    }
+
+    self.SaveInvoice = async function (status) {
         var cthd = localStorage.getItem(lcCTTraHangNhap);
         if (cthd !== null) {
             cthd = JSON.parse(cthd);
@@ -2180,6 +2185,21 @@ var TraHangNhapChiTiet = function () {
                 var errTonKho = '';
                 var sumTonKho = 0;
                 var sumSoLuong = 0;
+
+                var hd = localStorage.getItem(lcHDTraHangNhap);
+                if (hd !== null) {
+                    hd = JSON.parse(hd);
+                }
+                else {
+                    hd = [];
+                }
+
+                if (hd.length === 0) {
+                    Enable_btnSave();
+                    return;
+                }
+
+                let dateNgayLap = moment(hd[0].NgayLapHoaDon, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm');
 
                 if (CheckChar_Special(self.newHoaDon().MaHoaDon())) {
                     ShowMessage_Danger('Mã hóa đơn không được chứa kí tự đặc biệt');
@@ -2241,14 +2261,48 @@ var TraHangNhapChiTiet = function () {
                     delete arrCT[i]["DM_LoHang"];
                 }
                 if (self.ThietLap().XuatAm === false) {
-                    if (errTonKho !== '') {
-                        ShowMessage_Danger('Không đủ số lượng Tồn kho cho ' + errTonKho);
-                        Enable_btnSave();
-                        return false;
+                    //if (errTonKho !== '') {
+                    //    ShowMessage_Danger('Không đủ số lượng Tồn kho cho ' + errTonKho);
+                    //    Enable_btnSave();
+                    //    return false;
+                    //}
+                    //console.log('sumTonKho ', sumTonKho, sumSoLuong);
+                    //if (sumTonKho < sumSoLuong) {
+                    //    ShowMessage_Danger('Tổng số lượng trả của các mặt hàng khác đơn vị tính lớn hơn số lượng tồn kho ');
+                    //    Enable_btnSave();
+                    //    return false;
+                    //}
+                    let msgErr = '';
+
+                    let arrIDQuyDoi = $.unique(arrCT.map(function (x) {
+                        return x.ID_DonViQuiDoi;
+                    }));
+                    let arrIDLoHang = $.unique(arrCT.map(function (x) {
+                        return x.ID_LoHang;
+                    }).filter(x => x !== null).sort());
+
+                    let paramCheckTon = {
+                        ID_ChiNhanh: _idDonVi,
+                        ToDate: dateNgayLap,
+                        ListIDQuyDoi: arrIDQuyDoi,
+                        ListIDLoHang: arrIDLoHang,
+                    };
+
+                    // chưa check nếu có định lượng
+                    let dataCheck = await GetTonKho_byIDQuyDoi(paramCheckTon);
+
+                    for (let i = 0; i < arrCT.length; i++) {
+                        let forOut = arrCT[i];
+                        let dataDB = $.grep(dataCheck, function (o) {
+                            return o.ID_DonViQuiDoi === forOut.ID_DonViQuiDoi
+                                && (!forOut.QuanLyTheoLoHang || (o.ID_LoHang === forOut.ID_LoHang))
+                        });
+                        if (dataDB.length > 0 && RoundDecimal(dataDB[0].TonKho) < RoundDecimal(formatNumberToFloat(forOut.SoLuong))) {
+                            msgErr += forOut.TenHangHoa + ", ";
+                        }
                     }
-                    console.log('sumTonKho ', sumTonKho, sumSoLuong);
-                    if (sumTonKho < sumSoLuong) {
-                        ShowMessage_Danger('Tổng số lượng trả của các mặt hàng khác đơn vị tính lớn hơn số lượng tồn kho ');
+                    if (msgErr !== '') {
+                        ShowMessage_Danger('Không đủ số lượng Tồn kho cho ' + msgErr);
                         Enable_btnSave();
                         return false;
                     }
@@ -2273,24 +2327,18 @@ var TraHangNhapChiTiet = function () {
                 }
 
                 self.isLoading(true);
-                var hd = localStorage.getItem(lcHDTraHangNhap);
-                if (hd !== null) {
-                    hd = JSON.parse(hd);
-                    hd[0].NgayLapHoaDon = moment(hd[0].NgayLapHoaDon, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm');
-                    hd[0].ChoThanhToan = status === 0 ? false : true;
-                    hd[0].ID_NhanVien = $('#selectedNV').val();
-                    hd[0].MaHoaDon = self.newHoaDon().MaHoaDon();
-                    hd[0].DienGiai = self.newHoaDon().DienGiai();
-                    hd[0].ID_HoaDon = self.newHoaDon().ID_HoaDon();// used to trahang from nhaphang
 
-                    if (commonStatisJs.CheckNull(hd[0].ID_NhanVien)) {
-                        hd[0].ID_NhanVien = _idNhanVien;
-                    }
+                hd[0].NgayLapHoaDon = dateNgayLap;
+                hd[0].ChoThanhToan = status === 0 ? false : true;
+                hd[0].ID_NhanVien = $('#selectedNV').val();
+                hd[0].MaHoaDon = self.newHoaDon().MaHoaDon();
+                hd[0].DienGiai = self.newHoaDon().DienGiai();
+                hd[0].ID_HoaDon = self.newHoaDon().ID_HoaDon();// used to trahang from nhaphang
+
+                if (commonStatisJs.CheckNull(hd[0].ID_NhanVien)) {
+                    hd[0].ID_NhanVien = _idNhanVien;
                 }
-                else {
-                    Enable_btnSave();
-                    return false;
-                }
+
                 SaveHoaDon(hd[0], arrCT);
             }
             else {
@@ -2529,7 +2577,7 @@ var TraHangNhapChiTiet = function () {
             self.InforHDprintf(itemHDFormat);
 
             ajaxHelper('/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + TeamplateMauIn + '&idDonVi=' + _idDonVi, 'GET').done(function (result) {
-                var data = '<script src="/Scripts/knockout-3.4.2.js"></script>';
+                let data = '<script src="/Scripts/knockout-3.4.2.js"></script>';
                 data = data.concat("<script > var item4=[], item5=[]; var item1=" + JSON.stringify(self.CTHoaDonPrint()) + "; var item2=" + JSON.stringify(self.CTHoaDonPrint()) + ";var item3=" + JSON.stringify(itemHDFormat) + "; </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
                 PrintExtraReport(result, data, self.numbersPrintHD());

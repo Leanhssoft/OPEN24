@@ -305,7 +305,9 @@
                             <div class="row padding-10">
                                 <div class="col-lg-6">
                                     <div class="form-group floatleft">
-                                        <label class="control-label">Số km vào</label>
+                                        <label class="control-label">Số km vào
+                                            <span class="red" v-if="$root.role.PhieuTiepNhan.BatBuocNhapKmVao"> (*) </span>
+                                        </label>
                                         <div class="form-news">
                                             <input type="text" class="form-control text-right" autocomplete="off" onclick="this.select()"
                                                    v-model="newPhieuTiepNhan.SoKmVao" />

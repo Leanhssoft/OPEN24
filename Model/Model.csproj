@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Model</RootNamespace>
     <AssemblyName>Model</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -909,6 +909,26 @@
     <Compile Include="Migrations\202211010714467_AddUpdateSP_20221101.Designer.cs">
       <DependentUpon>202211010714467_AddUpdateSP_20221101.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202302020745125_AddUpdateSP_20230202.cs" />
+    <Compile Include="Migrations\202302020745125_AddUpdateSP_20230202.Designer.cs">
+      <DependentUpon>202302020745125_AddUpdateSP_20230202.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202303080840575_AddUpdateSP_20230308.cs" />
+    <Compile Include="Migrations\202303080840575_AddUpdateSP_20230308.Designer.cs">
+      <DependentUpon>202303080840575_AddUpdateSP_20230308.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202304140707221_UpdateTable_20230414.cs" />
+    <Compile Include="Migrations\202304140707221_UpdateTable_20230414.Designer.cs">
+      <DependentUpon>202304140707221_UpdateTable_20230414.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202306200739367_UpdateSP_20230630.cs" />
+    <Compile Include="Migrations\202306200739367_UpdateSP_20230630.Designer.cs">
+      <DependentUpon>202306200739367_UpdateSP_20230630.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202310300800444_AddUpdateSP_20231030.cs" />
+    <Compile Include="Migrations\202310300800444_AddUpdateSP_20231030.Designer.cs">
+      <DependentUpon>202310300800444_AddUpdateSP_20231030.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NhomDoiTuong_DonVi.cs" />
     <Compile Include="NhomHangHoa_DonVi.cs" />
@@ -1512,6 +1532,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202211010714467_AddUpdateSP_20221101.resx">
       <DependentUpon>202211010714467_AddUpdateSP_20221101.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202302020745125_AddUpdateSP_20230202.resx">
+      <DependentUpon>202302020745125_AddUpdateSP_20230202.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202303080840575_AddUpdateSP_20230308.resx">
+      <DependentUpon>202303080840575_AddUpdateSP_20230308.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202304140707221_UpdateTable_20230414.resx">
+      <DependentUpon>202304140707221_UpdateTable_20230414.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306200739367_UpdateSP_20230630.resx">
+      <DependentUpon>202306200739367_UpdateSP_20230630.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202310300800444_AddUpdateSP_20231030.resx">
+      <DependentUpon>202310300800444_AddUpdateSP_20231030.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

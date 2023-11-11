@@ -54,8 +54,30 @@
                     });
             }
         },
-        Insert_LichNhacBaoDuong: function (idHoaDon, cthd, isPrint = true) {
-
+        // apply for subdomain = LeeAuto
+        Insert_LichNhacBaoDuong_TheoXe: function (objPTN = {}) {
+            if (!$.isEmptyObject(objPTN)) {
+                ajaxHelper('/api/DanhMuc/GaraAPI/Insert_LichNhacBaoDuong_TheoXe?idPhieuTiepNhan=' + objPTN.ID, 'GET').done(function (x) {
+                    if (x.res) {
+                        let diary = {
+                            ID_DonVi: VHeader.IdDonVi,
+                            ID_NhanVien: VHeader.IdNhanVien,
+                            LoaiNhatKy: 1,
+                            ChucNang: 'Nhắc bảo dưỡng',
+                            NoiDung: 'Nhắc bảo dưỡng tự động khi xe xuất xưởng',
+                            NoiDungChiTiet: 'Tạo lịch nhắc bảo dưỡng cho xe '.concat(objPTN.BienSo,
+                                ' <br /> - Mã tiếp nhận: ', objPTN.MaPhieuTiepNhan,
+                                ' <br /> - Ngày tiếp nhận: ', moment(objPTN.NgayVaoXuong).format('DD/MM/YYYY HH:mm'),
+                                ' <br /> - Ngày xuất xưởng: ', moment(objPTN.NgayXuatXuong).format('DD/MM/YYYY HH:mm'),
+                                ' <br /> - Ngày nhắc bảo dưỡng tiếp theo: ', moment(objPTN.NgayXuatXuong).add('months', 6).format('DD/MM/YYYY HH:mm'),
+                            ),
+                        };
+                        Insert_NhatKyThaoTac_1Param(diary);
+                    }
+                });
+            }
+        },
+        Insert_LichNhacBaoDuong: async function (idHoaDon, cthd) {
             if (!commonStatisJs.CheckNull(idHoaDon) && idHoaDon !== const_GuidEmpty) {
                 let arrID = cthd.map(function (x) {
                     return x.ID_LichBaoDuong
@@ -65,24 +87,23 @@
                     status: 2,// daxuly
                 }
 
-                ajaxHelper('/api/DanhMuc/GaraAPI/LichNhacBaoDuong_updateStatus', 'POST', myData).done(function (x1) {
-                    ajaxHelper('/api/DanhMuc/GaraAPI/Insert_LichNhacBaoDuong?idHoaDon=' + idHoaDon, 'GET').done(function (x) {
-                        if (isPrint == false) {
-                            window.close();
-                        }
-                    });
-                });
+                await ajaxHelper('/api/DanhMuc/GaraAPI/LichNhacBaoDuong_updateStatus', 'POST', myData).done()
+                    .then(function () {
+                    })
+                await ajaxHelper('/api/DanhMuc/GaraAPI/Insert_LichNhacBaoDuong?idHoaDon=' + idHoaDon, 'GET').done()
+                    .then(function () {
+                    })
             }
         },
-        Upadate_LichBaoDuong: function (idHoaDon, hangthaymoi, ngaylapNew, ngaylapOld) {
+        Upadate_LichBaoDuong: async function (idHoaDon, hangthaymoi, ngaylapNew, ngaylapOld) {
             if (!commonStatisJs.CheckNull(hangthaymoi) && hangthaymoi.length > 0) {
                 var myData = {
                     ID_HoaDon: idHoaDon,
                     IDHangHoas: hangthaymoi,
                     NgayLapHoaDonOld: ngaylapOld,
                 }
-                ajaxHelper('/api/DanhMuc/GaraAPI/UpdateHD_UpdateBaoDuong', 'POST', myData)
-                    .done(function (x) {
+               await ajaxHelper('/api/DanhMuc/GaraAPI/UpdateHD_UpdateBaoDuong', 'POST', myData).done()
+                    .then(function () {
                         console.log('UpdateHD_UpdateBaoDuong ', x);
                     })
             }

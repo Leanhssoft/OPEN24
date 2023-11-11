@@ -496,7 +496,10 @@ var cmpChoseProduct = {
         },
         searchDB: function () {
             var self = this;
-            var txt = locdau(self.textSearch);
+            var txt = self.textSearch;
+            if (!commonStatisJs.CheckNull(txt)) {
+                txt = txt.trim();
+            }
             if (self.idBangGia === undefined) {
                 self.idBangGia = "00000000-0000-0000-0000-000000000000";
             }

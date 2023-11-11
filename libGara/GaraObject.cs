@@ -77,6 +77,7 @@ namespace libGara
     public class ParamGetListPhieuTiepNhan_v2
     {
         public List<string> IdChiNhanhs { get; set; } = new List<string>();
+        public Guid? IdUserLogin { get; set; } = Guid.Empty;
         public DateTime? NgayTiepNhan_From { get; set; } = null;
         public DateTime? NgayTiepNhan_To { get; set; } = null;
         public DateTime? NgayXuatXuongDuKien_From { get; set; } = null;
@@ -95,6 +96,7 @@ namespace libGara
         public string MaPhieuTiepNhan { get; set; }
         public DateTime NgayVaoXuong { get; set; }
         public int SoKmVao { get; set; }
+        public int? SoKmCu { get; set; }
         public DateTime? NgayXuatXuongDuKien { get; set; }
         public DateTime? NgayXuatXuong { get; set; }
         public int SoKmRa { get; set; }
@@ -141,9 +143,11 @@ namespace libGara
         public string MaDonVi { get; set; }
         public string TenDonVi { get; set; }
         public DateTime NgayTao { get; set; }
+        public string NguoiTao { get; set; }
         public int TotalRow { get; set; }
         public double TotalPage { get; set; }
         public Guid? ID_DonVi { get; set; }
+        public string XuatXuong_GhiChu { get; set; }
     }
 
     public class GetListPhieuTiepNhan_v2_Export
@@ -272,6 +276,8 @@ namespace libGara
 
     public class LichSuSuaChua_Export
     {
+        public string MaPhieuTiepNhan { get; set; }
+        public int? SoKmVao { get; set; }
         public string MaHoaDon { get; set; }
         public string MaBaoGia { get; set; }
         public DateTime NgayLapHoaDon { get; set; }
