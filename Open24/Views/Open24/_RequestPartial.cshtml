@@ -1,4 +1,4 @@
-﻿<div class="page-request">
+﻿@*<div class="page-request">
     <div class="container">
         <div class="list-introduces content-page-more">
             <h2 class="title title-page-more speed-animation">
@@ -40,4 +40,79 @@
             </div>
         </div>
     </div>
+</div>*@
+<style>
+    .from-request {
+        background-color: #FFF;
+        border-radius: 20px;
+        box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);
+    }
+</style>
+<div class="page-request">
+    <div class="container">
+        <div class="row pb-5 pt-5">
+            <div class="col-12 col-md-6 col-xs-12" id="hiddenCol"
+                 style="background-image: url('../../content/images/open24/iconhomepage/bg-page-support.png'); 
+                        background-repeat: no-repeat; background-position: bottom;min-height:200px">
+
+            </div>
+            <div class="col-12 col-md-6 col-xs-12 ">
+                <h5 class="text-center" style="color: #FF5C35;font-size:16px;font-weight:700;">
+                    Đăng ký tư vấn
+                </h5>
+                <div class="p-3 form-request">
+                    <h4 class="mb-4 text-center" style="color: #172B4D;font-weight:700;font-size:24px">Đăng ký nhận tư vấn miễn phí với Open 24</h4>
+                    <form>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txtHoTen" placeholder="Họ và tên">
+                            <label for="txtHoTen">Họ và tên</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com">
+                            <label for="txtEmail">Email</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txtDienThoai" placeholder="Số điện thoại">
+                            <label for="txtDienThoai">Số điện thoại</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txtDiaChi" placeholder="Địa chỉ">
+                            <label for="txtDiaChi">Địa chỉ</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea type="text" class="form-control" id="txtNoiDung" placeholder="Nội dung yêu cầu" style="height:205px"></textarea>
+                            <label for="txtNoiDung">Nội dung</label>
+                        </div>
+                        <button class="btn-submit" style="margin: 10px 0; width: 100%; background-color: #FF5C35; color: #FEFEFF">
+                            Gửi yêu cầu
+                        </button>
+                    </form>
+                </div>
+                
+            </div>
+        </div>
+    </div>
 </div>
+<script>
+    $(document).ready(function () {
+        // Kiểm tra kích thước màn hình khi trang tải lần đầu
+        checkScreenWidth();
+
+        // Gắn sự kiện resize để kiểm tra lại khi kích thước màn hình thay đổi
+        $(window).resize(function () {
+            checkScreenWidth();
+        });
+
+        function checkScreenWidth() {
+            // Lấy kích thước của màn hình
+            var screenWidth = $(window).width();
+
+            // Điều kiện: Nếu kích thước màn hình <= 576px, ẩn cột
+            if (screenWidth <= 576) {
+                $("#hiddenCol").hide();
+            } else {
+                $("#hiddenCol").show();
+            }
+        }
+    });
+</script>

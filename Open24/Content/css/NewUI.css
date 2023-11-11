@@ -375,7 +375,8 @@ h2.title {
 }
 
 .page-request {
-    background-color: #e8eef1;
+    /*background-color: #e8eef1;*/
+    background-color: #EBF4FC;
     padding-bottom: 10vh;
 }
 
