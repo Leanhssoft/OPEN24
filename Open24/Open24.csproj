@@ -3052,15 +3052,6 @@
     <Content Include="Views\Open24\_ModalTuVanOpen24.cshtml" />
     <Content Include="Views\Home\zalologin.cshtml" />
     <Content Include="Views\Open24\Index.cshtml" />
-    <Content Include="Views\Open24_Old\Index.cshtml" />
-    <Content Include="Views\Open24_Old\GaraOto.cshtml" />
-    <Content Include="Views\Open24_Old\KhachHang.cshtml" />
-    <Content Include="Views\Open24_Old\KhachHangChiTiet.cshtml" />
-    <Content Include="Views\Open24_Old\HoTroPhanMem.cshtml" />
-    <Content Include="Views\Open24_Old\Contact.cshtml" />
-    <Content Include="Views\Open24_Old\TinTuc.cshtml" />
-    <Content Include="Views\Open24_Old\TinTucChiTiet.cshtml" />
-    <Content Include="Views\Open24_Old\Home_old\HoTroPhanMem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

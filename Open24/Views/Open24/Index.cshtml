@@ -109,10 +109,12 @@
         box-shadow: 5px 5px 20px 0px #2745731a;
         border: none;
     }
+
     .card-body {
         flex: 1 1 auto;
         padding: 0 1rem;
     }
+
     @@media (max-width: 576px) {
         #supportPage, #img-bg-reason-page {
             background-image: none !important;
@@ -203,7 +205,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="card text-center speed-animation">
                         <div>
-                            <img src="~/Content/images/open24/IconHomePage/op-sales.png" alt="SuperMarket" style="height:208px"/>
+                            <img src="~/Content/images/open24/IconHomePage/op-sales.png" alt="SuperMarket" style="height:208px" />
                         </div>
                         <div class="card-body mt-3">
                             <h5 class="card-title">Open24 - Sales</h5>
@@ -475,10 +477,10 @@
     </div>
     <!--End Reason Choose-->
     @Html.Partial("_CustomerPartial")
-    <!--Start Support Page-->
-    @Html.Partial("_RequestPartial")
-    <!--End Support Page-->
 </div>
+<!--Start Support Page-->
+@Html.Partial("_RequestPartial")
+<!--End Support Page-->
 <div class="modal fade" id="myModal">
     <div class="modal-dialog" style="padding-top: 5%;">
         <iframe id="myVideo" width="100%" height="450px" src="" frameborder="0" allowfullscreen=""></iframe>

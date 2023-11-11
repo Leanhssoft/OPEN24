@@ -141,12 +141,14 @@
         height: 6px;
         margin-right: 5px
     }
+
     .op-panel-detail > div:before {
         color: #12B76A;
         background: #D1FADF;
         border-radius: 50%;
         padding: 4px;
     }
+
     .op-panel-detail > div.op-price-excepted:before {
         content: '\f00c';
         color: #525F7A;
@@ -154,8 +156,9 @@
         border-radius: 50%;
         padding: 4px;
     }
+
     .op-price-excepted {
-        padding-left:0;
+        padding-left: 0;
     }
 </style>
 
@@ -174,7 +177,7 @@
                     <span style=" color: #172B4D; font-size:32px ">
                         Chạy là mê ngay!
                     </span>
-                    <div> 
+                    <div>
                         <button class="btn-ads" style="margin-bottom: 18px;" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký dùng thử</button>
                     </div>
                 </div>
@@ -344,7 +347,7 @@
             <h2 class="title title-page">Quy trình sửa chữa Open24 Gara</h2>
         </div>
         <div style="height: auto; object-fit:fill; text-align:center">
-            <img src="~/Content/images/gara/bg-quy-trinh-sua-chua-gara.png" style="width:100%; height:100%"/>
+            <img src="~/Content/images/gara/bg-quy-trinh-sua-chua-gara.png" style="width:100%; height:100%" />
         </div>
     </div>
     <!--End quy trình sửa chữa-->
@@ -444,7 +447,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="col-12 col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="shadow rounded-3">
@@ -483,7 +486,7 @@
                             </div>
                         </div>
                         <div style="padding:32px; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; background: #EEF0F4">
-                            <button class="btn w-100" style="color: #28A59D;height:40px"  data-bs-toggle="modal" data-bs-target="#modalTuVan">Dùng thử</button>
+                            <button class="btn w-100" style="color: #28A59D;height:40px" data-bs-toggle="modal" data-bs-target="#modalTuVan">Dùng thử</button>
                         </div>
                     </div>
                 </div>
@@ -551,9 +554,9 @@
             <button class="btn-ads" style="margin-top: 18px; background: #FF5C35;" data-bs-toggle="modal" data-bs-target="#modalTuVan">Dùng thử ngay</button>
         </div>
     </div>
-    @Html.Partial("_RequestPartial")
 </div>
 
+@Html.Partial("_RequestPartial")
 <div class="modal fade" id="myModal">
     <div class="modal-dialog" style="padding-top: 5%;">
         <iframe id="myVideo" width="100%" height="450px" src="" frameborder="0" allowfullscreen=""></iframe>

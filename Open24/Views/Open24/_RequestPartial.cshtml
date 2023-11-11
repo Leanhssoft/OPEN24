@@ -11,7 +11,7 @@
         -moz-appearance: textfield;
     }
 </style>
-<div class="page-request" id="frmGuiYeuCauTuVan">
+<!--<div class="page-request" id="frmGuiYeuCauTuVan">-->
 @*<div class="page-request">
     <div class="container">
         <div class="list-introduces content-page-more">
@@ -106,7 +106,7 @@
         box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);
     }
 </style>
-<div class="page-request">
+<div class="page-request"  id="frmGuiYeuCauTuVan" >
     <div class="container">
         <div class="row pb-5 pt-5">
             <div class="col-12 col-md-6 col-xs-12" id="hiddenCol"
@@ -120,31 +120,31 @@
                 </h5>
                 <div class="p-3 form-request">
                     <h4 class="mb-4 text-center" style="color: #172B4D;font-weight:700;font-size:24px">Đăng ký nhận tư vấn miễn phí với Open 24</h4>
-                    <form>
+                    <div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="txtHoTen" placeholder="Họ và tên">
+                            <input type="text" class="form-control" id="txtHoTen" placeholder="Họ và tên" v-model="FullName">
                             <label for="txtHoTen">Họ và tên</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com">
+                            <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com" v-model="Email">
                             <label for="txtEmail">Email</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="txtDienThoai" placeholder="Số điện thoại">
+                            <input type="text" class="form-control" id="txtDienThoai" placeholder="Số điện thoại" v-model="Phone">
                             <label for="txtDienThoai">Số điện thoại</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="txtDiaChi" placeholder="Địa chỉ">
+                            <input type="text" class="form-control" id="txtDiaChi" placeholder="Địa chỉ" v-model="Address">
                             <label for="txtDiaChi">Địa chỉ</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea type="text" class="form-control" id="txtNoiDung" placeholder="Nội dung yêu cầu" style="height:205px"></textarea>
+                            <textarea type="text" class="form-control" id="txtNoiDung" placeholder="Nội dung yêu cầu" style="height:205px" v-model="Noted"></textarea>
                             <label for="txtNoiDung">Nội dung</label>
                         </div>
-                        <button class="btn-submit" style="margin: 10px 0; width: 100%; background-color: #FF5C35; color: #FEFEFF">
+                        <button class="btn-submit" type="button" style="margin: 10px 0; width: 100%; background-color: #FF5C35; color: #FEFEFF"  v-on:click="ClickGuiYeuCau">
                             Gửi yêu cầu
                         </button>
-                    </form>
+                    </div>
                 </div>
                 
             </div>
@@ -172,5 +172,49 @@
                 $("#hiddenCol").show();
             }
         }
+        var VYeuCauTuVan = new Vue({
+            el: "#frmGuiYeuCauTuVan",
+            data: {
+                FullName: "",
+                Email: "",
+                Phone: "",
+                Address: "",
+                Noted: ""
+            },
+            methods: {
+                ClickGuiYeuCau: function () {
+                    let self = this;
+                    var model = {
+                        FullName: self.FullName,
+                        Phone: self.Phone,
+                        Noted: self.Noted,
+                        Address: self.Address,
+                        Email: self.Email
+                    };
+                    $.ajax({
+                        data: model,
+                        url: '/Open24Api/ApiHome/GuiYeuCauTuVan',
+                        type: 'POST',
+                        dataType: 'json',
+                        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                        success: function (item) {
+                            if (item.res === true) {
+                                alert("Yêu cầu của quý khách đã gửi thành công. Chúng tôi sẽ liên hệ lại với quý khách trong thời gian sớm nhất. Cảm ơn quý khách!")
+                                /*window.location.href = "/dang-ky-dung-thu-thanh-cong";*/
+                                self.FullName = '';
+                                self.Phone = '';
+                                self.Noted = '';
+                                self.Address = "";
+                                self.Email = "";
+                            }
+                            else {
+                                alert(item.mess);
+                            }
+                        }
+                    });
+                }
+            }
+        });
     });
+    
 </script>
