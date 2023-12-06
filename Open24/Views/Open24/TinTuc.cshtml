@@ -3,71 +3,102 @@
     ViewBag.Title = "Tin tức";
 
 }
+<style>
+    .input-search {
+        border: 1px solid #C2C9D6;
+        border-radius: 8px;
+        width: 100%;
+        height: 40px;
+        padding: 9px 4px 9px 40px;
+        background: transparent url('../../content/images/open24/i-search.svg') no-repeat 13px center;
+    }
+
+        .input-search:focus {
+            border-color: #1183d6;
+            outline: none;
+            box-shadow: 0 0 3px 0 #1183d6;
+        }
+    .card {
+        background: #FEFEFF;
+        box-shadow: 5px 5px 20px 0px #2745731a;
+        border: none;
+    }
+
+    .card-body {
+        flex: 1 1 auto;
+        padding: 0;
+    }
+
+</style>
 <div id="renderNews">
-    <input id="op_type" hidden value="Tintuc"/>
-    <div class="container-fluid op-banner">
-        <div class="container ">
-            <div class="op-banner-content" data-aos="fade-right">
-                <h1 class="op-gara-heading">
-                    <span style="margin-bottom:30px">     Tin tức Open24</span>
-                </h1>
-            </div>
-            <div class="op-banner-image" style="max-width:60%">
-                <img src="~/Content/images/open24/op-tintuc-bg.svg" alt="gara xe" />
+    <input id="op_type" hidden value="Tintuc" />
+    <div class="container-fluid" style="background: #F4F5F7">
+        <div class="container " style="padding: 80px 0">
+            <div class="flex flex-column justify-content-center align-items-center">
+                <h1 style="margin-bottom: 24px; color: #172B4D;font-weight:700;font-size:40px">Tin tức</h1>
+                <div><span style="color: #525F7A;font-size:18px;font-weight:400">Chúng tôi luôn đồng hành cùng bạn. Thành công của bạn <br /> chính là mong muốn của chúng tôi</span></div>
             </div>
         </div>
     </div>
-    <section class="banner">
-        <div class="container flex">
-            <div class="detail-customer">
-                <div class="dt-cutomer-l">
-                    <div class="title-viewnews fl">
-                        Bài viết mới nhất
-                    </div>
-                    <div class="fl">
-                        <ul class="page-tree-news">
-                            <li class="" v-for="(item, index) in curentpage.data" v-show="curentpage.data.length>0" v-bind:class="[index==0 ? 'item-news-one' : 'fa-checkbox-blank-outline']">
-                                <div class="img">
-                                    <a href="javascript:void(0)" v-bind:href="item.Url">
-                                        <img class="bor-radius" v-bind:src="item.Image" />
-                                    </a>
-                                </div>
-                                <div class="news-content-title">
-                                    <a href="javascript:void(0)" v-bind:href="item.Url">
-                                        <h2 class="title-label">{{item.Title}}</h2>
-                                        <span class="time-news-more">{{item.CreatDate}}</span>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="text-center fl"><a href="javascript:void(0)" class="btn-more" v-on:click="NextPageNews" v-show="curentpage.ishow"> Xem thêm </a></div>
-                </div>
-                <div class="dt-cutomer-r">
-                    <div class="title-viewnews fl">
-                        Bài viết xem nhiều nhất
-                    </div>
-                    <ul class="list-tree-news">
-                        <li v-for="(item, index) in listcurentolbar" v-show="listcurentolbar.length>0">
-                            <a class="fl" href="javascript:void(0)" v-bind:href="item.Url">
-                                <div class="img img-tol3-new">
-                                    <img v-bind:src="item.Image" />
-                                </div>
-                                <div class="new-title">
-                                    <p>{{item.Title}}</p>
-                                    <span class="time-news-more">   {{item.CreatDate}}</span>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="view-news fl">
-                        @Html.Partial("PageFacebookPartial")
-                    </div>
-                </div>
-
+    <div class="container" style="padding: 80px 0">
+        <div class="flex justify-content-between align-content-center" style="margin-bottom:40px">
+            <div class="text-start">
+                <span style="color: #29303D;font-size:32px;font-weight:700">Tin tức mới</span>
+            </div>
+            <div class="text-end">
+                <input class="input-search" type="text" placeholder="Tìm kiếm"/>
             </div>
         </div>
-    </section>
+        <div class="row">
+            <div class="col-6 col-lg-6 col-xl-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="card h-100" data-attribute="{curentpage.data}">
+                    <a v-bind:href="curentpage.data[0].Url">
+                        <div class="card-body">
+                            <img v-if="curentpage.data.length > 0" :src="~curentpage.data[0].Image" style="width:100%;height:342px;object-fit:fill" />
+                            <div style="color: #3D475C;font-size:24px;font-weight:700;margin-top:24px">{{ curentpage.data[0].Title }}</div>
+                            <div style="color: #525F7A; font-size: 16px; font-weight: 400;margin-top:32px"> {{ curentpage.data[0].CreatDate }}</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-6 col-lg-6 col-xl-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="flex flex-row justify-content-start align-items-center" style="margin-bottom:32px" v-for="(item, index) in listcurentolbar.slice(0, 3)" v-show="listcurentolbar.length>0">
+                   
+                        <img style="border-radius:8px; height:140px;width:200px;object-fit:fill" v-bind:src="item.Image" />
+                        <div class="flex flex-column justify-content-between align-items-start" style="margin-left:12px">
+                            <p > <a href="javascript:void(0)" v-bind:href="item.Url"style="font-size: 18px; font-weight: 700; color: #3D475C">{{item.Title}}</a></p>
+                            <span style="color: #525F7A; font-size: 16px; font-weight: 400">{{item.CreatDate}}</span>
+                        </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container" style="padding: 80px 0">
+        <div style="margin-bottom: 64px; box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10); border-radius: 24px; display: flex; padding: 16px; align-items: center; gap: 24px; align-self: stretch; ">
+            <button class="btn op-trial">Gần đây</button>
+            <button class="btn-outline-light btn" style="color: #172B4D;font-size:18px;font-weight:700">Kinh doanh</button>
+            <button class="btn-outline-light btn" style="color: #172B4D;font-size:18px;font-weight:700">Marketing</button>
+            <button class="btn-outline-light btn" style="color: #172B4D;font-size:18px;font-weight:700">Phần mềm</button>
+        </div>
+        <div class="row">
+            <div class="col-12 col-lg-4 col-xl-4 col-md-4 col-sm-12 col-xs-12" style="margin-bottom:16px" v-for="(item, index) in curentpage.data" v-show="listcurentolbar.length>0">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <img v-bind:src="item.Image" style="height:255px; width:100%;margin-bottom:24px;border-radius:8px"/>
+                        <div>
+                            <span style="color: #525F7A;font-size:16px;font-weight:400">{{item.CreatDate}}</span>
+                            <hr/>
+                        </div>
+                        <div style="color: #3D475C;font-size:24px;font-weight:700">{{ item.Title }}</div>
+                        <div style="color: #525F7A; font-size: 16px; font-weight: 400 ;height: 70px; overflow: hidden; text-overflow: ellipsis; "> {{ item.Summary }}</div>
+                        <a class="btn" style="color: #0078D7" href="javascript:void(0)" v-bind:href="item.Url">Xem thêm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center fl"><a href="javascript:void(0)" class="btn-more" v-on:click="NextPageNews" v-show="curentpage.ishow"> Xem thêm </a></div>
+    </div>
     @Html.Partial("_WeareonePartial")
 </div>
 <script src="~/Assets/js/Client/open24/RenderNewVue.js"></script>

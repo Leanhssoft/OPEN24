@@ -1,4 +1,5 @@
-﻿<style>
+﻿
+<style>
     /* Chrome, Safari, Edge, Opera */
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {
@@ -10,49 +11,87 @@
     input[type=number] {
         -moz-appearance: textfield;
     }
+    .from-request {
+        background-color: #FFF;
+        border-radius: 20px;
+        box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);
+    }
 </style>
-<div class="page-request" id="frmGuiYeuCauTuVan">
+<div class="page-request"  id="frmGuiYeuCauTuVan" >
     <div class="container">
-        <div class="list-introduces content-page-more">
-            <h2 class="title title-page-more speed-animation">
-                Gửi yêu cầu tư vấn
-            </h2>
-        </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="txtHoTen" placeholder="Họ và tên" v-model="FullName">
-                    <label for="txtHoTen">Họ và tên</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com" v-model="Email">
-                    <label for="txtEmail">Email</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="txtDienThoai" placeholder="Số điện thoại" v-model="Phone">
-                    <label for="txtDienThoai">Số điện thoại</label>
-                </div>
-                <div class="form-floating mb-3">
-                    <input type="text" class="form-control" id="txtDiaChi" placeholder="Địa chỉ" v-model="Address">
-                    <label for="txtDiaChi">Địa chỉ</label>
+        <div class="row pb-5 pt-5">
+            <div class="col-12 col-md-6 col-xs-12" id="hiddenCol"
+                 style="background-image: url('../../content/images/open24/iconhomepage/bg-page-support.png'); 
+                        background-repeat: no-repeat; background-position: bottom;min-height:200px">
+
+            </div>
+            <div class="col-12 col-md-6 col-xs-12 ">
+                <h5 class="text-center" style="color: #FF5C35;font-size:16px;font-weight:700;">
+                    Đăng ký tư vấn
+                </h5>
+                <div class="p-3 form-request">
+                    <h4 class="mb-4 text-center" style="color: #172B4D;font-weight:700;font-size:24px">Đăng ký nhận tư vấn miễn phí với Open 24</h4>
+                    <div>
+                        <input id="NganhNghe" hidden value="@ViewBag.NganhNghe" />
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txtHoTen" placeholder="Họ và tên" v-model="FullName">
+                            <label for="txtHoTen">Họ và tên</label>
+                            <span v-if="!FullName.trim() && submitted" class="text-danger">Vui lòng nhập họ và tên</span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com" v-model="Email">
+                            <label for="txtEmail">Email</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txtDienThoai" placeholder="Số điện thoại" v-model="Phone">
+                            <label for="txtDienThoai">Số điện thoại</label>
+                            <span v-if="!Phone.trim() && submitted" class="text-danger">Vui lòng nhập số điện thoại</span>
+                            <span v-if="Phone.trim() && !phoneRegex.test(Phone.trim()) && submitted" class="text-danger">Số điện thoại không đúng dịnh dạng</span>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="txtDiaChi" placeholder="Địa chỉ" v-model="Address">
+                            <label for="txtDiaChi">Địa chỉ</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <textarea type="text" class="form-control" id="txtNoiDung" placeholder="Nội dung yêu cầu" style="height:205px" v-model="Noted"></textarea>
+                            <label for="txtNoiDung">Nội dung</label>
+                        </div>
+                        <button class="btn-submit" type="button" style="margin: 10px 0; width: 100%; background-color: #FF5C35; color: #FEFEFF"  v-on:click="ClickGuiYeuCau">
+                            Gửi yêu cầu
+                        </button>
+                    </div>
                 </div>
                 
-            </div>
-            <div class="col-lg-6 col-md-6  col-sm-6 col-12">
-                <div class="form-floating mb-3">
-                    <textarea type="text" class="form-control" id="txtNoiDung" placeholder="Nội dung yêu cầu" style="height:205px" v-model="Noted"></textarea>
-                    <label for="txtNoiDung">Nội dung</label>
-                </div>
-                <button class="btn-submit" style="margin:10px 0" v-on:click="ClickGuiYeuCau">
-                    <i class="fa fa-hand-o-right" aria-hidden="true" style="font-size:22px"></i>
-                    Gửi yêu cầu
-                </button>
             </div>
         </div>
     </div>
 </div>
-
 <script>
+    $(document).ready(function () {
+        // Kiểm tra kích thước màn hình khi trang tải lần đầu
+        checkScreenWidth();
+        // Gắn sự kiện resize để kiểm tra lại khi kích thước màn hình thay đổi
+        $(window).resize(function () {
+            checkScreenWidth();
+        });
+
+        function checkScreenWidth() {
+            // Lấy kích thước của màn hình
+            var screenWidth = $(window).width();
+
+            // Điều kiện: Nếu kích thước màn hình <= 576px, ẩn cột
+            if (screenWidth <= 576) {
+                $("#hiddenCol").hide();
+            } else {
+                $("#hiddenCol").show();
+            }
+        }
+        
+    });
+    
+</script>
+<script>
+    var nganhNgheValue = document.getElementById("NganhNghe").value;
     var VYeuCauTuVan = new Vue({
         el: "#frmGuiYeuCauTuVan",
         data: {
@@ -60,11 +99,38 @@
             Email: "",
             Phone: "",
             Address: "",
-            Noted: ""
+            Noted: "",
+            phoneRegex: /^\d{10,}$/,
+            submitted: false
         },
         methods: {
             ClickGuiYeuCau: function () {
+
                 let self = this;
+                self.submitted = true;
+                if (!self.FullName.trim()) {
+                    return;
+                }
+
+                if (!self.Phone.trim()) {
+                    return;
+                }
+
+                if (!self.phoneRegex.test(self.Phone.trim())) {
+                    return;
+                }
+                if (nganhNgheValue== "OTXMXDD") {
+                    self.Noted += " (Gara)";
+                }
+                else if (nganhNgheValue== "TMV") {
+                    self.Noted += " (Beauty)";
+                }
+                else if (nganhNgheValue== "Other") {
+                    self.Noted += " (Sales)";
+                }
+                else {
+                    self.Noted += " (Trang chủ)";
+                }
                 var model = {
                     FullName: self.FullName,
                     Phone: self.Phone,
@@ -91,6 +157,7 @@
                         else {
                             alert(item.mess);
                         }
+                        self.submitted = false;
                     }
                 });
             }

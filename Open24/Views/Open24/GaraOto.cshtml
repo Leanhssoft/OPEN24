@@ -6,7 +6,8 @@
 <style>
     :root {
         --color-theme: #0E63C4;
-        --color-theme-2: #b7d7fa
+        --color-theme-2: #b7d7fa;
+        --color-theme-3: #FFFFFF;
     }
 
     .op-description-body {
@@ -34,6 +35,131 @@
         font-size: 16px;
         font-weight: bold;
     }
+
+    .container-fluid {
+        background-color: var(--color-theme-3)
+    }
+
+    .op-gara-heading {
+        text-align: left;
+        font-family: Roboto;
+        font-weight: 700;
+        margin: 0;
+        margin-bottom: 30px;
+    }
+
+    .btn-ads {
+        height: 40px;
+        background: #28A59D;
+        text-align: center;
+        padding: 7px 12px;
+        font-size: 16px;
+        font-weight: normal;
+        border: none;
+        border-radius: 20px;
+        font-family: "Roboto";
+        width: 175px;
+        color: #FEFEFF;
+        letter-spacing: 0;
+        line-height: 24px;
+        transition: all 0.4s ease;
+    }
+
+        .btn-ads:hover {
+            height: 40px;
+            background: #28A59D;
+            text-align: center;
+            padding: 7px 12px;
+            font-size: 16px;
+            font-weight: normal;
+            border: none;
+            border-radius: 20px;
+            font-family: "Roboto";
+            width: 175px;
+            color: #FEFEFF;
+            letter-spacing: 1.5px;
+            line-height: 24px;
+            transition: all 0.4s ease;
+        }
+
+    .card-title {
+        color: #172B4D;
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .card-text {
+        color: #666768;
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .card {
+        border-radius: 10px;
+        background: #FEFEFF;
+        box-shadow: 5px 5px 20px 0px #2745731a;
+        border: none;
+        padding: 40px 24px;
+        height: 100%;
+    }
+
+    .card-body {
+        flex: 1 1 auto;
+        padding-top: 24px;
+    }
+
+    .title-body {
+        padding: 40px 40px;
+        text-align: center;
+    }
+
+    .title {
+        color: #28A59D;
+        font-family: Montserrat;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 24px;
+        text-transform: uppercase;
+    }
+
+    .title-page {
+        color: #333435;
+        font-family: Roboto;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 36px;
+    }
+
+    .list-ul-li::before {
+        color: #A0D911;
+        content: "\2022";
+        font-weight: bold;
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin-right: 5px
+    }
+
+    .op-panel-detail > div:before {
+        color: #12B76A;
+        background: #D1FADF;
+        border-radius: 50%;
+        padding: 4px;
+    }
+
+    .op-panel-detail > div.op-price-excepted:before {
+        content: '\f00c';
+        color: #525F7A;
+        background: #F2F4F7;
+        border-radius: 50%;
+        padding: 4px;
+    }
+
+    .op-price-excepted {
+        padding-left: 0;
+    }
 </style>
 
 @using Model_banhang24vn.Common
@@ -41,600 +167,340 @@
     <input id="currentPage" value="Gara" hidden />
     <div class="container-fluid op-banner">
         <div class="container ">
-            <div class="op-banner-content" data-aos="fade-right">
-                <div class=" " style="background:red; height:45px; width:45px; padding:10px; border-radius:25px;">
-                    <i class="fa fa-car" style="font-size:24px; color:white">
-                    </i>
-                </div>
-                <h1 class="op-gara-heading">
-                    <span>Open24 Gara</span>
-                    <br />
-                    <span style="        color: white;
-">
+            <div class="op-banner-content p-5" data-aos="fade-right" style="border-radius: 0 0 20% 0;background: #F8F8F8;">
+                <div class="op-gara-heading p-5">
+                    <div style="margin-bottom: 18px; color: #28A59D;font-size:48px">Open24 Gara</div>
+                    <span style=" color: #172B4D;font-size:32px ">
                         Phần mềm cực hay
                     </span>
                     <br />
-                    <span style="        color: white;
-">
+                    <span style=" color: #172B4D; font-size:32px ">
                         Chạy là mê ngay!
                     </span>
-                </h1>
-                <button class="btn-ads" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký dùng thử</button>
-                @*<button class="btn-ads" style="background: #FFD40C" data-toggle="modal" data-target="#modalTuVan">Đặt mua</button>*@
+                    <div>
+                        <button class="btn-ads" style="margin-bottom: 18px;" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký dùng thử</button>
+                    </div>
+                </div>
             </div>
             <div class="op-banner-image">
-                <img src="~/Content/images/gara/gara_car.png" class="gara-car-img" alt="gara xe" />
-                
+                <img src="~/Content/images/gara/gara_car_2.png" class="gara-car-img" alt="gara xe" />
+
             </div>
         </div>
     </div>
-    <div class="container" style="text-align: center; display: flex;flex-direction: column; justify-content: center;">
-        <font style="font-size: 32px; margin: 50px 0;">Quy trình sửa chữa Open24 Gara</font>
-        <div style="padding:15px; display:flex; flex-direction:row; flex-wrap:wrap;">
-
-            <div class="op-quytrinh">
-
-                <div class=" op-quytrinh-items">
-                    <img src="~/Content/images/quytrinh/gara/gara-quytrinh-1.svg" />
-                    <div>
-                        <span>1</span>
-                        <b>Tiếp đón xe</b>
-                    </div>
-                </div>
-
-
-
-                <div class=" op-quytrinh-items">
-                    <img src="~/Content/images/quytrinh/gara/gara-quytrinh-2.svg" />
-                    <div>
-                        <span>2</span>
-                        <b>Đánh giá trình trạng xe</b>
-                    </div>
-                </div>
-
-
-                <div class=" op-quytrinh-items">
-                    <img src="~/Content/images/quytrinh/gara/gara-quytrinh-3.svg" />
-                    <div>
-                        <span>3</span>
-                        <b>Lập báo giá</b>
-                        <b>lên phương</b>
-                        <b>án sửa chữa</b>
-                    </div>
-                </div>
-
-
-
-                <div class=" op-quytrinh-items">
-                    <img src="~/Content/images/quytrinh/gara/gara-quytrinh-4.svg" />
-                    <div>
-                        <span>4</span>
-                        <b>Lên hợp đồng,</b>
-                        <b> lệnh sửa chữa</b>
-                    </div>
-                </div>
-                <div class=" op-quytrinh-items">
-                    <img src="~/Content/images/quytrinh/gara/gara-quytrinh-5.svg" />
-                    <div>
-                        <span>5</span>
-                        <b>Tiến hành sửa chữa</b>
-                    </div>
-                </div>
-                <div class=" op-quytrinh-items">
-                    <img src="~/Content/images/quytrinh/gara/gara-quytrinh-6.svg" />
-                    <div>
-                        <span>6</span>
-                        <b>Nghiệm thu,</b>
-                        <b> thanh lý, bàn giao</b>
-                    </div>
-                </div>
-                <div class=" op-quytrinh-items">
-                    <img src="~/Content/images/quytrinh/gara/gara-quytrinh-7.svg" />
-                    <div>
-                        <span>7</span>
-                        <b>Lập phiếu cho</b>
-                        <b> xe xuất xưởng</b>
-                    </div>
-                </div>
-                <div class=" op-quytrinh-items">
-                    <img src="~/Content/images/quytrinh/gara/gara-quytrinh-8.svg" />
-                    <div>
-                        <span>8</span>
-                        <b>Chăm sóc khách hàng,</b>
-                        <b> nhắc nhở bảo dưỡng</b>
-                    </div>
-                </div>
-                <div class=" op-quytrinh-items">
-                    <img src="~/Content/images/quytrinh/gara/gara-quytrinh-9.svg" />
-                    <div>
-                        <span>9</span>
-                        <b>Theo dõi công nợ</b>
-                    </div>
-                </div>
-                <div class=" op-quytrinh-items">
-                    <img src="~/Content/images/quytrinh/gara/gara-quytrinh-10.svg" />
-                    <div>
-                        <span>10</span>
-                        <b>Báo cáo kết quả</b>
-                        <b> kinh doanh</b>
-                    </div>
-                </div>
-
-            </div>
-            @*<img src="~/Content/images/open24/op-gara-bg.svg" style="width: 652px; max-width: 80vw;" />*@
+    <!--Tổng quan-->
+    <div class="container pb-4">
+        <div class="title-body">
+            <h4 class="title" style="color: #FF5C35">Đơn giản hóa quản lý</h4>
+            <h2 class="title title-page">
+                Phần mềm quản lý toàn diện
+            </h2>
         </div>
-    </div>
-    <!--quy trinh sua chua-->
-    <div class="container">
-        <div class="op-section-title">
-            <font>Tính năng chính Open24 Gara</font>
-        </div>
-        <div style="display:flex; flex-direction:row; flex-wrap:wrap">
-            <div class="col-md-6 col-xs-12 p-3">
-                <div class="op-description">
-                    <div class="op-description-header" onclick="ToggleNext(this)">
-                        <div class="op-description-title">
-                            <span class="op-description-number">1</span>
-                            Quản lý xe, phụ tùng, kho
-                        </div>
-                        <a class="op-description-toggle"><i class="fa fa-angle-up"></i></a>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="card text-center">
+                    <div>
+                        <img src="~/Content/images/gara/statistics.svg" />
                     </div>
-                    <div class="op-description-body">
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Theo dõi chi tiết thông tin xe: Biển số, số khung, số máy, nhật ký sửa chữa
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý danh mục phụ tùng, dịch vụ sửa chữa
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý kho hàng, nhập mua, xuất bán, xuất sửa chữa, tồn kho
-                            </span>
-                        </div>
+                    <div class="card-body mt-3">
+                        <h5 class="card-title">Tăng trưởng doanh thu</h5>
+                        <p class="card-text">Kiểm soát chặt chẽ lãi lỗ, các khoản thu chi nhờ báo cáo chính xác, kịp thời</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-xs-12 p-3">
-                <div class="op-description">
-                    <div class="op-description-header" onclick="ToggleNext(this)">
-                        <div class="op-description-title">
-                            <span class="op-description-number">2</span>
-                            Quản lý sửa chữa
-                        </div>
-                        <a class="op-description-toggle"><i class="fa fa-angle-up"></i></a>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="card text-center">
+                    <div>
+                        <img src="~/Content/images/gara/budgeting.svg" />
                     </div>
-                    <div class="op-description-body">
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Cố vấn dịch vụ tiếp nhận xe, đánh giá tình trạng xe
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Lập báo giá, báo giá bảo hiểm duyệt
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Theo dõi tiến độ sửa chữa
-                            </span>
-                        </div>
-
-
+                    <div class="card-body mt-3">
+                        <h5 class="card-title">Tối ưu chi phí</h5>
+                        <p class="card-text">Cung cấp dịch vụ tốt nhất với mức chi phí tốt nhất</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-xs-12 p-3">
-                <div class="op-description">
-                    <div class="op-description-header" onclick="ToggleNext(this)">
-                        <div class="op-description-title">
-                            <span class="op-description-number">3</span>
-                            Quản lý hợp đồng, báo giá
-
-                        </div>
-                    
-                   
-                   
-
-                        <a class="op-description-toggle"><i class="fa fa-angle-up"></i></a>
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="card text-center">
+                    <div>
+                        <img src="~/Content/images/gara/system.svg" />
                     </div>
-                    <div class="op-description-body">
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý báo giá đã duyệt, thu đặt cọc ( nếu có )
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Lập hợp đồng, lệnh sửa chữa
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Xuất kho hàng hóa vật tư theo báo giá duyệt
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 col-xs-12 p-3">
-                <div class="op-description">
-                    <div class="op-description-header" onclick="ToggleNext(this)">
-                        <div class="op-description-title">
-                            <span class="op-description-number">4</span>
-                            Quản lý mua hàng, bán hàng
-                        </div>
-                        <a class="op-description-toggle"><i class="fa fa-angle-up"></i></a>
-                    </div>
-                    <div class="op-description-body">
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý nhập mua, trả lại nhà cung cấp
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý bán hàng, xuất kho phụ tùng sửa chữa, xuất bán lẻ
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý đổi trả phụ tùng
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xs-12 p-3">
-                <div class="op-description">
-                    <div class="op-description-header" onclick="ToggleNext(this)">
-                        <div class="op-description-title">
-                            <span class="op-description-number">5</span>
-                            Quản lý khách hàng, bảo hiểm, nhà cung cấp
-                        </div>
-                        <a class="op-description-toggle"><i class="fa fa-angle-up"></i></a>
-                    </div>
-                    <div class="op-description-body">
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý thông tin khách hàng, chủ xe
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý thông tin các công ty bảo hiểm
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý thông tin nhà cung cấp, đối tác
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xs-12 p-3">
-                <div class="op-description">
-                    <div class="op-description-header" onclick="ToggleNext(this)">
-                        <div class="op-description-title">
-                            <span class="op-description-number">6</span>
-                            Quản lý tài chính, công nợ
-                        </div>
-                        <a class="op-description-toggle"><i class="fa fa-angle-up"></i></a>
-                    </div>
-                    <div class="op-description-body">
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý sổ quỹ, nhật ký thu tiền, chi tiền theo từng khoản mục
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Theo dõi thu, chi đặt cọc sửa chữa
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý công nợ khách hàng, nhà cung cấp, bảo hiểm
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xs-12 p-3">
-                <div class="op-description">
-                    <div class="op-description-header" onclick="ToggleNext(this)">
-                        <div class="op-description-title">
-                            <span class="op-description-number">7</span>
-                            Hệ thống báo cáo kinh doanh
-                        </div>
-                        <a class="op-description-toggle"><i class="fa fa-angle-up"></i></a>
-                    </div>
-                    <div class="op-description-body">
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Hệ thống báo cáo doanh thu, chi phí sửa chữa theo từng xe
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Báo cáo tổng hợp hàng hóa, khách hàng, nhà cung cấp, bảo hiểm, kho
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Báo cáo kết quả hoạt động kinh doanh theo ngày, tháng, quý, năm
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xs-12 p-3">
-                <div class="op-description">
-                    <div class="op-description-header" onclick="ToggleNext(this)">
-                        <div class="op-description-title">
-                            <span class="op-description-number">8</span>
-                            Nhắc lịch bảo hành, bảo dưỡng
-                        </div>
-                        <a class="op-description-toggle"><i class="fa fa-angle-up"></i></a>
-                    </div>
-                    <div class="op-description-body">
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Nhắc nhở xe đến hạn thay dầu, bảo dưỡng
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Theo dõi lịch bảo hành phụ tùng theo xe
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Hệ thống chăm sóc khách hàng định kỳ
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xs-12 p-3">
-                <div class="op-description">
-                    <div class="op-description-header" onclick="ToggleNext(this)">
-                        <div class="op-description-title">
-                            <span class="op-description-number">9</span>
-                            Marketing email, smsbrandname
-                        </div>
-                        <a class="op-description-toggle"><i class="fa fa-angle-up"></i></a>
-                    </div>
-                    <div class="op-description-body">
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý email marketing gửi mail hàng loạt
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Tích hợp hệ thống tin nhắn thương hiệu sms brandname
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Báo cáo phân tích, thống kê hoạt động email, sms marketing
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-xs-12 p-3">
-                <div class="op-description">
-                    <div class="op-description-header" onclick="ToggleNext(this)">
-                        <div class="op-description-title">
-                            <span class="op-description-number">10</span>
-                            Chấm công, tính lương, hoa hồng
-                        </div>
-                        <a class="op-description-toggle"><i class="fa fa-angle-up"></i></a>
-                    </div>
-                    <div class="op-description-body">
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý chấm công hàng ngày, hàng giờ
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý hoa hồng bán hàng, tư vấn, thực hiện sửa chữa
-                            </span>
-                        </div>
-                        <div class="op-description-item">
-                            <i class="fa fa-circle "></i>
-                            <span class="op-description-detail">
-                                Quản lý bảng lương tổng hợp, lương hoa hồng, lương kinh doanh
-                            </span>
-                        </div>
+                    <div class="card-body mt-3">
+                        <h5 class="card-title">Quản lý hiện đại</h5>
+                        <p class="card-text">Quản lý thông minh linh hoạt, mọi lúc mọi nơi</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="container">
-        <div>
-            <div class="op-section-title">
-                <font>Bảng giá phần mềm Open24 Gara</font>
-                <div style="display:flex; flex-direction:column">
-                    <span>Không chi phí phát sinh</span>
-                    <span>
-                        Hỗ trợ trong suốt quá trình sử dung
-                    </span>
-                    <span>
-                        Miễn phí khởi tạo, thiết kế mẫu biểu báo giá, hợp đồng, lệnh sửa chữa …
-                    </span>
-                </div>
+    <!--End tổng quan-->
+    <!--Tính năng-->
+    <div class="container-fluid pb-4" style="background: #F4F5F7;">
+        <div class="container">
+            <div class="title-body">
+                <h4 class="title">Tính năng ưu việt</h4>
+                <h2 class="title title-page">Giải pháp toàn diện đáp ứng nghiệp vụ dễ dàng</h2>
             </div>
-            <div class="flex op-price">
-                <!--gói tiết kiệm-->
-                <div class="col-lg-4 col-xs-12 p-2">
-                    <div class="op-price-panel">
-                        <font class="" style=" text-transform: uppercase; font-weight:bold">Gói tiết kiệm</font>
-                        <div class="op-panel-icon">
-                            <img src="~/Content/images/gara/save-money.png" />
-                        </div>
-                        <div class="flex flex-column">
-                            <div>
-                                <font style="color:var(--color-theme); font-size:32px">595.000</font>
-                                <span>đ/tháng</span>
+            <div class="row" style="margin-bottom:80px">
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12">
+                    <div style="
+                                background-image: url('../../content/images/gara/pm-gara.png');
+                                background-position: bottom center;
+                                background-repeat: no-repeat;
+                                min-height: 383px;">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12">
+                    <div class="p-3 gap-2 flex flex-column">
+                        <div>
+                            <div class="flex flex-row justify-content-start align-items-center" style="background: #28A59D; padding: 24px; border-radius: 8px 8px 0px 0px;">
+                                <img src="~/Content/images/gara/i-shipping.svg" />
+                                <span style="color:white; font-size:18px;font-weight:700">Quản lý xe, phụ tùng, kho</span>
                             </div>
-                            <div class="flex flex-row flex-around">
-                                <div style="text-decoration: line-through; color: #5c5c5c;">
+                            <div style="padding:24px">
+                                <ul>
+                                    <li class="list-ul-li" style="color: #666768; font-size: 16px; line-height: 24px; font-weight: 400">Theo dõi chi tiết thông tin xe: Biển số, số khung, số máy, nhật ký sửa chữa</li>
+                                    <li class="list-ul-li" style="color: #666768; font-size: 16px; line-height: 24px; font-weight: 400">Quản lý danh mục phụ tùng, dịch vụ sửa chữa</li>
+                                    <li class="list-ul-li" style="color: #666768; font-size: 16px; line-height: 24px; font-weight: 400">Quản lý kho hàng, nhập mua, xuất bán, xuất sửa chữa, tồn kho</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-1 flex-row justify-content-start align-items-center bg-white" style="padding: 24px; border-radius: 8px;">
+                            <img src="~/Content/images/gara/i-repair.png" />
+                            <span style="color:black; font-size:18px;font-weight:700">Quản lý sửa chữa</span>
+                        </div>
+                        <div class="flex gap-1 flex-row justify-content-start align-items-center bg-white" style="padding: 24px; border-radius: 8px;">
+                            <img src="~/Content/images/gara/i-clipbox.png" />
+                            <span style="color:black; font-size:18px;font-weight:700">Quản lý hợp đồng, báo giá</span>
+                        </div>
+                        <div class="flex gap-1 flex-row justify-content-start align-items-center bg-white" style="padding: 24px; border-radius: 8px;">
+                            <img src="~/Content/images/gara/i-sales.png" />
+                            <span style="color:black; font-size:18px;font-weight:700">Quản lý bán hàng</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:80px">
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12">
+                    <div class="p-3 gap-2 flex flex-column">
+                        <div class="flex gap-1 flex-row justify-content-start align-items-center bg-white" style="padding: 24px; border-radius: 8px;">
+                            <img src="~/Content/images/gara/i-money.png" />
+                            <span style="color:black; font-size:18px;font-weight:700">Quản lý tài chính, công nợ</span>
+                        </div>
+                        <div class="flex gap-1 flex-row justify-content-start align-items-center bg-white" style="padding: 24px; border-radius: 8px;">
+                            <img src="~/Content/images/gara/i-crm.png" />
+                            <span style="color:black; font-size:18px;font-weight:700">Quản lý khách hàng, bảo hiểm, nhà cung cấp</span>
+                        </div>
+                        <div class="flex gap-1 flex-row justify-content-start align-items-center bg-white" style="padding: 24px; border-radius: 8px;">
+                            <img src="~/Content/images/gara/i-report.png" />
+                            <span style="color:black; font-size:18px;font-weight:700">Hệ thống báo cáo kinh doanh</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12">
+                    <div style="
+                                background-image: url('../../content/images/gara/pm-gara.png');
+                                background-position: bottom center;
+                                background-repeat: no-repeat;
+                                min-height: 383px;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-bottom:40px">
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12">
+                    <div style="
+                                background-image: url('../../content/images/gara/pm-gara.png');
+                                background-position: bottom center;
+                                background-repeat: no-repeat;
+                                min-height: 383px;">
+                    </div>
+                </div>
+                <div class="col-12 col-md-6 col-lg-6 col-xl-6 col-sm-12 col-xs-12">
+                    <div class="p-3 gap-2 flex flex-column">
+                        <div class="flex gap-1 flex-row justify-content-start align-items-center bg-white" style="padding: 24px; border-radius: 8px;">
+                            <img src="~/Content/images/gara/i-calendar.png" />
+                            <span style="color:black; font-size:18px;font-weight:700">Nhắc lịch bảo hành, bảo dưỡng</span>
+                        </div>
+                        <div class="flex gap-1 flex-row justify-content-start align-items-center bg-white" style="padding: 24px; border-radius: 8px;">
+                            <img src="~/Content/images/gara/i-nhan-vien.png" />
+                            <span style="color:black; font-size:18px;font-weight:700">Chấm công, tính lương, hoa hồng</span>
+                        </div>
+                        <div class="flex gap-1 flex-row justify-content-start align-items-center bg-white" style="padding: 24px; border-radius: 8px;">
+                            <img src="~/Content/images/gara/i-mail.png" />
+                            <span style="color:black; font-size:18px;font-weight:700">Marketing email, smsbrandname</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn-ads" style="margin-bottom: 18px;" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký dùng thử</button>
+            </div>
+        </div>
+    </div>
+    <!--End Tính nănh-->
+    <!--Quy trình sửa chưa-->
+    <div class="container">
+        <div class="title-body">
+            <h4 class="title">Quy trình chuyên nghiệp</h4>
+            <h2 class="title title-page">Quy trình sửa chữa Open24 Gara</h2>
+        </div>
+        <div style="height: auto; object-fit:fill; text-align:center">
+            <img src="~/Content/images/gara/bg-quy-trinh-sua-chua-gara.png" style="width:100%; height:100%" />
+        </div>
+    </div>
+    <!--End quy trình sửa chữa-->
+    <!--Bảng giá-->
+    <div class="container-fluid" style="background: #F4F5F7; padding:80px 0px">
+        <div class="container">
+            <div class="title-body">
+                <h4 class="title">Bảng giá</h4>
+                <h2 class="title title-page">Không chi phí phát sinh <br />Hỗ trợ trong suốt quá trình sử dụng</h2>
+            </div>
+            <div class="row">
+                <div class="col-12 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="shadow rounded-3">
+                        <div class="bg-white" style="padding: 32px; border-top-left-radius: 16px; border-top-right-radius: 16px ">
+                            <div class="text-center">
+                                <img src="~/Content/images/gara/i-zap.svg" style="margin-bottom:20px" />
+                                <h4 style="text-transform: uppercase; color: #28A59D; font-size:20px;font-weight:600;">Gói tiết kiệm</h4>
+                                <div style="margin:8px 0px">
+                                    <font style="color: #000203; font-size: 48px; font-weight:600">595.000</font>
+                                    <span style="color: #666768;font-size:18px;font-weight:400">đ/tháng</span>
+                                </div>
+                                <div style="text-decoration: line-through; color: #666768;font-size:16px;font-weight:700;margin-bottom:32px;">
                                     <font>795.000</font>
                                     <span>đ/tháng</span>
                                 </div>
-                                <span style="background-color: red; color: white;">-25%</span>
+                            </div>
+                            <div class="op-panel-detail">
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý xe, phụ tùng, kho</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý sửa chữa</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý hợp đồng, báo giá</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý mua hàng, bán hàng</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý khách hàng, bảo hiểm</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý tài chính, công nợ</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Hệ thống báo cáo kinh doanh</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Nhắc lịch bảo hành, bảo dưỡng</span></div>
+                                <div class="op-price-excepted"><span style="margin-left:12px;font-size:16px;font-weight:400">Chấm công, tính lương, hoa hồng</span></div>
+                                <div class="op-price-excepted"><span style="margin-left:12px;font-size:16px;font-weight:400">Marketing email, smsbrandname</span></div>
+
+                            </div>
+                            <div class="text-center">
+                                <small class="op-price-noted">
+                                    Phù hợp gara 5 - 10 nhân viên
+                                </small>
+                                <label> 01 chi nhánh</label>
+                                <label> 03 tài khoản đăng nhập</label>
                             </div>
                         </div>
-                        <div class="op-panel-detail">
-                            <div>  Quản lý xe, phụ tùng, kho</div>
-                            <div>  Quản lý sửa chữa</div>
-                            <div>  Quản lý hợp đồng, báo giá</div>
-                            <div>   Quản lý mua hàng, bán hàng</div>
-                            <div>  Quản lý khách hàng, bảo hiểm</div>
-                            <div> Quản lý tài chính, công nợ</div>
-                            <div> Hệ thống báo cáo kinh doanh</div>
-                            <div> Nhắc lịch bảo hành, bảo dưỡng</div>
-                            <div class="op-price-excepted">Chấm công, tính lương, hoa hồng</div>
-                            <div class="op-price-excepted"> Marketing email, smsbrandname</div>
-                            <small class="op-price-noted">
-                                Phù hợp gara 5 - 10 nhân viên
-                            </small>
-                            <label> 01 chi nhánh</label>
-                            <label> 03 tài khoản đăng nhập</label>
+                        <div style="padding:32px; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; background: #EEF0F4">
+                            <button class="btn w-100" style="color: #28A59D;height:40px" data-bs-toggle="modal" data-bs-target="#modalTuVan">Dùng thử</button>
                         </div>
-                        <button class="btn-ads " data-bs-toggle="modal" data-bs-target="#modalTuVan">Dùng thử</button>
                     </div>
                 </div>
-                <!--gói tiêu chuẩn-->
-                <div class="col-lg-4 col-xs-12 p-2">
-                    <div class="op-price-panel op-tag-start">
-                        <font class="" style=" text-transform: uppercase; font-weight:bold">Gói tiêu chuẩn</font>
-                        <div class="op-panel-icon">
-                            <img src="~/Content/images/gara/standard.png" />
-                        </div>
-                        <div class="flex flex-column">
-                            <div>
-                                <font style="color:var(--color-theme); font-size:32px">695.000</font>
-                                <span>đ/tháng</span>
+                <div class="col-12 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div style="position:relative">
+                        <div style="padding: 0 32px; text-align:center;position:absolute;z-index:2;width:100%;top:-20px">
+                            <div style="background: #FF5C35; border-radius: 20px; color: white; height: 40px;display:flex;justify-content:center;align-items:center ">
+                                <span style="font-size:16px;font-weight:400">Đề xuất</span>
                             </div>
-                            <div class="flex flex-row flex-around">
-                                <div style="text-decoration: line-through; color: #5c5c5c;">
-                                    <font>995.000</font>
-                                    <span>đ/tháng</span>
+                        </div>
+                        <div class="shadow rounded-3">
+                            <div class="bg-white" style="padding: 32px; border-top-left-radius: 16px; border-top-right-radius: 16px ">
+                                <div class="text-center">
+                                    <img src="~/Content/images/gara/i-zap.svg" style="margin-bottom:20px" />
+                                    <h4 style="text-transform: uppercase; color: #28A59D; font-size:20px;font-weight:600;">Gói tiêu chuẩn</h4>
+                                    <div style="margin:8px 0px">
+                                        <font style="color: #000203; font-size: 48px; font-weight:600">695.000</font>
+                                        <span style="color: #666768;font-size:18px;font-weight:400">đ/tháng</span>
+                                    </div>
+                                    <div style="text-decoration: line-through; color: #666768;font-size:16px;font-weight:700;margin-bottom:32px;">
+                                        <font>995.000</font>
+                                        <span>đ/tháng</span>
+                                    </div>
                                 </div>
-                                <span style="background-color:red;color:white;">-30%</span>
+                                <div class="op-panel-detail">
+                                    <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý xe, phụ tùng, kho</span></div>
+                                    <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý sửa chữa</span></div>
+                                    <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý hợp đồng, báo giá</span></div>
+                                    <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý mua hàng, bán hàng</span></div>
+                                    <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý khách hàng, bảo hiểm</span></div>
+                                    <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý tài chính, công nợ</span></div>
+                                    <div><span style="margin-left:12px;font-size:16px;font-weight:400">Hệ thống báo cáo kinh doanh</span></div>
+                                    <div><span style="margin-left:12px;font-size:16px;font-weight:400">Nhắc lịch bảo hành, bảo dưỡng</span></div>
+                                    <div><span style="margin-left:12px;font-size:16px;font-weight:400">Chấm công, tính lương, hoa hồng</span></div>
+                                    <div class="op-price-excepted"><span style="margin-left:12px;font-size:16px;font-weight:400">Marketing email, smsbrandname</span></div>
+
+                                </div>
+                                <div class="text-center">
+                                    <small class="op-price-noted">
+                                        Phù hợp gara 10 - 20 nhân viên
+                                    </small>
+                                    <label> 01 chi nhánh</label>
+                                    <label> 06 tài khoản đăng nhập</label>
+                                </div>
+                            </div>
+                            <div style="padding:32px; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; background: #EEF0F4">
+                                <button class="btn w-100" style="background: #28A59D;color:white; height: 40px" data-bs-toggle="modal" data-bs-target="#modalTuVan">Dùng thử</button>
                             </div>
                         </div>
-                        <div class="op-panel-detail">
-                            <div>  Quản lý xe, phụ tùng, kho</div>
-                            <div>  Quản lý sửa chữa</div>
-                            <div>  Quản lý hợp đồng, báo giá</div>
-                            <div>   Quản lý mua hàng, bán hàng</div>
-                            <div>  Quản lý khách hàng, bảo hiểm</div>
-                            <div> Quản lý tài chính, công nợ</div>
-                            <div> Hệ thống báo cáo kinh doanh</div>
-                            <div> Nhắc lịch bảo hành, bảo dưỡng</div>
-                            <div>Chấm công, tính lương, hoa hồng</div>
-                            <div class="op-price-excepted">  Marketing email, smsbrandname</div>
-                            <small class="op-price-noted">
-                                Phù hợp gara 10 - 20 nhân viên
-                            </small>
-                            <label> 01 chi nhánh</label>
-                            <label> 06 tài khoản đăng nhập</label>
-                        </div>
-                        <button class="btn-ads btn-focus " data-bs-toggle="modal" data-bs-target="#modalTuVan">Dùng thử</button>
                     </div>
+
                 </div>
-                <!--Gói nâng cao-->
-                <div class="col-lg-4 col-xs-12 p-2">
-                    <div class="op-price-panel">
-                        <font class="" style=" text-transform: uppercase; font-weight:bold">Gói nâng cao</font>
-                        <div class="op-panel-icon">
-                            <img src="~/Content/images/gara/diploma.png" />
-                        </div>
-                        <div class="flex flex-column">
-                            <div>
-                                <font style="color:var(--color-theme); font-size:32px">825.000</font>
-                                <span>đ/tháng</span>
-                            </div>
-                            <div class="flex flex-row flex-around">
-                                <div style="text-decoration: line-through; color: #5c5c5c;">
+                <div class="col-12 col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                    <div class="shadow rounded-3">
+                        <div class="bg-white" style="padding: 32px; border-top-left-radius: 16px; border-top-right-radius: 16px ">
+                            <div class="text-center">
+                                <img src="~/Content/images/gara/i-zap.svg" style="margin-bottom:20px" />
+                                <h4 style="text-transform: uppercase; color: #28A59D; font-size:20px;font-weight:600;">Gói nâng cao</h4>
+                                <div style="margin:8px 0px">
+                                    <font style="color: #000203; font-size: 48px; font-weight:600">825.000</font>
+                                    <span style="color: #666768;font-size:18px;font-weight:400">đ/tháng</span>
+                                </div>
+                                <div style="text-decoration: line-through; color: #666768;font-size:16px;font-weight:700;margin-bottom:32px;">
                                     <font>1.295.000</font>
                                     <span>đ/tháng</span>
                                 </div>
-                                <span style="background-color: red; color: white;">-35%</span>
+                            </div>
+                            <div class="op-panel-detail">
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý xe, phụ tùng, kho</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý sửa chữa</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý hợp đồng, báo giá</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý mua hàng, bán hàng</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý khách hàng, bảo hiểm</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Quản lý tài chính, công nợ</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Hệ thống báo cáo kinh doanh</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Nhắc lịch bảo hành, bảo dưỡng</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Chấm công, tính lương, hoa hồng</span></div>
+                                <div><span style="margin-left:12px;font-size:16px;font-weight:400">Marketing email, smsbrandname</span></div>
+
+                            </div>
+                            <div class="text-center">
+                                <small class="op-price-noted">
+                                    Phù hợp gara 20 - 50 nhân viên
+                                </small>
+                                <label> 01 chi nhánh</label>
+                                <label> 15 tài khoản đăng nhập</label>
                             </div>
                         </div>
-                        <div class="op-panel-detail">
-                            <div>  Quản lý xe, phụ tùng, kho</div>
-                            <div>  Quản lý sửa chữa</div>
-                            <div>  Quản lý hợp đồng, báo giá</div>
-                            <div>   Quản lý mua hàng, bán hàng</div>
-                            <div>  Quản lý khách hàng, bảo hiểm</div>
-                            <div> Quản lý tài chính, công nợ</div>
-                            <div> Hệ thống báo cáo kinh doanh</div>
-                            <div> Nhắc lịch bảo hành, bảo dưỡng</div>
-                            <div>Chấm công, tính lương, hoa hồng</div>
-                            <div>  Marketing email, smsbrandname</div>
-                            <small class="op-price-noted">
-                                Phù hợp gara 20 - 50 nhân viên
-                            </small>
-                            <label> 01 chi nhánh</label>
-                            <label> 15 tài khoản đăng nhập</label>
+                        <div style="padding:32px; border-bottom-left-radius: 16px; border-bottom-right-radius: 16px; background: #EEF0F4">
+                            <button class="btn w-100" style="color: #28A59D;height:40px" data-bs-toggle="modal" data-bs-target="#modalTuVan">Dùng thử</button>
                         </div>
-                        <button class="btn-ads " data-bs-toggle="modal" data-bs-target="#modalTuVan">
-                            <span style="z-index:2">
-                                Dùng thử
-                            </span>
-                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <!--End bảng giá-->
+    <div class="container-fluid"></div>
+    <!--Start khách hàng-->
     <div class="container">
-        <div class="op-section-title">
-            <font>Khách hàng đang sử dụng Open24 Gara!</font>
+        <div class="title-body">
+            <h2 class="title title-page">
+                Doanh nghiệp tin dùng
+            </h2>
         </div>
         <div class="p-3">
             <ul class="op-customer-list">
@@ -681,17 +547,16 @@
             </ul>
         </div>
     </div>
-    <div class="banner-wave">
-        <h2 class="bg-line-text">
-            <span style="white-space:nowrap">Chúng tôi luôn không ngừng nỗ lực</span>
-            <br />
-            <span style="color: #FFD40C">vì sự hài lòng của bạn !</span>
-        </h2>
+    <!--End khách hàng-->
+    <div class="container-fluid p-4" style="background: #DFF0EA">
+        <div class="text-center">
+            <h2 class="title title-page">Giải pháp toàn diện đáp ứng nghiệp vụ dễ dàng</h2>
+            <button class="btn-ads" style="margin-top: 18px; background: #FF5C35;" data-bs-toggle="modal" data-bs-target="#modalTuVan">Dùng thử ngay</button>
+        </div>
     </div>
-
-    @Html.Partial("_RequestPartial")
 </div>
 
+@Html.Partial("_RequestPartial")
 <div class="modal fade" id="myModal">
     <div class="modal-dialog" style="padding-top: 5%;">
         <iframe id="myVideo" width="100%" height="450px" src="" frameborder="0" allowfullscreen=""></iframe>
@@ -703,3 +568,8 @@
         vmbody.IsShowCustomer = false;
         vmbody.changenganhnghe('@ViewBag.NganhNghe');
 </script>
+
+
+
+
+

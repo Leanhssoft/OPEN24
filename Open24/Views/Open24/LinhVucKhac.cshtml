@@ -40,6 +40,7 @@
         text-align: center;
         margin: 45px 0;
     }
+
     .op-description-body {
         display: block;
     }
@@ -564,7 +565,6 @@
             <span style="color: #FFD40C">vì sự hài lòng của bạn !</span>
         </h2>
     </div>
-    @Html.Partial("_RequestPartial")
     @*@Html.Partial("_ModalTuVanOpen24")*@
     <div class="modal fade" id="myModal">
         <div class="modal-dialog" style="padding-top: 5%;">
@@ -572,6 +572,7 @@
         </div>
     </div>
 </div>
+@Html.Partial("_RequestPartial")
 <script src="~/Assets/js/Client/open24/RenderBodyVue.js"></script>
 <script>
     vmbody.GetCustomerHome();
