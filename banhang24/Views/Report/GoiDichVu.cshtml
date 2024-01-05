@@ -401,22 +401,22 @@
                                         </thead>
                                         <tbody data-bind="foreach: BaoCaoGoiDichVu_SoDuTongHop_Page">
                                             <tr class="prev-tr-hide">
-                                                <td class="@commonEnum.TypeRGoiDichVu.magoi  bhmact cls1 text-center Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.magoi  text-center  ">
                                                     <a style="cursor: pointer" data-bind="text: MaHoaDon, click: $parent.LoadHoaDon_byMaHD">
                                                     </a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.ngayban   cls2 text-center">
+                                                <td class="@commonEnum.TypeRGoiDichVu.ngayban   text-center">
                                                     <span data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></span>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.makhach Detail_makhach bhmact cls1 text-center Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.makhach  text-center  ">
                                                     <a style="cursor: pointer" data-bind="text: MaKhachHang, click: $parent.LoadKhachHang_byMaKH">0111KH01</a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.tenkhach bhmact cls1 text-left " data-bind="text: TenKhachHang"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nhomkhach  bhmact cls1 text-left " data-bind="text: NhomKhachHang"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nguonkhach  bhmact cls1 text-left " data-bind="text: TenNguonKhach"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.dienthoai  bhmact cls1 text-right " data-bind="text: DienThoai"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.gioitinh  bhmact cls1 text-center " data-bind="text: GioiTinh"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu  bhmact cls1 text-left " data-bind="text: NguoiGioiThieu"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.tenkhach text-left " data-bind="text: TenKhachHang"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nhomkhach  text-left " data-bind="text: NhomKhachHang"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nguonkhach  text-left " data-bind="text: TenNguonKhach"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.dienthoai  text-right " data-bind="text: DienThoai"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.gioitinh  text-center " data-bind="text: GioiTinh"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu  text-left " data-bind="text: NguoiGioiThieu"></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongban  text-right" data-bind="text: formatNumber3Digit(SoLuong) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.thanhtien  text-right" data-bind="text: formatNumber3Digit(ThanhTien,2) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.giamgiahd  text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2) "></td>
@@ -428,29 +428,31 @@
                                                 <td class=" @commonEnum.TypeRGoiDichVu.giavon text-right" data-bind="text: formatNumber3Digit(GiaVon,2) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongconlai  text-right" data-bind="text: formatNumber3Digit(SoLuongConLai) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.giatriconlai  text-right" data-bind="text: formatNumber3Digit(GiaTriConLai) "></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.ngayapdung cls2 text-center">
+                                                <td class="@commonEnum.TypeRGoiDichVu.ngayapdung text-center">
                                                     <span data-bind="text: moment(NgayApDungGoiDV).format('DD/MM/YYYY')!='Invalid date'? moment(NgayApDungGoiDV).format('DD/MM/YYYY'):''"></span>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.hansudung cls2 text-center">
+                                                <td class="@commonEnum.TypeRGoiDichVu.hansudung text-center">
                                                     <span data-bind="text: moment(HanSuDungGoiDV).format('DD/MM/YYYY')!='Invalid date'? moment(HanSuDungGoiDV).format('DD/MM/YYYY'):''"></span>
                                                 </td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.songayconlai  text-right" data-bind="text: formatNumber3Digit(SoNgayConHan) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.songayquahan  text-right" data-bind="text: formatNumber3Digit(SoNgayHetHan) "></td>
                                             </tr>
                                         </tbody>
-                                        <tfoot class="PhanQuyen" hidden>
+                                        <!--ko if: !BCGDV_SoDuTongHop()-->
+                                        <tfoot class="PhanQuyen">
                                             <tr>
-                                                <td class="bg12 bhma text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
+                                                <td class="bg12 text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
                                             </tr>
                                         </tfoot>
-                                        <tfoot class="Report_Empty" hidden>
+                                        <!--/ko-->
+                                        <tfoot class="Report_Empty" data-bind="visible: BaoCaoGoiDichVu_SoDuTongHop_Page().length === 0">
                                             <tr>
-                                                <td class="bg12 bhma text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
+                                                <td class="bg12 text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
                                             </tr>
                                         </tfoot>
-                                        <tfoot class="SD_TongHop" hidden>
+                                        <tfoot data-bind="visible: BaoCaoGoiDichVu_SoDuTongHop_Page().length > 0">
                                             <tr class="bg12 bold">
-                                                <td class="@commonEnum.TypeRGoiDichVu.magoi   text-left bold bhmact">Tổng cộng</td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.magoi   text-left bold">Tổng cộng</td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.ngayban "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.makhach "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.tenkhach "></td>
@@ -517,33 +519,33 @@
                                         </thead>
                                         <tbody data-bind="foreach: BaoCaoGoiDichVu_SoDuChiTiet_Page">
                                             <tr class="prev-tr-hide">
-                                                <td class="@commonEnum.TypeRGoiDichVu.magoi bhmact cls1 text-center Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.magoi text-center  ">
                                                     <a style="cursor: pointer" data-bind="text: MaHoaDon, click: $parent.LoadHoaDon_byMaHD">
                                                     </a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.ngayban cls2 text-center">
+                                                <td class="@commonEnum.TypeRGoiDichVu.ngayban text-center">
                                                     <span data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></span>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.makhach Detail_makhach bhmact cls1 text-center Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.makhach   text-center  ">
                                                     <a style="cursor: pointer" data-bind="text: MaKhachHang, click: $parent.LoadKhachHang_byMaKH">0111KH01</a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.tenkhach bhmact cls1 text-left " data-bind="text: TenKhachHang"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nhomkhach  bhmact cls1 text-left " data-bind="text: NhomKhachHang"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nguonkhach  bhmact cls1 text-left " data-bind="text: TenNguonKhach"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.dienthoai  bhmact cls1 text-right " data-bind="text: DienThoai"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.gioitinh  bhmact cls1 text-center " data-bind="text: GioiTinh"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu  bhmact cls1 text-left " data-bind="text: NguoiGioiThieu"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.mahanghoa bhmahh cls1 text-left Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.tenkhach text-left " data-bind="text: TenKhachHang"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nhomkhach  text-left " data-bind="text: NhomKhachHang"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nguonkhach  text-left " data-bind="text: TenNguonKhach"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.dienthoai  text-right " data-bind="text: DienThoai"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.gioitinh  text-center " data-bind="text: GioiTinh"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu  text-left " data-bind="text: NguoiGioiThieu"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.mahanghoa text-left  ">
                                                     <a style="cursor: pointer" data-bind="text: MaHangHoa, click: $parent.LoadHangHoa_byMaHH">
                                                     </a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa bhname cls3 text-left">
+                                                <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa text-left">
                                                     <span data-bind="text: TenHangHoa"></span>
                                                     <span data-bind="text: ThuocTinh_GiaTri" style="color:#ff6a00"></span>
                                                 </td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.donvitinh  text-left" data-bind="text: TenDonViTinh"></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.lohanghoa">
-                                                    <a style="cursor: pointer" class="text-left Trinhpv-hovver" data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
+                                                    <a style="cursor: pointer" class="text-left  " data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
                                                     </a>
                                                 </td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongban  text-right" data-bind="text: formatNumber3Digit(SoLuong) "></td>
@@ -559,20 +561,22 @@
                                                 <td class="@commonEnum.TypeRGoiDichVu.giavon text-right" data-bind="text: formatNumber3Digit(GiaVon,2) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongconlai  text-right" data-bind="text: formatNumber3Digit(SoLuongConLai) "></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.giatriconlai  text-right" data-bind="text: formatNumber3Digit(GiaTriConLai) "></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nhanvien bhmact cls1 text-left" data-bind="text: NhanVienChietKhau"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nhanvien text-left" data-bind="text: NhanVienChietKhau"></td>
                                             </tr>
                                         </tbody>
-                                        <tfoot class="PhanQuyen" hidden>
+                                        <!--ko if: !BCGDV_SoDuChiTiet()-->
+                                        <tfoot class="PhanQuyen">
                                             <tr>
-                                                <td class="bg12 bhma text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
+                                                <td class="bg12 text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
                                             </tr>
                                         </tfoot>
-                                        <tfoot class="Report_Empty" hidden>
+                                        <!--/ko-->
+                                        <tfoot class="Report_Empty" data-bind="visible: BaoCaoGoiDichVu_SoDuChiTiet_Page().length === 0">
                                             <tr>
-                                                <td class="bg12 bhma text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
+                                                <td class="bg12 text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
                                             </tr>
                                         </tfoot>
-                                        <tfoot class="SD_ChiTiet" hidden>
+                                        <tfoot data-bind="visible: BaoCaoGoiDichVu_SoDuChiTiet_Page().length > 0">
                                             <tr class="bg12 bold">
                                                 <td class="@commonEnum.TypeRGoiDichVu.magoi  text-left  bhmact">Tổng cộng</td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.ngayban"></td>
@@ -641,27 +645,27 @@
                                         </thead>
                                         <tbody data-bind="foreach: BaoCaoGoiDichVu_NhatKySuDungTongHop_Page">
                                             <tr class="prev-tr-hide">
-                                                <td class="@commonEnum.TypeRGoiDichVu.makhach Detail_makhach bhmact cls1 text-center Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.makhach   text-center  ">
                                                     <a style="cursor: pointer" data-bind="text: MaKhachHang, click: $parent.LoadKhachHang_byMaKH">0111KH01</a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.tenkhach bhmact cls1 text-left " data-bind="text: TenKhachHang"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nhomkhach   bhmact cls1 text-left " data-bind="text: NhomKhachHang"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nguonkhach   bhmact cls1 text-left " data-bind="text: TenNguonKhach"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.dienthoai   bhmact cls1 text-right " data-bind="text: DienThoai"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.gioitinh   bhmact cls1 text-center " data-bind="text: GioiTinh"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu   bhmact cls1 text-left " data-bind="text: NguoiGioiThieu"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nhomhanghoa bhmahh cls1 text-left " data-bind="text: TenNhomHang"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.mahanghoa bhmahh cls1 text-left Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.tenkhach text-left " data-bind="text: TenKhachHang"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nhomkhach   text-left " data-bind="text: NhomKhachHang"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nguonkhach   text-left " data-bind="text: TenNguonKhach"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.dienthoai   text-right " data-bind="text: DienThoai"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.gioitinh   text-center " data-bind="text: GioiTinh"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu   text-left " data-bind="text: NguoiGioiThieu"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nhomhanghoa text-left " data-bind="text: TenNhomHang"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.mahanghoa text-left  ">
                                                     <a style="cursor: pointer" data-bind="text: MaHangHoa, click: $parent.LoadHangHoa_byMaHH">
                                                     </a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa bhname cls3 text-left">
+                                                <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa text-left">
                                                     <span data-bind="text: TenHangHoa"></span>
                                                     <span data-bind="text: ThuocTinh_GiaTri" style="color:#ff6a00"></span>
                                                 </td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.donvitinh  text-left" data-bind="text: TenDonViTinh"></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.lohanghoa">
-                                                    <a style="cursor: pointer" class="text-left Trinhpv-hovver" data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
+                                                    <a style="cursor: pointer" class="text-left  " data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
                                                     </a>
                                                 </td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongban  text-right" data-bind="text: formatNumber3Digit(SoLuongMua) "></td>
@@ -670,17 +674,19 @@
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongconlai  text-right" data-bind="text: formatNumber3Digit(SoLuongConLai) "></td>
                                             </tr>
                                         </tbody>
-                                        <tfoot class="PhanQuyen" hidden>
+                                        <!--ko if: !BCGDV_NhatKySuDungTongHop()-->
+                                        <tfoot class="PhanQuyen">
                                             <tr>
-                                                <td class="bg12 bhma text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
+                                                <td class="bg12 text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
                                             </tr>
                                         </tfoot>
-                                        <tfoot class="Report_Empty" hidden>
+                                        <!--/ko-->
+                                        <tfoot class="Report_Empty" data-bind="visible: BaoCaoGoiDichVu_NhatKySuDungTongHop().length === 0">
                                             <tr>
-                                                <td class="bg12 bhma text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
+                                                <td class="bg12 text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
                                             </tr>
                                         </tfoot>
-                                        <tfoot class="NK_TongHop" hidden>
+                                        <tfoot data-bind="visible: BaoCaoGoiDichVu_NhatKySuDungTongHop().length > 0">
                                             <tr>
                                                 <td class="@commonEnum.TypeRGoiDichVu.makhach  bg12 text-left bold bhmact">Tổng cộng</td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.tenkhach bg12"></td>
@@ -746,58 +752,60 @@
                                                 <td class="@commonEnum.ColumnInvoices.machuxe" data-bind="text: MaChuXe"></td>
                                                 <td class="@commonEnum.ColumnInvoices.tenchuxe" data-bind="text: TenChuXe"></td>
                                                 <!--/ko-->
-                                                <td class="@commonEnum.TypeRGoiDichVu.makhach  Detail_makhach bhmact cls1 text-center Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.makhach    text-center  ">
                                                     <a style="cursor: pointer" data-bind="text: MaKhachHang, click: $parent.LoadKhachHang_byMaKH">0111KH01</a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.tenkhach bhmact cls1 text-left " data-bind="text: TenKhachHang"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nhomkhach  bhmact cls1 text-left " data-bind="text: NhomKhachHang"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nguonkhach    bhmact cls1 text-left " data-bind="text: TenNguonKhach"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.dienthoai  bhmact cls1 text-right " data-bind="text: DienThoai"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.gioitinh  bhmact cls1 text-center " data-bind="text: GioiTinh"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu  bhmact cls1 text-left " data-bind="text: NguoiGioiThieu"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.magoi bhmact cls1 text-center Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.tenkhach text-left " data-bind="text: TenKhachHang"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nhomkhach  text-left " data-bind="text: NhomKhachHang"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nguonkhach    text-left " data-bind="text: TenNguonKhach"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.dienthoai  text-right " data-bind="text: DienThoai"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.gioitinh  text-center " data-bind="text: GioiTinh"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nguoigioithieu  text-left " data-bind="text: NguoiGioiThieu"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.magoi text-center  ">
                                                     <a style="cursor: pointer" data-bind="text: MaGoiDV, click: $parent.LoadHoaDon_byMaHD">
                                                     </a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.mahoadon bhmact cls1 text-center Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.mahoadon text-center  ">
                                                     <a style="cursor: pointer" data-bind="text: MaHoaDon, click: $parent.LoadHoaDon_byMaHD">
                                                     </a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.ngayapdung cls2 text-center">
+                                                <td class="@commonEnum.TypeRGoiDichVu.ngayapdung text-center">
                                                     <span data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></span>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nhomhanghoa bhmact cls1 text-left " data-bind="text: TenNhomHang"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.mahanghoa bhmahh cls1 text-left Trinhpv-hovver">
+                                                <td class="@commonEnum.TypeRGoiDichVu.nhomhanghoa text-left " data-bind="text: TenNhomHang"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.mahanghoa text-left  ">
                                                     <a style="cursor: pointer" data-bind="text: MaHangHoa, click: $parent.LoadHangHoa_byMaHH">
                                                     </a>
                                                 </td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa bhname cls3 text-left">
+                                                <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa text-left">
                                                     <span data-bind="text: TenHangHoa"></span>
                                                     <span data-bind="text: ThuocTinh_GiaTri" style="color:#ff6a00"></span>
                                                 </td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.donvitinh  text-left" data-bind="text: TenDonViTinh"></td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.lohanghoa">
-                                                    <a style="cursor: pointer" class="text-left Trinhpv-hovver" data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
+                                                    <a style="cursor: pointer" class="text-left  " data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
                                                     </a>
                                                 </td>
                                                 <td class="@commonEnum.TypeRGoiDichVu.soluongban text-right" data-bind="text: formatNumber3Digit(SoLuong) "></td>
                                                 <td class="@commonEnum.TypeReportTotal.Total_doanhthuthuan text-right" data-bind="text: formatNumber3Digit(GiaTriSD,2) "></td>
                                                 <td class="@commonEnum.TypeReportTotal.Total_tienvon text-right" data-bind="text: formatNumber3Digit(TienVon,2) "></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.nhanvien bhmact cls1 text-left" data-bind="text: NhanVienChietKhau"></td>
-                                                <td class="@commonEnum.TypeRGoiDichVu.ghichu bhmact cls1 text-left " data-bind="text: GhiChu"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.nhanvien text-left" data-bind="text: NhanVienChietKhau"></td>
+                                                <td class="@commonEnum.TypeRGoiDichVu.ghichu text-left " data-bind="text: GhiChu"></td>
                                             </tr>
                                         </tbody>
-                                        <tfoot class="PhanQuyen" hidden>
+                                        <!--ko if: !BCGDV_NhatKySuDungChiTiet()-->
+                                        <tfoot class="PhanQuyen">
                                             <tr>
-                                                <td class="bg12 bhma text-center" colspan="21"><i>Bạn không có quyền xem báo cáo này!</i></td>
+                                                <td class="bg12 text-center" colspan="21"><i>Bạn không có quyền xem báo cáo này!</i></td>
                                             </tr>
                                         </tfoot>
-                                        <tfoot class="Report_Empty" hidden>
+                                        <!--/ko-->
+                                        <tfoot class="Report_Empty" data-bind="visible: BaoCaoGoiDichVu_NhatKySuDungChiTiet().length === 0">
                                             <tr>
-                                                <td class="bg12 bhma text-center" colspan="21"><i>Báo cáo không có dữ liệu</i></td>
+                                                <td class="bg12 text-center" colspan="21"><i>Báo cáo không có dữ liệu</i></td>
                                             </tr>
                                         </tfoot>
-                                        <tfoot class="NK_ChiTiet" hidden>
+                                        <tfoot data-bind="visible: BaoCaoGoiDichVu_NhatKySuDungChiTiet().length > 0">
                                             <tr class="bg12 bold">
                                                 <!--ko if: $root.LoaiNganhNghe()===1 -->
                                                 <td class="@commonEnum.ColumnInvoices.bienso text-left ">Tổng cộng</td>
@@ -854,17 +862,17 @@
                                 </thead>
                                 <tbody data-bind="foreach: BaoCaoGoiDichVu_TonChuaSuDung_Page">
                                     <tr class="prev-tr-hide">
-                                        <td class="@commonEnum.TypeRGoiDichVu.mahanghoa bhmahh cls1 text-left Trinhpv-hovver">
+                                        <td class="@commonEnum.TypeRGoiDichVu.mahanghoa text-left  ">
                                             <a style="cursor: pointer" data-bind="text: MaHangHoa, click: $parent.LoadHangHoa_byMaHH">
                                             </a>
                                         </td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa bhname cls3 text-left">
+                                        <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa text-left">
                                             <span data-bind="text: TenHangHoa"></span>
                                             <span data-bind="text: ThuocTinh_GiaTri" style="color:#ff6a00"></span>
                                         </td>
                                         <td class="@commonEnum.TypeRGoiDichVu.donvitinh  text-left" data-bind="text: TenDonViTinh"></td>
                                         <td class="@commonEnum.TypeRGoiDichVu.lohanghoa">
-                                            <a style="cursor: pointer" class="text-left Trinhpv-hovver" data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
+                                            <a style="cursor: pointer" class="text-left  " data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
                                             </a>
                                         </td>
                                         <td class="@commonEnum.TypeRGoiDichVu.soluongban  text-right" data-bind="text: formatNumber3Digit(SoLuongBan) "></td>
@@ -877,30 +885,32 @@
                                         <td class="@commonEnum.TypeRGoiDichVu.giatriconlai  text-right" data-bind="text: formatNumber3Digit(GiaTriConLai,2) "></td>
                                     </tr>
                                 </tbody>
-                                <tfoot class="PhanQuyen" hidden>
+                                <!--ko if: !BCGDV_TonChuaSuDung()-->
+                                <tfoot class="PhanQuyen">
                                     <tr>
-                                        <td class="bg12 bhma text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
+                                        <td class="bg12 text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
                                     </tr>
                                 </tfoot>
-                                <tfoot class="Report_Empty" hidden>
+                                <!--/ko-->
+                                <tfoot class="Report_Empty" data-bind="visible: BaoCaoGoiDichVu_TonChuaSuDung_Page().length === 0">
                                     <tr>
-                                        <td class="bg12 bhma text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
+                                        <td class="bg12 text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
                                     </tr>
                                 </tfoot>
-                                <tfoot class="DV_TonChuaSuDung" hidden>
-                                    <tr>
-                                        <td class="@commonEnum.TypeRGoiDichVu.mahanghoa  bg12 text-left bold bhmact">Tổng cộng</td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa bg12"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.donvitinh bg12"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.lohanghoa bg12 bhmahh"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.soluongban bg12  text-right bold" data-bind="text: formatNumber3Digit(TCSD_SoLuong())"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.giatriban bg12  text-right bold" data-bind="text: formatNumber3Digit(TCSD_GiaTri(),2)"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.soluongtra bg12  text-right bold" data-bind="text: formatNumber3Digit(TCSD_SoLuongTra())"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.giatritra bg12  text-right bold" data-bind="text: formatNumber3Digit(TCSD_GiaTriTra(),2)"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.soluongsudung bg12  text-right bold" data-bind="text: formatNumber3Digit(TCSD_SoLuongSuDung())"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.giatrisudung bg12  text-right bold" data-bind="text: formatNumber3Digit(TCSD_GiaTriSuDung(),2)"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.soluongconlai bg12  text-right bold" data-bind="text: formatNumber3Digit(TCSD_SoLuongConLai())"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.giatriconlai bg12  text-right bold" data-bind="text: formatNumber3Digit(TCSD_GiaTriConLai(),2)"></td>
+                                <tfoot data-bind="visible: BaoCaoGoiDichVu_TonChuaSuDung_Page().length > 0">
+                                    <tr class="bg12 ">
+                                        <td class="@commonEnum.TypeRGoiDichVu.mahanghoa   text-left">Tổng cộng</td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa "></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.donvitinh "></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.lohanghoa "></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.soluongban   text-right " data-bind="text: formatNumber3Digit(TCSD_SoLuong())"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.giatriban   text-right " data-bind="text: formatNumber3Digit(TCSD_GiaTri(),2)"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.soluongtra   text-right " data-bind="text: formatNumber3Digit(TCSD_SoLuongTra())"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.giatritra   text-right " data-bind="text: formatNumber3Digit(TCSD_GiaTriTra(),2)"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.soluongsudung   text-right " data-bind="text: formatNumber3Digit(TCSD_SoLuongSuDung())"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.giatrisudung   text-right " data-bind="text: formatNumber3Digit(TCSD_GiaTriSuDung(),2)"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.soluongconlai   text-right " data-bind="text: formatNumber3Digit(TCSD_SoLuongConLai())"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.giatriconlai   text-right " data-bind="text: formatNumber3Digit(TCSD_GiaTriConLai(),2)"></td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -913,38 +923,38 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                     <tr>
-                                        <th class="@commonEnum.TypeRGoiDichVu.mahanghoa mahang xntma middle bg17" rowspan="2">Mã hàng hóa</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.tenhanghoa mahang xntma middle bg17" rowspan="2">Tên hàng hóa</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.donvitinh text-left mahang xntma middle bg17" rowspan="2">Đvt</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.lohanghoa text-left mahang xntma middle bg17 " rowspan="2">Lô hàng</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.tondau mahang xntma middle bg17 text-right" rowspan="2">Tồn đầu</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.giatriban mahang xntma middle bg17 text-right" rowspan="2">Giá trị đầu kỳ</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.trongky xntslnhap text-center bg18" colspan="6">Trong kỳ</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.toncuoi mahang xntma middle bg17 text-right" rowspan="2">Tồn cuối</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.giatriconlai mahang xntma middle bg17 text-right" rowspan="2">Giá trị cuối kỳ</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.mahanghoa   middle bg17" rowspan="2">Mã hàng hóa</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.tenhanghoa   middle bg17" rowspan="2">Tên hàng hóa</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.donvitinh text-left   middle bg17" rowspan="2">Đvt</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.lohanghoa text-left   middle bg17 " rowspan="2">Lô hàng</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.tondau   middle bg17 text-right" rowspan="2">Tồn đầu</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.giatriban   middle bg17 text-right" rowspan="2">Giá trị đầu kỳ</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.trongky  text-center bg18" colspan="6">Trong kỳ</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.toncuoi   middle bg17 text-right" rowspan="2">Tồn cuối</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.giatriconlai   middle bg17 text-right" rowspan="2">Giá trị cuối kỳ</th>
                                     </tr>
                                     <tr>
-                                        <th class="@commonEnum.TypeRGoiDichVu.trongky xntslnhap mahang bg18 text-right">Số lượng bán</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.trongky xntslnhap tenhang bg18 text-right">Giá trị bán</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.trongky xntslnhap mahang bg18 text-right">Số lượng trả</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.trongky xntslnhap tenhang bg18 text-right">Giá trị trả</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.trongky xntslnhap nhomhang bg18 text-right">Số lượng sử dụng</th>
-                                        <th class="@commonEnum.TypeRGoiDichVu.trongky xntslnhap bg18 text-right">Giá trị sử dụng</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.trongky   bg18 text-right">Số lượng bán</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.trongky  tenhang bg18 text-right">Giá trị bán</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.trongky   bg18 text-right">Số lượng trả</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.trongky  tenhang bg18 text-right">Giá trị trả</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.trongky  nhomhang bg18 text-right">Số lượng sử dụng</th>
+                                        <th class="@commonEnum.TypeRGoiDichVu.trongky  bg18 text-right">Giá trị sử dụng</th>
                                     </tr>
                                 </thead>
                                 <tbody data-bind="foreach: BaoCaoGoiDichVu_NhapXuatTon_Page">
                                     <tr class="prev-tr-hide">
-                                        <td class="@commonEnum.TypeRGoiDichVu.mahanghoa bhmahh cls1 text-left Trinhpv-hovver">
+                                        <td class="@commonEnum.TypeRGoiDichVu.mahanghoa text-left  ">
                                             <a style="cursor: pointer" data-bind="text: MaHangHoa, click: $parent.LoadHangHoa_byMaHH">
                                             </a>
                                         </td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa bhname cls3 text-left">
+                                        <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa text-left">
                                             <span data-bind="text: TenHangHoa"></span>
                                             <span data-bind="text: ThuocTinh_GiaTri" style="color:#ff6a00"></span>
                                         </td>
                                         <td class="@commonEnum.TypeRGoiDichVu.donvitinh  text-left" data-bind="text: TenDonViTinh"></td>
                                         <td class="@commonEnum.TypeRGoiDichVu.lohanghoa">
-                                            <a style="cursor: pointer" class="text-left Trinhpv-hovver" data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
+                                            <a style="cursor: pointer" class="text-left  " data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
                                             </a>
                                         </td>
                                         <td class="@commonEnum.TypeRGoiDichVu.tondau  text-right" data-bind="text: formatNumber3Digit(SoLuongConLaiDK) "></td>
@@ -959,32 +969,34 @@
                                         <td class="@commonEnum.TypeRGoiDichVu.giatriconlai  text-right" data-bind="text: formatNumber3Digit(GiaTriConLaiCK,2) "></td>
                                     </tr>
                                 </tbody>
-                                <tfoot class="PhanQuyen" hidden>
+                                <!--ko if: !BCGDV_NhapXuatTon()-->
+                                <tfoot class="PhanQuyen">
                                     <tr>
-                                        <td class="bg12 bhma text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
+                                        <td class="bg12 text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
                                     </tr>
                                 </tfoot>
-                                <tfoot class="Report_Empty" hidden>
+                                <!--/ko-->
+                                <tfoot class="Report_Empty" data-bind="visible: BaoCaoGoiDichVu_NhapXuatTon_Page().length === 0">
                                     <tr>
-                                        <td class="bg12 bhma text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
+                                        <td class="bg12 text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
                                     </tr>
                                 </tfoot>
-                                <tfoot class="DV_NhapXuatTon" hidden>
-                                    <tr>
-                                        <td class="@commonEnum.TypeRGoiDichVu.mahanghoa  bg12 text-left bold bhmact">Tổng cộng</td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa bg12"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.donvitinh bg12"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.lohanghoa bg12 bhmahh"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.tondau bg12  text-right bold" data-bind="text: formatNumber3Digit(NXT_SoLuongConLaiDK())"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.giatriban bg12  text-right bold" data-bind="text: formatNumber3Digit(NXT_GiaTriConLaiDK(),2)"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.trongky bg12  text-right bold" data-bind="text: formatNumber3Digit(NXT_SoLuongBanGK())"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.trongky bg12  text-right bold" data-bind="text: formatNumber3Digit(NXT_GiaTriBanGK(),2)"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.trongky bg12  text-right bold" data-bind="text: formatNumber3Digit(NXT_SoLuongTraGK())"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.trongky bg12  text-right bold" data-bind="text: formatNumber3Digit(NXT_GiaTriTraGK(),2)"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.trongky bg12  text-right bold" data-bind="text: formatNumber3Digit(NXT_SoLuongSuDungGK())"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.trongky bg12  text-right bold" data-bind="text: formatNumber3Digit(NXT_GiaTriSuDungGK(),2)"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.toncuoi bg12  text-right bold" data-bind="text: formatNumber3Digit(NXT_SoLuongConLaiCK())"></td>
-                                        <td class="@commonEnum.TypeRGoiDichVu.giatriconlai bg12  text-right bold" data-bind="text: formatNumber3Digit(NXT_GiaTriConLaiCK(),2)"></td>
+                                <tfoot data-bind="visible: BaoCaoGoiDichVu_NhapXuatTon_Page().length > 0">
+                                    <tr class="bg12 bold">
+                                        <td class="@commonEnum.TypeRGoiDichVu.mahanghoa   text-left">Tổng cộng</td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.tenhanghoa "></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.donvitinh "></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.lohanghoa"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.tondau   text-right " data-bind="text: formatNumber3Digit(NXT_SoLuongConLaiDK())"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.giatriban   text-right " data-bind="text: formatNumber3Digit(NXT_GiaTriConLaiDK(),2)"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.trongky   text-right " data-bind="text: formatNumber3Digit(NXT_SoLuongBanGK())"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.trongky   text-right " data-bind="text: formatNumber3Digit(NXT_GiaTriBanGK(),2)"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.trongky   text-right " data-bind="text: formatNumber3Digit(NXT_SoLuongTraGK())"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.trongky   text-right " data-bind="text: formatNumber3Digit(NXT_GiaTriTraGK(),2)"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.trongky   text-right " data-bind="text: formatNumber3Digit(NXT_SoLuongSuDungGK())"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.trongky   text-right " data-bind="text: formatNumber3Digit(NXT_GiaTriSuDungGK(),2)"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.toncuoi   text-right " data-bind="text: formatNumber3Digit(NXT_SoLuongConLaiCK())"></td>
+                                        <td class="@commonEnum.TypeRGoiDichVu.giatriconlai   text-right " data-bind="text: formatNumber3Digit(NXT_GiaTriConLaiCK(),2)"></td>
                                     </tr>
                                 </tfoot>
                             </table>

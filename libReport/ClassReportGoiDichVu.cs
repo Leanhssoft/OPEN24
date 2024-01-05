@@ -16,6 +16,49 @@ namespace libReport
             _db = db;
         }
 
+        public ReportSale_ParamCommon ReportGDV_GetCommonParam(Param_ReportGoiDichVu param)
+        {
+            string theoDoi = "%%", trangThai = "%%", thoiHan = "%%";
+            string idChiNhanhs = string.Empty;
+            if (param != null && param.IDChiNhanhs != null && param.IDChiNhanhs.Count > 0)
+            {
+                idChiNhanhs = string.Join(",", param.IDChiNhanhs);
+            }
+
+            switch (param.TinhTrang)
+            {
+                case 2:
+                    theoDoi = "%1%";
+                    trangThai = "%0%";
+                    break;
+                case 3:
+                    theoDoi = "%0%";
+                    break;
+                case 4:
+                    trangThai = "%1%";
+                    break;
+            }
+
+            switch (param.ThoiHanSuDung)
+            {
+                case 2:
+                    thoiHan = "%1%";
+                    break;
+                case 3:
+                    thoiHan = "%0%";
+                    break;
+            }
+
+
+            return new ReportSale_ParamCommon()
+            {
+                TheoDoi = theoDoi,
+                TrangThai = trangThai,
+                ThoiHanSuDung = thoiHan,
+                IDChiNhanhs = idChiNhanhs,
+            };
+        }
+
         public List<BaoCaoGoiDichVu_SoDuTongHopPRC> GetBaoCaoDichVu_SoDuTongHop(string maHD_search, string MaHH_search, string MaKH_search, string MaKH_TV, DateTime timeStart, DateTime timeEnd,
             string ID_ChiNhanh, string LaHH_search, string TheoDoi, string TrangThai, string ThoiHan, string ID_NhomHang_search, string ID_NhomHang_SP, Guid ID_NguoiDung)
         {
@@ -45,7 +88,7 @@ namespace libReport
             }
         }
 
-        public List<BaoCaoGoiDichVu_SoDuChiTietPRC> GetBaoCaoDichVu_SoDuChiTiet(string maHD_search, string MaHH_search, string MaKH_search, string MaKH_TV, DateTime timeStart, DateTime timeEnd, 
+        public List<BaoCaoGoiDichVu_SoDuChiTietPRC> GetBaoCaoDichVu_SoDuChiTiet(string maHD_search, string MaHH_search, string MaKH_search, string MaKH_TV, DateTime timeStart, DateTime timeEnd,
             string ID_ChiNhanh, string LaHH_search, string TheoDoi, string TrangThai, string ThoiHan, string ID_NhomHang_search, string ID_NhomHang_SP, Guid ID_NguoiDung)
         {
             try
@@ -73,26 +116,25 @@ namespace libReport
                 return new List<BaoCaoGoiDichVu_SoDuChiTietPRC>();
             }
         }
-        public List<BaoCaoGoiDichVu_SoDuChiTietPRC> BaoCaoDichVu_SoDuChiTiet(Param_ReportGoidDichVu param)
+        // todo: đang định viết lại
+        public List<BaoCaoGoiDichVu_SoDuChiTietPRC> BaoCaoDichVu_SoDuChiTiet(Param_ReportGoiDichVu param)
         {
             try
             {
-                var idChiNhanhs = string.Empty;
-                if (param.IDChiNhanhs!=null && param.IDChiNhanhs.Count> 0)
+                var objPr = ReportGDV_GetCommonParam(param);
+                List<SqlParameter> sql = new List<SqlParameter>
                 {
-                    idChiNhanhs = string.Join(",", param.IDChiNhanhs);
-                }
-                List<SqlParameter> sql = new List<SqlParameter>();
-                sql.Add(new SqlParameter("TextSearch", param.TextSearch));
-                sql.Add(new SqlParameter("DateFrom", param.DateFrom));
-                sql.Add(new SqlParameter("DateTo", param.DateTo));
-                sql.Add(new SqlParameter("IDChiNhanhs", idChiNhanhs));
-                sql.Add(new SqlParameter("LoaiHangHoas", param.LoaiHangHoas));
-                sql.Add(new SqlParameter("TheoDoi", param.TinhTrang));// todo
-                sql.Add(new SqlParameter("TrangThai", param.ThoiHanSuDung));// todo
-                sql.Add(new SqlParameter("ThoiHan", param.ThoiHanSuDung));
-                sql.Add(new SqlParameter("ID_NhomHang", param.ID_NhomHang));
-                sql.Add(new SqlParameter("ID_NguoiDung", param.ID_NguoiDung));
+                    new SqlParameter("TextSearch", param.TextSearch),
+                    new SqlParameter("DateFrom", param.DateFrom),
+                    new SqlParameter("DateTo", param.DateTo),
+                    new SqlParameter("IDChiNhanhs", objPr.IDChiNhanhs),
+                    new SqlParameter("LoaiHangHoas", param.LoaiHangHoas),
+                    new SqlParameter("TheoDoi", objPr.TheoDoi),
+                    new SqlParameter("TrangThai", objPr.TrangThai),// todo
+                    new SqlParameter("ThoiHan", objPr.ThoiHanSuDung),
+                    new SqlParameter("ID_NhomHang", param.ID_NhomHang),
+                    new SqlParameter("ID_NguoiDung", param.ID_NguoiDung)
+                };
                 return _db.Database.SqlQuery<BaoCaoGoiDichVu_SoDuChiTietPRC>("exec BaoCaoDichVu_SoDuChiTiet @TextSearch,@DateFrom,@DateTo,@IDChiNhanhs, " +
                     "@TheoDoi, @TrangThai, @ThoiHan, @ID_NhomHang, @ID_NguoiDung", sql.ToArray()).ToList();
             }
@@ -102,22 +144,22 @@ namespace libReport
                 return new List<BaoCaoGoiDichVu_SoDuChiTietPRC>();
             }
         }
-
-        public List<BaoCaoGoiDichVu_NhatKySuDungTongHopPRC> GetBaoCaoDichVu_NhatKySuDungTongHop(string MaHangHoa, DateTime timeStart, DateTime timeEnd, string ID_ChiNhanh, string LaHH_search, 
-            string TheoDoi, string TrangThai, string ThoiHan, Guid? ID_NhomHang)
+        public List<BaoCaoGoiDichVu_NhatKySuDungTongHopPRC> GetBaoCaoDichVu_NhatKySuDungTongHop(Param_ReportGoiDichVu param)
         {
             try
             {
+                var objPr = ReportGDV_GetCommonParam(param);
+
                 List<SqlParameter> sql = new List<SqlParameter>();
-                sql.Add(new SqlParameter("Text_Search", MaHangHoa));
-                sql.Add(new SqlParameter("timeStart", timeStart));
-                sql.Add(new SqlParameter("timeEnd", timeEnd));
-                sql.Add(new SqlParameter("ID_ChiNhanh", ID_ChiNhanh));
-                sql.Add(new SqlParameter("LaHangHoa", LaHH_search));
-                sql.Add(new SqlParameter("TheoDoi", TheoDoi));
-                sql.Add(new SqlParameter("TrangThai", TrangThai));
-                sql.Add(new SqlParameter("ThoiHan", ThoiHan));
-                sql.Add(new SqlParameter("ID_NhomHang", ID_NhomHang == null ? (object)DBNull.Value : ID_NhomHang.Value));
+                sql.Add(new SqlParameter("Text_Search", param.TextSearch));
+                sql.Add(new SqlParameter("timeStart", param.DateFrom));
+                sql.Add(new SqlParameter("timeEnd", param.DateTo));
+                sql.Add(new SqlParameter("ID_ChiNhanh", objPr.IDChiNhanhs));
+                sql.Add(new SqlParameter("LaHangHoa", "%%"));
+                sql.Add(new SqlParameter("TheoDoi", objPr.TheoDoi));
+                sql.Add(new SqlParameter("TrangThai", objPr.TrangThai));
+                sql.Add(new SqlParameter("ThoiHan", objPr.ThoiHanSuDung));
+                sql.Add(new SqlParameter("ID_NhomHang", param.ID_NhomHang ?? (object)DBNull.Value));
                 return _db.Database.SqlQuery<BaoCaoGoiDichVu_NhatKySuDungTongHopPRC>("exec BaoCaoDichVu_NhatKySuDungTongHop @Text_Search, @timeStart, @timeEnd, @ID_ChiNhanh, @LaHangHoa, @TheoDoi, @TrangThai,@ThoiHan, @ID_NhomHang", sql.ToArray()).ToList();
             }
             catch (Exception ex)
@@ -208,11 +250,11 @@ namespace libReport
         }
     }
 
-    public class Param_ReportGoidDichVu: CommonParamSearch
+    public class Param_ReportGoiDichVu : CommonParamSearch
     {
         public List<string> LoaiHangHoas { get; set; }
-        public int TinhTrang { get; set; }
-        public int ThoiHanSuDung { get; set; }
+        public int? TinhTrang { get; set; }
+        public int? ThoiHanSuDung { get; set; }
         public Guid? ID_NhomHang { get; set; }
         public Guid ID_NguoiDung { get; set; }
     }
