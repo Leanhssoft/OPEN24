@@ -149,6 +149,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             TenDonViTinh = p.TenDonViTinh,
                             QuanLyTheoLoHang = p.QuanLyTheoLoHang,
                             LaHangHoa = p.LaHangHoa,
+                            DuocBanTrucTiep = p.DuocBanTrucTiep,
+                            Xoa = p.Xoa,
+                            TheoDoi = p.TheoDoi,
                             GiaVon = p.GiaVon,
                             GiaBan = p.GiaBan,
                             GiaNhap = p.GiaNhap,
@@ -5260,39 +5263,46 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
 
-        public JsonResult<JSONTheKho> GetListTheKho(int currentPage, int pageSize, Guid id, Guid iddonvi)
+        public IHttpActionResult GetListTheKho(int currentPage, int pageSize, Guid id, Guid iddonvi)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 var _classDMHH = new ClassDM_HangHoa(db);
                 List<DM_TheKhoDTO> lstreturn = _classDMHH.GetListTheKho(id, iddonvi).ToList();
+
+                // find first row has TonLuyKe != TonKho (NgayLapHoaDon asc): used to update again TonLuyKe
+                var firstRow = lstreturn.Where(x => x.LuyKeTonKho != x.TonKho).OrderBy(x => x.NgayLapHoaDon).FirstOrDefault();
+
                 int totalRecords = lstreturn.Count();
                 lstreturn = lstreturn.Skip(currentPage * pageSize).Take(pageSize).ToList();
-                JSONTheKho json = new JSONTheKho
+                return Json(new
                 {
-                    lst = lstreturn.ToList(),
+                    lst = lstreturn,
+                    RowErrKho = firstRow,
                     Rowcount = totalRecords,
                     pageCount = System.Math.Ceiling(totalRecords * 1.0 / pageSize),
-                };
-                return Json(json);
+                });
             }
         }
 
-        public JsonResult<JSONTheKho> GetListTheKhoByMaLoHang(int currentPage, int pageSize, Guid idlohang, Guid iddonvi, Guid idhanghoa)
+        public IHttpActionResult GetListTheKhoByMaLoHang(int currentPage, int pageSize, Guid idlohang, Guid iddonvi, Guid idhanghoa)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 var _classDMHH = new ClassDM_HangHoa(db);
                 List<DM_TheKhoDTO> lstreturn = _classDMHH.GetListTheKhoByMaLoHang(idlohang, iddonvi, idhanghoa).ToList();
+                // find first row has TonLuyKe != TonKho (NgayLapHoaDon asc): used to update again TonLuyKe
+                var firstRow = lstreturn.Where(x => x.LuyKeTonKho != x.TonKho).OrderBy(x => x.NgayLapHoaDon).FirstOrDefault();
+
                 int totalRecords = lstreturn.Count();
                 lstreturn = lstreturn.Skip(currentPage * pageSize).Take(pageSize).ToList();
-                JSONTheKho json = new JSONTheKho
+                return Json(new
                 {
-                    lst = lstreturn.ToList(),
+                    lst = lstreturn,
+                    RowErrKho = firstRow,
                     Rowcount = totalRecords,
                     pageCount = System.Math.Ceiling(totalRecords * 1.0 / pageSize),
-                };
-                return Json(json);
+                });
             }
         }
 
