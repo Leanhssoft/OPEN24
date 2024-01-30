@@ -8,6 +8,7 @@ using zkemkeeper;
 using Riss.Devices;
 using System.Data.SqlClient;
 using System.Net.Http.Headers;
+using libHT_NguoiDung;
 
 namespace libNS_NhanVien
 {
@@ -230,7 +231,7 @@ namespace libNS_NhanVien
             _dbcontext.HT_NhatKySuDung.Add(model);
         }
 
-        public bool TaiDuLieuFromDevice(NS_MayChamCong mcc, DateTime firstDay, DateTime lastDay, HT_NguoiDung nguoidung, ref string mess)
+        public bool TaiDuLieuFromDevice(NS_MayChamCong mcc, DateTime firstDay, DateTime lastDay, HTNguoiDungCookiesDto nguoidung, ref string mess)
         {
             CookieStore.WriteProgress("Đang kết nối máy chấm công...", "TaiDuLieuMayChamCong");
             Device device = new Device();

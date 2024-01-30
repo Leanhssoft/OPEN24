@@ -4491,7 +4491,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
             try
             {
-                HT_NguoiDung UserLogin = contant.GetUserCookies();
+                HTNguoiDungCookiesDto UserLogin = contant.GetUserCookies();
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
                     if (model.ID != Guid.Empty)
@@ -4585,7 +4585,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         [AcceptVerbs("GET", "POST")]
         public IHttpActionResult TaiDuLieuMayChamCong([FromBody] JObject objIn)
         {
-            HT_NguoiDung UserLogin = contant.GetUserCookies();
+            HTNguoiDungCookiesDto UserLogin = contant.GetUserCookies();
             Guid IDMayChamCong = objIn["IDMayChamCong"].ToObject<Guid>();
             int InMonth = objIn["InMonth"].ToObject<int>();
             int InYear = objIn["InYear"].ToObject<int>();
