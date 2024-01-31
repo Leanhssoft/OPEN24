@@ -1450,7 +1450,7 @@
                 else {
                     var localHeader = JSON.parse(localStorage.getItem('BaoCaoTongHopHeader'));
                     var initHeader = self.InitBaoCaoTongHopHeader();
-                    if (initHeader.length !== localHeader.length || localHeader[14].colName !== "colChiPhi") {
+                    if (initHeader.length !== localHeader.length) {
                         self.BaoCaoTongHopHeader = initHeader;
                     }
                     else {

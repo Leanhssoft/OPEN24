@@ -609,54 +609,6 @@ BEGIN
     	END
 END");
 
-			Sql(@"ALTER PROCEDURE [dbo].[PhieuTiepNhan_GetThongTinChiTiet]
-    @ID_PhieuTiepNhan [uniqueidentifier]
-AS
-BEGIN
-    SET NOCOUNT ON;	
-    	
-    	select tn.*,		
-    		xe.BienSo, xe.SoKhung, xe.SoMay,
-    		xe.DungTich, xe.HopSo, xe.MauSon, xe.NamSanXuat, 
-    		nvlap.TenNhanVien as NhanVienTiepNhan,
-    		nvlap.MaNhanVien as MaNVTiepNhan,
-    		ISNULL(nv.TenNhanVien,'') as CoVanDichVu,
-    		ISNULL(cv.DienThoaiDiDong,'') as CoVan_SDT,
-    		ISNULL(nv.MaNhanVien,'') as MaCoVan,
-    		ISNULL(nv.TenNhanVienKhongDau,'') as TenNhanVienKhongDau,
-    		ISNULL(dt.MaDoiTuong,'') as MaDoiTuong,
-    		isnull(dt.TenDoiTuong,'') as TenDoiTuong,
-    		isnull(dt.TenDoiTuong_KhongDau,'') as TenDoiTuong_KhongDau,
-    		dt.DienThoai as DienThoaiKhachHang,
-    		dt.DiaChi,
-    		dt.Email,
-    		cast(iif(xe.ID_KhachHang = tn.ID_KhachHang,'1','0') as bit) as LaChuXe,
-    		cx.TenDoiTuong as ChuXe,
-    		cx.DienThoai as ChuXe_SDT,
-    		cx.Email as ChuXe_Email,
-    		cx.DiaChi as ChuXe_DiaChi,
-    		mau.TenMauXe,
-    		hang.TenHangXe,
-    		loai.TenLoaiXe,
-			tn.ID_BaoHiem,
-			tn.NguoiLienHeBH,
-			tn.SoDienThoaiLienHeBH,
-			ISNULL(bh.TenDoituong,'') as TenBaoHiem,
-			ISNULL(bh.MaDoiTuong,'') as MaBaoHiem   	
-    	from Gara_PhieuTiepNhan tn
-    	join Gara_DanhMucXe xe on tn.ID_Xe = xe.ID
-    	join Gara_MauXe mau on xe.ID_MauXe = mau.ID
-    	join Gara_HangXe hang on mau.ID_HangXe= hang.ID
-    	join Gara_LoaiXe loai on mau.ID_LoaiXe= loai.ID
-    	join NS_NhanVien nvlap on tn.ID_NhanVien= nvlap.ID
-    	left join NS_NhanVien cv on tn.ID_CoVanDichVu= cv.ID
-    	left join DM_DoiTuong dt on tn.ID_KhachHang = dt.ID
-    	left join DM_DoiTuong cx on xe.ID_KhachHang = cx.ID
-		left join DM_DoiTuong bh on tn.ID_BaoHiem= bh.ID
-    	left join NS_NhanVien nv on tn.ID_CoVanDichVu= nv.ID
-    	where tn.id= @ID_PhieuTiepNhan
-END");
-
             Sql(@"ALTER PROCEDURE [dbo].[ReportDiscountProduct_General]
     @ID_ChiNhanhs [nvarchar](max),
     @ID_NhanVienLogin [nvarchar](max),

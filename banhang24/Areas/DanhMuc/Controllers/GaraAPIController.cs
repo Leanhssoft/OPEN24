@@ -2106,7 +2106,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         TrangThaiPhieuTiepNhan = p.TrangThai == 1 ? "Đang sửa" : p.TrangThai == 2 ? "Hoàn thành" : p.TrangThai == 3 ? "Đã xuất xưởng" : "Hủy",
                         TenDonVi = p.TenDonVi,
                         TenBaoHiem = p.TenBaoHiem
-                    }).ToList();
+                    }).OrderByDescending(p=>p.NgayVaoXuong).ToList();
                     DataTable excel = classOffice.ToDataTable<GetListPhieuTiepNhan_v2_Export>(lst);
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/Template_DanhSachPhieuTiepNhan.xlsx");
                     fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/DanhSachPhieuTiepNhan.xlsx");
