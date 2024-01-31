@@ -3141,16 +3141,14 @@
         const hdDB = await GetInforHD_fromDB(id);
         var objPrint = $.extend({}, hdDB);
         var phaiThanhToan = formatNumberToFloat(hdDB.PhaiThanhToan);
-        var daThanhToan = formatNumberToFloat(hdDB.KhachDaTra);
+        var daThanhToan = RoundDecimal(hdDB.KhachDaTra, 0);
         objPrint.MaHoaDonTraHang = objPrint.MaHoaDonGoc;
         objPrint.TenNhaCungCap = objPrint.TenDoiTuong;
         objPrint.DienThoaiKhachHang = objPrint.DienThoai;
         objPrint.TongTichDiem = formatNumber(objPrint.DiemSauGD);
         objPrint.NhanVienBanHang = objPrint.TenNhanVien;
         objPrint.TongGiamGia = formatNumber(hdDB.TongGiamGia + hdDB.KhuyeMai_GiamGia);
-        if (objPrint.NgaySinh_NgayTLap !== null) {
-            objPrint.NgaySinh_NgayTLap = moment(hdDB.NgaySinh_NgayTLap).format('DD/MM/YYYY');
-        }
+      
         let tongcong = formatNumberToFloat(objPrint.TongThanhToan);
         objPrint.NgayLapHoaDon = moment(hdDB.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
         objPrint.Ngay = moment(hdDB.NgayLapHoaDon).format('DD');
@@ -3159,7 +3157,7 @@
 
         objPrint.TongTienHang = formatNumber3Digit(objPrint.TongTienHang);
         objPrint.PhaiThanhToan = formatNumber(phaiThanhToan);
-        objPrint.DaThanhToan = formatNumber(daThanhToan);
+        objPrint.DaThanhToan = formatNumber3Digit(daThanhToan, 0);
         objPrint.DiemGiaoDich = formatNumber(objPrint.DiemGiaoDich);
         objPrint.TienThua = 0;
         objPrint.TongTienThue = formatNumber(objPrint.TongTienThue);
@@ -3199,12 +3197,14 @@
             objPrint.TongChiPhiHangTra = formatNumber(hdDB.TongChiPhi);
             objPrint.TongCong = tongcong;
         }
-        var notruoc = 0, nosau = 0;
+        var notruoc = 0, nosau = 0, diachiKH = '', ngaysinhKH ='';
         let customer = {};
         if (!commonStatisJs.CheckNull(hdDB.ID_DoiTuong)) {
             customer = await GetInforCus(hdDB.ID_DoiTuong);
             if (!$.isEmptyObject(customer)) {
                 notruoc = customer.NoHienTai - conno;
+                diachiKH = customer.DiaChi;
+                ngaysinhKH = customer.NgaySinh_NgayTLap;
             }
 
             notruoc = notruoc < 0 ? 0 : notruoc;
@@ -3212,6 +3212,11 @@
         else {
             nosau = conno;// khachle
         }
+        
+        if (!commonStatisJs.CheckNull(ngaysinhKH)) {
+            objPrint.NgaySinh_NgayTLap = moment(ngaysinhKH).format('DD/MM/YYYY');
+        }
+        objPrint.DiaChiKhachHang = diachiKH;
         objPrint.NoTruoc = formatNumber(notruoc);
         objPrint.NoSau = formatNumber(nosau);
         objPrint.ChiPhiNhap = objPrint.TongChiPhi;
@@ -4621,6 +4626,7 @@
         }
 
         dataMauIn = dataMauIn.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+        dataMauIn = dataMauIn.concat("<style> @media print {body {-webkit-print-color-adjust: exact;}} </style>" )
         dataMauIn = dataMauIn.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
         dataMauIn = dataMauIn.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
             + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
@@ -5368,12 +5374,16 @@
         newHD.TienGui = 0;
         newHD.ChuyenKhoan = 0;
         newHD.BangGiaWasChanged = false;
+        newHD.NguoiTao = newHD.NguoiTao.toUpperCase();// vì ở BanLe.js check userlogin
 
         if (commonStatisJs.CheckNull(hdDB.CongThucBaoHiem)) {
             newHD.CongThucBaoHiem = 0;
         }
         if (commonStatisJs.CheckNull(hdDB.GiamTruThanhToanBaoHiem)) {
             newHD.GiamTruThanhToanBaoHiem = 0;
+        }
+        if (commonStatisJs.CheckNull(hdDB.MaPhieuTiepNhan)) {
+            newHD.MaPhieuTiepNhan = '';
         }
 
         // assign again ID = constGuid_Empty at BanLe.js
