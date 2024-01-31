@@ -5,6 +5,7 @@
     },
     data: {
         saveOK: false,
+        isLoading: false,
         isNew: true,
         IsShareDiscount: '2',
         LoaiChietKhauHD_NV: '2',
@@ -87,6 +88,7 @@
             var self = this;
             self.saveOK = false;
             self.isNew = true;
+            self.isLoading = false;
             self.inforHoaDon = item;
             self.inforPhieuThu = {};
             $('#HoaHongNhanVienHD').modal('show');
@@ -96,6 +98,7 @@
             self.IsShareDiscount = '2';
             self.saveOK = false;
             self.isNew = false;
+            self.isLoading = false;
             self.inforHoaDon = item;
 
             // check share discount
@@ -435,6 +438,8 @@
             var self = this;
             self.saveOK = true;
             if (self.isNew === false) {
+                if (self.isLoading) return;
+                self.isLoading = true;
                 self.UpdateChietKhauNVHoaDon_toDB();
             }
             else {
@@ -496,6 +501,7 @@
                     else {
                         ShowMessage_Danger(x.mes);
                     }
+                    self.isLoading = false;
                 });
             }
             else {
@@ -517,6 +523,7 @@
                     else {
                         ShowMessage_Danger(x.mes);
                     }
+                    self.isLoading = false;
                 });
             }
         },
