@@ -1273,6 +1273,11 @@
                 }
             }
 
+            if (moment(ptKhach.NgayLapHoaDon, 'YYYY-MM-DD HH:mm').format('YYYYMMDDHHmm') > moment(new Date()).format('YYYYMMDDHHmm')) {
+                commonStatisJs.ShowMessageDanger('Ngày lập phiếu vượt quá thời gian hiện tại');
+                return;
+            }
+
             if (ptKhach.DaThanhToan === 0) {
                 commonStatisJs.ShowMessageDanger('Vui lòng nhập số tiền cần thanh toán');
                 return;
