@@ -61,7 +61,7 @@ namespace libHT_NguoiDung
                     List<SqlParameter> lstParam = new List<SqlParameter>();
                     lstParam.Add(new SqlParameter("ID_NguoiDung", idNguoiDung));
                     lstParam.Add(new SqlParameter("ID_DonVi", idChiNhanh));
-                    return db.Database.SqlQuery<HT_Quyen_NhomDTO>("EXEC SP_GetQuyen_ByIDNguoiDung @ID_NguoiDung, @ID_DonVi", lstParam.ToArray()).ToList();
+                    return db.Database.SqlQuery<HT_Quyen_NhomDTO>("EXEC GetQuyen_ByIDNguoiDung @ID_NguoiDung, @ID_DonVi", lstParam.ToArray()).ToList();
                 }
                 catch (Exception ex)
                 {
