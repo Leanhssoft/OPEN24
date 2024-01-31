@@ -2526,9 +2526,42 @@
         return objHD;
     }
 
+    async function GetInforCus(id) {
+        if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
+            var date = moment(new Date()).format('YYYY-MM-DD HH:mm');
+            var xx = await ajaxHelper(DMDoiTuongUri + "GetInforKhachHang_ByID?idDoiTuong=" + id + '&idChiNhanh=' + VHeader.IdDonVi
+                + '&timeStart=' + date + '&timeEnd=' + date + '&wasChotSo=false', 'GET').done(function () {
+                })
+                .then(function (data) {
+                    if (data !== null && data.length > 0) {
+                        return data[0];
+                    }
+                    return {};
+                })
+            return xx;
+        }
+        return {};
+    }
+
     async function GetInforHDPrint(id, isDoiTraHang) {
         let hdDB = await GetInforHD_fromDB(id);
         hdDB.BH_NhanVienThucHiens = await GetChietKhauNV_byIDHoaDon(id);
+
+        let customer = {};
+        var notruoc = 0, nosau = 0, diachiKH = '', ngaysinhKH = '';
+        if (!commonStatisJs.CheckNull(hdDB.ID_DoiTuong)) {
+            customer = await GetInforCus(hdDB.ID_DoiTuong);
+            if (!$.isEmptyObject(customer)) {
+                notruoc = customer.NoHienTai - conno;
+                diachiKH = customer.DiaChi;
+                ngaysinhKH = customer.NgaySinh_NgayTLap;
+            }
+
+            notruoc = notruoc < 0 ? 0 : notruoc;
+        }
+        else {
+            nosau = conno;// khachle
+        }
 
         var objPrint = $.extend({}, hdDB);
         var phaiThanhToan = formatNumberToInt(hdDB.PhaiThanhToan);
@@ -2537,8 +2570,8 @@
         objPrint.DienThoaiKhachHang = objPrint.DienThoai;
         objPrint.TongTichDiem = formatNumber(objPrint.DiemSauGD);
         objPrint.NhanVienBanHang = objPrint.TenNhanVien;
-        if (objPrint.NgaySinh_NgayTLap != null) {
-            objPrint.NgaySinh_NgayTLap = moment(NgaySinh_NgayTLap).format('DD/MM/YYYY');
+        if (!commonStatisJs.CheckNull(ngaysinhKH)) {
+            objPrint.NgaySinh_NgayTLap = moment(ngaysinhKH).format('DD/MM/YYYY');
         }
 
         var tongcong = formatNumberToInt(objPrint.TongTienHang) - formatNumberToInt(objPrint.TongGiamGia) + formatNumberToInt(objPrint.TongChiPhi);
