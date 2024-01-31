@@ -3055,9 +3055,6 @@ var ViewModel = function () {
         myData.idhoadon = _idhoadon;
         myData.objnewKho = KiemKho;
         myData.idnhanvien = _IDNhanVien;
-        //if (localStorage.getItem('isUpdate') == 'true') {
-        //    myData.objChiTietKho = self.newKiemKho().BH_KiemKho_ChiTiet();
-        //} else {
 
         var store = db.transaction(table, "readwrite").objectStore(table);
         var req = store.openCursor(key_Add);
@@ -12789,6 +12786,8 @@ var ViewModel = function () {
                 hdct[i].ID_HangHoa = hdct[i].ID;
                 hdct[i].SoLuong = 0;
                 hdct[i].GiaVon = 0;
+                // 2 cột: SoLuong, TienChietKhau lưu ngược so với DB
+                // (do code ban đầu thế rồi, nên không muốn sửa lại nữa, vì phải check lại nhiều chỗ)
                 if (dataDB.length > 0) {
                     hdct[i].GiaVon = dataDB[0].GiaVon;
                     hdct[i].SoLuong = dataDB[0].TonKho;// soluongDB
