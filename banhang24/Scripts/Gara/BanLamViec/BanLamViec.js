@@ -1908,6 +1908,7 @@ var workTable = new Vue({
 
             objPrint.TongTienHang = formatNumber(hdChosing.TongTienHang);
             objPrint.TongGiamGia = formatNumber(hdChosing.TongGiamGia);
+            objPrint.TongChietKhau = hdChosing.TongChietKhau;
             objPrint.PhaiThanhToan = formatNumber(phaiThanhToan);
             objPrint.DaThanhToan = formatNumber3Digit(daThanhToan,0);
             objPrint.BaoHiemDaTra = formatNumber(hdChosing.BaoHiemDaTra);
