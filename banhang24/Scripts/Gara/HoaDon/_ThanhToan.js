@@ -495,7 +495,7 @@
 
                     var nguoinop = [];
                     var invoice = [];
-                    var khachCanTra = hdDB.PhaiThanhToan - hdDB.KhachDaTra;
+                    var khachCanTra = hdDB.PhaiThanhToan - hdDB.KhachDaTra - formatNumberToFloat(hdDB.TongTienHDTra);
                     var baohiemCanTra = hdDB.PhaiThanhToanBaoHiem - hdDB.BaoHiemDaTra;
 
                     if (khachCanTra > 0) {
@@ -681,7 +681,8 @@
                 var khachCanTra = 0;
                 var invoice = [];
                 if (item.ID === self.HoaDonChosing.ID_DoiTuong) {
-                    khachCanTra = self.HoaDonChosing.PhaiThanhToan - self.HoaDonChosing.KhachDaTra;
+                    khachCanTra = self.HoaDonChosing.PhaiThanhToan - self.HoaDonChosing.KhachDaTra 
+                        - formatNumberToFloat(self.HoaDonChosing.TongTienHDTra);
 
                     invoice = [{
                         ID: self.HoaDonChosing.ID,
