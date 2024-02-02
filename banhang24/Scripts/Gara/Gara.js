@@ -12466,10 +12466,7 @@ var NewModel_BanHangLe = function () {
             else {
                 lstHDLe = [];
             }
-            _maHoaDon = nameMaHD + (max + 1);
-            localStorage.setItem(lcMaHD, _maHoaDon);
-            self.HoaDons().MaHoaDon(_maHoaDon);
-
+           
             if (item.ID_BangGia === null) {
                 item.ID_BangGia = const_GuidEmpty;
             }
@@ -12477,6 +12474,10 @@ var NewModel_BanHangLe = function () {
             objNew.ThuTuThe = item.ThuTuThe;// gtri Thanh toán từ thẻ gtrị sau khi trả hàng
             lstHDLe.push(objNew);
             localStorage.setItem(lcListHD, JSON.stringify(lstHDLe));
+             _maHoaDon = objNew.MaHoaDon;
+            localStorage.setItem(lcMaHD, _maHoaDon);
+            self.HoaDons().MaHoaDon(_maHoaDon);
+
             GetCurrentPage_byMaHoaDon(_maHoaDon)
             // add in cache CTHD
             var lstCTHD = localStorage.getItem(lcListCTHD);
@@ -17372,8 +17373,12 @@ var NewModel_BanHangLe = function () {
                 return o.ID_DonViQuiDoi === forOut.ID_DonViQuiDoi
                     && (!forOut.QuanLyTheoLoHang || (o.ID_LoHang === forOut.ID_LoHang))
             });
-            if (dataDB.length > 0 && RoundDecimal(dataDB[0].TonKho) < RoundDecimal(formatNumberToFloat(forOut.SoLuong))) {
-                msgErr += forOut.TenHangHoa.concat(' ', forOut.QuanLyTheoLoHang ? ' (' + forOut.MaLoHang + ') ' : '', ', ');
+            if (dataDB.length > 0) {
+                let tonkhoDB = RoundDecimal(dataDB[0].TonKho);
+                let soluong = RoundDecimal(formatNumberToFloat(forOut.SoLuong));
+                if (tonkhoDB < soluong) {
+                    msgErr += forOut.TenHangHoa.concat(' ', forOut.QuanLyTheoLoHang ? ' (' + forOut.MaLoHang + ') ' : '', ', ');
+                }
             }
         }
         if (!commonStatisJs.CheckNull(msgErr)) {
