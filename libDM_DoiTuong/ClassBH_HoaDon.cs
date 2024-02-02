@@ -2982,6 +2982,7 @@ namespace libDM_DoiTuong
             var trangthais = "0,1,2";
             var mahoadon = string.Empty;
             var loaiHoaDons = "7";
+            var idNhanVienlogin = string.Empty;
             if (model.columsort != null && model.columsort != string.Empty)
             {
                 columnSort = model.columsort;
@@ -3001,11 +3002,18 @@ namespace libDM_DoiTuong
             if (model.ArrLoaiHoaDon != null && model.ArrLoaiHoaDon.Count > 0)
             {
                 loaiHoaDons = string.Join(",", model.ArrLoaiHoaDon);
+            } 
+            if (model.id_NhanViens != null && model.id_NhanViens.Count > 0)
+            {
+                idNhanVienlogin = string.Join(",", model.id_NhanViens);
             }
             List<SqlParameter> lstParam = new List<SqlParameter>();
             lstParam.Add(new SqlParameter("TextSearch", mahoadon));
             lstParam.Add(new SqlParameter("LoaiHoaDon", loaiHoaDons));
             lstParam.Add(new SqlParameter("IDChiNhanhs", isChiNhanhs));
+            // nếu idNhanViens = empty (getall)
+            // else: chỉ get phiếu nhập do chính NV đăng nhập tạo
+            lstParam.Add(new SqlParameter("IDNhanViens", idNhanVienlogin));
             lstParam.Add(new SqlParameter("FromDate", model.dayStart));
             lstParam.Add(new SqlParameter("ToDate", model.dayEnd));
             lstParam.Add(new SqlParameter("TrangThais", trangthais));
@@ -3013,7 +3021,7 @@ namespace libDM_DoiTuong
             lstParam.Add(new SqlParameter("PageSize", model.pageSize));
             lstParam.Add(new SqlParameter("ColumnSort", columnSort));
             lstParam.Add(new SqlParameter("SortBy", sortBy));
-            return db.Database.SqlQuery<BH_HoaDonDTO>("EXEC GetList_HoaDonNhapHang @TextSearch, @LoaiHoaDon, @IDChiNhanhs, @FromDate, @ToDate," +
+            return db.Database.SqlQuery<BH_HoaDonDTO>("EXEC GetList_HoaDonNhapHang @TextSearch, @LoaiHoaDon, @IDChiNhanhs,@IDNhanViens, @FromDate, @ToDate," +
                 "@TrangThais, @CurrentPage, @PageSize, @ColumnSort, @SortBy", lstParam.ToArray()).ToList();
         }
 

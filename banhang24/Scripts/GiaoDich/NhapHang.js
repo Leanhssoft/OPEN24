@@ -108,6 +108,7 @@
     self.Show_BtnUpdateSoQuy = ko.observable(false);
     self.Show_BtnDeleteSoQuy = ko.observable(false);
     self.Allow_ChangeTimeSoQuy = ko.observable(false);
+    self.Role_KhongDuocXemPhieuNhap_CuaNVKhac = ko.observable(false);
     self.role_NhapKhoNoiBo = ko.observable(VHeader.Quyen.indexOf('NhapKhoNoiBo') > -1);
     self.role_NhapHangKhachThua = ko.observable(VHeader.Quyen.indexOf('NhapHangKhachThua') > -1);
 
@@ -156,7 +157,6 @@
     function PageLoad() {
         LoadColumnCheck();
         Check_QuyenXemGiaVon();
-        LoadID_NhanVien();
         GetHT_Quyen_ByNguoiDung();
         GetDataChotSo();
         GetCauHinhHeThong();
@@ -239,7 +239,6 @@
     }
 
     function GetHT_Quyen_ByNguoiDung() {
-
         ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + "GetListQuyen_OfNguoiDung", 'GET').done(function (data) {
             if (data !== "" && data.length > 0) {
                 self.Quyen_NguoiDung(data);
@@ -249,6 +248,7 @@
                 self.Show_BtnUpdateSoQuy(CheckQuyenExist('SoQuy_CapNhat'));
                 self.Show_BtnDeleteSoQuy(CheckQuyenExist('SoQuy_Xoa'));
                 self.Allow_ChangeTimeSoQuy(CheckQuyenExist('SoQuy_ThayDoiThoiGian'));
+                self.Role_KhongDuocXemPhieuNhap_CuaNVKhac(CheckQuyenExist('NhapHang_KhongDuocXemPhieuNhap_CuaNhanVienKhac'));
 
                 switch (self.LoaiHoaDonMenu()) {
                     case 4:
@@ -285,20 +285,14 @@
                         self.Show_BtnExcelDetail(CheckQuyenExist('DatHangNCC_XuatFile'));
                         break;
                 }
+
+                SearchHoaDon();
             }
             else {
                 ShowMessage_Danger('Không có quyền');
             }
         });
 
-    }
-
-    function LoadID_NhanVien() {
-        ajaxHelper('/api/DanhMuc/ChamSocKhachHangAPI/' + 'GetListNhanVienLienQuanByIDLoGin_inDepartment?idnvlogin=' + _id_NhanVien
-            + '&idChiNhanh=' + _IDchinhanh + '&funcName=' + funcName, 'GET').done(function (data) {
-                self.ListIDNhanVienQuyen(data);
-                SearchHoaDon();
-            });
     }
 
     self.ThietLap = ko.observableArray();
@@ -853,12 +847,9 @@
         }
 
         var arrIDNV = [];
-        for (let i = 0; i < self.ListIDNhanVienQuyen().length; i++) {
-            if ($.inArray(self.ListIDNhanVienQuyen()[i], arrIDNV) === -1) {
-                arrIDNV.push(self.ListIDNhanVienQuyen()[i]);
-            }
+        if (self.Role_KhongDuocXemPhieuNhap_CuaNVKhac() && VHeader.LaAdmin !== 'Admin') {
+            arrIDNV = [_id_NhanVien]; // chỉ được xem phiếu nhập hàng do NV này tạo
         }
-        self.MangIDNhanVien(arrIDNV);
 
         if (self.filterNgayLapHD() === '0') {
             switch (parseInt(self.filterNgayLapHD_Quy())) {
