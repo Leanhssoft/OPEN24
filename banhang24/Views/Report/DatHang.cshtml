@@ -339,14 +339,40 @@
                                 <button type="button" class="btn btn-main  dropdown-toggle" onclick="showCollumnFilter(this)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-angle-double-down"></i>
                                 </button>
-                                <div class="dropdown-list" style="display: none;">
-                                    <ul data-bind="foreach: listCheckbox">
-                                        <li>
-                                            <div class="checkbox">
-                                                <label><input type="checkbox" class="checkbox" checked="checked" data-bind="value:Key"><span></span><label class="nopadding" data-bind="text:Value" /></label>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <div class="dropdown-list" data-bind="css:listCheckbox().length>9?'dropdown-list-two':''" style="display: none;right:0">
+                                    <div data-bind="if:listCheckbox().length <=9">
+                                        <ul data-bind="foreach: listCheckbox">
+                                            <li>
+                                                <div class="checkbox">
+                                                    <label><input type="checkbox" class="checkbox" checked="checked" data-bind="value:Key"><span></span><label class="nopadding" data-bind="text:Value" /></label>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div data-bind="if:listCheckbox().length >9">
+                                        <div class="col-sm-6 dropdown-left">
+                                            <ul data-bind="foreach: listCheckbox">
+                                                <!-- ko if: $index() <=($root.listCheckbox().length/2)-->
+                                                <li>
+                                                    <div class="checkbox">
+                                                        <label><input type="checkbox" class="checkbox" checked="checked" data-bind="value:Key"><span></span><label class="nopadding" data-bind="text:Value" /></label>
+                                                    </div>
+                                                </li>
+                                                <!--/ko-->
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-6 dropdown-right">
+                                            <ul data-bind="foreach: listCheckbox">
+                                                <!-- ko if: $index() >($root.listCheckbox().length/2)-->
+                                                <li>
+                                                    <div class="checkbox">
+                                                        <label><input type="checkbox" class="checkbox" checked="checked" data-bind="value:Key"><span></span><label class="nopadding" data-bind="text:Value" /></label>
+                                                    </div>
+                                                </li>
+                                                <!--/ko-->
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -371,40 +397,33 @@
                             <div class="table-reponsive table-frame" id="table-reponsive">
                                 <table class="table table-striped table-hover">
                                     <thead>
-                                        <tr>
-                                            <th class="@commonEnum.TypeReportOrder.Order_nhomhang text-left">Nhóm hàng</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_mahang text-left">Mã hàng</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_tenhang text-left">Tên hàng</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_donvitinh text-left">Đvt</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_lohang text-left">Lô hàng</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_soluong text-right">Số lượng đặt </th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_thanhtien text-right">Thành tiền</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_giamgia text-right">Giảm giá HĐ</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_giatri text-right">Giá trị đặt</th>
-                                            <th class=" @commonEnum.TypeReportOrder.Order_soluongnhan text-right">Số lượng nhận</th>
+                                        <tr data-bind="foreach: $root.listCheckbox">
+                                            <th class="text-center" data-bind="attr:{class: Key +' text-center'}, text: Value"></th>
                                         </tr>
                                     </thead>
                                     <tbody data-bind="foreach: BaoCaoDatHang_TongHop_Page">
                                         <tr class="prev-tr-hide">
-                                            <td class="@commonEnum.TypeReportOrder.Order_nhomhang bhmact cls1 text-left " data-bind="text: TenNhomHangHoa"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_nhomhang  text-left " data-bind="text: TenNhomHangHoa"></td>
                                             <td class="@commonEnum.TypeReportOrder.Order_mahang">
                                                 <a style="cursor: pointer" class=" text-left Trinhpv-hovver" data-bind="text: MaHangHoa, click: $parent.LoadHangHoa_byMaHH">
                                                 </a>
                                             </td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_tenhang bhname cls3 text-left">
+                                            <td class="@commonEnum.TypeReportOrder.Order_tenhang  text-left">
                                                 <span data-bind="text: TenHangHoa"></span>
                                                 <span data-bind="text: ThuocTinh_GiaTri" style="color:#ff6a00"></span>
                                             </td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_donvitinh bhsoluong cls4 text-left" data-bind="text: TenDonViTinh"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_donvitinh   text-left" data-bind="text: TenDonViTinh"></td>
                                             <td class="@commonEnum.TypeReportOrder.Order_lohang">
-                                                <a style="cursor: pointer" class="text-left Trinhpv-hovver" data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
+                                                <a style="cursor: pointer" class="text-left " data-bind="text: TenLoHang, click: $parent.LoadLoHang_byMaLH">
                                                 </a>
                                             </td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_soluong bhsoluong cls4 text-right" data-bind="text: formatNumber3Digit(SoLuongDat) "></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_thanhtien bhgiaban cls5 text-right " data-bind="text: formatNumber3Digit(ThanhTien,2)"></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_giamgia bhthanhtien cls6 text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2) "></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_giatri bhchietkhau cls5 text-right" data-bind="text: formatNumber3Digit(GiaTriDat,2)"></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_soluongnhan  bhchietkhau cls5 text-right" data-bind="text: formatNumber3Digit(SoLuongNhan)"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_soluong   text-right" data-bind="text: formatNumber3Digit(SoLuongDat) "></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_chietkhau   text-right" data-bind="text: formatNumber3Digit(TongChietKhau) "></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_thanhtien   text-right " data-bind="text: formatNumber3Digit(ThanhTien,2)"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_tienthue   text-right " data-bind="text: formatNumber3Digit(TongTienThue,2)"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_giamgia   text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2) "></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_giatri   text-right" data-bind="text: formatNumber3Digit(GiaTriDat,2)"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_soluongnhan    text-right" data-bind="text: formatNumber3Digit(SoLuongNhan)"></td>
                                         </tr>
                                     </tbody>
                                     <tfoot class="PhanQuyen" hidden>
@@ -418,17 +437,19 @@
                                         </tr>
                                     </tfoot>
                                     <tfoot class="TC_TongHop" hidden>
-                                        <tr>
-                                            <td class="@commonEnum.TypeReportOrder.Order_nhomhang bg12 text-left bold bhmact">Tổng cộng</td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_mahang bg12 bhtime"></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_tenhang bg12 bhmahh"></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_donvitinh bg12 bhtime"></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_lohang bg12 bhmahh"></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_soluong bg12 bhsoluong text-right bold" data-bind="text: formatNumber3Digit(TH_SoLuongDat())"></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_thanhtien bg12 text-right bold " data-bind="text: formatNumber3Digit(TH_ThanhTien(),2)"></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_giamgia bg12 text-right bold " data-bind="text: formatNumber3Digit(TH_GiamGiaHD(),2)"></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_giatri bg12 text-right bold " data-bind="text: formatNumber3Digit(TH_GiaTriDat(),2)"></td>
-                                            <td class="@commonEnum.TypeReportOrder.Order_soluongnhan  bg12 text-right bold " data-bind="text: formatNumber3Digit(TH_SoLuongNhan())"></td>
+                                        <tr class="bg12 bold">
+                                            <td class="@commonEnum.TypeReportOrder.Order_nhomhang  text-left bold bhmact">Tổng cộng</td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_mahang  "></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_tenhang  "></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_donvitinh  "></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_lohang  "></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_soluong   text-right " data-bind="text: formatNumber3Digit(TH_SoLuongDat())"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_chietkhau   text-right " data-bind="text: formatNumber3Digit($root.TongChietKhau())"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_thanhtien  text-right  " data-bind="text: formatNumber3Digit(TH_ThanhTien(),2)"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_tienthue  text-right  " data-bind="text: formatNumber3Digit($root.TongTienThue(),2)"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_giamgia  text-right  " data-bind="text: formatNumber3Digit(TH_GiamGiaHD(),2)"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_giatri  text-right  " data-bind="text: formatNumber3Digit(TH_GiaTriDat(),2)"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_soluongnhan   text-right  " data-bind="text: formatNumber3Digit(TH_SoLuongNhan())"></td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -440,21 +461,8 @@
                             <div class="table-reponsive">
                                 <table class="table table-striped table-hover">
                                     <thead>
-                                        <tr>
-                                            <th class="@commonEnum.TypeReportOrder.Order_machungtu text-left">Mã chứng từ</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_ngay text-center"> Ngày chứng từ</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_khachhang text-left">Khách hàng</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_mahang text-left">Mã hàng</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_tenhang  text-left">Tên hàng</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_donvitinh text-left">Đvt</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_lohang text-left">Lô hàng</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_soluong text-right">Số lượng đặt</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_thanhtien text-right">Thành tiền</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_giamgia text-right">Giảm giá HĐ</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_giatri text-right">Giá trị đặt</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_soluongnhan text-right">Số lượng nhận</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_nhanvien  text-center">Nhân viên</th>
-                                            <th class="@commonEnum.TypeReportOrder.Order_ghichu text-center">Ghi chú</th>
+                                        <tr data-bind="foreach: $root.listCheckbox">
+                                            <th class="text-center" data-bind="attr:{class: Key +' text-center'}, text: Value"></th>
                                         </tr>
                                     </thead>
                                     <tbody data-bind="foreach: BaoCaoDatHang_ChiTiet_Page">
@@ -481,7 +489,10 @@
                                                 </a>
                                             </td>
                                             <td class="@commonEnum.TypeReportOrder.Order_soluong text-right" data-bind="text: formatNumber3Digit(SoLuongDat) "></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_dongia text-right" data-bind="text: formatNumber3Digit(DonGia) "></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_chietkhau text-right" data-bind="text: formatNumber3Digit(TongChietKhau) "></td>
                                             <td class="@commonEnum.TypeReportOrder.Order_thanhtien text-right" data-bind="text: formatNumber3Digit(TongTienHang,2) "></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_tienthue text-right" data-bind="text: formatNumber3Digit(TongTienThue,2) "></td>
                                             <td class="@commonEnum.TypeReportOrder.Order_giamgia text-right" data-bind="text: formatNumber3Digit(GiamGiaHD,2) "></td>
                                             <td class="@commonEnum.TypeReportOrder.Order_giatri text-right" data-bind="text: formatNumber3Digit(GiaTriDat,2) "></td>
                                             <td class="@commonEnum.TypeReportOrder.Order_soluongnhan text-right" data-bind="text: formatNumber3Digit(SoLuongNhan) "></td>
@@ -491,12 +502,12 @@
                                     </tbody>
                                     <tfoot class="PhanQuyen" hidden>
                                         <tr>
-                                            <td class="bg12 bhma text-center" colspan="13"><i>Bạn không có quyền xem báo cáo này!</i></td>
+                                            <td class="bg12 bhma text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
                                         </tr>
                                     </tfoot>
                                     <tfoot class="Report_Empty" hidden>
                                         <tr>
-                                            <td class="bg12 bhma text-center" colspan="13"><i>Báo cáo không có dữ liệu</i></td>
+                                            <td class="bg12 bhma text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
                                         </tr>
                                     </tfoot>
                                     <tfoot class="TC_ChiTiet">
@@ -509,7 +520,10 @@
                                             <td class="@commonEnum.TypeReportOrder.Order_donvitinh "></td>
                                             <td class="@commonEnum.TypeReportOrder.Order_lohang "></td>
                                             <td class="@commonEnum.TypeReportOrder.Order_soluong  text-right bold" data-bind="text: formatNumber3Digit(CT_SoLuongDat())"></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_dongia  text-right bold" ></td>
+                                            <td class="@commonEnum.TypeReportOrder.Order_chietkhau  text-right bold" data-bind="text: formatNumber3Digit($root.TongChietKhau())"></td>
                                             <td data-bind="text: formatNumber3Digit(CT_TongTienHang(),2)" class="@commonEnum.TypeReportOrder.Order_thanhtien  text-right"></td>
+                                            <td data-bind="text: formatNumber3Digit($root.TongTienThue(),2)" class="@commonEnum.TypeReportOrder.Order_tienthue  text-right"></td>
                                             <td data-bind="text: formatNumber3Digit(CT_GiamGiaHD(),2)" class="@commonEnum.TypeReportOrder.Order_giamgia  text-right"></td>
                                             <td data-bind="text: formatNumber3Digit(CT_GiaTriDat(),2)" class="@commonEnum.TypeReportOrder.Order_giatri  text-right "></td>
                                             <td data-bind="text: formatNumber3Digit(CT_SoLuongNhan())" class="@commonEnum.TypeReportOrder.Order_soluongnhan text-right "></td>

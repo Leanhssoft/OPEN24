@@ -358,7 +358,9 @@ namespace libReport
         public string TenDonViTinh { get; set; }
         public string TenLoHang { get; set; }
         public double SoLuongDat { get; set; }
+        public double? TongChietKhau { get; set; }// tổng chiết khấu hàng hóa
         public double ThanhTien { get; set; }
+        public double? TongTienThue { get; set; }
         public double GiamGiaHD { get; set; }
         public double GiaTriDat { get; set; }
         public double SoLuongNhan { get; set; }
@@ -376,7 +378,10 @@ namespace libReport
         public string TenDonViTinh { get; set; }
         public string TenLoHang { get; set; }
         public double SoLuongDat { get; set; }
-        public double TongTienHang { get; set; }
+        public double? DonGia { get; set; }
+        public double? TongChietKhau { get; set; }// soluong * chietkhau moi mat hang
+        public double TongTienHang { get; set; }// thành tiền sau chiet khau
+        public double? TongTienThue { get; set; }
         public double GiamGiaHD { get; set; }
         public double GiaTriDat { get; set; }
         public double SoLuongNhan { get; set; }

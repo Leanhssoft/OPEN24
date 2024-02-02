@@ -3672,19 +3672,22 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double ThanhTien = lst.Sum(x => x.ThanhTien);
                 double GiaTriDat = lst.Sum(x => x.GiaTriDat);
                 double GiamGiaHD = lst.Sum(x => x.GiamGiaHD);
+                double tongChietKhau = lst.Sum(x => x.TongChietKhau ?? 0);
+                double tongTienThue = lst.Sum(x => x.TongTienThue ?? 0);
                 int lstPages = getNumber_Page(Rown, 10);
-                JsonResultExampleTr<BaoCaoDatHang_TongHopPRC> json = new JsonResultExampleTr<BaoCaoDatHang_TongHopPRC>
+                return Json(new
                 {
                     LstData = lst,
                     Rowcount = Rown,
                     numberPage = lstPages,
+                    TongChietKhau = tongChietKhau,
+                    TongTienThue = tongTienThue,
                     a1 = Math.Round(SoLuongDat, 3, MidpointRounding.ToEven),
                     a2 = Math.Round(ThanhTien, 0, MidpointRounding.ToEven),
                     a3 = Math.Round(GiamGiaHD, 0, MidpointRounding.ToEven),
                     a4 = Math.Round(GiaTriDat, 0, MidpointRounding.ToEven),
                     a5 = Math.Round(SoLuongNhan, 3, MidpointRounding.ToEven),
-                };
-                return Json(json);
+                });
             }
         }
         [AcceptVerbs("GET", "POST")]
@@ -3723,19 +3726,22 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double GiamGiaHD = lst.Sum(x => x.GiamGiaHD);
                 double GiaTriDat = lst.Sum(x => x.GiaTriDat);
                 double SoLuongNhan = lst.Sum(x => x.SoLuongNhan);
+                double tongChietKhau = lst.Sum(x => x.TongChietKhau ?? 0);
+                double tongTienThue = lst.Sum(x => x.TongTienThue ?? 0);
                 int lstPages = getNumber_Page(Rown, 10);
-                JsonResultExampleTr<BaoCaoDatHang_ChiTietPRC> json = new JsonResultExampleTr<BaoCaoDatHang_ChiTietPRC>
+                return Json(new
                 {
                     LstData = lst,
                     Rowcount = Rown,
                     numberPage = lstPages,
+                    TongChietKhau = tongChietKhau,
+                    TongTienThue = tongTienThue,
                     a1 = Math.Round(SoLuongBan, 3, MidpointRounding.ToEven),
                     a2 = Math.Round(ThanhTien, 0, MidpointRounding.ToEven),
                     a3 = Math.Round(GiamGiaHD, 0, MidpointRounding.ToEven),
                     a4 = Math.Round(GiaTriDat, 0, MidpointRounding.ToEven),
                     a5 = Math.Round(SoLuongNhan, 3, MidpointRounding.ToEven),
-                };
-                return Json(json);
+                });
             }
         }
         [AcceptVerbs("GET", "POST")]
