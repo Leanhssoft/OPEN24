@@ -1894,7 +1894,7 @@ var workTable = new Vue({
             objPrint.TaiKhoanNganHang = hdChosing.TaiKhoanNganHang;
 
             objPrint.MaHoaDon = hdChosing.MaHoaDon;
-            objPrint.MaHoaDonTraHang = hdChosing.MaBaoGia;
+            objPrint.MaHoaDonTraHang = hdChosing.MaHoaDonGoc;
             objPrint.NgayLapHoaDon = moment(hdChosing.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
             objPrint.NgayVaoXuong = moment(self.listData.ThongTinXe.NgayVaoXuong).format('DD/MM/YYYY HH:mm');
             objPrint.NgayXuatXuongDuKien = self.listData.ThongTinXe.NgayXuatXuongDuKien ?
