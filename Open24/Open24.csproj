@@ -1824,6 +1824,36 @@
     <Content Include="Content\images\khachhang\khpiad.jpg" />
     <Content Include="Content\images\khachhang\khsech.png" />
     <Content Include="Content\images\khachhang\khup.png" />
+    <Content Include="Content\images\landing-page\gara\bg-landing-page-header.png" />
+    <Content Include="Content\images\landing-page\gara\car.png" />
+    <Content Include="Content\images\landing-page\gara\customer\AKIKO.png" />
+    <Content Include="Content\images\landing-page\gara\customer\Frame 1000004296.png" />
+    <Content Include="Content\images\landing-page\gara\customer\Frame 1000004297.png" />
+    <Content Include="Content\images\landing-page\gara\customer\Frame 1000004299.png" />
+    <Content Include="Content\images\landing-page\gara\customer\Frame 1000004302.png" />
+    <Content Include="Content\images\landing-page\gara\customer\gara_xuan_thuy.png" />
+    <Content Include="Content\images\landing-page\gara\customer\Ha_THanh_Gara.png" />
+    <Content Include="Content\images\landing-page\gara\customer\Hz_Car.png" />
+    <Content Include="Content\images\landing-page\gara\customer\PIAGGIO.png" />
+    <Content Include="Content\images\landing-page\gara\customer\THC_Auto.png" />
+    <Content Include="Content\images\landing-page\gara\i-calendar.png" />
+    <Content Include="Content\images\landing-page\gara\i-chi-phi.png" />
+    <Content Include="Content\images\landing-page\gara\i-doanh-thu.png" />
+    <Content Include="Content\images\landing-page\gara\i-email.png" />
+    <Content Include="Content\images\landing-page\gara\i-employee.png" />
+    <Content Include="Content\images\landing-page\gara\i-flash-orange.png" />
+    <Content Include="Content\images\landing-page\gara\i-flash-primary.png" />
+    <Content Include="Content\images\landing-page\gara\i-give-heart.png" />
+    <Content Include="Content\images\landing-page\gara\i-group-employee.png" />
+    <Content Include="Content\images\landing-page\gara\i-quan-ly.png" />
+    <Content Include="Content\images\landing-page\gara\i-report.png" />
+    <Content Include="Content\images\landing-page\gara\i-support.png" />
+    <Content Include="Content\images\landing-page\gara\img-man.png" />
+    <Content Include="Content\images\landing-page\gara\quy_trinh_lam_viec.png" />
+    <Content Include="Content\images\landing-page\gara\ticket.png" />
+    <Content Include="Content\images\landing-page\gara\tinh_nang.png" />
+    <Content Include="Content\images\landing-page\gara\tinh_nang_bao_cao.png" />
+    <Content Include="Content\images\landing-page\gara\tinh_nang_cong_viec.png" />
     <Content Include="Content\images\lg.jpg" />
     <Content Include="Content\images\loading-image.gif" />
     <Content Include="Content\images\logo-22112021.png" />
@@ -2206,6 +2236,7 @@
     <Content Include="Content\js\main.js" />
     <Content Include="Content\js\moment.js" />
     <Content Include="Content\js\sample.js" />
+    <Content Include="Content\landing-page\gara\landing-page-gara.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="DynamicData\FieldTemplates\DynamicDataField1.ascx" />
     <Content Include="DynamicData\FieldTemplates\DynamicDataField1_Edit.ascx" />
@@ -3052,6 +3083,7 @@
     <Content Include="Views\Open24\_ModalTuVanOpen24.cshtml" />
     <Content Include="Views\Home\zalologin.cshtml" />
     <Content Include="Views\Open24\Index.cshtml" />
+    <Content Include="Views\Open24\LandingPageGara.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

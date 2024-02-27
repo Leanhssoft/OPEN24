@@ -1,0 +1,199 @@
+﻿/* Thiết lập các biến màu chủ đề */
+:root {
+    --color-theme: #0E63C4;
+}
+
+/* Thiết lập font size cho tiêu đề h6 */
+.h6 {
+    font-size: 18px;
+}
+
+/* Thiết lập font size cho tiêu đề h7 */
+.h7 {
+    font-size: 16px;
+}
+
+/* Thiết lập kiểu hiển thị và layout cho danh sách khách hàng */
+.list-customer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    list-style-type: none;
+}
+
+/* Thiết lập kiểu cho nút submit */
+.op-btn-submit {
+    height: 40px;
+    line-height: 24px;
+    padding: 8px 15px; /* Đã loại bỏ dòng padding: 3px; vì nó bị ghi đè bởi dòng tiếp theo */
+    background: var(--color-theme);
+    border-radius: 20px;
+    color: white !important;
+}
+
+/* Thiết lập kiểu cho thanh navbar */
+.landing-gara-nav-bar {
+    width: 100%;
+    background: #00284C;
+    height: 80px;
+}
+
+
+
+/* Thiết lập kiểu cho nhãn văn bản */
+.text-lable {
+    font-size: 18px;
+    line-height: 28px;
+    font-weight: 700;
+    color: #ffffff;
+    font-family: "Inter", sans-serif;
+}
+
+/* Thiết lập kiểu cho nội dung văn bản */
+.text-content {
+    font-size: 14px;
+    font-weight: 400;
+    color: #FFFFFF;
+    font-family: "Inter", sans-serif;
+    line-height: 24px;
+}
+
+/* Thiết lập chiều cao cho nội dung trang */
+.landing-gara-content {
+    height: 100%;
+}
+
+/* Thiết lập kiểu cho nút thử nghiệm */
+.btn-trial {
+    padding: 12px 16px 12px 16px;
+    background-color: #ff6a00;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: Roboto;
+    border-radius: 24px;
+}
+
+    .btn-trial:hover {
+        padding: 12px 16px 12px 16px;
+        background-color: #FF5C35;
+        color: #FFFFFF;
+        font-size: 16px;
+        font-weight: 700;
+        font-family: Roboto;
+        border-radius: 24px;
+    }
+
+
+/* Thiết lập kiểu cho màn hình di động */
+@media only screen and (max-width: 767px) {
+    .op-gara-content {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    /* Các thiết lập khác cho màn hình di động */
+    .landing-page-header {
+        /*background-image: url('../../images/landing-page/gara/bg-landing-page-header.png');*/
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        height: 300px;
+    }
+
+    .img-bg-gara-header {
+        width: 100%;
+        position: absolute;
+        z-index: -1;
+        height: 300px;
+        object-fit: fill
+    }
+
+    .content-header {
+        padding-top: 1.25rem;
+    }
+
+    .box-card-shadow {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: none;
+        border-radius: 0.25rem;
+        box-shadow: 5px 5px 20px 0px #2745731A;
+        border-radius: 8px;
+        padding: 24px 4px 16px 4px
+    }
+    .list-customer li {
+        width: 33.333333333%;
+    }
+    .khach-hang-page {
+        padding-bottom: 8rem;
+    }
+    /* Thiết lập kiểu cho phần footer */
+    .landing-gara-footer {
+        padding-top: 7rem;
+        padding-bottom: 5rem;
+        background: #0078D7;
+    }
+}
+
+/* Thiết lập kiểu cho màn hình máy tính */
+@media only screen and (min-width: 768px) {
+    .op-gara-content {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+    }
+
+    /* Các thiết lập khác cho màn hình máy tính */
+
+    .landing-page-header {
+        /*background-image: url('../../images/landing-page/gara/bg-landing-page-header.png');*/
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        height: 932px;
+    }
+
+    .img-bg-gara-header {
+        width: 100%;
+        position: absolute;
+        z-index: -1;
+        height: 932px;
+        object-fit: fill
+    }
+
+    .content-header {
+        padding-top: 4rem;
+    }
+
+    .box-card-shadow {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: none;
+        border-radius: 0.25rem;
+        padding: 40px 24px;
+        box-shadow: 5px 5px 20px 0px #2745731A;
+        border-radius: 8px;
+    }
+
+
+    .list-customer li {
+        width: 20%;
+    }
+    .khach-hang-page{
+        padding-bottom: 15rem;
+    }
+    /* Thiết lập kiểu cho phần footer */
+    .landing-gara-footer {
+        padding-top: 10rem;
+        padding-bottom: 5rem;
+        background: #0078D7;
+    }
+}
