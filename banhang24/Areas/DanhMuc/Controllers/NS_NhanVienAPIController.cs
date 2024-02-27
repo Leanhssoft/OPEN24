@@ -23,6 +23,8 @@ using System.Web.Script.Services;
 using System.Threading.Tasks;
 using Model.Infrastructure;
 using banhang24.Compress;
+using libHT_NguoiDung;
+using System.Web.Http.Results;
 
 namespace banhang24.Areas.DanhMuc.Controllers
 {
@@ -191,7 +193,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         /// Get cookies of user login { ID,ID_NhanVien,TaiKhoan}
         /// </summary>
         /// <returns></returns>
-        public HT_NguoiDung GetUserCookies()
+        public HTNguoiDungCookiesDto GetUserCookies()
         {
             return banhang24.Hellper.contant.GetUserCookies();
         }

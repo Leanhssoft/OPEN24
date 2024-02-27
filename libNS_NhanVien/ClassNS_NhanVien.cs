@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using libHT_NguoiDung;
 
 namespace libNS_NhanVien
 {
@@ -360,7 +361,7 @@ namespace libNS_NhanVien
                     return db.Quy_HoaDon.Where(query);
             }
         }
-        public JsonViewModel<string> UpdatettChinhTri(NS_NhanVien_new model, HT_NguoiDung User)
+        public JsonViewModel<string> UpdatettChinhTri(NS_NhanVien_new model, HTNguoiDungCookiesDto User)
         {
             var result = new JsonViewModel<string>() { ErrorCode = false };
             var data = db.NS_NhanVien.FirstOrDefault(o => o.ID == model.ID);

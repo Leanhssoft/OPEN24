@@ -24,6 +24,7 @@ using System.Web.Management;
 using libDM_DonVi;
 using iTextSharp.text.pdf.qrcode;
 using System.Text.RegularExpressions;
+using libHT_NguoiDung;
 
 namespace banhang24.Areas.DanhMuc.Controllers
 {
@@ -84,7 +85,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         [System.Web.Http.HttpGet]
         public IHttpActionResult LoadListMauIn()
         {
-            HT_NguoiDung objUser_Cookies = contant.GetUserCookies();
+            HTNguoiDungCookiesDto objUser_Cookies = contant.GetUserCookies();
             var data = new List<MacDinhMauInView>();
             foreach (var o in commonEnum.DanhSachTenMauIn)
             {
@@ -127,7 +128,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         {
             try
             {
-                HT_NguoiDung objUser_Cookies = contant.GetUserCookies();
+                HTNguoiDungCookiesDto objUser_Cookies = contant.GetUserCookies();
                 foreach (var item in model)
                 {
                     var mauInOld = (from mauin in db.DM_MauIn
@@ -634,6 +635,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content = content.Replace("{NgaySanXuat}", "<span data-bind=\"text: NgaySanXuat\"></span>");
             content = content.Replace("{NgayHetHan}", "<span data-bind=\"text: NgayHetHan\"></span>");
             content = content.Replace("{BaoHanh}", "<span data-bind=\"text: BaoHanh\"></span>");// 6 tháng, 1 năm...
+            content = content.Replace("{TenNhomHangHoa}", "<span data-bind=\"text: TenNhomHangHoa\"></span>");
 
             // sudung dv
             content = content.Replace("{SLDVDaSuDung}", "<span data-bind=\"text: formatNumber(SoLuongDVDaSuDung)\"></span>");
@@ -700,17 +702,25 @@ namespace banhang24.Areas.DanhMuc.Controllers
             else
             if (content1.IndexOf("{Nhom_HangHoaDV}") == -1 && (content1.IndexOf("{TheoHangHoa}") > -1 || content1.IndexOf("{TheoDichVu}") > -1))
             {
-                var openTbl = content1.LastIndexOf("<tbody", content1.IndexOf("{TheoHangHoa}")) + 7;
-                var closeTbl = content1.IndexOf("tbody>", content1.IndexOf("{TheoDichVu}")) + 6;
-                string temptable = content1.Substring(openTbl, closeTbl - openTbl);
-                string temptable1 = temptable;
+                var xx = content1.IndexOf("{TheoHangHoa}");
+
+                int openTbl, closeTbl;
+                string temptable = string.Empty, temptable1 = string.Empty;
+
+                if (xx > 0)
+                {
+                    openTbl = content1.LastIndexOf("<tbody", content1.IndexOf("{TheoHangHoa}")) + 7;
+                    closeTbl = content1.IndexOf("tbody>", content1.IndexOf("{TheoDichVu}")) + 6;
+                    temptable = content1.Substring(openTbl, closeTbl - openTbl);
+                    temptable1 = temptable;
+                }
 
                 var strDV = "<!-- ko foreach:  $root.CTHoaDonPrint().filter(x=> x.LaHangHoa === false) -->";
                 var strHH = "<!-- ko foreach:  $root.CTHoaDonPrint().filter(x=> x.LaHangHoa) -->";
 
                 var indexHH = temptable1.IndexOf("TheoHangHoa");
                 var indexDV = temptable1.IndexOf("TheoDichVu");
-                if (indexHH == -1 && indexDV ==-1)
+                if (indexHH == -1 && indexDV == -1)
                 {
                     openTbl = content1.LastIndexOf("tbody", content1.IndexOf("{TenHangHoa")) - 1;
                     closeTbl = content1.IndexOf("tbody", content1.IndexOf("{TenHangHoa")) + 6;
@@ -1522,7 +1532,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 CheckRowNext:
                                     {
                                         loopNext += 1;
-                                        if (loopNext >3)
+                                        if (loopNext > 3)
                                         {
                                             row1Str = string.Concat(row1Str, "<!--/ko-->");
                                             goto ReplaceDetail;
@@ -1604,7 +1614,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TongTienHang}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongTienHang,2)\"></span>");
             content1 = content1.Replace("{TongTienHDSauGiamGia}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongTienHDSauGiamGia,2)\"></span>");
             content1 = content1.Replace("{TongTienHDSauVAT}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongTienHDSauVAT,2)\"></span>");
-            content1 = content1.Replace("{DaThanhToan}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().DaThanhToan,2)\"></span>");
+            content1 = content1.Replace("{DaThanhToan}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().DaThanhToan)\"></span>");
             content1 = content1.Replace("{KhachDaTra}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().KhachDaTra)\"></span>");
             content1 = content1.Replace("{ThuDatHang}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().ThuDatHang)\"></span>");
             content1 = content1.Replace("{PhaiThanhToan_TruCocBG}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().PhaiThanhToan_TruCocBG,0)\"></span>");
@@ -1658,7 +1668,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{MaNccVanChuyen}", "<span data-bind=\"text: $root.InforHDprintf().MaNccVanChuyen\"></span>");
             content1 = content1.Replace("{TenNccVanChuyen}", "<span data-bind=\"text: $root.InforHDprintf().TenNccVanChuyen\"></span>");
             content1 = content1.Replace("{DaTraNCC}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().DaTraNCC)\"></span>");
-            content1 = content1.Replace("{DaChi_BenVCKhac}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().DaChi_BenVCKhac)\"></span>");
+            content1 = content1.Replace("{DaChi_BenVCKhac}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().DaChi_BenVCKhac)\"></span>");         
 
             #region ChuyenHang
             content1 = content1.Replace("{ChiNhanhChuyen}", "<span data-bind=\"text: InforHDprintf().ChiNhanhChuyen\"></span>");
@@ -1684,7 +1694,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TienBangChu}", "<span data-bind=\"text: $root.InforHDprintf().TienBangChu\"></span>");
             content1 = content1.Replace("{GhiChuChiNhanhChuyen}", "<span data-bind=\"text: InforHDprintf().GhiChuChiNhanhChuyen\"></span>");
             content1 = content1.Replace("{ChiNhanhBanHang}", "<span data-bind=\"text: InforHDprintf().ChiNhanhBanHang\"></span>");
-            content1 = content1.Replace("{HoaDonLienQuan}", "<span data-bind=\"text: InforHDprintf().HoaDonLienQuan\"></span>");
+            content1 = content1.Replace("{HoaDonLienQuan}", "<span style=\"white-space:pre-wrap\" data-bind=\"text: InforHDprintf().HoaDonLienQuan\"></span>");
             content1 = content1.Replace("{PhuongThucTT}", "<span data-bind=\"text: InforHDprintf().PhuongThucTT\"></span>");
             content1 = content1.Replace("{KhoanMucThuChi}", "<span data-bind=\"text: InforHDprintf().KhoanMucThuChi\"></span>");
             content1 = content1.Replace("{TienMat_BangChu}", "<span data-bind=\"text: InforHDprintf().TienMat_BangChu\"></span>");
@@ -1871,7 +1881,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{DienGiai}", "<span style=\"white-space:pre-wrap\" data-bind=\"text: DienGiai\"></span>");
             content1 = content1.Replace("{TongTienHang}", "<span data-bind=\"text: formatNumber(TongTienHang,2)\"></span>");
             content1 = content1.Replace("{TongTienHDSauGiamGia}", "<span data-bind=\"text: formatNumber(TongTienHDSauGiamGia)\"></span>");
-            content1 = content1.Replace("{DaThanhToan}", "<span data-bind=\"text: formatNumber(DaThanhToan,2)\"></span>");
+            content1 = content1.Replace("{DaThanhToan}", "<span data-bind=\"text: formatNumber(DaThanhToan)\"></span>");
             content1 = content1.Replace("{ChietKhauHoaDon}", "<span data-bind=\"text: formatNumber(TongGiamGia,2)\"></span>");
             content1 = content1.Replace("{PhiTraHang}", "<span data-bind=\"text: TongChiPhiHangTra\"></span>");
 

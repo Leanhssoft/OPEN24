@@ -1716,7 +1716,7 @@ var ViewModelQuyHD = function () {
 
     function GetInforHDPrint(objHD) {
         var hd = $.extend({}, objHD);
-
+        const tongThu = RoundDecimal(objHD.TongTienThu,0);
         let cn = VHeader.GetInforChiNhanh(objHD.ID_DonVi);
         hd.TenChiNhanh = cn.TenChiNhanh;
         hd.DiaChiChiNhanh = cn.DiaChiChiNhanh;
@@ -1737,10 +1737,10 @@ var ViewModelQuyHD = function () {
         hd.DiaChi = hd.DiaChi;
         hd.DienThoaiKhachHang = hd.SoDienThoai;
         hd.DiaChiKhachHang = hd.DiaChiKhachHang;
-        hd.GiaTriPhieu = formatNumber3Digit(objHD.TongTienThu, 2);
-        hd.TienBangChu = DocSo(objHD.TongTienThu);
-        hd.TienMat = formatNumber3Digit(objHD.TienMat, 2);
-        hd.TienATM = formatNumber3Digit(objHD.TienPOS, 2);
+        hd.GiaTriPhieu = formatNumber3Digit(objHD.TongTienThu, 0);
+        hd.TienBangChu = DocSo(tongThu);
+        hd.TienMat = formatNumber3Digit(objHD.TienMat, 0);
+        hd.TienATM = formatNumber3Digit(objHD.TienPOS, 0);
         hd.KhoanMucThuChi = hd.NoiDungThuChi;
         hd.TienMat_BangChu = DocSo(objHD.TienMat);
         hd.TienPOS_BangChu = DocSo(objHD.TienPOS);
@@ -1779,7 +1779,7 @@ var ViewModelQuyHD = function () {
             let itFor = self.ChiTietQuys()[i];
             if ($.inArray(itFor.MaHoaDonHD, arrMaHD) === -1) {
                 arrMaHD.push(itFor.MaHoaDonHD);
-                sMaHD += itFor.MaHoaDonHD + ',';
+                sMaHD += itFor.MaHoaDonHD + ', ';
             }
         }
         hd.HoaDonLienQuan = Remove_LastComma(sMaHD);

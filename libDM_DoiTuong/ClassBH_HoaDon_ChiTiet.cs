@@ -977,6 +977,8 @@ namespace libDM_DoiTuong
         public Guid? ID_ChiTietDinhLuong { get; set; }
         public Guid? ID_LoHang { get; set; }
         public bool? LaHangHoa { get; set; }
+        public bool? QuanLyTheoLoHang { get; set; }// used to check tonkho tpdl when savehoadon
+        public int? LoaiHangHoa { get; set; }// used to check tonkho tpdl when savehoadon
         public Guid? IDChiTietDichVu { get; set; } // used to xuất kho định lượng (thêm hàng ngoài --> get idchitiet của dihcj vụ at hdsc)
         public int? LaDinhLuongBoSung { get; set; }
         public string ChatLieu { get; set; } // chatlieu = 4: xuatkho sudung goi baoduong

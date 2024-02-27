@@ -36,7 +36,6 @@ namespace libHT_NguoiDung
                     return db.HT_NguoiDung.Where(query);
             }
         }
-
         public IQueryable<HT_Quyen_Nhom> GetListQuyen()
         {
             string account = CookieStore.GetCookieAes("Account");
@@ -1129,6 +1128,14 @@ namespace libHT_NguoiDung
         public string TenQuyen { get; set; }
         public string QuyenCha { get; set; }
         public bool? DuocSuDung { get; set; }
+    }
+
+    public class HTNguoiDungCookiesDto
+    {
+        public Guid ID { get; set; }
+        public Guid? ID_NhanVien { get; set; }
+        public Guid? ID_DonVi { get; set; }
+        public string TaiKhoan { get; set; }
     }
 
     public class HT_NguoiDungDTO

@@ -140,35 +140,37 @@
                                        v-on:click="GetInfor_PhieuTiepNhan(item)"
                                        v-bind:class="[{focusPTN: ID_PhieuTiepNhan == item.ID},{expandPTN: !$root.isFirstLoad && ID_PhieuTiepNhan == item.ID}]">
                                     <tr>
-                                        <td class="text-center" v-if="CheckColShow('STT')">
+                                        <td class="text-center" v-if="CheckColShow('STT')"  style="max-width:5%">
                                             <span class="gara-li-check" v-bind:class="{ garaDone: item.TrangThai !==1 }">
                                                 {{(index+ 1) + ((Paging_PhieuSuaChua.CurrentPage - 1) *  Paging_PhieuSuaChua.PageSize)}}
                                             </span>
                                         </td>
-                                        <td class="bold" v-if="CheckColShow('BienSoXe')">
+                                        <td class="bold" v-if="CheckColShow('BienSoXe')"  >
                                             <a href="javascript:void(0)">
                                                 <span href="javascript:void(0)" v-on:click="updateCar(item.ID_Xe)">
                                                     {{item.BienSo}}
                                                 </span>
                                             </a>
                                         </td>
-                                        <td v-if="CheckColShow('MaPhieuTiepNhan')">
+                                        <td v-if="CheckColShow('MaPhieuTiepNhan')"  >
                                             <a v-on:click="UpdatePhieuTiepNhan(item)"
                                                v-bind:title="item.MaPhieuTiepNhan">{{item.MaPhieuTiepNhan}}</a>
                                         </td>
-                                        <td class="text-center" v-if="CheckColShow('SoKMVao')">
+                                        <td class="text-center" v-if="CheckColShow('SoKMVao')"  >
                                             {{formatNumber(item.SoKmVao)}}
                                         </td>
-                                        <td v-if="CheckColShow('NgayTiepNhan')">
+                                        <td v-if="CheckColShow('NgayTiepNhan')" >
                                             {{moment(item.NgayVaoXuong).format('DD/MM/YYYY HH:mm')}}
                                         </td>
-                                        <td v-if="CheckColShow('MauHangXe')" v-bind:title="item.TenMauXe + '_'+ item.TenHangXe">
+                                        <td v-if="CheckColShow('MauHangXe')" v-bind:title="item.TenMauXe + '_'+ item.TenHangXe" >
                                             {{ commonStatisJs.SubStringContent(item.TenMauXe + '_'+ item.TenHangXe,15)}}
                                         </td>
                                         <td v-if="CheckColShow('TenKhachHang')"
-                                            v-bind:title="item.TenDoiTuong">
+                                            v-bind:title="item.TenDoiTuong"
+                                            style="max-width:15%; min-width:15%"
+                                            >
                                             <a href="javascript:void(0)" v-on:click="updateCus(item.ID_KhachHang)">
-                                                {{item.TenDoiTuong}}
+                                                {{commonStatisJs.SubStringContent(item.TenDoiTuong,30)}}
                                             </a>
                                         </td>
                                         <td v-if="CheckColShow('SDTKhachHang')">
@@ -185,7 +187,7 @@
                                     </tr>
 
                                     <tr v-if="!$root.isFirstLoad && ID_PhieuTiepNhan == item.ID">
-                                        <td colspan="9" style="border-bottom:none">
+                                        <td colspan="11" style="border-bottom:none">
                                             <div class="gara-section-list-functions"
                                                  v-bind:style="        [!$root.isFirstLoad && ID_PhieuTiepNhan == item.ID?{'display':'flex !important'} : 'none']">
                                                 <a href="javascript:void(0)" v-on:click="AddBaoGia(item)"

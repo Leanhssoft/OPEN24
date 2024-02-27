@@ -383,9 +383,14 @@
 
         SavePhieuThu: function (print) {
             var self = this;
+            var ptKhach = self.newPhieuThu;
             let khoaSo = VHeader.CheckKhoaSo(moment(self.newPhieuThu.NgayLapHoaDon, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD'), self.newPhieuThu.ID_DonVi);
             if (khoaSo) {
                 ShowMessage_Danger(VHeader.warning.ChotSo.Update);
+                return;
+            }
+            if (moment(ptKhach.NgayLapHoaDon, 'YYYY-MM-DD HH:mm').format('YYYYMMDDHHmm') > moment(new Date()).format('YYYYMMDDHHmm')) {
+                commonStatisJs.ShowMessageDanger('Ngày lập phiếu vượt quá thời gian hiện tại');
                 return;
             }
             if (commonStatisJs.CheckNull(self.newPhieuThu.ID_NhanVien)) {
@@ -402,7 +407,6 @@
             }
             self.isLoading = true;
 
-            var ptKhach = self.newPhieuThu;
             let ghichu = ptKhach.NoiDungThu;
             let idDoiTuong = ptKhach.ID_DoiTuong;
             let idKhoanThuChi = ptKhach.ID_KhoanThuChi;

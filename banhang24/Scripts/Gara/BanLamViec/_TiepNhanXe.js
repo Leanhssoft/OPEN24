@@ -993,6 +993,15 @@
                     self.UploadFile();
                     self.LichBaoDuong_Update();
                     $('#TiepNhanXeModal').modal('hide');
+
+                    if (self.phieuTiepNhanOld.ID_Xe !== self.newPhieuTiepNhan.ID_Xe) {
+                        let myDataUpdate = {
+                            objPhieuTN: self.phieuTiepNhanOld,
+                            arrType: [],
+                        }
+                        ajaxHelper('/api/DanhMuc/GaraAPI/ChangePTN_updateCus', 'POST', myDataUpdate).done(function (x) {
+                        })
+                    }
                 }
                 else {
                     self.saveOK = false;

@@ -28,12 +28,12 @@ namespace banhang24.Hellper
             }
         }
 
-        public static HT_NguoiDung GetUserCookies()
+        public static HTNguoiDungCookiesDto GetUserCookies()
         {
             var httpRequest = HttpContext.Current.Request;
             if (httpRequest.Cookies["Account"] == null)
             {
-                return new HT_NguoiDung();
+                return new HTNguoiDungCookiesDto();
             }
             else
             {
@@ -41,7 +41,7 @@ namespace banhang24.Hellper
                 var json = AesEncrypt.DecryptStringFromBytes_Aes(Convert.FromBase64String(jsonconvert), "SSOFTVN");
                 var ison2 = json.Replace("%0d%0a", "\r\n");
                 var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                var result = serializer.Deserialize<HT_NguoiDung>(ison2);
+                var result = serializer.Deserialize<HTNguoiDungCookiesDto>(ison2);
                 return result;
             }
         }

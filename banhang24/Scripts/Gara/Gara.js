@@ -422,6 +422,7 @@ var NewModel_BanHangLe = function () {
     self.Quyen_NguoiDung = ko.observableArray();
     // Setting print invoice
     self.setViewSoDoPhong = ko.observable(false);
+    self.setOnXuatKhoToanBo = ko.observable(false);
     self.setLuuTam = ko.observable(false);
     self.setNhapQuyCach = ko.observable(false);
     self.setHideProduct = ko.observable(false);
@@ -1508,6 +1509,19 @@ var NewModel_BanHangLe = function () {
             cthd = [];
         }
 
+        // xuatKhoAll: get from setting 
+        let xuatkhoAll = false;
+        let lcSetting = localStorage.getItem(lcSetPrintConst);
+        if (lcSetting != null && lcSetting !== 'null') {
+            lcSetting = JSON.parse(lcSetting);
+            let itemOnXuatKho = $.grep(lcSetting, function (x) {
+                return x.OnXuatKhoToanBo === true;
+            });
+            if (itemOnXuatKho.length > 0) {
+                xuatkhoAll = true;
+            }
+        }
+
         switch (createHDfrom) {
             case 'TN_taohoadon':
             case 'TN_taobaogia':
@@ -1516,6 +1530,8 @@ var NewModel_BanHangLe = function () {
                     phieuTN = JSON.parse(phieuTN);
                     let max = GetMax_MaHoaDon(phieuTN.LoaiHoaDon, lstHD);
                     let newHD = newHoaDon(phieuTN.LoaiHoaDon, max + 1);
+                    newHD.XuatKhoAll = xuatkhoAll;
+
                     localStorage.setItem(lcMaHD, newHD.MaHoaDon);
                     if (phieuTN.ID !== undefined && phieuTN.ID !== null) {
                         newHD.MaPhieuTiepNhan = phieuTN.MaPhieuTiepNhan.concat('_', phieuTN.BienSo);
@@ -1674,7 +1690,7 @@ var NewModel_BanHangLe = function () {
                         hd.IDRandom = idRandomHD;
                         hd.NguoiTao = userLogin;// save NguoiTao to do check when Delete_whenTimeout
                         hd.ID = idHD;
-                        hd.XuatKhoAll = false;
+                        hd.XuatKhoAll = xuatkhoAll;
                         lstHD.push(hd);
                     }
                     localStorage.setItem(lcListHD, JSON.stringify(lstHD));
@@ -3096,9 +3112,23 @@ var NewModel_BanHangLe = function () {
                     var loaiHD_DoiTra = 1;
                     if (itemHD[0].MaHoaDon.indexOf('DV') > -1) {
                         loaiHD_DoiTra = 19;
-                        // format NgayApDung GoiDV
-                        itemHD[0].NgayApDungGoiDV = moment(itemHD[0].NgayApDungGoiDV, 'DD/MM/YYYY').format('YYYY-MM-DD');
-                        itemHD[0].HanSuDungGoiDV = moment(itemHD[0].HanSuDungGoiDV, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                        let ngayapdung = itemHD[0].NgayApDungGoiDV;
+                        let handung = itemHD[0].HanSuDungGoiDV;
+
+                        if (commonStatisJs.CheckNull(ngayapdung)) {
+                            ngayapdung = null;
+                        }
+                        else {
+                            ngayapdung = moment(ngayapdung, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                        }
+                        if (commonStatisJs.CheckNull(handung)) {
+                            handung = null;
+                        }
+                        else {
+                            handung = moment(handung, 'DD/MM/YYYY').format('YYYY-MM-DD');
+                        }
+                        itemHD[0].NgayApDungGoiDV = ngayapdung;
+                        itemHD[0].HanSuDungGoiDV = handung;
                     }
                     // if MuaMoi < TongTienTra: KhachCanTra = 0, nhung van phai luu PhaiThanhToan = Tong tien ma khach phai Thanh toan
                     var objMuaHang = {
@@ -3244,7 +3274,7 @@ var NewModel_BanHangLe = function () {
                     var msgErr = "";
                     // khong cho phep mua hang khi het ton 
                     if (self.ThietLap().XuatAm === false) {
-                        const checkTonKho = await CheckTonKho_CTHD(arrCTHD_MuaHang, ngaylapHD);
+                        const checkTonKho = await CheckTonKho_CTHD(arrCTHD_MuaHang_LoHang, ngaylapHD);
                         if (!checkTonKho) {
                             SaveHD_RemoveDisable();
                             return false;
@@ -4243,7 +4273,7 @@ var NewModel_BanHangLe = function () {
         var khach_diem = formatNumberToFloat(ptKhach.TTBangDiem);
         var khach_coc = formatNumberToFloat(ptKhach.TienDatCoc);
         var khach_tt = formatNumberToFloat(ptKhach.DaThanhToan);
-        var khachthieu = khach_tt - objHD.PhaiThanhToan;
+        var khachthieu = khach_tt - objHD.PhaiThanhToan + formatNumberToFloat(objHD.ThuDatHang);
         var khachthua = 0;
 
         var bh_mat = formatNumberToFloat(ptBaoHiem.TienMat);
@@ -4387,7 +4417,12 @@ var NewModel_BanHangLe = function () {
         objPrint.BH_TienBangChu = DocSo(objHD.PhaiThanhToanBaoHiem);
         const kh_tongDaThanhToan = objHD.KhachDaTra + khach_tt;
         objPrint.KH_DaThanhToan_BangChu = DocSo(khach_tt);
-        objPrint.ThuDatHang = formatNumber3Digit(objHD.KhachDaTra, 0);
+        if (objPrint.LoaiHoaDon === 3) {
+            objPrint.ThuDatHang = formatNumber3Digit(khach_tt, 0);
+        }
+        else {
+            objPrint.ThuDatHang = formatNumber3Digit(objHD.ThuDatHang, 0);
+        }
         objPrint.KH_DaThanhToan_TruCocBG = ptKhach.DaThanhToan;
         objPrint.KH_DaThanhToan_TruCocBG_BangChu = DocSo(ptKhach.DaThanhToan);
 
@@ -9459,7 +9494,7 @@ var NewModel_BanHangLe = function () {
             ChiPhi_GhiChu: '',
             TongThanhToan: 0,
             TenBaoHiem: '',
-            XuatKhoAll: false,
+            XuatKhoAll: self.setOnXuatKhoToanBo(),
             DuyetBaoGia: false,
 
             PTChietKhauHH: 0,
@@ -12431,10 +12466,7 @@ var NewModel_BanHangLe = function () {
             else {
                 lstHDLe = [];
             }
-            _maHoaDon = nameMaHD + (max + 1);
-            localStorage.setItem(lcMaHD, _maHoaDon);
-            self.HoaDons().MaHoaDon(_maHoaDon);
-
+           
             if (item.ID_BangGia === null) {
                 item.ID_BangGia = const_GuidEmpty;
             }
@@ -12442,6 +12474,10 @@ var NewModel_BanHangLe = function () {
             objNew.ThuTuThe = item.ThuTuThe;// gtri Thanh toán từ thẻ gtrị sau khi trả hàng
             lstHDLe.push(objNew);
             localStorage.setItem(lcListHD, JSON.stringify(lstHDLe));
+             _maHoaDon = objNew.MaHoaDon;
+            localStorage.setItem(lcMaHD, _maHoaDon);
+            self.HoaDons().MaHoaDon(_maHoaDon);
+
             GetCurrentPage_byMaHoaDon(_maHoaDon)
             // add in cache CTHD
             var lstCTHD = localStorage.getItem(lcListCTHD);
@@ -14517,6 +14553,7 @@ var NewModel_BanHangLe = function () {
                         TrangThaiHD: 1,// HD xuly tuDH
                         IsActive: '',
                         KhachDaTra: khachDaTra,
+                        ThuDatHang: khachDaTra, // mục đích để In thôi
                         BaoHiemDaTra: 0,// todo
                         KhuyeMai_GiamGia: itemHDGoc[0].KhuyeMai_GiamGia,
                         DiemGiaoDich: 0,
@@ -14548,7 +14585,7 @@ var NewModel_BanHangLe = function () {
                         TongThanhToan: itemHDGoc[0].TongThanhToan,
                         TenBaoHiem: itemHDGoc[0].TenBaoHiem,
 
-                        XuatKhoAll: false,
+                        XuatKhoAll: self.setOnXuatKhoToanBo(),
                         DuyetBaoGia: false,
 
                         PTChietKhauHH: itemHDGoc[0].PTChietKhauHH,
@@ -17288,17 +17325,14 @@ var NewModel_BanHangLe = function () {
                         }
                     }
                     else {
-                        let obj = {
-                            TenHangHoa: itFor.TenHangHoa,
-                            MaHangHoa: itFor.MaHangHoa,
-                            MaLoHang: itFor.MaLoHang,
-                            ID_DonViQuiDoi: itFor.ID_DonViQuiDoi,
-                            ID_LoHang: itFor.ID_LoHang,
-                            SoLuong: itFor.SoLuong,
-                            ID_LoHang: null,
-                            QuanLyTheoLoHang: itFor.QuanLyTheoLoHang
+                        // find & sum by lo
+                        for (let j = 0; j < arrCTNew.length; j++) {
+                            let forNew = arrCTNew[j];
+                            if (forNew.ID_DonViQuiDoi === itFor.ID_DonViQuiDoi) {
+                                arrCTNew[j].SoLuong += formatNumberToFloat(itFor.SoLuong);
+                                break;
+                            }
                         }
-                        arrCTNew.push(obj);
                     }
                 }
             }
@@ -17306,7 +17340,7 @@ var NewModel_BanHangLe = function () {
         return arrCTNew;
     }
 
-    async function CheckTonKho_CTHD(arrCTHD, ngaylapHD) {
+    async function CheckTonKho_CTHD(arrCTHD, ngaylapHD, trangThaiHD = 1, idHoaDonUpdate = const_GuidEmpty) {
 
         const arrCTNew = CheckTonKho_GroupIDQuyDoi(arrCTHD);
 
@@ -17316,9 +17350,15 @@ var NewModel_BanHangLe = function () {
         let arrIDLoHang = arrCTNew.map(function (x) {
             return x.ID_LoHang;
         }).filter(x => x !== null);
+
+        // neu capnhatHD: get ngaylapHD theo hoadon
+        let ngayLapCompare = trangThaiHD === 8 ? moment(ngaylapHD, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm') :
+            moment(ngaylapHD, 'YYYY-MM-DD HH:mm').add(1, 'minutes').format('YYYY-MM-DD HH:mm');
+
         let paramCheckTon = {
             ID_ChiNhanh: id_DonVi,
-            ToDate: moment(ngaylapHD, 'YYYY-MM-DD HH:mm').add(1, 'minutes').format('YYYY-MM-DD HH:mm'),
+            IdHoaDonUpdate: trangThaiHD === 8 ? idHoaDonUpdate : const_GuidEmpty,
+            ToDate: ngayLapCompare,
             ListIDQuyDoi: arrIDQuyDoi,
             ListIDLoHang: arrIDLoHang,
         };
@@ -17333,18 +17373,22 @@ var NewModel_BanHangLe = function () {
                 return o.ID_DonViQuiDoi === forOut.ID_DonViQuiDoi
                     && (!forOut.QuanLyTheoLoHang || (o.ID_LoHang === forOut.ID_LoHang))
             });
-            if (dataDB.length > 0 && RoundDecimal(dataDB[0].TonKho) < RoundDecimal(formatNumberToFloat(forOut.SoLuong))) {
-                msgErr += forOut.TenHangHoa.concat(' ', forOut.QuanLyTheoLoHang ? ' (' + forOut.MaLoHang + ') ' : '', ', ');
+            if (dataDB.length > 0) {
+                let tonkhoDB = RoundDecimal(dataDB[0].TonKho);
+                let soluong = RoundDecimal(formatNumberToFloat(forOut.SoLuong));
+                if (tonkhoDB < soluong) {
+                    msgErr += forOut.TenHangHoa.concat(' ', forOut.QuanLyTheoLoHang ? ' (' + forOut.MaLoHang + ') ' : '', ', ');
+                }
             }
         }
         if (!commonStatisJs.CheckNull(msgErr)) {
-            ShowMessage_Danger('Không đủ tồn kho cho hàng hóa ' + msgErr);
+            ShowMessage_Danger('Không đủ tồn kho cho hàng hóa ' + Remove_LastComma(msgErr));
             return false;
         }
         return true;
     }
 
-    async function TPDL_CheckTonKho(arrCTHD, ngaylapHD) {
+    async function TPDL_CheckTonKho(arrCTHD, ngaylapHD, trangThaiHD = 1, idHoaDonUpdate = const_GuidEmpty) {
         // get all dinhluong, tpComBo laHangHoa
         let tpdl_all = [];
         for (let i = 0; i < arrCTHD.length; i++) {
@@ -17383,9 +17427,15 @@ var NewModel_BanHangLe = function () {
         tpdl_arrIDLohang = arrCheckNew.map(function (x) {
             return x.ID_LoHang;
         }).filter(x => x !== null);
+
+        // neu capnhatHD: get ngaylapHD theo hoadon
+        let ngayLapCompare = trangThaiHD === 8 ? moment(ngaylapHD, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm') :
+            moment(ngaylapHD, 'YYYY-MM-DD HH:mm').add(1, 'minutes').format('YYYY-MM-DD HH:mm');
+
         let tpdl_checkTon = {
             ID_ChiNhanh: id_DonVi,
-            ToDate: moment(ngaylapHD, 'YYYY-MM-DD HH:mm').add(1, 'minutes').format('YYYY-MM-DD HH:mm'),
+            IdHoaDonUpdate: trangThaiHD === 8 ? idHoaDonUpdate : const_GuidEmpty,
+            ToDate: ngayLapCompare,
             ListIDQuyDoi: tpdl_arrIDQuyDoi,
             ListIDLoHang: tpdl_arrIDLohang,
         };
@@ -17403,7 +17453,7 @@ var NewModel_BanHangLe = function () {
             }
         }
         if (!commonStatisJs.CheckNull(msgErr)) {
-            ShowMessage_Danger('Không đủ tồn kho cho định lượng ' + msgErr);
+            ShowMessage_Danger('Không đủ tồn kho cho định lượng ' + Remove_LastComma(msgErr));
             return false;
         }
         return true;
@@ -17476,13 +17526,13 @@ var NewModel_BanHangLe = function () {
                 var ngaylapHD = GetNgayLapHD_whenSave(objAdd[0].NgayLapHoaDon);
                 if ((loaiHD !== 25 || (loaiHD === 25 && objAdd[0].XuatKhoAll)) && xuatAm === false) {
                     // always get tonkho from DB && check again
-                    const checkTonKho = await CheckTonKho_CTHD(objCTAdd, ngaylapHD);
+                    const checkTonKho = await CheckTonKho_CTHD(objCTAdd, ngaylapHD, objAdd[0].TrangThaiHD, objAdd[0].ID);
                     if (!checkTonKho) {
                         SaveHD_RemoveDisable();
                         return false;
                     }
 
-                    const tpdl_checkTonKho = await TPDL_CheckTonKho(objCTAdd, ngaylapHD);
+                    const tpdl_checkTonKho = await TPDL_CheckTonKho(objCTAdd, ngaylapHD, objAdd[0].TrangThaiHD, objAdd[0].ID);
                     if (!tpdl_checkTonKho) {
                         SaveHD_RemoveDisable();
                         return false;
@@ -21261,7 +21311,7 @@ var NewModel_BanHangLe = function () {
             .then(function (x) {
                 return x;
             })
-        if (xx.res) {
+        if (xx.res && xx.dataSoure != null) {
             var diary = {
                 LoaiHoaDon: 8,
                 LoaiNhatKy: 1,
@@ -21714,20 +21764,25 @@ var NewModel_BanHangLe = function () {
                 Bind_CTHĐoiTra_afterHideColumn();
                 break;
             case 6:
-                ActiveTab_SoDoPhong(false);
+                {
+                    OnOffXuatkho_forAllHoaDon(self.setOnXuatKhoToanBo());
+                }
                 break;
         }
     }
-    function BindPrint_HideSoDoPhong() {
-        $('#setPrint div:eq(0)').hide();
-        $('#setPrint div:eq(4)').hide();
-    }
-    function BindPrint_ShowSoDoPhong() {
-        if (IsShop_SpaSalon()) {
-            $('#setPrint div:eq(0)').show();
-            $('#setPrint div:eq(4)').show();
+
+    function OnOffXuatkho_forAllHoaDon(status = false) {
+        var hd = localStorage.getItem(lcListHD);
+        if (hd !== null) {
+            hd = JSON.parse(hd);
+            for (let i = 0; i < hd.length; i++) {
+                hd[i].XuatKhoAll = status;
+            }
+            self.HoaDons().XuatKhoAll(status);// assing to hdCurrent
+            localStorage.setItem(lcListHD, JSON.stringify(hd));
         }
     }
+
     self.BindSettingPrint = function (isFirstLoad) {
         // get mahoadon --> get temp by loaiHoaDon
         if (_maHoaDon === '') {
@@ -21750,15 +21805,12 @@ var NewModel_BanHangLe = function () {
             case 1:
             case 25:
                 maloaiChungTu = 'HDBL';
-                BindPrint_ShowSoDoPhong();
                 break;
             case 19:
                 maloaiChungTu = 'GDV';
-                BindPrint_HideSoDoPhong();
                 break;
             case 3:
                 maloaiChungTu = 'DH';
-                BindPrint_HideSoDoPhong();
                 break;
             case 6:
                 // check xem co mua moi khong
@@ -21775,11 +21827,9 @@ var NewModel_BanHangLe = function () {
                 if (itemCTDT.length > 0) {
                     maloaiChungTu = 'DTH';
                     loaiHoaDon = 4; // assign to do check in set print
-                    BindPrint_ShowSoDoPhong();
                 }
                 else {
                     maloaiChungTu = 'TH';
-                    BindPrint_HideSoDoPhong();
                 }
                 break;
         }
@@ -21805,8 +21855,9 @@ var NewModel_BanHangLe = function () {
             var x = a.LaMacDinh, y = b.LaMacDinh;
             return (x === y) ? 0 : x ? -1 : 1;
         });
-        // hide product if TonKho <= 0 
-        var hideProduct = false;
+
+        // hide product, onxuatkho: apply all LoaiHoaDon
+        let hideProduct = false, onXuatKhoAll = false;
         var itemSet = [];
         var lcSetPrint = localStorage.getItem(lcSetPrintConst);
         if (lcSetPrint !== null) {
@@ -21815,6 +21866,11 @@ var NewModel_BanHangLe = function () {
                 return x.HideProduct === true;
             });
             hideProduct = itemEx.length > 0;
+            const itemOnXuatKho = $.grep(lcSetPrint, function (x) {
+                return x.OnXuatKhoToanBo === true;
+            });
+            onXuatKhoAll = itemOnXuatKho.length > 0;
+
             itemSet = $.grep(lcSetPrint, function (x) {
                 return x.LoaiHoaDon === loaiHoaDon && x.ID_DonVi === id_DonVi;
             });
@@ -21844,6 +21900,8 @@ var NewModel_BanHangLe = function () {
         }
         // chi can cai dat HideProduct = true cho 1 loaiHD -- > default cac loai khac cung HideProduct = true 
         self.setHideProduct(hideProduct);
+        self.setOnXuatKhoToanBo(onXuatKhoAll);
+
         if (isFirstLoad === false) {
             var divSetPrint = $('.install-notifi');
             if (divSetPrint.is(':hidden')) {
@@ -21976,11 +22034,11 @@ var NewModel_BanHangLe = function () {
                     break;
                 }
             }
-            // if HideProduct = false --> update HideProduct = false for all
-            if (self.setHideProduct() === false) {
-                for (let i = 0; i < lsSetPrint.length; i++) {
-                    lsSetPrint[i].HideProduct = false;
-                }
+
+            // if HideProduct, OnXuatKhoToanBo: apply all loaiHoaDon (same)
+            for (let i = 0; i < lsSetPrint.length; i++) {
+                lsSetPrint[i].HideProduct = self.setHideProduct();
+                lsSetPrint[i].OnXuatKhoToanBo = self.setOnXuatKhoToanBo();
             }
         }
         else {
@@ -22001,6 +22059,7 @@ var NewModel_BanHangLe = function () {
                 ShowEditQuyCach: self.setNhapQuyCach(),
                 ShowSoDoPhong: self.setViewSoDoPhong(),
                 ShowLuuTam: self.setLuuTam(),
+                OnXuatKhoToanBo: self.setOnXuatKhoToanBo(),
                 ID_DonVi: id_DonVi,
             };
             lsSetPrint.push(objSetPrint);
@@ -22258,12 +22317,7 @@ var NewModel_BanHangLe = function () {
     shortcut.add('Home', function () {
         $('#CTHDView').find('input[id^=munber_]').eq(0).focus().select();
     });
-    shortcut.add('F6', function () {
-        self.NhapThuong_Nhanh();
-        //if( window.screen.width <1280){
-        //    $("#divListHD").toggle()    
-        //    }
-    });
+
     shortcut.add('F10', function () {
         if ($('.bgwhite').css('display') === "none") {
             $('.bgwhite').show();
@@ -26512,7 +26566,7 @@ var NewModel_BanHangLe = function () {
             ThucThu: hd.DaThanhToan,
             ConNo: 0,
             DienGiai: hd.DienGiai,
-            ID_DoiTuong: idCus,
+            ID_DoiTuong: hd.ID_DoiTuong,
             ID_BaoHiem: hd.ID_BaoHiem,
             MaDoiTuong: maKH,
             TenDoiTuong: tenKH,

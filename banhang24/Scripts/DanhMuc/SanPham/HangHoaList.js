@@ -212,6 +212,7 @@ var ViewModel = function () {
     self.KiemGanDays = ko.observableArray();
     loaiHoaDon = $('#loaiHoaDon').val();
     self.TheKhos = ko.observableArray();
+    self.RowErrKho = ko.observable();
     self.ListChooseHH = ko.observableArray();
     self.ListChooseHHInTemThuocTinh = ko.observableArray();
     self.error = ko.observable();
@@ -3054,9 +3055,6 @@ var ViewModel = function () {
         myData.idhoadon = _idhoadon;
         myData.objnewKho = KiemKho;
         myData.idnhanvien = _IDNhanVien;
-        //if (localStorage.getItem('isUpdate') == 'true') {
-        //    myData.objChiTietKho = self.newKiemKho().BH_KiemKho_ChiTiet();
-        //} else {
 
         var store = db.transaction(table, "readwrite").objectStore(table);
         var req = store.openCursor(key_Add);
@@ -7924,6 +7922,12 @@ var ViewModel = function () {
             self.TheKhos(data.lst);
             self.TotalRecordTK(data.Rowcount);
             self.PageCountTK(data.pageCount);
+            if (data.RowErrKho !== null) {
+                self.RowErrKho(data.RowErrKho);
+            }
+            else {
+                self.RowErrKho();
+            }
             $('.table-js-tk').gridLoader({ show: false });
         });
     };
@@ -12690,7 +12694,149 @@ var ViewModel = function () {
         self.sumError(0);
     }
     self.loiExcel = ko.observableArray();
-    self.importKiemKho = function () {
+
+    // get tonkho + giavon tai thoidiem
+    async function GetTonKho_byIDQuyDoi(param) {
+        let xx = await ajaxHelper(DMHangHoaUri + 'GetTonKho_byIDQuyDois', 'POST', param).done(function (x) { }).then(function (x) {
+            if (x.res) return x.data;
+            return [];
+        }).fail(function () {
+            return [];
+        });
+        return xx;
+    }
+
+    self.importKiemKho = async function () {
+        $('.choose-file').gridLoader({
+            style: "left: 200px;top: 77px;"
+        });
+        var _ngayKk = $('#datetimepicker').val();
+        if (_ngayKk === "") {
+            _ngayKk = moment(new Date()).format('DD/MM/YYYY HH:mm');
+        }
+        var check = CheckNgayLapHD_format(_ngayKk);
+        if (!check) {
+            $('.choose-file').gridLoader({ show: false });
+            return false;
+        }
+        var _ngayKiemKe = moment(_ngayKk, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm');
+        var formData = new FormData();
+        var totalFiles = document.getElementById("imageUploadForm").files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = document.getElementById("imageUploadForm").files[i];
+            formData.append("imageUploadForm", file);
+        }
+
+        const dataErr = await $.ajax({
+            type: "POST",
+            url: DMHangHoaUri + "ImfortExcelKiemKho",
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false
+        }).done()
+            .then(function (data) {
+                return data
+            })
+
+        if (dataErr.length > 0) {
+            self.loiExcel(dataErr);
+            $(".BangBaoLoi").show();
+            $(".btnImportExcel").hide();
+            $(".refreshFile").show();
+            $(".deleteFile").hide();
+            $('.choose-file').gridLoader({ show: false });
+        }
+        else {
+            let hdct = await $.ajax({
+                type: "POST",
+                url: DMHangHoaUri + "getList_DanhSachHangKiemKho?iddonvi=" + _IDchinhanh + '&timeKK=' + _ngayKiemKe,
+                data: formData,
+                dataType: 'json',
+                contentType: false,
+                processData: false
+            }).done()
+                .then(function (data) {
+                    return data;
+                });
+
+            let arrIDQuyDoi = $.unique(hdct.map(function (x) {
+                return x.ID_DonViQuiDoi;
+            }));
+            let arrIDLoHang = hdct.map(function (x) {
+                return x.ID_LoHang;
+            }).filter(x => x !== null);
+
+            const paramCheckTon = {
+                ID_ChiNhanh: _IDchinhanh,
+                ToDate: _ngayKiemKe,
+                ListIDQuyDoi: arrIDQuyDoi,
+                ListIDLoHang: arrIDLoHang,
+            };
+
+            const dataTonkho = await GetTonKho_byIDQuyDoi(paramCheckTon);
+
+            for (let i = 0; i < hdct.length; i++) {
+                let itFor = hdct[i];
+                let dataDB = $.grep(dataTonkho, function (o) {
+                    return o.ID_DonViQuiDoi === itFor.ID_DonViQuiDoi
+                        && (!itFor.QuanLyTheoLoHang || (o.ID_LoHang === itFor.ID_LoHang))
+                });
+                hdct[i].ID_Random = CreateIDRandom('CTKK_');
+                hdct[i].ID_HangHoa = hdct[i].ID;
+                hdct[i].SoLuong = 0;
+                hdct[i].GiaVon = 0;
+                // 2 cột: SoLuong, TienChietKhau lưu ngược so với DB
+                // (do code ban đầu thế rồi, nên không muốn sửa lại nữa, vì phải check lại nhiều chỗ)
+                if (dataDB.length > 0) {
+                    hdct[i].GiaVon = dataDB[0].GiaVon;
+                    hdct[i].SoLuong = dataDB[0].TonKho;// soluongDB
+                }
+                hdct[i].TienChietKhau = hdct[i].ThanhTien - hdct[i].SoLuong;// soluong thucte - soluongDB
+                hdct[i].ThanhToan = hdct[i].TienChietKhau * hdct[i].GiaVon;//gtri lech
+            }
+
+            self.newKiemKho().BH_KiemKho_ChiTiet(hdct);
+            for (var i = 0; i < self.newKiemKho().BH_KiemKho_ChiTiet().length; i++) {
+                if (parseInt(self.newKiemKho().BH_KiemKho_ChiTiet()[i].ThanhTien) === self.newKiemKho().BH_KiemKho_ChiTiet()[i].SoLuong) {
+                    self.SLKhops.push(self.newKiemKho().BH_KiemKho_ChiTiet()[i]);
+                }
+                if (self.newKiemKho().BH_KiemKho_ChiTiet()[i].ThanhTien === null) {
+                    self.SLChuaKiems.push(self.newKiemKho().BH_KiemKho_ChiTiet()[i]);
+                }
+                if (self.newKiemKho().BH_KiemKho_ChiTiet()[i].ThanhTien !== null && parseInt(self.newKiemKho().BH_KiemKho_ChiTiet()[i].ThanhTien) !== self.newKiemKho().BH_KiemKho_ChiTiet()[i].SoLuong) {
+                    self.SLLechs.push(self.newKiemKho().BH_KiemKho_ChiTiet()[i]);
+                }
+            }
+            var objectStore = db.transaction(table, "readwrite").objectStore(table);
+            var req = objectStore.openCursor(key_Add);
+            req.onsuccess = function (evt) {
+                objectStore.delete(key_Add);
+                objectStore.add({ Key: key_Add, Value: JSON.stringify(self.newKiemKho().BH_KiemKho_ChiTiet()) });
+
+            };
+            if (self.newKiemKho().BH_KiemKho_ChiTiet().length > 0) {
+                $('#importKiemKho').hide();
+            }
+            else {
+                $('#importKiemKho').show();
+                self.deleteFileSelect();
+            }
+            $('#tongitem').text(self.newKiemKho().BH_KiemKho_ChiTiet().length);
+            $('#tongitemkhop').text(self.SLKhops().length);
+            $('#tongitemlech').text(self.SLLechs().length);
+            $('#tongitemchuakiem').text(self.SLChuaKiems().length);
+            self.TinhLaiLech();
+            self.TinhLaiSLKhop();
+            self.TinhLaiSLThuc();
+            UpdateAgain_ListDVT();
+            //$("#wait").remove();
+            $('.choose-file').gridLoader({ show: false });
+            ShowMessage_Success("Import file thành công");
+        }
+    }
+
+    self.importKiemKho2 = function () {
         $('.choose-file').gridLoader({
             style: "left: 200px;top: 77px;"
         });
@@ -14333,21 +14479,8 @@ var ViewModel = function () {
     }
 
     self.CapNhatTonKho = function (item) {
-        let saiTK = $.grep(self.TheKhos(), (x) => {
-            return x.LuyKeTonKho !== tk.TonKho;
-        });
-
-        let itemTK = {};
-        // tìm đến dòng đầu tiên bị sai lũy kế
-        for (let i = saiTK.length - 1; i > 0; i--) {
-            let tk = saiTK[i];
-            if (tk.LuyKeTonKho !== tk.TonKho) {
-                itemTK = tk;
-                break;
-            }
-        }
-
-        if (!$.isEmptyObject(itemTK)) {
+        let itemTK = self.RowErrKho();
+        if (!$.isEmptyObject(itemTK) && itemTK !== undefined) {
             let diary = {
                 ID_DonVi: itemTK.ID_DonVi,
                 ID_NhanVien: VHeader.IdNhanVien,
@@ -14365,6 +14498,30 @@ var ViewModel = function () {
             }
             Post_NhatKySuDung_UpdateGiaVon(diary);
             ShowMessage_Success('Cập nhật thành công');
+        }
+        else {
+            // lũy kế tồn kho đúng, nhưng tồn kho hiện tại # lũy kế cuối cùng
+            // get thekho cuối cùng
+            if (self.TheKhos().length > 0) {
+                const hdLast = self.TheKhos()[0];
+                let diary = {
+                    ID_DonVi: hdLast.ID_DonVi,
+                    ID_NhanVien: VHeader.IdNhanVien,
+                    LoaiNhatKy: 2,
+                    ChucNang: 'Cập nhật tồn lũy kế',
+                    NoiDung: 'Cập nhật tồn lũy kế cho hàng hóa '.concat(item.TenHangHoa, ' (', item.MaHangHoa, ')'),
+                    NoiDungChiTiet: 'Cập nhật tồn lũy kế '.concat(item.TenHangHoa, ' (', item.MaHangHoa,
+                        ') <br /> Mã phiếu: ', hdLast.MaHoaDon,
+                        ') <br /> Ngày lập phiếu: ', hdLast.NgayLapHoaDon,
+                        ' <br /> Người cập nhật: ', VHeader.UserLogin
+                    ),
+                    ID_HoaDon: hdLast.ID_HoaDon,
+                    LoaiHoaDon: hdLast.LoaiHoaDon,
+                    ThoiGianUpdateGV: hdLast.NgayLapHoaDon,
+                }
+                Post_NhatKySuDung_UpdateGiaVon(diary);
+                ShowMessage_Success('Cập nhật thành công');
+            }
         }
     }
 };

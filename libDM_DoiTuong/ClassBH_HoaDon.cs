@@ -1776,47 +1776,22 @@ namespace libDM_DoiTuong
             try
             {
                 var data = db.Database.SqlQuery<BH_HoaDon_ChiTietDTO>("EXEC GetChiTietHoaDon_ByIDHoaDon @ID_HoaDon", param).ToList();
+               
+
                 if (data != null && data.Count() > 0)
                 {
+
                     ClassBH_HoaDon_ChiTiet classhoadonchitiet = new ClassBH_HoaDon_ChiTiet(db);
 
                     // get all donvitinh of hanghoa in cthd
                     var arrIDHangHoa = data.Select(x => x.ID_HangHoa).ToList();
                     List<DonViTinh> lstDVT = CTHD_GetAllDonViTinhOfhangHoa(arrIDHangHoa);
 
-                    //List<DonViTinh> lstDVT = db.DonViQuiDois.Where(x => arrIDHangHoa.Contains(x.ID_HangHoa) && x.Xoa != true)
-                    //    .Select(x => new DonViTinh
-                    //    {
-                    //        ID = x.ID,
-                    //        ID_HangHoa = x.ID_HangHoa,
-                    //        TenDonViTinh = x.TenDonViTinh,
-                    //        ID_DonViQuiDoi = x.ID,
-                    //        Xoa = false,
-                    //        TyLeChuyenDoi = x.TyLeChuyenDoi
-                    //    }).ToList();
-
                     // get all nvth of cthd
                     var arrIDCTHD = data.Select(x => x.ID).ToList();
                     List<BH_NhanVienThucHienDTO> lstNV = CTHD_GetAllNhanVienThucHien(arrIDCTHD);
 
-                    //List<BH_NhanVienThucHienDTO> lstNV = (from nv in db.NS_NhanVien
-                    //                                      join bh_nv in db.BH_NhanVienThucHien
-                    //                                      on nv.ID equals bh_nv.ID_NhanVien
-                    //                                      where arrIDCTHD.Contains(bh_nv.ID_ChiTietHoaDon)
-                    //                                      select new BH_NhanVienThucHienDTO
-                    //                                      {
-                    //                                          ID_NhanVien = bh_nv.ID_NhanVien,
-                    //                                          TenNhanVien = nv.TenNhanVien,
-                    //                                          ID_ChiTietHoaDon = bh_nv.ID_ChiTietHoaDon,
-                    //                                          ThucHien_TuVan = bh_nv.ThucHien_TuVan,
-                    //                                          TienChietKhau = bh_nv.TienChietKhau,
-                    //                                          PT_ChietKhau = bh_nv.PT_ChietKhau,
-                    //                                          TheoYeuCau = bh_nv.TheoYeuCau,
-                    //                                          HeSo = bh_nv.HeSo,
-                    //                                          TinhChietKhauTheo = bh_nv.TinhChietKhauTheo,
-                    //                                          TinhHoaHongTruocCK = bh_nv.TinhHoaHongTruocCK != null ? bh_nv.TinhHoaHongTruocCK : 0
-                    //                                      }).ToList();
-
+                    int lengthCT = data.Count;
                     foreach (var item in data)
                     {
                         if (item.ID_ChiTietDinhLuong != null && item.ID_ChiTietDinhLuong == item.ID)
@@ -3007,6 +2982,7 @@ namespace libDM_DoiTuong
             var trangthais = "0,1,2";
             var mahoadon = string.Empty;
             var loaiHoaDons = "7";
+            var idNhanVienlogin = string.Empty;
             if (model.columsort != null && model.columsort != string.Empty)
             {
                 columnSort = model.columsort;
@@ -3026,11 +3002,18 @@ namespace libDM_DoiTuong
             if (model.ArrLoaiHoaDon != null && model.ArrLoaiHoaDon.Count > 0)
             {
                 loaiHoaDons = string.Join(",", model.ArrLoaiHoaDon);
+            } 
+            if (model.id_NhanViens != null && model.id_NhanViens.Count > 0)
+            {
+                idNhanVienlogin = string.Join(",", model.id_NhanViens);
             }
             List<SqlParameter> lstParam = new List<SqlParameter>();
             lstParam.Add(new SqlParameter("TextSearch", mahoadon));
             lstParam.Add(new SqlParameter("LoaiHoaDon", loaiHoaDons));
             lstParam.Add(new SqlParameter("IDChiNhanhs", isChiNhanhs));
+            // nếu idNhanViens = empty (getall)
+            // else: chỉ get phiếu nhập do chính NV đăng nhập tạo
+            lstParam.Add(new SqlParameter("IDNhanViens", idNhanVienlogin));
             lstParam.Add(new SqlParameter("FromDate", model.dayStart));
             lstParam.Add(new SqlParameter("ToDate", model.dayEnd));
             lstParam.Add(new SqlParameter("TrangThais", trangthais));
@@ -3038,7 +3021,7 @@ namespace libDM_DoiTuong
             lstParam.Add(new SqlParameter("PageSize", model.pageSize));
             lstParam.Add(new SqlParameter("ColumnSort", columnSort));
             lstParam.Add(new SqlParameter("SortBy", sortBy));
-            return db.Database.SqlQuery<BH_HoaDonDTO>("EXEC GetList_HoaDonNhapHang @TextSearch, @LoaiHoaDon, @IDChiNhanhs, @FromDate, @ToDate," +
+            return db.Database.SqlQuery<BH_HoaDonDTO>("EXEC GetList_HoaDonNhapHang @TextSearch, @LoaiHoaDon, @IDChiNhanhs,@IDNhanViens, @FromDate, @ToDate," +
                 "@TrangThais, @CurrentPage, @PageSize, @ColumnSort, @SortBy", lstParam.ToArray()).ToList();
         }
 

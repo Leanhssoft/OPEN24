@@ -74,6 +74,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\libHT_NguoiDung\libHT_NguoiDung.csproj">
+      <Project>{5776f41b-0a16-4392-b686-98b906c8632d}</Project>
+      <Name>libHT_NguoiDung</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{43122f03-2ffb-49cd-8de0-99706d792e33}</Project>
       <Name>Model</Name>

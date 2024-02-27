@@ -1839,7 +1839,7 @@ var workTable = new Vue({
             let objPrint = $.extend({}, self.listData.ThongTinXe);
             let hdChosing = await self.GetInforHD_fromDB(self.itemChosing.ID);
             let phaiThanhToan = formatNumberToInt(hdChosing.PhaiThanhToan);
-            let daThanhToan = formatNumberToInt(hdChosing.KhachDaTra);
+            let daThanhToan = RoundDecimal(formatNumberToInt(hdChosing.KhachDaTra), 0);
             let tongcong = RoundDecimal(hdChosing.TongThanhToan, 0);
             let cus_DebitHD = hdChosing.PhaiThanhToan - hdChosing.KhachDaTra;
 
@@ -1855,6 +1855,11 @@ var workTable = new Vue({
             let cus_DebitOld = cus_NoHienTai - cus_DebitHD;
             cus_DebitOld = cus_DebitOld < 0 ? 0 : cus_DebitOld;
 
+            objPrint.BienSo = hdChosing.BienSo;
+            objPrint.MaPhieuTiepNhan = hdChosing.MaPhieuTiepNhan;
+            objPrint.MaDoiTuong = hdChosing.MaDoiTuong;
+            objPrint.TenDoiTuong = hdChosing.TenDoiTuong;
+            objPrint.TenBaoHiem = hdChosing.TenBaoHiem;
             objPrint.NguoiTaoHD = hdChosing.NguoiTao;
             objPrint.Email = cus_Email;
             objPrint.DienThoaiKhachHang = cus_DienThoai;
@@ -1889,7 +1894,7 @@ var workTable = new Vue({
             objPrint.TaiKhoanNganHang = hdChosing.TaiKhoanNganHang;
 
             objPrint.MaHoaDon = hdChosing.MaHoaDon;
-            objPrint.MaHoaDonTraHang = hdChosing.MaBaoGia;
+            objPrint.MaHoaDonTraHang = hdChosing.MaHoaDonGoc;
             objPrint.NgayLapHoaDon = moment(hdChosing.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
             objPrint.NgayVaoXuong = moment(self.listData.ThongTinXe.NgayVaoXuong).format('DD/MM/YYYY HH:mm');
             objPrint.NgayXuatXuongDuKien = self.listData.ThongTinXe.NgayXuatXuongDuKien ?
@@ -1903,8 +1908,9 @@ var workTable = new Vue({
 
             objPrint.TongTienHang = formatNumber(hdChosing.TongTienHang);
             objPrint.TongGiamGia = formatNumber(hdChosing.TongGiamGia);
+            objPrint.TongChietKhau = hdChosing.TongChietKhau;
             objPrint.PhaiThanhToan = formatNumber(phaiThanhToan);
-            objPrint.DaThanhToan = formatNumber(daThanhToan);
+            objPrint.DaThanhToan = formatNumber3Digit(daThanhToan,0);
             objPrint.BaoHiemDaTra = formatNumber(hdChosing.BaoHiemDaTra);
             objPrint.TongTienBHDuyet = formatNumber(hdChosing.TongTienBHDuyet);
             objPrint.GiamTruThanhToanBaoHiem = formatNumber(hdChosing.GiamTruThanhToanBaoHiem);
@@ -2080,7 +2086,7 @@ var workTable = new Vue({
             }
 
             hd.TongGiamGiaHang = DV_tongCK + HH_tongCK;
-            hd.TongTienHangChuaCK = tongDV_truocCK + tongHH_truocCK;
+            hd.TongTienHangChuaCK = RoundDecimal(tongDV_truocCK + tongHH_truocCK);
 
             hd.TongSL_DichVu = DV_tongSL;
             hd.TongTienDichVu = tongDV;

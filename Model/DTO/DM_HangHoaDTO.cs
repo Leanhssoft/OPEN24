@@ -260,6 +260,9 @@ namespace Model
         public double? QuyCach { get; set; }
         public int? LoaiHangHoa { get; set; }
         public string ViTriKho { get; set; }
+        public bool? DuocBanTrucTiep { get; set; }
+        public bool? Xoa { get; set; }
+        public bool? TheoDoi { get; set; }
     }
 
     public class BCDM_LoHangDTO

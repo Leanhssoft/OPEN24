@@ -2125,7 +2125,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             {
                 using (SsoftvnContext db = SystemDBContext.GetDBContext())
                 {
-                    HT_NguoiDung user = contant.GetUserCookies();
+                    HTNguoiDungCookiesDto user = contant.GetUserCookies();
                     return new classDM_DoiTuong(db).GetAllKhachHang_NotWhere(user.ID_DonVi, user.ID_NhanVien);
                 }
             }

@@ -2175,7 +2175,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double? gtriConLai = lst.Sum(x => x.GiaTriConLai);
                 double? giamGiaHD = lst.Sum(x => x.GiamGiaHD);
                 int lstPages = getNumber_Page(Rown, 10);
-               
+
                 return Json(new
                 {
                     LstData = lst,
@@ -2376,41 +2376,14 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [AcceptVerbs("GET", "POST")]
-        public IHttpActionResult BaoCaoDichVu_NhatKySuDungTongHop(array_BaoCaoGoiDichVu array_BaoCaoGoiDichVu)
+        public IHttpActionResult BaoCaoDichVu_NhatKySuDungTongHop(Param_ReportGoiDichVu param)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportGoiDichVu reportGoiDichVu = new ClassReportGoiDichVu(db);
-                List<BaoCaoGoiDichVu_NhatKySuDungTongHopPRC> lst = new List<BaoCaoGoiDichVu_NhatKySuDungTongHopPRC>();
-                string TheoDoi = "%%";
-                string TrangThai = "%%";
-                string ThoiHan = "%%";
-                if (array_BaoCaoGoiDichVu.ThoiHanSuDung == 2)
-                    ThoiHan = "%1%";
-                else if (array_BaoCaoGoiDichVu.ThoiHanSuDung == 3)
-                    ThoiHan = "%0%";
-                if (array_BaoCaoGoiDichVu.TinhTrang == 2)
-                {
-                    TheoDoi = "%1%";
-                    TrangThai = "%0%";
-                }
-                else if (array_BaoCaoGoiDichVu.TinhTrang == 3)
-                {
-                    TheoDoi = "%0%";
-                }
-                else if (array_BaoCaoGoiDichVu.TinhTrang == 4)
-                {
-                    TrangThai = "%1%";
-                }
-                string LaHH_search = "%%";
-                if (array_BaoCaoGoiDichVu.LaHangHoa == 0)
-                    LaHH_search = "0";
-                else if (array_BaoCaoGoiDichVu.LaHangHoa == 1)
-                    LaHH_search = "1";
-                var idChiNhanhs = string.Join(",", array_BaoCaoGoiDichVu.lstIDChiNhanh);
-                lst = reportGoiDichVu.GetBaoCaoDichVu_NhatKySuDungTongHop(array_BaoCaoGoiDichVu.MaHangHoa, array_BaoCaoGoiDichVu.timeStart, array_BaoCaoGoiDichVu.timeEnd, idChiNhanhs,
-                    LaHH_search, TheoDoi, TrangThai, ThoiHan, array_BaoCaoGoiDichVu.ID_NhomHang);
+                List<BaoCaoGoiDichVu_NhatKySuDungTongHopPRC> lst = reportGoiDichVu.GetBaoCaoDichVu_NhatKySuDungTongHop(param);
+
                 int Rown = lst.Count();
                 double SoLuongMua = lst.Sum(x => x.SoLuongMua);
                 double SoLuongTra = lst.Sum(x => x.SoLuongTra);
@@ -2430,53 +2403,30 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 return Json(json);
             }
         }
+
         [AcceptVerbs("GET", "POST")]
         public string Export_BCGDV_NhatKySuDungTongHop([FromBody] JObject data)
         {
-            array_BaoCaoGoiDichVu array_BaoCaoGoiDichVu = data["objExcel"].ToObject<array_BaoCaoGoiDichVu>();
+            Param_ReportGoiDichVu param = data["objExcel"].ToObject<Param_ReportGoiDichVu>();
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportGoiDichVu reportGoiDichVu = new ClassReportGoiDichVu(db);
                 Class_officeDocument classOffice = new Class_officeDocument(db);
-                List<BaoCaoGoiDichVu_NhatKySuDungTongHopPRC> lst = new List<BaoCaoGoiDichVu_NhatKySuDungTongHopPRC>();
-                string TheoDoi = "%%";
-                string TrangThai = "%%";
-                string ThoiHan = "%%";
-                if (array_BaoCaoGoiDichVu.ThoiHanSuDung == 2)
-                    ThoiHan = "%1%";
-                else if (array_BaoCaoGoiDichVu.ThoiHanSuDung == 3)
-                    ThoiHan = "%0%";
-                if (array_BaoCaoGoiDichVu.TinhTrang == 2)
-                {
-                    TheoDoi = "%1%";
-                    TrangThai = "%0%";
-                }
-                else if (array_BaoCaoGoiDichVu.TinhTrang == 3)
-                {
-                    TheoDoi = "%0%";
-                }
-                else if (array_BaoCaoGoiDichVu.TinhTrang == 4)
-                {
-                    TrangThai = "%1%";
-                }
-                string LaHH_search = "%%";
-                if (array_BaoCaoGoiDichVu.LaHangHoa == 0)
-                    LaHH_search = "0";
-                else if (array_BaoCaoGoiDichVu.LaHangHoa == 1)
-                    LaHH_search = "1";
-                var idChiNhanhs = string.Join(",", array_BaoCaoGoiDichVu.lstIDChiNhanh);
-                lst = reportGoiDichVu.GetBaoCaoDichVu_NhatKySuDungTongHop(array_BaoCaoGoiDichVu.MaHangHoa, array_BaoCaoGoiDichVu.timeStart, array_BaoCaoGoiDichVu.timeEnd, idChiNhanhs,
-                    LaHH_search, TheoDoi, TrangThai, ThoiHan, array_BaoCaoGoiDichVu.ID_NhomHang);
+                List<BaoCaoGoiDichVu_NhatKySuDungTongHopPRC> lst = reportGoiDichVu.GetBaoCaoDichVu_NhatKySuDungTongHop(param);
+
                 DataTable excel = classOffice.ToDataTable<BaoCaoGoiDichVu_NhatKySuDungTongHopPRC>(lst);
                 excel.Columns.Remove("TenHangHoa");
                 excel.Columns.Remove("ThuocTinh_GiaTri");
-                //excel.Columns.Remove("TenDonViTinh");
-                //excel.Columns.Remove("TenLoHang");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoGoiDichVu/Teamplate_TongHopNhatKySuDungGoiDichVu.xlsx");
                 string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoGoiDichVu/TongHopNhatKySuDungGoiDichVu.xlsx");
                 fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, array_BaoCaoGoiDichVu.columnsHide, array_BaoCaoGoiDichVu.TodayBC, array_BaoCaoGoiDichVu.TenChiNhanh);
+                string columHide = string.Empty;
+                if (param.ColumnHide != null)
+                {
+                    columHide = string.Join("_", param.ColumnHide);
+                }
+                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, columHide, param.ReportTime, param.ReportBranch);
                 HttpResponse Response = HttpContext.Current.Response;
                 fileSave = classOffice.createFolder_Export("~/Template/ExportExcel/Report/BaoCaoGoiDichVu/TongHopNhatKySuDungGoiDichVu.xlsx");
                 return fileSave;
@@ -2869,7 +2819,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     TongDoanhThuThuan = lst.FirstOrDefault().TongDoanhThuThuan;
                     SumTienThue = lst.FirstOrDefault().SumTienThue;
                     sumChiPhi = lst.FirstOrDefault().TongChiPhi;
-                    sumGiamtruBaoHiem = lst.FirstOrDefault().TongGiamTruBaoHiem??0;
+                    sumGiamtruBaoHiem = lst.FirstOrDefault().TongGiamTruBaoHiem ?? 0;
                 }
                 int lstPages = getNumber_Page(Rown, param.pageSize);
                 return Json(new
@@ -2939,7 +2889,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
                 int Rown = 0;
                 double SoLuong = 0, ThanhTien = 0;
-                double GiamGiaHD = 0, sumGiamtruBaoHiem =0;
+                double GiamGiaHD = 0, sumGiamtruBaoHiem = 0;
                 double LaiLo = 0, TienVon = 0;
                 double? TongDoanhThuThuan = 0, SumTienThue = 0, tongChiPhi = 0;
                 if (lst.Count() > 0)
@@ -2953,7 +2903,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     TongDoanhThuThuan = lst.FirstOrDefault().DoanhThuThuan;
                     SumTienThue = lst.FirstOrDefault().TongTienThue;
                     tongChiPhi = lst.FirstOrDefault().TongChiPhi;
-                    sumGiamtruBaoHiem = lst.FirstOrDefault().TongGiamTruBaoHiem??0;
+                    sumGiamtruBaoHiem = lst.FirstOrDefault().TongGiamTruBaoHiem ?? 0;
                 }
                 int lstPages = getNumber_Page(Rown, param.pageSize);
                 return Json(new
@@ -3722,19 +3672,22 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double ThanhTien = lst.Sum(x => x.ThanhTien);
                 double GiaTriDat = lst.Sum(x => x.GiaTriDat);
                 double GiamGiaHD = lst.Sum(x => x.GiamGiaHD);
+                double tongChietKhau = lst.Sum(x => x.TongChietKhau ?? 0);
+                double tongTienThue = lst.Sum(x => x.TongTienThue ?? 0);
                 int lstPages = getNumber_Page(Rown, 10);
-                JsonResultExampleTr<BaoCaoDatHang_TongHopPRC> json = new JsonResultExampleTr<BaoCaoDatHang_TongHopPRC>
+                return Json(new
                 {
                     LstData = lst,
                     Rowcount = Rown,
                     numberPage = lstPages,
+                    TongChietKhau = tongChietKhau,
+                    TongTienThue = tongTienThue,
                     a1 = Math.Round(SoLuongDat, 3, MidpointRounding.ToEven),
                     a2 = Math.Round(ThanhTien, 0, MidpointRounding.ToEven),
                     a3 = Math.Round(GiamGiaHD, 0, MidpointRounding.ToEven),
                     a4 = Math.Round(GiaTriDat, 0, MidpointRounding.ToEven),
                     a5 = Math.Round(SoLuongNhan, 3, MidpointRounding.ToEven),
-                };
-                return Json(json);
+                });
             }
         }
         [AcceptVerbs("GET", "POST")]
@@ -3773,19 +3726,22 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 double GiamGiaHD = lst.Sum(x => x.GiamGiaHD);
                 double GiaTriDat = lst.Sum(x => x.GiaTriDat);
                 double SoLuongNhan = lst.Sum(x => x.SoLuongNhan);
+                double tongChietKhau = lst.Sum(x => x.TongChietKhau ?? 0);
+                double tongTienThue = lst.Sum(x => x.TongTienThue ?? 0);
                 int lstPages = getNumber_Page(Rown, 10);
-                JsonResultExampleTr<BaoCaoDatHang_ChiTietPRC> json = new JsonResultExampleTr<BaoCaoDatHang_ChiTietPRC>
+                return Json(new
                 {
                     LstData = lst,
                     Rowcount = Rown,
                     numberPage = lstPages,
+                    TongChietKhau = tongChietKhau,
+                    TongTienThue = tongTienThue,
                     a1 = Math.Round(SoLuongBan, 3, MidpointRounding.ToEven),
                     a2 = Math.Round(ThanhTien, 0, MidpointRounding.ToEven),
                     a3 = Math.Round(GiamGiaHD, 0, MidpointRounding.ToEven),
                     a4 = Math.Round(GiaTriDat, 0, MidpointRounding.ToEven),
                     a5 = Math.Round(SoLuongNhan, 3, MidpointRounding.ToEven),
-                };
-                return Json(json);
+                });
             }
         }
         [AcceptVerbs("GET", "POST")]

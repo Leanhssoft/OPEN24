@@ -920,6 +920,8 @@
     self.BaoCaoDatHang_ChiTiet = ko.observableArray();
     self.BaoCaoDatHang_TheoNhomHang = ko.observableArray();
     self.TH_SoLuongDat = ko.observable();
+    self.TongChietKhau = ko.observable();
+    self.TongTienThue = ko.observable();
     self.TH_SoLuongNhan = ko.observable();
     self.TH_ThanhTien = ko.observable();
     self.TH_GiaTriDat = ko.observable();
@@ -989,6 +991,8 @@
                     self.ResetCurrentPage();
                     self.SumRowsHangHoa(data.Rowcount);
                     self.TH_SoLuongDat(data.a1);
+                    self.TongChietKhau(data.TongChietKhau);
+                    self.TongTienThue(data.TongTienThue);
                     self.TH_ThanhTien(data.a2);
                     self.TH_GiamGiaHD(data.a3);
                     self.TH_GiaTriDat(data.a4);
@@ -1012,6 +1016,8 @@
                     AllPage = data.numberPage;
                     self.ResetCurrentPage();
                     self.SumRowsHangHoa(data.Rowcount);
+                    self.TongChietKhau(data.TongChietKhau);
+                    self.TongTienThue(data.TongTienThue);
                     self.CT_SoLuongDat(data.a1);
                     self.CT_TongTienHang(data.a2);
                     self.CT_GiamGiaHD(data.a3);

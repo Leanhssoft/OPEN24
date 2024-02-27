@@ -495,7 +495,7 @@
 
                     var nguoinop = [];
                     var invoice = [];
-                    var khachCanTra = hdDB.PhaiThanhToan - hdDB.KhachDaTra;
+                    var khachCanTra = hdDB.PhaiThanhToan - hdDB.KhachDaTra - formatNumberToFloat(hdDB.TongTienHDTra);
                     var baohiemCanTra = hdDB.PhaiThanhToanBaoHiem - hdDB.BaoHiemDaTra;
 
                     if (khachCanTra > 0) {
@@ -681,7 +681,8 @@
                 var khachCanTra = 0;
                 var invoice = [];
                 if (item.ID === self.HoaDonChosing.ID_DoiTuong) {
-                    khachCanTra = self.HoaDonChosing.PhaiThanhToan - self.HoaDonChosing.KhachDaTra;
+                    khachCanTra = self.HoaDonChosing.PhaiThanhToan - self.HoaDonChosing.KhachDaTra 
+                        - formatNumberToFloat(self.HoaDonChosing.TongTienHDTra);
 
                     invoice = [{
                         ID: self.HoaDonChosing.ID,
@@ -1271,6 +1272,11 @@
                     ShowMessage_Danger('Ngày lập phiếu thu không được nhỏ hơn ngày lập hóa đơn');
                     return;
                 }
+            }
+
+            if (moment(ptKhach.NgayLapHoaDon, 'YYYY-MM-DD HH:mm').format('YYYYMMDDHHmm') > moment(new Date()).format('YYYYMMDDHHmm')) {
+                commonStatisJs.ShowMessageDanger('Ngày lập phiếu vượt quá thời gian hiện tại');
+                return;
             }
 
             if (ptKhach.DaThanhToan === 0) {
