@@ -75,7 +75,7 @@ namespace Open24
               );
             routes.MapRoute(
                  name: "LandingPageGara",
-                   url: "phan-mem-quan-ly-gara-oto-xe-may", // URL with parameters
+                   url: "phan-mem-quan-ly-gara-open24", // URL with parameters
                   defaults: new { controller = "Open24", action = "LandingPageGara" },
                   namespaces: new[] { "Open24.Controllers" }
               );
