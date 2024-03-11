@@ -26,37 +26,56 @@
     <div id="renderBody">
         <input id="currentPage" value="Gara" hidden />
         <div class="w-100">
-            <div class="landing-gara-nav-bar d-flex align-items-center">
-                <div class="container px-3 px-md-5">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <img src="/Content/images/logo-22112021.png" style="object-fit:cover;height:35px;width:fit-content" alt="Logo-Open24" />
-                        <div class="navbar d-none d-md-block">
-                            <ul class="d-flex flex-row justify-content-between align-items-center list-unstyled text-white gap-4 mb-0">
-                                <li class="nav-link" style="cursor:pointer"><a href="#tinhNangRef" class="text-white text-decoration-none">Tính năng</a></li>
-                                <li class="nav-link" style="cursor:pointer"><a href="#quyTrinhRef" class="text-white text-decoration-none">Quy trình</a></li>
-                                <li class="nav-link" style="cursor:pointer"><a href="#bangGiaRef" class="text-white text-decoration-none">Bảng giá</a></li>
-                                <li class="nav-link" style="cursor:pointer"><a href="#khachHangRef" class="text-white text-decoration-none">Khách hàng</a></li>
-                            </ul>
-                        </div>
-                        <button class="btn btn-trial" style="border-radius:8px" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký</button>
-                    </div>
-                </div>
-            </div>
             <div class="landing-gara-content">
                 @* start - header *@
                 <div class="landing-page-header">
-                    <div class="position-relative">
-                        <img class="img-bg-gara-header w-100" src="~/Content/images/landing-page/gara/bg-landing-page-header.png" />
-                        <div class="d-flex flex-column gap-1 gap-md-2 align-items-center content-header">
-                            <span class="text-white display-4 text-center" style="font-weight: 700; font-family: inherit">Open24 GARA</span>
-                            <span class="text-white h4 text-center" style="font-weight:700;font-family:inherit">Phần mềm cực hay - Chạy là mê ngay!</span>
-                            <button class="btn btn-trial" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký dùng thử</button>
+                    <div class="w-100">
+                        <div class="landing-gara-nav-bar d-flex align-items-center bg-transparent">
+                            <div class="container px-3 px-md-5">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <img src="~/Content/images/logoOpen.png" alt="Logo-Open24" />
+                                    <div class="navbar d-none d-md-block">
+                                        <ul class="d-flex flex-row justify-content-between align-items-center list-unstyled text-white gap-0 gap-lg-4 mb-0">
+                                            <li class="nav-link" style="cursor:pointer"><a href="#tinhNangRef" class="nav-link__item">Tính năng</a></li>
+                                            <li class="nav-link" style="cursor:pointer"><a href="#quyTrinhRef" class="nav-link__item">Quy trình</a></li>
+                                            <li class="nav-link" style="cursor:pointer"><a href="#bangGiaRef" class="nav-link__item">Bảng giá</a></li>
+                                            <li class="nav-link" style="cursor:pointer"><a href="#khachHangRef" class="nav-link__item">Khách hàng</a></li>
+                                        </ul>
+                                    </div>
+                                    <button class="btn btn-trial" style="border-radius:8px" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký</button>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                    <div class="op-gara-content bg-transparent">
+
+                        <div class="container px-3 px-md-5">
+                            <div class="d-flex flex-column flex-md-row gap-3 gap-md-5">
+                                <div class="position-relative" style="flex:1">
+                                    <div class="triangle-down position-relative d-none d-lg-block" style="z-index:1"></div>
+                                    <div class="position-absolute header-text-box align-items-center d-none d-lg-flex" style="top:0;bottom:0;right:0;left:0;z-index:2">
+                                        <span class="heading-neutral__main">Open24 GARA</span>
+                                        <span class="heading-neutral__sub">Phần mềm cực hay - Chạy là mê ngay!</span>
+                                        <button class="btn btn-trial-header" style="border-radius: 24px;" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký dùng thử</button>
+                                    </div>
+                                    <div class="header-text-box align-items-center d-flex d-lg-none">
+                                        <span class="heading-neutral__main">Open24 GARA</span>
+                                        <span class="heading-neutral__sub">Phần mềm cực hay - Chạy là mê ngay!</span>
+                                        <button class="btn btn-trial-header" style="border-radius: 24px;" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký dùng thử</button>
+                                    </div>
+
+                                </div>
+                                <div style="flex:1">
+                                    <img class="image-header" src="~/Content/images/landing-page/gara/header_image.png" />
+                                </div>
+                            </div>
+                        </div>
+                       
                     </div>
                 </div>
                 @* end - header *@
                 <div class="container">
-                    <div class="d-flex w-100 justify-content-between align-items-center ps-3 ps-md-5 pe-0 pe-md-5" style="background-color: #FF5C35; border-radius:32px;">
+                    <div class="d-flex w-100 justify-content-between align-items-center mt-3 ps-2 ps-md-5 pe-2 pe-md-5" style="background-color: #FF5C35; border-radius:32px;">
                         <div class="d-flex justify-content-center text-center flex-column pt-2 pt-md-4 pb-md-5 pb-2">
                             <span class="text-white h3 text-uppercase" style="font-weight:600;font-family:inherit">GIẢI PHÁP QUẢN LÝ GARA CHUYÊN NGHIỆP</span>
                             <span class="text-white h4" style="font-weight:700 ;font-family:inherit">Siêu ưu đãi giảm <span class="display-3" style="font-weight:700 ;font-family:inherit">30%</span></span>
@@ -64,13 +83,30 @@
                         <img class="d-none d-md-block" src="~/Content/images/landing-page/gara/ticket.png" />
                     </div>
                 </div>
+                @* start - quy trình *@
+                <div class="op-gara-content" id="quyTrinhRef">
+                    <div class="container px-3 px-md-5">
+                        <div class="d-flex flex-column gap-3 justify-content-center align-items-center">
+                            <span class="text-uppercase text-center h7" style="color: #319DFF;font-weight:700">Quy trình chuyên nghiệp</span>
+                            <span class="text-center h2" style="color: #29303D;font-weight:700">OPEN24 - GARA THU NHỎ CỦA BẠN</span>
+                            <img class="w-100 d-none d-md-block" src="~/Content/images/landing-page/gara/quy_trinh_lam_viec.png" />
+                            <img class="w-100 d-block d-md-none" src="~/Content/images/landing-page/gara/quy_trinh_lam_viec_mobile.png" />
+                        </div>
+                        <div class="mt-2 mt-md-4 w-100 text-center">
+                            <button class="btn btn-trial" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký dùng thử</button>
+                        </div>
+                    </div>
+                </div>
+
+                @* end - quy trình *@
                 @* start - tính năng *@
                 <div class="op-gara-content" id="tinhNangRef">
                     <div class="container px-3 px-md-5">
                         <div class="d-flex flex-column gap-3 align-items-center">
                             <span class="text-uppercase text-center h7" style="color: #319DFF;font-weight:700">Bộ tính năng toàn diện</span>
                             <span class="text-center h2" style="color: #29303D;font-weight:700">Dành cho mọi gara, cửa hàng sửa chữa ô tô & xe máy</span>
-                            <img class="w-100" src="~/Content/images/landing-page/gara/tinh_nang.png" />
+                            <img class="w-100 d-none d-md-block" src="~/Content/images/landing-page/gara/tinh_nang.png" />
+                            <img class="w-100 d-block d-md-none" src="~/Content/images/landing-page/gara/tinh_nang_mobile.png" />
                         </div>
                     </div>
                 </div>
@@ -81,11 +117,11 @@
                                 <div class="col-12 col-md-6 gap-2">
                                     <div class="d-flex gap-3 align-items-center justify-content-start py-3 py-md-4">
                                         <img src="~/Content/images/landing-page/gara/i-employee.png" />
-                                        <span style="font-size: 18px; font-weight: 700; color: #29303D">Chấm công, tính lương và hoa hồng cho nhân viên</span>
+                                        <span class="h6" style="font-weight: 700; color: #29303D">Chấm công, tính lương và hoa hồng cho nhân viên</span>
                                     </div>
                                     <div class="d-flex gap-3 align-items-center justify-content-start py-3 py-md-4">
                                         <img src="~/Content/images/landing-page/gara/i-report.png" />
-                                        <span style="font-size: 18px; font-weight: 700; color: #29303D">Kiểm soát thu chi, quản lý công nợ, báo cáo kinh doanh</span>
+                                        <span class="h6" style="font-weight: 700; color: #29303D">Kiểm soát thu chi, quản lý công nợ, báo cáo kinh doanh</span>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -98,12 +134,12 @@
                                 </div>
                                 <div class="col-12 col-md-6 gap-2 order-0 order-md-1">
                                     <div class="d-flex gap-3 align-items-center justify-content-start py-3 py-md-4">
-                                        <img c src="~/Content/images/landing-page/gara/i-calendar.png" />
-                                        <span style="font-size: 18px; font-weight: 700; color: #29303D">Theo dõi lịch bảo hành, nhắc nhở xe đến hạn bảo dưỡng, chăm sóc định kỳ</span>
+                                        <img src="~/Content/images/landing-page/gara/i-calendar.png" />
+                                        <span class="h6" style="font-weight: 700; color: #29303D">Theo dõi lịch bảo hành, nhắc nhở xe đến hạn bảo dưỡng, chăm sóc định kỳ</span>
                                     </div>
                                     <div class="d-flex gap-3 align-items-center justify-content-start py-3 py-md-4">
                                         <img src="~/Content/images/landing-page/gara/i-email.png" />
-                                        <span style="font-size: 18px; font-weight: 700; color: #29303D">Email marketing gửi mail tự động, tích hợp hệ thống tin nhắn thương hiệu sms brandname</span>
+                                        <span class="h6" style="font-weight: 700; color: #29303D">Email marketing gửi mail tự động, tích hợp hệ thống tin nhắn thương hiệu sms brandname</span>
                                     </div>
                                 </div>
                             </div>
@@ -116,21 +152,7 @@
 
 
                 @* end - tính năng *@
-                @* start - quy trình *@
-                <div class="op-gara-content" id="quyTrinhRef">
-                    <div class="container px-3 px-md-5">
-                        <div class="d-flex flex-column gap-3 justify-content-center align-items-center">
-                            <span class="text-uppercase text-center h7" style="color: #319DFF;font-weight:700">Quy trình chuyên nghiệp</span>
-                            <span class="text-center h2" style="color: #29303D;font-weight:700">OPEN24 - GARA THU NHỎ CỦA BẠN</span>
-                            <img class="w-100" src="~/Content/images/landing-page/gara/quy_trinh_lam_viec.png" />
-                        </div>
-                        <div class="mt-2 mt-md-4 w-100 text-center">
-                            <button class="btn btn-trial" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký dùng thử</button>
-                        </div>
-                    </div>
-                </div>
 
-                @* end - quy trình *@
                 @* start - bảng giá *@
                 <div class="w-100" style="background-color: #F5FAFF" id="bangGiaRef">
                     <div class="op-gara-content">
@@ -143,7 +165,7 @@
                                 </div>
                                 <div class="row justify-content-center w-100 gap-0 gap-md-4 g-3 d-flex mt-4 mt-md-2">
                                     <div class="col-6 col-md-4 d-flex flex-column">
-                                        <div class="d-flex flex-column p-2 p-md-4 " style="flex:1; border-radius: 1rem; border-top: 1px solid #EAECF0; border-right: 1px solid #EAECF0; border-left: 1px solid #EAECF0 ">
+                                        <div class="d-flex flex-column px-2 px-md-4 py-4" style="flex:1; border-radius: 1rem; border-top: 1px solid #EAECF0; border-right: 1px solid #EAECF0; border-left: 1px solid #EAECF0 ">
                                             <div class="d-flex flex-column justify-content-center align-items-center">
                                                 <img style="width:40px" src="~/Content/images/landing-page/gara/i-flash-primary.png" />
                                                 <span class="text-uppercase mt-3 text-center" style="color: #319DFF;font-weight:600;font-family:inherit">GÓI TRẢI NGHIỆM 1 THÁNG</span>
@@ -152,9 +174,9 @@
                                             </div>
                                             <div class="pt-2 pt-md-3">
                                                 <div class="op-panel-detail">
-                                                    <div><span style="margin-left: 12px; font-size: 16px; font-weight: 400;color: #525F7A;font-family:inherit">1 chi nhánh</span></div>
-                                                    <div><span style="margin-left: 12px; font-size: 16px; font-weight: 400; color: #525F7A">1 tài khoản</span></div>
-                                                    <div><span style="margin-left: 12px; font-size: 16px; font-weight: 400; color: #525F7A">Không giới hạn tính năng</span></div>
+                                                    <div><span class="h7" style="margin-left: 12px; font-weight: 400;color: #525F7A;font-family:inherit">1 chi nhánh</span></div>
+                                                    <div><span class="h7" style="margin-left: 12px; font-weight: 400; color: #525F7A">1 tài khoản</span></div>
+                                                    <div><span class="h7" style="margin-left: 12px; font-weight: 400; color: #525F7A">Không giới hạn tính năng</span></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -175,12 +197,12 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="pt-2 pt-md-3">
                                                 <div class="op-panel-detail">
-                                                    <div><span style="margin-left: 12px; font-size: 16px; font-weight: 400;font-family:inherit">1 chi nhánh</span></div>
-                                                    <div><span style="margin-left: 12px; font-size: 16px; font-weight: 400;">1 tài khoản</span></div>
-                                                    <div><span style="margin-left: 12px; font-size: 16px; font-weight: 400;">Không giới hạn tính năng</span></div>
+                                                    <div><span class="h7" style="margin-left: 12px;font-weight: 400;font-family:inherit">1 chi nhánh</span></div>
+                                                    <div><span class="h7" style="margin-left: 12px; font-weight: 400;">1 tài khoản</span></div>
+                                                    <div><span class="h7" style="margin-left: 12px;  font-weight: 400;">Không giới hạn tính năng</span></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -389,19 +411,19 @@
     <script src="~/Assets/js/Client/open24/RenderBodyVue.js"></script>
     <script src="~/Assets/js/Client/open24/open24.js"></script>
     <script>
-    $(document).ready(function() {
-        // Smooth scrolling for all links with hash anchors
-        $('a[href^="#"]').on('click', function(event) {
-            var target = $(this.getAttribute('href'));
-            if( target.length ) {
-                event.preventDefault();
-                $('html, body').stop().animate({
-                    scrollTop: target.offset().top,
-                    behavior: 'smooth'
-                }, 1000);
-            }
+        $(document).ready(function () {
+            // Smooth scrolling for all links with hash anchors
+            $('a[href^="#"]').on('click', function (event) {
+                var target = $(this.getAttribute('href'));
+                if (target.length) {
+                    event.preventDefault();
+                    target[0].scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
         });
-    });
     </script>
     <!-- Your additional scripts -->
 </body>

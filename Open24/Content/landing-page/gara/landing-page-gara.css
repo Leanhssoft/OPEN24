@@ -1,8 +1,17 @@
-﻿/* Thiết lập các biến màu chủ đề */
+﻿ /* Thiết lập các biến màu chủ đề */
 :root {
     --color-theme: #0E63C4;
+    --color-neutral-90: #29303D;
+    --color-neutral-80: #3D475C;
+    font-size: 16px;
+    font-weight: 400;
+    font-family: Inter;
 }
 
+@font-face {
+    font-family: 'Inter';
+    src: url('../../fonts/inter-v.ttf') format('truetype');
+}
 /* Thiết lập font size cho tiêu đề h6 */
 .h6 {
     font-size: 18px;
@@ -12,7 +21,14 @@
 .h7 {
     font-size: 16px;
 }
-
+.triangle-down {
+    width: 0;
+    height: 0;
+    border-left: 200px solid transparent; /* Độ dài cạnh tam giác */
+    border-right: 200px solid transparent; /* Độ dài cạnh tam giác */
+    border-top: 250px solid #edf2f5ff; /* Độ cao của tam giác */
+    transform: rotate(0deg); /* Đảo ngược hướng tam giác xuống dưới */
+}
 /* Thiết lập kiểu hiển thị và layout cho danh sách khách hàng */
 .list-customer {
     display: flex;
@@ -41,8 +57,15 @@
 .bg-secondary-green {
     background: #50CD89;
 }
-
-
+.header-text-box{
+    display: flex;
+    flex-direction: column;
+    gap:8px
+}
+.image-header {
+    animation: slideToLeft 2s ease;
+    width: 100%;
+}
 /* Thiết lập kiểu cho nhãn văn bản */
 .text-lable {
     font-size: 18px;
@@ -51,6 +74,13 @@
     color: #ffffff;
     font-family: "Inter", sans-serif;
 }
+.text-neutral-80{
+    color: var(--color-neutral-80);
+}
+.text-neutral-90 {
+    color: var(--color-neutral-90);
+}
+
 
 /* Thiết lập kiểu cho nội dung văn bản */
 .text-content {
@@ -65,16 +95,32 @@
 .landing-gara-content {
     height: 100%;
 }
+.btn-trial-header {
+    padding: 12px 16px 12px 16px;
+    background-color: #ff6a00;
+    color: #FFFFFF;
+    font-weight: 700;
+    border-radius: 24px;
+    width: fit-content;
+    animation: slideToRight 2s ease;
+}
 
+    .btn-trial-header:hover {
+        padding: 12px 16px 12px 16px;
+        background-color: #FF5C35;
+        color: #FFFFFF;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 24px;
+    }
 /* Thiết lập kiểu cho nút thử nghiệm */
 .btn-trial {
     padding: 12px 16px 12px 16px;
     background-color: #ff6a00;
     color: #FFFFFF;
-    font-size: 16px;
     font-weight: 700;
-    font-family: Roboto;
     border-radius: 24px;
+    width:fit-content;
 }
 
     .btn-trial:hover {
@@ -83,7 +129,6 @@
         color: #FFFFFF;
         font-size: 16px;
         font-weight: 700;
-        font-family: Roboto;
         border-radius: 24px;
     }
 
@@ -93,7 +138,6 @@
     color: #FF5C35;
     font-size: 16px;
     font-weight: 700;
-    font-family: Roboto;
     border-radius: 24px;
 }
 
@@ -103,7 +147,6 @@
         color: #FFFFFF;
         font-size: 16px;
         font-weight: 700;
-        font-family: Roboto;
         border-radius: 24px;
     }
 
@@ -131,16 +174,48 @@
 
 /* Thiết lập kiểu cho màn hình di động */
 @media only screen and (max-width: 767px) {
+    .heading-neutral__main {
+        font-family: inherit;
+        font-weight: 700;
+        color: white;
+        font-size: 2rem;
+        text-align: center;
+        animation: slideToRight 2s ease;
+    }
+
+    .heading-neutral__sub {
+        font-family: inherit;
+        font-weight: 700;
+        color: white;
+        font-size: 1.125rem;
+        text-align: center;
+        animation: slideToRight 2s ease;
+    }
+    .nav-link__item {
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        font-size: 1rem;
+    }
     .op-gara-content {
-        padding-top: 1.5rem;
-        padding-bottom: 1.5rem;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
     }
 
     .landing-page-header {
-        /*background-image: url('../../images/landing-page/gara/bg-landing-page-header.png');*/
+        background-image: url('../../images/landing-page/gara/header_background.png');
         background-repeat: no-repeat;
         background-size: 100% 100%;
-        height: 300px;
+    }
+
+    .header-slogan {
+        font-family: Roboto;
+        font-size: 1.125rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 1.75rem;
+        color: #FFFFFF;
+        text-align: center;
     }
 
     .img-bg-gara-header {
@@ -193,17 +268,46 @@
 /* Thiết lập kiểu cho màn hình máy tính */
 @media only screen and (min-width: 768px ) and (max-width:899px) {
     .op-gara-content {
-        padding-top: 4rem;
-        padding-bottom: 4rem;
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+    .heading-neutral__main {
+        font-family: inherit;
+        font-weight: 700;
+        color:white;
+        font-size: 2.5rem;
+        text-align: center;
+        animation: slideToRight 2s ease;
     }
 
+    .heading-neutral__sub {
+        font-family: inherit;
+        font-weight: 700;
+        color: white;
+        font-size: 1.325rem;
+        text-align: center;
+        animation: slideToRight 2s ease;
+    }
+    .nav-link__item {
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        font-size: 1rem;
+    }
     /* Các thiết lập khác cho màn hình máy tính */
 
     .landing-page-header {
-        /*background-image: url('../../images/landing-page/gara/bg-landing-page-header.png');*/
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        height: 550px;
+        background-image: url('../../images/landing-page/gara/header_background.png');
+    }
+
+    .header-slogan {
+        font-family: Roboto;
+        font-size: 1.5rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 2rem;
+        color: #FFFFFF;
+        text-align: center;
     }
 
     .img-bg-gara-header {
@@ -256,24 +360,53 @@
 
 /* Thiết lập kiểu cho màn hình máy tính */
 @media only screen and (min-width: 900px) {
-    .op-gara-content {
-        padding-top: 4rem;
-        padding-bottom: 4rem;
+    .heading-neutral__main {
+        font-family: inherit;
+        font-weight: 700;
+        color: var(--color-neutral-90);
+        font-size: 3.5rem;
+        text-align: center;
+        animation: slideToRight 2s ease;
     }
 
+    .heading-neutral__sub {
+        font-family: inherit;
+        font-weight: 700;
+        color: var(--color-neutral-90);
+        font-size: 1.5rem;
+        text-align: center;
+        animation: slideToRight 2s ease;
+    }
+    .nav-link__item {
+        text-decoration: none;
+        color: var(--color-neutral-80);
+        font-weight: 500;
+        font-size: 1rem;
+    }
+    .op-gara-content {
+        padding-top: 5rem;
+        padding-bottom: 5rem;
+    }
+    .header-slogan {
+        font-family: Roboto;
+        font-size: 1.25rem;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 1.85rem;
+        color: #FFFFFF;
+        text-align: center;
+    }
     /* Các thiết lập khác cho màn hình máy tính */
 
     .landing-page-header {
-        /*background-image: url('../../images/landing-page/gara/bg-landing-page-header.png');*/
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        height: 932px;
+        background-image: linear-gradient(-45deg, transparent 50%, rgba(255, 255, 255, 1) 50%), url('../../images/landing-page/gara/header_background.png');
+        background-size: cover;
+        background-position: center;
     }
 
     .img-bg-gara-header {
         width: 100%;
         position: absolute;
-        z-index: -1;
         height: 932px;
         object-fit: fill
     }
@@ -317,3 +450,22 @@
     }
 }
 /*END Thiết lập kiểu cho màn hình máy tính */
+@keyframes slideToRight {
+    0% {
+        transform: translateX(-100%); /* Di chuyển phần tử sang trái ra khỏi màn hình */
+    }
+
+    100% {
+        transform: translateX(0); /* Di chuyển phần tử sang phải ra khỏi màn hình */
+    }
+}
+
+@keyframes slideToLeft {
+    0% {
+        transform: translateX(100%); /* Di chuyển phần tử sang trái ra khỏi màn hình */
+    }
+
+    100% {
+        transform: translateX(0); /* Di chuyển phần tử sang phải ra khỏi màn hình */
+    }
+}
