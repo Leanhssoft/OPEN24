@@ -1937,6 +1937,7 @@
     <Content Include="Content\images\open24\chart.png" />
     <Content Include="Content\images\open24\check.png" />
     <Content Include="Content\images\open24\CustomerPage\i-send.svg" />
+    <Content Include="Content\images\open24\i-check-round.svg" />
     <Content Include="Content\images\open24\i-search.svg" />
     <Content Include="Content\images\open24\IconHomePage\bg-page-adv-2.png" />
     <Content Include="Content\images\open24\IconHomePage\bg-page-reason-choose.png" />
@@ -1971,7 +1972,6 @@
     <Content Include="Content\images\open24\HumanResourcePage\banner-header.png" />
     <Content Include="Content\images\open24\HumanResourcePage\banner-wave-blue.png" />
     <Content Include="Content\images\open24\i-cham-soc.png" />
-    <Content Include="Content\images\open24\i-check-round .svg" />
     <Content Include="Content\images\open24\i-check-succes.png" />
     <Content Include="Content\images\open24\i-check.png" />
     <Content Include="Content\images\open24\i-checked-circle.png" />
