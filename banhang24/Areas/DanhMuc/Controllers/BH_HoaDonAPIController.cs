@@ -1166,6 +1166,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     DataTable excel = _classOFDCM.ToDataTable<BH_ChiTietHoaDon_Excel>(lst);
                     excel.Columns.Remove("TenHangHoaFull");
+                    excel.Columns.Remove("TenHangHoa");// get TenHangHoaThayThe
 
                     var tempFile = string.Empty;
                     var tempDown = string.Empty;

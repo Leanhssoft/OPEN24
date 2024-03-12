@@ -224,6 +224,7 @@ namespace Model
         public string MaHangHoa { get; set; }
         public string TenHangHoaFull { get; set; }
         public string TenHangHoa { get; set; }
+        public string TenHangHoaThayThe { get; set; }
         public string TenDonViTinh { get; set; }
         public string MaLoHang { get; set; }
         public double SoLuong { get; set; }
