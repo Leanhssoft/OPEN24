@@ -4734,7 +4734,7 @@ var ViewModel = function () {
                     }
 
                     data.GiaBan = formatNumber3Digit(data.GiaBan);
-                    data.TonKho = formatNumber3Digit(data.TonKho);
+                    data.TonKho = formatNumber3Digit(data.TonKho,3);
                     data.SoPhutThucHien = data.SoPhutThucHien !== null ? formatNumber3Digit(data.SoPhutThucHien) : data.SoPhutThucHien;
                     data.ChiPhiThucHien = formatNumber3Digit(data.ChiPhiThucHien);
                     for (var j = 0; j < data.DonViTinh.length; j++) {
@@ -6908,11 +6908,9 @@ var ViewModel = function () {
             self.DM_HangHoa_Anh(data.DM_HangHoa_Anh);
             self.ThuocTinhCuaHHEdit(data.HangHoa_ThuocTinh);
             GetAllNhomHHByLaNhomHH();
-            //self.files(data.DM_HangHoa_Anh);
             data.GiaBan = formatNumber3Digit(data.GiaBan);
             data.GiaVon = formatNumber3Digit(data.GiaVon);
-            data.TonKho = formatNumber3Digit(data.TonKho);
-            //self.selectIDNHHAdd(data.ID_NhomHangHoa);
+            data.TonKho = formatNumber3Digit(data.TonKho,3);
             self.selectIDNhomHHAddHH(data.ID_NhomHangHoa);
             for (var j = 0; j < data.DonViTinh.length; j++) {
                 data.DonViTinh[j].GiaBan = formatNumber3Digit(data.DonViTinh[j].GiaBan);
@@ -7221,6 +7219,14 @@ var ViewModel = function () {
         var _founHHCL = 0;
         var _maHHCL = "";
         var j = 0;
+
+        // nếu chỉ có 1 dòng cùng loại, và khách không nhập mã hàng: auto gán mã hàng này = mã đã nhập ở trên
+       if(self.newHangHoa().HangHoaCungLoaiArr().length === 1){
+           if(commonStatisJs.CheckNull(self.newHangHoa().HangHoaCungLoaiArr()[0].MaHangHoa)){             
+              myData.objHangHoaCungLoai[0].MaHangHoa = myData.objNewHH.MaHangHoa;
+              self.newHangHoa().HangHoaCungLoaiArr()[0].MaHangHoa = myData.objNewHH.MaHangHoa;
+           }
+       }
         var listHHCungLoai = self.newHangHoa().HangHoaCungLoaiArr().filter(p => p.MaHangHoa !== "");
         function checkMaHHCL() {
             if (j < listHHCungLoai.length) {
