@@ -53,6 +53,12 @@ namespace Open24.Controllers
         {
             return View();
         }
+
+        //[ViewAuthorize(Title ="/pham-mem-quan-ly-gara-toto")]
+        public ActionResult LandingPageGara()
+        {
+            return View();
+        }
         [ViewAuthorize]
         public ActionResult TinTucGroup(string Category)
         {
