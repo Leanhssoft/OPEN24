@@ -821,7 +821,7 @@
                                     </td>
                                     <!--/ko-->
                                     <!--ko if: $root.ColumnsExcel().indexOf('2') < 0-->
-                                    <td class="ch tendvt"  style="width:4%  !important">
+                                    <td class="ch tendvt" style="width:4%  !important">
                                         <!--ko if: CountCungLoai == 1-->
                                         <span data-bind="if: (DonViTinh.length == 1 && DonViTinhChuan != ''&& DonViTinhChuan!= null)">
                                             <span data-bind="text: DonViTinhChuan"></span>
@@ -1229,7 +1229,8 @@
                                                                                     <td data-bind="text:MaLoHang"></td>
                                                                                     <td data-bind="text: moment(NgaySanXuat).format('DD/MM/YYYY')!='Invalid date'? moment(NgaySanXuat).format('DD/MM/YYYY'):''"></td>
                                                                                     <td data-bind="text: moment(NgayHetHan).format('DD/MM/YYYY')!='Invalid date'? moment(NgayHetHan).format('DD/MM/YYYY'):''"></td>
-                                                                                    <td class="text-right" data-bind="text: formatNumber3Digit(TonKho)">50</td>
+                                                                                    <td class="text-right" data-bind="text: formatNumber3Digit(TonKho)">
+                                                                                    </td>
                                                                                 </tr>
                                                                                 <tr class="tr-hide-detailsolo" hidden>
                                                                                     <td colspan="4">
@@ -1258,7 +1259,14 @@
                                                                                                         <td data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? formatNumber3Digit(GiaVon,2): 0"></td>
                                                                                                         <td data-bind="text: SoLuong > 0 ? formatNumber3Digit(SoLuong) : 0"></td>
                                                                                                         <td data-bind="text: SoLuong > 0 ? 0 :formatNumber3Digit(SoLuong)"></td>
-                                                                                                        <td data-bind="text: formatNumber3Digit(TonKho)"></td>
+                                                                                                        <td>
+                                                                                                            <span data-bind="text: formatNumber3Digit(TonKho)">
+                                                                                                            </span>
+                                                                                                            &nbsp; &nbsp;
+                                                                                                            <span data-bind="visible: $index()===0 && (LuyKeTonKho !== TonKho || TonKho !== $parent.TonKho)">
+                                                                                                                <button class="btn btn-main" data-bind="click: function(){$root.CapNhatTonKho($parent)}">Cập nhật tồn kho</button>
+                                                                                                            </span>
+                                                                                                        </td>
                                                                                                     </tr>
                                                                                                 </tbody>
                                                                                             </table>
@@ -1922,7 +1930,14 @@
                                                                                             <td data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? formatNumber3Digit(GiaVon,2): 0"></td>
                                                                                             <td data-bind="text: SoLuong > 0 ? formatNumber3Digit(SoLuong) : 0"></td>
                                                                                             <td data-bind="text: SoLuong > 0 ? 0 :formatNumber3Digit(SoLuong)"></td>
-                                                                                            <td data-bind="text: formatNumber3Digit(TonKho)"></td>
+                                                                                            <td>
+                                                                                                <span data-bind="text: formatNumber3Digit(TonKho)">
+                                                                                                </span>
+                                                                                                &nbsp; &nbsp;
+                                                                                                <span data-bind="visible: $index()===0 && (LuyKeTonKho !== TonKho || TonKho !== $parent.TonKho)">
+                                                                                                    <button class="btn btn-main" data-bind="click: function(){$root.CapNhatTonKho($parent)}">Cập nhật tồn kho</button>
+                                                                                                </span>
+                                                                                            </td>
                                                                                         </tr>
                                                                                     </tbody>
                                                                                 </table>
