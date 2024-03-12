@@ -1910,7 +1910,7 @@ var workTable = new Vue({
             objPrint.TongGiamGia = formatNumber(hdChosing.TongGiamGia);
             objPrint.TongChietKhau = hdChosing.TongChietKhau;
             objPrint.PhaiThanhToan = formatNumber(phaiThanhToan);
-            objPrint.DaThanhToan = formatNumber3Digit(daThanhToan,0);
+            objPrint.DaThanhToan = formatNumber3Digit(daThanhToan, 0);
             objPrint.BaoHiemDaTra = formatNumber(hdChosing.BaoHiemDaTra);
             objPrint.TongTienBHDuyet = formatNumber(hdChosing.TongTienBHDuyet);
             objPrint.GiamTruThanhToanBaoHiem = formatNumber(hdChosing.GiamTruThanhToanBaoHiem);
@@ -2094,6 +2094,7 @@ var workTable = new Vue({
             hd.TongCK_DichVu = DV_tongCK;
             hd.TongTienDichVu_TruocCK = tongDV_truocCK;
             hd.TongTienDichVu_TruocVAT = tongDV_truocVAT;
+            hd.TongTienDichVu_TruocCK_SauVAT = tongDV_truocCK + DV_tongthue;
 
             hd.TongSL_PhuTung = HH_tongSL;
             hd.TongTienPhuTung = tongHH;
@@ -2101,6 +2102,7 @@ var workTable = new Vue({
             hd.TongCK_PhuTung = HH_tongCK;
             hd.TongTienPhuTung_TruocCK = tongHH_truocCK;
             hd.TongTienPhuTung_TruocVAT = tongHH_truocVAT;
+            hd.TongTienPhuTung_TruocCK_SauVAT = tongHH_truocCK + HH_tongthue;
 
             hd.TongGiamGiaHD_HH = formatNumberToFloat(hd.TongGiamGia)
                 + formatNumberToFloat(hd.KhuyeMai_GiamGia)
@@ -2112,12 +2114,15 @@ var workTable = new Vue({
                 let price = formatNumberToInt(itFor.DonGia);
                 let sale = formatNumberToInt(itFor.GiamGia);
                 let giaban = formatNumberToInt(itFor.GiaBan);
+                let tienThue = formatNumberToInt(itFor.TienThue);
                 let bh_tt = itFor.SoLuong * formatNumberToFloat(itFor.DonGiaBaoHiem);
                 thuocTinh = itFor.ThuocTinh_GiaTri;
                 thuocTinh = thuocTinh === null || thuocTinh === '' ? '' : thuocTinh.substr(1);
                 itFor.DonGia = formatNumber(price);
                 itFor.TienChietKhau = formatNumber(sale);
                 itFor.GiaBan = formatNumber(giaban);
+                itFor.GiaBanSauVAT = giaban + tienThue; // dongia - giamgia + vat
+                itFor.DonGiaSauVAT = price + tienThue;// dongia + vat
                 itFor.SoLuong = formatNumber3Digit(itFor.SoLuong);
                 itFor.ThanhTien = formatNumber3Digit(itFor.ThanhTien);
                 itFor.ThanhToan = formatNumber3Digit(itFor.ThanhToan);

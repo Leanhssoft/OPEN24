@@ -4446,6 +4446,7 @@ var NewModel_BanHangLe = function () {
             let itFor = $.extend({}, arr[i]);
             let dongia = formatNumberToInt(itFor.DonGia);
             let tienGiam = formatNumberToInt(itFor.TienChietKhau);
+            let tienThue = formatNumberToFloat(itFor.TienThue);
             let soluong = formatNumberToFloat(itFor.SoLuong);
             let bh_tt = soluong * formatNumberToFloat(itFor.DonGiaBaoHiem);
             itFor.DonGia = formatNumber3Digit(dongia);
@@ -4453,6 +4454,8 @@ var NewModel_BanHangLe = function () {
             itFor.BH_ThanhTien = formatNumber3Digit(bh_tt);
             itFor.TienChietKhau = formatNumber3Digit(tienGiam);
             itFor.GiaBan = formatNumber3Digit(dongia - tienGiam);
+            itFor.DonGiaSauVAT = formatNumber3Digit(dongia + tienThue);
+            itFor.GiaBanSauVAT = formatNumber3Digit(dongia - tienGiam + tienThue);
             itFor.SoLuong = formatNumber3Digit(itFor.SoLuong, 4);
             itFor.ThanhTien = formatNumber3Digit(itFor.ThanhTien);
             itFor.SoLuongDVDaSuDung = 0;
@@ -4478,6 +4481,7 @@ var NewModel_BanHangLe = function () {
                 let cungloai = itFor.HangCungLoais[k];
                 let dongia1 = formatNumberToInt(cungloai.DonGia);
                 let tienGiam1 = formatNumberToInt(cungloai.TienChietKhau);
+                let tienThue1 = formatNumberToInt(cungloai.TienThue);
                 let soluong1 = formatNumberToFloat(cungloai.SoLuong);
                 let bh_tt1 = soluong1 * formatNumberToFloat(cungloai.DonGiaBaoHiem);
                 itFor.HangCungLoais[k].SoLuong = formatNumber3Digit(soluong1);
@@ -4487,6 +4491,8 @@ var NewModel_BanHangLe = function () {
                 itFor.HangCungLoais[k].DonGiaBaoHiem = formatNumber3Digit(cungloai.DonGiaBaoHiem);
                 itFor.HangCungLoais[k].BH_ThanhTien = formatNumber3Digit(bh_tt1);
                 itFor.HangCungLoais[k].GiaBan = formatNumber3Digit(dongia1 - tienGiam1);
+                itFor.HangCungLoais[k].DonGiaSauVAT = formatNumber3Digit(dongia1 + tienThue1);
+                itFor.HangCungLoais[k].GiaBanSauVAT = formatNumber3Digit(dongia1 - tienGiam1 + tienThue1);
                 itFor.HangCungLoais[k].ThanhTien = formatNumber3Digit(cungloai.ThanhTien);
                 itFor.HangCungLoais[k].ThanhToan = formatNumber3Digit(cungloai.ThanhToan);
                 itFor.HangCungLoais[k].SoLuongDVDaSuDung = 0;
@@ -12183,6 +12189,7 @@ var NewModel_BanHangLe = function () {
         self.InforHDprintf().TongCK_PhuTung = formatNumber3Digit(HH_tongCK);
         self.InforHDprintf().TongTienPhuTung_TruocVAT = formatNumber3Digit(tongHH_truocVAT);
         self.InforHDprintf().TongTienPhuTung_TruocCK = formatNumber3Digit(tongHH_truocCK);
+        self.InforHDprintf().TongTienPhuTung_TruocCK_SauVAT = tongHH_truocCK + HH_tongthue;
 
         self.InforHDprintf().TongSL_DichVu = DV_tongSL;
         self.InforHDprintf().TongTienDichVu = formatNumber3Digit(tongDV);
@@ -12190,6 +12197,7 @@ var NewModel_BanHangLe = function () {
         self.InforHDprintf().TongCK_DichVu = formatNumber3Digit(DV_tongCK);
         self.InforHDprintf().TongTienDichVu_TruocVAT = formatNumber3Digit(tongDV_truocVAT);
         self.InforHDprintf().TongTienDichVu_TruocCK = formatNumber3Digit(tongDV_truocCK);
+        self.InforHDprintf().TongTienDichVu_TruocCK_SauVAT = tongDV_truocCK + DV_tongthue;
     }
 
     function Check_AutoPrint(loaiHoaDon) {
@@ -26771,9 +26779,13 @@ var NewModel_BanHangLe = function () {
                     hd[i].GiamTruThanhToanBaoHiem = formatNumberToFloat(obj.GiamTruThanhToanBaoHiem);
 
                     let tongThueCT = 0;
-                    for (let i = 0; i < cthd.length; i++) {
-                        if (cthd[i].IDRandomHD === obj.IDRandomHD) {
-                            tongThueCT += cthd[i].SoLuong * cthd[i].TienThue;
+                    for (let k = 0; k < cthd.length; k++) {
+                        if (cthd[k].IDRandomHD === obj.IDRandomHD) {
+                            tongThueCT += cthd[k].SoLuong * cthd[k].TienThue;
+
+                            for (let j = 0; j < cthd[k].HangCungLoais.length; j++) {
+                                tongThueCT += cthd[k].HangCungLoais[j].SoLuong * cthd[k].HangCungLoais[j].TienThue;
+                            }
                         }
                     }
                     // tét lai: update HD co baohiem, 

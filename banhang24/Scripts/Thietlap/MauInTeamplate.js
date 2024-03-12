@@ -73,6 +73,7 @@
                     TongCKTheoNhom: sumCK,
                     TongTienTheoNhom_TruocVAT: sum_truocVAT,
                     TongTienTheoNhom_TruocCK: sum_truocCK,
+                    TongTienTheoNhom_TruocCK_SauVAT: sum_truocCK + sumVAT,
                     HangHoas: arrHH
                 })
             }
@@ -118,6 +119,7 @@
                     TongCKTheoNhom: sumCK,
                     TongTienTheoNhom_TruocVAT: sum_truocVAT,
                     TongTienTheoNhom_TruocCK: sum_truocCK,
+                    TongTienTheoNhom_TruocCK_SauVAT: sum_truocCK + sumVAT,
                     HangHoas: arrHH
                 })
             }
@@ -162,6 +164,7 @@
                     TongCKTheoNhom: sumCK,
                     TongTienTheoNhom_TruocVAT: sum_truocVAT,
                     TongTienTheoNhom_TruocCK: sum_truocCK,
+                    TongTienTheoNhom_TruocCK_SauVAT: sum_truocCK + sumVAT,
                     HangHoas: arrHH
                 })
             }

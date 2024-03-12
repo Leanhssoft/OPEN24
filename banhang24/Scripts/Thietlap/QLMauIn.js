@@ -101,7 +101,7 @@ var PrintModel_HoaDon = function () {
                     const diary = {
                         ID_DonVi: VHeader.IdDonVi,
                         ID_NhanVien: VHeader.IdNhanVien,
-                        ChucNang:'Cài đặt mẫu in',
+                        ChucNang: 'Cài đặt mẫu in',
                         NoiDung: 'Cập nhật mẫu in '.concat(self.TenMauInAddNew()),
                         NoiDungChiTiet: 'Cập nhật mẫu in '.concat(self.TenMauInAddNew()),
                     }
@@ -147,10 +147,10 @@ var PrintModel_HoaDon = function () {
                 success: function (result) {
                     AjaxOnSuccess(result);
 
-                     const diary = {
+                    const diary = {
                         ID_DonVi: VHeader.IdDonVi,
                         ID_NhanVien: VHeader.IdNhanVien,
-                        ChucNang:'Cài đặt mẫu in',
+                        ChucNang: 'Cài đặt mẫu in',
                         NoiDung: 'Thêm mới mẫu in '.concat(self.TenMauInAddNew()),
                         NoiDungChiTiet: 'Thêm mới mẫu in '.concat(self.TenMauInAddNew()),
                     }
@@ -327,6 +327,7 @@ function Replace_TheoNhom(content) {
             '{TongTienTheoNhom}': '<span data-bind=\"text: TongTienTheoNhom\"></span>',
             '{TongTienTheoNhom_TruocVAT}': '<span data-bind=\"text: TongTienTheoNhom_TruocVAT\"></span>',
             '{TongTienTheoNhom_TruocCK}': '<span data-bind=\"text: TongTienTheoNhom_TruocCK\"></span>',
+            '{TongTienTheoNhom_TruocCK_SauVAT}': '<span data-bind=\"text: TongTienTheoNhom_TruocCK_SauVAT\"></span>',
             '{TongSLTheoNhom}': '<span data-bind=\"text: TongSLTheoNhom\"></span>',
             '{TongThueTheoNhom}': '<span data-bind=\"text: TongThueTheoNhom\"></span>',
             '{TongCKTheoNhom}': '<span data-bind=\"text: TongCKTheoNhom\"></span>',
@@ -396,6 +397,8 @@ function ReplaceCTHD(content) {
             '{PTChietKhauHH}': '<span data-bind=\"text: PTChietKhau\"></span>',
             '{GiamGia}': '<span data-bind=\"text: TienChietKhau\"></span>',
             '{GiaBan}': '<span data-bind=\"text: GiaBan\"></span>',
+            '{GiaBanSauVAT}': '<span data-bind=\"text: GiaBanSauVAT\"></span>',
+            '{DonGiaSauVAT}': '<span data-bind=\"text: DonGiaSauVAT\"></span>',
             '{ThanhTienTruocCK}': '<span data-bind=\"text: ThanhTienTruocCK\"></span>',
             '{ThanhToan}': '<span data-bind=\"text: ThanhToan\"></span>',
             '{ThanhTien}': '<span data-bind=\"text: ThanhTien\"></span>',
@@ -507,7 +510,7 @@ function SetConvertDataTest(strInput) {
         }
         else {
             if (strInput.indexOf("{Nhom_HangHoaDV}") == -1 && (strInput.indexOf("{TheoHangHoa}") > -1 || strInput.indexOf("{TheoDichVu}") > -1)) {
-               
+
                 var open = result.lastIndexOf("tbody", result.indexOf("{TenHangHoa")) - 1;
                 var close = result.indexOf("tbody", result.indexOf("{TenHangHoa")) + 6;
                 var temptable = result.substr(open, close - open);
@@ -526,7 +529,7 @@ function SetConvertDataTest(strInput) {
                     // nếu tách như này, khách chịu khó căn chỉnh dộ rộng cột thì mới đẹp được
                     indexHH = strInput.indexOf("{TheoHangHoa}");
                     indexDV = strInput.indexOf("{TheoDichVu}");
-                 
+
                     if (indexHH < indexDV) {
                         // hanghoa truoc - dv sau
                         if (indexHH !== -1) {
@@ -595,7 +598,7 @@ function SetConvertDataTest(strInput) {
                             let row1DV = row1DVStr;
                             row1DVStr = ''.concat(strDV, row1DVStr);
                             row1DVStr = ''.concat(row1DVStr, "<!--/ko--> ");
-                              // todo check GhiChu_NVThucHien (row2)
+                            // todo check GhiChu_NVThucHien (row2)
 
                             if (indexHH !== -1) {
 
@@ -610,7 +613,7 @@ function SetConvertDataTest(strInput) {
                                 let row1HH = row1HHStr;
                                 row1HHStr = ''.concat(strHH, row1HHStr);
                                 row1HHStr = ''.concat(row1HHStr, "<!--/ko--> ");
-                             
+
                                 temptable = temptable.replace(row1DV, row1DVStr);
                                 tblHHstr = tblHHstr.replace(row1HH, row1HHStr);
                                 tblHHstr = tblHHstr.replace(tblHH, tblHHstr);
@@ -793,25 +796,29 @@ function SetConvertDataTest(strInput) {
                     temptable = ReplaceCTHD(temptable);
                     result = result.replace(temptable1, temptable);
 
-                    result = result.replace('{TheoNhomHang}', '');
-                    result = result.replace("{TenNhomHangHoa}",
-                        " <span data-bind=\"text: TenNhomHangHoa\"> </span>");
-                    result = result.replace('{SoThuTuNhom}', ' <span data-bind="text: SoThuTuNhom"> </span>');
-                    result = result.replace('{SoThuTuNhom_LaMa}', ' <span data-bind="text: SoThuTuNhom_LaMa"> </span>');
+                    result = Replace_TheoNhom(result);
 
-                    result = result.replace('{TongTienTheoNhom}',
-                        '<span data-bind="text: TongTienTheoNhom" > </span>');
-                    result = result.replace('{TongTienTheoNhom_TruocVAT}',
-                        '<span data-bind="text: TongTienTheoNhom_TruocVAT" > </span>');
-                    result = result.replace("{TongTienTheoNhom_TruocCK}",
-                        "<span data-bind=\"text: TongTienTheoNhom_TruocCK\" > </span>");
+                    //result = result.replace('{TheoNhomHang}', '');
+                    //result = result.replace("{TenNhomHangHoa}",
+                    //    " <span data-bind=\"text: TenNhomHangHoa\"> </span>");
+                    //result = result.replace('{SoThuTuNhom}', ' <span data-bind="text: SoThuTuNhom"> </span>');
+                    //result = result.replace('{SoThuTuNhom_LaMa}', ' <span data-bind="text: SoThuTuNhom_LaMa"> </span>');
 
-                    result = result.replace("{TongSLTheoNhom}",
-                        "<span data-bind=\"text: TongSLTheoNhom\" > </span>");
-                    result = result.replace("{TongThueTheoNhom}",
-                        "<span data-bind=\"text: TongThueTheoNhom\" > </span>");
-                    result = result.replace("{TongCKTheoNhom}",
-                        "<span data-bind=\"text: TongCKTheoNhom\" > </span>");
+                    //result = result.replace('{TongTienTheoNhom}',
+                    //    '<span data-bind="text: TongTienTheoNhom" > </span>');
+                    //result = result.replace('{TongTienTheoNhom_TruocVAT}',
+                    //    '<span data-bind="text: TongTienTheoNhom_TruocVAT" > </span>');
+                    //result = result.replace("{TongTienTheoNhom_TruocCK}",
+                    //    "<span data-bind=\"text: TongTienTheoNhom_TruocCK\" > </span>");
+                    //result = result.replace("{TongTienTheoNhom_TruocCK_SauVAT}",
+                    //    "<span data-bind=\"text: TongTienTheoNhom_TruocCK_SauVAT\" > </span>");
+
+                    //result = result.replace("{TongSLTheoNhom}",
+                    //    "<span data-bind=\"text: TongSLTheoNhom\" > </span>");
+                    //result = result.replace("{TongThueTheoNhom}",
+                    //    "<span data-bind=\"text: TongThueTheoNhom\" > </span>");
+                    //result = result.replace("{TongCKTheoNhom}",
+                    //    "<span data-bind=\"text: TongCKTheoNhom\" > </span>");
                 }
                 else {
                     if (strInput.indexOf('{Combo}') > -1) {
@@ -1194,7 +1201,7 @@ function SetConvertDataTest(strInput) {
                             }
                             else {
                                 if (strInput.indexOf('{TenHangHoa') > -1) {
-                                    let loppNext=0;
+                                    let loppNext = 0;
                                     let open = result.lastIndexOf("tbody", result.indexOf("{TenHangHoa")) - 1;
                                     let close = result.indexOf("tbody", result.indexOf("{TenHangHoa")) + 6;
                                     let temptable = result.substr(open, close - open);
@@ -1229,10 +1236,10 @@ function SetConvertDataTest(strInput) {
                                     }
                                     else {
                                         CheckRowNext();
-                                       
+
                                     }
                                     function CheckRowNext() {
-                                        if(loppNext >3) { ReplaceDetail();}
+                                        if (loppNext > 3) { ReplaceDetail(); }
                                         let nextRowTo = temptable.indexOf("<tr", nextRowFrom + 1);
                                         if (nextRowTo < 0) {
                                             nextRowTo = temptable.lastIndexOf("/tr>") + 5;
@@ -1263,7 +1270,7 @@ function SetConvertDataTest(strInput) {
                                             nextRowFrom = nextRowTo;
                                             CheckRowNext();
                                         }
-                                         loppNext+=1;
+                                        loppNext += 1;
                                     }
 
                                     function ReplaceDetail() {
@@ -1461,6 +1468,7 @@ function SetConvertDataTest(strInput) {
                 '{TongThue_DichVu}': '<span data-bind=\"text: $root.TongThue_DichVu\"></span>',
                 '{TongCK_DichVu}': '<span data-bind=\"text: $root.TongCK_DichVu\"></span>',
                 '{TongTienDichVu_TruocCK}': '<span data-bind=\"text: $root.TongTienDichVu_TruocCK\"></span>',
+                '{TongTienDichVu_TruocCK_SauVAT}': '<span data-bind=\"text: $root.TongTienDichVu_TruocCK_SauVAT\"></span>',
 
                 '{TongSL_PhuTung}': '<span data-bind=\"text: $root.TongSL_PhuTung\"></span>',
                 '{TongThue_PhuTung}': '<span data-bind=\"text: $root.TongThue_PhuTung\"></span>',
@@ -1468,6 +1476,7 @@ function SetConvertDataTest(strInput) {
                 '{TongTienPhuTung}': '<span data-bind=\"text: $root.TongTienPhuTung\"></span>',
                 '{TongTienPhuTung_TruocVAT}': '<span data-bind=\"text: $root.TongTienPhuTung_TruocVAT\"></span>',
                 '{TongTienPhuTung_TruocCK}': '<span data-bind=\"text: $root.TongTienPhuTung_TruocCK\"></span>',
+                '{TongTienPhuTung_TruocCK_SauVAT}': '<span data-bind=\"text: $root.TongTienPhuTung_TruocCK_SauVAT\"></span>',
 
                 '{PhaiThanhToanBaoHiem}': '<span data-bind=\"text: $root.PhaiThanhToanBaoHiem\"></span>',
                 '{TongThanhToan}': '<span data-bind=\"text: $root.TongThanhToan\"></span>',

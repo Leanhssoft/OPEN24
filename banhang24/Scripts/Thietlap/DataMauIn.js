@@ -36,6 +36,8 @@ var dataMauIn = function () {
         DonViTinh: "Cái",
         DonGia: "10,000",
         GiaBan: "9,000",
+        GiaBanSauVAT: "10,500",
+        DonGiaSauVAT: "12,000",
         DonGiaBaoHiem: "10,000",
         SoLuong: "2",
         ThanhTienTruocCK: "20,000",
@@ -85,8 +87,8 @@ var dataMauIn = function () {
         MaLoHang: 'Lô 01',
         NgaySanXuat: '01/01/2022',
         NgayHetHan: '01/01/2024',
-        ViTriKho:'Kho 1',
-        BaoHanh:'6 tháng',
+        ViTriKho: 'Kho 1',
+        BaoHanh: '6 tháng',
     };
     var obj2 = {
         SoThuTu: 2,
@@ -100,6 +102,8 @@ var dataMauIn = function () {
         DonViTinh: "Lần",
         DonGia: "10,000",
         GiaBan: "8,000",
+        GiaBanSauVAT: "12,500",
+        DonGiaSauVAT: "13,000",
         DonGiaBaoHiem: "10,000",
         SoLuong: "1",
         ThanhTienTruocCK: "10,000",
@@ -152,7 +156,7 @@ var dataMauIn = function () {
         NgaySanXuat: '02/01/2022',
         NgayHetHan: '02/01/2024',
         ViTriKho: 'Kho 2',
-        BaoHanh:'1 năm',
+        BaoHanh: '1 năm',
     };
 
     var obj3 = {
@@ -167,6 +171,8 @@ var dataMauIn = function () {
         DonViTinh: "Lần",
         DonGia: "10,000",
         GiaBan: "8,000",
+        GiaBanSauVAT: "11,500",
+        DonGiaSauVAT: "14,000",
         DonGiaBaoHiem: "10,000",
         SoLuong: "1",
         ThanhTienTruocCK: "10,000",
@@ -219,7 +225,7 @@ var dataMauIn = function () {
         NgaySanXuat: '03/01/2022',
         NgayHetHan: '03/01/2024',
         ViTriKho: 'Kho 3',
-        BaoHanh:'2 năm',
+        BaoHanh: '2 năm',
     };
     var obj4 = {
         SoThuTu: 2,
@@ -233,6 +239,8 @@ var dataMauIn = function () {
         DonViTinh: "Lần",
         DonGia: "10,000",
         GiaBan: "8,000",
+        GiaBanSauVAT: "12,500",
+        DonGiaSauVAT: "13,000",
         DonGiaBaoHiem: "10,000",
         SoLuong: "1",
         ThanhTienTruocCK: "10,000",
@@ -285,7 +293,7 @@ var dataMauIn = function () {
         NgaySanXuat: '04/01/2022',
         NgayHetHan: '04/01/2024',
         ViTriKho: 'Kho 4',
-        BaoHanh:'9 tháng',
+        BaoHanh: '9 tháng',
     };
     self.CTHoaDonPrint = ko.observableArray([
         obj,
@@ -479,7 +487,7 @@ var dataMauIn = function () {
     self.PhaiThanhToanBaoHiem = ko.observable('400,000');
     self.TongThanhToan = ko.observable('1,500,000');
     self.PTN_GhiChu = ko.observable('bảo dưỡng');
-    self.XuatXuong_GhiChu  = ko.observable('Đã xuất xưởng');
+    self.XuatXuong_GhiChu = ko.observable('Đã xuất xưởng');
     self.TongThue_PhuTung = ko.observable('40,000');
     self.TongCK_PhuTung = ko.observable('4,000');
     self.TongCK_PhuTung = ko.observable('4,000');
@@ -487,6 +495,8 @@ var dataMauIn = function () {
     self.TongCK_DichVu = ko.observable('4,000');
     self.TongSL_PhuTung = ko.observable('4');
     self.TongSL_DichVu = ko.observable('2');
+    self.TongTienPhuTung_TruocCK_SauVAT = ko.observable('2,000,000');
+    self.TongTienDichVu_TruocCK_SauVAT = ko.observable('3,000,000');
 
     self.ChuXe = ko.observable('Lê Văn Quyết');
     self.ChuXe_SDT = ko.observable('0946 123 895');
@@ -555,6 +565,8 @@ var dataMauIn = function () {
             ID_NhomHangHoa: 1, TenNhomHangHoa: 'Nhóm 1', SoThuTuNhom: 1, SoThuTuNhom_LaMa: 'I',
             TongTienTheoNhom: '4,000,000',
             TongTienTheoNhom_TruocVAT: '1,500,000',
+            TongTienTheoNhom_TruocCK: '1,700,000',
+            TongTienTheoNhom_TruocCK_SauVAT: "1,600,000",
             TongSLTheoNhom: 4,
             TongThueTheoNhom: '40,000',
             TongCKTheoNhom: '4,000',
@@ -565,6 +577,9 @@ var dataMauIn = function () {
             ID_NhomHangHoa: 2, TenNhomHangHoa: 'Nhóm 2', SoThuTuNhom: 2, SoThuTuNhom_LaMa: 'II',
             TongTienTheoNhom: '1,500,000',
             TongTienTheoNhom_TruocVAT: '1,500,000',
+            TongTienTheoNhom_TruocCK: '1,800,000',
+            TongTienTheoNhom_TruocCK_SauVAT: "1,900,000",
+            TongSLTheoNhom: 4,
             TongSLTheoNhom: 2,
             TongThueTheoNhom: '20,000',
             TongCKTheoNhom: '4,000',
@@ -576,7 +591,6 @@ var dataMauIn = function () {
         {
             ID_NhomHangHoa: 1, TenNhomHangHoa: 'Nhóm 2', SoThuTuNhom: 1, SoThuTuNhom_LaMa: 'II',
             TongTienTheoNhom: '4,000,000',
-            TongTienTheoNhom_TruocVAT: '1,500,000',
             TongSLTheoNhom: 4,
             TongThueTheoNhom: '40,000',
             TongCKTheoNhom: '4,000',
@@ -586,7 +600,6 @@ var dataMauIn = function () {
         {
             ID_NhomHangHoa: 2, TenNhomHangHoa: 'Nhóm 4', SoThuTuNhom: 4, SoThuTuNhom_LaMa: 'IV',
             TongTienTheoNhom: '1,500,000',
-            TongTienTheoNhom_TruocVAT: '1,500,000',
             TongSLTheoNhom: 2,
             TongThueTheoNhom: '20,000',
             TongCKTheoNhom: '4,000',
@@ -597,7 +610,6 @@ var dataMauIn = function () {
         {
             ID_NhomHangHoa: 1, TenNhomHangHoa: 'Nhóm 1', SoThuTuNhom: 1, SoThuTuNhom_LaMa: 'I',
             TongTienTheoNhom: '4,000,000',
-            TongTienTheoNhom_TruocVAT: '1,500,000',
             TongSLTheoNhom: 4,
             TongThueTheoNhom: '40,000',
             TongCKTheoNhom: '4,000',
@@ -607,7 +619,6 @@ var dataMauIn = function () {
         {
             ID_NhomHangHoa: 2, TenNhomHangHoa: 'Nhóm 3', SoThuTuNhom: 3, SoThuTuNhom_LaMa: 'III',
             TongTienTheoNhom: '1,500,000',
-            TongTienTheoNhom_TruocVAT: '1,500,000',
             TongSLTheoNhom: 2,
             TongThueTheoNhom: '20,000',
             TongCKTheoNhom: '4,000',
@@ -615,11 +626,13 @@ var dataMauIn = function () {
         },
     ])
 
-    self.CTHoaDon_TheoNhom_VaHHDV =  ko.observableArray([
+    self.CTHoaDon_TheoNhom_VaHHDV = ko.observableArray([
         {
             ID_NhomHangHoa: 1, TenNhomHangHoa: 'Nhóm 1', SoThuTuNhom: 1, SoThuTuNhom_LaMa: 'I',
             TongTienTheoNhom: '4,000,000',
             TongTienTheoNhom_TruocVAT: '1,500,000',
+            TongTienTheoNhom_TruocCK: '2,800,000',
+            TongTienTheoNhom_TruocCK_SauVAT: "2,900,000",
             TongSLTheoNhom: 4,
             TongThueTheoNhom: '40,000',
             TongCKTheoNhom: '4,000',
@@ -647,6 +660,8 @@ var dataMauIn = function () {
             ID_NhomHangHoa: 2, TenNhomHangHoa: 'Nhóm 2', SoThuTuNhom: 2, SoThuTuNhom_LaMa: 'II',
             TongTienTheoNhom: '1,500,000',
             TongTienTheoNhom_TruocVAT: '1,500,000',
+            TongTienTheoNhom_TruocCK: '2,800,000',
+            TongTienTheoNhom_TruocCK_SauVAT: "2,900,000",
             TongSLTheoNhom: 2,
             TongThueTheoNhom: '20,000',
             TongCKTheoNhom: '4,000',

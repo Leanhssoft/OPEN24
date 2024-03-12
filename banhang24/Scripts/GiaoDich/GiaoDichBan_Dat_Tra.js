@@ -3288,9 +3288,12 @@
         objPrint.TongTienDichVu = formatNumber(self.TongTienDichVu());
         objPrint.TongTienDichVu_TruocVAT = formatNumber(self.TongTienDichVu_TruocVAT());
         objPrint.TongTienDichVu_TruocCK = formatNumber(self.TongTienDichVu_TruocCK());
+        objPrint.TongTienDichVu_TruocCK_SauVAT = self.TongTienDichVu_TruocCK() + self.TongThue_DichVu();
+
         objPrint.TongTienPhuTung = formatNumber(self.TongTienPhuTung());
         objPrint.TongTienPhuTung_TruocVAT = formatNumber(self.TongTienPhuTung_TruocVAT());
         objPrint.TongTienPhuTung_TruocCK = formatNumber(self.TongTienPhuTung_TruocCK());
+        objPrint.TongTienPhuTung_TruocCK_SauVAT = self.TongTienPhuTung_TruocCK() + self.TongThue_PhuTung();
         objPrint.TongTienHangChuaCK = formatNumber(self.TongTienHangChuaCK());
         objPrint.TongGiamGiaHD_HH = formatNumber(self.TongGiamGiaHang() + hdDB.TongGiamGia + hdDB.KhuyeMai_GiamGia);
         objPrint.TongTienHDSauGiamGia = formatNumber3Digit(formatNumberToFloat(objPrint.TongTienHang) - objPrint.TongGiamGiaKM_HD);
@@ -3412,6 +3415,7 @@
             let itFor = $.extend({}, cthdDB[i]);
             let price = formatNumberToFloat(itFor.DonGia);
             let sale = formatNumberToFloat(itFor.GiamGia);
+            let tienThue = formatNumberToFloat(itFor.TienThue);
             let giaban = formatNumberToFloat(itFor.GiaBan);
             let bh_tt = itFor.SoLuong * formatNumberToFloat(itFor.DonGiaBaoHiem);
 
@@ -3422,6 +3426,8 @@
             itFor.BH_ThanhTien = formatNumber3Digit(bh_tt);
             itFor.TienChietKhau = formatNumber(sale);
             itFor.GiaBan = formatNumber(giaban);
+            itFor.GiaBanSauVAT = giaban + tienThue; // dongia - giamgia + vat
+            itFor.DonGiaSauVAT = price + tienThue;// dongia + vat
             itFor.SoLuong = formatNumber3Digit(itFor.SoLuong);
             itFor.ThanhTien = formatNumber3Digit(itFor.ThanhTien);
             itFor.ThuocTinh_GiaTri = thuocTinh;
