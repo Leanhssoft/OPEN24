@@ -178,7 +178,9 @@ namespace libGara
         }
         public List<Gara_BaoGia> Gara_GetListHoaDonSuaChua(ParamSearch param)
         {
-            var idChiNhanh = string.Join(",", param.LstIDChiNhanh);
+            string idChiNhanh = "";
+            if(param.LstIDChiNhanh != null)
+                idChiNhanh = string.Join(",", param.LstIDChiNhanh);
             List<SqlParameter> sql = new List<SqlParameter>();
             sql.Add(new SqlParameter("IDChiNhanhs", idChiNhanh));
             sql.Add(new SqlParameter("FromDate", param.FromDate));

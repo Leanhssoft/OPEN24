@@ -1203,7 +1203,8 @@
                 LoadHoaDonByIdXe: function () {
                     let self = this;
                     let myData = {};
-                    myData.IdChiNhanhs = [$('#hd_IDdDonVi').val()];
+                    //myData.IdChiNhanhs = [$('#hd_IDdDonVi').val()];
+                    myData.IdChiNhanhs = '';
                     myData.BaoGiaDateFrom = '2016-01-01';
                     myData.BaoGiaDateTo = moment(new Date()).add('days', 1).format('YYYY-MM-DD');
                     myData.IDXe = self.idXeRowSelected;
