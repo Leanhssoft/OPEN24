@@ -706,6 +706,11 @@ namespace banhang24.Areas.DanhMuc.Controllers
             else
             if (content1.IndexOf("{Nhom_HangHoaDV}") == -1 && (content1.IndexOf("{TheoHangHoa}") > -1 || content1.IndexOf("{TheoDichVu}") > -1))
             {
+                //var openTbl = content1.LastIndexOf("<tbody", content1.IndexOf("{TheoHangHoa}")) + 7;
+                //var closeTbl = content1.IndexOf("tbody>", content1.IndexOf("{TheoDichVu}")) + 6;
+                //string temptable = content1.Substring(openTbl, closeTbl - openTbl);
+                //string temptable1 = temptable;
+
                 var xx = content1.IndexOf("{TheoHangHoa}");
 
                 int openTbl, closeTbl;
@@ -718,6 +723,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     temptable = content1.Substring(openTbl, closeTbl - openTbl);
                     temptable1 = temptable;
                 }
+
 
                 var strDV = "<!-- ko foreach:  $root.CTHoaDonPrint().filter(x=> x.LaHangHoa === false) -->";
                 var strHH = "<!-- ko foreach:  $root.CTHoaDonPrint().filter(x=> x.LaHangHoa) -->";

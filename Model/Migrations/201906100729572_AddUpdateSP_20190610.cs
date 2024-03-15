@@ -5619,20 +5619,6 @@ BEGIN
 	where (nv.TrangThai is null or nv.TrangThai = 1) and qtct.ID_DonVi = @ID_ChiNhanh and nv.DaNghiViec != 1 and  nv.ID not in (select ID_NhanVien from HT_nguoiDung)
 END");
 
-            Sql(@"ALTER PROCEDURE [dbo].[GetListTonTheoLoHangHoa]
-    @timeEnd [datetime],
-    @ID_ChiNhanh [uniqueidentifier],
-    @ID_HangHoa [uniqueidentifier]
-AS
-BEGIN
-
-	SELECT dmlo.ID as ID_LoHang, dmlo.MaLoHang, dmlo.NgaySanXuat, dmlo.NgayHetHan, ISNULL(hhtonkho.TonKho, 0) as TonKho FROM
-	DM_LoHang dmlo
-	LEFT JOIN DonViQuiDoi dvqd on dmlo.ID_HangHoa = dvqd.ID_HangHoa
-	LEFT JOIN DM_HangHoa_TonKho hhtonkho ON dvqd.ID = hhtonkho.ID_DonViQuyDoi AND hhtonkho.ID_DonVi = @ID_ChiNhanh AND hhtonkho.ID_LoHang = dmlo.ID
-	WHERE dvqd.ID_HangHoa = @ID_HangHoa and dvqd.LaDonViChuan = 1
-END");
-
             Sql(@"ALTER PROCEDURE [dbo].[LoadDanhMucLoHangBaoCao]
     @MaHH [nvarchar](max),
     @MaHHCoDau [nvarchar](max),
