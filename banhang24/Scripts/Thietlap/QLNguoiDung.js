@@ -496,20 +496,26 @@ var ViewModel = function () {
             }
         })
     }
-    self.showPopupAddND = function () {
+
+    async function CheckNguoiDung_VuotSoLuong() {
+        const xx = await ajaxHelper(HTNguoiDungs + 'GioiHanSoNguoiDung', 'GET').done(function () { }).then(function (data) {
+            return data;
+        });
+        return xx;
+    }
+
+    self.showPopupAddND = async function () {
         var insert = CheckRoleExist('NguoiDung_ThemMoi');
         if (!insert) {
             ShowMessage_Danger('Không có quyền thêm mới người dùng');
             return;
         }
-        ajaxHelper(HTNguoiDungs + 'GioiHanSoNguoiDung', 'GET').done(function (data) {
-            if (data) {
-                ShowMessage_Danger('Cửa hàng đã đạt số người dùng quy định, không thể thêm mới');
-                return;
-            }
-
-            vmThemMoiNguoiDung.ShowModalAdd();
-        });
+        const check = await CheckNguoiDung_VuotSoLuong();
+        if (check) {
+            ShowMessage_Danger('Cửa hàng đã đạt số người dùng quy định, không thể thêm mới');
+            return;
+        }
+        vmThemMoiNguoiDung.ShowModalAdd();
     }
 
     self.resetTextBox = function () {
@@ -660,17 +666,17 @@ var ViewModel = function () {
                     }
                 }
                 self.QuyenEdit(self.QuyenChas());
-               
+
                 var listquyen = self.QuyenChas();
                 listquyen.forEach(function (item1) {
                     var listquyenlvl2 = item1.Childs;
-                   
+
                     item1.DuocSuDung ? $(item1.MaQuyen).prop('checked', true) : $(item1.MaQuyen).prop('checked', false);
                     var quyen2check = 0;
 
 
                     listquyenlvl2.forEach(function (item2) {
-                      
+
                         var listquyenlvl3 = item2.Child2s;
                         var quyen3check = 0;
                         listquyenlvl3.forEach(function (item3) {
@@ -693,7 +699,7 @@ var ViewModel = function () {
                                 $('#editcheck' + item2.MaQuyen).removeClass('op-checkbox-square');
                                 quyen2check++;
                                 break;
-                           
+
                             default:
                                 $('#editcheck' + item2.MaQuyen).prop('checked', false);
                                 $('#editcheck' + item2.MaQuyen).addClass('op-checkbox-square');
@@ -711,7 +717,7 @@ var ViewModel = function () {
                             $('#' + item1.MaQuyen).removeClass('op-checkbox-square');
                             quyen2check++;
                             break;
-                     
+
                         default:
                             $('#' + item1.MaQuyen).prop('checked', false);
                             $('#' + item1.MaQuyen).addClass('op-checkbox-square');
@@ -721,7 +727,7 @@ var ViewModel = function () {
                 });
                 $("#role_edit").show();
                 $("#role_edit").siblings().hide();
-              
+
             });
         });
     }
@@ -880,7 +886,7 @@ var ViewModel = function () {
     }
 
     function getAllMaQuyen() {
-        var arrMaQuyen=[];
+        var arrMaQuyen = [];
         $('.op-main-role input').each(function () {
             var id = $(this).attr('id');
             var isCheck = $(this).is(':checked') || $(this).hasClass('.op-checkbox-square')
@@ -889,8 +895,8 @@ var ViewModel = function () {
 
 
         })
-      
-      
+
+
     }
     self.SuaVaiTro = function (formElement) {
         var _tennhom = self.newVaiTro().TenNhom();
@@ -922,15 +928,15 @@ var ViewModel = function () {
                 $('.op-js-loadsuavt').gridLoader({ show: false });
                 bottomrightnotify('<i class="fa fa-check" aria-hidden="true"></i>' + "Cập nhật vai trò thành công", "success");
                 $('#modalPopuplg_EditVaiTro').modal('hide');
-               
-                const autoApplyBG = $.inArray('ThietLapGia_TuDongApDungTheoChiNhanh',arrMaQuyen) >-1;
-                const diary ={
+
+                const autoApplyBG = $.inArray('ThietLapGia_TuDongApDungTheoChiNhanh', arrMaQuyen) > -1;
+                const diary = {
                     ID_DonVi: _IDchinhanh,
                     ID_NhanVien: _IDNhanVien,
                     ChucNang: 'Quản lý người dùng',
                     NoiDung: 'Cập nhật vai trò '.concat(self.newVaiTro().TenNhom()),
-                    NoiDungChiTiet: 'Cập nhật vai trò '.concat(self.newVaiTro().TenNhom(), 
-                    ' </br > Tự động áp dụng bảng giá theo chi nhánh: ', autoApplyBG?'có':'không'),
+                    NoiDungChiTiet: 'Cập nhật vai trò '.concat(self.newVaiTro().TenNhom(),
+                        ' </br > Tự động áp dụng bảng giá theo chi nhánh: ', autoApplyBG ? 'có' : 'không'),
                 }
                 Insert_NhatKyThaoTac_1Param(diary);
             },
@@ -1035,13 +1041,13 @@ var ViewModel = function () {
     }
 
     self.clickLoadHD = function (item) {
-       
+
         $(event.currentTarget).closest('div').find('.user-detail').show();
         self.getallQuyen(item);
         GetCurrentUser(item.ID);
         showNguoidung();
     }
-self.NgungHoatDong = function () {
+    self.NgungHoatDong = function () {
         ajaxHelper(HTNguoiDungs + "NgungHoatDong?id=" + self.currentUser().ID
             + '&idnhanvien=' + self.currentUser().ID_NhanVien
             + '&iddonvi=' + self.currentUser().ID_DonVi, 'GET').done(function () {
@@ -1050,7 +1056,12 @@ self.NgungHoatDong = function () {
             })
     }
 
-    self.ChoPhepHoatDong = function () {
+    self.ChoPhepHoatDong = async function () {
+        const check = await CheckNguoiDung_VuotSoLuong();
+        if (check) {
+            ShowMessage_Danger('Cửa hàng đã đạt số người dùng quy định');
+            return;
+        }
         ajaxHelper(HTNguoiDungs + "ChoHoatDong?id=" + self.currentUser().ID
             + '&idnhanvien=' + self.currentUser().ID_NhanVien
             + '&iddonvi=' + self.currentUser().ID_DonVi, 'GET').done(function () {
@@ -1152,7 +1163,7 @@ self.NgungHoatDong = function () {
 
     // Fetch the initial data.
     self.nguoidung_arrDonVi = ko.observableArray();
-    
+
     function locdau(obj) {
         if (!obj)
             return "";
@@ -1189,7 +1200,7 @@ self.NgungHoatDong = function () {
         self.selectedChange(item.ID);
         SearchNguoiDung2();
     }
-   
+
     function SearchNguoiDung(isGoToNext = false) {
         var findTK = localStorage.getItem('findTK');
         if (findTK !== null) {
@@ -1543,7 +1554,7 @@ function pushMaquyen(val) {
         arrMaQuyen.push(val);
     }
 }
-function removeMaquyen( val) {
+function removeMaquyen(val) {
     var index = arrMaQuyen.indexOf(val);
     if (index > -1) {
         arrMaQuyen.splice(index, 1);
@@ -1558,7 +1569,7 @@ function getMaQuyenlvl3(obj) {
     let checked = 0;//số checkbox cùng mục đã check
     $(obj).removeClass('op-checkbox-square');
     $(obj).is(':checked') ? pushMaquyen(thisID) : removeMaquyen(thisID);
-    
+
     quyencha.find(".op-role-lvl-3").each(function () {
         if ($(this).find('input[type="checkbox"]').is(':checked')) {
             checked++;
@@ -1578,13 +1589,13 @@ function getMaQuyenlvl3(obj) {
             checkboxquyencha.addClass('op-checkbox-square')
             break;
     }
-   
+
 };
 function CheckAllRoleLvl3(obj) {
     var isChecked = $(obj).is(":checked");
     let thisID = $(obj).attr('id').replace("editcheck", "");
     let childrole = $(obj).closest(".op-role-lvl-2").find(".op-role-lvl-3  input[type='checkbox']");
-   
+
     let quyencha = $(obj).closest(".op-role-lvl-1");//quyền cha
     let checkboxquyencha = quyencha.children('h3').find(' label input[type="checkbox"]');//check box quyền cha của quyền này
     let soquyen = quyencha.find(".op-role-lvl-2").length;//tổng số quyền cùng mục với quyền này
@@ -1600,14 +1611,14 @@ function CheckAllRoleLvl3(obj) {
         var childroleid = $(this).attr('id')
         isChecked ? pushMaquyen(childroleid) : removeMaquyen(childroleid);
     });
-   
-    
+
+
     ////check về thuộc tính, loại bỏ op-checkbox-square
     quyencha.find(".op-role-lvl-2").each(function () {
         if ($(this).find('h3 label input[type="checkbox"]').is(':checked')) {
             checked++;
         };
-    
+
     })
 
     switch (checked) {
@@ -1624,7 +1635,7 @@ function CheckAllRoleLvl3(obj) {
             checkboxquyencha.addClass('op-checkbox-square')
             break;
     }
-    
+
 }
 function CheckAllRoleLvl2(obj) {
     var isChecked = $(obj).is(":checked");
@@ -1648,18 +1659,18 @@ function CheckMainRole(ele) {
     let obj = $(ele);
     var Sub = obj.parent().parent().next().find("li");
     if (obj.is(':checked')) {
-       
+
         Sub.each(function () {
-        
+
             if (!($(this).find("input.subcheck").is(':checked'))) {
                 $(this).find("input.subcheck").click();
             }
 
         });
     } else {
-       
+
         Sub.each(function () {
-     
+
             if (($(this).find("input.subcheck").is(':checked'))) {
                 $(this).find("input.subcheck").click();
 
@@ -1681,5 +1692,5 @@ function showVaitro() {
 function closePaneContent() {
     $('#dummy-content').show();
     $('#dummy-content').siblings().hide();
-} 
+}
 
