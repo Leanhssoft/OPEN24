@@ -6014,6 +6014,7 @@ namespace libDM_DoiTuong
         public string BH_SDT { get; set; }
         public string BH_DiaChi { get; set; }
         public string BH_Email { get; set; }
+        public string BH_MaSoThue { get; set; }
         public string TrangThaiText { get; set; }
         public double? ConNo { get; set; }
         public double? DaThanhToan { get; set; } // = khach + baohiem da tra
@@ -6174,10 +6175,12 @@ namespace libDM_DoiTuong
         public string MaDoiTuong { get; set; }
         public string TenDoiTuong { get; set; }
         public string DienThoai { get; set; }
+        public string MaSoThue { get; set; }
         public string DiaChiKhachHang { get; set; }
         public string KhuVuc { get; set; }
         public string MaBaoHiem { get; set; }
         public string TenBaoHiem { get; set; }
+        public string BH_MaSoThue { get; set; }
         public string TenDonVi { get; set; }
         public string TenNhanVien { get; set; }
         public string NguoiTao { get; set; }

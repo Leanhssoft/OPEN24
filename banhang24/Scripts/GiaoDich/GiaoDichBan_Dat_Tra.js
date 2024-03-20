@@ -281,7 +281,7 @@
         switch (loaiHoaDon) {
             case 1:
             case 25:
-                arrHideColumn = ['madathang', 'email', 'diachi', 'sodienthoai', 'khuvuc', 'phuongxa', 'tenchinhanh', 'nguoiban', 'nguoitao',
+                arrHideColumn = ['madathang', 'email', 'diachi', 'sodienthoai', 'masothue','masothueBH', 'khuvuc', 'phuongxa', 'tenchinhanh', 'nguoiban', 'nguoitao',
                     'thanhtienchuack', 'giamgiact', 'giatrisudung', 'tienthue', 'pos', 'chuyenkhoan', 'tiendoidiem', 'thegiatri', 'trangthai'];
                 break;
             case 3:

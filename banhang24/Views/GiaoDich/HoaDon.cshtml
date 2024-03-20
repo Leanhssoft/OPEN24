@@ -510,6 +510,9 @@
                                 </td>
                                 <td class="@commonEnum.ColumnInvoices.email " data-bind="text:Email, click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.sodienthoai" data-bind="text:DienThoai, click: $parent.LoadChiTietHD"></td>
+                                <!--ko if: $root.LoaiHoaDonMenu() === 25-->
+                                <td class="@commonEnum.ColumnKhachHang.masothue" data-bind="text:MaSoThue, click: $parent.LoadChiTietHD"></td>
+                                <!--/ko-->
                                 <td class="@commonEnum.ColumnInvoices.diachi" data-bind="text:DiaChiKhachHang, click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnOrders.khuvuc" data-bind="text:KhuVuc, click: $parent.LoadChiTietHD"></td>
                                 <!--ko if: $root.LoaiHoaDonMenu() === 25-->
@@ -517,6 +520,7 @@
                                     <a href="=javascript:void(0)" data-bind="text: MaBaoHiem"></a>
                                 </td>
                                 <td class="@commonEnum.ColumnInvoices.tenbaohiem " data-bind="text:TenBaoHiem, click: $parent.LoadChiTietHD"></td>
+                                <td class="@commonEnum.ColumnInvoices.masothueBH " data-bind="text:BH_MaSoThue, click: $parent.LoadChiTietHD"></td>
                                 <!--/ko-->
                                 <td class="@commonEnum.ColumnInvoices.tenchinhanh " data-bind="text:TenDonVi, click: $parent.LoadChiTietHD"></td>
                                 <td class="@commonEnum.ColumnInvoices.nguoiban " data-bind="text:TenNhanVien, click: $parent.LoadChiTietHD"></td>
@@ -1276,11 +1280,15 @@
                                 <td class="bg12 @commonEnum.ColumnInvoices.tenkhachhang "></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.email "></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.sodienthoai "></td>
+                                <!--ko if: $root.LoaiHoaDonMenu() === 25 -->
+                                <td class="bg12 @commonEnum.ColumnKhachHang.masothue "></td>
+                                <!--/ko-->
                                 <td class="bg12 @commonEnum.ColumnInvoices.diachi "></td>
                                 <td class="bg12 @commonEnum.ColumnOrders.khuvuc "></td>
                                 <!--ko if: $root.LoaiHoaDonMenu() === 25 -->
                                 <td class="bg12 @commonEnum.ColumnInvoices.mabaohiem "></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.tenbaohiem "></td>
+                                <td class="bg12 @commonEnum.ColumnInvoices.masothueBH "></td>
                                 <!--/ko-->
                                 <td class="bg12 @commonEnum.ColumnInvoices.tenchinhanh "></td>
                                 <td class="bg12 @commonEnum.ColumnInvoices.nguoiban "></td>
@@ -1321,7 +1329,7 @@
                         <!--/ko-->
                         <tfoot class="Report_Empty" data-bind="visible: HoaDons().length === 0">
                             <tr class="text-center">
-                                <td colspan="42">
+                                <td colspan="50">
                                     <div class="op-object-detail">
                                         <div class="bg-warning padding-10 text-center">
                                             <i>Không có dữ liệu</i>

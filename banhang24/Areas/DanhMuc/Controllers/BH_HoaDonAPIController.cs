@@ -1071,7 +1071,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 try
                 {
                     List<BH_HoaDonDTO> lstAllHDs = classhoadon.GetListInvoice_Paging(listParams);
-                    List<BH_HoaDon_Excel> lst = lstAllHDs.Select(x => new BH_HoaDon_Excel
+                    var lst = lstAllHDs.Select(x => new BH_HoaDon_Excel
                     {
                         MaHoaDon = x.MaHoaDon,
                         MaHoaDonGoc = x.MaHoaDonGoc,
@@ -1083,10 +1083,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         MaDoiTuong = x.MaDoiTuong,
                         TenDoiTuong = x.TenDoiTuong,
                         DienThoai = x.DienThoai,
+                        MaSoThue = x.MaSoThue,
                         DiaChiKhachHang = x.DiaChiKhachHang,
                         KhuVuc = x.KhuVuc,
                         MaBaoHiem = x.MaBaoHiem,
                         TenBaoHiem = x.TenBaoHiem,
+                        BH_MaSoThue = x.BH_MaSoThue,
                         TenDonVi = x.TenDonVi,
                         TenNhanVien = x.TenNhanVien,
                         NguoiTao = x.NguoiTaoHD,
