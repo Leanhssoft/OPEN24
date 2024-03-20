@@ -405,7 +405,7 @@
                     let dachi_benVCKhac = formatNumberToFloat(item.DaChi_BenVCKhac);
                     let khachCanTra = item.PhaiThanhToan - item.KhachDaTra;
 
-                    if (!commonStatisJs.CheckNull(item.ID_NhaCungCap)) {
+                    if (!commonStatisJs.CheckNull(item.ID_NhaCungCap) && item.ID_NhaCungCap !== item.ID_DoiTuong) {
                         cpVC_benkhac = item.TongChiPhi;
                         khachCanTra = khachCanTra - item.TongChiPhi + dachi_benVCKhac;
                         conno_benVC = cpVC_benkhac - dachi_benVCKhac;
@@ -573,7 +573,7 @@
             let dachi_benVCKhac = formatNumberToFloat(self.HoaDonChosing.DaChi_BenVCKhac);
             let khachCanTra = self.HoaDonChosing.PhaiThanhToan - self.HoaDonChosing.KhachDaTra;
 
-            if (!commonStatisJs.CheckNull(self.HoaDonChosing.ID_NhaCungCap)) {
+            if (!commonStatisJs.CheckNull(self.HoaDonChosing.ID_NhaCungCap) && self.HoaDonChosing.ID_NhaCungCap !== item.ID ) {
                 khachCanTra = khachCanTra - self.HoaDonChosing.TongChiPhi;
                 cpVC_benkhac = self.HoaDonChosing.TongChiPhi;
                 conno_benVC = cpVC_benkhac - dachi_benVCKhac;
