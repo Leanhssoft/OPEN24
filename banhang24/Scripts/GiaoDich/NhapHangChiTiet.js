@@ -6036,6 +6036,11 @@ var NhapHangChiTiet = function () {
             let exCP = $.grep(cacheCP, function (x) {
                 return x.IDRandomHD === dataHD.IDRandom;
             });
+
+            let arrIDHDOld = [], arrCP = [];
+            if (!isInsert) {
+                arrIDHDOld = [dataHD.ID];
+            }
             if (exCP.length > 0) {
                 let objCP = {
                     ID_HoaDon: dataHD.ID,
@@ -6047,22 +6052,17 @@ var NhapHangChiTiet = function () {
                     MaDoiTuong: exCP[0].MaDoiTuong,
                     TenDoiTuong: exCP[0].TenDoiTuong,
                 }
+                arrCP = [objCP];
+            }
+            let myData = {
+                lstChiPhi: arrCP,
+                arrIDHoaDon: arrIDHDOld,
+            }
 
-                let arr = [];
-                if (objCP.ThanhTien > 0) {
-                    arr = [objCP];
-                }
-                let myData = {
-                    lstChiPhi: [objCP],
-                    arrIDHoaDon: [],
-                }
-                if (!isInsert) {
-                    myData.arrIDHoaDon = [dataHD.ID];
-                }
-
-                ajaxHelper(BH_HoaDonUri + 'NhapHang_PostChiPhiVanChuyen', 'POST', myData).done(function (x) {
-                    console.log('CTHD_PostPutChiPhi ', x)
-                    if (x.res) {
+            ajaxHelper(BH_HoaDonUri + 'NhapHang_PostChiPhiVanChuyen', 'POST', myData).done(function (x) {
+                console.log('CTHD_PostPutChiPhi ', x)
+                if (x.res) {
+                    if (dataHD.TongChiPhi > 0) {
                         let diary = {
                             ID_DonVi: _idDonVi,
                             ID_NhanVien: _idNhanVien,
@@ -6072,34 +6072,29 @@ var NhapHangChiTiet = function () {
                                 dataHD.MaHoaDon, ' </b> . Người tạo: ', _userLogin),
                             NoiDungChiTiet: '',
                         }
-                        if (arr.length === 0) {
-                            if (myData.arrIDHoaDon.length > 0) {
-                                diary.NoiDungChiTiet = 'Xóa chi phí của hóa đơn '.concat(dataHD.MaHoaDon);
-                                Insert_NhatKyThaoTac_1Param(diary);
-                            }
-                        }
-                        else {
-                            diary.NoiDungChiTiet = diary.NoiDung.concat('<br /> Chi phí: ', dataHD.TongChiPhi,
-                                '<br /> Bên vận chuyển: ', objCP.TenDoiTuong, ' (', objCP.MaDoiTuong, ')');
-                            Insert_NhatKyThaoTac_1Param(diary);
+                        diary.NoiDungChiTiet = diary.NoiDung.concat('<br /> Chi phí: ', dataHD.TongChiPhi)
+
+                        if (arrCP.length > 0) {
+                            diary.NoiDungChiTiet = diary.NoiDungChiTiet.concat('<br /> Bên vận chuyển: ', arrCP[0].TenDoiTuong, ' (', arrCP[0].MaDoiTuong, ')');
+                            dataHD.ID_DoiTuong = arrCP[0].ID_NhaCungCap;
+                            dataHD.MaDoiTuong = arrCP[0].MaDoiTuong;
+                            dataHD.TenDoiTuong = arrCP[0].TenDoiTuong;
+                            vmThanhToan.SavePhieuChiVanChuyen(dataHD);
                         }
 
-                        dataHD.ID_DoiTuong = objCP.ID_NhaCungCap;
-                        dataHD.MaDoiTuong = objCP.MaDoiTuong;
-                        dataHD.TenDoiTuong = objCP.TenDoiTuong;
-                        vmThanhToan.SavePhieuChiVanChuyen(dataHD);
-
-                        // remove cache CP
-                        cacheCP = $.grep(cacheCP, function (x) {
-                            return x.IDRandomHD !== dataHD.IDRandom;
-                        });
-                        localStorage.setItem('lcChiPhi_NhapHang', JSON.stringify(cacheCP));
-
-                        $('#vmCus .gara-search-HH').val('');
-                        vmCus.ID_DoiTuong = '';
+                        Insert_NhatKyThaoTac_1Param(diary);
                     }
-                })
-            }
+
+                    // remove cache CP
+                    cacheCP = $.grep(cacheCP, function (x) {
+                        return x.IDRandomHD !== dataHD.IDRandom;
+                    });
+                    localStorage.setItem('lcChiPhi_NhapHang', JSON.stringify(cacheCP));
+
+                    $('#vmCus .gara-search-HH').val('');
+                    vmCus.ID_DoiTuong = '';
+                }
+            })
         }
     }
 
