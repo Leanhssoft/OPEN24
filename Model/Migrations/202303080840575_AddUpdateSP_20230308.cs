@@ -10,7 +10,9 @@
 			Sql(@"CREATE FUNCTION [dbo].[BuTruTraHang_HDDoi]
 (
 	@ID_HoaDon uniqueidentifier,
-	@NgayLapHoaDon datetime
+	@NgayLapHoaDon datetime,
+    @ID_HoaDonGoc uniqueidentifier = null,
+	@LoaiHDGoc int =  0
 )
 RETURNS float
 AS
