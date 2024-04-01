@@ -571,26 +571,34 @@
             self.newPhieuThu.ID_DoiTuong = item.ID;
             let cpVC_benkhac = 0, conno_benVC = 0;
             let dachi_benVCKhac = formatNumberToFloat(self.HoaDonChosing.DaChi_BenVCKhac);
-            let khachCanTra = self.HoaDonChosing.PhaiThanhToan - self.HoaDonChosing.KhachDaTra;
+            let khachCanTra = self.HoaDonChosing.PhaiThanhToan;
+            let khachDaTra = self.HoaDonChosing.KhachDaTra;// ncc + benVC
 
-            if (!commonStatisJs.CheckNull(self.HoaDonChosing.ID_NhaCungCap) && self.HoaDonChosing.ID_NhaCungCap !== item.ID ) {
+            if (!commonStatisJs.CheckNull(self.HoaDonChosing.ID_NhaCungCap)
+                && self.HoaDonChosing.ID_NhaCungCap !== self.HoaDonChosing.ID_DoiTuong) {
                 khachCanTra = khachCanTra - self.HoaDonChosing.TongChiPhi;
                 cpVC_benkhac = self.HoaDonChosing.TongChiPhi;
                 conno_benVC = cpVC_benkhac - dachi_benVCKhac;
+                khachDaTra = khachDaTra - dachi_benVCKhac;
+            }
+            else {
+                if (commonStatisJs.CheckNull(self.HoaDonChosing.ID_NhaCungCap) && self.HoaDonChosing.TongChiPhi > 0) {
+                    // không chọn bên VC
+                    khachCanTra = khachCanTra - khachDaTra;
+                }
             }
 
             if (self.formType === 0) {// ds phieunhap
                 // ncc
                 let invoice = [];
                 if (item.ID === self.HoaDonChosing.ID_DoiTuong) {
-                    khachCanTra = khachCanTra + dachi_benVCKhac;
                     invoice = [{
                         ID: self.HoaDonChosing.ID,
                         MaHoaDon: self.HoaDonChosing.MaHoaDon,
                         LoaiHoaDon: self.HoaDonChosing.LoaiHoaDon,
                         NgayLapHoaDon: self.HoaDonChosing.NgayLapHoaDon,
                         PhaiThanhToan: self.HoaDonChosing.PhaiThanhToan - cpVC_benkhac,
-                        KhachDaTra: self.HoaDonChosing.KhachDaTra,
+                        KhachDaTra: khachDaTra,
                         CanThu: khachCanTra,
                         TienThu: formatNumber3Digit(khachCanTra),
                     }];
