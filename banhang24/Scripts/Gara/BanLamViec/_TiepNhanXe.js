@@ -35,7 +35,7 @@
         },
         role: {
             Xe: {},
-            PhieuTiepNhan: {BatBuocNhapKmVao: false},
+            PhieuTiepNhan: { BatBuocNhapKmVao: false },
             KhachHang: {},
             BaoHiem: {},
         },
@@ -223,7 +223,7 @@
             }
             return {};
         },
-        UpdatePhieuTiepNhan: function (thongtin, hangmuc=[], vatdung=[]) {
+        UpdatePhieuTiepNhan: function (thongtin, hangmuc = [], vatdung = []) {
             var self = this;
             self.isNew = false;
             self.saveOK = false;
@@ -374,24 +374,29 @@
             }
         },
 
-        GetThongTinChuXe: function () {
-            var self = this;
+        GetThongTinChuXe: async function () {
+            let self = this;
             // get infor customer by id_Xe
-            $.getJSON('/api/DanhMuc/GaraAPI/GetInforCustomer_byIDXe?idXe=' + self.newPhieuTiepNhan.ID_Xe).done(function (x) {
-                if (x.res) {
-                    if (x.dataSoure.length > 0) {
-                        self.ChuXe = x.dataSoure[0];
+            const xx = await $.getJSON('/api/DanhMuc/GaraAPI/GetInforCustomer_byIDXe?idXe=' + self.newPhieuTiepNhan.ID_Xe).done()
+                .then(function (x) {
+                    if (x.res) {
+                        let dataReturn = {};
+                        if (x.dataSoure.length > 0) {
+                            dataReturn = x.dataSoure[0];
+                        }
+                        return dataReturn;
                     }
                     else {
-                        self.ChuXe = {};
+                        commonStatisJs.ShowMessageDanger(x.mess);
+                        return {};
                     }
-                }
-                else {
-                    commonStatisJs.ShowMessageDanger(x.mess);
-                }
-            });
+                });
+            if (!$.isEmptyObject(xx)) {
+                self.ChuXe = xx;
+            }
+            return xx;
         },
-        Change_LaChuXe: function () {
+        Change_LaChuXe: async function () {
             var self = this;
             if (!self.role.PhieuTiepNhan.CapNhat || !self.role.PhieuTiepNhan.ThemMoi) {
                 return false;
@@ -406,7 +411,11 @@
                     return false;
                 }
                 self.newPhieuTiepNhan.ID_KhachHang = self.ChuXe.ID;
-                self.customerChosing = self.ChuXe;
+               
+                const chuxe = await self.GetThongTinChuXe();
+                if (!$.isEmptyObject(chuxe)) {
+                    self.ChuXe = chuxe;
+                }
             }
             else {
                 // reset customer
@@ -448,7 +457,7 @@
             vmThemMoiXe.inforLogin = this.inforLogin;
             vmThemMoiXe.ShowModalNewCar();
         },
-        ChangeCar: function (item) {
+        ChangeCar: async function (item) {
             var self = this;
             self.newPhieuTiepNhan.ID_Xe = item.ID;
             // reset infor cus
@@ -461,7 +470,7 @@
 
             // use when print phieuTN
             self.GetInforCar_byID(item.ID);
-            self.GetThongTinChuXe();
+            await self.GetThongTinChuXe();
         },
         ChangeCustomer: function (item) {
             var self = this;
@@ -817,7 +826,7 @@
                 commonStatisJs.ShowMessageDanger('Vui lòng chọn khách hàng');
                 return;
             }
-            if (self.role.PhieuTiepNhan.BatBuocNhapKmVao && (commonStatisJs.CheckNull(self.newPhieuTiepNhan.SoKmVao) || self.newPhieuTiepNhan.SoKmVao ===0)) {
+            if (self.role.PhieuTiepNhan.BatBuocNhapKmVao && (commonStatisJs.CheckNull(self.newPhieuTiepNhan.SoKmVao) || self.newPhieuTiepNhan.SoKmVao === 0)) {
                 commonStatisJs.ShowMessageDanger('Vui lòng nhập số Km vào');
                 return;
             }
