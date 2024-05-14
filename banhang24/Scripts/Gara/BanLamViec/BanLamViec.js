@@ -2569,6 +2569,7 @@ var workTable = new Vue({
                                 , "; var item5 =", JSON.stringify(self.MauIn.ListData.VatDungKemTheo)
                                 , "; </script>");
                             data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>"); // MauInTeamplate.js: used to bind data in knockout
+                            data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
                             PrintExtraReport(data);
                         }
                     });
