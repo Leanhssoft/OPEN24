@@ -2471,7 +2471,8 @@ var workTable = new Vue({
             objHD.TienBangChu = DocSo(objHD.TongCong);
             objHD.KH_TienBangChu = DocSo(khachdatra);
             objHD.BH_TienBangChu = DocSo(baohiemdatra);
-
+            objHD.TienKhachThieu_BangChu = DocSo(khachConNo);
+            
             ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetChiTietHD_MultipleHoaDon?arrID_HoaDon=' + self.arrID_HDPrint, 'GET').done(function (data) {
                 if (data !== null) {
 
