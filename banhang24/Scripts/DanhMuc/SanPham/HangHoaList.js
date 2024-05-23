@@ -9646,7 +9646,6 @@ var ViewModel = function () {
 
     async function GetInforBasic_OfListHangHoa() {
         const xx = ajaxHelper(DMHangHoaUri + "GetInforBasic_OfListHangHoa", 'POST', arrIDHang).done().then(function (data) {
-            console.log('GetInforBasic_OfListHangHoa ', data);
             return data;
         });
         return xx;
@@ -9655,7 +9654,6 @@ var ViewModel = function () {
     async function UpdateLoaiHangHoa() {
         // todo: nếu sau này muốn chuyển dịch vụ --> hàng hóa: thay loaiHangHoa = 1 + cập nhật lại Tồn kho cho hàng dc chọn
         const xx = ajaxHelper(DMHangHoaUri + "UpdateLoaiHangHoa?loaiHangHoa=2", 'POST', arrIDHang).done().then(function (data) {
-            console.log('UpdateLoaiHangHoa ', data);
             return data;
         });
         return xx;
