@@ -583,6 +583,11 @@
                                 <a href="javascript:void(0)" data-bind="click: showChuyenNhomhang" data-toggle="modal">
                                     <i class="fa fa-external-link-square"></i> Chuyển nhóm hàng
                                 </a>
+                            </li> 
+                            <li data-bind="visible: $root.role_UpdateProduct(), click: $root.ChuyenHangHoa_ToDichVu">
+                                <a href="javascript:void(0)" data-toggle="modal">
+                                    <i class="fa fa-external-link-square"></i> Chuyển hàng hóa --> dịch vụ
+                                </a>
                             </li>
                             <li>
                                 <a href="#" data-bind="click: getListChooseHH" data-toggle="modal" data-target="#mymodaltableprint">

@@ -2208,7 +2208,6 @@ namespace libDM_DoiTuong
                     objUpd.NgayGiaoDichGanNhat = obj.NgayGiaoDichGanNhat;
                     objUpd.NgaySinh_NgayTLap = obj.NgaySinh_NgayTLap;
                     objUpd.TaiKhoanNganHang = obj.TaiKhoanNganHang;
-                    objUpd.NgayGiaoDichGanNhat = obj.NgayGiaoDichGanNhat;
                     objUpd.TenKhac = obj.TenKhac;
                     objUpd.The_TheKhachHang = obj.The_TheKhachHang;
                     objUpd.ThuongTru = obj.ThuongTru;

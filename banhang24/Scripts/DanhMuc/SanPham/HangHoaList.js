@@ -4734,7 +4734,7 @@ var ViewModel = function () {
                     }
 
                     data.GiaBan = formatNumber3Digit(data.GiaBan);
-                    data.TonKho = formatNumber3Digit(data.TonKho,3);
+                    data.TonKho = formatNumber3Digit(data.TonKho, 3);
                     data.SoPhutThucHien = data.SoPhutThucHien !== null ? formatNumber3Digit(data.SoPhutThucHien) : data.SoPhutThucHien;
                     data.ChiPhiThucHien = formatNumber3Digit(data.ChiPhiThucHien);
                     for (var j = 0; j < data.DonViTinh.length; j++) {
@@ -6910,7 +6910,7 @@ var ViewModel = function () {
             GetAllNhomHHByLaNhomHH();
             data.GiaBan = formatNumber3Digit(data.GiaBan);
             data.GiaVon = formatNumber3Digit(data.GiaVon);
-            data.TonKho = formatNumber3Digit(data.TonKho,3);
+            data.TonKho = formatNumber3Digit(data.TonKho, 3);
             self.selectIDNhomHHAddHH(data.ID_NhomHangHoa);
             for (var j = 0; j < data.DonViTinh.length; j++) {
                 data.DonViTinh[j].GiaBan = formatNumber3Digit(data.DonViTinh[j].GiaBan);
@@ -7221,12 +7221,12 @@ var ViewModel = function () {
         var j = 0;
 
         // nếu chỉ có 1 dòng cùng loại, và khách không nhập mã hàng: auto gán mã hàng này = mã đã nhập ở trên
-       if(self.newHangHoa().HangHoaCungLoaiArr().length === 1){
-           if(commonStatisJs.CheckNull(self.newHangHoa().HangHoaCungLoaiArr()[0].MaHangHoa)){             
-              myData.objHangHoaCungLoai[0].MaHangHoa = myData.objNewHH.MaHangHoa;
-              self.newHangHoa().HangHoaCungLoaiArr()[0].MaHangHoa = myData.objNewHH.MaHangHoa;
-           }
-       }
+        if (self.newHangHoa().HangHoaCungLoaiArr().length === 1) {
+            if (commonStatisJs.CheckNull(self.newHangHoa().HangHoaCungLoaiArr()[0].MaHangHoa)) {
+                myData.objHangHoaCungLoai[0].MaHangHoa = myData.objNewHH.MaHangHoa;
+                self.newHangHoa().HangHoaCungLoaiArr()[0].MaHangHoa = myData.objNewHH.MaHangHoa;
+            }
+        }
         var listHHCungLoai = self.newHangHoa().HangHoaCungLoaiArr().filter(p => p.MaHangHoa !== "");
         function checkMaHHCL() {
             if (j < listHHCungLoai.length) {
@@ -9642,6 +9642,49 @@ var ViewModel = function () {
             $('.choose-commodity').hide();
             ShowMessage_Success("Cập nhật hàng hóa thành công!");
         }
+    }
+
+    async function GetInforBasic_OfListHangHoa() {
+        const xx = ajaxHelper(DMHangHoaUri + "GetInforBasic_OfListHangHoa", 'POST', arrIDHang).done().then(function (data) {
+            console.log('GetInforBasic_OfListHangHoa ', data);
+            return data;
+        });
+        return xx;
+    }
+
+    async function UpdateLoaiHangHoa() {
+        // todo: nếu sau này muốn chuyển dịch vụ --> hàng hóa: thay loaiHangHoa = 1 + cập nhật lại Tồn kho cho hàng dc chọn
+        const xx = ajaxHelper(DMHangHoaUri + "UpdateLoaiHangHoa?loaiHangHoa=2", 'POST', arrIDHang).done().then(function (data) {
+            console.log('UpdateLoaiHangHoa ', data);
+            return data;
+        });
+        return xx;
+    }
+
+    self.ChuyenHangHoa_ToDichVu = function () {
+        dialogConfirm('Thay đổi loại hàng', 'Bạn có chắc chắn muốn chuyển <b>' + arrIDHang.length + '</b> hàng hóa đã chọn thành dịch vụ không?', async function () {
+            const dataReturn = await UpdateLoaiHangHoa();
+            if (dataReturn) {
+                ShowMessage_Success('Chuyển loại hàng thàng công');
+
+                const lstHangHoa = await GetInforBasic_OfListHangHoa();
+
+                const sTenHangHoa = lstHangHoa.map((x) => {
+                    return x.Ma_TenHangHoa;
+                }).join(' <br />');
+
+                let diary = {
+                    ID_NhanVien: _IDNhanVien,
+                    ID_DonVi: _IDchinhanh,
+                    ChucNang: "Thay đổi loại hàng",
+                    NoiDung: "Thay đổi loại hàng cho ".concat(arrIDHang.length, ' hàng hóa thành dịch vụ'),
+                    NoiDungChiTiet: "Danh sách hàng chuyển gồm: <br />".concat(sTenHangHoa,
+                        '<br /> User chuyển: ', VHeader.UserLogin),
+                    LoaiNhatKy: 2
+                }
+                Insert_NhatKyThaoTac_1Param(diary);
+            }
+        })
     }
 
     self.NgungKDChoose = function () {
