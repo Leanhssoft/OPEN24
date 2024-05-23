@@ -711,7 +711,7 @@ var ViewModel = function () {
                             NoiDung: "Khôi phục ".concat(sloai, ': ', item.TenHangHoa, ' (', item.MaHangHoa, ')',),
                             NoiDungChiTiet: "Khôi phục ".concat(sloai, ': ', item.TenHangHoa, ' (', item.MaHangHoa, ')',
                                 '<br /> Người khôi phục: ', _txtTenTaiKhoan),
-                            LoaiNhatKy: 3
+                            LoaiNhatKy: 2
                         }
                         Insert_NhatKyThaoTac_1Param(diary);
                         SearchHangHoa();

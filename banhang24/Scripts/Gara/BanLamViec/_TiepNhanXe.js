@@ -414,7 +414,7 @@
                
                 const chuxe = await self.GetThongTinChuXe();
                 if (!$.isEmptyObject(chuxe)) {
-                    self.ChuXe = chuxe;
+                    self.customerChosing = chuxe;
                 }
             }
             else {
