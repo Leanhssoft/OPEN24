@@ -421,6 +421,7 @@ namespace libReport
         public DateTime NgayLapHoaDon { get; set; }
         public string MaNhaCungCap { get; set; }
         public string TenNhaCungCap { get; set; }
+        public string TenNhomHangHoa { get; set; }
         public string MaHangHoa { get; set; }
         public string TenHangHoaFull { get; set; }
         public string TenHangHoa { get; set; }
