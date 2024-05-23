@@ -2284,7 +2284,7 @@ var workTable = new Vue({
                     maHD += hd[0].MaHoaDon + ', ';
                     maBG += hd[0].MaBaoGia + ', ';
                     nguoitaoHD = hd[0].NguoiTaoHD;
-                    diengiai += hd[0].DienGiai + ' <br /> ';
+                    diengiai +=  hd[0].DienGiai.concat(commonStatisJs.CheckNull(hd[0].DienGiai)?'':'<br />');
                     tenNhanVien = hd[0].TenNhanVien;
                     ngaylapHD = hd[0].NgayLapHoaDon;
                     masothue = hd[0].MaSoThue;
@@ -2471,7 +2471,8 @@ var workTable = new Vue({
             objHD.TienBangChu = DocSo(objHD.TongCong);
             objHD.KH_TienBangChu = DocSo(khachdatra);
             objHD.BH_TienBangChu = DocSo(baohiemdatra);
-
+            objHD.TienKhachThieu_BangChu = DocSo(khachConNo);
+            
             ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetChiTietHD_MultipleHoaDon?arrID_HoaDon=' + self.arrID_HDPrint, 'GET').done(function (data) {
                 if (data !== null) {
 
@@ -2568,6 +2569,7 @@ var workTable = new Vue({
                                 , "; var item5 =", JSON.stringify(self.MauIn.ListData.VatDungKemTheo)
                                 , "; </script>");
                             data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>"); // MauInTeamplate.js: used to bind data in knockout
+                            data = data.replace('{TienKhachThieu_BangChu}', "<span data-bind=\"text: InforHDprintf().TienKhachThieu_BangChu\"></span>");
                             PrintExtraReport(data);
                         }
                     });
