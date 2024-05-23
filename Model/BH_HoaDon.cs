@@ -64,10 +64,10 @@ namespace Model
                                             // sudung gdv: ID_HoaDon = null
                                             // trahoadon/tragoi, xulydh: ID_HoaDon !=null
         [Column(TypeName = "int")]
-        public int LoaiHoaDon { get; set; }
+        public int LoaiHoaDon { get; set; }// thuộc DM_LoaiChungTu
 
         [Column(TypeName = "bit")]
-        public bool? ChoThanhToan { get; set; }
+        public bool? ChoThanhToan { get; set; }// true.Tạm lưu, false. Hoàn thành, null.Hủy
 
         [Column(TypeName = "float")]
         public double TongTienHang { get; set; } // KiemKho: tong SL lech giam, TheGiaTri: TongTienNap + KhuyenMai

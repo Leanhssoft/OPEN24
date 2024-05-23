@@ -602,7 +602,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="op-object-detail-function">
-                                                    <!-- ko if: $root.RoleUpdate_Order() && $root.Enable_NgayLapHD()-->
+                                                    <!-- ko if: $root.RoleRestore_Order() && ChoThanhToan === null && loaiHoaDon !== 6 -->
+                                                    <button href="javascript:void(0)" class="btn btn-main" style="background-color: #704242; color: white"
+                                                            data-bind="click: function(){$root.RestoreInvoice($data)}">
+                                                        <i class="fa fa-recycle"></i>Khôi phục
+                                                    </button>
+                                                    <!--/ko-->
+                                                    <!-- ko if: $root.RoleUpdate_Order() && $root.Enable_NgayLapHD() && ChoThanhToan != null -->
                                                     <button href="javascript:void(0)" class="btn btn-main" data-bind="click: $parent.updateHoaDon">
                                                         <i class="fa fa-save"></i> Lưu
                                                     </button>

@@ -37,6 +37,7 @@
     self.Quyen_NguoiDung = ko.observableArray();
     // hoa don ban
     self.RoleView_Invoice = ko.observable(false);
+    self.RoleRestore_Invoice = ko.observable(false);
     self.RoleInsert_Invoice = ko.observable(false);
     self.RoleInsert_HoaDonBaoHanh = ko.observable(false);
     self.RoleUpdate_Invoice = ko.observable(false);
@@ -47,6 +48,7 @@
     self.RoleXemTongDoanhThu = ko.observable(false);// quyền "Không" (ngược với bình thường)
     // hd dat
     self.RoleView_Order = ko.observable(false);
+    self.RoleRestore_Order = ko.observable(false);
     self.RoleInsert_Order = ko.observable(false);
     self.RoleUpdate_Order = ko.observable(false);
     self.RoleDelete_Order = ko.observable(false);
@@ -281,7 +283,7 @@
         switch (loaiHoaDon) {
             case 1:
             case 25:
-                arrHideColumn = ['madathang', 'email', 'diachi', 'sodienthoai', 'masothue','masothueBH', 'khuvuc', 'phuongxa', 'tenchinhanh', 'nguoiban', 'nguoitao',
+                arrHideColumn = ['madathang', 'email', 'diachi', 'sodienthoai', 'masothue', 'masothueBH', 'khuvuc', 'phuongxa', 'tenchinhanh', 'nguoiban', 'nguoitao',
                     'thanhtienchuack', 'giamgiact', 'giatrisudung', 'tienthue', 'pos', 'chuyenkhoan', 'tiendoidiem', 'thegiatri', 'trangthai'];
                 break;
             case 3:
@@ -376,6 +378,7 @@
         switch (loaiHoaDon) {
             case 1:
             case 25:
+                self.RoleRestore_Invoice(CheckQuyenExist('HoaDon_Restore'));
                 self.RoleView_Invoice(CheckQuyenExist('HoaDon_XemDS'));
                 self.RoleInsert_Invoice(CheckQuyenExist('HoaDon_ThemMoi'));
                 self.RoleUpdate_Invoice(CheckQuyenExist('HoaDon_CapNhat'));
@@ -417,6 +420,7 @@
                 break;
             case 3:
                 self.RoleView_Order(CheckQuyenExist('DatHang_XemDS'));
+                self.RoleRestore_Order(CheckQuyenExist('DatHang_Restore'));
                 self.RoleInsert_Order(CheckQuyenExist('DatHang_ThemMoi'));
                 self.RoleUpdate_Order(CheckQuyenExist('DatHang_CapNhat'));
                 self.RoleDelete_Order(CheckQuyenExist('DatHang_Xoa'));
@@ -3148,7 +3152,7 @@
         objPrint.TongTichDiem = formatNumber(objPrint.DiemSauGD);
         objPrint.NhanVienBanHang = objPrint.TenNhanVien;
         objPrint.TongGiamGia = formatNumber(hdDB.TongGiamGia + hdDB.KhuyeMai_GiamGia);
-      
+
         let tongcong = formatNumberToFloat(objPrint.TongThanhToan);
         objPrint.NgayLapHoaDon = moment(hdDB.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');
         objPrint.Ngay = moment(hdDB.NgayLapHoaDon).format('DD');
@@ -3197,7 +3201,7 @@
             objPrint.TongChiPhiHangTra = formatNumber(hdDB.TongChiPhi);
             objPrint.TongCong = tongcong;
         }
-        var notruoc = 0, nosau = 0, diachiKH = '', ngaysinhKH ='';
+        var notruoc = 0, nosau = 0, diachiKH = '', ngaysinhKH = '';
         let customer = {};
         if (!commonStatisJs.CheckNull(hdDB.ID_DoiTuong)) {
             customer = await GetInforCus(hdDB.ID_DoiTuong);
@@ -3212,7 +3216,7 @@
         else {
             nosau = conno;// khachle
         }
-        
+
         if (!commonStatisJs.CheckNull(ngaysinhKH)) {
             objPrint.NgaySinh_NgayTLap = moment(ngaysinhKH).format('DD/MM/YYYY');
         }
@@ -4632,7 +4636,7 @@
         }
 
         dataMauIn = dataMauIn.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
-        dataMauIn = dataMauIn.concat("<style> @media print {body {-webkit-print-color-adjust: exact;}} </style>" )
+        dataMauIn = dataMauIn.concat("<style> @media print {body {-webkit-print-color-adjust: exact;}} </style>")
         dataMauIn = dataMauIn.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
         dataMauIn = dataMauIn.concat("<script > var item1=" + JSON.stringify(self.CTHoaDonPrint())
             + "; var item2=" + JSON.stringify(self.CTHoaDonPrintMH())
@@ -5214,6 +5218,123 @@
             return x;
         })
         return xx;
+    }
+
+    async function CheckPTN_DaBiHuy(idPTN) {
+        if (commonStatisJs.CheckNull(idPTN) || idPTN === const_GuidEmpty) {
+            return false;
+        }
+        let xx = await $.getJSON('/api/DanhMuc/GaraAPI/' + 'CheckPTN_DaBiHuy?idPhieuTiepNhan=' + idPTN).done(function () {
+        }).then(function (x) {
+            return x;
+        })
+        return xx;
+    }
+    async function CheckPTN_isDeleted(idPTN) {
+        if (commonStatisJs.CheckNull(idPTN) || idPTN === const_GuidEmpty) {
+            return false;
+        }
+        let xx = await $.getJSON('/api/DanhMuc/GaraAPI/' + 'CheckPTN_isDeleted?idPhieuTiepNhan=' + idPTN).done(function () {
+        }).then(function (x) {
+            return x;
+        })
+        return xx;
+    }
+    async function CheckHoaDon_isDeleted(idHoaDon) {
+        if (commonStatisJs.CheckNull(idHoaDon) || idHoaDon === const_GuidEmpty) {
+            return false;
+        }
+        let xx = await $.getJSON(BH_HoaDonUri + 'CheckHoaDon_isDeleted?idHoaDon=' + idHoaDon).done(function () {
+        }).then(function (x) {
+            return x;
+        })
+        return xx;
+    }
+
+    async function RestoreInvoice_fromDB(idHoaDon) {
+        if (commonStatisJs.CheckNull(idHoaDon) || idHoaDon === const_GuidEmpty) {
+            return false;
+        }
+        let xx = await $.getJSON(BH_HoaDonUri + 'RestoreInvoice?idHoaDon=' + idHoaDon).done(function () {
+        }).then(function (x) {
+            return x;
+        })
+        return xx;
+    }
+
+    async function CheckXuLyHet_DonDatHang_AndUpdateTrangThaiBG(loaiHoaDon, idHoaDon, idDatHang) {
+        // idHoaDon: không sử dụng (chỉ truyền vào thôi, vì func cũ đang dùng)
+        if ((loaiHoaDon === 1 || loaiHoaDon === 25) && idDatHang !== null && idDatHang !== const_GuidEmpty) {
+            const xx = await ajaxHelper(BH_HoaDonUri + 'CheckXuLyHet_DonDathang?idHoaDon=' + idHoaDon + '&idDatHang=' + idDatHang, 'GET').done()
+                .then(function (data) {
+                    return data;
+                });
+
+            const trangThaiBG = xx ? 3 : 2;
+
+            const dataUpdate = await ajaxHelper(BH_HoaDonUri + 'Update_StatusHD?id=' + idDatHang + '&Status=' + trangThaiBG, 'POST').done()
+                .then(function (data) {
+                    return data;
+                });
+        }
+    }
+
+    self.RestoreInvoice = async function (item) {
+        const maHoaDon = item.MaHoaDon;
+        const loaiHoaDon = item.LoaiHoaDon;
+        let sLoai = '', sLoaiLowercase ='';
+
+        switch (loaiHoaDon) {
+            case 1:
+            case 25:
+                {
+                    sLoai = 'Hóa đơn';
+                    sLoaiLowercase ='hóa đơn';
+                }
+                break;
+            case 3:
+                {
+                    sLoai = 'Báo giá';
+                    sLoaiLowercase ='báo giá';
+                }
+                break;
+        }
+
+        if (loaiHoaDon === 25) {
+            const checkPTN = await CheckPTN_isDeleted(item.ID_PhieuTiepNhan);
+            if (checkPTN) {
+                ShowMessage_Danger(sLoai + ' thuộc phiếu tiếp nhận đã bị hủy. Vui lòng khôi phục lại Phiếu tiếp nhận');
+                return;
+            }
+        }
+
+        const checkHD = await CheckHoaDon_isDeleted(item.ID_HoaDon, 3);
+        if (checkHD) {
+            ShowMessage_Danger(sLoai + ' thuộc báo giá đã bị hủy. Vui lòng khôi phục lại Báo giá');
+            return;
+        }
+
+        dialogConfirm('Khôi phục ' + sLoaiLowercase, 'Bạn có chắc chắn muốn khôi phục ' + sLoaiLowercase + ' <b>' + maHoaDon + '</b> không?', async function () {
+            const dataReturn = await RestoreInvoice_fromDB(item.ID);
+            if (dataReturn) {
+                await CheckXuLyHet_DonDatHang_AndUpdateTrangThaiBG(loaiHoaDon, item.ID_HoaDon, item.ID_HoaDon);
+                ShowMessage_Success('Khôi phục ' + sLoaiLowercase + ' thàng công');
+
+                
+                let diary = {
+                     ID_DonVi: VHeader.IdDonVi,
+                ID_NhanVien: VHeader.IdNhanVien,
+                    ChucNang: "Khôi phục " + sLoaiLowercase ,
+                    NoiDung: "Khôi phục ".concat(sLoaiLowercase, ' ', item.MaHoaDon),
+                    NoiDungChiTiet: "Khôi phục ".concat(sLoaiLowercase, ': ', item.MaHoaDon,
+                        '<br /> Người khôi phục: ', VHeader.UserLogin),
+                    LoaiNhatKy: 2
+                }
+                Insert_NhatKyThaoTac_1Param(diary);
+
+                SearchHoaDon();
+            }
+        })
     }
 
     self.CheckHD_DaXuatKho = async function (item, type) {
