@@ -163,6 +163,23 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
 
+        [HttpGet]
+        public bool CheckPTN_isDeleted(Guid idPhieuTiepNhan)
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    var data = db.Gara_PhieuTiepNhan.Where(x => x.ID == idPhieuTiepNhan && x.TrangThai == 0).Count();
+                    return data > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         [HttpGet, HttpPost]
         public IHttpActionResult GetInforCustomer_byIDXe(Guid idXe)
         {
@@ -2106,7 +2123,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         TrangThaiPhieuTiepNhan = p.TrangThai == 1 ? "Đang sửa" : p.TrangThai == 2 ? "Hoàn thành" : p.TrangThai == 3 ? "Đã xuất xưởng" : "Hủy",
                         TenDonVi = p.TenDonVi,
                         TenBaoHiem = p.TenBaoHiem
-                    }).OrderByDescending(p=>p.NgayVaoXuong).ToList();
+                    }).OrderByDescending(p => p.NgayVaoXuong).ToList();
                     DataTable excel = classOffice.ToDataTable<GetListPhieuTiepNhan_v2_Export>(lst);
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/Template_DanhSachPhieuTiepNhan.xlsx");
                     fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/DanhSachPhieuTiepNhan.xlsx");
@@ -2230,7 +2247,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     List<LichSuSuaChua_Export> lst = xx.Select(p => new LichSuSuaChua_Export
                     {
                         MaPhieuTiepNhan = p.MaPhieuTiepNhan,
-                        SoKmVao = p.SoKmVao, 
+                        SoKmVao = p.SoKmVao,
                         MaHoaDon = p.MaHoaDon,
                         MaBaoGia = p.MaBaoGia,
                         NgayLapHoaDon = p.NgayLapHoaDon.Value,
