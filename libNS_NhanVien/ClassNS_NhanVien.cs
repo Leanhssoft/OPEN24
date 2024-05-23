@@ -224,7 +224,7 @@ namespace libNS_NhanVien
             //}
         }
 
-        public IQueryable<NS_NhanVien> getListNhanViens_news(Guid? phongbanId, string maNhanVen, int trangthai)
+        public IQueryable<NS_NhanVien> getListNhanViens_news(Guid? phongbanId, string maNhanVen, int trangthai, int? trangThaiXoa = 2)
         {
             var listPhongban = new List<Guid>();
             if (phongbanId != null)
@@ -243,8 +243,7 @@ namespace libNS_NhanVien
                 }
             }
             string MaNVSearch = CommonStatic.ConvertToUnSign(maNhanVen).ToLower();
-            var tb_fm = db.NS_NhanVien.Where(o => (o.TrangThai == null || o.TrangThai != (int)commonEnumHellper.TypeIsDelete.daxoa) &&
-                        (listPhongban.Contains(o.ID_NSPhongBan ?? new Guid()) || phongbanId == null)).AsEnumerable();
+            var tb_fm = db.NS_NhanVien.Where(o => (listPhongban.Contains(o.ID_NSPhongBan ?? new Guid()) || phongbanId == null)).AsEnumerable();
 
 
             if (maNhanVen != "" & maNhanVen != null & maNhanVen != "null")
@@ -262,6 +261,15 @@ namespace libNS_NhanVien
             if (trangthai == 2)
             {
                 tb_fm = tb_fm.Where(x => x.DaNghiViec == false);
+            }
+            switch (trangThaiXoa)
+            {
+                case 1:// chua xoa
+                    tb_fm = tb_fm.Where(x => x.TrangThai != 0);
+                    break;
+                case 0:// xoa
+                    tb_fm = tb_fm.Where(x => x.TrangThai == 0);
+                    break;
             }
             return tb_fm.OrderByDescending(o => o.NgayTao).AsQueryable();
         }
@@ -2080,6 +2088,7 @@ namespace libNS_NhanVien
         public DateTime? NgayVaolam { get; set; }
         public DateTime? NgayTao { get; set; }
         public Guid? ID_NguoiDung { get; set; }
+        public int? TrangThai { get; set; }
     }
     public class PrintNhanVien
     {
@@ -2249,8 +2258,8 @@ namespace libNS_NhanVien
         public DateTime? TuNgay { get; set; }
 
         public DateTime? DenNgay { get; set; }
-
         public int? TrangThai { get; set; }
+        public int? TrangThaiXoa { get; set; }
 
         public int pageSize { get; set; }
 

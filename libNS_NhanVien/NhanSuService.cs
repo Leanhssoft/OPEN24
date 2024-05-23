@@ -526,7 +526,7 @@ namespace libNS_NhanVien
                     listPhongban = listPhongban.Distinct().ToList();
                 }
             }
-            var tb_fm = _dbcontext.NS_NhanVien.Where(o => (o.TrangThai != (int)commonEnumHellper.TypeIsDelete.daxoa || o.TrangThai == null)).AsQueryable();
+            var tb_fm = _dbcontext.NS_NhanVien.AsQueryable();
 
             if (listPhongban.Count > 0)
             {
@@ -605,6 +605,16 @@ namespace libNS_NhanVien
             if (model.TrangThai == 2)
             {
                 tb_fm = tb_fm.Where(x => x.DaNghiViec == false);
+            }
+
+            switch (model.TrangThaiXoa)
+            {
+                case 1:// chua xoa
+                    tb_fm = tb_fm.Where(x => x.TrangThai != 0);
+                    break;
+                case 0:// xoa
+                    tb_fm = tb_fm.Where(x => x.TrangThai == 0);
+                    break;
             }
             var startday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 00, 00, 00);
             var Endday = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 23, 59, 59);

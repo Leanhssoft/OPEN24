@@ -151,6 +151,7 @@ var ViewModel = function () {
     self.role_ThietLapLuongCopy = ko.observable(false);
     self.role_ThietLapLuongUpdate = ko.observable(false);
     self.role_ThietLapLuongXemDS = ko.observable(false);
+    self.role_RestoreNhanVien = ko.observable(false);
 
     //self.DaNghiViec = ko.observableArray([
     //    { name: "Đang làm việc", value: "true" },
@@ -169,6 +170,7 @@ var ViewModel = function () {
                 self.role_ThietLapLuongCopy(CheckQuyen_byMa('ThietLapLuong_SaoChep'));
                 self.role_ThietLapLuongUpdate(CheckQuyen_byMa('ThietLapLuong_CapNhat'));
                 self.role_ThietLapLuongXemDS(CheckQuyen_byMa('ThietLapLuong_XemDS'));
+                self.role_RestoreNhanVien(CheckQuyen_byMa('NhanVien_Restore'));
             }
             else {
                 commonStatisJs.ShowMessageDanger('Không có quyền xem danh sách ' + sLoai);
@@ -220,6 +222,36 @@ var ViewModel = function () {
             mask: true, // '9999/19/39 29:59' - digit is the maximum possible for a cell
             format: 'd/m/Y',
         });
+    }
+
+    async function RestoreNhanVien_fromDB(idNhanVien) {
+        let xx = await $.getJSON(NhanVienUri + 'RestoreNhanVien?idNhanVien=' + idNhanVien).done(function () {
+        }).then(function (x) {
+            return x;
+        })
+        return xx;
+    }
+
+    self.RestoreNhanVien = async function (item) {
+        dialogConfirm('Khôi phục nhân viên', 'Bạn có chắc chắn muốn khôi phục nhân viên <b>' + item.TenNhanVien + '</b> không?', async function () {
+            const dataReturn = await RestoreNhanVien_fromDB(item.ID);
+            if (dataReturn) {
+                ShowMessage_Success('Khôi phục nhân viên thàng công');
+
+                let diary = {
+                    ID_NhanVien: _id_NhanVien_LS,
+                    ID_DonVi: _id_DonVi,
+                    ChucNang: "Khôi phục nhân viên",
+                    NoiDung: "Khôi phục nhân viên ".concat(item.TenNhanVien, ' (', item.MaNhanVien, ')',),
+                    NoiDungChiTiet: "Khôi phục nhân viên".concat(item.TenNhanVien, ' (', item.MaNhanVien, ')',
+                        '<br /> Người khôi phục: ', VHeader.UserLogin),
+                    LoaiNhatKy: 2
+                }
+                Insert_NhatKyThaoTac_1Param(diary);
+
+                getAllNhanViens();
+            }
+        })
     }
     self.editNV = function (item) {
         ajaxHelper(NhanVienUri + "getlistQTCongTac?ID_NhanVien=" + item.ID, "GET").done(function (data) {
@@ -1735,6 +1767,8 @@ var ViewModel = function () {
     self.News_IdNhanVienOld = ko.observable(null);
     self.tenPBSelected = ko.observable();
     self.SelectedPBId = ko.observable(null);
+    self.rdoTrangThaiXoa = ko.observable('1');
+
     self.visibleCMND = ko.computed(function () {
         var result = !commonStatisJs.CheckNull(self.news_SoCMTND()) && (self.news_SoCMTND().length >= 8);
         if (!commonStatisJs.CheckNull(self.news_SoCMTND()) && !result) {
@@ -1901,6 +1935,11 @@ var ViewModel = function () {
     self.SaveAndNewStaff = function () {
         createStaff(true);
     }
+
+    self.rdoTrangThaiXoa.subscribe(function (newVal) {
+        console.log('self.rdoTrangThaiXoa ', self.rdoTrangThaiXoa())
+        getAllNhanViens();
+    });
 
     function createStaff(IsNew) {
         self.news_MaNhanVien(commonStatisJs.convertVarchar(self.news_MaNhanVien()));
@@ -2875,7 +2914,7 @@ var ViewModel = function () {
                 TypeTime: self.TypeBirthDate(),
                 TuNgay: self.startDate(),
                 DenNgay: self.endDate(),
-
+                TrangThaiXoa: parseInt(self.rdoTrangThaiXoa())
             }
             $.ajax({
                 data: model,
@@ -2897,8 +2936,6 @@ var ViewModel = function () {
                             self.RowsEndAll_NhanVien('0');
                         }
                         self.RowsAll_NhanVien(data.dataSoure.Rowcount);
-                        //self.PagesAll_NhanVien(data.dataSoure.LstPageNumber);
-                        //self.PagesAll_NhanVien(data.dataSoure.numberPage);
                         AllPageAll_NhanVien = data.dataSoure.numberPage;
                         self.selecPageAll_NhanVien();
                         if (IsLoad || IsFilter) {
@@ -2912,7 +2949,7 @@ var ViewModel = function () {
             });
         }
         else {
-            ajaxHelper(NhanVienUri + "getListNhanVien?phongbanId=" + self.selectedPhongBan() + "&maNhanVien=" + _maNhanVien_seach + "&trangthai=" + _trangthai_seach + "&pageSize=" + pageAllSize + "&pageNum=" + pageAllNum, 'GET').done(function (data) {
+            ajaxHelper(NhanVienUri + "getListNhanVien?phongbanId=" + self.selectedPhongBan() + "&maNhanVien=" + _maNhanVien_seach + "&trangthai=" + _trangthai_seach + "&pageSize=" + pageAllSize + "&pageNum=" + pageAllNum + '&trangThaiXoa=' + parseInt(self.rdoTrangThaiXoa()), 'GET').done(function (data) {
                 $('#table-reponsive').gridLoader({ show: false });
                 self.NhanViens(data.LstData);
                 LoadHtmlGrid();
@@ -2925,8 +2962,6 @@ var ViewModel = function () {
                     self.RowsEndAll_NhanVien('0');
                 }
                 self.RowsAll_NhanVien(data.Rowcount);
-                // self.PagesAll_NhanVien(data.LstPageNumber);
-                //self.PagesAll_NhanVien(data.numberPage);
                 AllPageAll_NhanVien = data.numberPage;
                 self.selecPageAll_NhanVien();
             });
