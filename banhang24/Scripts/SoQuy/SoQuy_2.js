@@ -1739,12 +1739,15 @@ var ViewModelQuyHD = function () {
         hd.DiaChiKhachHang = hd.DiaChiKhachHang;
         hd.GiaTriPhieu = formatNumber3Digit(objHD.TongTienThu, 0);
         hd.TienBangChu = DocSo(tongThu);
+        const tienMat = RoundDecimal(objHD.TienMat,0);
+        const tienPos = RoundDecimal(objHD.TienPOS,0);
+        const tienCK = RoundDecimal(objHD.ChuyenKhoan,0);
         hd.TienMat = formatNumber3Digit(objHD.TienMat, 0);
         hd.TienATM = formatNumber3Digit(objHD.TienPOS, 0);
         hd.KhoanMucThuChi = hd.NoiDungThuChi;
-        hd.TienMat_BangChu = DocSo(objHD.TienMat);
-        hd.TienPOS_BangChu = DocSo(objHD.TienPOS);
-        hd.ChuyenKhoan_BangChu = DocSo(objHD.ChuyenKhoan);
+        hd.TienMat_BangChu = DocSo(tienMat);
+        hd.TienPOS_BangChu = DocSo(tienPos);
+        hd.ChuyenKhoan_BangChu = DocSo(tienCK);
 
         let pthucTT = '';
         if (objHD.TienMat > 0) {

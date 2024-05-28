@@ -1004,6 +1004,7 @@ namespace banhang24.Hellper
                     {TypeReportImport.Import_ngaychungtu.ToString(),"Ngày chứng từ" },
                      {TypeReportImport.Import_manhacc.ToString(),"Mã nhà cung cấp" },
                   {TypeReportImport.Import_tennhacc.ToString(),"Tên nhà cung cấp" },
+                  {TypeRChietKhau.tennhomhang.ToString(),"Tên nhóm hàng" },
                   {TypeReportImport.Import_mahang.ToString(),"Mã hàng" },
                     {TypeReportImport.Import_tenhang.ToString(),"Tên hàng" },
                      { TypeReportImport.Import_donvitinh.ToString(),"Đvt" },

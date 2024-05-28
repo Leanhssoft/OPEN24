@@ -355,6 +355,35 @@
                             </div>
                         </aside>
                     </article>
+                    <article class="boxLeft">
+                        <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
+                            <img src="~/Content/images/icon/trangthai (1).png" />     Trạng thái xóa
+                        </h3>
+                        <aside class="op-filter-container">
+                            <div>
+                                <ul>
+                                    <li>
+                                        <label>
+                                            <input type="radio" name="rdoTrangThaiXoa" value="2" data-bind="checked: $root.rdoTrangThaiXoa" />
+                                            Tất cả
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label>
+                                            <input type="radio" name="rdoTrangThaiXoa" value="1" data-bind="checked: $root.rdoTrangThaiXoa" />
+                                            Chưa xóa
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label>
+                                            <input type="radio" name="rdoTrangThaiXoa" value="0" data-bind="checked: $root.rdoTrangThaiXoa" />
+                                            Đã xóa
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>
+                        </aside>
+                    </article>
                 </section>
                 <div class="op-filter-footer">
                     <button type="button" class="btn btn-link" style="color:red" onclick="closeFilter()">Hủy</button>
@@ -692,9 +721,15 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="op-object-detail-function">
+                                                                    <!--ko if: $root.role_RestoreNhanVien() && TrangThai ==0-->
+                                                                    <button class="btn btn-main" style="background-color: #704242; color: white"
+                                                                            data-bind="click: $parent.RestoreNhanVien">
+                                                                        <i class="fas fa-undo-alt"></i>Khôi phục
+                                                                    </button>
+                                                                    <!--/ko-->
                                                                     @if (Model.UserRoleUpdate)
                                                                     {
-                                                                        <button class="btn btn-main editNVchild" data-bind="click: $parent.editNV">
+                                                                        <button class="btn btn-main" data-bind="click: $parent.editNV, visible: TrangThai !=0">
                                                                             <i class="fa fa-check-square"></i> Sửa đổi
                                                                         </button>
                                                                     }
@@ -709,7 +744,7 @@
                                                                     }
                                                                     @if (Model.UserRoleDelete)
                                                                     {
-                                                                        <button class="btn btn-cancel xoaNVchild" data-bind="visible: ID != $parent.ID_NhanVienAdmin(), click: $parent.modalDelete">
+                                                                        <button class="btn btn-cancel xoaNVchild" data-bind="visible: ID != $parent.ID_NhanVienAdmin() && TrangThai !=0, click: $parent.modalDelete">
                                                                             <i class="fa fa-trash"></i> Xóa
                                                                         </button>
                                                                     }
@@ -1332,10 +1367,17 @@
                                                                 </div>
                                                             </div>
                                                             <div class="op-object-detail-function">
-                                                                <button class="btn btn-main editNVchild" data-bind="click: $parent.editNV">
+                                                                <!--ko if: $root.role_RestoreNhanVien() && TrangThai ==0-->
+                                                                <button class="btn btn-main" style="background-color: #704242; color: white"
+                                                                        data-bind="click: $parent.RestoreNhanVien">
+                                                                    <i class="fa fa-recycle"></i>Khôi phục
+                                                                </button>
+                                                                <!--/ko-->
+                                                                <button class="btn btn-main editNVchild" data-bind="click: $parent.editNV, visible: TrangThai !=0">
                                                                     <i class="fa fa-check-square"></i> Sửa đổi
                                                                 </button>
-                                                                <button class="btn btn-cancel xoaNVchild" data-bind="visible: ID != $parent.ID_NhanVienAdmin(), click: $parent.modalDelete">
+                                                                <button class="btn btn-cancel xoaNVchild"
+                                                                        data-bind="visible: ID != $parent.ID_NhanVienAdmin() && TrangThai !=0, click: $parent.modalDelete">
                                                                     <i class="fa fa-trash"></i> Xóa
                                                                 </button>
                                                             </div>

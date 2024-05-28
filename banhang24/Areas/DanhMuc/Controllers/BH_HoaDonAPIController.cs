@@ -278,6 +278,36 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 return hoadonchitiet.ServicePackage_CheckUsed(idHoaDon);
             }
         }
+        [HttpGet]
+        public bool CheckHoaDon_isDeleted(Guid idHoaDon)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                var data = db.BH_HoaDon.Where(x => x.ID == idHoaDon && x.ChoThanhToan == null).Count();
+                return data > 0;
+            }
+        }
+        /// <summary>
+        /// chỉ khôi phục hóa đơn (không khôi phục phiếu thu/chi)
+        /// </summary>
+        /// <param name="idHoaDon"></param>
+        /// <param name="loaiHoaDon"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public bool RestoreInvoice(Guid idHoaDon)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                var data = db.BH_HoaDon.Find(idHoaDon);
+                if (data != null)
+                {
+                    data.ChoThanhToan = false;
+                    db.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+        }
 
         [HttpPost, HttpGet]
         public IHttpActionResult GetListNVChietKhau_ManyHoaDon([FromBody] JObject data)

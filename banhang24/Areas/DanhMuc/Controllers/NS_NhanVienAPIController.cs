@@ -3059,13 +3059,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
             return tb.FirstOrDefault().Value.ToString();
         }
         #endregion
-        public IHttpActionResult getListNhanVien(Guid? phongbanId, string maNhanVien, int trangthai, int pageSize, int pageNum)
+        public IHttpActionResult getListNhanVien(Guid? phongbanId, string maNhanVien, int trangthai, int pageSize, int pageNum, int? trangThaiXoa = 2)
         {
             using (var db = SystemDBContext.GetDBContext())
             {
-                var lst_nv = new ClassNS_NhanVien(db).getListNhanViens_news(phongbanId, maNhanVien, trangthai);
+                var lst_nv = new ClassNS_NhanVien(db).getListNhanViens_news(phongbanId, maNhanVien, trangthai, trangThaiXoa);
                 int Row = lst_nv.Count();
-                //List<ListLHPages> lstPage = getAllPagenew<NS_NhanVien_new>(lst_nv, pageSize);
                 int lstPages = getNumber_Page(Row, pageSize);
                 List<NS_NhanVien_new> lst = lst_nv.Skip(pageSize * (pageNum - 1)).Take(pageSize).ToList().Select(nv => new NS_NhanVien_new
                 {
@@ -3084,6 +3083,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     NguyenQuan = nv.NguyenQuan,
                     Email = nv.Email,
                     DaNghiViec = nv.DaNghiViec,
+                    TrangThai = nv.TrangThai,
                     Image = nv.NS_NhanVien_Anh.Any() ? nv.NS_NhanVien_Anh.FirstOrDefault().URLAnh : string.Empty,
                     GhiChuThongTinChinhTri = nv.GhiChuThongTinChinhTri,
                     NgayNhapNgu = nv.NgayNhapNgu,
@@ -3120,7 +3120,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     Rowcount = Row,
                     LstData = lst,
                     numberPage = lstPages
-                    //LstPageNumber = lstPage
                 };
                 return Json(json);
             }
@@ -3162,29 +3161,34 @@ namespace banhang24.Areas.DanhMuc.Controllers
             _Class_officeDocument.downloadFile(fileSave);
         }
 
-        //[System.Web.Http.AcceptVerbs("GET", "POST")]
-        ////[ScriptMethod(ResponseFormat = ResponseFormat.Json)]
-        //public async Task Cardpayment()
-        //{
-        //    string myid = "";
-        //}
+        [HttpGet]
+        public bool RestoreNhanVien(Guid idNhanVien)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                var data = db.NS_NhanVien.Find(idNhanVien);
+                if (data != null)
+                {
+                    data.TrangThai = 1;
+                    data.DaNghiViec = false;
+                    db.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+        }
 
         [HttpPost]
         public IHttpActionResult getListNhanVienHRM(NhanVienFilter model)
         {
             try
             {
-                //var json = Newtonsoft.Json.JsonConvert.SerializeObject(model);
-                //var service = new Model.Service.CommonService();
-                //string url = "http://localhost:4414/api/DanhMuc/NS_NhanVienAPI/Cardpayment";
-                //service.SendWebClientThread(url, null, "GET");
                 using (var _dbcontext = SystemDBContext.GetDBContext())
                 {
                     NhanSuService _NhanSuService = new NhanSuService(_dbcontext);
                     var lst_nv = _NhanSuService.getListNhanVien_HRM(model);
                     int Row = lst_nv.Count();
                     int lstPages = getNumber_Page(Row, model.pageSize);
-                    //List<ListLHPages> lstPage = getAllPagenew<NS_NhanVien_new>(lst_nv, model.pageSize);
                     List<NS_NhanVien_new> lst = lst_nv.OrderByDescending(o => o.NgayTao).Skip(model.pageSize * (model.pageNum - 1)).Take(model.pageSize).ToList().AsEnumerable().Select(nv => new NS_NhanVien_new
                     {
                         ID = nv.ID,
@@ -3202,6 +3206,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         NguyenQuan = nv.NguyenQuan,
                         Email = nv.Email,
                         DaNghiViec = nv.DaNghiViec,
+                        TrangThai = nv.TrangThai,
                         Image = nv.NS_NhanVien_Anh.Any() ? nv.NS_NhanVien_Anh.FirstOrDefault().URLAnh : string.Empty,
                         GhiChuThongTinChinhTri = nv.GhiChuThongTinChinhTri,
                         NgayNhapNgu = nv.NgayNhapNgu,
@@ -3239,7 +3244,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         Rowcount = Row,
                         LstData = lst,
                         numberPage = lstPages
-                        //LstPageNumber = lstPage
                     };
                     return ActionTrueData(json);
                 }

@@ -478,6 +478,7 @@
                                             <th class="@commonEnum.TypeReportImport.Import_ngaychungtu text-center"> Ngày chứng từ</th>
                                             <th class="@commonEnum.TypeReportImport.Import_manhacc text-left"> Mã nhà cung cấp</th>
                                             <th class="@commonEnum.TypeReportImport.Import_tennhacc text-left"> Tên nhà cung cấp</th>
+                                            <th class="@commonEnum.TypeRChietKhau.tennhomhang text-left">Tên nhóm hàng</th>
                                             <th class="@commonEnum.TypeReportImport.Import_mahang text-left"> Mã hàng</th>
                                             <th class="@commonEnum.TypeReportImport.Import_tenhang text-left"> Tên hàng</th>
                                             <th class="@commonEnum.TypeReportImport.Import_donvitinh text-left">Đvt</th>
@@ -507,6 +508,7 @@
                                                 </a>
                                             </td>
                                             <td class="@commonEnum.TypeReportImport.Import_tennhacc text-left" data-bind="text: TenNhaCungCap"></td>
+                                            <td class="@commonEnum.TypeRChietKhau.tennhomhang text-left" data-bind="text: TenNhomHangHoa"></td>
                                             <td class="@commonEnum.TypeReportImport.Import_mahang ">
                                                 <a style="cursor: pointer" class="text-left " data-bind="text: MaHangHoa, click: $parent.LoadHangHoa_byMaHH">
                                                 </a>
@@ -533,12 +535,12 @@
                                     </tbody>
                                     <tfoot class="PhanQuyen" hidden>
                                         <tr>
-                                            <td class="bg12 bhma text-center" colspan="17"><i>Bạn không có quyền xem báo cáo này!</i></td>
+                                            <td class="bg12 bhma text-center" colspan="20"><i>Bạn không có quyền xem báo cáo này!</i></td>
                                         </tr>
                                     </tfoot>
                                     <tfoot class="Report_Empty" hidden>
                                         <tr>
-                                            <td class="bg12 bhma text-center" colspan="17"><i>Báo cáo không có dữ liệu</i></td>
+                                            <td class="bg12 bhma text-center" colspan="20"><i>Báo cáo không có dữ liệu</i></td>
                                         </tr>
                                     </tfoot>
                                     <tfoot class="TC_ChiTiet">
@@ -547,6 +549,7 @@
                                             <td class="@commonEnum.TypeReportImport.Import_ngaychungtu"></td>
                                             <td class="@commonEnum.TypeReportImport.Import_manhacc "></td>
                                             <td class="@commonEnum.TypeReportImport.Import_tennhacc "></td>
+                                            <td class="@commonEnum.TypeRChietKhau.tennhomhang "></td>
                                             <td class="@commonEnum.TypeReportImport.Import_mahang "></td>
                                             <td class="@commonEnum.TypeReportImport.Import_tenhang "></td>
                                             <td class="@commonEnum.TypeReportImport.Import_donvitinh "></td>

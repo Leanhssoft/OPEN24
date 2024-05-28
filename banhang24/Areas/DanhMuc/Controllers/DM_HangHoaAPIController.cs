@@ -31,6 +31,7 @@ using System.Diagnostics;
 using Model_banhang24vn.DAL;
 using System.Web.Http.Results;
 using banhang24.Compress;
+using WebGrease.Css.Extensions;
 
 namespace banhang24.Areas.DanhMuc.Controllers
 {
@@ -47,6 +48,57 @@ namespace banhang24.Areas.DanhMuc.Controllers
             {
                 var _classDMHH = new ClassDM_HangHoa(db);
                 return _classDMHH.Gets(null);
+            }
+        }
+
+        [HttpPost]
+        public List<dynamic> GetInforBasic_OfListHangHoa(List<Guid> arrIdQuyDoi)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                var quydoi = db.DonViQuiDois.Where(x => arrIdQuyDoi.Contains(x.ID)).Select(x => new
+                {
+                    x.ID,
+                    x.ID_HangHoa,
+                    x.MaHangHoa,
+                }).ToList();
+
+                var data = (from qd in quydoi
+                            join hh in db.DM_HangHoa on qd.ID_HangHoa equals hh.ID
+                            select new
+                            {
+                                qd.ID,
+                                qd.ID_HangHoa,
+                                qd.MaHangHoa,
+                                hh.TenHangHoa,
+                                Ma_TenHangHoa = string.Concat(hh.TenHangHoa, " (", qd.MaHangHoa, ")")
+                            }).ToList<dynamic>();
+                return data;
+            }
+        }
+
+        [HttpPost]
+        public bool UpdateLoaiHangHoa(int loaiHangHoa, List<Guid> arrIdQuyDoi)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                try
+                {
+                    bool laHangHoa = false;
+                    if (loaiHangHoa == 1)
+                    {
+                        laHangHoa = true;
+                    }
+                    List<Guid> arrIdHangHoa = db.DonViQuiDois.Where(x => arrIdQuyDoi.Contains(x.ID)).Select(x => x.ID_HangHoa).ToList();
+
+                    db.DM_HangHoa.Where(x => arrIdHangHoa.Contains(x.ID)).ForEach(x => { x.LoaiHangHoa = loaiHangHoa; x.LaHangHoa = laHangHoa; });
+                    db.SaveChanges();
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
             }
         }
 
@@ -6311,7 +6363,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     DonViQuiDoi dvqd = _classDVQD.Get(id => id.ID == objNewDVT.ID);
                     Guid iddvqdold = dvqdOld.Where(pc => pc.LaDonViChuan == true).FirstOrDefault().ID;
                     List<DM_GiaVon> dmgiavon = db.DM_GiaVon.Where(p => p.ID_DonVi == iddonvi && p.ID_DonViQuiDoi == iddvqdold).ToList();
-                    double GiaVonOld = dmgiavon.Count != 0 ? Math.Round(dmgiavon.FirstOrDefault().GiaVon,2) : 0;// không làm tròn giavon
+                    double GiaVonOld = dmgiavon.Count != 0 ? Math.Round(dmgiavon.FirstOrDefault().GiaVon, 2) : 0;// không làm tròn giavon
                     if (objNewDVT.GiaVon != GiaVonOld && objNewHH.QuanLyTheoLoHang == false)
                     {
                         if (dmgiavon.Count > 0)
