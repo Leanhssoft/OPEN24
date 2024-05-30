@@ -1022,17 +1022,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     return BadRequest(ModelState);
                 }
                 string strUpd = _classND.Put_NguoiDung(hT_NguoiDung).Result;
-                //add lich sử thao tác
-                HT_NhatKySuDung hT_NhatKySuDung = new HT_NhatKySuDung();
-                hT_NhatKySuDung.ID = Guid.NewGuid();
-                hT_NhatKySuDung.ID_NhanVien = idnhanvien;
-                hT_NhatKySuDung.ChucNang = "Quản lý người dùng";
-                hT_NhatKySuDung.ThoiGian = DateTime.Now;
-                hT_NhatKySuDung.NoiDung = "Cập nhật người dùng tên: " + _classNV.Get(p => p.ID == hT_NguoiDung.ID_NhanVien).TenNhanVien + ", tên đăng nhập: " + hT_NguoiDung.TaiKhoan;
-                hT_NhatKySuDung.NoiDungChiTiet = "Cập nhật người dùng tên: " + _classNV.Get(p => p.ID == hT_NguoiDung.ID_NhanVien).TenNhanVien + ", tên đăng nhập: " + hT_NguoiDung.TaiKhoan;
-                hT_NhatKySuDung.LoaiNhatKy = 2;
-                hT_NhatKySuDung.ID_DonVi = hT_NguoiDung.ID_DonVi.Value;
-                SaveDiary.add_Diary(hT_NhatKySuDung);
                 if (strUpd != null && strUpd != string.Empty)
                     return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, strUpd));
                 else

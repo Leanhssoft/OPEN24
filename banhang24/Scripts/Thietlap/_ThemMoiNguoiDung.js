@@ -125,6 +125,7 @@
             let itemDV = self.listData.ChiNhanhs.filter((x) => x.ID === item.ID_DonVi);
             if (itemDV.length > 0) {
                 self.newUser.TenDonVi = itemDV[0].TenDonVi;
+                self.itemOld.TenDonVi = itemDV[0].TenDonVi;
             }
             $('#vmThemMoiNguoiDung').modal('show');
         },
@@ -135,7 +136,7 @@
             self.newUser.TenNhanVien = item.TenNhanVien;
             self.newUser.ID_NhanVien = item.ID;
             await self.GetListDonVi_byNhanVien(item.ID);
-            if (self.listData.ChiNhanhs.length === 1 ) {
+            if (self.listData.ChiNhanhs.length === 1) {
                 self.newUser.TenDonVi = self.listData.ChiNhanhs[0].TenDonVi;
                 self.newUser.ID_DonVi = self.listData.ChiNhanhs[0].ID;
             }
@@ -257,7 +258,7 @@
                                         ID_DonVi: VHeader.IdDonVi,
                                         ID_NhanVien: VHeader.IdNhanVien,
                                         LoaiNhatKy: 1,
-                                        ChucNang: 'Người dùng',
+                                        ChucNang: 'Quản lý người dùng',
                                         NoiDung: 'Thêm mới người dùng '.concat(self.newUser.TaiKhoan),
                                         NoiDungChiTiet: 'Thêm mới người dùng '.concat(self.newUser.TaiKhoan,
                                             '<br /> - Nhân viên: ', self.newUser.TenNhanVien,
@@ -307,6 +308,26 @@
                                     self.saveOK = true;
                                     commonStatisJs.ShowMessageSuccess('Cập nhật người dùng thành công');
 
+                                    let diary = {
+                                        ID_DonVi: VHeader.IdDonVi,
+                                        ID_NhanVien: VHeader.IdNhanVien,
+                                        LoaiNhatKy: 2,
+                                        ChucNang: 'Quản lý người dùng',
+                                        NoiDung: 'Cập nhật người dùng '.concat(self.newUser.TaiKhoan),
+                                        NoiDungChiTiet: 'Cập nhật người dùng '.concat(self.newUser.TaiKhoan,
+                                            '<br /> - Mã nhân viên: ', self.newUser.MaNhanVien,
+                                            '<br /> - Tên nhân viên: ', self.newUser.TenNhanVien,
+                                            '<br /> - Vai trò: ', self.newUser.TenVaiTro,
+                                            '<br /> - Chi nhánh: ', self.newUser.TenDonVi,
+                                            '<br /> - Đổi mật khẩu: ', self.isChangePassword ? 'có' : 'không',
+                                            '<br /> <b> Thông tin cũ: </b> ',
+                                            '<br /> - Tên đăng nhập: ', self.itemOld.TaiKhoan,
+                                            '<br /> - Mã nhân viên: ', self.itemOld.MaNhanVien,
+                                            '<br /> - Tên nhân viên: ', self.itemOld.TenNhanVien,
+                                            '<br /> - Chi nhánh: ', self.itemOld.TenDonVi
+                                        )
+                                    }
+                                    Insert_NhatKyThaoTac_1Param(diary);
                                 }).always(function () {
                                     $('#vmThemMoiNguoiDung').modal('hide');
                                 })
