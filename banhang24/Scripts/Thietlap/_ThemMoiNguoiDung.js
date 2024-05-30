@@ -9,6 +9,7 @@
         saveOK: false,
         typeUpdate: true,// 1,new, 2.update, 3.delete
         isSaving: false,
+        isChangePassword: false,
         role: {},
         itemOld: {},
         chinhanhChosing: { TenChiNhanh: '', ID: null },
@@ -45,24 +46,24 @@
         self.Guid_Empty = '00000000-0000-0000-0000-000000000000';
     },
     methods: {
-        GetListDonVi_byNhanVien: function (idNhanVien) {
+        GetListDonVi_byNhanVien: async function (idNhanVien) {
             var self = this;
-            ajaxHelper("/api/DanhMuc/DM_DonViAPI/" + "GetListDonViByIDNguoiDung?idnhanvien=" + idNhanVien, 'GET').done(function (data) {
-                if (data !== null && data.length > 0) {
-                    self.listData.ChiNhanhs = data;
-                    if (data.length === 1) {
-                        self.newUser.ID_DonVi = data[0].ID;
-                        self.newUser.TenDonVi = data[0].TenDonVi;
+            await ajaxHelper("/api/DanhMuc/DM_DonViAPI/" + "GetListDonViByIDNguoiDung?idnhanvien=" + idNhanVien, 'GET').done()
+                .then(function (data) {
+                    if (data !== null && data.length > 0) {
+                        self.listData.ChiNhanhs = data;
                     }
-                    console.log('cn by user ', data)
-                }
-            })
+                    else {
+                        self.listData.ChiNhanhs = [];
+                    }
+                })
         },
         ShowModalAdd: function () {
             var self = this;
             self.saveOK = false;
             self.typeUpdate = 1;
             self.isSaving = false;
+            self.isChangePassword = false;
 
             self.newUser = {
                 ID: self.Guid_Empty,
@@ -88,10 +89,11 @@
             }
             $('#vmThemMoiNguoiDung').modal('show');
         },
-        ShowModalUpdate: function (item) {
+        ShowModalUpdate: async function (item) {
             var self = this;
             self.saveOK = false;
             self.typeUpdate = 2;
+            self.isChangePassword = false;
             self.itemOld = $.extend({}, item);
             self.newUser = {
                 ID: item.ID,
@@ -113,23 +115,30 @@
                 TenDonVi: VHeader.TenDonVi,
                 TenVaiTro: '',
             }
-            console.log(2, self.newUser)
             var vaitro = $.grep(self.listData.NhomNguoiDungs, function (x) {
                 return x.ID === self.newUser.ID_NhomNguoiDung;
             });
             if (vaitro.length > 0) {
                 self.newUser.TenVaiTro = vaitro[0].TenNhom;
             }
-            self.GetListDonVi_byNhanVien(item.ID_NhanVien);
+            await self.GetListDonVi_byNhanVien(item.ID_NhanVien);
+            let itemDV = self.listData.ChiNhanhs.filter((x) => x.ID === item.ID_DonVi);
+            if (itemDV.length > 0) {
+                self.newUser.TenDonVi = itemDV[0].TenDonVi;
+            }
             $('#vmThemMoiNguoiDung').modal('show');
         },
 
-        ChoseNhanVien: function (item) {
+        ChoseNhanVien: async function (item) {
             let self = this;
             self.newUser.MaNhanVien = item.MaNhanVien;
             self.newUser.TenNhanVien = item.TenNhanVien;
             self.newUser.ID_NhanVien = item.ID;
-            self.GetListDonVi_byNhanVien(item.ID);
+            await self.GetListDonVi_byNhanVien(item.ID);
+            if (self.listData.ChiNhanhs.length === 1 ) {
+                self.newUser.TenDonVi = self.listData.ChiNhanhs[0].TenDonVi;
+                self.newUser.ID_DonVi = self.listData.ChiNhanhs[0].ID;
+            }
         },
         ChoseVaiTro: function (item) {
             let self = this;
@@ -141,7 +150,6 @@
             self.newUser.TenDonVi = item.TenDonVi;
             self.newUser.ID_DonVi = item.ID;
         },
-
         CheckSave: function () {
             let self = this;
             var password = self.newUser.MatKhau;
@@ -166,33 +174,38 @@
                 }
             }
 
-            if (commonStatisJs.CheckNull(password)) {
-                commonStatisJs.ShowMessageDanger('Vui lòng nhập mật khẩu');
-                return false;
-            }
+            if (self.isChangePassword || self.typeUpdate == 1) {
+                password = password.trim();
+                if (password.length < 6) {
+                    commonStatisJs.ShowMessageDanger('Mật khẩu phải chứa ít nhất 6 ký tự ');
+                    return false;
+                }
+                if (password.length > 50) {
+                    commonStatisJs.ShowMessageDanger('Mật khẩu phải chỉ được nhập tối đa 50 ký tự ');
+                    return;
+                }
+                if (password.search(/\d/) == -1) {
+                    commonStatisJs.ShowMessageDanger('Mật khẩu phải có ít nhất 1 chữ số ');
+                    return false;
+                }
 
-            password = password.trim();
-            if (password.length < 6) {
-                commonStatisJs.ShowMessageDanger('Mật khẩu phải chứa ít nhất 6 ký tự ');
-                return false;
-            }
-            if (password.length > 50) {
-                commonStatisJs.ShowMessageDanger('Mật khẩu phải chỉ được nhập tối đa 50 ký tự ');
-                return;
-            }
-            if (password.search(/\d/) == -1) {
-                commonStatisJs.ShowMessageDanger('Mật khẩu phải có ít nhất 1 chữ số ');
-                return false;
-            }
+                if (password.search(/[a-zA-Z]/) == -1) {
+                    commonStatisJs.ShowMessageDanger('Mật khẩu phải có ít nhất 1 chữ cái');
+                    return false;
+                }
 
-            if (password.search(/[a-zA-Z]/) == -1) {
-                commonStatisJs.ShowMessageDanger('Mật khẩu phải có ít nhất 1 chữ cái');
-                return false;
-            }
+                if (self.newUser.MatKhau !== self.newUser.PasswordRepeat) {
+                    commonStatisJs.ShowMessageDanger('Mật khẩu xác nhận không giống nhau');
+                    return false;
+                }
 
-            if (self.newUser.MatKhau !== self.newUser.PasswordRepeat) {
-                commonStatisJs.ShowMessageDanger('Mật khẩu xác nhận không giống nhau');
-                return false;
+                if (commonStatisJs.CheckNull(password)) {
+                    commonStatisJs.ShowMessageDanger('Vui lòng nhập mật khẩu');
+                    return false;
+                }
+            }
+            else {
+                self.newUser.MatKhau = '';
             }
 
             if (self.typeUpdate === 1) {
@@ -274,7 +287,6 @@
                     idnhanvien: self.newUser.ID_NhanVien,
                     objNewND: self.newUser,
                 };
-                console.log('PutHT_NguoiDung', myData)
                 ajaxHelper(self.HTNguoiDungAPI + "Check_ID_NhanVienEditExist?idNhanVien=" + self.newUser.ID_NhanVien
                     + "&id=" + self.newUser.ID, 'GET').done(function (data) {
                         if (data) {
