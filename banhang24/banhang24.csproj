@@ -12436,6 +12436,7 @@
     <Content Include="Views\Home\Login2.cshtml" />
     <Content Include="Views\ThietLap\_themmoinguoidung.cshtml" />
     <Content Include="Views\TuVan\_themmoilichhen.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\FolderProfile2.pubxml" />
     <Content Include="Views\TuVan\_themmoiphanhoi.cshtml" />
     <Content Include="Views\GiaoDich\ChuyenHang.cshtml" />
