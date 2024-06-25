@@ -8171,6 +8171,12 @@ var ViewModel = function () {
             self.ListTheKhoByLoHang(data.lst);
             self.TotalRecordLH(data.Rowcount);
             self.PageCountLH(data.pageCount);
+            if (data.RowErrKho !== null) {
+                self.RowErrKho(data.RowErrKho);
+            }
+            else {
+                self.RowErrKho();
+            }
         });
     };
 
