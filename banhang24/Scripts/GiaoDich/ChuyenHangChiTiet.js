@@ -196,6 +196,16 @@ var ChuyenHangChiTiet = function () {
         }
     }
 
+    async function GetTonKho_byIDQuyDoi_fromDB(param) {
+        let xx = await ajaxHelper(DMHangHoaUri + 'GetTonKho_byIDQuyDois', 'POST', param).done(function (x) { }).then(function (x) {
+            if (x.res) return x.data;
+            return [];
+        }).fail(function () {
+            return [];
+        });
+        return xx;
+    }
+
     function GetTonKho_byIDQuyDois() {
         var arrIDQuiDoi = [], arrIDLoHang = [];
 
@@ -1483,7 +1493,140 @@ var ChuyenHangChiTiet = function () {
         document.getElementById("btnaddHDCHHT").lastChild.data = "Lưu (F10)";
     }
 
-    self.SaveInvoice = function (status) {
+    function CheckTonKho_GroupIDQuyDoi(arrCTHD) {
+        // group by idDonViQuyDoi, id_Lohang
+        let group_arrIDQuyDoi = [], group_arrIDLoHang = [];
+        let arrCTNew = [];
+        for (let i = 0; i < arrCTHD.length; i++) {
+            let itFor = arrCTHD[i];
+            if ($.inArray(itFor.ID_DonViQuiDoi, group_arrIDQuyDoi) === -1) {
+                group_arrIDQuyDoi.push(itFor.ID_DonViQuiDoi);
+
+                if (itFor.QuanLyTheoLoHang) {
+                    if ($.inArray(itFor.ID_LoHang, group_arrIDLoHang) === -1) {
+                        group_arrIDLoHang.push(itFor.ID_LoHang);
+                        let obj = {
+                            TenHangHoa: itFor.TenHangHoa,
+                            MaHangHoa: itFor.MaHangHoa,
+                            MaLoHang: itFor.MaLoHang,
+                            ID_DonViQuiDoi: itFor.ID_DonViQuiDoi,
+                            ID_LoHang: itFor.ID_LoHang,
+                            SoLuong: itFor.SoLuong,
+                            QuanLyTheoLoHang: itFor.QuanLyTheoLoHang
+                        }
+                        arrCTNew.push(obj);
+                    }
+                    else {
+                        // find & sum by lo
+                        for (let j = 0; j < arrCTNew.length; j++) {
+                            let forNew = arrCTNew[j];
+                            if (forNew.ID_DonViQuiDoi === itFor.ID_DonViQuiDoi && forNew.ID_LoHang === itFor.ID_LoHang) {
+                                arrCTNew[j].SoLuong += formatNumberToFloat(itFor.SoLuong);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else {
+                    let obj = {
+                        TenHangHoa: itFor.TenHangHoa,
+                        MaHangHoa: itFor.MaHangHoa,
+                        MaLoHang: itFor.MaLoHang,
+                        ID_DonViQuiDoi: itFor.ID_DonViQuiDoi,
+                        ID_LoHang: itFor.ID_LoHang,
+                        SoLuong: itFor.SoLuong,
+                        ID_LoHang: null,
+                        QuanLyTheoLoHang: itFor.QuanLyTheoLoHang
+                    }
+                    arrCTNew.push(obj);
+                }
+            }
+            else {
+                if (itFor.QuanLyTheoLoHang) {
+                    if ($.inArray(itFor.ID_LoHang, group_arrIDLoHang) === -1) {
+                        group_arrIDLoHang.push(itFor.ID_LoHang);
+                        let obj = {
+                            TenHangHoa: itFor.TenHangHoa,
+                            MaHangHoa: itFor.MaHangHoa,
+                            MaLoHang: itFor.MaLoHang,
+                            ID_DonViQuiDoi: itFor.ID_DonViQuiDoi,
+                            ID_LoHang: itFor.ID_LoHang,
+                            SoLuong: itFor.SoLuong,
+                            QuanLyTheoLoHang: itFor.QuanLyTheoLoHang
+                        }
+                        arrCTNew.push(obj);
+                    }
+                    else {
+                        // find & sum by lo
+                        for (let j = 0; j < arrCTNew.length; j++) {
+                            let forNew = arrCTNew[j];
+                            if (forNew.ID_DonViQuiDoi === itFor.ID_DonViQuiDoi && forNew.ID_LoHang === itFor.ID_LoHang) {
+                                arrCTNew[j].SoLuong += formatNumberToFloat(itFor.SoLuong);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else {
+                    // find & sum by lo
+                    for (let j = 0; j < arrCTNew.length; j++) {
+                        let forNew = arrCTNew[j];
+                        if (forNew.ID_DonViQuiDoi === itFor.ID_DonViQuiDoi) {
+                            arrCTNew[j].SoLuong += formatNumberToFloat(itFor.SoLuong);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return arrCTNew;
+    }
+
+    async function CheckTonKho_CTHD(arrCTHD, ngaylapHD, trangThaiHD = 1, idHoaDonUpdate = const_GuidEmpty) {
+
+        const arrCTNew = CheckTonKho_GroupIDQuyDoi(arrCTHD);
+
+        let arrIDQuyDoi = $.unique(arrCTNew.map(function (x) {
+            return x.ID_DonViQuiDoi;
+        }));
+        let arrIDLoHang = arrCTNew.map(function (x) {
+            return x.ID_LoHang;
+        }).filter(x => x !== null);
+
+        // neu capnhatHD: get ngaylapHD theo hoadon
+        let ngayLapCompare = trangThaiHD === 8 ? moment(ngaylapHD, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DD HH:mm') :
+            moment(ngaylapHD, 'YYYY-MM-DD HH:mm').add(1, 'minutes').format('YYYY-MM-DD HH:mm');
+
+        let paramCheckTon = {
+            ID_ChiNhanh: _idDonVi,
+            IdHoaDonUpdate: trangThaiHD === 8 ? idHoaDonUpdate : const_GuidEmpty,
+            ToDate: ngayLapCompare,
+            ListIDQuyDoi: arrIDQuyDoi,
+            ListIDLoHang: arrIDLoHang,
+        };
+
+        // check tonko hangthuong + hang colo
+        let msgErr = '';
+        let dataCheck = await GetTonKho_byIDQuyDoi_fromDB(paramCheckTon);
+        if (commonStatisJs.CheckNull(dataCheck)) return true;
+        for (let i = 0; i < arrCTNew.length; i++) {
+            let forOut = arrCTNew[i];
+            let dataDB = $.grep(dataCheck, function (o) {
+                return o.ID_DonViQuiDoi === forOut.ID_DonViQuiDoi
+                    && (!forOut.QuanLyTheoLoHang || (o.ID_LoHang === forOut.ID_LoHang))
+            });
+            if (dataDB.length > 0 && RoundDecimal(dataDB[0].TonKho) < RoundDecimal(formatNumberToFloat(forOut.SoLuong))) {
+                msgErr += forOut.TenHangHoa.concat(' ', forOut.QuanLyTheoLoHang ? ' (' + forOut.MaLoHang + ') ' : '', ', ');
+            }
+        }
+        if (!commonStatisJs.CheckNull(msgErr)) {
+            ShowMessage_Danger('Không đủ tồn kho cho hàng hóa ' + Remove_LastComma(msgErr));
+            return false;
+        }
+        return true;
+    }
+
+    self.SaveInvoice = async function (status) {
         var cthd = localStorage.getItem(lcCTChuyenHang);
         if (cthd !== null) {
             cthd = JSON.parse(cthd);
@@ -1513,11 +1656,11 @@ var ChuyenHangChiTiet = function () {
                     Enable_btnSave();
                     return false;
                 }
+                let ngaylapHD = GetNgayLapHD_withTimeNow(hd[0].NgayLapHoaDon);
 
                 var idHoaDon = hd[0].ID;
                 var arrCT = [];
                 var err = '';
-                var errTonKho = '';
                 if (idHoaDon === null || idHoaDon === undefined || idHoaDon === const_GuidEmpty) {
                     idHoaDon = const_GuidEmpty;
                 }
@@ -1552,52 +1695,8 @@ var ChuyenHangChiTiet = function () {
                     Enable_btnSave();
                     return false;
                 }
-                // only check soluong if chuyenhang
-                if (self.IsChuyenHang()) {
-                    for (let i = 0; i < cthd.length; i++) {
-                        let itOut = cthd[i];
-                        if (formatNumberToFloat(itOut.SoLuong) === 0) {
-                            err += itOut.TenHangHoa + ', ';
-                        }
-                        // check soluong > tonkho
-                        //if (idHoaDon === const_GuidEmpty) {
-                        if (formatNumberToFloat(itOut.SoLuong) > itOut.TonKho) {
-                            errTonKho += itOut.TenHangHoa + ', ';
-                        }
-                        for (let j = 0; j < itOut.DM_LoHang.length; j++) {
-                            let itFor = itOut.DM_LoHang[j];
-                            if (j !== 0) {
-                                if (formatNumberToFloat(itFor.SoLuong) === 0) {
-                                    err += itFor.TenHangHoa + ', ';
-                                }
-                                if (formatNumberToFloat(itFor.SoLuong) > itFor.TonKho) {
-                                    errTonKho += itFor.TenHangHoa + ' (Lô: ' + itFor.MaLoHang + ') ,';
-                                }
-                            }
-                        }
-                        //}
-                        //else {
-                        //    // sua doi hoadonchuyenhang: cộng ngược lại số lượng chuyển trước đó
-                        //    if (formatNumberToFloat(itOut.SoLuong) > itOut.TonKho + itOut.SoLuongChuyen) {
-                        //        errTonKho += itOut.TenHangHoa + ', ';
-                        //    }
 
-                        //    for (let j = 0; j < itOut.DM_LoHang.length; j++) {
-                        //        let itFor = itOut.DM_LoHang[j];
-                        //        if (j !== 0) {
-                        //            if (formatNumberToFloat(itFor.SoLuong) === 0) {
-                        //                err += itFor.TenHangHoa + ', ';
-                        //            }
-                        //            if (formatNumberToFloat(itFor.SoLuong) > itFor.TonKho + itFor.SoLuongChuyen) {
-                        //                errTonKho += itFor.TenHangHoa + ' (Lô: ' + itFor.MaLoHang + ') ,';
-                        //            }
-                        //        }
-                        //    }
-                        //}
-                    }
-                }
                 err = Remove_LastComma(err);
-                errTonKho = Remove_LastComma(errTonKho);
 
                 if (err !== '') {
                     ShowMessage_Danger('Vui lòng nhập số lượng cho ' + err);
@@ -1605,10 +1704,13 @@ var ChuyenHangChiTiet = function () {
                     return false;
                 }
                 if (self.ThietLap().XuatAm === false) {
-                    if (errTonKho !== '') {
-                        ShowMessage_Danger('Không đủ số lượng tồn kho cho ' + errTonKho);
-                        Enable_btnSave();
-                        return false;
+                    // only check soluong if chuyenhang
+                    if (self.IsChuyenHang()) {
+                        const checkTonKho = await CheckTonKho_CTHD(arrCT, ngaylapHD, idHoaDon == const_GuidEmpty ? 1 : 8, idHoaDon);
+                        if (!checkTonKho) {
+                            Enable_btnSave();
+                            return false;
+                        }
                     }
                 }
 
@@ -1617,7 +1719,7 @@ var ChuyenHangChiTiet = function () {
                 }
 
                 var nhanhang = 0;
-                hd[0].NgayLapHoaDon = GetNgayLapHD_withTimeNow(hd[0].NgayLapHoaDon);
+                hd[0].NgayLapHoaDon = ngaylapHD;
                 hd[0].TongChiPhi = 0;
 
                 if (self.IsChuyenHang()) {
