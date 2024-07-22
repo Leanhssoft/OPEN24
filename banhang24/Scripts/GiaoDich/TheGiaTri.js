@@ -1459,6 +1459,9 @@
                     + "; var item2= [], item4= [], item5 =[]"
                     + "; var item3=" + JSON.stringify(self.InforHDprintf()) + "; </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>"); // MauInTeamplate.js: used to bind data in knockout
+                data = data.replace('{TienThuaTraKhach}', "<span data-bind=\"text: InforHDprintf().TienThua\"></span>");
+                data = data.replace('{ChietKhauNVHoaDon}', "<span data-bind=\"text: InforHDprintf().ChietKhauNVHoaDon\"></span>");
+
                 PrintExtraReport(data); // assign content HTML into frame
             }
         });
@@ -1478,6 +1481,8 @@
                 data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
                 data = data.concat("<script > var item1= [], item4= [], item5 =[]" + "; var item2= []" + ";var item3=" + JSON.stringify(itemHDFormat) + "; </script>");
                 data = data.concat(" <script type='text/javascript' src='/Scripts/Thietlap/MauInTeamplate.js'></script>");
+                data = data.replace('{TienThuaTraKhach}', "<span data-bind=\"text: InforHDprintf().TienThua\"></span>");
+                data = data.replace('{ChietKhauNVHoaDon}', "<span data-bind=\"text: InforHDprintf().ChietKhauNVHoaDon\"></span>");
                 PrintExtraReport(data);
             }
         });
