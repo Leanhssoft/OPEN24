@@ -1371,6 +1371,8 @@
         hd.KhuyenMai = formatNumber(hd.KhuyenMaiVND);
         hd.TongTienHang = formatNumber(hd.MucNap);
         hd.TongGiamGia = formatNumber(hd.ChietKhauVND);
+        hd.TienThua = 0;
+        hd.ChietKhauNVHoaDon = hd.NhanVienThucHien;
         let conno = formatNumberToFloat(hd.PhaiThanhToan) - formatNumberToFloat(hd.KhachDaTra);
         hd.NoSau = formatNumber(conno);
         hd.PhaiThanhToan = formatNumber(hd.PhaiThanhToan);
