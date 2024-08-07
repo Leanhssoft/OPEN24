@@ -1342,6 +1342,7 @@
                 break;
             case 6:
                 MenuLeft_ShowSearchHang();
+                array_Seach.ID_NguoiDung = _id_NhanVien;
                 array_Seach.lstPhongBan = self.ListIDPhongBan_Chosed();
                 array_Seach.LoaiChungTu = array_Seach.LoaiChungTu + ',6';
 
@@ -2818,7 +2819,7 @@
     self.PhongBans = ko.observableArray();
     self.ListIDPhongBan_Chosed = ko.observableArray();
     var treeDepartment = '';
-
+    
     function GetTree_NhomHangHoa() {
         ajaxHelper('/api/DanhMuc/NS_NhanVienAPI/' + 'GetTreePhongBan?chinhanhId=' + _id_DonVi, 'GET').done(function (data) {
             if (data.length > 0) {
@@ -2838,7 +2839,7 @@
         });
     }
     GetTree_NhomHangHoa();
-
+   
     self.GetChildenID_Department = function (idNhom) {
         var arrID = [];
         var nhom = $.grep(self.PhongBans(), function (x) {
