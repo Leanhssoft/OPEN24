@@ -25255,20 +25255,6 @@ var NewModel_BanHangLe = function () {
                 var itemHH = await GetInforProduct_ByIDQuidoi(idQuiDoi, id_DonVi)
                 if (itemHH.length > 0) {
                     laHangHoa = itemHH[0].LaHangHoa;
-                    //if (itemHH[0].QuanLyTheoLoHang) {
-                    //    let lot = $.grep(itemHH, function (x) {
-                    //        return x.ID_LoHang === itemChose.ID_LoHang;
-                    //    });
-                    //    if (lot.length > 0) {
-                    //        tonkho = lot[0].TonKho;
-                    //    }
-                    //}
-                    //else {
-                    //    tonkho = itemHH[0].TonKho;
-                    //}
-                    //if (laHangHoa === false) {
-                    //    giaVon = 0;
-                    //}
                     if (itemHH[0].Xoa) {
                         ShowMessage_Danger('Dịch vụ ' + itemChose.TenHangHoa + ' đã bị xóa, không thể sử dụng');
                         return false;
