@@ -45,6 +45,23 @@ namespace Model
             return dt;
         }
         /// <summary>
+        /// so sánh ngày lập hóa đơn cũ và ngày lập mới
+        /// --> trả về ngày lập cũ nếu ngày lập mới giống (ngày,tháng, năm, giờ, phút)
+        /// </summary>
+        /// <param name="dtOld"></param>
+        /// <param name="dtNew"></param>
+        /// <returns></returns>
+        public static DateTime GetDateOld_ifSameHHmm(DateTime dtOld, DateTime dtNew)
+        {
+            string sDateOld = dtOld.ToString("yyyy-MM-dd HH:mm");
+            string sDateNew = dtNew.ToString("yyyy-MM-dd HH:mm");
+            if (string.Compare(sDateNew, sDateOld) == 0)
+            {
+                return dtOld;
+            }
+            return AddTimeNow_forDate(dtNew);
+        }
+        /// <summary>
         /// Dãy tiếng việt có dấu cần chuyển đổi
         /// </summary>
         public static readonly string[] VietnameseSigns = new string[]

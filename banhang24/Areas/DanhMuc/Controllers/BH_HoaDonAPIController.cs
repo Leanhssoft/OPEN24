@@ -3749,7 +3749,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     oldBH_HD.MaHoaDon = BH_HoaDon.MaHoaDon;
                     oldBH_HD.NgaySua = DateTime.Now;
                     oldBH_HD.NguoiSua = BH_HoaDon.NguoiSua;
-                    oldBH_HD.NgayLapHoaDon = BH_HoaDon.NgayLapHoaDon;
+                    oldBH_HD.NgayLapHoaDon = CommonStatic.GetDateOld_ifSameHHmm(ngayLapHDOld, BH_HoaDon.NgayLapHoaDon);
                     oldBH_HD.NgayApDungGoiDV = BH_HoaDon.NgayApDungGoiDV;
                     oldBH_HD.HanSuDungGoiDV = BH_HoaDon.HanSuDungGoiDV;
 
