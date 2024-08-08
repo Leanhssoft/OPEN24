@@ -63,6 +63,12 @@ namespace Model
 
         [Column(TypeName = "bit")]
         public bool? ThuPhiThanhToan { get; set; } = false;
+        [MaxLength(10)]
+        public string MaPinNganHang { get; set; }
+        public string LogoNganHang { get; set; }
+        [MaxLength(30)]
+        public string TenRutGon { get; set; }
+        public byte? TrangThai { get; set; } = 1;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DM_DoiTuong> DM_DoiTuong { get; set; }

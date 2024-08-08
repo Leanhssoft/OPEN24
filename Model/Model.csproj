@@ -942,6 +942,10 @@
     <Compile Include="Migrations\202406180239303_UpdateCoumnNoiDungThu_tblQuyHoaDon.designer.cs">
       <DependentUpon>202406180239303_UpdateCoumnNoiDungThu_tblQuyHoaDon.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202408080325541_AddColumnToDM_NganHang.cs" />
+    <Compile Include="Migrations\202408080325541_AddColumnToDM_NganHang.designer.cs">
+      <DependentUpon>202408080325541_AddColumnToDM_NganHang.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NhomDoiTuong_DonVi.cs" />
     <Compile Include="NhomHangHoa_DonVi.cs" />
@@ -1569,6 +1573,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202406180239303_UpdateCoumnNoiDungThu_tblQuyHoaDon.resx">
       <DependentUpon>202406180239303_UpdateCoumnNoiDungThu_tblQuyHoaDon.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202408080325541_AddColumnToDM_NganHang.resx">
+      <DependentUpon>202408080325541_AddColumnToDM_NganHang.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
