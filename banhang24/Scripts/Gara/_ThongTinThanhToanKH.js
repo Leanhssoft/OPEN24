@@ -459,7 +459,7 @@
             self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan = item.ID;
             self.QRCode.MaNganHang = item.MaNganHang;
             self.QRCode.SoTaiKhoan = item.SoTaiKhoan;
-            self.QRCode.SoTien = self.PhieuThuKhach.TienCK;
+            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(',', '');;
 
             console.log("change AccountCK", self.QRCode);
             self.updateQRCode();
