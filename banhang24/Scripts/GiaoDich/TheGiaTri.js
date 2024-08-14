@@ -59,6 +59,12 @@
     self.SuDungThe = ko.observable(0);
     self.HoanTraTheGiaTri = ko.observable(0);
 
+    //TaikhoannganhangCK
+    self.TenNganHangCK = ko.observable('');
+    self.TenChuTheCK = ko.observable('');
+    self.SoTaiKhoanCK = ko.observable('');
+    self.MaNganHangCK = ko.observable('');
+
     self.filter = ko.observable();
     self.filterNgayTao = ko.observable("0");
     self.filterNgayTao_Quy = ko.observable("0");
@@ -1110,6 +1116,7 @@
     self.NoHienTai = ko.observable();
 
     self.showpopupThanhtoan = function (item) {
+        debugger;
         ajaxHelper(BH_HoaDonUri + 'GetChietKhauNV_HoaDon?idHoaDon=' + item.ID, 'GET').done(function (obj) {
             if (obj.res === true) {
                 item.BH_NhanVienThucHiens = obj.data;
@@ -1389,7 +1396,6 @@
         var dasudung = self.SuDungThe() - self.HoanTraTheGiaTri();
         hd.TongSuDungThe = formatNumber(dasudung);
         hd.SoDuConLai = formatNumber(self.SoDuTheGiaTri());
-
         hd.TienMat = formatNumber3Digit(hd.TienMat);
         hd.TienATM = formatNumber3Digit(hd.TienATM);
         hd.TienGui = formatNumber3Digit(hd.TienGui);
@@ -1404,12 +1410,18 @@
         }
         if (formatNumberToFloat(objHD.TienGui) > 0) {
             pthuc += 'Chuyển khoản, ';
+            hd.TenNganHangChuyenKhoan = self.TenNganHangCK();
+            hd.TenChuTheChuyenKhoan = self.TenChuTheCK();
+            hd.SoTaiKhoanChuyenKhoan = self.SoTaiKhoanCK();
+            hd.LinkQR = 'https://img.vietqr.io/image/' + self.MaNganHangCK() + '-' +
+                self.SoTaiKhoanCK() + '-qr_only.png?amount=' + objHD.TienGui + '&addInfo=Thanh Toan Hoa Don';
+
         }
         hd.PhuongThucTT = Remove_LastComma(pthuc);
 
         return hd;
     }
-
+ 
     function GetInforPhieuThu(objHD) {
         objHD.TenCuaHang = self.CongTy()[0].TenCongTy;
         objHD.DiaChiCuaHang = self.CongTy()[0].DiaChi;
@@ -1467,8 +1479,31 @@
         });
     }
 
-    self.InTheNap_ByID = function (item, key) {
-        var itemHDFormat = GetInforHDPrint(item, false);
+    function fetchBankAccountData(MaHoaDon, ID_DonVi) {
+        return new Promise((resolve, reject) => {
+            ajaxHelper(BH_HoaDonUri + 'GetHoaDonDetails?maHoaDon=' + MaHoaDon + '&idDonVi=' + ID_DonVi, 'GET').done(function (data) {
+                if (data != null && data.length > 0) {
+                    var firstItem = data[0];
+                    self.TenNganHangCK(firstItem.TenNganHang);
+                    self.TenChuTheCK(firstItem.TenChuThe);
+                    self.SoTaiKhoanCK(firstItem.SoTaiKhoan);
+                    self.MaNganHangCK(firstItem.MaNganHang);
+                    resolve(); 
+                } else {
+                    reject("Không có dữ liệu");
+                }
+            }).fail(function (error) {
+                reject(error); 
+            });
+        });
+    }
+
+    self.InTheNap_ByID = async function (item, key) {
+        debugger;
+        if (item.TienGui > 0) { //Ngan hang CK
+            await fetchBankAccountData(item.MaHoaDon, item.ID_DonVi);
+        }
+        var itemHDFormat = GetInforHDPrint(item);
         self.InforHDprintf(itemHDFormat);
 
         $.ajax({

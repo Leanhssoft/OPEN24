@@ -6159,6 +6159,40 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
 
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetHoaDonDetails(string maHoaDon, Guid idDonVi)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                try
+                {
+                    var result = (from hd in db.BH_HoaDon
+                                  join ct in db.Quy_HoaDon_ChiTiet on hd.ID equals ct.ID_HoaDonLienQuan
+                                  join tknh in db.DM_TaiKhoanNganHang on ct.ID_TaiKhoanNganHang equals tknh.ID
+                                  join nh in db.DM_NganHang on tknh.ID_NganHang equals nh.ID
+                                  where hd.MaHoaDon == maHoaDon && hd.ID_DonVi == idDonVi
+                                  select new
+                                  {
+                                      nh.MaNganHang,
+                                      nh.TenNganHang,
+                                      tknh.TenChuThe,
+                                      tknh.SoTaiKhoan,
+                                      ct.TienGui
+                                  }).ToList();
+
+                    if (result == null || !result.Any())
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return InternalServerError(ex);
+                }
+            }
+        }
         [HttpPost]
         public IHttpActionResult PostBH_HoaDonNapThe([FromBody] JObject data)
         {

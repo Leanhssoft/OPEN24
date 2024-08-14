@@ -1133,7 +1133,7 @@ namespace banhang24.Controllers
             content1 = content1.Replace("{TenCuaHang}", "<span data-bind=\"text: InforHDprintf().TenCuaHang\"></span>");
             content1 = content1.Replace("{TenChiNhanh}", "<span data-bind=\"text: InforHDprintf().TenChiNhanh\"></span>");
             content1 = content1.Replace("{DienThoaiChiNhanh}", "<span data-bind=\"text: InforHDprintf().DienThoaiChiNhanh\"></span>");
-            content1 = content1.Replace("{Logo}", "<img data-bind=\"attr: {src: InforHDprintf().LogoCuaHang}\" style=\"width:100% \" />");
+            content1 = content1.Replace("{Logo}", "<img data-bind=\"attr: {src: InforHDprintf().LogoCuaHang}\" style=\"width:100% \" />");        
 
             content1 = content1.Replace("{NgayBan}", "<span data-bind=\"text: InforHDprintf().NgayLapHoaDon\"></span>");
             content1 = content1.Replace("{NgayLapHoaDon}", "<span data-bind=\"text: InforHDprintf().NgayLapHoaDon\"></span>");
@@ -1149,7 +1149,7 @@ namespace banhang24.Controllers
 
             content1 = content1.Replace("{GhiChu}", "<span data-bind=\"text: InforHDprintf().GhiChu\"></span>");
             content1 = content1.Replace("{TongTienHang}", "<span data-bind=\"text: InforHDprintf().TongTienHang\"></span>");
-            content1 = content1.Replace("{DaThanhToan}", "<span data-bind=\"text: InforHDprintf().DaThanhToan\"></span>");
+            content1 = content1.Replace("{DaThanhToan}", "<span data-bind=\"text: InforHDprintf().DaThanhToan\"></span>");//a
             content1 = content1.Replace("{ChietKhauHoaDon}", "<span data-bind=\"text: InforHDprintf().TongGiamGia\"></span>");
             content1 = content1.Replace("{DiaChiCuaHang}", "<span data-bind=\"text: InforHDprintf().DiaChiCuaHang\"></span>");
             content1 = content1.Replace("{PhiTraHang}", "<span data-bind=\"text: InforHDprintf().TongChiPhi\"></span>");

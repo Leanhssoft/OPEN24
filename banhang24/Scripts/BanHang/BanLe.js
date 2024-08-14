@@ -4195,11 +4195,12 @@ var NewModel_BanHangLe = function () {
             objPrint.TenNganHangChuyenKhoan = accountCK[0].TenNganHang;
             objPrint.TenChuTheChuyenKhoan = accountCK[0].TenChuThe;
             objPrint.SoTaiKhoanChuyenKhoan = accountCK[0].SoTaiKhoan;
+            objPrint.LinkQR = vmThanhToanGara.LinkQR;
         }
         else {
             objPrint.TenNganHangChuyenKhoan = '';
             objPrint.TenChuTheChuyenKhoan = '';
-            objPrint.SoTaiKhoanChuyenKhoan = '';
+            objPrint.SoTaiKhoanChuyenKhoan = '';           
         }
         objPrint.TienMat = formatNumber3Digit(objHD.TienMat);
         objPrint.TienGui = formatNumber3Digit(objHD.TienGui);

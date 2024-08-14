@@ -28,6 +28,12 @@
     self.CTHoaDonPrint = ko.observableArray();
     self.CTHoaDonPrintMH = ko.observableArray();
 
+    //TaikhoannganhangCK
+    self.TenNganHangCK = ko.observable('');
+    self.TenChuTheCK = ko.observable('');
+    self.SoTaiKhoanCK = ko.observable('');
+    self.MaNganHangCK = ko.observable('');
+
     var url = '$/BanLe';
     switch (VHeader.IdNganhNgheKinhDoanh.toUpperCase()) {
         case 'C16EDDA0-F6D0-43E1-A469-844FAB143014':
@@ -2669,6 +2675,11 @@
         }
         if (hdDB.ChuyenKhoan > 0) {
             pthuc += 'Chuyển khoản, ';
+            objPrint.TenNganHangChuyenKhoan = self.TenNganHangCK();
+            objPrint.TenChuTheChuyenKhoan = self.TenChuTheCK();
+            objPrint.SoTaiKhoanChuyenKhoan = self.SoTaiKhoanCK();
+            objPrint.LinkQR = 'https://img.vietqr.io/image/' + self.MaNganHangCK() + '-' +
+                self.SoTaiKhoanCK() + '-qr_only.png?amount=' + hdDB.ChuyenKhoan + '&addInfo=Thanh Toan Hoa Don';
         }
         if (hdDB.ThuTuThe > 0) {
             pthuc += 'Thẻ giá trị, ';
@@ -3767,10 +3778,31 @@
         });
 
     }
+
+    function fetchBankAccountData(MaHoaDon, ID_DonVi) {
+        return new Promise((resolve, reject) => {
+            ajaxHelper(BH_HoaDonUri + 'GetHoaDonDetails?maHoaDon=' + MaHoaDon + '&idDonVi=' + ID_DonVi, 'GET').done(function (data) {
+                if (data != null && data.length > 0) {
+                    var firstItem = data[0];
+                    self.TenNganHangCK(firstItem.TenNganHang);
+                    self.TenChuTheCK(firstItem.TenChuThe);
+                    self.SoTaiKhoanCK(firstItem.SoTaiKhoan);
+                    self.MaNganHangCK(firstItem.MaNganHang);
+                    resolve();
+                } else {
+                    reject("Không có dữ liệu");
+                }
+            }).fail(function (error) {
+                reject(error);
+            });
+        });
+    }
     self.PrinDatHang = async function (item, key) {
         var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
-
+        if (item.ChuyenKhoan > 0) { //Ngan hang CK
+            await fetchBankAccountData(item.MaHoaDon, item.ID_DonVi);
+        }
         var itemHDFormat = await GetInforHDPrint(item.ID, false);
         self.InforHDprintf(itemHDFormat);
 

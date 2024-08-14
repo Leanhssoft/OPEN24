@@ -553,6 +553,8 @@ function ReplaceString_toData(content1) {
     content1 = content1.replace("{DienThoaiChiNhanh}", "<span data-bind=\"text: InforHDprintf().DienThoaiChiNhanh\"></span>");
     content1 = content1.replace("{DiaChiChiNhanh}", "<span data-bind=\"text: InforHDprintf().DiaChiChiNhanh\"></span>");
     content1 = content1.replace("{Logo}", "<img data-bind=\"attr: {src: InforHDprintf().LogoCuaHang}\" style=\"width:100% \" />");
+    //INS 08.08.2024
+    content1 = content1.replace("{ImageQR}", "<img data-bind=\"attr: {src: InforHDprintf().LinkQR}\" style=\"width:100% \" />");
 
     // thong tin TK ngan hang cua cua hang
     content1 = content1.replace("{TenNganHangPOS}", "<span data-bind=\"text: InforHDprintf().TenNganHangPOS\"></span>");

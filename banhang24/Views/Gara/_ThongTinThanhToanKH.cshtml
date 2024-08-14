@@ -158,7 +158,7 @@
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control text-right " readonly="readonly"
                                                    onkeypress="return keypressNumber(event)"
-                                                    v-bind:value="formatNumber3Digit(PhieuThuKhach.TTBangDiem,2)" />
+                                                   v-bind:value="formatNumber3Digit(PhieuThuKhach.TTBangDiem,2)" />
                                         </div>
                                     </div>
                                 </div>
@@ -197,7 +197,7 @@
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <input type="text" class="form-control text-right "
                                            onclick="this.select()"
-                                            onkeypress="keypressNumber_limitNumber(event,this)"
+                                           onkeypress="keypressNumber_limitNumber(event,this)"
                                            v-model="PhieuThuKhach.TienMat"
                                            v-on:keyup="KH_EditTienMat" />
                                 </div>
@@ -220,7 +220,7 @@
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <input type="text" class="form-control text-right "
-                                            onkeypress="keypressNumber_limitNumber(event,this)"
+                                           onkeypress="keypressNumber_limitNumber(event,this)"
                                            onclick="this.select()"
                                            v-model="PhieuThuKhach.TienPOS"
                                            v-on:keyup="KH_EditTienPos"
@@ -231,8 +231,10 @@
                             <div class="container-fluid row" style="margin-bottom:5px">
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" style="display: flex; flex-direction: row; align-content: center; justify-content: space-between; align-items: center;">
                                     <label>Tiền chuyển khoản</label>
-                                    <i class="fas fa-qrcode" style="color: #005aaa" v-on:click="ShowModalQRCode()"></i>
+                                    <i class="fas fa-qrcode" style="color: #005aaa" v-on:click="ShowModalQRCode(1)"></i>
+                                   
                                 </div>
+
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <account-bank :text-search="PhieuThuKhach.TenTaiKhoanCK"
                                                   :accounts="listData.AccountBanks.filter(x=>x.TaiKhoanPOS==false)"
@@ -244,14 +246,14 @@
                                 </div>
                                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                                     <input type="text" class="form-control text-right "
-                                            onkeypress="keypressNumber_limitNumber(event,this)"
+                                           onkeypress="keypressNumber_limitNumber(event,this)"
                                            onclick="this.select()"
                                            v-model="PhieuThuKhach.TienCK"
                                            v-on:keyup="KH_EditTienCK"
                                            v-bind:disabled="PhieuThuKhach.ID_TaiKhoanChuyenKhoan==null" />
-                                </div>
+                                </div>                               
                             </div>
-
+                           
 
                             <!--Hoàn trả thẻ giá trị: chi dung cho spa-->
                             <div class="container-fluid row" style="margin-bottom:5px"
