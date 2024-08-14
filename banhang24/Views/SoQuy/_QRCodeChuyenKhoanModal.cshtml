@@ -1,5 +1,5 @@
 ﻿<div class="modal fade" id="modalQRCode">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">QRCode</h5>
@@ -27,7 +27,17 @@
                 let self = this;
                 self.MaNganHang = data.MaNganHang;
                 self.SoTaiKhoan = data.SoTaiKhoan;
-                self.SoTien = data.SoTien.replace(',', '');
+
+                if (typeof data.SoTien === 'number') {
+                    self.SoTien = data.SoTien.toString();
+                } else if (typeof data.SoTien === 'string') {
+                    self.SoTien = data.SoTien.replace(',', '');
+                } else {
+                    console.error('SoTien is not a valid string or number');
+                    self.SoTien = ''; // Sotien không hợp lệ
+                }
+                
+                console.log('SoTien ơ ModalQR code', data);
                 self.NoiDung = data.NoiDung;
             },
             showModal: function () {
@@ -38,7 +48,8 @@
             getLinkQR: function () {
                 let self = this;
                 return 'https://img.vietqr.io/image/' + self.MaNganHang + '-' +
-                    self.SoTaiKhoan + '-print.jpg?amount=' + self.SoTien + '%5C&addInfo=' + self.NoiDung;
+                    self.SoTaiKhoan + '-print.jpg?amount=' + self.SoTien + '&addInfo=' + self.NoiDung;
+                
             }
         }
     });

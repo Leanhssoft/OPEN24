@@ -8892,6 +8892,7 @@ var NewModel_BanHangLe = function () {
                 CheckThongBao_TienDoCongViec(objHDAdd);
             }
 
+            console.log('vmPhieuThu', vmThanhToanGara.PhieuThuKhach)
             AssignValueHoaDon_ToPhieuThu(objHDAdd);
             await vmThanhToanGara.SavePhieuThu(objHDAdd.BH_NhanVienThucHiens);
 
@@ -8984,6 +8985,9 @@ var NewModel_BanHangLe = function () {
                 }
                 myData.objHoaDon.DiemGiaoDich = diemGD;
                 myData.objHoaDon = GetInforHDPrint(myData.objHoaDon);
+                if (vmThanhToanGara.LinkQR != '') {
+                    myData.objHoaDon.LinkQR = vmThanhToanGara.LinkQR;
+                }
                 self.InforHDprintf(myData.objHoaDon);
                 let ctHDprint = GetCTHDPrint_Format(myData.objCTHoaDon);
                 self.CTHoaDonPrint(ctHDprint);
@@ -9221,6 +9225,9 @@ var NewModel_BanHangLe = function () {
             }
             myData.objHoaDon.DiemGiaoDich = diemGD;
             myData.objHoaDon = GetInforHDPrint(myData.objHoaDon);
+            if (vmThanhToanGara.LinkQR != '') {
+                myData.objHoaDon.LinkQR = vmThanhToanGara.LinkQR;
+            }
             self.InforHDprintf(myData.objHoaDon);
             var ctHDprint = GetCTHDPrint_Format(myData.objCTHoaDon);
             self.CTHoaDonPrint(ctHDprint);

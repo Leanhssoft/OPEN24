@@ -399,7 +399,7 @@
             vmThanhToanGara.PhieuThuKhach.DaThanhToan = daTT;
         },
 
-        SaveTheNap: function (print) {
+        SaveTheNap: function (print) {           
             var self = this;
             if (self.isLoading) {
                 return;
@@ -530,6 +530,10 @@
             }
             if (formatNumberToFloat(vmThanhToanGara.PhieuThuKhach.TienCK) > 0) {
                 pthuc += 'Chuyển khoản, ';
+                hd.TenNganHangChuyenKhoan = vmThanhToanGara.PhieuThuKhach.TenNganHangCK;
+                hd.TenChuTheChuyenKhoan = vmThanhToanGara.PhieuThuKhach.TenTaiKhoanCK;
+                hd.SoTaiKhoanChuyenKhoan = vmThanhToanGara.PhieuThuKhach.SoTaiKhoanCK;
+                hd.LinkQR = vmThanhToanGara.LinkQR;
             }
             hd.PhuongThucTT = Remove_LastComma(pthuc);
 

@@ -61,6 +61,12 @@
     self.RoleDelete_Return = ko.observable(false);
     self.RoleExport_Return = ko.observable(false);
 
+    //TaikhoannganhangCK
+    self.TenNganHangCK = ko.observable('');
+    self.TenChuTheCK = ko.observable('');
+    self.SoTaiKhoanCK = ko.observable('');
+    self.MaNganHangCK = ko.observable('');
+
     self.Show_BtnUpdate = ko.observable(false);
     self.Show_BtnCopy = ko.observable(false);
     self.Show_BtnEdit = ko.observable(false);
@@ -3055,10 +3061,32 @@
             });
         return data;
     }
+    function fetchBankAccountData(MaHoaDon, ID_DonVi) {
+        return new Promise((resolve, reject) => {
+            ajaxHelper(BH_HoaDonUri + 'GetHoaDonDetails?maHoaDon=' + MaHoaDon + '&idDonVi=' + ID_DonVi, 'GET').done(function (data) {
+                if (data != null && data.length > 0) {
+                    var firstItem = data[0];
+                    self.TenNganHangCK(firstItem.TenNganHang);
+                    self.TenChuTheCK(firstItem.TenChuThe);
+                    self.SoTaiKhoanCK(firstItem.SoTaiKhoan);
+                    self.MaNganHangCK(firstItem.MaNganHang);
+                    resolve();
+                } else {
+                    reject("Không có dữ liệu");
+                }
+            }).fail(function (error) {
+                reject(error);
+            });
+        });
+    }
 
     self.InHoaDon = async function (item) {
+        debugger;
         var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
+        if (item.ChuyenKhoan > 0) { //Ngan hang CK
+            await fetchBankAccountData(item.MaHoaDon, item.ID_DonVi);
+        }
 
         var itemHDFormat = await GetInforHDPrint(item.ID, false);
         self.InforHDprintf(itemHDFormat);
@@ -3142,6 +3170,7 @@
     }
 
     async function GetInforHDPrint(id, isDoiTraHang = false, arCT = null) {
+        debugger;
         const hdDB = await GetInforHD_fromDB(id);
         var objPrint = $.extend({}, hdDB);
         var phaiThanhToan = formatNumberToFloat(hdDB.PhaiThanhToan);
@@ -3263,6 +3292,11 @@
         }
         if (formatNumberToFloat(hdDB.ChuyenKhoan) > 0) {
             pthuc += 'Chuyển khoản, ';
+            objPrint.TenNganHangChuyenKhoan = self.TenNganHangCK();
+            objPrint.TenChuTheChuyenKhoan = self.TenChuTheCK();
+            objPrint.SoTaiKhoanChuyenKhoan = self.SoTaiKhoanCK();
+            objPrint.LinkQR = 'https://img.vietqr.io/image/' + self.MaNganHangCK() + '-' +
+                self.SoTaiKhoanCK() + '-qr_only.png?amount=' + hdDB.ChuyenKhoan + '&addInfo=Thanh Toan Hoa Don';
         }
         if (formatNumberToFloat(hdDB.ThuTuThe) > 0) {
             pthuc += 'Thẻ giá trị, ';
@@ -4663,9 +4697,13 @@
         return data;
     }
     self.PrinDatHang = async function (item, key) {
+        debugger;
         var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
 
+        if (item.ChuyenKhoan > 0) { //Ngan hang CK
+            await fetchBankAccountData(item.MaHoaDon, item.ID_DonVi);
+        }
         var itemHDFormat = await GetInforHDPrint(item.ID, false);
         self.InforHDprintf(itemHDFormat);
 

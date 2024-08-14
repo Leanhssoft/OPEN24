@@ -321,6 +321,7 @@ var dataMauIn = function () {
     self.DienThoaiChiNhanh = ko.observable('0985226332');
     self.DiaChiChiNhanh = ko.observable('Số 12, Phạm Văn Đồng, Cầu Giấy, HN')
     self.LogoCuaHang = ko.observable(logoImage);
+    self.LinkQR = ko.observable('https://img.vietqr.io/image/MB-0976898183-qr_only.png?amount=270000&addInfo=Thanh%20Toan%20Hoa%20Don');
     self.NgayLapHoaDon = ko.observable('05/05/2014 09:40');
     self.NgayApDungGoiDV = ko.observable('01/01/2021');
     self.HanSuDungGoiDV = ko.observable('01/01/2023');

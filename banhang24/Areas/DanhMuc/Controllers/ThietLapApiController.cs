@@ -1622,6 +1622,14 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{NguoiTao}", "<span data-bind=\"text: $root.InforHDprintf().NguoiTao\"></span>");
             content1 = content1.Replace("{KhachCanTra}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().PhaiThanhToan,0)\"></span>");
 
+            //INS 08.08.2024
+            content1 = content1.Replace("{TenNganHangPOS}", "<span data-bind=\"text: InforHDprintf().TenNganHangPOS\"></span>");
+            content1 = content1.Replace("{TenChuThePOS}", "<span data-bind=\"text: InforHDprintf().TenChuThePOS\"></span>");
+            content1 = content1.Replace("{SoTaiKhoanPOS}", "<span data-bind=\"text: InforHDprintf().SoTaiKhoanPOS\"></span>");
+            content1 = content1.Replace("{TenNganHangChuyenKhoan}", "<span data-bind=\"text: InforHDprintf().TenNganHangChuyenKhoan\"></span>");
+            content1 = content1.Replace("{TenChuTheChuyenKhoan}", "<span data-bind=\"text: InforHDprintf().TenChuTheChuyenKhoan\"></span>");
+            content1 = content1.Replace("{SoTaiKhoanChuyenKhoan}", "<span data-bind=\"text: InforHDprintf().SoTaiKhoanChuyenKhoan\"></span>");
+            content1 = content1.Replace("{ImageQR}", "<img data-bind=\"attr: {src: $root.InforHDprintf().LinkQR}\" style=\"width:100%\" />");
             content1 = content1.Replace("{DienGiai}", "<span style=\"white-space:pre-wrap\" data-bind=\"text: $root.InforHDprintf().DienGiai\"></span>");
             content1 = content1.Replace("{TongTienHang}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongTienHang,2)\"></span>");
             content1 = content1.Replace("{TongTienHDSauGiamGia}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongTienHDSauGiamGia,2)\"></span>");
@@ -1868,6 +1876,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{DiaChiChiNhanh}", "<span data-bind=\"text: DiaChiChiNhanh\"></span>");
             content1 = content1.Replace("{Logo}", "<img data-bind=\"attr: {src: LogoCuaHang}\" style=\"width:100%\" />");
 
+            //INS 08.08.2024
+            content1 = content1.Replace("{ImageQR}", "<img data-bind=\"attr: {src: LinkQR}\" style=\"width:100%\" />");
             content1 = content1.Replace("{NgayBan}", "<span data-bind=\"text: NgayLapHoaDon\"></span>");
             content1 = content1.Replace("{NgayLapHoaDon}", "<span data-bind=\"text: NgayLapHoaDon\"></span>");
             content1 = content1.Replace("{NgayApDungGoiDV}", "<span data-bind=\"text: NgayApDungGoiDV\"></span>");
@@ -1927,6 +1937,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TTBangTienCoc}", "<span data-bind=\"text: formatNumber(TTBangTienCoc)\"></span>");
             content1 = content1.Replace("{TienDoiDiem}", "<span data-bind=\"text: formatNumber(TienDoiDiem)\"></span>");
             content1 = content1.Replace("{TienTheGiaTri}", "<span data-bind=\"text: formatNumber(TienTheGiaTri)\"></span>");
+
+            content1 = content1.Replace("{TenNganHangPOS}", "<span data-bind=\"text: InforHDprintf().TenNganHangPOS\"></span>");
+            content1 = content1.Replace("{TenChuThePOS}", "<span data-bind=\"text: InforHDprintf().TenChuThePOS\"></span>");
+            content1 = content1.Replace("{SoTaiKhoanPOS}", "<span data-bind=\"text: InforHDprintf().SoTaiKhoanPOS\"></span>");
+            content1 = content1.Replace("{TenNganHangChuyenKhoan}", "<span data-bind=\"text: InforHDprintf().TenNganHangChuyenKhoan\"></span>");
+            content1 = content1.Replace("{TenChuTheChuyenKhoan}", "<span data-bind=\"text: InforHDprintf().TenChuTheChuyenKhoan\"></span>");
+            content1 = content1.Replace("{SoTaiKhoanChuyenKhoan}", "<span data-bind=\"text: InforHDprintf().SoTaiKhoanChuyenKhoan\"></span>");
 
             content1 = content1.Replace("{TongGiamGiaHD_HH}", "<span data-bind=\"text: formatNumber(TongGiamGiaHD_HH)\"></span>");
             content1 = content1.Replace("{ChietKhauNVHoaDon}", "<span data-bind=\"text: ChietKhauNVHoaDon\"></span>");
@@ -2021,6 +2038,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{NoSau}", "<span data-bind=\"text: formatNumber(InforHDprintf().NoSau)\"></span>");
             content1 = content1.Replace("{TienKhachThieu}", "<span data-bind=\"text: formatNumber(InforHDprintf().TienKhachThieu)\"></span>");
             content1 = content1.Replace("{PhuongThucTT}", "<span data-bind=\"text: InforHDprintf().PhuongThucTT\"></span>");
+
+            //INS 08.08.2024
+            content1 = content1.Replace("{TenNganHangPOS}", "<span data-bind=\"text: InforHDprintf().TenNganHangPOS\"></span>");
+            content1 = content1.Replace("{TenChuThePOS}", "<span data-bind=\"text: InforHDprintf().TenChuThePOS\"></span>");
+            content1 = content1.Replace("{SoTaiKhoanPOS}", "<span data-bind=\"text: InforHDprintf().SoTaiKhoanPOS\"></span>");
+            content1 = content1.Replace("{TenNganHangChuyenKhoan}", "<span data-bind=\"text: InforHDprintf().TenNganHangChuyenKhoan\"></span>");
+            content1 = content1.Replace("{TenChuTheChuyenKhoan}", "<span data-bind=\"text: InforHDprintf().TenChuTheChuyenKhoan\"></span>");
+            content1 = content1.Replace("{SoTaiKhoanChuyenKhoan}", "<span data-bind=\"text: InforHDprintf().SoTaiKhoanChuyenKhoan\"></span>");
+            content1 = content1.Replace("{ImageQR}", "<img data-bind=\"attr: {src: $root.InforHDprintf().LinkQR}\" style=\"width:100%\" />");
 
             return content1;
         }

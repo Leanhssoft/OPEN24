@@ -1294,6 +1294,8 @@ function SetConvertDataTest(strInput) {
         result = result.allReplace(
             {
                 '{Logo}': '<img data-bind=\"attr: {src: LogoCuaHang}\" style=\"width:100%;\" />',
+                //INS 08.08.2024
+                '{ImageQR}': '<img data-bind=\"attr: {src: LinkQR}\" style=\"width:100%;\" />',
                 '{TenCuaHang}': '<span data-bind=\"text: TenCuaHang\"></span>',
                 '{DienThoaiCuaHang}': '<span data-bind=\"text: DienThoaiCuaHang\"></span>',
                 '{TenChiNhanh}': '<span data-bind=\"text: TenChiNhanh\"></span>',
