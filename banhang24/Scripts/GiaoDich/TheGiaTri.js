@@ -64,6 +64,7 @@
     self.TenChuTheCK = ko.observable('');
     self.SoTaiKhoanCK = ko.observable('');
     self.MaNganHangCK = ko.observable('');
+    self.MaPinNganHang = ko.observable('');
 
     self.filter = ko.observable();
     self.filterNgayTao = ko.observable("0");
@@ -1116,7 +1117,6 @@
     self.NoHienTai = ko.observable();
 
     self.showpopupThanhtoan = function (item) {
-        debugger;
         ajaxHelper(BH_HoaDonUri + 'GetChietKhauNV_HoaDon?idHoaDon=' + item.ID, 'GET').done(function (obj) {
             if (obj.res === true) {
                 item.BH_NhanVienThucHiens = obj.data;
@@ -1369,8 +1369,9 @@
         });
     }
 
-    function GetInforHDPrint(objHD) {
+    async function GetInforHDPrint(objHD) {
         var hd = $.extend({}, objHD);
+        console.log("hoa dơn", hd);
         hd.NgayLapHoaDon = moment(hd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');;
         hd.TenChiNhanh = hd.TenDonVi;
         hd.DienThoaiKhachHang = hd.SoDienThoai;
@@ -1413,8 +1414,13 @@
             hd.TenNganHangChuyenKhoan = self.TenNganHangCK();
             hd.TenChuTheChuyenKhoan = self.TenChuTheCK();
             hd.SoTaiKhoanChuyenKhoan = self.SoTaiKhoanCK();
-            hd.LinkQR = 'https://img.vietqr.io/image/' + self.MaNganHangCK() + '-' +
-                self.SoTaiKhoanCK() + '-qr_only.png?amount=' + objHD.TienGui + '&addInfo=Thanh Toan Hoa Don';
+            hd.LinkQR = await getQRCode({
+                accountNo: self.SoTaiKhoanCK(),
+                accountName: self.TenNganHangCK(),
+                acqId: self.MaPinNganHang(),
+                addInfo: 'Thanh Toan Hoa Don',
+                amount: objHD.TienGui
+            });
 
         }
         hd.PhuongThucTT = Remove_LastComma(pthuc);
@@ -1455,7 +1461,7 @@
         });
     }
 
-    self.InTheNap = function (item) {
+    self.InTheNap = async function (item) {
         var itemHDFormat = GetInforHDPrint(item, false);
         self.InforHDprintf(itemHDFormat);
 
@@ -1488,6 +1494,7 @@
                     self.TenChuTheCK(firstItem.TenChuThe);
                     self.SoTaiKhoanCK(firstItem.SoTaiKhoan);
                     self.MaNganHangCK(firstItem.MaNganHang);
+                    self.MaPinNganHang(firstItem.MaPinNganHang);
                     resolve(); 
                 } else {
                     reject("Không có dữ liệu");
@@ -1499,11 +1506,10 @@
     }
 
     self.InTheNap_ByID = async function (item, key) {
-        debugger;
         if (item.TienGui > 0) { //Ngan hang CK
             await fetchBankAccountData(item.MaHoaDon, item.ID_DonVi);
         }
-        var itemHDFormat = GetInforHDPrint(item);
+        var itemHDFormat = await GetInforHDPrint(item);
         self.InforHDprintf(itemHDFormat);
 
         $.ajax({
@@ -1599,3 +1605,35 @@ $('.daterange').daterangepicker({
         "firstDay": 1
     }
 });
+
+function getQRCode({ accountNo, accountName, acqId, addInfo, amount, template = 'qr_only' }) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'https://api.vietqr.io/v2/generate',
+            type: 'POST',
+            data: JSON.stringify({
+                accountNo: accountNo,
+                accountName: accountName,
+                acqId: acqId,
+                addInfo: addInfo,
+                amount: amount,
+                template: template
+            }),
+            headers: {
+                'x-client-id': '107ad630-167c-48c2-8b19-956c7a360f97',
+                'x-api-key': '55430a78-4106-4194-a094-11a7acef6228',
+                'Content-Type': 'application/json'
+            },
+            success: function (response) {
+                if (response.code === "00") {
+                    resolve(response.data.qrDataURL);
+                } else {
+                    reject(response.desc || "Unknown error");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                reject("AJAX request failed: " + textStatus + ", " + errorThrown);
+            }
+        });
+    });
+}
