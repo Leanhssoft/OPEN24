@@ -523,7 +523,6 @@ function SetConvertDataTest(strInput) {
                 let indexDV = temptable1.indexOf("TheoDichVu");
 
                 if (indexHH === -1 && indexDV === -1) {
-                    debugger;
 
                     // tách riêng 2 bảng: hàng hóa. dịch vụ
                     // nếu tách như này, khách chịu khó căn chỉnh dộ rộng cột thì mới đẹp được

@@ -6177,6 +6177,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                       nh.TenNganHang,
                                       tknh.TenChuThe,
                                       tknh.SoTaiKhoan,
+                                      nh.MaPinNganHang,
                                       ct.TienGui
                                   }).ToList();
 
