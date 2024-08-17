@@ -77,8 +77,10 @@
         PhieuThuBaoHiemPrint: {},
         QRCode: {
             MaNganHang: '',
+            TenNganHangCK: '',
             SoTaiKhoan: '',
             SoTien: '',
+            MaPin: '',
             NoiDung: 'Thanh Toan Hoa Don'
         },
         QRCodeBH: {
@@ -86,7 +88,7 @@
             SoTaiKhoan: '',
             SoTien: '',
             NoiDung: 'BH Thanh Toan Hoa Don'
-        }, 
+        },
         LinkQR: ''
     },
     methods: {
@@ -288,7 +290,6 @@
             self.PhieuThuKhach.PhaiThanhToan = cantt;
             self.PhieuThuKhach.HoanTraTamUng = hoantra;
             self.PhieuThuKhach.ThucThu = self.inforHoaDon.ThucThu;
-
             let tkPos = $.grep(self.listData.AccountBanks, function (x) {
                 return x.ID === idPOS;
             });
@@ -458,8 +459,16 @@
             self.PhieuThuKhach.TenNganHangCK = item.TenNganHang;
             self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan = item.ID;
             self.QRCode.MaNganHang = item.MaNganHang;
+            self.QRCode.TenNganHangCK = item.TenNganHang;
+            self.QRCode.MaPin = item.MaPinNganHang;
+
             self.QRCode.SoTaiKhoan = item.SoTaiKhoan;
-            self.QRCode.SoTien = self.PhieuThuKhach.TienCK;
+            if (typeof self.PhieuThuKhach.TienCK === 'number') {
+                self.QRCode.SoTien = self.PhieuThuKhach.TienCK.toString();
+            } else {
+                self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(',', '');
+            }
+
 
             console.log("change AccountCK", self.QRCode);
             self.updateQRCode();
@@ -474,6 +483,8 @@
             self.CaculatorDaThanhToan();
             self.QRCode.MaNganHang = '';
             self.QRCode.SoTaiKhoan = '';
+            //
+            self.QRCode.MaPinNganHang = '';
         },
 
         BH_ResetAccountPOS: function () {
@@ -2272,7 +2283,7 @@
         //    }
 
         //},
-        ShowModalQRCode: function (type = 1) {           
+        ShowModalQRCode: function (type = 1) {
             let self = this;
             if (type === 1) {
                 //QR khách hàng
@@ -2286,16 +2297,39 @@
             }
             VQRCode.showModal();
         },
-              
+
         updateQRCode: function () {
             let self = this;
-            if (self.QRCode.MaNganHang && self.QRCode.SoTaiKhoan) {
-                self.LinkQR = 'https://img.vietqr.io/image/' + self.QRCode.MaNganHang + '-' +
-                    self.QRCode.SoTaiKhoan + '-qr_only.png?amount=' + self.QRCode.SoTien + '&addInfo=' + self.QRCode.NoiDung;
-            } else {
-                self.LinkQR = '';
-            }
+            $.ajax({
+                url: 'https://api.vietqr.io/v2/generate',
+                type: 'POST',
+                data: JSON.stringify({
+                    accountNo: self.QRCode.SoTaiKhoan,
+                    accountName: self.QRCode.TenNganHangCK,
+                    acqId: self.QRCode.MaPin,
+                    addInfo: self.QRCode.NoiDung,
+                    amount: self.QRCode.SoTien,
+                    template: 'qr_only'
+                }),
+                headers: {
+                    'x-client-id': '107ad630-167c-48c2-8b19-956c7a360f97',
+                    'x-api-key': '55430a78-4106-4194-a094-11a7acef6228',
+                    'Content-Type': 'application/json'
+                },
+                success: function (response) {
+                    if (response.code === "00") {
+                        self.LinkQR = response.data.qrDataURL;
+                        console.log('result:', response.data.qrDataURL);
+                    } else {
+                        console.error("Error description:", response.desc);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("AJAX request failed:", textStatus, errorThrown);
+                }
+            });
             console.log('Generated QR Link:', self.LinkQR);
-        }
+        },
+
     },
 })

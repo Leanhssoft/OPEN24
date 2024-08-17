@@ -66,6 +66,7 @@
     self.TenChuTheCK = ko.observable('');
     self.SoTaiKhoanCK = ko.observable('');
     self.MaNganHangCK = ko.observable('');
+    self.MaPinNganHang = ko.observable('');
 
     self.Show_BtnUpdate = ko.observable(false);
     self.Show_BtnCopy = ko.observable(false);
@@ -3070,6 +3071,7 @@
                     self.TenChuTheCK(firstItem.TenChuThe);
                     self.SoTaiKhoanCK(firstItem.SoTaiKhoan);
                     self.MaNganHangCK(firstItem.MaNganHang);
+                    self.MaPinNganHang(firstItem.MaPinNganHang);
                     resolve();
                 } else {
                     reject("Không có dữ liệu");
@@ -3081,7 +3083,6 @@
     }
 
     self.InHoaDon = async function (item) {
-        debugger;
         var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
         if (item.ChuyenKhoan > 0) { //Ngan hang CK
@@ -3170,7 +3171,6 @@
     }
 
     async function GetInforHDPrint(id, isDoiTraHang = false, arCT = null) {
-        debugger;
         const hdDB = await GetInforHD_fromDB(id);
         var objPrint = $.extend({}, hdDB);
         var phaiThanhToan = formatNumberToFloat(hdDB.PhaiThanhToan);
@@ -3295,8 +3295,14 @@
             objPrint.TenNganHangChuyenKhoan = self.TenNganHangCK();
             objPrint.TenChuTheChuyenKhoan = self.TenChuTheCK();
             objPrint.SoTaiKhoanChuyenKhoan = self.SoTaiKhoanCK();
-            objPrint.LinkQR = 'https://img.vietqr.io/image/' + self.MaNganHangCK() + '-' +
-                self.SoTaiKhoanCK() + '-qr_only.png?amount=' + hdDB.ChuyenKhoan + '&addInfo=Thanh Toan Hoa Don';
+            objPrint.LinkQR= await getQRCode({
+                accountNo: self.SoTaiKhoanCK(),
+                accountName: self.TenNganHangCK(),
+                acqId: self.MaPinNganHang(),
+                addInfo: 'Thanh Toan Hoa Don',
+                amount: hdDB.ChuyenKhoan
+            });
+        
         }
         if (formatNumberToFloat(hdDB.ThuTuThe) > 0) {
             pthuc += 'Thẻ giá trị, ';
@@ -4697,7 +4703,6 @@
         return data;
     }
     self.PrinDatHang = async function (item, key) {
-        debugger;
         var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
 
@@ -6777,4 +6782,35 @@ function ConvertMinutes_ToHourMinutes(sophut) {
         return hours.toString().concat(' giờ ', minutes, ' phút');
     }
     return minutes.toString().concat(' phút');
+}
+function getQRCode({ accountNo, accountName, acqId, addInfo, amount, template = 'qr_only' }) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: 'https://api.vietqr.io/v2/generate',
+            type: 'POST',
+            data: JSON.stringify({
+                accountNo: accountNo,
+                accountName: accountName,
+                acqId: acqId,
+                addInfo: addInfo,
+                amount: amount,
+                template: template
+            }),
+            headers: {
+                'x-client-id': '107ad630-167c-48c2-8b19-956c7a360f97',
+                'x-api-key': '55430a78-4106-4194-a094-11a7acef6228',
+                'Content-Type': 'application/json'
+            },
+            success: function (response) {
+                if (response.code === "00") {
+                    resolve(response.data.qrDataURL);
+                } else {
+                    reject(response.desc || "Unknown error");
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                reject("AJAX request failed: " + textStatus + ", " + errorThrown);
+            }
+        });
+    });
 }
