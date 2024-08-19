@@ -1220,7 +1220,7 @@
                                             <!--/ko-->
                                             <td class="@commonEnum.TypeReportGroupProduct.doanhthuthuan text-right" data-bind="text: formatNumber3Digit(DoanhThu,2)"></td>
                                             <td class="@commonEnum.TypeReportGroupProduct.tienthue text-right" data-bind="text: formatNumber3Digit(TienThue,2)"></td>
-                                            <td class="@commonEnum.TypeReportUser.User_tienvon text-right" data-bind="text: formatNumber3Digit(TienVon,2)"></td>
+                                            <td class="@commonEnum.TypeReportUser.User_tienvon text-right" data-bind="text: $root.HangHoa_XemGiaVon() == true? formatNumber3Digit(TienVon,2): 0"></td>
                                             <td class="@commonEnum.TypeReportDetail.Detail_chiphi text-right" data-bind="text: formatNumber3Digit(ChiPhi,2)"></td>
                                             <td class="@commonEnum.TypeReportUser.User_lailo text-right" data-bind="text: formatNumber3Digit(LaiLo,2)"></td>
                                         </tr>
@@ -1423,7 +1423,7 @@
                                         <tr>
                                             @foreach (var item in commonEnum.DictionaryReportPromotion)
                                             {
-                                                <th class="@item.Key" >
+                                                <th class="@item.Key">
                                                     <a href="javascript:void(0)">@item.Value</a>
                                                 </th>
                                             }
@@ -1433,8 +1433,7 @@
                                         <!--ko foreach: {data: itemOut.lstDetail, as:'itemIn'}  -->
                                         <tr class="prev-tr-hide">
 
-                                            <td class="@commonEnum.ReportPromotion.makhuyenmai"
-                                                >
+                                            <td class="@commonEnum.ReportPromotion.makhuyenmai">
                                                 <a href="javascript: void(0)" data-bind="text: MaKhuyenMai, click: $parent.LoadChungTuGoc_byMaHD">
                                                 </a>
                                             </td>

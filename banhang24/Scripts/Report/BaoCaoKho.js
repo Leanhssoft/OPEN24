@@ -2281,8 +2281,9 @@
         let url = "/api/DanhMuc/DM_HangHoaAPI/Download_fileExcel?fileSave=" + item;
         window.location.href = url;
     };
+
     // xuất file Excel
-    self.ExportExcel = function () {
+    self.ExportExcel = async function () {
         LoadingForm(true);
         var keyselected;
         var lisstcolumn = [];
@@ -2347,8 +2348,6 @@
                 break;
         }
 
-        console.log('arrayColumn ', arrayColumnCT, arrayColumn)
-
         LoadingForm(false);
         arrayColumn.sort();
         for (let i = 0; i < arrayColumn.length; i++) {
@@ -2377,8 +2376,6 @@
             LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
         };
 
-        Insert_NhatKyThaoTac_1Param(diary);
-
         var array_Seach = {
             MaHangHoa: locdau(Text_search),
             timeStart: self.check_MoiQuanTam() !== 1 ? _timeStart : _tonkhoStart,
@@ -2405,20 +2402,12 @@
             LoadingForm(false);
             return false;
         }
-
+        LoadingForm(true);
+        let exportOK = false;
         switch (parseInt(self.check_MoiQuanTam())) {
             case 1:
                 if (self.BaoCaoKho_TonKho().length > 0) {
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: ReportUri + "Export_BCK_TonKho",
-                        data: { objExcel: array_Seach },
-                        success: function (url) {
-                            self.DownloadFileTeamplateXLSX(url);
-                            LoadingForm(false);
-                        }
-                    });
+                    exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCK_TonKho", 'POST', { objExcel: array_Seach }, "BaoCaoHangHoaTonKho.xlsx");
                 }
                 break;
             case 2:
@@ -2426,16 +2415,7 @@
                     ShowMessage_Danger('Không có dữ liệu');
                     return;
                 }
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: ReportUri + "Export_BCK_NhapXuatTon",
-                    data: { objExcel: array_Seach },
-                    success: function (url) {
-                        self.DownloadFileTeamplateXLSX(url);
-                        LoadingForm(false);
-                    }
-                });
+                exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCK_NhapXuatTon", 'POST', { objExcel: array_Seach }, "BaoCaoHangHoaNhapXuatTon.xlsx");
                 break;
             case 3:
                 if (self.BaoCaoKho_NhapXuatTonChiTiet().length === 0) {
@@ -2460,62 +2440,24 @@
                     arrayColumn.push(11);
                     arrayColumn.push(12);
                 }
-                console.log('arrayColumn ', arrayColumn)
                 let thisC = '';
                 for (let i = 0; i < arrayColumn.length; i++) {
                     thisC += arrayColumn[i] + '_';
                 }
                 array_Seach.columnsHide = thisC;
-
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: ReportUri + "Export_BCK_NhapXuatTonChiTiet",
-                    data: { objExcel: array_Seach },
-                    success: function (url) {
-                        self.DownloadFileTeamplateXLSX(url);
-                        LoadingForm(false);
-                    }
-                });
+                exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCK_NhapXuatTonChiTiet", 'POST', { objExcel: array_Seach }, "BaoCaoHangHoaNhapXuatTonChiTiet.xlsx");
                 break;
             case 4:
                 if (dk_tab === 1) {
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: ReportUri + "Export_BCK_XuatChuyenHang",
-                        data: { objExcel: array_Seach },
-                        success: function (url) {
-                            self.DownloadFileTeamplateXLSX(url);
-                            LoadingForm(false);
-                        }
-                    });
+                    exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCK_XuatChuyenHang", 'POST', { objExcel: array_Seach }, "BaoCaoKho_XuatChuyenHang.xlsx");
                 }
                 else {
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: ReportUri + "Export_BCK_NhapChuyenHang",
-                        data: { objExcel: array_Seach },
-                        success: function (url) {
-                            self.DownloadFileTeamplateXLSX(url);
-                            LoadingForm(false);
-                        }
-                    });
+                    exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCK_NhapChuyenHang", 'POST', { objExcel: array_Seach }, "BaoCaoKho_NhapChuyenHang.xlsx");
                 }
                 break;
             case 5:
                 array_Seach.XuatKho = false;
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: ReportUri + "Export_BCK_TongHopHangNhapKho",
-                    data: { objExcel: array_Seach },
-                    success: function (url) {
-                        self.DownloadFileTeamplateXLSX(url);
-                        LoadingForm(false);
-                    }
-                });
+                exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCK_TongHopHangNhapKho", 'POST', { objExcel: array_Seach }, "BaoCaoKho_TongHopHangNhap.xlsx");
                 break;
             case 6:
                 if (dk_tabxk === 3) {
@@ -2545,16 +2487,7 @@
                         columnHideThis += lstAfter[i].toString() + '_';
                     }
                     array_Seach.columnsHide = columnHideThis;
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: ReportUri + "Export_BCK_XuatDinhLuongDichVu",
-                        data: { objExcel: array_Seach },
-                        success: function (url) {
-                            self.DownloadFileTeamplateXLSX(url);
-                            LoadingForm(false);
-                        }
-                    });
+                    exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCK_XuatDinhLuongDichVu", 'POST', { objExcel: array_Seach }, "BaoCaoKho_XuatDinhLuongDichVu.xlsx");
                 }
                 else {
                     array_Seach.XuatKho = true;
@@ -2581,55 +2514,14 @@
                         }
                         array_Seach.columnsHideCT = columnHideThis;
                     }
-
-                    $.ajax({
-                        type: "POST",
-                        dataType: "json",
-                        url: ReportUri + "Export_BCK_TongHopHangXuatKho",
-                        data: { objExcel: array_Seach },
-                        success: function (url) {
-                            self.DownloadFileTeamplateXLSX(url);
-                            LoadingForm(false);
-                        }
-                    });
+                    exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCK_TongHopHangXuatKho", 'POST', { objExcel: array_Seach }, "BaoCaoKho_TongHopHangXuatKho.xlsx");
                 }
                 break;
         }
-    };
-    self.ExportChiTietNhanVien = function (item) {
-        var objDiary = {
-            ID_NhanVien: _id_NhanVien,
-            ID_DonVi: _id_DonVi,
-            ChucNang: "Báo cáo bán hàng",
-            NoiDung: "Xuất báo cáo danh sách hàng bán theo nhân viên",
-            NoiDungChiTiet: "Xuất báo cáo danh sách hàng bán theo nhân viên",
-            LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-        };
-        var myData = {};
-        myData.objDiary = objDiary;
-        $.ajax({
-            url: DiaryUri + "post_NhatKySuDung",
-            type: 'POST',
-            async: true,
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data: myData,
-            success: function (item) {
-                var columnHide = null;
-                let url = ReportUri + "Export_BCBHCT_TheoNhanVien?ID_NhanVien=" + _idNhanVienBanHang + "&timeStart=" + _timeStart + "&timeEnd=" + _timeEnd + "&ID_ChiNhanh=" + _idDonViSeach + "&LaHangHoa=" + _laHangHoa + "&TinhTrang=" + TinhTrangHH + "&ID_NhomHang=" + _ID_NhomHang + "&ID_NguoiDung=" + _IDDoiTuong + "&columnsHide=" + columnHide + "&TodayBC=" + self.TodayBC() + "&TenChiNhanh=" + self.TenChiNhanh() + "&chitiet=" + _tenNhanVienBanHang;
-                window.location.href = url;
-            },
-            statusCode: {
-                404: function () {
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                bottomrightnotify('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + "Ghi nhật ký sử dụng thất bại!", "danger");
-            },
-            complete: function () {
-
-            }
-        });
+        LoadingForm(false);
+        if (exportOK) {
+            Insert_NhatKyThaoTac_1Param(diary);
+        }
     };
 
     self.LoadHangHoa_byMaHH = function (item) {
