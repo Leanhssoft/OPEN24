@@ -1877,10 +1877,11 @@
                     self.PhieuThuKhachPrint.TienTheGiaTri = tienthe;
                     self.PhieuThuKhachPrint.TTBangDiem = tiendiem;
                     self.PhieuThuKhachPrint.DaThanhToan = tongthu;
-
-                    self.PhieuThuKhachPrint.TenNganHangCK = ptKhach.TenNganHangCK;
-                    self.PhieuThuKhachPrint.TenChuTheCK = ptKhach.TenTaiKhoanCK;
-                    self.PhieuThuKhachPrint.SoTaiKhoanCK = ptKhach.SoTaiKhoanCK;
+                    if (self.LinkQR != '') {
+                        self.PhieuThuKhachPrint.TenNganHangCK = ptKhach.TenNganHangCK;
+                        self.PhieuThuKhachPrint.TenChuTheCK = ptKhach.TenTaiKhoanCK;
+                        self.PhieuThuKhachPrint.SoTaiKhoanCK = ptKhach.SoTaiKhoanCK;
+                    }             
                     // thu tiền cọc
                     if (tiendatcoc > 0 && loaiThuChi === 11) {
                         let qct = newQuyChiTiet({
@@ -2298,37 +2299,15 @@
             VQRCode.showModal();
         },
 
-        updateQRCode: function () {
+        updateQRCode: async function () {
             let self = this;
-            $.ajax({
-                url: 'https://api.vietqr.io/v2/generate',
-                type: 'POST',
-                data: JSON.stringify({
-                    accountNo: self.QRCode.SoTaiKhoan,
-                    accountName: self.QRCode.TenNganHangCK,
-                    acqId: self.QRCode.MaPin,
-                    addInfo: self.QRCode.NoiDung,
-                    amount: self.QRCode.SoTien,
-                    template: 'qr_only'
-                }),
-                headers: {
-                    'x-client-id': '107ad630-167c-48c2-8b19-956c7a360f97',
-                    'x-api-key': '55430a78-4106-4194-a094-11a7acef6228',
-                    'Content-Type': 'application/json'
-                },
-                success: function (response) {
-                    if (response.code === "00") {
-                        self.LinkQR = response.data.qrDataURL;
-                        console.log('result:', response.data.qrDataURL);
-                    } else {
-                        console.error("Error description:", response.desc);
-                    }
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error("AJAX request failed:", textStatus, errorThrown);
-                }
-            });
-            console.log('Generated QR Link:', self.LinkQR);
+            self.LinkQR = await getQRCode({
+                accountNo: self.QRCode.SoTaiKhoan,
+                accountName: self.QRCode.TenNganHangCK,
+                acqId: self.QRCode.MaPin,
+                addInfo: self.QRCode.NoiDung,
+                amount: self.QRCode.SoTien
+            });                
         },
 
     },

@@ -429,6 +429,47 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
 
+
+
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetSoQuyDetails(string maHoaDon, Guid idDonVi)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                try
+                {
+                    var result = (from qh in db.Quy_HoaDon
+                                  join ct in db.Quy_HoaDon_ChiTiet on qh.ID equals ct.ID_HoaDon
+                                  join tknh in db.DM_TaiKhoanNganHang on ct.ID_TaiKhoanNganHang equals tknh.ID
+                                  join nh in db.DM_NganHang on tknh.ID_NganHang equals nh.ID
+                                  where qh.MaHoaDon == maHoaDon
+                                    && ct.HinhThucThanhToan == 3 //thanhtoan CK
+                                    && qh.ID_DonVi == idDonVi
+                                  select new
+                                  {
+                                      nh.MaNganHang,
+                                      nh.TenNganHang,
+                                      tknh.TenChuThe,
+                                      tknh.SoTaiKhoan,
+                                      nh.MaPinNganHang,
+                                      ct.TienGui
+                                  }).ToList();
+
+                    if (result == null || !result.Any())
+                    {
+                        return NotFound();
+                    }
+
+                    return Ok(result);
+                }
+                catch (Exception ex)
+                {
+                    return InternalServerError(ex);
+                }
+            }
+        }
+
+
         [HttpGet, HttpPost]
         public IHttpActionResult GetListCashFlow_Paging2(ParamCashFlow lstParam)
         {

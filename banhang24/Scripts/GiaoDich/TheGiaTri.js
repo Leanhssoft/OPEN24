@@ -65,6 +65,7 @@
     self.SoTaiKhoanCK = ko.observable('');
     self.MaNganHangCK = ko.observable('');
     self.MaPinNganHang = ko.observable('');
+    self.LinkQR = ko.observable('');
 
     self.filter = ko.observable();
     self.filterNgayTao = ko.observable("0");
@@ -1411,17 +1412,21 @@
         }
         if (formatNumberToFloat(objHD.TienGui) > 0) {
             pthuc += 'Chuyển khoản, ';
-            hd.TenNganHangChuyenKhoan = self.TenNganHangCK();
-            hd.TenChuTheChuyenKhoan = self.TenChuTheCK();
-            hd.SoTaiKhoanChuyenKhoan = self.SoTaiKhoanCK();
-            hd.LinkQR = await getQRCode({
+            self.LinkQR = await getQRCode({
                 accountNo: self.SoTaiKhoanCK(),
                 accountName: self.TenNganHangCK(),
                 acqId: self.MaPinNganHang(),
                 addInfo: 'Thanh Toan Hoa Don',
                 amount: objHD.TienGui
             });
-
+ 
+            if (self.LinkQR != '') {
+                hd.TenNganHangChuyenKhoan = self.TenNganHangCK();
+                hd.TenChuTheChuyenKhoan = self.TenChuTheCK();
+                hd.SoTaiKhoanChuyenKhoan = self.SoTaiKhoanCK();
+                hd.LinkQR = self.LinkQR;
+            }
+           
         }
         hd.PhuongThucTT = Remove_LastComma(pthuc);
 
@@ -1606,34 +1611,4 @@ $('.daterange').daterangepicker({
     }
 });
 
-function getQRCode({ accountNo, accountName, acqId, addInfo, amount, template = 'qr_only' }) {
-    return new Promise((resolve, reject) => {
-        $.ajax({
-            url: 'https://api.vietqr.io/v2/generate',
-            type: 'POST',
-            data: JSON.stringify({
-                accountNo: accountNo,
-                accountName: accountName,
-                acqId: acqId,
-                addInfo: addInfo,
-                amount: amount,
-                template: template
-            }),
-            headers: {
-                'x-client-id': '107ad630-167c-48c2-8b19-956c7a360f97',
-                'x-api-key': '55430a78-4106-4194-a094-11a7acef6228',
-                'Content-Type': 'application/json'
-            },
-            success: function (response) {
-                if (response.code === "00") {
-                    resolve(response.data.qrDataURL);
-                } else {
-                    reject(response.desc || "Unknown error");
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                reject("AJAX request failed: " + textStatus + ", " + errorThrown);
-            }
-        });
-    });
-}
+
