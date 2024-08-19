@@ -173,6 +173,15 @@
             CongNoThe: 0,
         },
         HinhThucTT: { ID: 0, Text: 'Tất cả' },
+        QRCode: {
+            TenNganHangCK: '',
+            TenChuTheCK:'',
+            SoTaiKhoan: '',
+            SoTien: '',
+            MaPinNganHang: '',
+            NoiDung: 'Thanh Toan Hoa Don'
+        },
+        LinkQR:''
     },
     methods: {
         GetInforHD_fromDB: async function (id) {
@@ -648,12 +657,27 @@
             var self = this;
             self.ddl_textVal.accountCKName = item.TenChuThe;
             self.newPhieuThu.ID_TaiKhoanChuyenKhoan = item.ID.toUpperCase();
+            self.QRCode.TenTaiKhoanCK = item.TenChuThe;
+            self.QRCode.SoTaiKhoanCK = item.SoTaiKhoan;
+            self.QRCode.TenNganHangCK = item.TenNganHang;
+            self.QRCode.MaPinNganHang = item.MaPinNganHang;
+            if (typeof self.newPhieuThu.TienCK === 'number') {
+                self.QRCode.SoTien = self.newPhieuThu.TienCK.toString();
+            } else {
+                self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(',', '');
+            }
+            self.updateQRCode();
+            
         },
         Only_ResetAccountCK: function () {
             var self = this;
             self.ddl_textVal.accountCKName = '';
             self.newPhieuThu.ID_TaiKhoanChuyenKhoan = null;
             self.newPhieuThu.TienCK = 0;
+            self.QRCode.TenTaiKhoanCK = '';
+            self.QRCode.SoTaiKhoanCK = '';
+            self.QRCode.TenNganHangCK = '';
+            self.QRCode.MaPinNganHang = '';
         },
         ResetAccountCK: function () {
             var self = this;
@@ -958,6 +982,9 @@
             self.newPhieuThu.TienPOS = formatNumber3Digit(tienpos);
             self.newPhieuThu.TienCK = formatNumber3Digit(tienck);
             self.CaculatorDaThanhToan();
+            // Cập nhật số tiền trong QRCode (trong trường hợp tiền CK)
+            self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(',', '');
+            self.updateQRCode();
 
             var key = event.keyCode || event.which;
             if (key === 13) {
@@ -995,6 +1022,9 @@
 
             self.newPhieuThu.TienCK = formatNumber3Digit(tienck);
             self.CaculatorDaThanhToan();
+            // Cập nhật số tiền trong QRCode (trong trường hợp tiền CK)
+            self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(',', '');
+            self.updateQRCode();
 
             var key = event.keyCode || event.which;
             if (key === 13) {
@@ -1023,6 +1053,8 @@
                     $this.parent().next().find('input').select();
                 }
             }
+            self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(',', '');
+            self.updateQRCode();
             self.ResetHinhThucTT();
         },
         EditTienThe: function () {
@@ -1495,7 +1527,7 @@
 
                     if ($.inArray(qct.HinhThucThanhToan, arrPhuongThuc) === -1) {
                         arrPhuongThuc.push(qct.HinhThucThanhToan);
-                    }
+                    }                   
                 }
 
                 if (objShare.TienTheGiaTri > 0) {
@@ -1571,7 +1603,7 @@
             quyhd.TienDatCoc = objShare.TienCoc;
             quyhd.TTBangDiem = objShare.TTBangDiem;
             quyhd.DiemQuyDoi = sumDiemQD;
-
+            
             var myData = {
                 objQuyHoaDon: quyhd,
                 lstCTQuyHoaDon: lstQuyCT
@@ -1903,7 +1935,14 @@
             quyhd.TienMat_BangChu = DocSo(obj.TienMat);
             quyhd.ChuyenKhoan_BangChu = DocSo(obj.TienChuyenKhoan);
             quyhd.TienPOS_BangChu = DocSo(obj.TienPOS);
-
+                   
+            if (self.LinkQR != '') {
+                quyhd.TenNganHangChuyenKhoan = self.QRCode.TenNganHangCK;
+                quyhd.TenChuTheChuyenKhoan = self.QRCode.TenTaiKhoanCK;
+                quyhd.SoTaiKhoanChuyenKhoan = self.QRCode.SoTaiKhoanCK;
+                quyhd.LinkQR = self.LinkQR;
+            } 
+           
             ajaxHelper('/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + loaiCT + '&idDonVi='
                 + self.inforLogin.ID_DonVi, 'GET').done(function (result) {
                     let data = result;
@@ -2085,6 +2124,17 @@
             self.showCheckHachToan = false;
             self.GetSoQuy_andHoaDonLienQuan(id, nohientai);
         },
+        updateQRCode: async function () {
+            let self = this;
+            self.LinkQR = await getQRCode({
+                accountNo: self.QRCode.SoTaiKhoanCK,
+                accountName: self.QRCode.TenNganHangCK,
+                acqId: self.QRCode.MaPinNganHang,
+                addInfo: self.QRCode.NoiDung,
+                amount: self.QRCode.SoTien
+            });         
+        },
+       
         GetSoQuy_andHoaDonLienQuan: function (idQuyHD, nohientai = 0) {
             let self = this;
             ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/' + 'GetQuyChiTiet_byIDQuy/' + idQuyHD, 'GET').done(function (x) {

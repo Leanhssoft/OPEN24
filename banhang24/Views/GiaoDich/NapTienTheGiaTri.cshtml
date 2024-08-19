@@ -286,7 +286,7 @@
                         <tr class="prev-tr-hide" data-bind="click: $root.LoadChiTiet">
                             <td class="text-center @commonEnum.ColumnValueCard.mahoadon" data-bind="text: MaHoaDon"></td>
                             <td class="text-center @commonEnum.ColumnValueCard.ngaylaphoadon" data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></td>
-                            <td class="text-center @commonEnum.ColumnValueCard.makhachhang" >
+                            <td class="text-center @commonEnum.ColumnValueCard.makhachhang">
                                 <a data-bind="text: MaKhachHang, click: $root.gotoKhachHang"></a>
                             </td>
                             <td class="text-center @commonEnum.ColumnValueCard.tenkhachhang" data-bind="text: TenKhachHang"></td>
@@ -339,7 +339,7 @@
                                                     <div class="form-group floatleft">
                                                         <label class="css-form-label">Ngày lập HĐ</label>
                                                         <div class="css-form-detail">
-                                                            <input type="text" class="form-control txtNgayLapHD" 
+                                                            <input type="text" class="form-control txtNgayLapHD"
                                                                    data-bind="value: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):'',
                                                                    enable: !$root.wasKhoaSo()" />
                                                         </div>
@@ -777,6 +777,7 @@
 @Html.Partial("~/Views/Gara/KhachHang/_ThemNhomKhachHang.cshtml")
 @Html.Partial("~/Views/Gara/KhachHang/_vmTrangThai_NguonKhach.cshtml")
 @Html.Partial("~/Views/Gara/_ThongTinThanhToanKH.cshtml")
+@Html.Partial("~/Views/SoQuy/_QRCodeChuyenKhoanModal.cshtml")
 <div class="modal " id="modalPopuplgDelete">
     <div class="modal-dialog">
         @Html.Action("_modalDelete", new { area = "", Controller = "GiaoDich" })

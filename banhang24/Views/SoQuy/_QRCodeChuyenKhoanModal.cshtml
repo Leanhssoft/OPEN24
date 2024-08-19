@@ -58,9 +58,6 @@
             },
             getLinkQR: function () {
                 let self = this;
-                //return 'https://img.vietqr.io/image/' + self.MaNganHang + '-' +
-                //    self.SoTaiKhoan + '-print.jpg?amount=' + self.SoTien + '&addInfo=' + self.NoiDung;
-                debugger;
                 $.ajax({
                     url: 'https://api.vietqr.io/v2/generate',
                     type: 'POST',
