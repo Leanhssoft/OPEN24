@@ -458,17 +458,14 @@
             self.PhieuThuKhach.SoTaiKhoanCK = item.SoTaiKhoan;
             self.PhieuThuKhach.TenNganHangCK = item.TenNganHang;
             self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan = item.ID;
-            self.QRCode.MaNganHang = item.MaNganHang;
-            self.QRCode.TenNganHangCK = item.TenNganHang;
+            self.QRCode.TenNganHangCK = item.TenChuThe;
             self.QRCode.MaPin = item.MaPinNganHang;
-
             self.QRCode.SoTaiKhoan = item.SoTaiKhoan;
             if (typeof self.PhieuThuKhach.TienCK === 'number') {
                 self.QRCode.SoTien = self.PhieuThuKhach.TienCK.toString();
             } else {
-                self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(',', '');
+                self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(/,/g, '');
             }
-
 
             console.log("change AccountCK", self.QRCode);
             self.updateQRCode();
@@ -481,9 +478,8 @@
             self.PhieuThuKhach.TenNganHangCK = '';
             self.PhieuThuKhach.TienCK = 0;
             self.CaculatorDaThanhToan();
-            self.QRCode.MaNganHang = '';
             self.QRCode.SoTaiKhoan = '';
-            //
+            self.QRCode.TenNganHangCK = '';
             self.QRCode.MaPinNganHang = '';
         },
 
@@ -718,7 +714,7 @@
             self.CaculatorDaThanhToan();
 
             // Cập nhật số tiền trong QRCode (trong trường hợp tiền CK)
-            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(',', '');
+            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(/,/g, '');
             self.updateQRCode();
 
             var key = event.keyCode || event.which;
@@ -759,7 +755,7 @@
             self.CaculatorDaThanhToan();
 
             // Cập nhật số tiền trong QRCode (trong trường hợp tiền CK)
-            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(',', '');
+            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(/,/g, '');
             self.updateQRCode();
 
             var key = event.keyCode || event.which;
@@ -782,7 +778,7 @@
             self.PhieuThuKhach.TienCK = $this.val();
             self.CaculatorDaThanhToan();
             // Cập nhật số tiền trong QRCode
-            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(',', '');
+            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(/,/g, '');
             self.updateQRCode();
         },
         KH_EditTienThe: function () {
