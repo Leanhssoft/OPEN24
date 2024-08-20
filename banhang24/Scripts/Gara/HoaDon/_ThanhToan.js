@@ -175,13 +175,13 @@
         HinhThucTT: { ID: 0, Text: 'Tất cả' },
         QRCode: {
             TenNganHangCK: '',
-            TenChuTheCK:'',
+            TenChuTheCK: '',
             SoTaiKhoan: '',
             SoTien: '',
             MaPinNganHang: '',
             NoiDung: 'Thanh Toan Hoa Don'
         },
-        LinkQR:''
+        LinkQR: ''
     },
     methods: {
         GetInforHD_fromDB: async function (id) {
@@ -455,6 +455,13 @@
             self.saveOK = false;
             self.KhongBuTruCongNo = false;
             self.listData.HoaDons = [];
+
+            self.LinkQR = '';
+            self.QRCode.TenTaiKhoanCK = '';
+            self.QRCode.SoTaiKhoanCK = '';
+            self.QRCode.TenNganHangCK = '';
+            self.QRCode.MaPinNganHang = '';
+
             self.ddl_textVal = {
                 staffName: self.inforLogin.TenNhanVien,
                 accountPOSName: '',
@@ -667,7 +674,7 @@
                 self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(/,/g, '');
             }
             self.updateQRCode();
-            
+
         },
         Only_ResetAccountCK: function () {
             var self = this;
@@ -705,7 +712,7 @@
                 var khachCanTra = 0;
                 var invoice = [];
                 if (item.ID === self.HoaDonChosing.ID_DoiTuong) {
-                    khachCanTra = self.HoaDonChosing.PhaiThanhToan - self.HoaDonChosing.KhachDaTra 
+                    khachCanTra = self.HoaDonChosing.PhaiThanhToan - self.HoaDonChosing.KhachDaTra
                         - formatNumberToFloat(self.HoaDonChosing.TongTienHDTra);
 
                     invoice = [{
@@ -1527,7 +1534,7 @@
 
                     if ($.inArray(qct.HinhThucThanhToan, arrPhuongThuc) === -1) {
                         arrPhuongThuc.push(qct.HinhThucThanhToan);
-                    }                   
+                    }
                 }
 
                 if (objShare.TienTheGiaTri > 0) {
@@ -1603,7 +1610,7 @@
             quyhd.TienDatCoc = objShare.TienCoc;
             quyhd.TTBangDiem = objShare.TTBangDiem;
             quyhd.DiemQuyDoi = sumDiemQD;
-            
+
             var myData = {
                 objQuyHoaDon: quyhd,
                 lstCTQuyHoaDon: lstQuyCT
@@ -1935,14 +1942,14 @@
             quyhd.TienMat_BangChu = DocSo(obj.TienMat);
             quyhd.ChuyenKhoan_BangChu = DocSo(obj.TienChuyenKhoan);
             quyhd.TienPOS_BangChu = DocSo(obj.TienPOS);
-                   
+
             if (self.LinkQR != '') {
                 quyhd.TenNganHangChuyenKhoan = self.QRCode.TenNganHangCK;
                 quyhd.TenChuTheChuyenKhoan = self.QRCode.TenTaiKhoanCK;
                 quyhd.SoTaiKhoanChuyenKhoan = self.QRCode.SoTaiKhoanCK;
                 quyhd.LinkQR = self.LinkQR;
-            } 
-           
+            }
+
             ajaxHelper('/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + loaiCT + '&idDonVi='
                 + self.inforLogin.ID_DonVi, 'GET').done(function (result) {
                     let data = result;
@@ -2132,9 +2139,9 @@
                 acqId: self.QRCode.MaPinNganHang,
                 addInfo: self.QRCode.NoiDung,
                 amount: self.QRCode.SoTien
-            });         
+            });
         },
-       
+
         GetSoQuy_andHoaDonLienQuan: function (idQuyHD, nohientai = 0) {
             let self = this;
             ajaxHelper('/api/DanhMuc/Quy_HoaDonAPI/' + 'GetQuyChiTiet_byIDQuy/' + idQuyHD, 'GET').done(function (x) {
