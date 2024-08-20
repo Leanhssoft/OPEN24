@@ -61,15 +61,6 @@
     self.RoleDelete_Return = ko.observable(false);
     self.RoleExport_Return = ko.observable(false);
 
-    //TaikhoannganhangCK
-    self.TenNganHangCK = ko.observable('');
-    self.TenChuTheCK = ko.observable('');
-    self.SoTaiKhoanCK = ko.observable('');
-    self.MaNganHangCK = ko.observable('');
-    self.MaPinNganHang = ko.observable('');
-    self.SoTienCK = ko.observable(0);
-    self.LinkQR = ko.observable('');
-
     self.Show_BtnUpdate = ko.observable(false);
     self.Show_BtnCopy = ko.observable(false);
     self.Show_BtnEdit = ko.observable(false);
@@ -3064,33 +3055,28 @@
             });
         return data;
     }
-    function fetchBankAccountData(MaHoaDon, ID_DonVi) {
-        return new Promise((resolve, reject) => {
-            ajaxHelper(BH_HoaDonUri + 'GetHoaDonDetails?maHoaDon=' + MaHoaDon + '&idDonVi=' + ID_DonVi, 'GET').done(function (data) {
-                if (data != null && data.length > 0) {
-                    var firstItem = data[0];
-                    self.TenNganHangCK(firstItem.TenNganHang);
-                    self.TenChuTheCK(firstItem.TenChuThe);
-                    self.SoTaiKhoanCK(firstItem.SoTaiKhoan);
-                    self.MaNganHangCK(firstItem.MaNganHang);
-                    self.SoTienCK(firstItem.TienGui);
-                    self.MaPinNganHang(firstItem.MaPinNganHang);
-                    resolve();
-                } else {
-                    reject("Không có dữ liệu");
+
+    async function fetchBankAccountData(id) {
+        const xx = await ajaxHelper(BH_HoaDonUri + 'GetInforBankAccount_ofHoaDon?idHoaDon=' + id, 'GET').done()
+            .then(function (data) {
+                if (data.res && data.dataSoure.length > 0) {
+                    return data.dataSoure[0];
                 }
-            }).fail(function (error) {
-                reject(error);
+                return {
+                    MaNganHang: '',
+                    TenNganHang: '',
+                    TenChuThe: '',
+                    SoTaiKhoan: '',
+                    MaPinNganHang: '',
+                    TienThu: 0,
+                }
             });
-        });
+        return xx;
     }
 
     self.InHoaDon = async function (item) {
         var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
-        if (item.ChuyenKhoan > 0) { //Ngan hang CK
-            await fetchBankAccountData(item.MaHoaDon, item.ID_DonVi);
-        }
 
         var itemHDFormat = await GetInforHDPrint(item.ID, false);
         self.InforHDprintf(itemHDFormat);
@@ -3175,6 +3161,7 @@
 
     async function GetInforHDPrint(id, isDoiTraHang = false, arCT = null) {
         const hdDB = await GetInforHD_fromDB(id);
+        const taiKhoanCK = await fetchBankAccountData(id);
         var objPrint = $.extend({}, hdDB);
         var phaiThanhToan = formatNumberToFloat(hdDB.PhaiThanhToan);
         var daThanhToan = RoundDecimal(hdDB.KhachDaTra, 0);
@@ -3295,21 +3282,19 @@
         }
         if (formatNumberToFloat(hdDB.ChuyenKhoan) > 0) {
             pthuc += 'Chuyển khoản, ';
-            self.LinkQR = await getQRCode({
-                accountNo: self.SoTaiKhoanCK(),
-                accountName: self.TenChuTheCK(),
-                acqId: self.MaPinNganHang(),
-                addInfo: 'Thanh Toan Hoa Don',
-                amount: self.SoTienCK()
+            let qrCode = await getQRCode({
+                accountNo: taiKhoanCK.SoTaiKhoan,
+                accountName: taiKhoanCK.TenChuThe,
+                acqId: taiKhoanCK.MaPinNganHang,
+                addInfo: 'Thanh Toan Hoa Don ' + hdDB.MaHoaDon,
+                amount: taiKhoanCK.TienThu
             });
-
-            if (self.LinkQR != '') {
-                objPrint.TenNganHangChuyenKhoan = self.TenNganHangCK();
-                objPrint.TenChuTheChuyenKhoan = self.TenChuTheCK();
-                objPrint.SoTaiKhoanChuyenKhoan = self.SoTaiKhoanCK();
-                objPrint.LinkQR = self.LinkQR;
+            objPrint.TenNganHangChuyenKhoan = taiKhoanCK.TenNganHang;
+            objPrint.TenChuTheChuyenKhoan = taiKhoanCK.TenChuThe;
+            objPrint.SoTaiKhoanChuyenKhoan = taiKhoanCK.SoTaiKhoan;
+            if (qrCode != '') {
+                objPrint.LinkQR = qrCode;
             }
-        
         }
         if (formatNumberToFloat(hdDB.ThuTuThe) > 0) {
             pthuc += 'Thẻ giá trị, ';
@@ -3444,7 +3429,6 @@
                 objPrint.ID_ChuXe = tn.ID_ChuXe;
             }
         }
-        console.log('objPrint ', objPrint.ID_DoiTuong, 'bhiem', objPrint.ID_BaoHiem, 'ptn', objPrint.ID_ChuXe)
         return objPrint;
     }
     function GetInforCongTy() {
@@ -4713,9 +4697,6 @@
         var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
 
-        if (item.ChuyenKhoan > 0) { //Ngan hang CK
-            await fetchBankAccountData(item.MaHoaDon, item.ID_DonVi);
-        }
         var itemHDFormat = await GetInforHDPrint(item.ID, false);
         self.InforHDprintf(itemHDFormat);
 
@@ -5332,20 +5313,20 @@
     self.RestoreInvoice = async function (item) {
         const maHoaDon = item.MaHoaDon;
         const loaiHoaDon = item.LoaiHoaDon;
-        let sLoai = '', sLoaiLowercase ='';
+        let sLoai = '', sLoaiLowercase = '';
 
         switch (loaiHoaDon) {
             case 1:
             case 25:
                 {
                     sLoai = 'Hóa đơn';
-                    sLoaiLowercase ='hóa đơn';
+                    sLoaiLowercase = 'hóa đơn';
                 }
                 break;
             case 3:
                 {
                     sLoai = 'Báo giá';
-                    sLoaiLowercase ='báo giá';
+                    sLoaiLowercase = 'báo giá';
                 }
                 break;
         }
@@ -5370,11 +5351,11 @@
                 await CheckXuLyHet_DonDatHang_AndUpdateTrangThaiBG(loaiHoaDon, item.ID_HoaDon, item.ID_HoaDon);
                 ShowMessage_Success('Khôi phục ' + sLoaiLowercase + ' thàng công');
 
-                
+
                 let diary = {
-                     ID_DonVi: VHeader.IdDonVi,
-                ID_NhanVien: VHeader.IdNhanVien,
-                    ChucNang: "Khôi phục " + sLoaiLowercase ,
+                    ID_DonVi: VHeader.IdDonVi,
+                    ID_NhanVien: VHeader.IdNhanVien,
+                    ChucNang: "Khôi phục " + sLoaiLowercase,
                     NoiDung: "Khôi phục ".concat(sLoaiLowercase, ' ', item.MaHoaDon),
                     NoiDungChiTiet: "Khôi phục ".concat(sLoaiLowercase, ': ', item.MaHoaDon,
                         '<br /> Người khôi phục: ', VHeader.UserLogin),
