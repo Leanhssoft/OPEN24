@@ -664,7 +664,7 @@
             if (typeof self.newPhieuThu.TienCK === 'number') {
                 self.QRCode.SoTien = self.newPhieuThu.TienCK.toString();
             } else {
-                self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(',', '');
+                self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(/,/g, '');
             }
             self.updateQRCode();
             
@@ -983,7 +983,7 @@
             self.newPhieuThu.TienCK = formatNumber3Digit(tienck);
             self.CaculatorDaThanhToan();
             // Cập nhật số tiền trong QRCode (trong trường hợp tiền CK)
-            self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(',', '');
+            self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(/,/g, '');
             self.updateQRCode();
 
             var key = event.keyCode || event.which;
@@ -1023,7 +1023,7 @@
             self.newPhieuThu.TienCK = formatNumber3Digit(tienck);
             self.CaculatorDaThanhToan();
             // Cập nhật số tiền trong QRCode (trong trường hợp tiền CK)
-            self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(',', '');
+            self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(/,/g, '');
             self.updateQRCode();
 
             var key = event.keyCode || event.which;
@@ -1053,7 +1053,7 @@
                     $this.parent().next().find('input').select();
                 }
             }
-            self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(',', '');
+            self.QRCode.SoTien = self.newPhieuThu.TienCK.replace(/,/g, '');
             self.updateQRCode();
             self.ResetHinhThucTT();
         },
@@ -2128,7 +2128,7 @@
             let self = this;
             self.LinkQR = await getQRCode({
                 accountNo: self.QRCode.SoTaiKhoanCK,
-                accountName: self.QRCode.TenNganHangCK,
+                accountName: self.QRCode.TenTaiKhoanCK,
                 acqId: self.QRCode.MaPinNganHang,
                 addInfo: self.QRCode.NoiDung,
                 amount: self.QRCode.SoTien

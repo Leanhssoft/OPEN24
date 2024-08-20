@@ -1770,7 +1770,7 @@ var ViewModelQuyHD = function () {
             pthucTT += 'Chuyển khoản, ';
             self.LinkQR = await getQRCode({
                 accountNo: self.SoTaiKhoanCK(),
-                accountName: self.TenNganHangCK(),
+                accountName: self.TenChuTheCK(),
                 acqId: self.MaPinNganHang(),
                 /*addInfo: `${hd.NguoiNopTien} Thanh Toan Hoa Don ${hd.MaPhieu}`,*/
                 addInfo: 'Thanh Toan Hoa Don',

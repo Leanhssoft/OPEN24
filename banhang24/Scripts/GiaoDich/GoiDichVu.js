@@ -2680,7 +2680,7 @@
             pthuc += 'Chuyển khoản, ';           
             self.LinkQR = await getQRCode({
                 accountNo: self.SoTaiKhoanCK(),
-                accountName: self.TenNganHangCK(),
+                accountName: self.TenChuTheCK(),
                 acqId: self.MaPinNganHang(),
                 addInfo: 'Thanh Toan Hoa Don',
                 amount: self.SoTienCK()

@@ -37,7 +37,7 @@
                 if (typeof data.SoTien === 'number') {
                     self.SoTien = data.SoTien.toString();
                 } else if (typeof data.SoTien === 'string') {
-                    self.SoTien = data.SoTien.replace(',', '');
+                    self.SoTien = data.SoTien.replace(/,/g, '');
                 } else {
                     console.error('SoTien is not a valid string or number');
                     self.SoTien = ''; // Sotien không hợp lệ
