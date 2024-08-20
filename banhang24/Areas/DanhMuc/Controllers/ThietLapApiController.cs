@@ -1172,8 +1172,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             int hh_row1To = sTblHH.IndexOf("/tr>", hh_row1From + 3) + 4;
 
                             int hh_row2From = sTblHH.IndexOf("<tr", hh_row1To);
-                            int hh_row2To = sTblHH.IndexOf("/tr>", hh_row2From) + 6;
-                            string hh_row2Str = sTblHH.Substring(hh_row1To, hh_row2To - hh_row2From);
+                            int hh_row2To = sTblHH.IndexOf("/tr>", hh_row2From);
+                            string hh_row2Str = sTblHH.Substring(hh_row2From, hh_row2To - hh_row2From + 5);
                             string hh_row2 = hh_row2Str;
 
                             // find row contain sum phutung
