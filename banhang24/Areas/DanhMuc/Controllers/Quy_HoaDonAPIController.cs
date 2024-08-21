@@ -432,19 +432,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
 
         [AcceptVerbs("GET")]
-        public IHttpActionResult GetSoQuyDetails(string maHoaDon, Guid idDonVi)
+        public IHttpActionResult GetInforBankAccount_ofSoQuy(Guid idQuyHoaDon, int hinhThucThanhToan = (int)commonEnumHellper.HINH_THUC_THANH_TOAN.CHUYEN_KHOAN)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 try
                 {
-                    var result = (from qh in db.Quy_HoaDon
-                                  join ct in db.Quy_HoaDon_ChiTiet on qh.ID equals ct.ID_HoaDon
+                    var result = (from ct in db.Quy_HoaDon_ChiTiet
                                   join tknh in db.DM_TaiKhoanNganHang on ct.ID_TaiKhoanNganHang equals tknh.ID
                                   join nh in db.DM_NganHang on tknh.ID_NganHang equals nh.ID
-                                  where qh.MaHoaDon == maHoaDon
-                                    && ct.HinhThucThanhToan == 3 //thanhtoan CK
-                                    && qh.ID_DonVi == idDonVi
+                                  where ct.ID_HoaDon == idQuyHoaDon && ct.HinhThucThanhToan == hinhThucThanhToan
                                   select new
                                   {
                                       nh.MaNganHang,
@@ -452,19 +449,14 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                       tknh.TenChuThe,
                                       tknh.SoTaiKhoan,
                                       nh.MaPinNganHang,
-                                      ct.TienGui
+                                      ct.TienThu
                                   }).ToList();
 
-                    if (result == null || !result.Any())
-                    {
-                        return NotFound();
-                    }
-
-                    return Ok(result);
+                    return ActionTrueData(result);
                 }
                 catch (Exception ex)
                 {
-                    return InternalServerError(ex);
+                    return ActionFalseNotData(ex.Message);
                 }
             }
         }

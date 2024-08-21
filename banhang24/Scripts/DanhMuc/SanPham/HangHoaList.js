@@ -11756,17 +11756,10 @@ var ViewModel = function () {
             } else {
                 current = JSON.parse(current);
                 for (var i = 0; i < current.length; i++) {
-                    //$(current[i].NameClass).addClass("operation");
-                    document.getElementById(current[i].NameId).checked = false;
-                    //if (loadColumExeHH) {
+                    $('#'+ current[i].NameId).attr('checked', false);
                     self.addColum(current[i].Value);
-                    //}
-
                 }
                 loadColumExeHH = false;
-
-                // set checked in list check
-
             }
             $('#myTable tbody .op-js-tr-hide').each(function () {
                 $(this).find('.td-colspan').attr("colspan", 11 - current.length);
@@ -11806,11 +11799,7 @@ var ViewModel = function () {
     // Add Các tham số cần lưu lại đẻ 
     // cache khi load lại form hàng hóa
     //===============================
-    function setColspanForTable() {
-
-    }
     function addClassHH(name, id, value) {
-
         var current = localStorage.getItem('DanhSachHangHoa');
         if (!current) {
             current = [];

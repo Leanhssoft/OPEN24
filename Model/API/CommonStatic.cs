@@ -376,6 +376,15 @@ namespace Model
 
     public static class commonEnumHellper
     {
+        public enum HINH_THUC_THANH_TOAN
+        {
+            TIEN_MAT = 1,
+            POS,
+            CHUYEN_KHOAN,
+            THE_GIA_TRI,
+            DIEM,
+            TIEN_COC
+        }
         public enum TypeHoatDong
         {
             insert = 1,
