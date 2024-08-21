@@ -265,6 +265,7 @@ namespace libGara
         public string LoaiXe { get; set; }
         public string MauXe { get; set; }
         public int NamSanXuat { get; set; }
+        public string Diachi { get; set; }
         public string SoKhung { get; set; }
         public string SoMay { get; set; }
         public string MauSon { get; set; }
