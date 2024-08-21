@@ -69,6 +69,7 @@
     <Compile Include="ClassXuatHuy.cs" />
     <Compile Include="Class_officeDocument.cs" />
     <Compile Include="Class_Report.cs" />
+    <Compile Include="ClassAsposeExportExcel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

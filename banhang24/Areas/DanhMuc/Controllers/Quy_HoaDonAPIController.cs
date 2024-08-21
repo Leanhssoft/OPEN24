@@ -429,6 +429,39 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
 
+
+
+        [AcceptVerbs("GET")]
+        public IHttpActionResult GetInforBankAccount_ofSoQuy(Guid idQuyHoaDon, int hinhThucThanhToan = (int)commonEnumHellper.HINH_THUC_THANH_TOAN.CHUYEN_KHOAN)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                try
+                {
+                    var result = (from ct in db.Quy_HoaDon_ChiTiet
+                                  join tknh in db.DM_TaiKhoanNganHang on ct.ID_TaiKhoanNganHang equals tknh.ID
+                                  join nh in db.DM_NganHang on tknh.ID_NganHang equals nh.ID
+                                  where ct.ID_HoaDon == idQuyHoaDon && ct.HinhThucThanhToan == hinhThucThanhToan
+                                  select new
+                                  {
+                                      nh.MaNganHang,
+                                      nh.TenNganHang,
+                                      tknh.TenChuThe,
+                                      tknh.SoTaiKhoan,
+                                      nh.MaPinNganHang,
+                                      ct.TienThu
+                                  }).ToList();
+
+                    return ActionTrueData(result);
+                }
+                catch (Exception ex)
+                {
+                    return ActionFalseNotData(ex.Message);
+                }
+            }
+        }
+
+
         [HttpGet, HttpPost]
         public IHttpActionResult GetListCashFlow_Paging2(ParamCashFlow lstParam)
         {
@@ -890,6 +923,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                        tk.GhiChu,
                                        tk.TaiKhoanPOS,
                                        nh.MaNganHang,
+                                       nh.MaPinNganHang,
                                        nh.TenNganHang,
                                        TrangThai = tk.TrangThai == null ? 1 : tk.TrangThai.Value,
                                        ChiPhiThanhToan = nh.ChiPhiThanhToan == null ? 0 : nh.ChiPhiThanhToan,

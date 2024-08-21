@@ -400,8 +400,8 @@
     <div id="divPage">
         <div class=" bill-header floatleft flex" id="bill-header">
             <div class="w701" id="header1">
-                @*<input id="versioncache" value="@System.Configuration.ConfigurationManager.AppSettings["VersionCache"]" 
-                       style="display:none" />*@
+                @*<input id="versioncache" value="@System.Configuration.ConfigurationManager.AppSettings["VersionCache"]"
+                    style="display:none" />*@
                 <input style="display:none" value="@ViewBag.cookieDonVi" id="txtDonVi" />
                 <input type="hidden" value="@contant.GetUserCookies().ID_NhanVien" id="txtIDNhanVien" />
                 <input type="hidden" value="@contant.GetUserCookies().ID" id="txtIDUser" />
@@ -4465,6 +4465,7 @@
 @Html.Partial("~/Views/BanHang/_trahanghoadon.cshtml")
 @Html.Partial("~/Views/Component/_vue-ImageModal.cshtml")
 @Html.Partial("~/Views/DoiTac/_UpAnhHoaDon.cshtml")
+@Html.Partial("~/Views/SoQuy/_QRCodeChuyenKhoanModal.cshtml")
 
 <script src="@Html.WriteRenderFile(Scripts.Url("~/bundles/BanLe"))" type="text/javascript"></script>
 

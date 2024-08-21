@@ -941,6 +941,30 @@ var commonStatisJs = commonStatisJs || (function () {
         return decodeURIComponent(str);
     }
 
+    var DowloadFile_fromBrower = async function (url, method ='POST', data=null, fileName="FileDowload") {
+        const dataStream = await $.ajax({
+            url: url,
+            type: method,
+            data: data ? JSON.stringify(data) : null,
+            contentType: 'application/json',
+            xhrFields: {
+                responseType: 'blob'
+            }
+        }).done().then(function (blob) {
+            return blob;
+        });
+        if (dataStream) {
+            let link = document.createElement('a');
+            link.href = window.URL.createObjectURL(dataStream);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            return true;
+        }
+        return false;
+    }
+
     return {
         ChangeThemeColor: ChangeThemeColor,
         URLEncoding: encodeURI,
@@ -979,6 +1003,7 @@ var commonStatisJs = commonStatisJs || (function () {
         TableRowRemoveFocus: tableRowRemoveFocus,
         FirstChar_UpperCase: FirstChar_UpperCase,
         checkSizeImage: checkSizeImage,
+        DowloadFile_fromBrower: DowloadFile_fromBrower
     };
 })();
 commonStatisJs.ChangeThemeColor(LocalCaches.GetThemeColor(), false);

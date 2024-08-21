@@ -16,6 +16,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using static banhang24.Hellper.commonEnum;
 
 
 namespace banhang24.Areas.DanhMuc.Controllers
@@ -4145,7 +4146,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
 
         [AcceptVerbs("GET", "POST")]
-        public string Export_BCK_TonKho([FromBody] JObject data)
+        public HttpResponseMessage Export_BCK_TonKho([FromBody] JObject data)
         {
             array_BaoCaoKhoHang param = data["objExcel"].ToObject<array_BaoCaoKhoHang>();
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
@@ -4153,17 +4154,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 List<BaoCaoKho_TonKhoPRC> lst = reportKho.GetBaoCaoKho_TonKhoPRC(param);
 
                 DataTable excel = classOffice.ToDataTable<BaoCaoKho_TonKhoPRC>(lst);
                 excel.Columns.Remove("TenHangHoa");
                 excel.Columns.Remove("ThuocTinh_GiaTri");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoHangHoaTonKho.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangHoaTonKho.xlsx");
-                fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, param.columnsHide, param.TodayBC, param.TenChiNhanh);
-                fileSave = classOffice.createFolder_Export("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangHoaTonKho.xlsx");
-                return fileSave;
+                var lstDataCell = classAposeCell.GetData_ForDefaultCell(param.TenChiNhanh, param.TodayBC);
+                HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 4, 28, true, param.columnsHide, lstDataCell);
+                return response;
             }
         }
         [AcceptVerbs("GET", "POST")]
@@ -4204,7 +4204,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [AcceptVerbs("GET", "POST")]
-        public string Export_BCK_NhapXuatTon([FromBody] JObject data)
+        public HttpResponseMessage Export_BCK_NhapXuatTon([FromBody] JObject data)
         {
             array_BaoCaoKhoHang param = data["objExcel"].ToObject<array_BaoCaoKhoHang>();
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
@@ -4212,17 +4212,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
+
                 List<BaoCaoKho_NhapXuaTonPRC> lst = reportKho.GetBaoCaoKho_NhapXuatTonPRC(param);
                 DataTable excel = classOffice.ToDataTable<BaoCaoKho_NhapXuaTonPRC>(lst);
                 excel.Columns.Remove("TenHangHoa");
                 excel.Columns.Remove("ThuocTinh_GiaTri");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoHangHoaNhapXuatTon.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangHoaNhapXuatTon.xlsx");
-                fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, param.columnsHide, param.TodayBC, param.TenChiNhanh);
-                HttpResponse Response = HttpContext.Current.Response;
-                fileSave = classOffice.createFolder_Export("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangHoaNhapXuatTon.xlsx");
-                return fileSave;
+                var lstDataCell = classAposeCell.GetData_ForDefaultCell(param.TenChiNhanh, param.TodayBC);
+                HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 4, 28, true, param.columnsHide, lstDataCell);
+                return response;
             }
         }
         [AcceptVerbs("GET", "POST")]
@@ -4276,7 +4275,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [AcceptVerbs("GET", "POST")]
-        public string Export_BCK_NhapXuatTonChiTiet([FromBody] JObject data)
+        public HttpResponseMessage Export_BCK_NhapXuatTonChiTiet([FromBody] JObject data)
         {
             array_BaoCaoKhoHang param = data["objExcel"].ToObject<array_BaoCaoKhoHang>();
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
@@ -4284,6 +4283,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
+
                 List<BaoCaoKho_NhapXuaTonChiTietPRC> lst = reportKho.GetBaoCaoKho_NhapXuatTonChiTietPRC(param);
                 DataTable excel = classOffice.ToDataTable<BaoCaoKho_NhapXuaTonChiTietPRC>(lst);
                 excel.Columns.Remove("TenHangHoa");
@@ -4291,12 +4292,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 excel.Columns.Remove("SoLuongNhap_SX");
                 excel.Columns.Remove("SoLuongXuat_SX");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoHangHoaNhapXuatTonChiTiet.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangHoaNhapXuatTonChiTiet.xlsx");
-                fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 5, 29, 24, true, param.columnsHide, param.TodayBC, param.TenChiNhanh);
-                HttpResponse Response = HttpContext.Current.Response;
-                fileSave = classOffice.createFolder_Export("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangHoaNhapXuatTonChiTiet.xlsx");
-                return fileSave;
+                var lstDataCell = classAposeCell.GetData_ForDefaultCell(param.TenChiNhanh, param.TodayBC);
+                HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 5, 29, true, param.columnsHide, lstDataCell);
+                return response;
             }
         }
         [AcceptVerbs("GET", "POST")]
@@ -4348,7 +4346,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [AcceptVerbs("GET", "POST")]
-        public string Export_BCK_XuatChuyenHang([FromBody] JObject data)
+        public HttpResponseMessage Export_BCK_XuatChuyenHang([FromBody] JObject data)
         {
             array_BaoCaoKhoHang param = data["objExcel"].ToObject<array_BaoCaoKhoHang>();
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
@@ -4356,24 +4354,48 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
+
                 List<BaoCaoKho_XuatChuyenHangPRC> lst = reportKho.GetBaoCaoKho_XuatChuyenHangPRC(true, param);
                 List<BaoCaoKho_XuatChuyenHangChiTietPRC> lstCT = reportKho.GetBaoCaoKho_XuatChuyenHangChiTietPRC(true, param);
                 DataTable excel = classOffice.ToDataTable<BaoCaoKho_XuatChuyenHangPRC>(lst);
                 excel.Columns.Remove("TenHangHoa");
                 excel.Columns.Remove("ThuocTinh_GiaTri");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoHangHoaXuatChuyenHang.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangHoaXuatChuyenHang.xlsx");
-                fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, param.columnsHide, param.TodayBC, param.TenChiNhanh);
+
                 DataTable excelCT = classOffice.ToDataTable<BaoCaoKho_XuatChuyenHangChiTietPRC>(lstCT);
                 excelCT.Columns.Remove("TenHangHoa");
                 excelCT.Columns.Remove("ThuocTinh_GiaTri");
                 excelCT.Columns.Remove("MaChiNhanhChuyen");
                 excelCT.Columns.Remove("MaChiNhanhNhan");
-                classOffice.listToOfficeExcel_Sheet(fileSave, fileSave, excelCT, 4, 28, 24, true, param.columnsHideCT, 1, param.TodayBC, param.TenChiNhanh);
-                HttpResponse Response = HttpContext.Current.Response;
-                fileSave = classOffice.createFolder_Export("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangHoaXuatChuyenHang.xlsx");
-                return fileSave;
+
+                List<System.Data.DataTable> lstDataTable = new List<System.Data.DataTable>
+                {
+                    excel,excelCT
+                };
+                List<ClassExcel_CellData> lstCell = classAposeCell.GetData_ForDefaultCell(param.TenChiNhanh, param.TodayBC);
+                List<Excel_ParamExport> lstPr = new List<Excel_ParamExport> {
+                     new Excel_ParamExport
+                     {
+                        SheetIndex=0,
+                        StartRow =  4,
+                        EndRow = 28,
+                        ColumnsHide = param.columnsHide ,
+                        HasRowSum_AtLastIndex = true,
+                        CellData = lstCell
+                     },
+                        new Excel_ParamExport
+                     {
+                        SheetIndex=1,
+                        StartRow =  4,
+                        EndRow = 28,
+                        ColumnsHide = param.columnsHideCT ,
+                        HasRowSum_AtLastIndex = true,
+                        CellData = lstCell
+                     }
+                };
+                HttpResponseMessage response = classAposeCell.ExportData_ToMultipleSheet(fileTeamplate, lstDataTable, lstPr);
+                return response;
             }
         }
         [AcceptVerbs("GET", "POST")]
@@ -4425,7 +4447,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [AcceptVerbs("GET", "POST")]
-        public string Export_BCK_NhapChuyenHang([FromBody] JObject data)
+        public HttpResponseMessage Export_BCK_NhapChuyenHang([FromBody] JObject data)
         {
             array_BaoCaoKhoHang param = data["objExcel"].ToObject<array_BaoCaoKhoHang>();
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
@@ -4433,24 +4455,49 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
+
                 List<BaoCaoKho_XuatChuyenHangPRC> lst = reportKho.GetBaoCaoKho_XuatChuyenHangPRC(false, param);
                 List<BaoCaoKho_XuatChuyenHangChiTietPRC> lstCT = reportKho.GetBaoCaoKho_XuatChuyenHangChiTietPRC(false, param);
                 DataTable excel = classOffice.ToDataTable<BaoCaoKho_XuatChuyenHangPRC>(lst);
                 excel.Columns.Remove("TenHangHoa");
                 excel.Columns.Remove("ThuocTinh_GiaTri");
-                string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoHangHoaNhapChuyenHang.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangHoaNhapChuyenHang.xlsx");
-                fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, param.columnsHide, param.TodayBC, param.TenChiNhanh);
+
                 DataTable excelCT = classOffice.ToDataTable<BaoCaoKho_XuatChuyenHangChiTietPRC>(lstCT);
                 excelCT.Columns.Remove("TenHangHoa");
                 excelCT.Columns.Remove("ThuocTinh_GiaTri");
                 excelCT.Columns.Remove("MaChiNhanhChuyen");
                 excelCT.Columns.Remove("MaChiNhanhNhan");
-                classOffice.listToOfficeExcel_Sheet(fileSave, fileSave, excelCT, 4, 28, 24, true, param.columnsHideCT, 1, param.TodayBC, param.TenChiNhanh);
-                HttpResponse Response = HttpContext.Current.Response;
-                fileSave = classOffice.createFolder_Export("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangHoaNhapChuyenHang.xlsx");
-                return fileSave;
+
+                string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoHangHoaNhapChuyenHang.xlsx");
+
+                List<System.Data.DataTable> lstDataTable = new List<System.Data.DataTable>
+                {
+                    excel,excelCT
+                };
+                List<ClassExcel_CellData> lstCell = classAposeCell.GetData_ForDefaultCell(param.TenChiNhanh, param.TodayBC);
+                List<Excel_ParamExport> lstPr = new List<Excel_ParamExport> {
+                     new Excel_ParamExport
+                     {
+                        SheetIndex=0,
+                        StartRow =  4,
+                        EndRow = 28,
+                        ColumnsHide = param.columnsHide ,
+                        HasRowSum_AtLastIndex = true,
+                        CellData = lstCell
+                     },
+                        new Excel_ParamExport
+                     {
+                        SheetIndex=1,
+                        StartRow =  4,
+                        EndRow = 28,
+                        ColumnsHide = param.columnsHideCT ,
+                        HasRowSum_AtLastIndex = true,
+                        CellData = lstCell
+                     }
+                };
+                HttpResponseMessage response = classAposeCell.ExportData_ToMultipleSheet(fileTeamplate, lstDataTable, lstPr);
+                return response;
             }
         }
         [AcceptVerbs("GET", "POST")]
@@ -4500,7 +4547,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [AcceptVerbs("GET", "POST")]
-        public string Export_BCK_TongHopHangNhapKho([FromBody] JObject data)
+        public HttpResponseMessage Export_BCK_TongHopHangNhapKho([FromBody] JObject data)
         {
             array_BaoCaoKhoHang param = data["objExcel"].ToObject<array_BaoCaoKhoHang>();
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
@@ -4508,26 +4555,49 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
+
                 List<BaoCaoKho_XuatChuyenHangPRC> lst = reportKho.GetBaoCaoKho_TongHopHangNhapXuatKho(param);
                 List<BaoCaoKho_ChiTietHangNhapKhoPRC> lstCT = reportKho.GetBaoCaoKho_ChiTietHangNhapXuatKho(param);
 
                 DataTable excel = classOffice.ToDataTable<BaoCaoKho_XuatChuyenHangPRC>(lst);
-
                 excel.Columns.Remove("TenHangHoa");
                 excel.Columns.Remove("ThuocTinh_GiaTri");
-                string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoTongHopHangNhapKho.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoTongHopHangNhapKho.xlsx");
-                fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, param.columnsHide, param.TodayBC, param.TenChiNhanh);
 
                 DataTable excelCT = classOffice.ToDataTable<BaoCaoKho_ChiTietHangNhapKhoPRC>(lstCT);
                 excelCT.Columns.Remove("TenHangHoa");
                 excelCT.Columns.Remove("ThuocTinh_GiaTri");
                 excelCT.Columns.Remove("BienSo");
-                classOffice.listToOfficeExcel_Sheet(fileSave, fileSave, excelCT, 4, 28, 24, true, param.columnsHideCT, 1, param.TodayBC, param.TenChiNhanh);
-                HttpResponse Response = HttpContext.Current.Response;
-                fileSave = classOffice.createFolder_Export("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoTongHopHangNhapKho.xlsx");
-                return fileSave;
+
+                string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoTongHopHangNhapKho.xlsx");
+
+                List<System.Data.DataTable> lstDataTable = new List<System.Data.DataTable>
+                {
+                    excel,excelCT
+                };
+                List<ClassExcel_CellData> lstCell = classAposeCell.GetData_ForDefaultCell(param.TenChiNhanh, param.TodayBC);
+                List<Excel_ParamExport> lstPr = new List<Excel_ParamExport> {
+                     new Excel_ParamExport
+                     {
+                        SheetIndex=0,
+                        StartRow =  4,
+                        EndRow = 28,
+                        ColumnsHide = param.columnsHide ,
+                        HasRowSum_AtLastIndex = true,
+                        CellData = lstCell
+                     },
+                        new Excel_ParamExport
+                     {
+                        SheetIndex=1,
+                        StartRow =  4,
+                        EndRow = 28,
+                        ColumnsHide = param.columnsHideCT ,
+                        HasRowSum_AtLastIndex = true,
+                        CellData = lstCell
+                     }
+                };
+                HttpResponseMessage response = classAposeCell.ExportData_ToMultipleSheet(fileTeamplate, lstDataTable, lstPr);
+                return response;
             }
         }
         [AcceptVerbs("GET", "POST")]
@@ -4577,7 +4647,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [AcceptVerbs("GET", "POST")]
-        public string Export_BCK_TongHopHangXuatKho([FromBody] JObject data)
+        public HttpResponseMessage Export_BCK_TongHopHangXuatKho([FromBody] JObject data)
         {
             array_BaoCaoKhoHang param = data["objExcel"].ToObject<array_BaoCaoKhoHang>();
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
@@ -4585,28 +4655,52 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
+
                 List<BaoCaoKho_XuatChuyenHangPRC> lst = reportKho.GetBaoCaoKho_TongHopHangNhapXuatKho(param);
                 List<BaoCaoKho_ChiTietHangNhapKhoPRC> lstCT = reportKho.GetBaoCaoKho_ChiTietHangNhapXuatKho(param);
 
                 DataTable excel = classOffice.ToDataTable<BaoCaoKho_XuatChuyenHangPRC>(lst);
                 excel.Columns.Remove("TenHangHoa");
                 excel.Columns.Remove("ThuocTinh_GiaTri");
-                string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoTongHopHangXuatKho.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoTongHopHangXuatKho.xlsx");
-                fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, param.columnsHide, param.TodayBC, param.TenChiNhanh);
 
                 DataTable excelCT = classOffice.ToDataTable<BaoCaoKho_ChiTietHangNhapKhoPRC>(lstCT);
                 excelCT.Columns.Remove("TenHangHoa");
                 excelCT.Columns.Remove("ThuocTinh_GiaTri");
-                classOffice.listToOfficeExcel_Sheet(fileSave, fileSave, excelCT, 4, 28, 24, true, param.columnsHideCT, 1, param.TodayBC, param.TenChiNhanh);
-                HttpResponse Response = HttpContext.Current.Response;
-                fileSave = classOffice.createFolder_Export("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoTongHopHangXuatKho.xlsx");
-                return fileSave;
+
+                string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoTongHopHangXuatKho.xlsx");
+
+                List<System.Data.DataTable> lstDataTable = new List<System.Data.DataTable>
+                {
+                    excel,excelCT
+                };
+                List<ClassExcel_CellData> lstCell = classAposeCell.GetData_ForDefaultCell(param.TenChiNhanh, param.TodayBC);
+                List<Excel_ParamExport> lstPr = new List<Excel_ParamExport> {
+                     new Excel_ParamExport
+                     {
+                        SheetIndex=0,
+                        StartRow =  4,
+                        EndRow = 28,
+                        ColumnsHide = param.columnsHide ,
+                        HasRowSum_AtLastIndex = true,
+                        CellData = lstCell
+                     },
+                        new Excel_ParamExport
+                     {
+                        SheetIndex=1,
+                        StartRow =  4,
+                        EndRow = 28,
+                        ColumnsHide = param.columnsHideCT ,
+                        HasRowSum_AtLastIndex = true,
+                        CellData = lstCell
+                     }
+                };
+                HttpResponseMessage response = classAposeCell.ExportData_ToMultipleSheet(fileTeamplate, lstDataTable, lstPr);
+                return response;
             }
         }
         [AcceptVerbs("GET", "POST")]
-        public string Export_BCK_XuatDinhLuongDichVu([FromBody] JObject data)
+        public HttpResponseMessage Export_BCK_XuatDinhLuongDichVu([FromBody] JObject data)
         {
             array_BaoCaoKhoHang param = data["objExcel"].ToObject<array_BaoCaoKhoHang>();
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
@@ -4614,6 +4708,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
+
                 List<BaoCaoKho_XuatDichVuDinhLuongPRC> lst = reportKho.GetBaoCaoKho_XuatDichVuDinhLuong(param);
                 DataTable excel = classOffice.ToDataTable<BaoCaoKho_XuatDichVuDinhLuongPRC>(lst);
                 var nganhnghe = CookieStore.GetCookieAes("shop").ToUpper();
@@ -4629,11 +4725,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 excel.Columns.Remove("TenHangHoa");
                 excel.Columns.Remove("ThuocTinh_GiaTri");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoHangXuatKhoTheoDichVuDinhLuong.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangXuatKhoTheoDichVuDinhLuong.xlsx");
-                fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 5, 28, 23, true, columnRemove, param.TodayBC, param.TenChiNhanh);
-                fileSave = classOffice.createFolder_Export("~/Template/ExportExcel/Report/BaoCaoKho/BaoCaoHangXuatKhoTheoDichVuDinhLuong.xlsx");
-                return fileSave;
+                var lstDataCell = classAposeCell.GetData_ForDefaultCell(param.TenChiNhanh, param.TodayBC);
+                HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 5, 28, true, columnRemove);
+                return response;
             }
         }
         [AcceptVerbs("GET", "POST")]

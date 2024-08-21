@@ -545,7 +545,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content = content.Replace("{TongTienTheoNhom_TruocVAT}",
             "<span data-bind=\"text: formatNumber(TongTienTheoNhom_TruocVAT,0)\" > </span>");
             content = content.Replace("{TongTienTheoNhom_TruocCK}",
-            "<span data-bind=\"text: formatNumber(TongTienTheoNhom_TruocCK,0)\" > </span>");  
+            "<span data-bind=\"text: formatNumber(TongTienTheoNhom_TruocCK,0)\" > </span>");
             content = content.Replace("{TongTienTheoNhom_TruocCK_SauVAT}",
             "<span data-bind=\"text: formatNumber(TongTienTheoNhom_TruocCK_SauVAT,0)\" > </span>");
 
@@ -706,31 +706,17 @@ namespace banhang24.Areas.DanhMuc.Controllers
             else
             if (content1.IndexOf("{Nhom_HangHoaDV}") == -1 && (content1.IndexOf("{TheoHangHoa}") > -1 || content1.IndexOf("{TheoDichVu}") > -1))
             {
-                //var openTbl = content1.LastIndexOf("<tbody", content1.IndexOf("{TheoHangHoa}")) + 7;
-                //var closeTbl = content1.IndexOf("tbody>", content1.IndexOf("{TheoDichVu}")) + 6;
-                //string temptable = content1.Substring(openTbl, closeTbl - openTbl);
-                //string temptable1 = temptable;
-
-                var xx = content1.IndexOf("{TheoHangHoa}");
 
                 int openTbl, closeTbl;
-                string temptable = string.Empty, temptable1 = string.Empty;
+                string temptable, temptable1;
 
-                if (xx > 0)
-                {
-                    openTbl = content1.LastIndexOf("<tbody", content1.IndexOf("{TheoHangHoa}")) + 7;
-                    closeTbl = content1.IndexOf("tbody>", content1.IndexOf("{TheoDichVu}")) + 6;
-                    temptable = content1.Substring(openTbl, closeTbl - openTbl);
-                    temptable1 = temptable;
-                }
-
+                var indexHH = content1.IndexOf("TheoHangHoa");
+                var indexDV = content1.IndexOf("TheoDichVu");
 
                 var strDV = "<!-- ko foreach:  $root.CTHoaDonPrint().filter(x=> x.LaHangHoa === false) -->";
                 var strHH = "<!-- ko foreach:  $root.CTHoaDonPrint().filter(x=> x.LaHangHoa) -->";
 
-                var indexHH = temptable1.IndexOf("TheoHangHoa");
-                var indexDV = temptable1.IndexOf("TheoDichVu");
-                if (indexHH == -1 && indexDV == -1)
+                if (indexHH == -1 || indexDV == -1)
                 {
                     openTbl = content1.LastIndexOf("tbody", content1.IndexOf("{TenHangHoa")) - 1;
                     closeTbl = content1.IndexOf("tbody", content1.IndexOf("{TenHangHoa")) + 6;
@@ -862,6 +848,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 }
                 else
                 {
+                    // chung 1 bảng: gồm hàng hóa + dv
+                    openTbl = content1.LastIndexOf("<tbody", content1.IndexOf("{TheoHangHoa}")) + 7;
+                    closeTbl = content1.IndexOf("tbody>", content1.IndexOf("{TheoDichVu}")) + 6;
+                    temptable = content1.Substring(openTbl, closeTbl - openTbl);
+                    temptable1 = temptable;
+
                     int row1From = temptable.IndexOf("<tr");
                     int row1To = temptable.IndexOf("/tr>");
                     string row1Str = temptable.Substring(row1From, row1To);
@@ -1180,8 +1172,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             int hh_row1To = sTblHH.IndexOf("/tr>", hh_row1From + 3) + 4;
 
                             int hh_row2From = sTblHH.IndexOf("<tr", hh_row1To);
-                            int hh_row2To = sTblHH.IndexOf("/tr>", hh_row2From) + 6;
-                            string hh_row2Str = sTblHH.Substring(hh_row1To, hh_row2To - hh_row2From);
+                            int hh_row2To = sTblHH.IndexOf("/tr>", hh_row2From);
+                            string hh_row2Str = sTblHH.Substring(hh_row2From, hh_row2To - hh_row2From + 5);
                             string hh_row2 = hh_row2Str;
 
                             // find row contain sum phutung
@@ -1688,7 +1680,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{MaNccVanChuyen}", "<span data-bind=\"text: $root.InforHDprintf().MaNccVanChuyen\"></span>");
             content1 = content1.Replace("{TenNccVanChuyen}", "<span data-bind=\"text: $root.InforHDprintf().TenNccVanChuyen\"></span>");
             content1 = content1.Replace("{DaTraNCC}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().DaTraNCC)\"></span>");
-            content1 = content1.Replace("{DaChi_BenVCKhac}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().DaChi_BenVCKhac)\"></span>");         
+            content1 = content1.Replace("{DaChi_BenVCKhac}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().DaChi_BenVCKhac)\"></span>");
 
             #region ChuyenHang
             content1 = content1.Replace("{ChiNhanhChuyen}", "<span data-bind=\"text: InforHDprintf().ChiNhanhChuyen\"></span>");

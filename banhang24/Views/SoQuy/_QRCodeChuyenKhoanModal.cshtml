@@ -6,7 +6,8 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
             </div>
             <div class="modal-body">
-                <img v-bind:src="LinkQR" alt="QRCode" style="width:100%" />
+                <p v-if="ErrorMessage" class="text-danger">{{ ErrorMessage }}</p>
+                <img v-if="LinkQR" v-bind:src="LinkQR" alt="QRCode" style="width:100%" />
             </div>
         </div>
     </div>
@@ -18,20 +19,25 @@
         data: {
             LinkQR: '',
             MaNganHang: '',
+            TenNganHangCK: '',
             SoTaiKhoan: '',
             SoTien: '',
-            NoiDung: ''
+            MaPin: '',
+            NoiDung: '',
+            ErrorMessage: ''
         },
         methods: {
             setData: function (data) {
                 let self = this;
                 self.MaNganHang = data.MaNganHang;
                 self.SoTaiKhoan = data.SoTaiKhoan;
+                self.TenNganHangCK = data.TenNganHangCK;
+                self.MaPin = data.MaPin;
 
                 if (typeof data.SoTien === 'number') {
                     self.SoTien = data.SoTien.toString();
                 } else if (typeof data.SoTien === 'string') {
-                    self.SoTien = data.SoTien.replace(',', '');
+                    self.SoTien = data.SoTien.replace(/,/g, '');
                 } else {
                     console.error('SoTien is not a valid string or number');
                     self.SoTien = ''; // Sotien không hợp lệ
@@ -42,13 +48,43 @@
             },
             showModal: function () {
                 let self = this;
+                if (!self.SoTaiKhoan || !self.TenNganHangCK) {
+                    console.error("No account selected.");
+                    return;
+                }
+                self.ErrorMessage = '';
                 self.LinkQR = self.getLinkQR();
                 $('#modalQRCode').modal('show');
             },
             getLinkQR: function () {
                 let self = this;
-                return 'https://img.vietqr.io/image/' + self.MaNganHang + '-' +
-                    self.SoTaiKhoan + '-print.jpg?amount=' + self.SoTien + '&addInfo=' + self.NoiDung;
+                $.ajax({
+                    url: 'https://api.vietqr.io/v2/generate',
+                    type: 'POST',
+                    data: JSON.stringify({
+                        accountNo: self.SoTaiKhoan,
+                        accountName: self.TenNganHangCK,
+                        acqId: self.MaPin,
+                        addInfo: self.NoiDung,
+                        amount: self.SoTien,
+                        template: 'print'
+                    }),
+                    headers: {
+                        'x-client-id': '107ad630-167c-48c2-8b19-956c7a360f97',
+                        'x-api-key': '55430a78-4106-4194-a094-11a7acef6228',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function (response) {
+                        if (response.code === "00") {
+                            self.LinkQR = response.data.qrDataURL;
+                        } else {
+                            self.ErrorMessage = response.desc || "Đã xảy ra lỗi khi tạo mã QR.";                          
+                        }
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        self.ErrorMessage = "Yêu cầu không thành công. Vui lòng thử lại.";
+                    }
+                });
                 
             }
         }

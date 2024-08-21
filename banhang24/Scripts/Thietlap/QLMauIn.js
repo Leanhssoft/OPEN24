@@ -523,7 +523,6 @@ function SetConvertDataTest(strInput) {
                 let indexDV = temptable1.indexOf("TheoDichVu");
 
                 if (indexHH === -1 && indexDV === -1) {
-                    debugger;
 
                     // tách riêng 2 bảng: hàng hóa. dịch vụ
                     // nếu tách như này, khách chịu khó căn chỉnh dộ rộng cột thì mới đẹp được
@@ -915,8 +914,8 @@ function SetConvertDataTest(strInput) {
                             let hh_row1To = sTblHH.indexOf("/tr>", hh_row1From + 3) + 4;
 
                             let hh_row2From = sTblHH.indexOf("<tr", hh_row1To);
-                            let hh_row2To = sTblHH.indexOf("/tr>", hh_row2From) + 6;
-                            let hh_row2Str = sTblHH.substr(hh_row1To, hh_row2To - hh_row2From);
+                            let hh_row2To = sTblHH.indexOf("/tr>", hh_row2From);
+                            let hh_row2Str = sTblHH.substr(hh_row2From, hh_row2To - hh_row2From + 5);
                             let hh_row2 = hh_row2Str;
 
                             // find row contain sum phutung

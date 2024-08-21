@@ -282,11 +282,21 @@
     self.DonVis = ko.observableArray();
     self.searchDonVi = ko.observableArray();
     self.MangChiNhanh = ko.observableArray();
+
+    function CheckQuyenXemGiaVon() {
+        ajaxHelper(ReportUri + "getQuyenXemGiaVon?ID_NguoiDung=" + _IDDoiTuong + "&MaQuyen=" + "HangHoa_XemGiaVon", "GET").done(function (data) {
+            if (commonStatisJs.CheckNull(data)) {
+                self.HangHoa_XemGiaVon(false);
+            }
+            else {
+                self.HangHoa_XemGiaVon(true);
+            }
+        })
+    }
+
+    CheckQuyenXemGiaVon();
+
     function getQuyen_NguoiDung() {
-        //quyền xem báo cáo
-        //ajaxHelper(ReportUri + "getQuyen_NguoiDung?ID_NguoiDung=" + _IDDoiTuong + "&ID_DonVi=" + _id_DonVi + "&MaQuyen=" + "BaoCaoBanHang", "GET").done(function (data) {
-        //    self.BaoCaoBanHang(data);
-        //})
         if (VHeader.Quyen.indexOf('BaoCaoBanHang') > -1) {
             self.BaoCaoBanHang('BaoCaoBanHang');
         }
@@ -364,13 +374,6 @@
         }
         else {
             self.BCBH_XuatFile('false');
-        }
-
-        if (VHeader.Quyen.indexOf('HangHoa_XemGiaVon') > -1) {
-            self.HangHoa_XemGiaVon('HangHoa_XemGiaVon');
-        }
-        else {
-            self.HangHoa_XemGiaVon('false');
         }
     }
     getQuyen_NguoiDung();
@@ -2819,7 +2822,7 @@
     self.PhongBans = ko.observableArray();
     self.ListIDPhongBan_Chosed = ko.observableArray();
     var treeDepartment = '';
-    
+
     function GetTree_NhomHangHoa() {
         ajaxHelper('/api/DanhMuc/NS_NhanVienAPI/' + 'GetTreePhongBan?chinhanhId=' + _id_DonVi, 'GET').done(function (data) {
             if (data.length > 0) {
@@ -2839,7 +2842,7 @@
         });
     }
     GetTree_NhomHangHoa();
-   
+
     self.GetChildenID_Department = function (idNhom) {
         var arrID = [];
         var nhom = $.grep(self.PhongBans(), function (x) {

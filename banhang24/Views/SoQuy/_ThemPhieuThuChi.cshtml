@@ -466,6 +466,7 @@
                     TaiKhoanPOS: false,
                     TenChuThe: '',
                     TenNganHang: '',
+                    MaPinNganHang: '',
                     TextSearchAuto: '',
                     TrangThai: true,
                 }
@@ -645,6 +646,7 @@
                     TaiKhoanPOS: item.TaiKhoanPOS,
                     TenChuThe: item.TenChuThe,
                     TenNganHang: item.TenNganHang,
+                    MaPinNganHang: item.MaPinNganHang,
                     TextSearchAuto: '',
                     TrangThai: true,
                 }
@@ -664,6 +666,7 @@
                     TaiKhoanPOS: false,
                     TenChuThe: '',
                     TenNganHang: '',
+                    MaPinNganHang: '',
                     TextSearchAuto: '',
                     TrangThai: true,
                 }
@@ -980,7 +983,7 @@
                 });
             },
 
-            InPhieuThu: function (dataQuyHD) {
+            InPhieuThu: async function (dataQuyHD) {
                 var self = this;
                 var loaiCT = 'SQPT'
                 let quyhd = { ...dataQuyHD };
@@ -1018,6 +1021,17 @@
                 quyhd.TienMat_BangChu = DocSo(dataQuyHD.TienMat);
                 quyhd.ChuyenKhoan_BangChu = DocSo(dataQuyHD.TienCK);
                 quyhd.TienPOS_BangChu = DocSo(dataQuyHD.TienATM);
+
+                let qrCode = await getQRCode({
+                    accountNo: self.taiKhoanNganHang.SoTaiKhoan,
+                    accountName: self.taiKhoanNganHang.TenChuThe,
+                    acqId: self.taiKhoanNganHang.MaPinNganHang,
+                    addInfo: dataQuyHD.NoiDungThu,
+                    amount: dataQuyHD.TienCK
+                });
+                if (qrCode != '') {
+                    quyhd.LinkQR = qrCode;
+                }
 
                 $.ajax({
                     url: '/api/DanhMuc/ThietLapApi/GetContentFIlePrintTypeChungTu?maChungTu=' + loaiCT + '&idDonVi=' + quyhd.ID_DonVi,

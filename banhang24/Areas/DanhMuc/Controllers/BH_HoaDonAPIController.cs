@@ -6177,6 +6177,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                       nh.TenNganHang,
                                       tknh.TenChuThe,
                                       tknh.SoTaiKhoan,
+                                      nh.MaPinNganHang,
                                       ct.TienGui
                                   }).ToList();
 
@@ -6190,6 +6191,34 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 catch (Exception ex)
                 {
                     return InternalServerError(ex);
+                }
+            }
+        }
+        public IHttpActionResult GetInforBankAccount_ofHoaDon(Guid idHoaDon, int hinhThucThanhToan = (int)commonEnumHellper.HINH_THUC_THANH_TOAN.CHUYEN_KHOAN)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                try
+                {
+                    var result = (from qct in db.Quy_HoaDon_ChiTiet
+                                  join tknh in db.DM_TaiKhoanNganHang on qct.ID_TaiKhoanNganHang equals tknh.ID
+                                  join nh in db.DM_NganHang on tknh.ID_NganHang equals nh.ID
+                                  where qct.ID_HoaDonLienQuan == idHoaDon
+                                  && qct.HinhThucThanhToan == hinhThucThanhToan
+                                  select new
+                                  {
+                                      nh.MaNganHang,
+                                      nh.TenNganHang,
+                                      tknh.TenChuThe,
+                                      tknh.SoTaiKhoan,
+                                      nh.MaPinNganHang,
+                                      qct.TienThu
+                                  }).ToList();
+                    return ActionTrueData(result);
+                }
+                catch (Exception ex)
+                {
+                    return ActionFalseNotData(ex.Message);
                 }
             }
         }

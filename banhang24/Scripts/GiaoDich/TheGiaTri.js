@@ -59,12 +59,6 @@
     self.SuDungThe = ko.observable(0);
     self.HoanTraTheGiaTri = ko.observable(0);
 
-    //TaikhoannganhangCK
-    self.TenNganHangCK = ko.observable('');
-    self.TenChuTheCK = ko.observable('');
-    self.SoTaiKhoanCK = ko.observable('');
-    self.MaNganHangCK = ko.observable('');
-
     self.filter = ko.observable();
     self.filterNgayTao = ko.observable("0");
     self.filterNgayTao_Quy = ko.observable("0");
@@ -1116,7 +1110,6 @@
     self.NoHienTai = ko.observable();
 
     self.showpopupThanhtoan = function (item) {
-        debugger;
         ajaxHelper(BH_HoaDonUri + 'GetChietKhauNV_HoaDon?idHoaDon=' + item.ID, 'GET').done(function (obj) {
             if (obj.res === true) {
                 item.BH_NhanVienThucHiens = obj.data;
@@ -1369,8 +1362,9 @@
         });
     }
 
-    function GetInforHDPrint(objHD) {
+    async function GetInforHDPrint(objHD) {
         var hd = $.extend({}, objHD);
+        const taiKhoanCK = await fetchBankAccountData(objHD.ID);
         hd.NgayLapHoaDon = moment(hd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');;
         hd.TenChiNhanh = hd.TenDonVi;
         hd.DienThoaiKhachHang = hd.SoDienThoai;
@@ -1410,18 +1404,26 @@
         }
         if (formatNumberToFloat(objHD.TienGui) > 0) {
             pthuc += 'Chuyển khoản, ';
-            hd.TenNganHangChuyenKhoan = self.TenNganHangCK();
-            hd.TenChuTheChuyenKhoan = self.TenChuTheCK();
-            hd.SoTaiKhoanChuyenKhoan = self.SoTaiKhoanCK();
-            hd.LinkQR = 'https://img.vietqr.io/image/' + self.MaNganHangCK() + '-' +
-                self.SoTaiKhoanCK() + '-qr_only.png?amount=' + objHD.TienGui + '&addInfo=Thanh Toan Hoa Don';
+            let qrCode = await getQRCode({
+                accountNo: taiKhoanCK.SoTaiKhoan,
+                accountName: taiKhoanCK.TenChuThe,
+                acqId: taiKhoanCK.MaPinNganHang,
+                addInfo: 'Thanh Toan Hoa Don ' + hd.MaHoaDon,
+                amount: taiKhoanCK.TienThu
+            });
 
+            objPrint.TenNganHangChuyenKhoan = taiKhoanCK.TenNganHang;
+            objPrint.TenChuTheChuyenKhoan = taiKhoanCK.TenChuThe;
+            objPrint.SoTaiKhoanChuyenKhoan = taiKhoanCK.SoTaiKhoan;
+            if (qrCode != '') {
+                objPrint.LinkQR = qrCode;
+            }
         }
         hd.PhuongThucTT = Remove_LastComma(pthuc);
 
         return hd;
     }
- 
+
     function GetInforPhieuThu(objHD) {
         objHD.TenCuaHang = self.CongTy()[0].TenCongTy;
         objHD.DiaChiCuaHang = self.CongTy()[0].DiaChi;
@@ -1455,8 +1457,8 @@
         });
     }
 
-    self.InTheNap = function (item) {
-        var itemHDFormat = GetInforHDPrint(item, false);
+    self.InTheNap = async function (item) {
+        var itemHDFormat = await GetInforHDPrint(item, false);
         self.InforHDprintf(itemHDFormat);
 
         $.ajax({
@@ -1479,31 +1481,26 @@
         });
     }
 
-    function fetchBankAccountData(MaHoaDon, ID_DonVi) {
-        return new Promise((resolve, reject) => {
-            ajaxHelper(BH_HoaDonUri + 'GetHoaDonDetails?maHoaDon=' + MaHoaDon + '&idDonVi=' + ID_DonVi, 'GET').done(function (data) {
-                if (data != null && data.length > 0) {
-                    var firstItem = data[0];
-                    self.TenNganHangCK(firstItem.TenNganHang);
-                    self.TenChuTheCK(firstItem.TenChuThe);
-                    self.SoTaiKhoanCK(firstItem.SoTaiKhoan);
-                    self.MaNganHangCK(firstItem.MaNganHang);
-                    resolve(); 
-                } else {
-                    reject("Không có dữ liệu");
+    async function fetchBankAccountData(id) {
+        const xx = await ajaxHelper(BH_HoaDonUri + 'GetInforBankAccount_ofHoaDon?idHoaDon=' + id, 'GET').done()
+            .then(function (data) {
+                if (data.res && data.dataSoure.length > 0) {
+                    return data.dataSoure[0];
                 }
-            }).fail(function (error) {
-                reject(error); 
+                return {
+                    MaNganHang: '',
+                    TenNganHang: '',
+                    TenChuThe: '',
+                    SoTaiKhoan: '',
+                    MaPinNganHang: '',
+                    TienThu: 0,
+                }
             });
-        });
+        return xx;
     }
 
     self.InTheNap_ByID = async function (item, key) {
-        debugger;
-        if (item.TienGui > 0) { //Ngan hang CK
-            await fetchBankAccountData(item.MaHoaDon, item.ID_DonVi);
-        }
-        var itemHDFormat = GetInforHDPrint(item);
+        var itemHDFormat = await GetInforHDPrint(item);
         self.InforHDprintf(itemHDFormat);
 
         $.ajax({
@@ -1599,3 +1596,5 @@ $('.daterange').daterangepicker({
         "firstDay": 1
     }
 });
+
+

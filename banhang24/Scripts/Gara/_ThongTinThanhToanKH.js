@@ -77,8 +77,10 @@
         PhieuThuBaoHiemPrint: {},
         QRCode: {
             MaNganHang: '',
+            TenNganHangCK: '',
             SoTaiKhoan: '',
             SoTien: '',
+            MaPin: '',
             NoiDung: 'Thanh Toan Hoa Don'
         },
         QRCodeBH: {
@@ -86,7 +88,7 @@
             SoTaiKhoan: '',
             SoTien: '',
             NoiDung: 'BH Thanh Toan Hoa Don'
-        }, 
+        },
         LinkQR: ''
     },
     methods: {
@@ -288,7 +290,6 @@
             self.PhieuThuKhach.PhaiThanhToan = cantt;
             self.PhieuThuKhach.HoanTraTamUng = hoantra;
             self.PhieuThuKhach.ThucThu = self.inforHoaDon.ThucThu;
-
             let tkPos = $.grep(self.listData.AccountBanks, function (x) {
                 return x.ID === idPOS;
             });
@@ -457,14 +458,14 @@
             self.PhieuThuKhach.SoTaiKhoanCK = item.SoTaiKhoan;
             self.PhieuThuKhach.TenNganHangCK = item.TenNganHang;
             self.PhieuThuKhach.ID_TaiKhoanChuyenKhoan = item.ID;
-            self.QRCode.MaNganHang = item.MaNganHang;
+            self.QRCode.TenNganHangCK = item.TenChuThe;
+            self.QRCode.MaPin = item.MaPinNganHang;
             self.QRCode.SoTaiKhoan = item.SoTaiKhoan;
             if (typeof self.PhieuThuKhach.TienCK === 'number') {
                 self.QRCode.SoTien = self.PhieuThuKhach.TienCK.toString();
             } else {
-                self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(',', '');
+                self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(/,/g, '');
             }
-           
 
             console.log("change AccountCK", self.QRCode);
             self.updateQRCode();
@@ -477,8 +478,9 @@
             self.PhieuThuKhach.TenNganHangCK = '';
             self.PhieuThuKhach.TienCK = 0;
             self.CaculatorDaThanhToan();
-            self.QRCode.MaNganHang = '';
             self.QRCode.SoTaiKhoan = '';
+            self.QRCode.TenNganHangCK = '';
+            self.QRCode.MaPinNganHang = '';
         },
 
         BH_ResetAccountPOS: function () {
@@ -712,7 +714,7 @@
             self.CaculatorDaThanhToan();
 
             // Cập nhật số tiền trong QRCode (trong trường hợp tiền CK)
-            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(',', '');
+            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(/,/g, '');
             self.updateQRCode();
 
             var key = event.keyCode || event.which;
@@ -753,7 +755,7 @@
             self.CaculatorDaThanhToan();
 
             // Cập nhật số tiền trong QRCode (trong trường hợp tiền CK)
-            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(',', '');
+            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(/,/g, '');
             self.updateQRCode();
 
             var key = event.keyCode || event.which;
@@ -776,7 +778,7 @@
             self.PhieuThuKhach.TienCK = $this.val();
             self.CaculatorDaThanhToan();
             // Cập nhật số tiền trong QRCode
-            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(',', '');
+            self.QRCode.SoTien = self.PhieuThuKhach.TienCK.replace(/,/g, '');
             self.updateQRCode();
         },
         KH_EditTienThe: function () {
@@ -1871,10 +1873,11 @@
                     self.PhieuThuKhachPrint.TienTheGiaTri = tienthe;
                     self.PhieuThuKhachPrint.TTBangDiem = tiendiem;
                     self.PhieuThuKhachPrint.DaThanhToan = tongthu;
-
-                    self.PhieuThuKhachPrint.TenNganHangCK = ptKhach.TenNganHangCK;
-                    self.PhieuThuKhachPrint.TenChuTheCK = ptKhach.TenTaiKhoanCK;
-                    self.PhieuThuKhachPrint.SoTaiKhoanCK = ptKhach.SoTaiKhoanCK;
+                    if (self.LinkQR != '') {
+                        self.PhieuThuKhachPrint.TenNganHangCK = ptKhach.TenNganHangCK;
+                        self.PhieuThuKhachPrint.TenChuTheCK = ptKhach.TenTaiKhoanCK;
+                        self.PhieuThuKhachPrint.SoTaiKhoanCK = ptKhach.SoTaiKhoanCK;
+                    }             
                     // thu tiền cọc
                     if (tiendatcoc > 0 && loaiThuChi === 11) {
                         let qct = newQuyChiTiet({
@@ -2277,7 +2280,7 @@
         //    }
 
         //},
-        ShowModalQRCode: function (type = 1) {           
+        ShowModalQRCode: function (type = 1) {
             let self = this;
             if (type === 1) {
                 //QR khách hàng
@@ -2291,16 +2294,17 @@
             }
             VQRCode.showModal();
         },
-              
-        updateQRCode: function () {
+
+        updateQRCode: async function () {
             let self = this;
-            if (self.QRCode.MaNganHang && self.QRCode.SoTaiKhoan) {
-                self.LinkQR = 'https://img.vietqr.io/image/' + self.QRCode.MaNganHang + '-' +
-                    self.QRCode.SoTaiKhoan + '-qr_only.png?amount=' + self.QRCode.SoTien + '&addInfo=' + self.QRCode.NoiDung;
-            } else {
-                self.LinkQR = '';
-            }
-            console.log('Generated QR Link:', self.LinkQR);
-        }
+            self.LinkQR = await getQRCode({
+                accountNo: self.QRCode.SoTaiKhoan,
+                accountName: self.QRCode.TenNganHangCK,
+                acqId: self.QRCode.MaPin,
+                addInfo: self.QRCode.NoiDung,
+                amount: self.QRCode.SoTien
+            });                
+        },
+
     },
 })

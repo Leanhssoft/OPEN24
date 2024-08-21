@@ -28,12 +28,6 @@
     self.CTHoaDonPrint = ko.observableArray();
     self.CTHoaDonPrintMH = ko.observableArray();
 
-    //TaikhoannganhangCK
-    self.TenNganHangCK = ko.observable('');
-    self.TenChuTheCK = ko.observable('');
-    self.SoTaiKhoanCK = ko.observable('');
-    self.MaNganHangCK = ko.observable('');
-
     var url = '$/BanLe';
     switch (VHeader.IdNganhNgheKinhDoanh.toUpperCase()) {
         case 'C16EDDA0-F6D0-43E1-A469-844FAB143014':
@@ -411,7 +405,6 @@
             });
             self.KM_KMApDung(listKM);
         }
-        //console.log(2, self.KM_KMApDung())
     }
     function CheckKM_IsApDung(idNhanVien) {
         var isApDung = false;
@@ -2551,6 +2544,7 @@
 
     async function GetInforHDPrint(id, isDoiTraHang) {
         let hdDB = await GetInforHD_fromDB(id);
+        const taiKhoanCK = await fetchBankAccountData(id);
         hdDB.BH_NhanVienThucHiens = await GetChietKhauNV_byIDHoaDon(id);
 
         let customer = {};
@@ -2675,11 +2669,20 @@
         }
         if (hdDB.ChuyenKhoan > 0) {
             pthuc += 'Chuyển khoản, ';
-            objPrint.TenNganHangChuyenKhoan = self.TenNganHangCK();
-            objPrint.TenChuTheChuyenKhoan = self.TenChuTheCK();
-            objPrint.SoTaiKhoanChuyenKhoan = self.SoTaiKhoanCK();
-            objPrint.LinkQR = 'https://img.vietqr.io/image/' + self.MaNganHangCK() + '-' +
-                self.SoTaiKhoanCK() + '-qr_only.png?amount=' + hdDB.ChuyenKhoan + '&addInfo=Thanh Toan Hoa Don';
+            let qrCode = await getQRCode({
+                accountNo: taiKhoanCK.SoTaiKhoan,
+                accountName: taiKhoanCK.TenChuThe,
+                acqId: taiKhoanCK.MaPinNganHang,
+                addInfo: 'Thanh Toan Hoa Don ' + hdDB.MaHoaDon,
+                amount: taiKhoanCK.TienThu
+            });
+
+            objPrint.TenNganHangChuyenKhoan = taiKhoanCK.TenNganHang;
+            objPrint.TenChuTheChuyenKhoan = taiKhoanCK.TenChuThe;
+            objPrint.SoTaiKhoanChuyenKhoan = taiKhoanCK.SoTaiKhoan;
+            if (qrCode != '') {
+                objPrint.LinkQR = qrCode;
+            }
         }
         if (hdDB.ThuTuThe > 0) {
             pthuc += 'Thẻ giá trị, ';
@@ -3779,30 +3782,27 @@
 
     }
 
-    function fetchBankAccountData(MaHoaDon, ID_DonVi) {
-        return new Promise((resolve, reject) => {
-            ajaxHelper(BH_HoaDonUri + 'GetHoaDonDetails?maHoaDon=' + MaHoaDon + '&idDonVi=' + ID_DonVi, 'GET').done(function (data) {
-                if (data != null && data.length > 0) {
-                    var firstItem = data[0];
-                    self.TenNganHangCK(firstItem.TenNganHang);
-                    self.TenChuTheCK(firstItem.TenChuThe);
-                    self.SoTaiKhoanCK(firstItem.SoTaiKhoan);
-                    self.MaNganHangCK(firstItem.MaNganHang);
-                    resolve();
-                } else {
-                    reject("Không có dữ liệu");
+    async function fetchBankAccountData(id) {
+        const xx = await ajaxHelper(BH_HoaDonUri + 'GetInforBankAccount_ofHoaDon?idHoaDon=' + id, 'GET').done()
+            .then(function (data) {
+                if (data.res && data.dataSoure.length > 0) {
+                    return data.dataSoure[0];
                 }
-            }).fail(function (error) {
-                reject(error);
+                return {
+                    MaNganHang: '',
+                    TenNganHang: '',
+                    TenChuThe: '',
+                    SoTaiKhoan: '',
+                    MaPinNganHang: '',
+                    TienThu: 0,
+                }
             });
-        });
+        return xx;
     }
+
     self.PrinDatHang = async function (item, key) {
         var cthdFormat = await GetCTHDPrint_Format(item.ID);
         self.CTHoaDonPrint(cthdFormat);
-        if (item.ChuyenKhoan > 0) { //Ngan hang CK
-            await fetchBankAccountData(item.MaHoaDon, item.ID_DonVi);
-        }
         var itemHDFormat = await GetInforHDPrint(item.ID, false);
         self.InforHDprintf(itemHDFormat);
 
@@ -4079,7 +4079,6 @@
                                         arrIDRemove.push(arrIDNhomOld[i]);
                                     }
                                 }
-                                console.log('arrIDRemove ', arrIDRemove)
 
                                 for (var i = 0; i < arrIDRemove.length; i++) {
                                     // remove ID_NhomDoiTuong in DM_DoiTuong_Nhom with ID_DoiTuong
@@ -4109,7 +4108,6 @@
                                         }
                                     }
                                 }
-                                console.log('arrAddDB ', arrAddDB)
                                 if (arrAddDB.length > 0) {
                                     Insert_ManyNhom(arrAddDB);
                                 }
@@ -4555,3 +4553,4 @@ function RemoveAllCheck() {
     $('#divThaoTac').hide();
     $('.choose-commodity').hide();
 }
+

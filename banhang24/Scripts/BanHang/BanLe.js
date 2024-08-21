@@ -4191,7 +4191,7 @@ var NewModel_BanHangLe = function () {
         var accountCK = $.grep(self.ListAccountChuyenKhoan(), function (x) {
             return x.ID === objHD.ID_TaiKhoanChuyenKhoan;
         });
-        if (accountCK.length > 0 && formatNumberToFloat(objHD.TienGui) > 0) {
+        if (accountCK.length > 0 && formatNumberToFloat(objHD.TienGui) > 0 && vmThanhToanGara.LinkQR!= '') {
             objPrint.TenNganHangChuyenKhoan = accountCK[0].TenNganHang;
             objPrint.TenChuTheChuyenKhoan = accountCK[0].TenChuThe;
             objPrint.SoTaiKhoanChuyenKhoan = accountCK[0].SoTaiKhoan;
