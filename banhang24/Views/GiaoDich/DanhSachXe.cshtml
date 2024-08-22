@@ -24,8 +24,9 @@
                 padding: 6px;
                 text-align: center;
             }
-        #vDanhSachXe table thead tr th{
-            text-align:center
+
+        #vDanhSachXe table thead tr th {
+            text-align: center
         }
     </style>
 </head>
@@ -356,7 +357,7 @@
                                                         </button>
                                                         <button class="btn btn-cancel "
                                                                 v-if="item.TrangThai === 1 && role.DanhMucXe.Xoa"
-                                                                v-on:click="RemoveDanhMucXe(item)" >
+                                                                v-on:click="RemoveDanhMucXe(item)">
                                                             <i class="fa fa-trash"></i>
                                                             Xóa
                                                         </button>
@@ -912,7 +913,7 @@
                 },
                 role: {
                     HoaDon: {},
-                    DanhMucXe: {Xoa: false}
+                    DanhMucXe: { Xoa: false }
                 }
             },
             methods: {
@@ -1606,17 +1607,18 @@
                     { colName: 'colMaChuXe', colText: 'Mã chủ xe', colShow: true, index: 1 },
                     { colName: 'colChuXe', colText: 'Chủ xe', colShow: true, index: 2 },
                     { colName: 'colDienThoai', colText: 'Điện thoại', colShow: true, index: 3 },
-                    { colName: 'colHangXe', colText: 'Hãng xe', colShow: true, index: 4 },
-                    { colName: 'colLoaiXe', colText: 'Loại xe', colShow: true, index: 5 },
-                    { colName: 'colMauXe', colText: 'Mẫu xe', colShow: true, index: 6 },
-                    { colName: 'colNamSanXuat', colText: 'Năm sản xuất', colShow: true, index: 7 },
-                    { colName: 'colSoKhung', colText: 'Số khung', colShow: true, index: 8 },
-                    { colName: 'colSoMay', colText: 'Số máy', colShow: true, index: 9 },
-                    { colName: 'colMauSon', colText: 'Màu sơn', colShow: true, index: 10 },
-                    { colName: 'colDungTich', colText: 'Dung tích', colShow: true, index: 11 },
-                    { colName: 'colHopSo', colText: 'Hộp số', colShow: true, index: 12 },
-                    { colName: 'colGhiChu', colText: 'Ghi chú', colShow: false, index: 13 },
-                    { colName: 'colTrangThai', colText: 'Trạng thái', colShow: true, index: 14 }];
+                    { colName: 'colDiaChi', colText: 'Địa chỉ', colShow: true, index: 4 },
+                    { colName: 'colHangXe', colText: 'Hãng xe', colShow: true, index: 5 },
+                    { colName: 'colLoaiXe', colText: 'Loại xe', colShow: true, index: 6 },
+                    { colName: 'colMauXe', colText: 'Mẫu xe', colShow: true, index: 7 },
+                    { colName: 'colNamSanXuat', colText: 'Năm sản xuất', colShow: true, index: 8 },
+                    { colName: 'colSoKhung', colText: 'Số khung', colShow: true, index: 9 },
+                    { colName: 'colSoMay', colText: 'Số máy', colShow: true, index: 10 },
+                    { colName: 'colMauSon', colText: 'Màu sơn', colShow: true, index: 11 },
+                    { colName: 'colDungTich', colText: 'Dung tích', colShow: true, index: 12 },
+                    { colName: 'colHopSo', colText: 'Hộp số', colShow: true, index: 13 },
+                    { colName: 'colGhiChu', colText: 'Ghi chú', colShow: false, index: 14 },
+                    { colName: 'colTrangThai', colText: 'Trạng thái', colShow: true, index: 15 }];
                     localStorage.setItem('DMXe', JSON.stringify(this.ListHeader));
                 }
                 else {
@@ -1627,17 +1629,18 @@
                         { colName: 'colMaChuXe', colText: 'Mã chủ xe', colShow: true, index: 1 },
                         { colName: 'colChuXe', colText: 'Chủ xe', colShow: true, index: 2 },
                         { colName: 'colDienThoai', colText: 'Điện thoại', colShow: true, index: 3 },
-                        { colName: 'colHangXe', colText: 'Hãng xe', colShow: true, index: 4 },
-                        { colName: 'colLoaiXe', colText: 'Loại xe', colShow: true, index: 5 },
-                        { colName: 'colMauXe', colText: 'Mẫu xe', colShow: true, index: 6 },
-                        { colName: 'colNamSanXuat', colText: 'Năm sản xuất', colShow: true, index: 7 },
-                        { colName: 'colSoKhung', colText: 'Số khung', colShow: true, index: 8 },
-                        { colName: 'colSoMay', colText: 'Số máy', colShow: true, index: 9 },
-                        { colName: 'colMauSon', colText: 'Màu sơn', colShow: true, index: 10 },
-                        { colName: 'colDungTich', colText: 'Dung tích', colShow: true, index: 11 },
-                        { colName: 'colHopSo', colText: 'Hộp số', colShow: true, index: 12 },
-                        { colName: 'colGhiChu', colText: 'Ghi chú', colShow: false, index: 13 },
-                        { colName: 'colTrangThai', colText: 'Trạng thái', colShow: true, index: 14 }];
+                        { colName: 'colDiaChi', colText: 'Địa chỉ', colShow: true, index: 4 },
+                        { colName: 'colHangXe', colText: 'Hãng xe', colShow: true, index: 5 },
+                        { colName: 'colLoaiXe', colText: 'Loại xe', colShow: true, index: 6 },
+                        { colName: 'colMauXe', colText: 'Mẫu xe', colShow: true, index: 7 },
+                        { colName: 'colNamSanXuat', colText: 'Năm sản xuất', colShow: true, index: 8 },
+                        { colName: 'colSoKhung', colText: 'Số khung', colShow: true, index: 9 },
+                        { colName: 'colSoMay', colText: 'Số máy', colShow: true, index: 10 },
+                        { colName: 'colMauSon', colText: 'Màu sơn', colShow: true, index: 11 },
+                        { colName: 'colDungTich', colText: 'Dung tích', colShow: true, index: 12 },
+                        { colName: 'colHopSo', colText: 'Hộp số', colShow: true, index: 13 },
+                        { colName: 'colGhiChu', colText: 'Ghi chú', colShow: false, index: 14 },
+                        { colName: 'colTrangThai', colText: 'Trạng thái', colShow: true, index: 15 }];
                         localStorage.setItem('DMXe', JSON.stringify(this.ListHeader));
                     }
                 }

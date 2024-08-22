@@ -2176,6 +2176,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         ChuXe = p.TenDoiTuong,
                         DienThoai = p.DienThoai,
                         HangXe = p.TenHangXe,
+                        Diachi = p.DiaChi,
                         LoaiXe = p.TenLoaiXe,
                         MauXe = p.TenMauXe,
                         NamSanXuat = p.NamSanXuat,
