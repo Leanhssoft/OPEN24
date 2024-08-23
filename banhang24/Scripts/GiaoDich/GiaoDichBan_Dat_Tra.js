@@ -1104,7 +1104,7 @@
 
     var dayStart_Excel, dayEnd_Excel;// used to export many hoadon
 
-    function SearchHoaDon(isExport = false) {
+    async function SearchHoaDon(isExport = false) {
         var arrDV = [];
         $('.line-right').height(0).css("margin-top", "0px");
         var maHDFind = localStorage.getItem('FindHD');
@@ -1292,14 +1292,17 @@
             var txtLoaiHD = 'Hóa đơn';
             var funcName = 'ExportExcel_HoaDonBanLe'; // loai 1, 19, 2
             var noidungNhatKy = "Xuất excel danh sách hóa đơn";
+            var fileNameExport = 'DanhSachHoaDonBanLe.xlsx';
 
             switch (loaiHoaDon) {
                 case 1:
                     GetColumHide(1);
                     funcName = 'ExportExcel_HoaDonBanLe';
+                    fileNameExport = 'DanhSachHoaDonBanLe.xlsx';
                     break;
                 case 25:
                     funcName = 'ExportExcel_HoaDonSuaChua';
+                    fileNameExport = 'DanhSachHoaDonSuaChua.xlsx';
                     GetColumHide(1);
                     break;
                 case 2:
@@ -1312,6 +1315,7 @@
                     GetColumHide(0);
                     if (self.LoaiHoaDonMenu() === 0) {
                         funcName = 'ExportExcel_DatHang';
+                        fileNameExport = 'HoaDonDatHang.xlsx';
                         txtLoaiHD = 'Đặt hàng';
                         noidungNhatKy = "Xuất excel danh sách hóa đơn đặt hàng";
 
@@ -1336,6 +1340,7 @@
                         funcName = 'ExportExcel_BaoGiaSuaChua';
                         txtLoaiHD = 'Báo giá sửa chữa';
                         noidungNhatKy = "Xuất excel danh sách báo giá sửa chữa";
+                        fileNameExport = 'DanhSachBaoGiaSuaChua.xlsx';
 
                         // remove column {TongChiPhi}
                         let allHide = columnHide.split('_');
@@ -1359,6 +1364,7 @@
                     GetColumHide(0);
                     txtLoaiHD = 'Trả hàng';
                     funcName = 'ExportExcel_PhieuTraHang';
+                    fileNameExport = 'PhieuTraHang.xlsx';
                     noidungNhatKy = "Xuất excel danh sách hóa đơn trả hàng";
                     break;
             }
@@ -1366,20 +1372,23 @@
             Params_GetListHoaDon.PageSize = self.TotalRecord();
             Params_GetListHoaDon.ColumnsHide = columnHide;
 
-            ajaxHelper(BH_HoaDonUri + funcName, 'POST', Params_GetListHoaDon).done(function (url) {
+            let exportOK = false;
+            exportOK = await commonStatisJs.DowloadFile_fromBrower(BH_HoaDonUri + funcName, 'POST', Params_GetListHoaDon, fileNameExport);
+            if (exportOK) {
                 $('.content-table').gridLoader({ show: false });
-                if (url !== "") {
-                    self.DownloadFileTeamplateXLSX(url);
-                }
-            })
-            var objDiary = {
-                ID_NhanVien: _id_NhanVien,
-                ID_DonVi: id_donvi,
-                ChucNang: txtLoaiHD,
-                NoiDung: noidungNhatKy,
-                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-            };
-            Insert_NhatKyThaoTac_1Param(objDiary);
+                commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+                var objDiary = {
+                    ID_NhanVien: _id_NhanVien,
+                    ID_DonVi: id_donvi,
+                    ChucNang: txtLoaiHD,
+                    NoiDung: noidungNhatKy,
+                    LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+                };
+                Insert_NhatKyThaoTac_1Param(objDiary);
+            } else {
+                commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
+            }
+            
         }
         else {
             var hasPermission = false;
@@ -2103,7 +2112,7 @@
     self.ExportExcel_HoaDon = function () {
         SearchHoaDon(true);
     }
-    self.ExportExcel_ChiTietHoaDon = function (item) {
+    self.ExportExcel_ChiTietHoaDon = async function (item) {
         //let table = $('#home_' + item.ID);
         //    TableToExcel.convert(table[0], { // html code may contain multiple tables so here we are refering to 1st table tag
         //        name: `export.xlsx`, // fileName you could use any name
@@ -2111,78 +2120,52 @@
         //            name: 'Sheet 1' // sheetName
         //        }
         //    });
-        var objDiary = {
-            ID_NhanVien: _id_NhanVien,
-            ID_DonVi: id_donvi,
-            ChucNang: "Hóa đơn",
-            NoiDung: "Xuất báo cáo hóa đơn chi tiết theo mã: " + item.MaHoaDon,
-            LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-        };
-        var myData = {};
-        myData.objDiary = objDiary;
-        $.ajax({
-            url: DiaryUri + "post_NhatKySuDung",
-            type: 'POST',
-            async: true,
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data: myData,
-            success: function (item) {
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                ShowMessage_Danger("Ghi nhật ký sử dụng thất bại");
-            },
-            complete: function () {
-                var columnHide = '';
-                if (self.ThietLap().LoHang === false) {
-                    columnHide = '3'; // hide: LoHang
-                }
-                var url = BH_HoaDonUri + 'ExportExcel__ChiTietHoaDon?ID_HoaDon=' + item.ID + '&loaiHoaDon=' + loaiHoaDon + '&columHides=' + columnHide;
-                window.location.href = url;
-            }
-        })
+       
+
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(BH_HoaDonUri + 'ExportExcel__ChiTietHoaDon?ID_HoaDon=' + item.ID + '&loaiHoaDon=' + loaiHoaDon + '&columHides=' + columnHide, 'GET', null, "GiaoDichHoaDon_ChiTiet.xlsx");
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+            var objDiary = {
+                ID_NhanVien: _id_NhanVien,
+                ID_DonVi: id_donvi,
+                ChucNang: "Hóa đơn",
+                NoiDung: "Xuất báo cáo hóa đơn chi tiết theo mã: " + item.MaHoaDon,
+                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+            };
+            Insert_NhatKyThaoTac_1Param(objDiary);
+        } else {
+            commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
+        }
+       
     }
     // xuất excel phiếu trả hàng
-    self.ExportExcel_PhieuTraHang = function () {
-        SearchHoaDon(true);
+    self.ExportExcel_PhieuTraHang = async function () {
+       await SearchHoaDon(true);
     }
-    self.ExportExcel_ChiTietPhieuTraHang = function (item) {
-        var objDiary = {
-            ID_NhanVien: _id_NhanVien,
-            ID_DonVi: id_donvi,
-            ChucNang: "Trả hàng",
-            NoiDung: "Xuất báo cáo phiếu trả hàng chi tiết theo mã: " + item.MaHoaDon,
-            LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-        };
-        var myData = {};
-        myData.objDiary = objDiary;
-        $.ajax({
-            url: DiaryUri + "post_NhatKySuDung",
-            type: 'POST',
-            async: true,
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data: myData,
-            success: function (item) {
-            },
-            statusCode: {
-                404: function () {
-                },
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                bottomrightnotify('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + "Ghi nhật ký sử dụng thất bại", "danger");
-            },
-            complete: function () {
-                var url = BH_HoaDonUri + 'ExportExcel__ChiTietPhieuTraHang?ID_HoaDon=' + item.ID;
-                window.location.href = url;
-            }
-        })
+    self.ExportExcel_ChiTietPhieuTraHang = async function (item) {
+       
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(BH_HoaDonUri + 'ExportExcel__ChiTietPhieuTraHang?ID_HoaDon=' + item.ID, 'GET', null, "PhieuTraHang_ChiTiet.xlsx");
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+            var objDiary = {
+                ID_NhanVien: _id_NhanVien,
+                ID_DonVi: id_donvi,
+                ChucNang: "Trả hàng",
+                NoiDung: "Xuất báo cáo phiếu trả hàng chi tiết theo mã: " + item.MaHoaDon,
+                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+            };
+            Insert_NhatKyThaoTac_1Param(objDiary);
+        } else {
+            commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
+        }
     }
     //xuất excel phiếu đặt hàng
-    self.ExportExcel_DatHang = function () {
-        SearchHoaDon(true);
+    self.ExportExcel_DatHang = async function () {
+        await SearchHoaDon(true);
     }
-    self.ExportExcel_ChiTietPhieuDatHang = function (item) {
+    self.ExportExcel_ChiTietPhieuDatHang = async function (item) {
         var objDiary = {
             ID_NhanVien: _id_NhanVien,
             ID_DonVi: id_donvi,
@@ -2190,29 +2173,16 @@
             NoiDung: "Xuất báo cáo phiếu đặt hàng chi tiết theo mã: " + item.MaHoaDon,
             LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
         };
-        var myData = {};
-        myData.objDiary = objDiary;
-        $.ajax({
-            url: DiaryUri + "post_NhatKySuDung",
-            type: 'POST',
-            async: true,
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data: myData,
-            success: function (item) {
-            },
-            statusCode: {
-                404: function () {
-                },
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                bottomrightnotify('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + "Ghi nhật ký sử dụng thất bại", "danger");
-            },
-            complete: function () {
-                var url = BH_HoaDonUri + 'ExportExcel_ChiTietPhieuDatHang?ID_HoaDon=' + item.ID;
-                window.location.href = url;
-            }
-        })
+       
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(BH_HoaDonUri + 'ExportExcel_ChiTietPhieuDatHang?ID_HoaDon=' + item.ID, 'GET', null, "PhieuDatHang_ChiTiet.xlsx");
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+            Insert_NhatKyThaoTac_1Param(objDiary);
+            
+        } else {
+            commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
+        }
     }
 
     async function GetInforCar_ByID(idXe) {

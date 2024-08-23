@@ -2066,9 +2066,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
         #region ExportExcel
         [AcceptVerbs("GET", "POST")]
-        public IHttpActionResult ExportExcel_GetListPhieuTiepNhan_v2([FromBody] JObject objIn)
+        public HttpResponseMessage ExportExcel_GetListPhieuTiepNhan_v2([FromBody] JObject objIn)
         {
-            string fileSave = string.Empty;
             try
             {
                 ParamGetListPhieuTiepNhan_v2 param = new ParamGetListPhieuTiepNhan_v2();
@@ -2100,6 +2099,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
                     Class_officeDocument classOffice = new Class_officeDocument(db);
+                    ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                     List<GetListPhieuTiepNhan_v2> dataPhieuTiepNhan = classPhieuTiepNhan.GetListPhieuTiepNhan_v2(param);
                     List<GetListPhieuTiepNhan_v2_Export> lst = dataPhieuTiepNhan.Select(p => new GetListPhieuTiepNhan_v2_Export
                     {
@@ -2125,21 +2125,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         TenBaoHiem = p.TenBaoHiem
                     }).OrderByDescending(p => p.NgayVaoXuong).ToList();
                     DataTable excel = classOffice.ToDataTable<GetListPhieuTiepNhan_v2_Export>(lst);
-                    string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/Template_DanhSachPhieuTiepNhan.xlsx");
-                    fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/DanhSachPhieuTiepNhan.xlsx");
-                    fileSave = classOffice.createFolder_Download(fileSave);
-                    classOffice.listToOfficeExcel_v2(fileTeamplate, fileSave, excel, 3, 100, 97, false, lstColHide);
-
-                    var index = fileSave.IndexOf(@"\Template");
-                    fileSave = "~" + fileSave.Substring(index, fileSave.Length - index);
-                    fileSave = fileSave.Replace(@"\", "/");
-                    return ActionTrueNotData(fileSave);
+                    string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/Template_DanhSachPhieuTiepNhan.xlsx");                 
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 3, 100, true, string.Join("_", lstColHide));
+                    return response;                 
                 }
+               
             }
             catch (Exception ex)
             {
                 CookieStore.WriteLog("ExportExcel_GetListPhieuTiepNhan_v2 " + ex.InnerException + ex.Message);
-                return ActionFalseNotData(ex.Message);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
             }
         }
         public IHttpActionResult ExportExcel_GetListGaraDanhMucXe_v1([FromBody] JObject objIn)

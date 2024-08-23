@@ -1421,9 +1421,10 @@
                         { colName: 'colBaoHiem', colText: 'Đơn vị bảo hiểm', colShow: true, index: 19 }];
                 },
                 //Begin Export
-                ExportExcel: function () {
+                ExportExcel: async function () {
                     let self = this;
                     self.isLoading = true;
+                    let exportOK = false;
                     if (!this.isPageSelect) {
                         self.currentPage = 1;
                     }
@@ -1443,23 +1444,12 @@
                     myData.TrangThais = self.ListTrangThai.filter(p => p.Checked === true).map(p => p.Value);
                     myData.ColHide = self.ListHeader.filter(p => p.colShow === false).map(p => p.index);
                     myData.BaoHiemFilter = self.BaoHiemFilter;
-                    $.ajax({
-                        url: urlApiGara + "ExportExcel_GetListPhieuTiepNhan_v2",
-                        type: 'POST',
-                        dataType: 'json',
-                        data: myData,
-                        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                        success: function (data) {
-                            if (data.res === true) {
-                                var url = "/api/DanhMuc/DM_HangHoaAPI/Download_fileExcel?fileSave=" + data.mess;
-                                window.location.href = url;
-                                commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
-                            }
-                            else {
-                                commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
-                            }
-                        }
-                    });
+                    exportOK = await commonStatisJs.DowloadFile_fromBrower(urlApiGara + "ExportExcel_GetListPhieuTiepNhan_v2", 'POST', myData, "DanhSachPhieuTiepNhan.xlsx");
+                    if (exportOK) {
+                        commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+                    } else {
+                        commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
+                    }
                     self.onRefresh = false;
                     self.isLoading = false;
                 },
