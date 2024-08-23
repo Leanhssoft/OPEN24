@@ -1454,9 +1454,10 @@
                 },
                 //End Import file
                 //Begin ExportFile
-                ExportDanhSachXe: function () {
+                ExportDanhSachXe: async function () {
                     let self = this;
                     let myData = {};
+                    let exportOK = false;
                     myData.IdHangXe = self.listHangXe.HangXeSelected;
                     myData.IdLoaiXe = self.listLoaiXe.LoaiXeSelected;
                     myData.IdMauXe = self.listMauXe.MauXeSelected;
@@ -1465,23 +1466,12 @@
                     myData.TextSearch = self.dataDanhMucXe.TextSearch;
                     myData.ColHide = self.ListHeader.filter(p => p.colShow === false).map(p => p.index);
 
-                    $.ajax({
-                        url: urlApiGara + "ExportExcel_GetListGaraDanhMucXe_v1",
-                        type: 'POST',
-                        dataType: 'json',
-                        data: myData,
-                        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                        success: function (data) {
-                            if (data.res === true) {
-                                var url = "/api/DanhMuc/DM_HangHoaAPI/Download_fileExcel?fileSave=" + data.mess;
-                                window.location.href = url;
-                                commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
-                            }
-                            else {
-                                commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
-                            }
-                        }
-                    });
+                    exportOK = await commonStatisJs.DowloadFile_fromBrower(urlApiGara + "ExportExcel_GetListGaraDanhMucXe_v1", 'POST', myData, "DanhSachXe.xlsx");
+                    if (exportOK) {
+                        commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+                    } else {
+                        commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
+                    }
                 },
                 ExportLichSuSuaChua: function () {
                     let self = this;
