@@ -1837,6 +1837,7 @@ var workTable = new Vue({
         GetInforHDPrint: async function () {
             let self = this;
             let objPrint = $.extend({}, self.listData.ThongTinXe);
+            const taiKhoanCK = await self.fetchBankAccountData(self.itemChosing.ID);
             let hdChosing = await self.GetInforHD_fromDB(self.itemChosing.ID);
             let phaiThanhToan = formatNumberToInt(hdChosing.PhaiThanhToan);
             let daThanhToan = RoundDecimal(formatNumberToInt(hdChosing.KhachDaTra), 0);
@@ -1948,7 +1949,7 @@ var workTable = new Vue({
             let mat = 0, pos = 0, ck = 0, tgt = 0, coc = 0, diem = 0;
             mat = hdChosing.Khach_TienMat + hdChosing.BH_TienMat;
             pos = hdChosing.Khach_TienPOS + hdChosing.BH_TienPOS;
-            ck = hdChosing.Khach_TienCK + hdChosing.BH_TienCK;
+            ck = self.itemChosing.Khach_TienCK + self.itemChosing.BH_TienCK;
             tgt = hdChosing.Khach_TheGiaTri + hdChosing.BH_TheGiaTri;
             coc = hdChosing.Khach_TienCoc + hdChosing.BH_TienCoc;
             diem = hdChosing.Khach_TienDiem + hdChosing.BH_TienDiem;
@@ -1962,6 +1963,19 @@ var workTable = new Vue({
             }
             if (ck > 0) {
                 pthuc += 'Chuyển khoản, ';
+                let qrCode = await getQRCode({
+                    accountNo: taiKhoanCK.SoTaiKhoan,
+                    accountName: taiKhoanCK.TenChuThe,
+                    acqId: taiKhoanCK.MaPinNganHang,
+                    addInfo: 'Thanh Toan Hoa Don ' + hdChosing.MaHoaDon,
+                    amount: taiKhoanCK.TienThu
+                });
+                objPrint.TenNganHangChuyenKhoan = taiKhoanCK.TenNganHang;
+                objPrint.TenChuTheChuyenKhoan = taiKhoanCK.TenChuThe;
+                objPrint.SoTaiKhoanChuyenKhoan = taiKhoanCK.SoTaiKhoan;
+                if (qrCode != '') {
+                    objPrint.LinkQR = qrCode;
+                }
             }
             if (tgt > 0) {
                 pthuc += 'Thẻ giá trị, ';
@@ -2051,6 +2065,24 @@ var workTable = new Vue({
             PrintExtraReport(dataMauIn);
         },
 
+        fetchBankAccountData: async function (id) {
+            const xx = await ajaxHelper('/api/DanhMuc/BH_HoaDonAPI/' + 'GetInforBankAccount_ofHoaDon?idHoaDon=' + id, 'GET').done()
+                .then(function (data) {
+                    if (data.res && data.dataSoure.length > 0) {
+                        return data.dataSoure[0];
+                    }
+                    return {
+                        MaNganHang: '',
+                        TenNganHang: '',
+                        TenChuThe: '',
+                        SoTaiKhoan: '',
+                        MaPinNganHang: '',
+                        TienThu: 0,
+                    }
+                });
+            return xx;
+        },
+        
         InHoaDon: async function (isPrintID, val) {
             var self = this;
             var hd = await self.GetInforHDPrint();
