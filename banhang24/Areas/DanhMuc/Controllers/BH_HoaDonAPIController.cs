@@ -38,6 +38,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Results;
+using static banhang24.Hellper.commonEnum;
 using static libDM_DoiTuong.ClassBH_HoaDon;
 
 namespace banhang24.Areas.DanhMuc.Controllers
@@ -936,13 +937,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public string ExportExcel_HoaDonBanLe(Params_GetListHoaDon listParams)
+        public HttpResponseMessage ExportExcel_HoaDonBanLe(Params_GetListHoaDon listParams)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
-                string fileSave = string.Empty;
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 try
                 {
                     List<BH_HoaDonDTO> lstAllHDs = classhoadon.GetListInvoice_Paging(listParams);
@@ -984,8 +985,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     DataTable excel = _classOFDCM.ToDataTable<HoaDonBanExcel>(lst);
 
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Teamplate_GiaoDichHoaDon.xlsx");
-                    fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/DanhSachHoaDonBanLe.xlsx");
-                    fileSave = _classOFDCM.createFolder_Download(fileSave);
                     var valExcel1 = string.Empty;
                     if (listParams.NgayTaoHD_TuNgay == new DateTime(2016, 1, 1))
                     {
@@ -995,27 +994,26 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     {
                         valExcel1 = listParams.NgayTaoHD_TuNgay + " - " + listParams.NgayTaoHD_DenNgay;
                     }
-                    _classOFDCM.listToOfficeExcel_Sheet_KH(fileTeamplate, fileSave, excel, 6, 30, 24, true, 0, listParams.ColumnsHide, valExcel1, listParams.ValueText);
-                    var index = fileSave.IndexOf(@"\Template");
-                    fileSave = "~" + fileSave.Substring(index, fileSave.Length - index);
-                    fileSave = fileSave.Replace(@"\", "/");
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(listParams.ValueText, valExcel1);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, listParams.ColumnsHide, lstDataCell);
+                    return response;
                 }
                 catch (Exception ex)
                 {
                     CookieStore.WriteLog("ExportExcel_HoaDonBanLe " + ex.InnerException + ex.Message);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
                 }
-                return fileSave;
             }
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public string ExportExcel_GoiDichVu(Params_GetListHoaDon listParams)
+        public HttpResponseMessage ExportExcel_GoiDichVu(Params_GetListHoaDon listParams)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
-                string fileSave = string.Empty;
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 var columnRemove = string.Empty;
                 try
                 {
@@ -1066,8 +1064,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     }
 
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Teamplate_GoiDichVu.xlsx");
-                    fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/DanhSachGoiDichVu.xlsx");
-                    fileSave = _classOFDCM.createFolder_Download(fileSave);
                     var valExcel1 = string.Empty;
                     if (listParams.NgayTaoHD_TuNgay == new DateTime(2016, 1, 1))
                     {
@@ -1077,27 +1073,27 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     {
                         valExcel1 = listParams.NgayTaoHD_TuNgay + " - " + listParams.NgayTaoHD_DenNgay;
                     }
-                    _classOFDCM.listToOfficeExcel_Sheet_KH(fileTeamplate, fileSave, excel, 6, 30, 24, true, 0, columnRemove, valExcel1, listParams.ValueText);
-                    var index = fileSave.IndexOf(@"\Template");
-                    fileSave = "~" + fileSave.Substring(index, fileSave.Length - index);
-                    fileSave = fileSave.Replace(@"\", "/");
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(listParams.ValueText, valExcel1);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, columnRemove, lstDataCell);
+                    return response;
                 }
                 catch (Exception ex)
                 {
                     CookieStore.WriteLog("ExportExcel_GoiDichVu " + ex.InnerException + ex.Message);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
                 }
-                return fileSave;
+                
             }
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public string ExportExcel_HoaDonSuaChua(Params_GetListHoaDon listParams)
+        public HttpResponseMessage ExportExcel_HoaDonSuaChua(Params_GetListHoaDon listParams)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
-                string fileSave = string.Empty;
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 try
                 {
                     List<BH_HoaDonDTO> lstAllHDs = classhoadon.GetListInvoice_Paging(listParams);
@@ -1160,8 +1156,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     excel.Columns.Remove("HanSuDungGoiDV");
 
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Teamplate_GiaoDichHoaDon_Gara.xlsx");
-                    fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/DanhSachHoaDonSuaChua.xlsx");
-                    fileSave = _classOFDCM.createFolder_Download(fileSave);
                     var valExcel1 = string.Empty;
                     if (listParams.NgayTaoHD_TuNgay == new DateTime(2016, 1, 1))
                     {
@@ -1172,26 +1166,25 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         valExcel1 = listParams.NgayTaoHD_TuNgay + " - " + listParams.NgayTaoHD_DenNgay;
                     }
                     // xuất excel hoadon: không ẩn cột (assign columnhide = null)
-                    _classOFDCM.listToOfficeExcel_Sheet_KH(fileTeamplate, fileSave, excel, 6, 30, 24, true, 0, listParams.ColumnsHide, valExcel1, listParams.ValueText);
-
-                    var index = fileSave.IndexOf(@"\Template");
-                    fileSave = "~" + fileSave.Substring(index, fileSave.Length - index);
-                    fileSave = fileSave.Replace(@"\", "/");
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(listParams.ValueText, valExcel1);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, listParams.ColumnsHide, lstDataCell);
+                    return response;     
                 }
                 catch (Exception ex)
                 {
                     CookieStore.WriteLog("ExportExcel_HoaDons listParams " + ex.InnerException + ex.Message);
-                }
-                return fileSave;
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
+                }                
             }
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public void ExportExcel__ChiTietHoaDon(Guid ID_HoaDon, int loaiHoaDon, string columHides)
+        public HttpResponseMessage ExportExcel__ChiTietHoaDon(Guid ID_HoaDon, int loaiHoaDon, string columHides)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 SqlParameter param = new SqlParameter("ID_HoaDon", ID_HoaDon);
                 List<BH_ChiTietHoaDon_Excel> lst = db.Database.SqlQuery<BH_ChiTietHoaDon_Excel>("EXEC GetChiTietHoaDon_ByIDHoaDon @ID_HoaDon", param).ToList();
                 if (lst != null && lst.Count() > 0)
@@ -1201,41 +1194,39 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     excel.Columns.Remove("TenHangHoa");// get TenHangHoaThayThe
 
                     var tempFile = string.Empty;
-                    var tempDown = string.Empty;
                     switch (loaiHoaDon)
                     {
                         case 1:
                         case 25:
                             tempFile = "Teamplate_GiaoDichHoaDon_ChiTiet.xlsx";
-                            tempDown = "GiaoDichHoaDon_ChiTiet.xlsx";
                             excel.Columns.Remove("ThanhTien");// get value of colum ThanhToan = ThanhTien - Thue
                             break;
                         case 19:
                             tempFile = "Teamplate_GoiDichVu_ChiTiet.xlsx";
-                            tempDown = "GoiDichVu_ChiTiet.xlsx";
                             excel.Columns.Remove("ThanhToan");// get value of colum ThanhToan = ThanhTien - Thue
                             excel.Columns.Remove("TienThue");// get value of colum ThanhToan = ThanhTien - Thue
                             break;
                     }
                     excel.Columns.Remove("GhiChu");
-                    string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/" + tempFile);
-                    string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/" + tempDown);
-                    fileSave = _classOFDCM.createFolder_Download(fileSave);
-                    _classOFDCM.listToOfficeExcel(fileTeamplate, fileSave, excel, 3, 27, 24, true, columHides);
-                    HttpResponse Response = HttpContext.Current.Response;
-                    _classOFDCM.downloadFile(fileSave);
+                    string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/" + tempFile);                   
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 3, 27, true, null);
+                    return response;
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NoContent);
                 }
             }
         }
         // trinhpv xuất phiếu trả hàng
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public string ExportExcel_PhieuTraHang(Params_GetListHoaDon listParams)
+        public HttpResponseMessage ExportExcel_PhieuTraHang(Params_GetListHoaDon listParams)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
-                string fileSave = string.Empty;
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 try
                 {
                     var lstAllHDs = classhoadon.GetListInvoice_Paging(listParams);
@@ -1268,9 +1259,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     }
                     DataTable excel = _classOFDCM.ToDataTable<BH_PhieuTraHang_Excel>(lst);
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Teamplate_PhieuTraHang.xlsx");
-                    fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/PhieuTraHang.xlsx");
-                    fileSave = _classOFDCM.createFolder_Download(fileSave);
-
                     var valExcel1 = string.Empty;
                     if (listParams.NgayTaoHD_TuNgay == new DateTime(2016, 1, 1))
                     {
@@ -1280,40 +1268,41 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     {
                         valExcel1 = listParams.NgayTaoHD_TuNgay + " - " + listParams.NgayTaoHD_DenNgay;
                     }
-                    _classOFDCM.listToOfficeExcel_Sheet_KH(fileTeamplate, fileSave, excel, 6, 30, 24, true, 0, listParams.ColumnsHide, valExcel1, listParams.ValueText);
-
-                    var index = fileSave.IndexOf(@"\Template");
-                    fileSave = "~" + fileSave.Substring(index, fileSave.Length - index);
-                    fileSave = fileSave.Replace(@"\", "/");
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(listParams.ValueText, valExcel1);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, listParams.ColumnsHide, lstDataCell);
+                    return response;
                 }
                 catch (Exception ex)
                 {
                     CookieStore.WriteLog("ExportExcel_PhieuTraHang passObject" + ex.InnerException + ex.Message);
-                }
-                return fileSave;
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
+                }              
             }
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public void ExportExcel__ChiTietPhieuTraHang(Guid ID_HoaDon)
+        public HttpResponseMessage ExportExcel__ChiTietPhieuTraHang(Guid ID_HoaDon)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 SqlParameter param = new SqlParameter("ID_HoaDon", ID_HoaDon);
                 List<BH_ChiTietHoaDon_Excel> lstHDCT = db.Database.SqlQuery<BH_ChiTietHoaDon_Excel>("EXEC GetChiTietHoaDon_ByIDHoaDon @ID_HoaDon", param).ToList();
                 if (lstHDCT != null && lstHDCT.Count() > 0)
                 {
                     DataTable excel = _classOFDCM.ToDataTable<BH_ChiTietHoaDon_Excel>(lstHDCT);
                     excel.Columns.Remove("TenHangHoa");
+                    excel.Columns.Remove("TenHangHoaThayThe");
                     excel.Columns.Remove("ThanhTien");// use cloumn ThanhToan
 
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Teamplate_PhieuTraHang_ChiTiet.xlsx");
-                    string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/PhieuTraHang_ChiTiet.xlsx");
-                    fileSave = _classOFDCM.createFolder_Download(fileSave);
-                    _classOFDCM.listToOfficeExcel(fileTeamplate, fileSave, excel, 3, 27, 24, true, null);
-                    HttpResponse Response = HttpContext.Current.Response;
-                    _classOFDCM.downloadFile(fileSave);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 3, 27, true, null);
+                    return response;
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NoContent);
                 }
             }
         }
@@ -1550,13 +1539,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public string ExportExcel_DatHang(Params_GetListHoaDon listParams)
+        public HttpResponseMessage ExportExcel_DatHang(Params_GetListHoaDon listParams)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
-                string fileSave = string.Empty;
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 try
                 {
                     var lstAllHDs = classhoadon.GetListInvoice_Paging(listParams);
@@ -1588,8 +1577,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     DataTable excel = _classOFDCM.ToDataTable<BH_PhieuDatHang_Excel>(lst);
 
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/" + "Teamplate_HoaDonDatHang.xlsx");
-                    fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/" + "HoaDonDatHang.xlsx");
-                    fileSave = _classOFDCM.createFolder_Download(fileSave);
                     var valExcel1 = string.Empty;
                     if (listParams.NgayTaoHD_TuNgay == new DateTime(2016, 1, 1))
                     {
@@ -1599,28 +1586,28 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     {
                         valExcel1 = listParams.NgayTaoHD_TuNgay + " - " + listParams.NgayTaoHD_DenNgay;
                     }
-                    _classOFDCM.listToOfficeExcel_Sheet_KH(fileTeamplate, fileSave, excel, 6, 30, 24, true, 0, listParams.ColumnsHide, valExcel1, listParams.ValueText);
 
-                    var index = fileSave.IndexOf(@"\Template");
-                    fileSave = "~" + fileSave.Substring(index, fileSave.Length - index);
-                    fileSave = fileSave.Replace(@"\", "/");
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(listParams.ValueText, valExcel1);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, listParams.ColumnsHide, lstDataCell);
+                    return response;
                 }
                 catch (Exception ex)
                 {
                     CookieStore.WriteLog("ExportExcel_DatHang listParams " + ex.InnerException + ex.Message);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
                 }
-                return fileSave;
+               
             }
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public string ExportExcel_BaoGiaSuaChua(Params_GetListHoaDon listParams)
+        public HttpResponseMessage ExportExcel_BaoGiaSuaChua(Params_GetListHoaDon listParams)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
-                string fileSave = string.Empty;
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 try
                 {
                     var lstAllHDs = classhoadon.GetListInvoice_Paging(listParams);
@@ -1652,8 +1639,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     }
                     DataTable excel = _classOFDCM.ToDataTable<Excel_BaoGiaSuaChua>(lst);
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/" + "Teamplate_DanhSachBaoGiaSuaChua.xlsx");
-                    fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/" + "DanhSachBaoGiaSuaChua.xlsx");
-                    fileSave = _classOFDCM.createFolder_Download(fileSave);
                     var valExcel1 = string.Empty;
                     if (listParams.NgayTaoHD_TuNgay == new DateTime(2016, 1, 1))
                     {
@@ -1663,39 +1648,42 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     {
                         valExcel1 = listParams.NgayTaoHD_TuNgay + " - " + listParams.NgayTaoHD_DenNgay;
                     }
-                    _classOFDCM.listToOfficeExcel_Sheet_KH(fileTeamplate, fileSave, excel, 6, 30, 24, true, 0, listParams.ColumnsHide, valExcel1, listParams.ValueText);
-
-                    var index = fileSave.IndexOf(@"\Template");
-                    fileSave = "~" + fileSave.Substring(index, fileSave.Length - index);
-                    fileSave = fileSave.Replace(@"\", "/");
+                    
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(listParams.ValueText, valExcel1);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, listParams.ColumnsHide, lstDataCell);
+                    return response;
                 }
                 catch (Exception ex)
                 {
                     CookieStore.WriteLog("ExportExcel_DatHang listParams " + ex.InnerException + ex.Message);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
                 }
-                return fileSave;
             }
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public void ExportExcel_ChiTietPhieuDatHang(Guid ID_HoaDon)
+        public HttpResponseMessage ExportExcel_ChiTietPhieuDatHang(Guid ID_HoaDon)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 SqlParameter param = new SqlParameter("ID_HoaDon", ID_HoaDon);
                 List<BH_ChiTietHoaDon_Excel> lst = db.Database.SqlQuery<BH_ChiTietHoaDon_Excel>("EXEC GetChiTietHoaDon_ByIDHoaDon @ID_HoaDon", param).ToList();
                 if (lst != null && lst.Count() > 0)
                 {
                     DataTable excel = _classOFDCM.ToDataTable<BH_ChiTietHoaDon_Excel>(lst);
                     excel.Columns.Remove("TenHangHoa");
+                    excel.Columns.Remove("TenHangHoaThayThe");
                     excel.Columns.Remove("ThanhTien");
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Teamplate_HoaDonDatHang_ChiTiet.xlsx");
-                    string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/PhieuDatHang_ChiTiet.xlsx");
-                    fileSave = _classOFDCM.createFolder_Download(fileSave);
-                    _classOFDCM.listToOfficeExcel(fileTeamplate, fileSave, excel, 3, 27, 24, true, null);
-                    HttpResponse Response = HttpContext.Current.Response;
-                    _classOFDCM.downloadFile(fileSave);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 3, 27, true, null);
+                    return response;
+
+                }
+                else
+                {
+                    return new HttpResponseMessage(HttpStatusCode.NoContent);
                 }
             }
         }

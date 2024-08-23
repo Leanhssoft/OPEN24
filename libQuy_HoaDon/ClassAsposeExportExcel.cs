@@ -53,6 +53,19 @@ namespace libQuy_HoaDon
             };
             return lstCell;
         }
+
+        public List<ClassExcel_CellData> GetData_ForDefaultCellv2(string tenChiNhanh, string timeReport)
+        {
+            timeReport = timeReport.Contains("Thời gian") ? timeReport.Replace("Thời gian", "").Trim() : timeReport;
+            List<ClassExcel_CellData> lstCell = new List<ClassExcel_CellData>
+            {
+                new ClassExcel_CellData { RowIndex = 2, ColumnIndex = 0, CellValue =  "Thời gian: " },
+                new ClassExcel_CellData { RowIndex = 2, ColumnIndex = 1, CellValue =  timeReport },
+                new ClassExcel_CellData { RowIndex = 3, ColumnIndex = 0, CellValue = "Chi nhánh: " },
+                new ClassExcel_CellData { RowIndex = 3, ColumnIndex = 1, CellValue = tenChiNhanh }
+            };
+            return lstCell;
+        }
         private void SetData_ToDefaultCell(Aspose.Cells.Worksheet wSheet, List<ClassExcel_CellData> lst)
         {
             if (lst != null)
