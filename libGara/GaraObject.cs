@@ -261,11 +261,11 @@ namespace libGara
         public string MaChuXe { get; set; }
         public string ChuXe { get; set; }
         public string DienThoai { get; set; }
+        public string Diachi { get; set; }
         public string HangXe { get; set; }
         public string LoaiXe { get; set; }
         public string MauXe { get; set; }
         public int NamSanXuat { get; set; }
-        public string Diachi { get; set; }
         public string SoKhung { get; set; }
         public string SoMay { get; set; }
         public string MauSon { get; set; }
