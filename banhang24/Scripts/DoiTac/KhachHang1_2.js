@@ -895,7 +895,7 @@
         self.currentPage(0);
         SearchKhachHang(false, false);
     }
-    function SearchKhachHang(firstload, isXuatExcel) {
+    async function SearchKhachHang(firstload, isXuatExcel) {
         firstload = firstload || false;
         isXuatExcel = isXuatExcel || false;
         $('.line-right').height(0).css("margin-top", "0px");
@@ -1333,22 +1333,26 @@
             Params_GetListKhachHang.CurrentPage = 0;
             Params_GetListKhachHang.PageSize = self.TotalRecord();
             var funcName = 'ExportExcel_KhachHang';
+            var fileNameExport = 'DanhSachKhachHang.xlsx';
             if (loaiDoiTuong === 2) {
                 funcName = 'ExportExcel_NhaCungCap';
+                fileNameExport = 'DanhSachNhaCungCap.xlsx';
             }
-            ajaxHelper(DMDoiTuongUri + funcName, 'POST', Params_GetListKhachHang).done(function (url) {
-                if (url !== "") {
-                    self.DownloadFileTeamplateXLS_Export(url);
-                }
-            })
-            var objDiary = {
-                ID_NhanVien: idNhanVien,
-                ID_DonVi: idDonVi,
-                ChucNang: sLoai,
-                NoiDung: "Xuất báo cáo danh sách " + sLoai,
-                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-            };
-            Insert_NhatKyThaoTac_1Param(objDiary);
+
+
+            let exportOK = false;
+            exportOK = await commonStatisJs.DowloadFile_fromBrower(DMDoiTuongUri + funcName, 'POST', Params_GetListKhachHang, fileNameExport);
+            if (exportOK) {
+                commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+                var objDiary = {
+                    ID_NhanVien: idNhanVien,
+                    ID_DonVi: idDonVi,
+                    ChucNang: sLoai,
+                    NoiDung: "Xuất báo cáo danh sách " + sLoai,
+                    LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+                };
+                Insert_NhatKyThaoTac_1Param(objDiary);
+            }            
         }
         else {
             var hasPermisson = false;
@@ -3397,27 +3401,30 @@
             mask: true,
             timepicker: false,
         });
-    self.Export_HisAllTab = function (item) {
+    self.Export_HisAllTab = async function (item) {
         let ids = GetIDDonVis_Chosed();
         var funcExport = 'ExportExcel_AllHis_ofKH?';
+        var fileNameExport = 'LichSuMua_ThanhToan_TichLuy_ofKhachHang.xlsx';
         if (loaiDoiTuong === 2) {
             funcExport = 'ExportExcel_AllHis_ofNCC?';
+            fileNameExport = 'LichSuNhap_ThanhToan_ofNhaCungCap.xlsx';
         }
-        ajaxHelper(DMDoiTuongUri + funcExport
+
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(DMDoiTuongUri + funcExport
             + 'idDoiTuong=' + item.ID + '&maDoiTuog=' + item.MaDoiTuong + '&tenDoiTuong=' + item.TenDoiTuong
-            + '&idChiNhanh=' + ids, 'POST').done(function (url) {
-                if (url !== "") {
-                    self.DownloadFileTeamplateXLS_Export(url);
-                }
-            })
-        var objDiary = {
-            ID_NhanVien: idNhanVien,
-            ID_DonVi: idDonVi,
-            ChucNang: "Danh mục " + sLoai,
-            NoiDung: "Xuất báo cáo lịch sử mua, thanh toán, tích điểm của" + sLoai + " : " + item.MaDoiTuong,
-            LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-        };
-        Insert_NhatKyThaoTac_1Param(objDiary);
+            + '&idChiNhanh=' + ids, 'POST', null, fileNameExport);
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+            var objDiary = {
+                ID_NhanVien: idNhanVien,
+                ID_DonVi: idDonVi,
+                ChucNang: "Danh mục " + sLoai,
+                NoiDung: "Xuất báo cáo lịch sử mua, thanh toán, tích điểm của" + sLoai + " : " + item.MaDoiTuong,
+                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+            };
+            Insert_NhatKyThaoTac_1Param(objDiary);
+        }       
     }
     function GetAllChiNhanh() {
         ajaxHelper('/api/DanhMuc/DM_DonViAPI/' + 'GetListDonVi_User?ID_NguoiDung=' + userID, 'GET').done(function (data) {

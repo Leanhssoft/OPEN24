@@ -1766,12 +1766,14 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public string ExportExcel_CongViec(ParamCalendar model)
+        public HttpResponseMessage ExportExcel_CongViec(ParamCalendar model)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 class_LichHen classLichHen = new class_LichHen(db);
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
+
                 List<SP_Calendar> lstReturn = classLichHen.GetListCalendar(model);
                 List<ChamSocKhachHangXuatFileDTO> lst = new List<ChamSocKhachHangXuatFileDTO>();
                 foreach (var item in lstReturn)
@@ -1801,9 +1803,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/CongViec.xlsx");
                 fileSave = classOffice.createFolder_Download(fileSave);
                 var time = "Thời gian: " + model.FromDate + " - " + model.ToDate;
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, model.ColumnsHide, time, model.TenChiNhanhs);
-                fileSave = classOffice.createFolder_Export("~/Template/ExportExcel/CongViec.xlsx");
-                return fileSave;
+                var lstDataCell = classAposeCell.GetData_ForDefaultCell(model.TenChiNhanhs, time);
+                HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 4, 28, true, model.ColumnsHide, lstDataCell);
+                return response;
             }
         }
 

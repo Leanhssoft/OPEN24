@@ -1348,7 +1348,7 @@ var ViewModelHD = function () {
         GoToChiTietNhap();
     }
 
-    self.ExportExcel_ChuyenHang = function () {
+    self.ExportExcel_ChuyenHang = async function () {
         var param = GetParamSearch();
         //load columnhide from cache
         var columnHide = '';
@@ -1370,33 +1370,38 @@ var ViewModelHD = function () {
             + '&maHoaDon=' + param.MaHoaDon + '&trangThai=' + param.TrangThai
             + '&dayStart=' + param.DayStart + '&dayEnd=' + param.DayEnd + '&id_donvi=' + _IDchinhanh + "&ColumnsHide=" + columnHide
             + '&arrChiNhanh=' + param.ArrIDDonVi + '&time=' + self.TodayBC() + '&TenChiNhanh=' + self.TenChiNhanh();
-        window.location.href = url;
 
-        var objDiary = {
-            ID_NhanVien: _id_NhanVien,
-            ID_DonVi: _IDchinhanh,
-            ChucNang: "Chuyển hàng",
-            NoiDung: "Xuất báo cáo danh sách phiếu chuyển hàng",
-            NoiDungChiTiet: "Xuất báo cáo danh sách phiếu chuyển hàng",
-            LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-        };
-        Insert_NhatKyThaoTac_1Param(objDiary);
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(url, 'GET', null, "PhieuChuyenHang.xlsx");
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+            var objDiary = {
+                ID_NhanVien: _id_NhanVien,
+                ID_DonVi: _IDchinhanh,
+                ChucNang: "Chuyển hàng",
+                NoiDung: "Xuất báo cáo danh sách phiếu chuyển hàng",
+                NoiDungChiTiet: "Xuất báo cáo danh sách phiếu chuyển hàng",
+                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+            };
+            Insert_NhatKyThaoTac_1Param(objDiary);
+        }                    
     };
 
-    self.ExportExcel_ChiTietChuyenHang = function (item) {
-
-        var url = BH_HoaDonUri + 'ExportExcel__ChiTietPhieuChuyenHang?ID_HoaDon=' + item.ID;
-        window.location.href = url;
-
-        var objDiary = {
-            ID_NhanVien: _id_NhanVien,
-            ID_DonVi: _IDchinhanh,
-            ChucNang: "Chuyển hàng",
-            NoiDung: "Xuất báo cáo phiếu chuyển hàng chi tiết theo mã: " + item.MaHoaDon,
-            NoiDungChiTiet: "Xuất báo cáo phiếu chuyển hàng chi tiết theo mã: <a onclick=\"FindMaHD('" + item.MaHoaDon + "')\"> " + item.MaHoaDon + "</a>",
-            LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-        };
-        Insert_NhatKyThaoTac_1Param(objDiary);
+    self.ExportExcel_ChiTietChuyenHang = async function (item) {
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(BH_HoaDonUri + 'ExportExcel__ChiTietPhieuChuyenHang?ID_HoaDon=' + item.ID, 'GET', null, "PhieuChuyenHang_ChiTiet.xlsx");
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+            var objDiary = {
+                ID_NhanVien: _id_NhanVien,
+                ID_DonVi: _IDchinhanh,
+                ChucNang: "Chuyển hàng",
+                NoiDung: "Xuất báo cáo phiếu chuyển hàng chi tiết theo mã: " + item.MaHoaDon,
+                NoiDungChiTiet: "Xuất báo cáo phiếu chuyển hàng chi tiết theo mã: <a onclick=\"FindMaHD('" + item.MaHoaDon + "')\"> " + item.MaHoaDon + "</a>",
+                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+            };
+            Insert_NhatKyThaoTac_1Param(objDiary);
+        }    
     };
 
     function loadMauIn() {

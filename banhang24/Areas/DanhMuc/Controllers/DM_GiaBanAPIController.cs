@@ -409,12 +409,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
         //Trinhpv xuất excel giá bán
         [HttpGet]
-        public void ExportExcel_GiaBan(string maHoaDon, string idnhomhang, string _id, string columnsHide, Guid iddonvi)
+        public HttpResponseMessage ExportExcel_GiaBan(string maHoaDon, string idnhomhang, string _id, string columnsHide, Guid iddonvi)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 classDM_GiaBan_ChiTiet _classDMGBCT = new classDM_GiaBan_ChiTiet(db);
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 List<GiaBanChiTietDTO> lstAllGBs = _classDMGBCT.SelectChiTiet_where(_id, maHoaDon, iddonvi);
                 if (maHoaDon != null)
                 {
@@ -457,11 +458,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     columnsHide = "6";// remove colum GiaChung
                 }
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Teamplate_DanhMucGiaBan.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/DanhMucGiaBan.xlsx");
-                fileSave = _classOFDCM.createFolder_Download(fileSave);
-                _classOFDCM.listToOfficeExcel(fileTeamplate, fileSave, excel, 3, 27, 24, false, columnsHide);
-                HttpResponse Response = HttpContext.Current.Response;
-                _classOFDCM.downloadFile(fileSave);
+                HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 3, 27, false, columnsHide);
+                return response;
             }
         }
         public System.Web.Http.Results.JsonResult<JsonResultExampleBangGia> GetListGiaBans_where(int currentPage, int pageSize, string maHoaDon, string idnhomhang, string _id, string columsort, string sort, Guid iddonvi)

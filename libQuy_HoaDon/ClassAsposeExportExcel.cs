@@ -30,19 +30,38 @@ namespace libQuy_HoaDon
     }
     public class ClassAsposeExportExcel
     {
+        //private void RemoveColumn(Aspose.Cells.Worksheet wSheet, string columnsHide)
+        //{
+        //    if (!string.IsNullOrEmpty(columnsHide))
+        //    {
+        //        string[] coloumHide = columnsHide.Split('_');
+        //        coloumHide = coloumHide.Where(x => x != "").Distinct().ToArray();
+        //        var columH = Array.ConvertAll(coloumHide, int.Parse).OrderByDescending(x => x).ToArray();
+        //        for (int i = 0; i < columH.Length; i++)
+        //        {
+        //            wSheet.Cells.DeleteColumn(columH[i]);
+        //        }
+        //    }
+        //}
         private void RemoveColumn(Aspose.Cells.Worksheet wSheet, string columnsHide)
         {
             if (!string.IsNullOrEmpty(columnsHide))
             {
                 string[] coloumHide = columnsHide.Split('_');
-                coloumHide = coloumHide.Where(x => x != "").Distinct().ToArray();
-                var columH = Array.ConvertAll(coloumHide, int.Parse).OrderByDescending(x => x).ToArray();
-                for (int i = 0; i < columH.Length; i++)
+                var validColumns = coloumHide
+                    .Where(x => !string.IsNullOrWhiteSpace(x) && int.TryParse(x, out _))
+                    .Select(int.Parse)
+                    .Distinct()
+                    .OrderByDescending(x => x)
+                    .ToArray();
+
+                foreach (var columnIndex in validColumns)
                 {
-                    wSheet.Cells.DeleteColumn(columH[i]);
+                    wSheet.Cells.DeleteColumn(columnIndex);
                 }
             }
         }
+
         public List<ClassExcel_CellData> GetData_ForDefaultCell(string tenChiNhanh, string timeReport)
         {
             timeReport = timeReport.Contains("Thời gian") ? timeReport : string.Concat("Thời gian: ", timeReport);
@@ -72,7 +91,23 @@ namespace libQuy_HoaDon
             {
                 foreach (var item in lst)
                 {
-                    wSheet.Cells[item.RowIndex, item.ColumnIndex].Value = item.CellValue;
+                    var cell = wSheet.Cells[item.RowIndex, item.ColumnIndex];
+                    if (item.IsNumber)
+                    {
+                        double numberValue;
+                        if (double.TryParse(item.CellValue, out numberValue))
+                        {
+                            cell.PutValue(numberValue);
+                            // Áp dụng định dạng số với dấu phân cách hàng nghìn
+                            var style = cell.GetStyle();
+                            style.Custom = "#,##0";
+                            cell.SetStyle(style);
+                        }
+                    }
+                    else
+                    {
+                        cell.Value = item.CellValue;
+                    }
                 }
             }
         }

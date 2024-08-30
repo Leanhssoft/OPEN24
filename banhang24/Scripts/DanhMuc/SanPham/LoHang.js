@@ -447,50 +447,32 @@ var LoHangViewModel = function () {
         }
     });
 
-    self.ExportDMHHtoExcel = function () {
-        var objDiary = {
-            ID_NhanVien: _id_NhanVien,
-            ID_DonVi: _IDchinhanh,
-            ChucNang: "Danh Mục lô hàng",
-            NoiDung: "Xuất báo cáo danh sách lô hàng",
-            NoiDungChiTiet: "Xuất báo cáo danh sách lô hàng",
-            LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-        };
-        var myData = {};
-        myData.objDiary = objDiary;
-        $.ajax({
-            url: DiaryUri + "post_NhatKySuDung",
-            type: 'POST',
-            async: true,
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data: myData,
-            success: function (item) {
-                var columnHide = null;
-                for (var i = 0; i < self.ColumnsExcel().length; i++) {
-                    if (i == 0) {
-                        columnHide = self.ColumnsExcel()[i];
-                    }
-                    else {
-                        columnHide = self.ColumnsExcel()[i] + "_" + columnHide;
-                    }
-                }
-                var url = DMHangHoaUri + 'ExportExel_DMLoHang?idnhomhang=' + self.arrIDNhomHang() +
-                    '&maHoaDon=' + txtmMaHDon_Excel + '&tonkho=' + txtTonKho_Excel + '&columnsHide=' + columnHide + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart_Excel + '&dayEnd=' + dayEnd_Excel + '&time=' + self.TodayBC();
-                window.location.href = url;
-            },
-            statusCode: {
-                404: function () {
-                },
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                bottomrightnotify('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + "Ghi nhật ký sử dụng thất bại!", "danger");
-            },
-            complete: function () {
-
+    self.ExportDMHHtoExcel = async function () {
+        var columnHide = null;
+        for (var i = 0; i < self.ColumnsExcel().length; i++) {
+            if (i == 0) {
+                columnHide = self.ColumnsExcel()[i];
             }
-        })
+            else {
+                columnHide = self.ColumnsExcel()[i] + "_" + columnHide;
+            }
+        }
 
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(DMHangHoaUri + 'ExportExel_DMLoHang?idnhomhang=' + self.arrIDNhomHang() +
+            '&maHoaDon=' + txtmMaHDon_Excel + '&tonkho=' + txtTonKho_Excel + '&columnsHide=' + columnHide + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart_Excel + '&dayEnd=' + dayEnd_Excel + '&time=' + self.TodayBC(), 'GET', null, "DanhMucLoHang.xlsx");
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+            let objDiary = {
+                ID_NhanVien: _id_NhanVien,
+                ID_DonVi: _IDchinhanh,
+                ChucNang: "Danh Mục lô hàng",
+                NoiDung: "Xuất báo cáo danh sách lô hàng",
+                NoiDungChiTiet: "Xuất báo cáo danh sách lô hàng",
+                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+            };
+            Insert_NhatKyThaoTac_1Param(objDiary);
+        }          
     }
 
     self.ColumnsExcel = ko.observableArray();

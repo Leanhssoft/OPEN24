@@ -998,13 +998,14 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [HttpPost, HttpGet]
-        public IHttpActionResult LeeAuto_ExportExcelLichBaoDuong(ParamSeachLichBaoDuong param)
+        public HttpResponseMessage LeeAuto_ExportExcelLichBaoDuong(ParamSeachLichBaoDuong param)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 try
                 {
                     Class_officeDocument classOffice = new Class_officeDocument(db);
+                    ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                     ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
                     var columnsHide = string.Empty;
                     if (param.ColumnsHide != null && param.ColumnsHide.Count > 0)
@@ -1030,19 +1031,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     excel.Columns.Remove("NgayNhacKetThuc");
                     excel.Columns.Remove("LanNhac");
 
-                    string tempFile = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/LeeAuto_Template_LichNhacBaoDuong.xlsx");
-                    string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/LichNhacBaoDuong.xlsx");
-                    fileSave = classOffice.createFolder_Download(fileSave);
-                    classOffice.listToOfficeExcel(tempFile, fileSave, excel, 3, 100, 97, true, columnsHide);
-
-                    var index = fileSave.IndexOf(@"\Template");
-                    fileSave = "~" + fileSave.Substring(index, fileSave.Length - index);
-                    fileSave = fileSave.Replace(@"\", "/");
-                    return ActionTrueNotData(fileSave);
+                    string tempFile = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/LeeAuto_Template_LichNhacBaoDuong.xlsx");                  
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(tempFile, excel, 3, 100, true, columnsHide);
+                    return response;
                 }
                 catch (Exception ex)
                 {
-                    return ActionFalseNotData(ex.InnerException + ex.Message);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
                 }
             }
         }

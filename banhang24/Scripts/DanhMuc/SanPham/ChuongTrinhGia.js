@@ -2596,50 +2596,33 @@ var CTGiaViewModel = function () {
     }
 
     // Trinhpv xuất excel
-    self.ExportExcel_GiaBan = function () {
+    self.ExportExcel_GiaBan = async function () {
 
-        var objDiary = {
-            ID_NhanVien: _id_NhanVien,
-            ID_DonVi: _IDchinhanh,
-            ChucNang: "Danh sách giá",
-            NoiDung: "Xuất báo cáo danh sách giá",
-            NoiDungChiTiet: "Xuất báo cáo danh sách giá",
-            LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-        };
-        var myData = {};
-        myData.objDiary = objDiary;
-        $.ajax({
-            url: DiaryUri + "post_NhatKySuDung",
-            type: 'POST',
-            async: true,
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data: myData,
-            success: function (item) {
-                var columnHide = null;
-                for (var i = 0; i < self.ColumnsExcel().length; i++) {
-                    if (i == 0) {
-                        columnHide = self.ColumnsExcel()[i];
-                    }
-                    else {
-                        columnHide = self.ColumnsExcel()[i] + "_" + columnHide;
-                    }
-                }
-                var url = GiaBanUri + 'ExportExcel_GiaBan?idnhomhang=' + self.arrIDNhomHang() +
-                    '&maHoaDon=' + txtMaHDon_Excel + '&_id=' + self.selectedGiaBan() + "&columnsHide=" + columnHide + '&iddonvi=' + _IDchinhanh;
-                window.location.href = url;
-            },
-            statusCode: {
-                404: function () {
-                },
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                bottomrightnotify('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + "Ghi nhật ký sử dụng thất bại!", "danger");
-            },
-            complete: function () {
-
+        var columnHide = null;
+        for (var i = 0; i < self.ColumnsExcel().length; i++) {
+            if (i == 0) {
+                columnHide = self.ColumnsExcel()[i];
             }
-        })
+            else {
+                columnHide = self.ColumnsExcel()[i] + "_" + columnHide;
+            }
+        }
+
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(GiaBanUri + 'ExportExcel_GiaBan?idnhomhang=' + self.arrIDNhomHang() +
+            '&maHoaDon=' + txtMaHDon_Excel + '&_id=' + self.selectedGiaBan() + "&columnsHide=" + columnHide + '&iddonvi=' + _IDchinhanh, 'GET', null, "ExportExcel_GiaBan.xlsx");
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+            var objDiary = {
+                ID_NhanVien: _id_NhanVien,
+                ID_DonVi: _IDchinhanh,
+                ChucNang: "Danh sách giá",
+                NoiDung: "Xuất báo cáo danh sách giá",
+                NoiDungChiTiet: "Xuất báo cáo danh sách giá",
+                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+            };
+            Insert_NhatKyThaoTac_1Param(objDiary);
+        }                   
     }
     self.ColumnsExcel = ko.observableArray();
     self.addColum = function (item) {
