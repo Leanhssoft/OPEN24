@@ -643,7 +643,7 @@
             let car = await vmThemMoiXe.GetInforCar_byID(item.ID_Xe);
             vmThemMoiXe.ShowModalUpdate(car);
         },
-        ExportExcel: function () {
+        ExportExcel: async function () {
             let self = this;
             if (self.listData.LichBaoDuong.length > 0) {
                 var colHide = [];
@@ -660,12 +660,9 @@
                 param.PageSize = self.listData.LichBaoDuong[0].TotalRow;
 
                 if (self.isLeeAuto) {
-                    ajaxHelper(self.urlAPI.Gara + 'LeeAuto_ExportExcelLichBaoDuong', 'POST', param).done(function (x) {
-                        $('.content-table').gridLoader({ show: false });
-                        if (x.res) {
-                            self.DownloadFileTeamplateXLSX(x.mess);
-                        }
-                    })
+                    let exportOK = false;
+                    $('.content-table').gridLoader({ show: false });
+                    exportOK = await commonStatisJs.DowloadFile_fromBrower(self.urlAPI.Gara + 'LeeAuto_ExportExcelLichBaoDuong', 'POST', param, 'LichNhacBaoDuong.xlsx');
                 }
                 else {
                     ajaxHelper(self.urlAPI.Gara + 'ExportExcel_LichBaoDuong', 'POST', param).done(function (x) {

@@ -2852,88 +2852,54 @@
             }
         }
     }
-    self.ExportExcel = function () {
+    self.ExportExcel = async function () {
         if (self.HoaDons().length != 0) {
-            var objDiary = {
-                ID_NhanVien: _id_NhanVien,
-                ID_DonVi: _id_DonVi,
-                ChucNang: " Phiếu điều chỉnh",
-                NoiDung: "Xuất danh sách phiếu điều chỉnh",
-                NoiDungChiTiet: "Xuất danh sách phiếu điều chỉnh",
-                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-            };
-            var myData = {};
-            myData.objDiary = objDiary;
-            $.ajax({
-                url: DiaryUri + "post_NhatKySuDung",
-                type: 'POST',
-                async: true,
-                dataType: 'json',
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                data: myData,
-                success: function (item) {
-                    var columnHide = null;
-                    for (var i = 0; i < self.ColumnsExcel().length; i++) {
-                        if (i == 0) {
-                            columnHide = self.ColumnsExcel()[i];
-                        }
-                        else {
-                            columnHide = self.ColumnsExcel()[i] + "_" + columnHide;
-                        }
-                    }
-                    console.log(self.TodayBC(), self.TenChiNhanh());
-                    var url = DieuChinhUri + "Export_HoaDonDieuChinh?MaHoaDon=" + _maDC_seach + "&dayStart=" + timeStart + "&dayEnd=" + timeEnd + "&trangthai1=" + _trangthai1 + "&trangthai2=" + _trangthai2 + "&trangthai3=" + _trangthai3 + "&ID_ChiNhanh=" + _tenDonViSeach + "&ColumnsHide=" + columnHide + "&time=" + self.TodayBC() + "&ChiNhanh=" + self.TenChiNhanh();
-                    window.location.href = url;
-                },
-                statusCode: {
-                    404: function () {
-                    },
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    bottomrightnotify('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + "Ghi nhật ký sử dụng thất bại!", "danger");
-                },
-                complete: function () {
-
+            var columnHide = null;
+            for (var i = 0; i < self.ColumnsExcel().length; i++) {
+                if (i == 0) {
+                    columnHide = self.ColumnsExcel()[i];
                 }
-            })
+                else {
+                    columnHide = self.ColumnsExcel()[i] + "_" + columnHide;
+                }
+            }
+
+            let exportOK = false;
+            exportOK = await commonStatisJs.DowloadFile_fromBrower(DieuChinhUri + "Export_HoaDonDieuChinh?MaHoaDon=" + _maDC_seach + "&dayStart=" + timeStart + "&dayEnd=" + timeEnd + "&trangthai1=" + _trangthai1 + "&trangthai2=" + _trangthai2 + "&trangthai3=" + _trangthai3 + "&ID_ChiNhanh=" + _tenDonViSeach + "&ColumnsHide=" + columnHide + "&time=" + self.TodayBC() + "&ChiNhanh=" + self.TenChiNhanh(), 'GET', null, "PhieuDieuChinhGiaVon.xlsx");
+            if (exportOK) {
+                commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+                var objDiary = {
+                    ID_NhanVien: _id_NhanVien,
+                    ID_DonVi: _id_DonVi,
+                    ChucNang: " Phiếu điều chỉnh",
+                    NoiDung: "Xuất danh sách phiếu điều chỉnh",
+                    NoiDungChiTiet: "Xuất danh sách phiếu điều chỉnh",
+                    LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+                };
+                Insert_NhatKyThaoTac_1Param(objDiary);
+            }                   
         }
         else {
             bottomrightnotify('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + "Không có dữ liệu để xuất file excel!", "danger");
         }
     };
-    self.ExportExcel_ChiTiet = function (item) {
-        var objDiary = {
-            ID_NhanVien: _id_NhanVien,
-            ID_DonVi: _id_DonVi,
-            ChucNang: "Phiếu điều chỉnh",
-            NoiDung: "Xuất danh sách chi tiết phiếu điều chỉnh: " + item.MaHoaDon,
-            NoiDungChiTiet: "Xuất danh sách chi tiết hàng hóa theo phiếu điều chỉnh: " + item.MaHoaDon,
-            LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
-        };
-        var myData = {};
-        myData.objDiary = objDiary;
-        $.ajax({
-            url: DiaryUri + "post_NhatKySuDung",
-            type: 'POST',
-            async: true,
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            data: myData,
-            success: function (item) {
-            },
-            statusCode: {
-                404: function () {
-                },
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                bottomrightnotify('<i class="fa fa-exclamation-triangle" aria-hidden="true"></i> ' + "Ghi nhật ký sử dụng thất bại!", "danger");
-            },
-            complete: function () {
-                var columnHide = null;
-                var url = DieuChinhUri + "Export_HoaDonDieuChinh_ChiTiet?ID_HoaDon=" + item.ID_HoaDon + "&ColumnsHide=" + columnHide + "&time=" + self.TodayBC() + "&ChiNhanh=" + self.TenChiNhanh();
-                window.location.href = url;
-            }
-        })
+    self.ExportExcel_ChiTiet = async function (item) {
+       
+        let exportOK = false;
+        var columnHide = null;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(DieuChinhUri + "Export_HoaDonDieuChinh_ChiTiet?ID_HoaDon=" + item.ID_HoaDon + "&ColumnsHide=" + columnHide + "&time=" + self.TodayBC() + "&ChiNhanh=" + self.TenChiNhanh(), 'GET', null, "ChiTietPhieuDieuChinhGiaVon.xlsx");
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+            var objDiary = {
+                ID_NhanVien: _id_NhanVien,
+                ID_DonVi: _id_DonVi,
+                ChucNang: "Phiếu điều chỉnh",
+                NoiDung: "Xuất danh sách chi tiết phiếu điều chỉnh: " + item.MaHoaDon,
+                NoiDungChiTiet: "Xuất danh sách chi tiết hàng hóa theo phiếu điều chỉnh: " + item.MaHoaDon,
+                LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
+            };
+            Insert_NhatKyThaoTac_1Param(objDiary);
+        }
     }
     var arrColumnsExcel = [];
     self.addColum = function (item) {

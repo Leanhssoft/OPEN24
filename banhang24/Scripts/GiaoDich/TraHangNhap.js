@@ -814,6 +814,7 @@
             ArrTrangThai: arrStatus,
             DayStart: dayStart,
             DayEnd: dayEnd,
+            tenchinhanh: self.TenChiNhanh(),
             arrChiNhanh: self.MangIDDV(),
             ArrIDNhanVien: arrIDNV,
             id_ViTris: arrStatus,
@@ -1411,7 +1412,7 @@
         window.location.href = url1;
     }
 
-    self.ExportExcel_TraHangNhap = function () {
+    self.ExportExcel_TraHangNhap = async function () {
         var param = GetParamSearch();
         //load columnhide from cache
         var columnHide = '';
@@ -1432,8 +1433,11 @@
         param.columnsHide = columnHide;
         param.currentPage = 0;
         param.pageSize = self.TotalRecord();
-        ajaxHelper(BH_HoaDonUri + "ExportExcel_PhieuTraHangNhap", 'post', { objExcel: param }).done(function (url) {
-            self.DownloadFileExportXLSX(url);
+
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(BH_HoaDonUri + "ExportExcel_PhieuTraHangNhap", 'POST', { objExcel: param }, 'PhieuTraHangNhap.xlsx');
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
             var objDiary = {
                 ID_NhanVien: _id_NhanVien,
                 ID_DonVi: _IDchinhanh,
@@ -1443,7 +1447,8 @@
                 LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
             };
             Insert_NhatKyThaoTac_1Param(objDiary);
-        });
+        }            
+        
     };
 
     self.ExportExcel_ChiTietPhieuTraHangNhap = function (item) {

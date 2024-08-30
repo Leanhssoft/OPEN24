@@ -317,11 +317,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [HttpGet]
-        public void Export_HoaDonDieuChinh(string MaHoaDon, DateTime dayStart, DateTime dayEnd, string trangthai1, string trangthai2, string trangthai3, string ID_ChiNhanh, string columnsHide, string time, string ChiNhanh)
+        public HttpResponseMessage Export_HoaDonDieuChinh(string MaHoaDon, DateTime dayStart, DateTime dayEnd, string trangthai1, string trangthai2, string trangthai3, string ID_ChiNhanh, string columnsHide, string time, string ChiNhanh)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
 
                 List<HD_DieuChinhPRC> lst = new List<HD_DieuChinhPRC>();
                 string maHD_search = string.Empty;
@@ -349,11 +350,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 excel.Columns.Remove("NguoiTao");
                 excel.Columns.Remove("NguoiDieuChinh");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/BaoCao/Teamplate_PhieuDieuChinhGiaVon.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/BaoCao/PhieuDieuChinhGiaVon.xlsx");
-                fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, columnsHide, time, ChiNhanh);
-                HttpResponse Response = HttpContext.Current.Response;
-                classOffice.downloadFile(fileSave);
+                var lstDataCell = classAposeCell.GetData_ForDefaultCell(ChiNhanh, time);
+                HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 4, 28, true, columnsHide, lstDataCell);
+                return response;
+     
             }
         }
         [HttpGet]
@@ -377,11 +377,12 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [HttpGet]
-        public void Export_HoaDonDieuChinh_ChiTiet(Guid ID_HoaDon, string columnsHide, string time, string ChiNhanh)
+        public HttpResponseMessage Export_HoaDonDieuChinh_ChiTiet(Guid ID_HoaDon, string columnsHide, string time, string ChiNhanh)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 Class_officeDocument classOffice = new Class_officeDocument(db);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 List<HD_DieuChinhChiTietPRC> lst = new List<HD_DieuChinhChiTietPRC>();
                 List<SqlParameter> paramlist = new List<SqlParameter>();
                 paramlist.Add(new SqlParameter("ID_HoaDon", ID_HoaDon));
@@ -401,11 +402,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 excel.Columns.Remove("ChenhLech");
                 excel.Columns.Remove("SoThuTu");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/BaoCao/Teamplate_ChiTietPhieuDieuChinhGiaVon.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/BaoCao/ChiTietPhieuDieuChinhGiaVon.xlsx");
-                fileSave = classOffice.createFolder_Download(fileSave);
-                classOffice.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 28, 24, true, columnsHide, time, ChiNhanh);
-                HttpResponse Response = HttpContext.Current.Response;
-                classOffice.downloadFile(fileSave);
+                var lstDataCell = classAposeCell.GetData_ForDefaultCell(ChiNhanh, time);
+                HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 4, 28, true, columnsHide, lstDataCell);
+                return response;
             }
         }
         #endregion

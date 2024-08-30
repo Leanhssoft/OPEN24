@@ -1569,16 +1569,8 @@ var ViewModelQuyHD = function () {
         window.location.href = url;
     }
 
-    self.ExportExcel = function () {
+    self.ExportExcel = async function () {
         var txtLoai = GetText_byLoai();
-        var objDiary = {
-            ID_NhanVien: _IDNhanVien,
-            ID_DonVi: _IDchinhanh,
-            ChucNang: "Sổ quỹ",
-            NoiDung: "Xuất báo cáo sổ quỹ ".concat(txtLoai),
-            NoiDungChiTiet: "Xuất báo cáo sổ quỹ ".concat(txtLoai),
-            LoaiNhatKy: 6
-        };
 
         var obj = GetParamSearch();
         obj.CurrentPage = 0;
@@ -1609,13 +1601,33 @@ var ViewModelQuyHD = function () {
         obj.ColumnHides = sClHide;
         obj.TonDauKy = self.TonDauKy();
 
-        ajaxHelper(Quy_HoaDonUri + 'ExportExcel_SoQuy', 'POST', obj).done(function (url) {
-            $('#tableSQ').gridLoader({ show: false });
-            if (url !== "") {
-                self.DownloadFileTeamplateXLSX(url);
-            }
+        let fileNameExport;
+        switch (obj.LoaiSoQuy) {
+            case 0: // chuyenkhoan
+                fileNameExport = 'SoQuyNganHang.xlsx';
+                break;
+            case 1: // mat
+                fileNameExport = 'SoQuyTienMat.xlsx';
+                break;
+            default: // all
+                fileNameExport = 'SoQuyTongQuy.xlsx';
+                break;
+        }
+
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(Quy_HoaDonUri + 'ExportExcel_SoQuy', 'POST', obj, fileNameExport);
+        if (exportOK) {
+            commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
+            var objDiary = {
+                ID_NhanVien: _IDNhanVien,
+                ID_DonVi: _IDchinhanh,
+                ChucNang: "Sổ quỹ",
+                NoiDung: "Xuất báo cáo sổ quỹ ".concat(txtLoai),
+                NoiDungChiTiet: "Xuất báo cáo sổ quỹ ".concat(txtLoai),
+                LoaiNhatKy: 6
+            };
             Insert_NhatKyThaoTac_1Param(objDiary);
-        })
+        }          
     }
 
     function getallloaiMauIn() {
