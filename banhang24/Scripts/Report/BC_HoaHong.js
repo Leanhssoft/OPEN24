@@ -836,7 +836,7 @@
     //    return false;
     //});
 
-    function SearchReport(isExport, valueHideColum, itemDetail) {
+    async function SearchReport(isExport, valueHideColum, itemDetail) {
         isExport = isExport || false;
         valueHideColum = '' || valueHideColum;
         itemDetail = itemDetail || null;// BC doanhthu chitiet
@@ -1104,6 +1104,7 @@
         if (isExport) {
             $('.table-reponsive').gridLoader();
             var funcExcel = '';
+            var fileNameExport = '';
             var txtFunc = '';
             var detail = '';
 
@@ -1114,10 +1115,12 @@
                     if (self.IsReportDetail()) {
                         array_Seach.TypeReport = 2;
                         txtFunc = 'chi tiết theo hàng hóa';
+                        fileNameExport = 'BaoCaoTongHopHoaHongNhanVien.xlsx';
                     }
                     else {
                         array_Seach.TypeReport = 1;//
                         txtFunc = 'tổng hợp theo hàng hóa';
+                        fileNameExport = 'BaoCaoChiTietHoaHongNhanVien.xlsx';
                     }
                     break;
                 case 2:
@@ -1125,10 +1128,12 @@
                     if (self.IsReportDetail()) {
                         array_Seach.TypeReport = 4;
                         txtFunc = 'chi tiết theo hóa đơn';
+                        fileNameExport = 'BaoCaoHoaHongHoaDon_ChiTiet.xlsx';
                     }
                     else {
                         array_Seach.TypeReport = 3;
                         txtFunc = 'tổng hợp theo hóa đơn';
+                        fileNameExport = 'BaoCaoHoaHongHoaDon.xlsx';
                     }
                     break;
                 case 3:
@@ -1136,16 +1141,19 @@
                     if (itemDetail == null) {
                         array_Seach.TypeReport = 5;
                         txtFunc = 'tổng hợp theo doanh thu';
+                        fileNameExport = 'BaoCaoHoaHongDoanhThu.xlsx';
                     }
                     else {
                         array_Seach.TextSearch = itemDetail.ID_NhanVien;// mượn trường
                         array_Seach.TextReport += ' (Nhân viên: '.concat(itemDetail.MaNhanVien, ' - ', itemDetail.TenNhanVien, ')');
                         array_Seach.TypeReport = 6;
                         txtFunc = 'chi tiết theo doanh thu';
+                        fileNameExport = 'BaoCaoHoaHongDoanhThu_ChiTiet.xlsx';
                     }
                     break;
                 case 4:
                     funcExcel = 'ExportExcel_ReportDiscountAll';
+                    fileNameExport = 'TongHopBaoCaoHoaHongNhanVien.xlsx'
                     array_Seach.TypeReport = 7;
                     txtFunc = 'tổng hợp';
                     break;
@@ -1153,23 +1161,21 @@
             }
 
             array_Seach.PageSize = self.TotalRow();// export all row
-            ajaxHelper(ReportUri + funcExcel, 'POST', array_Seach).done(function (obj) {
+            let exportOK = false;
+            exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + funcExcel, 'POST', array_Seach, fileNameExport);
+            if (exportOK) {
                 $('.table-reponsive').gridLoader({ show: false });
-                if (obj.res === true) {
-                    self.DownloadFileTeamplateXLSX(obj.data);
-                }
-            })
-
-            detail = 'Xuất báo cáo hoa hồng '.concat(txtFunc, ' .Thời gian: ', self.TodayBC(), ' .Chi nhánh: ', self.TenChiNhanhs(), ' .Người xuất: ', _userLogin);
-            var objDiary = {
-                ID_NhanVien: _idNhanVien,
-                ID_DonVi: _idDonVi,
-                ChucNang: "Báo cáo hoa hồng ".concat(txtFunc),
-                NoiDung: 'Xuất báo cáo hoa hồng '.concat(txtFunc),
-                NoiDungChiTiet: detail,
-                LoaiNhatKy: 6
-            };
-            Insert_NhatKyThaoTac_1Param(objDiary);
+                detail = 'Xuất báo cáo hoa hồng '.concat(txtFunc, ' .Thời gian: ', self.TodayBC(), ' .Chi nhánh: ', self.TenChiNhanhs(), ' .Người xuất: ', _userLogin);
+                var objDiary = {
+                    ID_NhanVien: _idNhanVien,
+                    ID_DonVi: _idDonVi,
+                    ChucNang: "Báo cáo hoa hồng ".concat(txtFunc),
+                    NoiDung: 'Xuất báo cáo hoa hồng '.concat(txtFunc),
+                    NoiDungChiTiet: detail,
+                    LoaiNhatKy: 6
+                };
+                Insert_NhatKyThaoTac_1Param(objDiary);
+            }          
         }
         else {
             $('#select-column').show();

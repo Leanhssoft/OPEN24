@@ -296,7 +296,7 @@
         SearchReport(false);
     }
 
-    function SearchReport(isExport) {
+    async function SearchReport(isExport) {
         var valSearch = $('#txtSearch').val();
         var typeReport = parseInt(self.TypeReport());
 
@@ -521,32 +521,27 @@
 
             var funcNameExcel = 'ExportExcel_ValueCard_Balance';
             var noidungNhatKy = "Xuất excel báo cáo ";
+            var fileNameExport = '';
 
             switch (typeReport) {
                 case 1:
                     noidungNhatKy = noidungNhatKy + "số dư thẻ giá trị";
+                    fileNameExport = 'BaoCaoSoDuTheGiaTri.xlsx';
                     break;
                 case 2:
                     funcNameExcel = 'ExportExcel_ValueCard_HisUsed';
                     noidungNhatKy = noidungNhatKy + "nhật ký sử dụng thẻ giá trị";
+                    fileNameExport = 'BaoCaoNhatKyTheGiaTri.xlsx';
                     break;
                 case 3:
                     funcNameExcel = 'ExportExcel_ValueCard_ServiceUsed';
                     noidungNhatKy = noidungNhatKy + "nhật ký sử dụng dịch vụ thẻ giá trị";
+                    fileNameExport = 'BCNhatKySuDungDichVuTheGiaTri.xlsx';
                     break;
             }
             ParamReportValueCard.PageSize = self.TotalRow(); // export all row
-
-            ajaxHelper(ReportUri + funcNameExcel, 'POST', ParamReportValueCard).done(function (url) {
-                $('.table-reponsive').gridLoader({ show: false });
-                if (url !== "") {
-                    self.DownloadFileTeamplateXLSX(url);
-                }
-            })
-
             var noidungChiTiet = noidungNhatKy.concat('. Người xuất:  ', _userLogin, '. Chi nhánh: ', self.TenChiNhanhs(),
                 '. Thời gian: ', moment(dayStart, 'YYYY-MM-DD').format('DD/MM/YYYY'), ' - ', moment(dayEnd, 'YYYY-MM-DD').format('DD/MM/YYYY'));
-
             var objDiary = {
                 ID_NhanVien: _idNhanVien,
                 ID_DonVi: _idDonVi,
@@ -555,7 +550,15 @@
                 NoiDungChiTiet: noidungChiTiet,
                 LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
             };
-            Insert_NhatKyThaoTac_1Param(objDiary);
+
+
+            let exportOK = false;
+            $('.table-reponsive').gridLoader({ show: false });   
+            exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + funcNameExcel, 'POST', ParamReportValueCard, fileNameExport);
+            if (exportOK) {           
+                Insert_NhatKyThaoTac_1Param(objDiary);
+            }
+            
         }
         else {
             var funcName = 'ReportBalance_ValueCard';
