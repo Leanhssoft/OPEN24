@@ -8050,7 +8050,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     {
                         valExcel1 = lstParam.DateFrom.ToString() + " - " + lstParam.DateTo.ToString();
                     }
-                    var lstDataCell = classAposeCell.GetData_ForDefaultCell(lstParam.TextReport, valExcel1);
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(lstParam.TextReport, valExcel1);
                     HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, lstParam.ColumnsHide, lstDataCell);
                     return response;
                 }
@@ -8099,8 +8099,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     {
                         valExcel1 = lstParam.DateFrom.ToString() + " - " + lstParam.DateTo.ToString();
                     }
-                    var lstDataCell = classAposeCell.GetData_ForDefaultCell(lstParam.TextReport, valExcel1);
-                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, lstParam.ColumnsHide, lstDataCell);
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(lstParam.TextReport, valExcel1);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 31, true, lstParam.ColumnsHide, lstDataCell);
                     return response;
                 }
             }
@@ -8139,7 +8139,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         valExcel1 = lstParam.DateFrom.ToString() + " - " + lstParam.DateTo.ToString();
                     }
 
-                    var lstDataCell = classAposeCell.GetData_ForDefaultCell(lstParam.TextReport, valExcel1);
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(lstParam.TextReport, valExcel1);
                     HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, lstParam.ColumnsHide, lstDataCell);
                     return response;
                 }

@@ -20,6 +20,7 @@ using System.Net.Http;
 using System.Text;
 using System.Web;
 using System.Web.Http;
+using static banhang24.Hellper.commonEnum;
 using static libQuy_HoaDon.Class_Report;
 
 namespace banhang24.Areas.DanhMuc.Controllers
@@ -988,7 +989,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
         }
         [HttpPost]
-        public IHttpActionResult ExportExcelToCaLamViec(SearchFilter model)
+        public HttpResponseMessage ExportExcelToCaLamViec(SearchFilter model)
         {
             try
             {
@@ -1003,22 +1004,21 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         chinhanh = _NhanSuService.GetListDonViById(model.ListDonVi);
                     }
                     Class_officeDocument _Class_officeDocument = new Class_officeDocument(_dbcontext);
+                    ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                     DataTable excel = _Class_officeDocument.ToDataTable<NS_CaLamViecExport>(lst);
                     excel.Columns.Remove("ID");
                     excel.Columns.Remove("TrangThai");
                     excel.Columns.Remove("CachLayGioCong");
                     excel.Columns.Remove("NgayTao");
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/CaLamViec_ChamCong/Teamplate_BaoCaoDanhMucCaLamViec.xlsx");
-                    string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/CaLamViec_ChamCong/BaoCaoDanhMucCaLamViec.xlsx");
-                    fileSave = _Class_officeDocument.createFolder_Download(fileSave);
-                    _Class_officeDocument.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 5, 29, 24, true, "", time, chinhanh);
-                    System.Web.HttpResponse Response = System.Web.HttpContext.Current.Response;
-                    return ActionTrueData(fileSave);
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCell(chinhanh, time);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 5, 29, true, "", lstDataCell);
+                    return response;
                 }
             }
             catch (Exception ex)
             {
-                return Exeption(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
             }
         }
 
@@ -2098,7 +2098,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IHttpActionResult ExportExcelToPhieuPhanCa(PhieuPhanCaFilter model)
+        public HttpResponseMessage ExportExcelToPhieuPhanCa(PhieuPhanCaFilter model)
         {
             try
             {
@@ -2114,6 +2114,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         chinhanh = _NhanSuService.GetListDonViById(model.ListDonVi);
                     }
                     Class_officeDocument _Class_officeDocument = new Class_officeDocument(_dbcontext);
+                    ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                     DataTable excel = _Class_officeDocument.ToDataTable<NS_PhieuPhanCaDTO>(lst);
                     excel.Columns.Remove("ID");
                     excel.Columns.Remove("LoaiPhanCa");
@@ -2124,16 +2125,14 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     excel.Columns.Remove("TotalPage");
 
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/CaLamViec_ChamCong/Teamplate_DanhSachPhieuPhanCa.xlsx");
-                    string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/CaLamViec_ChamCong/DanhSachPhieuPhanCa.xlsx");
-                    fileSave = _Class_officeDocument.createFolder_Download(fileSave);
-                    _Class_officeDocument.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 4, 8, 8, true, "", time, chinhanh);
-                    System.Web.HttpResponse Response = System.Web.HttpContext.Current.Response;
-                    return ActionTrueData(fileSave);
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCell(chinhanh, time);
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 4, 8, true, "", lstDataCell);
+                    return response;
                 }
             }
             catch (Exception ex)
             {
-                return Exeption(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message); 
             }
         }
 
@@ -3078,7 +3077,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public IHttpActionResult ExportExcelToChamCong(ChamCongFilter model)
+        public HttpResponseMessage ExportExcelToChamCong(ChamCongFilter model)
         {
             try
             {
@@ -3107,7 +3106,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     }
 
                     Class_officeDocument _Class_officeDocument = new Class_officeDocument(_dbcontext);
+                    ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                     DataTable excel = _Class_officeDocument.ToDataTable<ChamCongModel>(lst);
+
 
                     excel.Columns.Remove("MaCa");
                     excel.Columns.Remove("ID_CaLamViec");
@@ -3160,18 +3161,23 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     excel.Columns.Remove("DisNgay31");
 
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/NhanSu/Teamplate_ChamCong.xlsx");
-                    string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/NhanSu/" + fileName + ".xlsx");
-                    fileSave = _Class_officeDocument.createFolder_Download(fileSave);
-                    _Class_officeDocument.ExportExcelToFileChamCong(fileTeamplate, fileSave, excel, 6, 29, 24, true, columhide, time,
-                                                                    kyText, chinhanh.Split('-')[0].Trim(),
-                                                                    new int[] { 0 }, listRowPan, model.PhonBanId != null ? chinhanh.Split('-')[1].Trim() : string.Empty);
-                    System.Web.HttpResponse Response = System.Web.HttpContext.Current.Response;
-                    return ActionTrueData(fileSave);
+                    List<ClassExcel_CellData> lstDataCell = classAposeCell.GetData_ForDefaultCell(chinhanh.Split('-')[0].Trim(), kyText);
+                    lstDataCell.Add(new ClassExcel_CellData { ColumnIndex = 6, RowIndex = 4, CellValue = "Tháng " + model.TuNgay.Value.Month + " Năm " + model.TuNgay.Value.Year });
+
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 29, true, columhide, lstDataCell);
+                    return response;
+                    //string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/NhanSu/" + fileName + ".xlsx");
+                    //fileSave = _Class_officeDocument.createFolder_Download(fileSave);
+                    //_Class_officeDocument.ExportExcelToFileChamCong(fileTeamplate, fileSave, excel, 6, 29, 24, true, columhide, time,
+                    //                                                kyText, chinhanh.Split('-')[0].Trim(),
+                    //                                                new int[] { 0 }, listRowPan, model.PhonBanId != null ? chinhanh.Split('-')[1].Trim() : string.Empty);
+                    //System.Web.HttpResponse Response = System.Web.HttpContext.Current.Response;
+                    //return ActionTrueData(fileSave);
                 }
             }
             catch (Exception ex)
             {
-                return Exeption(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
             }
         }
 
@@ -4066,7 +4072,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         /// <param name="Id"></param>
         /// <returns></returns>
         [HttpPost]
-        public IHttpActionResult ExportExcelBangLuongChiTiet(NS_BangLuong model)
+        public HttpResponseMessage ExportExcelBangLuongChiTiet(NS_BangLuong model)
         {
             try
             {
@@ -4077,6 +4083,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
                 var listRowPan = lst.GroupBy(o => o.MaNhanVien).Select(o => o.Count()).ToArray();
                 Class_officeDocument _Class_officeDocument = new Class_officeDocument(_dbcontext);
+                ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 DataTable excel = _Class_officeDocument.ToDataTable<BangLuongChiTietModel>(lst);
                 excel.Columns.Remove("ID_NhanVien");
                 excel.Columns.Remove("ID_BangLuong_ChiTiet");
@@ -4106,17 +4113,24 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 excel.Columns.Remove("TongNgayCongThuc");
 
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/NhanSu/Teamplate_BangLuong.xlsx");
-                string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/NhanSu/" + fileName + ".xlsx");
-                fileSave = _Class_officeDocument.createFolder_Download(fileSave);
+                List<ClassExcel_CellData> lstDataCell = new List<ClassExcel_CellData>
+                {
+                new ClassExcel_CellData { RowIndex = 1, ColumnIndex = 0, CellValue =  model.MaBangLuong + " - " + model.TenBangLuong },
+                };
 
-                _Class_officeDocument.ExportExcelToFileBangLuongCT(fileTeamplate, fileSave, excel, 4, 29, 24, true, string.Empty, "", model.MaBangLuong + " - " + model.TenBangLuong,
-                                                                new int[] { 0, 1 }, listRowPan);
-                System.Web.HttpResponse Response = System.Web.HttpContext.Current.Response;
-                return ActionTrueData(fileSave);
+                HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 4, 29, true, string.Empty, lstDataCell);
+                return response;
+                //string fileSave = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/NhanSu/" + fileName + ".xlsx");
+                //fileSave = _Class_officeDocument.createFolder_Download(fileSave);
+
+                //_Class_officeDocument.ExportExcelToFileBangLuongCT(fileTeamplate, fileSave, excel, 4, 29, 24, true, string.Empty, "", model.MaBangLuong + " - " + model.TenBangLuong,
+                //                                                new int[] { 0, 1 }, listRowPan);
+                //System.Web.HttpResponse Response = System.Web.HttpContext.Current.Response;
+                //return ActionTrueData(fileSave);
             }
             catch (Exception ex)
             {
-                return Exeption(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
             }
         }
 

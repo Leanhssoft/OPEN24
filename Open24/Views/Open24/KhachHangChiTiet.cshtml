@@ -3,96 +3,95 @@
     ViewBag.Title = ViewBag.TenKhachHang;
 
 }
-<style>
-    b {
-        color: #3D475C;
-        font-size:24px;
-        font-weight:700;
-    }
-    p > span {
-        color: #525F7A;
-        font-size: 18px;
-        font-weight: 400;
-    }
-    .input-text {
-        border: 1px solid #C2C9D6;
-        border-radius: 8px;
-        width: 100%;
-        height: 40px;
-        padding: 9px 4px 9px 16px;
-    }
-    .input-text:focus {
-        border-color: #1183d6;
-        outline: none;
-        box-shadow: 0 0 3px 0 #1183d6;
-    }
-</style>
+
 
 <div id="renderNews">
     <input id="op_type" hidden value="KhachhangChitiet" />
     <input id="customerID" hidden value="@ViewBag.CustomerId" />
-    <div class="container-fluid" style="background: #F0F0F0">
-        <div class="container text-center" style="padding:80px 0px">
-            <h6 style="color: #172B4D;font-size:16px;font-weight:400">Câu chuyện khách hàng</h6>
-            <div><span style="font-size:48px;font-weight:700;color:#172B4D">{{data.name}}</span></div>
-            <div><span style="color: #525F7A; font-size: 16px; font-weight: 400 ">{{data.note}}</span></div>
-        </div>
-    </div>
-    <div class="container-fluid bg-white">
-        <div class="container" style="padding:80px 0">
-            <div class="row">
-                <div class="col-12 col-lg-8 col-xl-8 col-md-8 col-sm-12 col-xs-12">
-                    <div v-html="data.discription" style="color: #525F7A"></div>
-                </div>
-                <div class="col-12 col-lg-4 col-xl-4 col-md-4 col-sm-12 col-xs-12">
-                    <div style="padding:32px" class="text-start">
-                        <img src="~/Content/images/open24/CustomerPage/i-send.svg" />
-                        <div style="margin-top: 32px;">
-                            <span style="color: #172B4D;font-size:24px;font-weight:600">Đăng ký tư vấn</span>
-                        </div>
-                        <div style="margin-top:12px;margin-bottom:32px">
-                            <span style="color: #525F7A;font-size:16px;font-weight:400">Gửi mail</span>
-                        </div>
-                        <div>
-                            <input class="input-text" type="text" placeholder="Nhập"/>
-                        </div>
-                        <div style="margin-top:16px">
-                            <button class="btn w-100" style="color: white; background: #FF5C35;border-radius:8px">Gửi</button>
-                        </div>
-                    </div>
-                </div>
+    <div class="container-fluid op-banner">
+        <div class="container ">
+            <div class="op-banner-content" data-aos="fade-right">
+                <h1 class="op-gara-heading">
+                    <span class="highlight-text size-text">Khách hàng</span><br />
+                    là <span class="highlight-text">trái tim</span><br />
+                    của <span class="size-text" style="white-space:nowrap">Open24 !</span>
+                </h1>
+
+
+                <button class="btn-ads yellow" data-toggle="modal" data-target="#modalTuVan">
+                    <span style="font-weight: normal">Đăng kí dùng thử</span>
+                </button>
+
+            </div>
+            <div class="op-banner-image">
+                <img src="~/Content/images/open24/op-khachhang-bg.svg" style="padding:30px" alt="gara xe" />
+
             </div>
         </div>
     </div>
+
+    <section class="banner">
+        <div class="container flex">
+            <div class="detail-customer">
+                <div class="dt-cutomer-l">
+                    <div class="date-timenews">
+                        <span><i class="fas fa-clock"></i></span>{{data.createdate}}
+                    </div>
+                    <h1 class="title-detailnews fl">
+                        {{data.name}}
+                    </h1>
+                    <div class="summary-detailnews fl">
+                        {{data.note}}
+                    </div>
+                    <div class="content-detailnews fl" v-html="data.discription">
+
+                    </div>
+                    <p class="by-detailnews fl">
+                        {{data.createby}}
+                    </p>
+                    <div class="fl text-center fiften-days">
+                        <p>
+                            Phần mềm quản lý Open24
+                        </p>
+                        <div class="fl bnt-news1">
+                            <a class="trial" data-bs-toggle="modal" data-bs-target="#modalTuVan">
+                                Đăng ký dùng thử
+                            </a>
+                        </div>
+                    </div>
+                    <div class="related-news fl">
+                        <div class="fl carenews" style="padding-top: 1%;">
+                            <div class="fb-like" data-href='@ViewBag.httpUrl' data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+                        </div>
+                        <div class="fb-comments" data-href='@ViewBag.httpUrl' data-numposts="5" data-width="100%"></div>
+                    </div>
+                </div>
+                <div class="dt-cutomer-r">
+                    <div class="title-viewnews fl">
+                        Khách hàng gần đây nhất
+                    </div>
+                    <ul class="list-tree-news">
+                        <li v-for="(item, index) in listcurentolbar" v-show="listcurentolbar.length>0">
+                            <a class="fl" href="javascript:void(0)" v-bind:href="item.Url">
+                                <div class="img img-tol3-new">
+                                    <img v-bind:src="item.Images" />
+                                </div>
+                                <div class="new-title">
+                                    <p>{{item.Name}}</p>
+                                    <span class="time-news-more">   {{item.CreatedDate}}</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="view-news fl">
+                        @Html.Partial("PageFacebookPartial")
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
     @Html.Partial("_WeareonePartial")
-    <div class="container" style="padding:80px 0">
-        <div style="margin-bottom:40px" class="row align-items-center">
-            <div class="float-start col-12 col-lg-6 col-xl-6 col-md-6 col-sm-12 col-xs-12">
-                <h3 style="color: #29303D;font-size:32px;font-weight:700">Các câu chuyện của khách hàng</h3>
-            </div>
-            <div class="col-12 col-lg-6 col-xl-6 col-md-6 col-sm-12 col-xs-12">
-                <a href="/khach-hang" class="btn-primary float-end" style="padding: 12px 24px; border-radius: 24px; background: #0077E4;color:#FFFFFF;font-size:16px;font-weight:700">Xem tất cả</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 col-lg-6 col-xl-6 col-md-6 col-sm-12 col-xs-12 h-100 mb-3"  v-for="(item, index) in listcurentolbar.slice(0,2)">
-                <div style="background: #F9F9F9;border-radius:24px;padding:24px" class="h-100">
-                    <div style="position:relative;margin-top:16px">
-                        <img style="width:100%;height:320px;border-radius:8px;z-index:1" />
-                        <button style="bottom: 21px; left: 21px; position: absolute; z-index: 2; background: #FFFFFF; color: #3D475C; padding: 8px 24px;border-radius:24px;border:none;font-size:14px;font-weight:500 ">
-                        {{item.TypeBusinessname}}
-                        </button>
-                    </div>
-                    <div class="mt-2 mb-2"><span style="color: #525F7A;font-size:16px;font-weight:400">{{item.CreatedDate}}</span></div>
-                    <div style="color:#3D475C;font-weight:700;font-size:18px;height:54px;overflow:hidden">{{item.Name}}</div>
-                    <div class="mt-3" style="height: 72px; overflow: hidden; text-overflow: ellipsis; color: #525F7A; font-size: 16px; font-weight: 400">
-                        {{item.Note}}
-                    </div>
-                    <a href="javascript:void(0)" v-bind:href="item.Url" style="color: #0078D7;font-size:18px;font-weight:700" class="text-decoration-underline mt-2">Đọc thêm</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script src="~/Assets/js/Client/open24/RenderNewVue.js"></script>

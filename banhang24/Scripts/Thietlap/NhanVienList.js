@@ -2978,7 +2978,7 @@ var ViewModel = function () {
         getAllNhanViens(true);
     }
 
-    self.ExportNhanVienExcel = function () {
+    self.ExportNhanVienExcel = async function () {
         $('#table-reponsive').gridLoader();
         var model = {
             DonViId: $('#hd_IDdDonVi').val(),
@@ -3012,22 +3012,13 @@ var ViewModel = function () {
             ColumnHiden: LocalCaches.LoadColumnGrid(Key_Form).map(x => x.Value)
 
         }
-        $.ajax({
-            data: model,
-            url: NhanVienUri + "ExportExcelNhanVien",
-            type: 'POST',
-            dataType: 'json',
-            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-            success: function (data) {
-                $('#table-reponsive').gridLoader({ show: false });
-                if (data.res === true) {
-                    window.location.href = "/api/DanhMuc/NS_NhanVienAPI/DownloadExecl?fileSave=" + data.dataSoure;
-                }
-                else {
-                    alert(data.mess);
-                }
-            }
-        });
+        let exportOK = false;
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(NhanVienUri + "ExportExcelNhanVien", 'POST', model, 'DanhSachNhanVien.xlsx');
+        if (exportOK) {
+            $('#table-reponsive').gridLoader({ show: false });
+        } else {
+            alert(data.mess);
+        }
     }
     self.PrintHsnv = function (item) {
         vmPrintHsnv.print(item.ID, $('.table-reponsive'));

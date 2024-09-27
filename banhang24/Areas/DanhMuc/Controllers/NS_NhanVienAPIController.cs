@@ -3479,7 +3479,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult ExportExcelNhanVien(NhanVienFilterExport model)
+        public HttpResponseMessage ExportExcelNhanVien(NhanVienFilterExport model)
         {
             try
             {
@@ -3559,22 +3559,21 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     paramlist.Add(new SqlParameter("text", model.Text ?? ""));
                     var lst = db.Database.SqlQuery<ExportNhanVien>("exec SelectDanhSachNhanVien @donviID,@phongban,@dantoc,@HK_TT,@HK_QH,@HK_XP,@TT_TT,@TT_QH,@TT_XP,@GioiTinh,@TrangThai,@ChinhTri,@Start,@End,@LoaiHopDong,@ListBaoHiem,@text", paramlist.ToArray()).ToList();
                     Class_officeDocument _Class_officeDocument = new Class_officeDocument(db);
+                    ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                     DataTable excel = _Class_officeDocument.ToDataTable<ExportNhanVien>(lst);
                     excel.Columns.Remove("TinhTrangHonNhan");
                     excel.Columns.Remove("DaNghiViec");
                     excel.Columns.Remove("GioiTinh");
                     string fileTeamplate = System.Web.HttpContext.Current.Server.MapPath("~/Template/ExportExcel/BaoCao/Teamplate_DanhSachNhanVien.xlsx");
-                    string fileSave = System.Web.HttpContext.Current.Server.MapPath("~/Template/ExportExcel/BaoCao/Teamplate_DanhSachNhanVien.xlsx");
-                    fileSave = _Class_officeDocument.createFolder_Download(fileSave);
-                    _Class_officeDocument.listToOfficeExcel_Stype(fileTeamplate, fileSave, excel, 5, 29, 24, true, "", DateTime.Now.ToString("dd/MM/yyyy"), db.DM_DonVi.Where(o => o.ID == model.DonViId).Select(o => o.TenDonVi).FirstOrDefault());
-                    System.Web.HttpResponse Response = System.Web.HttpContext.Current.Response;
-                    return ActionTrueData(fileSave);
+                    var lstDataCell = classAposeCell.GetData_ForDefaultCell(db.DM_DonVi.Where(o => o.ID == model.DonViId).Select(o => o.TenDonVi).FirstOrDefault(), DateTime.Now.ToString("dd/MM/yyyy"));
+                    HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 5, 29, true, "", lstDataCell);
+                    return response;
                 }
 
             }
             catch (Exception ex)
             {
-                return Exeption(ex);
+                return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
             }
         }
         [HttpGet]

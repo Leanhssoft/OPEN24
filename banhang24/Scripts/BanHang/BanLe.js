@@ -4207,6 +4207,7 @@ var NewModel_BanHangLe = function () {
         objPrint.ChuyenKhoan = objPrint.TienGui;
         objPrint.TienATM = formatNumber3Digit(objHD.TienATM);
         objPrint.TienTheGiaTri = formatNumber3Digit(ttBangTheGtri);
+        objPrint.TienTheGiaTri_TruocTT = formatNumber3Digit(vmThanhToanGara.theGiaTriCus.SoDuTheGiaTri);    
         objPrint.TongTienThue = formatNumber3Digit(objHD.TongTienThue);
         objPrint.TongThueDB = formatNumber3Digit(objHD.TongThueDB);
         objPrint.TienDoiDiem = formatNumber3Digit(objHD.TTBangDiem);

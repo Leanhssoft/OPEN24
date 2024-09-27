@@ -225,6 +225,25 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
 
+        [AcceptVerbs("GET")]
+        public IHttpActionResult Gara_GetSoKmPTN(Guid idPhieuTiepNhan)
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    ClassPhieuTiepNhan classPhieuTiepNhan = new ClassPhieuTiepNhan(db);
+                    int? soKmVaoPTN = classPhieuTiepNhan.GetClosestSoKmVao(idPhieuTiepNhan);
+                    return Json(new { success = true, data = soKmVaoPTN });
+
+                }
+            }
+            catch (Exception ex)
+            {
+                return ActionFalseNotData(ex.ToString());
+            }
+        }
+
         [AcceptVerbs("GET", "POST")]
         public IHttpActionResult GetListPhieuTiepNhan_v2([FromBody] JObject objIn)
         {

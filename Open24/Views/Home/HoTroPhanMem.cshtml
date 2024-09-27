@@ -3,333 +3,204 @@
     ViewBag.Title = "Hỗ trợ phần mềm open24";
 
 }
-<style>
-    .input-search {
-        border: 1px solid #C2C9D6;
-        border-radius: 8px;
-        width: 100%;
-        height: 40px;
-        padding: 9px 4px 9px 40px;
-        background: white url('../../content/images/open24/i-search.svg') no-repeat 13px center;
-    }
 
-        .input-search:focus {
-            border-color: #1183d6;
-            outline: none;
-            box-shadow: 0 0 3px 0 #1183d6;
-        }
-    .btn-show-more {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        padding: 6px 16px;
-        border-radius: 24px;
-        background: white;
-        border: 1px solid #C2C9D6;
-        color: #525F7A;
-        font-size: 14px;
-        font-weight: 400;
-        text-align: center;
-    }
-        .btn-show-more:hover {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            padding: 6px 16px;
-            border-radius: 24px;
-            background: #FF5C35;
-            color: white;
-            border: none;
-            font-size: 14px;
-            font-weight: 400;
-            text-align: center;
-        }
-    .title-support {
-        color: #3D475C !important;
-        font-family: Roboto;
-        font-size: 14px !important;
-        font-style: normal;
-        font-weight: 500;
-        line-height: 20px;
-        margin-top:16px;
-        margin-bottom:24px;
-    }
-    .op-description-title {
-        color: #3D475C;
-        font-family: Roboto;
-        font-size: 24px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: 32px;
-    }
-    .op-description-detail {
-        display: inline-block;
-        color: #525F7A;
-        font-family: Roboto;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 28px;
-    }
-    a.op-description-toggle {
-        text-align: center;
-        font-size: 24px;
-        background: #FF5C35;
-        border-radius: 50%;
-        display: flex;
-        width: 48px;
-        height: 48px;
-        padding: 12px 16px;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        color: white;
-    }
-    .op-functional-img {
-        height: 90px;
-        width: 90px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .huong-dan-tinh-nang {
-        background-color: transparent;
-        padding: 32px 24px !important;
-        border-radius: 8px;
-    }
-    .huong-dan-tinh-nang:hover {
-        background-color: #FFF;
-        box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);
-        padding: 32px 24px;
-        border-radius: 8px;
-    }
-
-    .huong-dan-vai-tro {
-        background-color: #F5FAFF;
-        padding: 24px 12px !important;
-        border-radius: 8px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-        .huong-dan-vai-tro:hover {
-            background-color: #FFF;
-            box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);
-            padding: 24px 12px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-    .tinh-nang-title {
-        font-size: 16px;
-        font-weight: 400;
-        color: #3D475C
-    }
-</style>
-<div class="container-fluid op-banner" style="background: #F4F6FD;height:371px">
+<div class="container-fluid op-banner">
     <div class="container" style="height: 100%; justify-content: center;">
 
         <div style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; width:100%">
             <div></div>
-            <div style="width: 80%; text-align: center; color: white;">
-                <h3 style="font-size: 48px; color: #172B4D;font-weight:700">
+            <div style="width: 80%; text-align: center; color:white;">
+                <h3 style="font-size:32px; color:white">
                     Trung tâm hỗ trợ sử dụng Open24
                 </h3>
-                <div style="position:relative; width:100%; padding:49px 0 15px">
-                    <input class="input-search" type="text" placeholder="Nhập thông tin bạn muốn tìm kiếm..." value="@ViewBag.SearchString" />
+                <div style="position:relative; width:100%; margin:15px 0">
+                    <input class="_sear-hotro" type="text" placeholder="Nhập thông tin bạn muốn tìm kiếm..." value="@ViewBag.SearchString" />
+                    <i style="position: absolute; top: 10px; right: 15px; font-size: 19px;" class="fa fa-search"></i>
+                </div>
+                <div>
+                    Liên hệ ngay
+                    <span style="color: #FFD40C"><i class="fa fa-phone"></i>     0247 303 9333</span> để được hỗ trợ trực tiếp
                 </div>
             </div>
-            <div></div>
+            <div>
+                <img src="~/Content/images/huongdansudung/help.png" />
+            </div>
         </div>
     </div>
 </div>
-
-<div class="container" style="padding:80px 0">
-    <div class="op-section-title">
-        <font>Hướng dẫn theo vai trò</font>
+<div class="container">
+    <div style="display:flex; justify-content:space-evenly; margin:30px">
+        <a data-toggle="modal" data-target="#modalTuVan" class="btn-op-lg">
+            <img src="~/Content/images/hotroopen24/i-dang-ky.png" style="height:40px;" />
+            <span>Đăng ký</span>
+            <i class="fa fa-angle-right"></i>
+        </a>
+        <a href="/gioi-thieu" class="btn-op-lg" style=" background: #3EA7D5">
+            <img src="~/Content/images/hotroopen24/i-gioi-thieu.png" style="height:40px;" />
+            <span>Giới thiệu</span>
+            <i class="fa fa-angle-right"></i>
+        </a>
     </div>
-    <ul class="container-fluid op-functional " >
+</div>
+
+<div class="container">
+    <div class="op-section-title">
+        <font>Vai trò sử dụng</font>
+    </div>
+    <ul class="container-fluid op-functional">
         <li>
-            <div class="huong-dan-vai-tro w-100">
-                <div class="op-functional-img-lg">
-                    <img src="~/Content/images/huongdansudung/thu_ngan_2.svg" />
-                </div>
-                <div class="title-support">Thu ngân</div>
-                <a class="btn btn-show-more" href="/huong-dan-su-dung/5/0/nhom-tinh-nang-nganh-nghe-thu-ngan">Xem thêm</a>
+            <div class="op-functional-img-lg">
+                <img src="~/Content/images/huongdansudung/thungan.png" />
             </div>
+            <span>Thu ngân</span>
+            <a class="btn" href="/huong-dan-su-dung/5/0/nhom-tinh-nang-nganh-nghe-thu-ngan">Xem thêm</a>
         </li>
         <li>
-            <div class="huong-dan-vai-tro w-100">
-                <div class="op-functional-img-lg">
-                    <img src="~/Content/images/huongdansudung/ke_toan_2.svg" />
-                </div>
-                <span class="title-support">Kế toán</span>
-                <a class="btn btn-show-more" href="/huong-dan-su-dung/6/0/nhom-tinh-nang-nganh-nghe-ke-toan">Xem thêm</a>
+            <div class="op-functional-img-lg">
+                <img src="~/Content/images/huongdansudung/ketoan.png" />
             </div>
+            <span>Kế toán</span>
+            <a class="btn" href="/huong-dan-su-dung/6/0/nhom-tinh-nang-nganh-nghe-ke-toan">Xem thêm</a>
         </li>
         <li>
-            <div class="huong-dan-vai-tro w-100">
-                <div class="op-functional-img-lg">
-                    <img src="~/Content/images/huongdansudung/marketing_2.svg" />
-                </div>
-                <span class="title-support">Marketing</span>
-                <a class="btn btn-show-more" href="/huong-dan-su-dung/10/0/nhom-tinh-nang-nganh-nghe-marketing">Xem thêm</a>
+            <div class="op-functional-img-lg">
+                <img src="~/Content/images/huongdansudung/marketing.png" />
             </div>
+            <span>Marketing</span>
+            <a class="btn" href="/huong-dan-su-dung/10/0/nhom-tinh-nang-nganh-nghe-marketing">Xem thêm</a>
         </li>
         <li>
-            <div class="huong-dan-vai-tro w-100">
-                <div class="op-functional-img-lg">
-                    <img src="~/Content/images/huongdansudung/cham_soc_khach_hang_2.svg" />
-                </div>
-                <span class="title-support">Chăm sóc khách hàng</span>
-                <a class="btn btn-show-more" href="/huong-dan-su-dung/8/0/nhom-tinh-nang-nganh-nghe-cham-soc-khach-hang">Xem thêm</a>
+            <div class="op-functional-img-lg">
+                <img src="~/Content/images/huongdansudung/chamsockhachhang.png" />
             </div>
+            <span>Chăm sóc khách hàng</span>
+            <a class="btn" href="/huong-dan-su-dung/8/0/nhom-tinh-nang-nganh-nghe-cham-soc-khach-hang">Xem thêm</a>
         </li>
         <li>
-            <div class="huong-dan-vai-tro w-100">
-                <div class="op-functional-img-lg">
-                    <img src="~/Content/images/huongdansudung/quan_ly_2.svg" />
-                </div>
-                <span class="title-support">Quản lý</span>
-                <a class="btn btn-show-more" href="/huong-dan-su-dung/9/0/nhom-tinh-nang-nganh-nghe-quan-ly">Xem thêm</a>
+            <div class="op-functional-img-lg">
+                <img src="~/Content/images/huongdansudung/omnichannel-merchandising.png" />
             </div>
+            <span>Quản lý</span>
+            <a class="btn" href="/huong-dan-su-dung/9/0/nhom-tinh-nang-nganh-nghe-quan-ly">Xem thêm</a>
         </li>
 
     </ul>
 </div>
 
-<div class="container-fluid" style="background: #F4F5F7;padding:80px 0">
+<div class="container">
     <div class="op-section-title">
         <font>Tính năng Open24</font>
     </div>
-    <ul class="container op-functional">
-        <li class="text-center huong-dan-tinh-nang">
-            <a  href="/huong-dan-su-dung/0/37/danh-muc-tinh-nang-cai-dat-he-thong">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/cai-dat-he-thong-2.png" />
-                </div>
-                <span style="margin-top: 16px; font-size: 16px; font-weight: 400; color: #3D475C">Cài đặt hệ thống</span>
-            </a>
+    <ul class="container-fluid op-functional">
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/hanghoa.png" />
+            </div>
+            <span>Hàng hóa</span>
+            <a class="btn" href="/huong-dan-su-dung/0/30/danh-muc-tinh-nang-hang-hoa">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/10031/danh-muc-tinh-nang-phan-quyen">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/phan-quyen-2.png" />
-                </div>
-                <span class="tinh-nang-title">Phân quyền</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/khachhang.png" />
+            </div>
+            <span>Khách hàng, Nhà cung cấp</span>
+            <a class="btn" href="/huong-dan-su-dung/0/32/danh-muc-tinh-nang-khach-hang-nha-cung-cap">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/70/danh-muc-tinh-nang-nguoi-dung">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/nguoi-dung-2.png" />
-                </div>
-                <span class="tinh-nang-title">Người dùng</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/banhang.png" />
+            </div>
+            <span>Bán hàng</span>
+            <a class="btn" href="/huong-dan-su-dung/0/47/danh-muc-tinh-nang-ban-hang">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/30/danh-muc-tinh-nang-hang-hoa">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/hang-hoa-2.png" />
-                </div>
-                <span class="tinh-nang-title">Hàng hóa</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/doitrahang.png" />
+            </div>
+            <span>Đổi trả hàng</span>
+            <a class="btn" href="/huong-dan-su-dung/0/49/danh-muc-tinh-nang-doi-tra-hang-ban">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/50/danh-muc-tinh-nang-nhap-hang">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/nhap-hang-2.png" />
-                </div>
-                <span class="tinh-nang-title">Nhập hàng</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/nhaphang.png" />
+            </div>
+            <span>Nhập hàng</span>
+            <a class="btn" href="/huong-dan-su-dung/0/50/danh-muc-tinh-nang-nhap-hang">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/47/danh-muc-tinh-nang-ban-hang">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/ban-hang-2.png" />
-                </div>
-                <span class="tinh-nang-title">Bán hàng</span>
-            </a>
+
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/trahangnhap.png" />
+            </div>
+            <span>Trả hàng nhập</span>
+            <a class="btn" href="/huong-dan-su-dung/0/51/danh-muc-tinh-nang-tra-hang-nhap">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/49/danh-muc-tinh-nang-doi-tra-hang-ban">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/doi-tra-hang-2.png" />
-                </div>
-                <span class="tinh-nang-title">Đổi trả hàng</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/xuatkho.png" />
+            </div>
+            <span>Xuất kho</span>
+            <a class="btn" href="/huong-dan-su-dung/0/53/danh-muc-tinh-nang-xuat-kho">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/51/danh-muc-tinh-nang-tra-hang-nhap">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/tra-hang-nhap-2.png" />
-                </div>
-                <span class="tinh-nang-title">Trả hàng nhập</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/dieuchuyen.png" />
+            </div>
+            <span>Điều chuyển</span>
+            <a class="btn" href="/huong-dan-su-dung/0/52/danh-muc-tinh-nang-dieu-chuyen">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/53/danh-muc-tinh-nang-xuat-kho">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/xuat-kho-2.png" />
-                </div>
-                <span class="tinh-nang-title">Xuất kho</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/thuchi.png" />
+            </div>
+            <span>Thu chi</span>
+            <a class="btn" href="/huong-dan-su-dung/0/33/danh-muc-tinh-nang-thu-chi">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/52/danh-muc-tinh-nang-dieu-chuyen">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/dieu-chuyen-2.png" />
-                </div>
-                <span class="tinh-nang-title">Điều chuyển</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/baocao.png" />
+            </div>
+            <span>Báo cáo</span>
+            <a class="btn" href="/huong-dan-su-dung/0/34/danh-muc-tinh-nang-bao-cao">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/10030/danh-muc-tinh-nang-khuyen-mai">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/khuyen-mai-2.png" />
-                </div>
-                <span class="tinh-nang-title">Khuyến mại</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/khuyenmai.png" />
+            </div>
+            <span>Khuyến mãi</span>
+            <a class="btn" href="/huong-dan-su-dung/0/10030/danh-muc-tinh-nang-khuyen-mai">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/33/danh-muc-tinh-nang-thu-chi">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/thu-chi-2.png" />
-                </div>
-                <span class="tinh-nang-title">Thu chi</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/nhanvien.png" />
+            </div>
+            <span>Nhân viên</span>
+            <a class="btn" href="/huong-dan-su-dung/0/35/danh-muc-tinh-nang-nhan-vien">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/34/danh-muc-tinh-nang-bao-cao">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/bao-cao-2.png" />
-                </div>
-                <span class="tinh-nang-title">Báo cáo</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/nguoidung.png" />
+            </div>
+            <span>Người dùng</span>
+            <a class="btn" href="/huong-dan-su-dung/0/70/danh-muc-tinh-nang-nguoi-dung">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/32/danh-muc-tinh-nang-khach-hang-nha-cung-cap">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/khach-hang-2.png" />
-                </div>
-                <span class="tinh-nang-title">Khách hàng, nhà cung cấp</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/phanquyen.png" />
+            </div>
+            <span>Phân quyền</span>
+            <a class="btn" href="/huong-dan-su-dung/0/10031/danh-muc-tinh-nang-phan-quyen">Xem thêm</a>
         </li>
-        <li class="text-center huong-dan-tinh-nang">
-            <a href="/huong-dan-su-dung/0/35/danh-muc-tinh-nang-nhan-vien">
-                <div style="margin-bottom:16px">
-                    <img src="~/Content/images/huongdansudung/nhan-vien-2.png" />
-                </div>
-                <span class="tinh-nang-title">Nhân viên</span>
-            </a>
+        <li>
+            <div class="op-functional-img">
+                <img src="~/Content/images/huongdansudung/hethong.png" />
+            </div>
+            <span>Cài đặt hệ thống</span>
+            <a class="btn" href="/huong-dan-su-dung/0/37/danh-muc-tinh-nang-cai-dat-he-thong">Xem thêm</a>
         </li>
+
     </ul>
+
 </div>
 
 
@@ -364,52 +235,45 @@
         </div>
     </div>
 
-    <div class="text-center m-4 bg-white" id="Addnew">
+    <div class="fl more-news" id="Addnew">
         <a href="#" data-bind="click:nextpage">Xem thêm</a>
     </div>
+
+
+
 </div>
-<div class="container" style="padding: 40px 0; background: #F4F5F7; border-radius:24px">
-    <div class="op-section-title mb-3">
+<div class="container">
+    <div class="op-section-title">
         <font>Phần mềm hỗ trợ</font>
     </div>
-    <div class="row p-4" style="">
-        <div class="col-md-4 col-xs-12 mb-2">
-            <div style="padding: 0px 12px; border-radius: 8px; box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);" class="bg-white">
-                <div class="flex justify-content-start" style="padding:40px">
-                    <img src="~/Content/images/huongdansudung/teamviewer-2.png" style="width:80px;height:80px" />
-                    <div class="op-download-helper justify-content-between align-items-start ml-2">
-                        <b>Teamviewer</b>
-                        <a target="_blank" href="https://www.teamviewer.com/vi/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
-                    </div>
-                    
-                </div>
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <div class="op-download-helper">
+                <img src="~/Content/images/huongdansudung/teamvier.png" />
+                <b>Teamviewer</b>
+                <span>Hỗ trợ máy tính từ xa</span>
+                <a target="_blank" href="https://www.teamviewer.com/vi/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
             </div>
         </div>
-        <div class="col-md-4 col-xs-12 mb-2">
-            <div style="padding: 0px 12px; border-radius: 8px; box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);" class="bg-white">
-                <div class="flex justify-content-start" style="padding:40px">
-                    <img src="~/Content/images/huongdansudung/ultraviewer.png" style="width:80px;height:80px" />
-                    <div class="op-download-helper justify-content-between align-items-start ml-2">
-                        <b>
-                            Ultraviewer
-                        </b>
-                        <a target="_blank" href="https://ultraviewer.net/vi/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
-                    </div>
+        <div class="col-md-4 col-xs-12">
+            <div class="op-download-helper">
+                <img src="~/Content/images/huongdansudung/ultra.png" />
+                <b>
+                    Ultraviewer
+                </b>
+                <span>Hỗ trợ máy tính từ xa</span>
+                <a target="_blank" href="https://ultraviewer.net/vi/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
+            </div>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <div class="op-download-helper">
+                <img src="~/Content/images/huongdansudung/driver.png" />
+                <b>Driver</b>
+                <span>Máy in</span>
+                <a target="_blank" href="https://xprinter.vn/download-driver-may-in-driver-pos-printer/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
+            </div>
+        </div>
 
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 col-xs-12 mb-2">
-            <div style="padding: 0px 12px; border-radius: 8px; box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);" class="bg-white">
-                <div class="flex justify-content-start" style="padding:40px">
-                    <img src="~/Content/images/huongdansudung/driver-printer.png" style="width:80px;height:80px"/>
-                    <div class="op-download-helper justify-content-between align-items-start ml-2">
-                        <b>Driver</b>
-                        <a target="_blank" href="https://xprinter.vn/download-driver-may-in-driver-pos-printer/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 <div style="background:#F5FAFE; margin-top:30px">
@@ -528,7 +392,7 @@
             var viewmodel = new hotrophanmem();
             console.log(viewmodel);
             ko.applyBindings(viewmodel);
-            $(".input-search").on('keyup', function (e) {
+            $("._sear-hotro").on('keyup', function (e) {
                 if (e.keyCode == 13) {
                     window.location.href = "/ho-tro-tim-kiem?search=" + $(this).val();
                 }
@@ -548,6 +412,6 @@
                 }
             });
         })
-        
+
     </script>
 }

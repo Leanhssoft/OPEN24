@@ -7,118 +7,75 @@
 @section scripts {
     <script src="~/Scripts/Post/Contact.js"></script>
 }
-<style>
-    .from-request {
-        background-color: #FFF;
-        border-radius: 20px;
-        box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);
-        padding: 40px;
-    }
-
-    .btn-trial {
-        border-radius: 20px;
-        background: #FFFFFF;
-        padding: 8px 16px;
-        color: #0078D7;
-        font-size: 16px;
-        font-weight: 700;
-        letter-spacing: 0;
-        width: 150px;
-    }
-
-        .btn-trial:hover {
-            letter-spacing: 1.5px;
-            border-radius: 20px;
-            background: #FFFFFF;
-            padding: 8px 16px;
-            color: #0078D7;
-            font-size: 16px;
-            font-weight: 700;
-            width: 180px;
-        }
-</style>
-<div class="container-fluid" style="background: #F4F6FD;">
-    <div class="container " style="padding: 80px 0">
-        <div style="display:flex;align-items:start">
+<div class="container-fluid op-banner">
+    <div class="container ">
+        <div style="display:flex;align-items:center">
             <div style="display: flex; flex-direction: column; min-width: 295px;" data-aos="fade-right">
-                <div style="color: #0078D7;font-size:16px;font-weight:700">Liên hệ</div>
-                <div style="color: #172B4D;font-size:40px;font-weight:700">Liên hệ với chúng tôi</div>
-                <div style="color: #525F7A; font-size:16px;font-weight:400">Open 24 sẵn sàng hỗ trợ 24/7 giải đáp mọi thắc mắc </div>
+                <div class="op-gara-heading">
+                    <span>
+                        Hỗ trợ 24/7
+                    </span>
+                    <small style="white-space:nowrap">
+                        Hotline: 024 730 39 333
+                    </small>
+                </div>
+                <button class="btn-ads" data-bs-toggle="modal" data-bs-target="#modalTuVan">Đăng ký dùng thử</button>
+                @*<button class="btn-ads" style="background: #FFD40C" data-toggle="modal" data-target="#modalTuVan">Đặt mua</button>*@
+            </div>
+            <div style="display:flex; align-items:flex-end">
+                <img src="~/Content/images/open24/op-lienhe-bg.png" class="gara-car-img" alt="gara xe" />
             </div>
         </div>
     </div>
 </div>
 
-<div class="container-fluid bg-white" id="frmGuiYeuCauTuVan">
-    <div class="container" style="padding: 8vh 0">
-        <div class="row">
-            <div class="col-7">
-                <div class="flex justify-content-start align-items-center flex-row" style="padding: 8px 0px">
-                    <img src="~/Content/images/i-home.svg" />
-                    <div class="flex justify-content-between align-items-start flex-column" style="margin-left:24px">
-                        <span style="color: #3D475C;font-size:18px; font-weight:700">Địa chỉ</span>
-                        <span style="color: #525F7A;font-size: 16px;font-weight:400 ">Tầng 7, Tòa nhà Handiresco,Số 31 Lê Văn Lương,Thanh Xuân, Hà Nội.</span>
+<div class="page-request" id="frmGuiYeuCauTuVan">
+    <div class="container">
+        <div class="list-introduces content-page-more">
+            <h2 class="title title-page-more speed-animation">
+                Gửi yêu cầu tư vấn
+            </h2>
+        </div>
+        <form v-on:submit.prevent="ClickGuiYeuCau">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+
+                    <input id="NganhNghe" hidden value="@ViewBag.NganhNghe" />
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="txtHoTen" placeholder="Họ và tên" v-model="FullName">
+                        <label for="txtHoTen">Họ và tên</label>
+                        <span v-if="!FullName.trim() && submitted" class="text-danger">Vui lòng nhập họ và tên</span>
                     </div>
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com" v-model="Email">
+                        <label for="txtEmail">Email</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="txtDienThoai" placeholder="Số điện thoại" v-model="Phone">
+                        <label for="txtDienThoai">Số điện thoại</label>
+                        <span v-if="!Phone.trim() && submitted" class="text-danger">Vui lòng nhập số điện thoại</span>
+                        <span v-if="Phone.trim() && !phoneRegex.test(Phone.trim()) && submitted" class="text-danger">Số điện thoại không đúng dịnh dạng</span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="txtDiaChi" placeholder="Địa chỉ" v-model="Address">
+                        <label for="txtDiaChi">Địa chỉ</label>
+                    </div>
+
                 </div>
-                <div class="flex justify-content-start align-items-center flex-row" style="padding: 8px 0px">
-                    <img src="~/Content/images/i-phone.svg" />
-                    <div class="flex justify-content-between align-items-start flex-column" style="margin-left:24px">
-                        <span style="color: #3D475C;font-size:18px; font-weight:700">Số điện thoại</span>
-                        <span style="color: #525F7A;font-size: 16px;font-weight:400 ">024 730 39 333</span>
+                <div class="col-lg-6 col-md-6  col-sm-6 col-12">
+
+                    <div class="form-floating mb-3">
+                        <textarea type="text" class="form-control" id="txtNoiDung" placeholder="Nội dung yêu cầu" style="height:205px" v-model="Noted"></textarea>
+                        <label for="txtNoiDung">Nội dung</label>
                     </div>
-                </div>
-                <div class="flex justify-content-start align-items-center flex-row" style="padding: 8px 0px">
-                    <img src="~/Content/images/i-email.svg" />
-                    <div class="flex justify-content-between align-items-start flex-column" style="margin-left:24px">
-                        <span style="color: #3D475C;font-size:18px; font-weight:700">Email</span>
-                        <span style="color: #525F7A;font-size: 16px;font-weight:400 ">hỗ trợ@open24.vn</span>
-                    </div>
+                    <button type="submit" class="btn-submit" style="margin:10px 0">
+                        <i class="fa fa-hand-o-right" aria-hidden="true" style="font-size:22px"></i>
+                        Gửi yêu cầu
+                    </button>
+
                 </div>
             </div>
-            <div class="col-5" style="position: relative; z-index:1">
-                <div>
-                    <div class="form-request" style="position: absolute; top: -120%;right:5%; z-index: 2; width: 100%; padding: 40px; background: #FFF; box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10); border-radius:20px">
-                        <h5 class="text-center" style="color: #3D475C; font-size: 24px; font-weight: 700;margin-bottom:24px">
-                            Gửi yêu cầu cần tư vấn
-                        </h5>
-                        <div>
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="txtHoTen" placeholder="Họ và tên" v-model="FullName">
-                                <label for="txtHoTen">Họ và tên</label>
-                                <span v-if="!FullName.trim() && submitted" class="text-danger">Vui lòng nhập họ và tên</span>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="txtEmail" placeholder="name@example.com" v-model="Email">
-                                <label for="txtEmail">Email</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="txtDienThoai" placeholder="Số điện thoại" v-model="Phone">
-                                <label for="txtDienThoai">Số điện thoại</label>
-                                <span v-if="!Phone.trim() && submitted" class="text-danger">Vui lòng nhập số điện thoại</span>
-                                <span v-if="Phone.trim() && !phoneRegex.test(Phone.trim()) && submitted" class="text-danger">Số điện thoại không đúng dịnh dạng</span>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <input type="text" class="form-control" id="txtDiaChi" placeholder="Địa chỉ" v-model="Address">
-                                <label for="txtDiaChi">Địa chỉ</label>
-                            </div>
-                            <div class="form-floating mb-3">
-                                <textarea type="text" class="form-control" id="txtNoiDung" placeholder="Nội dung yêu cầu" style="height:120px" v-model="Noted"></textarea>
-                                <label for="txtNoiDung">Nội dung</label>
-                            </div>
-                            <button class="btn-submit" type="button" style="margin: 10px 0; width: 100%; background-color: #FF5C35; color: #FEFEFF" v-on:click="ClickGuiYeuCau">
-                                Gửi yêu cầu
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container" style="padding:80px 0">
-        <div class="flex flex-column justify-content-center align-items-center" style="background: linear-gradient(#A4D9FF, #86E2FF, #7BD0FF); border-radius: 20px; height: 280px;text-align:center">
-            <div style="color:white;font-size:32px;font-weight:700">Tối ưu công việc kinh doanh với Open 24 ngay hôm nay</div>
-            <button class="btn btn-trial" style="margin-top:60px" data-bs-toggle="modal" data-bs-target="#modalTuVan">Dùng thử ngay</button>
-        </div>
+        </form>
     </div>
 </div>
 <div class="modal fade" id="myModal">
@@ -154,7 +111,7 @@
             Phone: "",
             Address: "",
             Noted: "",
-            phoneRegex: /^\d{10,}$/,
+            phoneRegex: /^(84|0[35789])([0-9]{8})$/,
             submitted: false
         },
         methods: {
@@ -194,6 +151,7 @@
                             self.Noted = '';
                             self.Address = "";
                             self.Email = "";
+                            self.submitted = false;
                         }
                         else {
                             alert(item.mess);

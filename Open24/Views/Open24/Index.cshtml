@@ -10,14 +10,13 @@
 @using Model_banhang24vn.Common
 <style>
     :root {
-        --color-theme: #27467A
+        --color-theme: #0078D7;
     }
 
     .op-banner-content {
         display: flex;
         flex-direction: column;
         min-width: 295px;
-        color: #F4F5F7;
     }
 
     .op-banner-image {
@@ -28,97 +27,15 @@
     .op-banner > .container {
         display: flex;
         padding-bottom: 0;
-        background-color: #F4F5F7
-    }
-
-    .op-banner {
-        background-color: #F4F5F7
     }
 
     .op-banner-descr {
-        color: #666768;
-        font-size: 18px;
-        display: block;
-        line-height: 28px;
-        padding: 3px;
-        font-weight: 700;
-    }
-
-    .btn-dang-ky-dung-thu {
-        height: 40px;
-        background: #FF5C35;
-        text-align: center;
-        padding: 7px 12px;
-        font-size: 16px;
-        font-weight: normal;
-        border: none;
-        border-radius: 20px;
-        font-family: "Roboto";
-        width: 175px;
-        color: #FEFEFF;
-        letter-spacing: 0;
-        line-height: 24px;
-        transition: all 0.4s ease;
-    }
-
-        .btn-dang-ky-dung-thu:hover {
-            height: 40px;
-            background: #FF5C35;
-            text-align: center;
-            padding: 7px 12px;
-            font-size: 16px;
-            font-weight: normal;
-            border: none;
-            border-radius: 20px;
-            font-family: "Roboto";
-            width: 175px;
-            color: #FEFEFF;
-            letter-spacing: 1.5px;
-            line-height: 24px;
-            transition: all 0.4s ease;
-        }
-
-    .btn-xem-them {
-        height: 40px;
-        color: #172B4D;
-        border-radius: 20px;
-        border: 1px solid #FF5C35;
-    }
-
-    .page-function .card {
-        border-radius: 10px;
-        background: #FEFEFF;
-        box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);
-    }
-
-    .card-title {
-        color: #172B4D;
-        font-size: 18px;
-        font-weight: 700;
-    }
-
-    .card-text {
-        color: #666768;
+        color: white;
         font-size: 14px;
-        font-weight: 500;
-    }
-
-    .card {
-        border-radius: 10px;
-        background: #FEFEFF;
-        box-shadow: 5px 5px 20px 0px #2745731a;
-        border: none;
-    }
-
-    .card-body {
-        flex: 1 1 auto;
-        padding: 0 1rem;
-    }
-
-    @@media (max-width: 576px) {
-        #supportPage, #img-bg-reason-page {
-            background-image: none !important;
-        }
+        font-weight: normal;
+        display: block;
+        line-height: 24px;
+        padding: 3px
     }
 </style>
 <div id="renderBody" style="position:relative">
@@ -128,58 +45,54 @@
             <div class="op-banner-content" data-aos="fade-right">
                 <div style="text-align:left">
                     <h1 class="op-gara-heading">
-                        <span style="margin-bottom: 30px; color: #2E475D;">     Phần mềm quản lý<br /> kinh doanh <span style="color: #FF5C35;">Open24</span></span>
-
+                        <span style="margin-bottom:30px">     Phần mềm quản lý<br /> kinh doanh Open24</span>
                         <font class="op-banner-descr">
-                            <img src="~/Content/images/open24/i-check-round.svg" />
                             Hệ thống tuyệt vời quản lý thống nhất
                             hoạt động kinh doanh.
                         </font>
                         <font class="op-banner-descr">
-                            <img src="~/Content/images/open24/i-check-round.svg" />
                             Sử dụng đơn giản, đầy đủ tính năng,
                             tiết kiệm thời gian.
                         </font>
-
                     </h1>
 
 
-                    <button class="btn btn-dang-ky-dung-thu " style="margin-top:15px" data-bs-toggle="modal" data-bs-target="#modalTuVan">
+                    <button class="btn btn-ads " data-bs-toggle="modal" data-bs-target="#modalTuVan">
                         <span style="font-weight: normal">Đăng kí dùng thử</span>
                     </button>
                 </div>
 
             </div>
             <div class="op-banner-image">
-                <img src="~/Content/images/open24/op-index-bg-2.png" style="height:450px" alt="open24-bg" />
+                <img src="~/Content/images/open24/op-index-bg.svg" style="height:450px" alt="gara xe" />
             </div>
         </div>
     </div>
-
-    @*<div class="content-page-function kd-dac-thu">*@
+    @*<div class="content-page-two ">*@
     <div class="container">
         <div class="list-introduces content-page-more">
-            <h4 class="title" style="color: #FF5C35">Open24 cung cấp những gì ?</h4>
             <h2 class="title title-page-more">
                 Phần mềm quản lý thông minh, hiệu quả theo đặc thù
+
             </h2>
         </div>
+    </div>
+    @*</div>*@
+    @*<div class="content-page-function kd-dac-thu">*@
+    <div class="container">
         <div class="page-function">
             <div class="row" style="display:flex; flex-direction:row; flex-wrap:wrap">
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="card text-center speed-animation">
-                        <div>
-                            <img alt="car-repair" src="~/Content/images/open24/IconHomePage/op-gara.png" style="height:208px" />
+                        <div class="bg-icon" style="background: #FF7208">
+                            <img alt="car-repair" src="~/Content/images/open24/IconHomePage/car-repair.png" />
                         </div>
-                        <div class="card-body mt-3">
+                        <div class="card-body">
                             <h5 class="card-title">Open24 - Gara</h5>
                             <p class="card-text">Phần mềm quản lý Gara ô tô, xe máy.</p>
                             <br />
-                            <div style="gap:12px">
-                                <a class="btn btn-dang-ky-dung-thu" onclick="ShowDangKy('Gara')">Đăng kí dùng thử</a>
-                                <a href="/gara-oto-xe-may" class="btn btn-outline btn-xem-them">Xem thêm</a>
-                            </div>
-
+                            <a class="btn btn-outline-primary" onclick="ShowDangKy('Gara')">Đăng kí dùng thử</a>
+                            <a href="/gara-oto-xe-may" class="btn btn-outline-primary">Xem thêm</a>
                         </div>
                     </div>
                 </div>
@@ -187,37 +100,31 @@
 
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="card text-center speed-animation">
-                        <div>
-                            <img alt="beautyhandcream" src="~/Content/images/open24/IconHomePage/op-beauty.png" style="height:208px" />
+                        <div class="bg-icon" style="background: #A74AE5">
+                            <img alt="beautyhandcream" src="~/Content/images/open24/IconHomePage/beautyhandcream.png" />
                         </div>
-                        <div class="card-body mt-3">
+                        <div class="card-body">
                             <h5 class="card-title">Open24 - Beauty</h5>
                             <p class="card-text">Phần mềm quản lý dành cho lĩnh vực làm đẹp.</p>
                             <br />
-                            <div style="gap:12px">
-                                <a class="btn btn-dang-ky-dung-thu" onclick="ShowDangKy('Beauty')">Đăng kí dùng thử</a>
-                                <a href="/spa-tham-my-vien" class="btn btn-outline btn-xem-them">Xem thêm</a>
-                            </div>
-
+                            <a class="btn btn-outline-primary" onclick="ShowDangKy('Beauty')">Đăng kí dùng thử</a>
+                            <a href="/spa-tham-my-vien" class="btn btn-outline-primary">Xem thêm</a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <div class="card text-center speed-animation">
-                        <div>
-                            <img src="~/Content/images/open24/IconHomePage/op-sales.png" alt="SuperMarket" style="height:208px" />
+                        <div class="bg-icon" style="background: #2680EB">
+                            <img alt="SuperMarket" src="~/Content/images/open24/IconHomePage/supermarket.png" />
                         </div>
-                        <div class="card-body mt-3">
+                        <div class="card-body">
                             <h5 class="card-title">Open24 - Sales</h5>
                             <p class="card-text">Phần mềm quản lý bán hàng, siêu thị.</p>
                             <br />
-                            <div class="speed-animation" style="gap:12px;">
-                                <a class="btn btn-dang-ky-dung-thu" onclick="ShowDangKy('Sale')">Đăng kí dùng thử</a>
-                                <a href="/phan-mem-quan-ly-open24" class="btn btn-outline btn-xem-them">Xem thêm</a>
-                            </div>
+                            <a class="btn btn-outline-primary" onclick="ShowDangKy('Sale')">Đăng kí dùng thử</a>
+                            <a href="/phan-mem-quan-ly-open24" class="btn btn-outline-primary">Xem thêm</a>
                         </div>
                     </div>
-
                 </div>
 
 
@@ -226,261 +133,236 @@
         </div>
     </div>
     @*</div>*@
-    <!--Start Page help-->
-    <div class="container">
-        <div class="list-introduces content-page-more">
-            <h4 class="title" style="color: #FF5C35">Open24 giúp được gì ?</h4>
-            <h2 class="title title-page-more">
-                Open24 giúp bạn quản lý kinh doanh hiệu quả,
-            </h2>
-            <h2 class="title title-page-more">
+
+    <div class="title-helpfull">
+        <div class="speed-animation">
+            <h2>
+                Open24 giúp bạn quản lý kinh doanh hiệu quả, <br />
                 mở rộng hoạt động kinh doanh nhanh chóng
             </h2>
-        </div>
-        <div class="page-function">
-            <div class="row" style="display:flex; flex-direction:row; flex-wrap:wrap">
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="card text-center">
-                        <div class="bg-icon">
-                            <img alt="car-repair" src="~/Content/images/open24/IconHomePage/inventory.svg" />
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Kiểm soát kho hàng chặt chẽ</h5>
-                            <p class="card-text">Giảm thiểu chi phí thuê nhân sự. Quản lý kho hàng toàn diện làm giảm sự thất thoát.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="card text-center">
-                        <div class="bg-icon">
-                            <img alt="car-repair" src="~/Content/images/open24/IconHomePage/customer-care.svg" />
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Chăm sóc khách hàng toàn diện</h5>
-                            <p class="card-text">Quản lý thông tin khách hàng, theo dõi và nhắc lịch hẹn, tích điểm, làm thẻ khách hàng.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="card text-center">
-                        <div class="bg-icon">
-                            <img alt="car-repair" src="~/Content/images/open24/IconHomePage/online-marketing.svg" />
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Xây dựng hoạt động marketing</h5>
-                            <p class="card-text">Tạo nhiều chương trình marketing, gửi email & sms kích thích nhu cầu tiêu dùng của khách hàng</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row" style="display:flex; flex-direction:row; flex-wrap:wrap">
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="card text-center">
-                        <div class="bg-icon">
-                            <img alt="car-repair" src="~/Content/images/open24/IconHomePage/save-money.svg" />
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Tiết kiệm 90% bán hàng</h5>
-                            <p class="card-text">Rút ngắn thời gian trong các công đoạn: tìm kiếm, báo giá, thanh toán, chăm sóc khách hàng</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="card text-center">
-                        <div class="bg-icon">
-                            <img alt="car-repair" src="~/Content/images/open24/IconHomePage/revenue.svg" />
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Tăng doanh thu</h5>
-                            <p class="card-text">Kiểm soát chặt chẽ lãi lỗ, các khoản thu chi nhờ báo cáo chính xác, kịp thời</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                    <div class="card text-center">
-                        <div class="bg-icon">
-                            <img alt="car-repair" src="~/Content/images/open24/IconHomePage/flexibility.svg" />
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title">Xây dựng hoạt động marketing</h5>
-                            <p class="card-text">Tạo nhiều chương trình marketing, gửi email & sms kích thích nhu cầu tiêu dùng của khách hàng</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <p>Tăng doanh thu, giảm thất thoát, kiểm soát chặt chẽ mọi hoạt động kinh doanh, số liệu rõ ràng</p>
         </div>
     </div>
-    <!--End Page Hepl-->
-    <!--Start Support Page-->
-    <div class="content-page-advantages speed-animation" style="background: #F4F5F7;">
-        <div class="title-helpfull" style="background-color: #F4F5F7;">
-            <div class="speed-animation">
-                <h4 class="title" style="color: #FF5C35">Open24 cung cấp những gì ?</h4>
-                <h2 class="title title-page-more">
-                    Open24 giúp được gì cho hoạt động kinh doanh của bạn ?
-                </h2>
-            </div>
-        </div>
-        <div class="container page-advantages" id="supportPage" style="background-image: url('../../content/images/open24/iconhomepage/bg-page-adv-2.png'); padding-bottom: 15px; ">
-            <div class="row g-2 g-md-0">
-                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                    <div class="text-right">
-                        <div class="d-flex flex-row justify-content-end align-items-start gap-sm-2 gap-md-0">
-                            <div class="card-body">
-                                <h5 class="card-title" style="text-align:end">
-                                    <b>Quản lý khách hàng (CRM)</b>
-                                </h5>
-                                <p class="card-text" style="text-align:end">
-                                    Khách hàng là tài sản quan trọng nhất
-                                </p>
-                                <p class="card-text" style="text-align:end">
-                                    Open24 giúp bạn quản lý và theo dõi khách hàng chu đáo
-                                </p>
-                            </div>
-                            <img src="~/Content/images/open24/IconHomePage/i-op-crm.svg" alt="Quản lý khách hàng" />
+
+    <div class="content-page-advantages speed-animation">
+        <div class="container page-advantages">
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center" style="width: 25rem; margin: 0 auto">
+                        <div class="card-body">
+                            <img src="~/Content/images/open24/IconHomePage/warehouse.png" alt="Quản lý kho">
+                            <h5 class="card-title">
+                                <b>Kiểm soát kho hàng chặt chẽ</b>
+                            </h5>
+                            <p class="card-text">
+                                Giảm thiểu chi phí thuê nhân sự. Quản lý kho hàng toàn diện làm giảm sự thất thoát.
+                            </p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 col-12">
-                    <div class="text-left">
-                        <div class="d-flex flex-row justify-content-end align-items-start gap-sm-2 gap-md-0">
-                            <img src="~/Content/images/open24/IconHomePage/i-sales.svg" alt="Quản lý bán hàng" />
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <b>Quản lý bán hàng (SALES)</b>
-                                </h5>
-                                <p class="card-text">
-                                    Thiết kế thông minh
-                                </p>
-                                <p class="card-text">
-                                    Hoạt động từ tiếp nhận nhu cầu khách hàng đến hợp đồng được thực hiện nhanh chóng.
-                                </p>
-                            </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-4 col-12">
+                    <div class="text-right" style="width: 25rem; margin: 0 auto">
+                        <div class="card-body">
+                            <img src="~/Content/images/open24/IconHomePage/gear.png" alt="Quản lý linh hoạt">
+                            <h5 class="card-title">
+                                <b>Quản lý linh hoạt, mọi lúc mọi nơi</b>
+                            </h5>
+                            <p class="card-text">
+                                Không cần liên tục ở cửa hàng giám sát vẫn có thể nắm bắt được mọi công việc mua bán tại cửa hàng, chuỗi cửa hàng.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-4 col-sm-offset-4 col-12">
+                    <div class="text-left" style="width: 24rem; margin: 0 auto">
+                        <div class="card-body">
+                            <img src="~/Content/images/open24/IconHomePage/community.png" alt="Chăm sóc khách hàng">
+                            <h5 class="card-title">
+                                <b>Chăm sóc khách hàng toàn diện</b>
+                            </h5>
+                            <p class="card-text">
+                                Quản lý thông tin khách hàng, theo dõi và nhắc lịch hẹn, tích điểm, làm thẻ khách hàng.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
             <br />
-            <div class="row g-2 g-md-0">
-                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                    <div class="text-right">
-                        <div class="d-flex flex-row justify-content-end align-items-start gap-sm-2 gap-md-0">
-                            <div class="card-body">
-                                <h5 class="card-title" style="text-align:end">
-                                    <b>Quản lý công việc, lịch hẹn (WORKS)</b>
-                                </h5>
-                                <p class="card-text" style="text-align:end">
-                                    Hệ thống giúp bạn theo dõi công việc, đặt hẹn trực quan dễ dàng.
-                                </p>
-                                <p class="card-text" style="text-align:end">
-                                    Nắm bắt và giải quyết công việc mọi lúc mọi nơi.
-                                </p>
-                            </div>
-                            <img src="~/Content/images/open24/IconHomePage/i-project-plan.svg" alt="Quản lý công việc, lịch hẹn" />
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-4 col-12">
+                    <div class="text-right" style="width: 25rem; margin: 0 auto">
+                        <div class="card-body">
+                            <img src="~/Content/images/open24/IconHomePage/Solid.png" alt="Tăng doanh thu">
+                            <h5 class="card-title">
+                                <b>Tăng doanh thu</b>
+                            </h5>
+                            <p class="card-text">
+                                Kiểm soát chặt chẽ lãi lỗ, các khoản thu chi nhờ báo cáo chính xác, kịp thời
+                            </p>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 col-12">
-                    <div class="text-left">
-                        <div class="d-flex flex-row justify-content-end align-items-start gap-sm-2 gap-md-0">
-                            <img src="~/Content/images/open24/IconHomePage/i-hrm.svg" alt="Quản lý nhân sự" />
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <b>Quản lý nhân sự (HRM)</b>
-                                </h5>
-                                <p class="card-text">
-                                    Quản lý toàn bộ nhân sự và các hoạt động của nhân viên.
-                                </p>
-                                <p class="card-text">
-                                    chấm công, đánh giá KPI, tính lương hoa hồng chính xác.
-                                </p>
-                            </div>
+
+                <div class="col-lg-6 col-lg-offset-0 col-md-6 col-md-offset-0 col-sm-4 col-sm-offset-4 col-12">
+                    <div class="text-left" style="width: 24rem; margin: 0 auto">
+                        <div class="card-body">
+                            <img src="~/Content/images/open24/IconHomePage/megaphone.png" alt="Marketing">
+                            <h5 class="card-title">
+                                <b>Xây dựng hoạt động marketing</b>
+                            </h5>
+                            <p class="card-text">
+                                Tạo nhiều chương trình marketing, gửi email & sms kích thích nhu cầu tiêu dùng của khách hàng
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="text-center" style="width: 25rem; margin: 0 auto">
+                        <div class="card-body">
+                            <img src="~/Content/images/open24/IconHomePage/09-timer.png" alt="Tiết kiệm thời gian">
+                            <h5 class="card-title">
+                                <b>Tiết kiệm 90% bán hàng</b>
+                            </h5>
+                            <p class="card-text">
+                                Rút ngắn thời gian trong các công đoạn: tìm kiếm, báo giá, thanh toán, chăm sóc khách hàng
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-page-service">
+        <div class="container speed-animation">
+            <h2 class="title helpfull">
+                Open24 giúp được gì <br />cho hoạt động kinh doanh của bạn ?
+            </h2>
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <div>
+                                <i class="fa fa-check-square" aria-hidden="true"></i>
+                            </div>
+                            <div>
+                                <p class="mb-1">Quản lý khách hàng (CRM)</p>
+                                <small>Khách hàng là tài sản quan trọng nhất, Open24 giúp bạn quản lý và theo dõi khách hàng chu đáo</small>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <i class="fa fa-check-square" aria-hidden="true"></i>
+                            </div>
+                            <div>
+                                <p class="mb-1">Quản lý bán hàng (SALES)</p>
+                                <small>Thiết kế thông minh giúp hoạt động từ tiếp nhận nhu cầu khách hàng đến hợp đồng được thực hiện nhanh chóng.</small>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <i class="fa fa-check-square" aria-hidden="true"></i>
+                            </div>
+                            <div>
+                                <p class="mb-1">Quản lý công việc, lịch hẹn (WORKS)</p>
+                                <small>Hệ thống giúp bạn theo dõi công việc, đặt hẹn trực quan dễ dàng. Nắm bắt và giải quyết công việc mọi lúc mọi nơi.</small>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <i class="fa fa-check-square" aria-hidden="true"></i>
+                            </div>
+                            <div>
+                                <p class="mb-1">Quản lý nhân sự (HRM)</p>
+                                <small>Quản lý toàn bộ nhân sự và các hoạt động của nhân viên. Giúp bạn chấm công, đánh giá KPI, tính lương hoa hồng chính xác.</small>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <i class="fa fa-check-square" aria-hidden="true"></i>
+                            </div>
+                            <div>
+                                <p class="mb-1">Quản lý marketing (MARKETING)</p>
+                                <small>Quản lý phân tích các nhu cầu khách hàng từ đó xây dựng chiến dịch email, sms marketing đơn giản nhanh chóng.</small>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div>
+                                <i class="fa fa-check-square" aria-hidden="true"></i>
+                            </div>
+                            <div>
+                                <p class="mb-1">Quản lý kho (WAREHOUSE)</p>
+                                <small>Quản lý hàng hoá, tồn kho chặt chẽ. Các hoạt động nhập, xuất và kiểm kê được thực hiện dễ dàng.</small>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <button class="btn-ads yellow" data-bs-toggle="modal" data-bs-target="#modalTuVan"><span style="font-weight:normal">Đăng ký dùng thử</span></button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-offset-6 col-md-offset-6 col-sm-offset-12 col-offset-12">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div style="background-image: url(../../Content/images/open24/IconHomePage/banner-wave.png); text-align: center; padding: 15px; background-color: #006CC1;height: 200px; margin: 10vh 0;">
+        <h2 class="bg-line-text">
+            <span style="color: #FFD40C">Open24 cam kết</span> đem lại cho bạn <span style="color: #FFD40C">sự hài lòng</span>
             <br />
-            <div class="row g-2 g-md-0">
-                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                    <div class="text-right">
-                        <div class="d-flex flex-row justify-content-end align-items-start gap-sm-2 gap-md-0">
-                            <div class="card-body">
-                                <h5 class="card-title" style="text-align:end">
-                                    <b>Quản lý marketing (MARKETING)</b>
-                                </h5>
-                                <p class="card-text" style="text-align:end">
-                                    Quản lý phân tích các nhu cầu khách hàng
-                                </p>
-                                <p class="card-text" style="text-align:end">
-                                    Xây dựng chiến dịch email, sms marketing đơn giản nhanh chóng.
-                                </p>
-                            </div>
-                            <img src="~/Content/images/open24/IconHomePage/i-email-marketing.svg" alt="Quản lý marketing" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4 offset-lg-4 col-md-4 offset-md-4 col-sm-6 col-12">
-                    <div class="text-left">
-                        <div class="d-flex flex-row justify-content-end align-items-start gap-sm-2 gap-md-0">
-                            <img src="~/Content/images/open24/IconHomePage/i-warehouse.svg" alt="Quản lý kho" />
-                            <div class="card-body">
-                                <h5 class="card-title">
-                                    <b>Quản lý kho (WAREHOUSE)</b>
-                                </h5>
-                                <p class="card-text">
-                                    Quản lý hàng hoá, tồn kho chặt chẽ.
-                                </p>
-                                <p class="card-text">
-                                    Các hoạt động nhập, xuất và kiểm kê được thực hiện dễ dàng.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div class="text-center pb-4">
-            <button class="btn btn-dang-ky-dung-thu " style="margin-top:15px" data-bs-toggle="modal" data-bs-target="#modalTuVan">
-                <span style="font-weight: normal">Đăng kí dùng thử</span>
-            </button>
-        </div>
+            <span style="color: #FFD40C">với sản phẩm và dịch vụ</span> của Open24 dành cho bạn
+        </h2>
     </div>
-    <!--End Support Page-->
-    <!--Start Reason Choose-->
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-md-6 col-xs-12" id="img-bg-reason-page" style="background-image: url('../../content/images/open24/iconhomepage/bg-page-reason-choose.png'); background-repeat:no-repeat;background-position:bottom;">
-                <div class="pt-5">
-                    <h2 class="title title-page-more">Tại sao bạn nên chọn chúng tôi</h2>
-                    <p class="card-text">Khách hàng là tài sản quan trọng nhất, Open24 giúp bạn quản lý và theo dõi khách hàng chu đáo.</p>
-                </div>
 
-            </div>
-            <div class="col-12 col-md-6 col-xs-12 pb-3 pt-5">
-                <div class="p-4" style="background: #F4F5F7; border-radius: 8px;">
-                    <h2 class="card-title">Chúng tôi thấu hiểu bạn</h2>
-                    <p class="card-text">Chúng tôi hiểu bản chất nghiệp vụ cũng như những khó khăn khách hàng gặp phải. Chúng tôi cam kết sẽ luôn nỗ lực không ngừng để đáp ứng nhu cầu quản lý của bạn. Thành công của bạn cũng là mong muốn và mục tiêu của chúng tôi.</p>
-                </div>
-                <br />
-                <div class="p-4" style="background: #0078D7; border-radius: 8px;">
-                    <h2 class="card-title" style="color: #FEFEFF">Quy trình khoa học</h2>
-                    <p class="card-text" style="color: #FEFEFF">Bên cạnh việc thiết kế và phát triển phần mềm dựa trên các nền tảng công nghệ mới nhất. Chúng tôi cũng không ngừng nâng cấp cải tiến các quy trình để nâng cao chất lượng sản phẩm và dịch vụ nhằm đem lại những lợi ích cao nhất cho khách hàng.</p>
-                </div>
-                <br />
-                <div class="p-4" style="background: #F4F5F7; border-radius: 8px;">
-                    <h2 class="card-title">Đội ngũ nhân sự</h2>
-                    <p class="card-text">Đội ngũ nhân viên công ty là những tài năng trong lĩnh vực CNTT. Với tố chất năng động, sáng tạo cùng với nền tảng tri thức được đào tạo bàn bản, nguồn nhân lực của SSOFT thực sự là một thế mạnh và tài sản vô giá của chúng tôi.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--End Reason Choose-->
     @Html.Partial("_CustomerPartial")
+
+    <div class="content-page-reason">
+        <div class="container">
+            <div class="row">
+                <div class="list-introduces content-page-more">
+                    <h2 class="title title-page-more speed-animation">
+                        Lý do bạn chọn chúng tôi
+                    </h2>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-12 text-center">
+                    <div class="card speed-animation">
+                        <div class="card-body">
+                            <img src="~/Content/images/open24/IconHomePage/self-awareness.png" alt="">
+                            <h5 class="card-title bold">Chúng tôi thấu hiểu bạn</h5>
+                            <p class="card-text">Chúng tôi hiểu bản chất nghiệp vụ cũng như những khó khăn khách hàng gặp phải. Chúng tôi cam kết sẽ luôn nỗ lực không ngừng để đáp ứng nhu cầu quản lý của bạn. Thành công của bạn cũng là mong muốn và mục tiêu của chúng tôi.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-12 text-center">
+                    <div class="card speed-animation">
+                        <div class="card-body">
+                            <img src="~/Content/images/open24/IconHomePage/workflow.png" alt="">
+                            <h5 class="card-title bold">Quy trình khoa học</h5>
+                            <p class="card-text">Bên cạnh việc thiết kế và phát triển phần mềm dựa trên các nền tảng công nghệ mới nhất. Chúng tôi cũng không ngừng nâng cấp cải tiến các quy trình để nâng cao chất lượng sản phẩm và dịch vụ nhằm đem lại những lợi ích cao nhất cho khách hàng.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4 col-12 text-center">
+                    <div class="card speed-animation">
+                        <div class="card-body">
+                            <img src="~/Content/images/open24/IconHomePage/employees.png" alt="">
+                            <h5 class="card-title bold">Đội ngũ nhân sự</h5>
+                            <p class="card-text">Đội ngũ nhân viên công ty là những tài năng trong lĩnh vực CNTT. Với tố chất năng động, sáng tạo cùng với nền tảng tri thức được đào tạo bàn bản, nguồn nhân lực của SSOFT thực sự là một thế mạnh và tài sản vô giá của chúng tôi.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<!--Start Support Page-->
-@Html.Partial("_RequestPartial")
-<!--End Support Page-->
+    @Html.Partial("_RequestPartial");    
 <div class="modal fade" id="myModal">
     <div class="modal-dialog" style="padding-top: 5%;">
         <iframe id="myVideo" width="100%" height="450px" src="" frameborder="0" allowfullscreen=""></iframe>
@@ -505,4 +387,4 @@
             $("#modalTuVan").modal("show");
         }
     });
-</script>
+ </script>

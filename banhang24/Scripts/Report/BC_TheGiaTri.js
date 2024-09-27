@@ -552,10 +552,10 @@
             };
 
 
-            let exportOK = false;
-            $('.table-reponsive').gridLoader({ show: false });   
+            let exportOK = false;            
             exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + funcNameExcel, 'POST', ParamReportValueCard, fileNameExport);
-            if (exportOK) {           
+            if (exportOK) { 
+                $('.table-reponsive').gridLoader({ show: false });  
                 Insert_NhatKyThaoTac_1Param(objDiary);
             }
             

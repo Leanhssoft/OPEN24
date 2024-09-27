@@ -1039,7 +1039,8 @@
                     self.onRefresh = false;
                     self.isLoading = false;
                 },
-                RowSelected: function (item) {
+                RowSelected: async function (item) {
+                    debugger;
                     let self = this;
                     if (item.ID !== self.idPhieuTiepNhanRowSelected) {
                         self.dataBaoGia.currentPage = 1;
@@ -1056,7 +1057,8 @@
                             ngayxx = moment(item.NgayXuatXuong).format('DD/MM/YYYY HH:mm');
                         }
                         item.PTN_GhiChu = item.GhiChu;
-                        self.dataMauIn.HoaDon = $.extend({}, true, item);
+                        self.dataMauIn.HoaDon = $.extend({}, true, item);                        
+                        self.dataMauIn.HoaDon.SoKmCu_PTN = await Gara_GetSoKmPTN(self.idPhieuTiepNhanRowSelected);
                         self.dataMauIn.HoaDon.NgayXuatXuong = ngayxx;
                         self.dataMauIn.HoaDon.BH_TenLienHe = item.NguoiLienHeBH;
                         self.dataMauIn.HoaDon.BH_SDTLienHe = item.SoDienThoaiLienHeBH;
