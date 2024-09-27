@@ -1436,6 +1436,7 @@ function SetConvertDataTest(strInput) {
                 '{SoDuConLai}': '<span data-bind=\"text: SoDuConLai\"></span>',
                 '{TienDoiDiem}': '<span data-bind=\"text: $root.TienDoiDiem\"></span>',
                 '{TienTheGiaTri}': '<span data-bind=\"text: $root.TienTheGiaTri\"></span>',
+                '{TienTheGiaTri_TruocTT}': '<span data-bind=\"text: $root.TienTheGiaTri_TruocTT\"></span>',
 
                 '{Ngay}': '<span data-bind=\"text: Ngay\"></span>',
                 '{Thang}': '<span data-bind=\"text: Thang\"></span>',
@@ -1458,6 +1459,7 @@ function SetConvertDataTest(strInput) {
                 '{SoMay}': '<span data-bind=\"text: SoMay\"></span>',
                 '{SoKmVao}': '<span data-bind=\"text: SoKmVao\"></span>',
                 '{SoKmRa}': '<span data-bind=\"text: SoKmRa\"></span>',
+                '{SoKmCu_PTN}': '<span data-bind=\"text: SoKmCu_PTN\"></span>',
                 '{HopSo}': '<span data-bind=\"text: HopSo\"></span>',
                 '{DungTich}': '<span data-bind=\"text: DungTich\"></span>',
                 '{MauSon}': '<span data-bind=\"text: MauSon\"></span>',

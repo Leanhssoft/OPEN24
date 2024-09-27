@@ -42,47 +42,29 @@
         vertical-align: middle;
         text-align: center;
     }
-    .input-search {
-        border: 1px solid #C2C9D6;
-        border-radius: 8px;
-        width: 100%;
-        height: 40px;
-        padding: 9px 4px 9px 40px;
-        background: white url('../../Content/images/open24/i-search.svg') no-repeat 13px center;
-    }
-
-        .input-search:focus {
-            border-color: #1183d6;
-            outline: none;
-            box-shadow: 0 0 3px 0 #1183d6;
-        }
-    span {
-        color: #667085;
-        font-size: 18px;
-        font-weight: 400;
-    }
-    b, strong {
-        font-weight: bolder;
-        color: #101828;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 700;
-    }
 </style>
 <div>
-    <div class="container-fluid op-banner" style="background: #F4F6FD;height:371px">
+    <div class="container-fluid row op-banner">
         <div class="container" style="height: 100%; justify-content: center;">
+
             <div style="display:flex; flex-direction:column; align-items:center; justify-content:space-between; width:100%">
                 <div></div>
-                <div style="width: 80%; text-align: center; color: white;">
-                    <h3 style="font-size: 48px; color: #172B4D;font-weight:700">
+                <div style="width: 80%; text-align: center; color:white;">
+                    <h3 style="font-size:32px; color:white">
                         Trung tâm hỗ trợ sử dụng Open24
                     </h3>
-                    <div style="position:relative; width:100%; padding:49px 0 15px">
-                        <input class="input-search" type="text" placeholder="Nhập thông tin bạn muốn tìm kiếm..." value="@ViewBag.SearchString" />
+                    <div style="position:relative; width:100%; margin:15px 0">
+                        <input class="_sear-hotro" type="text" placeholder="Nhập thông tin bạn muốn tìm kiếm..." value="@ViewBag.SearchString" />
+                        <i style="position: absolute; top: 10px; right: 15px; font-size: 19px;" class="fa fa-search"></i>
+                    </div>
+                    <div>
+                        Liên hệ ngay
+                        <span style="color: #FFD40C"><i class="fa fa-phone"></i>     0247 303 9333</span> để được hỗ trợ trực tiếp
                     </div>
                 </div>
-                <div></div>
+                <div>
+                    <img src="~/Content/images/huongdansudung/help.png" />
+                </div>
             </div>
         </div>
     </div>
@@ -95,9 +77,9 @@
                         <a href="javascript:void(0)" class="ht-a-parent tree-a" data-bind="attr: {'data-id': id},click:$parents[0].SelectTinhNang">
                             <span class="ht-title-parent" data-bind="text:text">Hàng hóa</span>
                             @*<div data-bind="visible: children.length>0">
-                                <i class="fa fa-plus-square" aria-hidden="true"></i>
-                                <i class="fa fa-minus-square" aria-hidden="true" style="display:none"></i>
-                            </div>*@
+                                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                                    <i class="fa fa-minus-square" aria-hidden="true" style="display:none"></i>
+                                </div>*@
                         </a>
                         <ul class="tree-child" data-bind="foreach:children">
                             <li>
@@ -126,7 +108,7 @@
             <div class="ht-tree-right">
                 <div class="floatleft ">
                     <h1>
-                        <span data-bind="text:tentitle" style="font-size: 32px; font-weight: 700; color: #101828"></span>
+                        <span data-bind="text:tentitle"></span>
                         <a href="javascript: void(0)" class="video" onclick="changeVideo()" hidden>
                             <i class="fa fa-play-circle element"></i>
                         </a>
@@ -143,53 +125,43 @@
                     <div class="fb-comments" data-bind="attr:{'data-href':url}" data-numposts="5" data-width="100%"></div>
                 </div>
             </div>
-          
+
         </div>
 
     </div>
 
     <div class="container">
-        <div class="op-section-title mb-3">
+        <div class="op-section-title">
             <font>Phần mềm hỗ trợ</font>
         </div>
-        <div class="row p-4" style="">
-            <div class="col-md-4 col-xs-12 mb-2">
-                <div style="padding: 0px 12px; border-radius: 8px; box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);" class="bg-white">
-                    <div class="flex justify-content-start" style="padding:40px">
-                        <img src="~/Content/images/huongdansudung/teamviewer-2.png" style="width:80px;height:80px" />
-                        <div class="op-download-helper justify-content-between align-items-start ml-2">
-                            <b>Teamviewer</b>
-                            <a target="_blank" href="https://www.teamviewer.com/vi/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
-                        </div>
+        <div class="row">
+            <div class="col-md-4 col-xs-12">
+                <div class="op-download-helper">
+                    <img src="~/Content/images/huongdansudung/teamvier.png" />
+                    <b>Teamviewer</b>
+                    <span>Hỗ trợ máy tính từ xa</span>
+                    <a target="_blank" href="https://www.teamviewer.com/vi/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="op-download-helper">
+                    <img src="~/Content/images/huongdansudung/ultra.png" />
+                    <b>
+                        Ultraviewer
+                    </b>
+                    <span>Hỗ trợ máy tính từ xa</span>
+                    <a target="_blank" href="https://ultraviewer.net/vi/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
+                </div>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <div class="op-download-helper">
+                    <img src="~/Content/images/huongdansudung/driver.png" />
+                    <b>Driver</b>
+                    <span>Máy in</span>
+                    <a target="_blank" href="https://xprinter.vn/download-driver-may-in-driver-pos-printer/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
+                </div>
+            </div>
 
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-xs-12 mb-2">
-                <div style="padding: 0px 12px; border-radius: 8px; box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);" class="bg-white">
-                    <div class="flex justify-content-start" style="padding:40px">
-                        <img src="~/Content/images/huongdansudung/ultraviewer.png" style="width:80px;height:80px" />
-                        <div class="op-download-helper justify-content-between align-items-start ml-2">
-                            <b>
-                                Ultraviewer
-                            </b>
-                            <a target="_blank" href="https://ultraviewer.net/vi/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 col-xs-12 mb-2">
-                <div style="padding: 0px 12px; border-radius: 8px; box-shadow: 5px 5px 20px 0px rgba(39, 69, 115, 0.10);" class="bg-white">
-                    <div class="flex justify-content-start" style="padding:40px">
-                        <img src="~/Content/images/huongdansudung/driver-printer.png" style="width:80px;height:80px" />
-                        <div class="op-download-helper justify-content-between align-items-start ml-2">
-                            <b>Driver</b>
-                            <a target="_blank" href="https://xprinter.vn/download-driver-may-in-driver-pos-printer/"><i class="fa fa-cloud-download"></i>Tải xuống</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -437,7 +409,7 @@
 
     ko.applyBindings(viewmodel);
 
-    $(".input-search").on('keyup', function (e) {
+        $("._sear-hotro").on('keyup', function (e) {
             if (e.keyCode == 13) {
                 window.location.href = "/ho-tro-tim-kiem?search=" + $(this).val();
             }

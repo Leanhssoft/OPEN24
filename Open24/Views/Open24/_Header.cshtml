@@ -10,8 +10,8 @@
         width: 100%;
         height: 100%;
         z-index: 1;
-        background:var(--color-theme);
-        opacity:0.5;
+        background: var(--color-theme);
+        opacity: 0.5;
         -webkit-transition: all 0.3s;
         -moz-transition: all 0.3s;
         -o-transition: all 0.3s;
@@ -22,9 +22,9 @@
         transition-timing-function: cubic-bezier(0.75, 0, 0.125, 1);
     }
 
-    .button16>span{
-
+    .button16 > span {
     }
+
     .button16 {
         -webkit-transition: all 0.3s;
         -moz-transition: all 0.3s;
@@ -34,10 +34,12 @@
         border: 1px solid rgba(255,255,255,0.5);
         overflow: hidden;
     }
+
         .button16:hover::before, .button16:hover::after {
             -webkit-transform: translate(0,0);
             transform: translate(0,0);
         }
+
         .button16::after {
             -webkit-transition-delay: 0.2s;
             transition-delay: 0.2s;
@@ -53,11 +55,12 @@
         width: 60%;
         cursor: pointer;
     }
+
     :root {
         --color-theme: #2B9EFB;
- 
         --op-main-color: #0078D7;
     }
+
     :root {
         --op-main-color: #00a0ef;
         --op-main-color-hover: #068bcd;
@@ -163,48 +166,9 @@
         margin: 0 15px;
         color: var(--color-theme);
     }
-    .op-signin,
-    .op-trial {
-        font-size: 16px;
-        padding: 8px 16px;
-        border-radius: 8px;
-        transition: all 0.4s ease;
-        font-weight: 700;
-        letter-spacing: 0;
-        line-height: 24px;
-    }
-
-    .op-trial {
-        /*background: #414141;*/
-        background: #FF5C35;
-        color: white
-    }
-
-        .op-trial:hover, .op-trial:focus {
-            /*color: white;*/
-
-        }
-    .op-signin {
-        border: 1px solid #FF5C35;
-        color: #172B4D;
-        font-size: 16px;
-        font-weight:700;
-    }
-        .op-signin:hover, .op-signin:focus {
-            color: #172B4D;
-        }
-    .header-top {
-        background-color: #FFFFFF !important;
-    }
-    .op-header-menu > li > a {
-        padding: 7px 15px;
-        border-bottom: 2px solid transparent;
-        position: relative;
-        color: #333435;
-    }
 </style>
 <script>
-   
+
     $(document).ready(function () {
         $(".op-menu-mobile").on("click", function () {
             $(".op-header-menu").toggleClass("menu-show");
@@ -217,7 +181,7 @@
 
             <a class="op-menu-mobile" hidden><i class="fa fa-bars"></i></a>
             <a href="/">
-                <img class="op-logo" style="height:35px;padding:3px;" alt="ảnh logo" src="~/Content/images/logoOpen.png" />
+                <img class="op-logo" style="height:35px;padding:3px;" alt="ảnh logo" src="~/Content/images/op-logo-white.png" />
             </a>
             <ul class="op-header-menu" style="position: relative">
                 <li class="li-main @Html.IsActive("Home", "GioiThieu")">
@@ -289,13 +253,12 @@
                 <li class='li-main @Html.IsActive("Open24", "TinTuc")'>
                     <a class=" " href="~/tin-tuc">Tin tức</a>
                 </li>
-
             </ul>
-            <div style="justify-content:start; display:flex; gap: 16px">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="btn op-signin">Đăng nhập</a>
-                <a data-bs-toggle="modal" data-bs-target="#modalTuVan" class="btn login-dang-ky op-trial button3">Dùng thử</a>
-            </div>
 
+            <div style="justify-content:center">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#login" class="op-signin">Đăng nhập</a>
+                <a data-bs-toggle="modal" data-bs-target="#modalTuVan" class="login-dang-ky op-trial button3">Dùng thử</a>
+            </div>
         </div>
     </div>
 </div>

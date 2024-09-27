@@ -1658,6 +1658,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TienChuyenKhoan}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().ChuyenKhoan,2)\"></span>");
             content1 = content1.Replace("{TienDoiDiem}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TienDoiDiem,2)\"></span>");
             content1 = content1.Replace("{TienTheGiaTri}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TienTheGiaTri,2)\"></span>");
+            content1 = content1.Replace("{TienTheGiaTri_TruocTT}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TienTheGiaTri_TruocTT,2)\"></span>");
             content1 = content1.Replace("{PTChietKhauHD}", "<span data-bind=\"text: $root.InforHDprintf().TongChietKhau\"></span>");
             content1 = content1.Replace("{TongGiamGiaHD_HH}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongGiamGiaHD_HH,2)\"></span>");
             content1 = content1.Replace("{ChietKhauNVHoaDon}", "<span data-bind=\"text: $root.InforHDprintf().ChietKhauNVHoaDon\"></span>");
@@ -1746,6 +1747,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{SoKhung}", "<span data-bind=\"text: InforHDprintf().SoKhung\"></span>");
             content1 = content1.Replace("{SoKmVao}", "<span data-bind=\"text: InforHDprintf().SoKmVao\"></span>");
             content1 = content1.Replace("{SoKmRa}", "<span data-bind=\"text: InforHDprintf().SoKmRa\"></span>");
+            //INS 23.09.2024
+            content1 = content1.Replace("{SoKmCu_PTN}", "<span data-bind=\"text: InforHDprintf().SoKmCu_PTN\"></span>");
             content1 = content1.Replace("{SoKmCu}", "<span data-bind=\"text: formatNumber(InforHDprintf().SoKmCu,2)\"></span>");
             content1 = content1.Replace("{NgayXuatXuong}", "<span data-bind=\"text: InforHDprintf().NgayXuatXuong\"></span>");
             content1 = content1.Replace("{TenMauXe}", "<span data-bind=\"text: InforHDprintf().TenMauXe\"></span>");
@@ -1929,6 +1932,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TTBangTienCoc}", "<span data-bind=\"text: formatNumber(TTBangTienCoc)\"></span>");
             content1 = content1.Replace("{TienDoiDiem}", "<span data-bind=\"text: formatNumber(TienDoiDiem)\"></span>");
             content1 = content1.Replace("{TienTheGiaTri}", "<span data-bind=\"text: formatNumber(TienTheGiaTri)\"></span>");
+            content1 = content1.Replace("{TienTheGiaTri_TruocTT}", "<span data-bind=\"text: formatNumber(TienTheGiaTri_TruocTT)\"></span>");
 
             content1 = content1.Replace("{TenNganHangPOS}", "<span data-bind=\"text: InforHDprintf().TenNganHangPOS\"></span>");
             content1 = content1.Replace("{TenChuThePOS}", "<span data-bind=\"text: InforHDprintf().TenChuThePOS\"></span>");
@@ -1977,6 +1981,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{SoKhung}", "<span data-bind=\"text: SoKhung\"></span>");
             content1 = content1.Replace("{SoKmVao}", "<span data-bind=\"text: SoKmVao\"></span>");
             content1 = content1.Replace("{SoKmRa}", "<span data-bind=\"text: SoKmRa\"></span>");
+            //INS 23.09.2024
+            content1 = content1.Replace("{SoKmCu_PTN}", "<span data-bind=\"text: SoKmCu_PTN\"></span>");
             content1 = content1.Replace("{NgayXuatXuong}", "<span data-bind=\"text: NgayXuatXuong\"></span>");
             content1 = content1.Replace("{TenMauXe}", "<span data-bind=\"text: TenMauXe\"></span>");
             content1 = content1.Replace("{TenLoaiXe}", "<span data-bind=\"text: TenLoaiXe\"></span>");

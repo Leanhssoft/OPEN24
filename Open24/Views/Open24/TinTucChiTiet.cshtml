@@ -18,33 +18,7 @@
         })
     </script>
 }
-<style>
-    .news-title {
-        color: #3D475C;
-        font-family: Roboto;
-        font-size: 48px;
-        font-style: normal;
-        font-weight: 700;
-    }
 
-    .avatar {
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        background: #E0E4EB;
-    }
-
-    .card {
-        background: #FEFEFF;
-        box-shadow: 5px 5px 20px 0px #2745731a;
-        border: none;
-    }
-
-    .card-body {
-        flex: 1 1 auto;
-        padding: 0;
-    }
-</style>
 <div id="renderNews">
     <div class="container-fluid op-banner">
         <div class="container ">
@@ -59,64 +33,98 @@
             </div>
         </div>
     </div>
-    <div class="container" style="padding:80px 0">
-        <h1 class="news-title">@Model.NewsModel.Title</h1>
-        <div class="flex justify-content-start align-items-center">
-            <img class="avatar" src="~/Content/images/open24/avatar.svg" style="margin: 24px 0" />
-            <div class="flex flex-column justify-content-between align-items-start" style="margin-left:16px">
-                <h5 style="color: #3D475C;font-size:18px;font-weight:500">@Model.CreateByUser</h5>
-                <h5 style="color: #525F7A; font-size: 16px; font-weight: 400">Đăng @Model.NewsModel.CreateDate</h5>
-            </div>
-        </div>
-        <img src="@Model.NewsModel.UrlImage" style="width: 100%;height:400px;object-fit:fill" />
-        <div class="row" style="margin-top:64px">
-            <div class="col-3">
-                <div class="related-news fl" style="margin-top: 32px">
-                    <div class="fl carenews" style="padding-top: 1%;">
-                        <div class="fb-like" data-href='@url' data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+    <section class="banner">
+        <div class="container flex">
+            <div class="detail-customer">
+                <div class="dt-cutomer-l">
+                    <div class="date-timenews">
+                        <span><i class="fas fa-clock"></i></span><span id="TitleDate"></span>
                     </div>
-                    <div class="fb-comments" data-href='@url' data-numposts="5" data-width="100%"></div>
-                </div>
-            </div>
-            <div class="col-9">
-                <div class="content-detailnews fl">
-                    @Html.Raw(Model.NewsModel.Content)
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container" style="padding: 96px 0">
-        <div class="flex flex-row justify-content-between" style="margin-bottom:64px">
-            <h2 style="color: #3D475C;font-size:32px;font-weight:700">Bài viết liên quan</h2>
-            <a href="@Model.CategoriesModel.Url" style="padding: 12px 24px; color: #FFFFFF; border-radius: 24px; background: #0078D7;border:none">Xem tất cả</a>
-        </div>
-        <div class="row">
-            @if (Model.ListRlatedArticles.Any())
-            {
-                foreach (var item in Model.ListRlatedArticles)
-                {
-                    <div class="col-6 col-lg-4 col-xl-4 col-md-4 col-sm-12 col-xs-12 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                <img style="height:255px;width:100%;margin-bottom:24px;border-radius:12px" src="@item.UrlImage" />
-                                <div class="flex justify-content-between align-items-start border-bottom">
-                                    <span>@item.CreateDate</span>
-                                </div>
-                                <p style="margin-top: 8px; color: #3D475C;font-size:24px;font-weight:700">
-                                    @item.Title
-                                </p>
-                                <div style="height:72px;overflow:hidden;text-overflow:clip; margin-top:16px">
-                                    <p style="color: #525F7A;font-size:16px;font-weight:400">@Html.Raw(item.Summary)</p>
-                                </div>
-                                <a href="@item.Url" style="color: #0078D7;font-size:18px;font-weight:700;margin-top:16px">Xem thêm</a>
-                            </div>
+                    <h1 class="title-detailnews fl">
+                        @Model.NewsModel.Title
+                    </h1>
+                    <div class="summary-detailnews fl">
+                        @Model.NewsModel.Summary
+                    </div>
+                    <div class="content-detailnews fl">
+                        @Html.Raw(Model.NewsModel.Content)
+                    </div>
+                    @*<p class="by-detailnews fl">
+                            @Model.CreateByUser
+                        </p>*@
+                    <div class="fl text-center fiften-days">
+                        <p>
+                            Phần mềm quản lý Open24
+                        </p>
+                        <div class="fl bnt-news1">
+                            <a class="trial" data-bs-toggle="modal" data-bs-target="#modalTuVan">
+                                Đăng ký dùng thử
+                            </a>
                         </div>
                     </div>
-                }
-            }
+                    <div class="content-detailnews tags-news fl">
+                        <span class="glyphicon glyphicon-tags"></span><span style="margin-left:1%">
+                            Tags:
+                            @foreach (var item in tags)
+                            {
+                                <a href="/tag/@item.ID"> @item.Name,</a>
+                            }
+                        </span>
+                    </div>
+                    @if (Model.ListRlatedArticles.Any())
+                    {
+                        <div class="related-news fl">
+                            <div class="line"></div>
+                            <div class="title-related">
+                                Tin tức liên quan
+                            </div>
+                            <div class="related-list fl">
+                                @foreach (var item in Model.ListRlatedArticles)
+                                {
+                                    <p> <i class="fa fa-chevron-right"></i><a href="@item.Url"> @item.Title</a></p>
+                                }
+                                <p>
+                                    <a href="@Model.CategoriesModel.Url" class="next-more-group-news">
+                                        Xem thêm
+                                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    }
+                    <div class="related-news fl">
+                        <div class="fl carenews" style="padding-top: 1%;">
+                            <div class="fb-like" data-href='@url' data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+                        </div>
+                        <div class="fb-comments" data-href='@url' data-numposts="5" data-width="100%"></div>
+                    </div>
+                </div>
+                <div class="dt-cutomer-r">
+                    <div class="title-viewnews fl">
+                        Bài viết mới nhất
+                    </div>
+                    <ul class="list-tree-news">
+                        <li v-for="(item, index) in listcurentolbar" v-show="listcurentolbar.length>0">
+                            <a class="fl" href="javascript:void(0)" v-bind:href="item.Url">
+                                <div class="img img-tol3-new">
+                                    <img v-bind:src="item.Image" />
+                                </div>
+                                <div class="new-title">
+                                    <p>{{item.Title}}</p>
+                                    <span class="time-news-more">   {{item.CreatDate}}</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="view-news fl">
+                        @Html.Partial("PageFacebookPartial")
+                    </div>
+                </div>
 
+            </div>
         </div>
-    </div>
+    </section>
+    @Html.Partial("_WeareonePartial")
 </div>
 
 <script src="~/Assets/js/Client/open24/RenderNewVue.js"></script>

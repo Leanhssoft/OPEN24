@@ -836,7 +836,7 @@
             return arrTTNV;
         },
 
-        Export: function () {
+        Export: async function () {
             var self = this;
             $('#table-reponsive').gridLoader();
             var model = {
@@ -852,25 +852,33 @@
                 ListCa: self.listdata.CaLamViec.filter(x => x.Checked).map(function (x) { return x.Id }),
                 TrangThai: self.GetTrangThaiNV(),
             }
-            $.ajax({
-                data: model,
-                url: self.URLAPI_NHANSU + "ExportExcelToChamCong",
-                type: 'POST',
-                dataType: 'json',
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                success: function (data) {
-                    $('#table-reponsive').gridLoader({ show: false });
-                    if (data.res === true) {
-                        window.location.href = self.URLAPI_NHANSU + "DownloadFileExecl?fileSave=" + data.dataSoure;
-                    }
-                    else {
-                        commonStatisJs.ShowMessageDanger(data.mess);
-                    }
-                },
-                error: function (result) {
-                    $('#table-reponsive').gridLoader({ show: false });
-                }
-            });
+            let fileName = "DanhSachChamCong_" + moment(model.TuNgay).format("MM_YYYY");
+            let exportOK = false;
+            exportOK = await commonStatisJs.DowloadFile_fromBrower(self.URLAPI_NHANSU + "ExportExcelToChamCong", 'POST', model, fileName);
+            if (exportOK) {
+                $('#table-reponsive').gridLoader({ show: false });
+            } else {
+                commonStatisJs.ShowMessageDanger(data.mess);
+            }
+            //$.ajax({
+            //    data: model,
+            //    url: self.URLAPI_NHANSU + "ExportExcelToChamCong",
+            //    type: 'POST',
+            //    dataType: 'json',
+            //    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            //    success: function (data) {
+            //        $('#table-reponsive').gridLoader({ show: false });
+            //        if (data.res === true) {
+            //            window.location.href = self.URLAPI_NHANSU + "DownloadFileExecl?fileSave=" + data.dataSoure;
+            //        }
+            //        else {
+            //            commonStatisJs.ShowMessageDanger(data.mess);
+            //        }
+            //    },
+            //    error: function (result) {
+            //        $('#table-reponsive').gridLoader({ show: false });
+            //    }
+            //});
         },
 
         // Thay đổi loại báo cáo công

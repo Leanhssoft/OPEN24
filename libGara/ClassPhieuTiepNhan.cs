@@ -22,6 +22,30 @@ namespace libGara
         {
             return _db.Gara_PhieuTiepNhan.Where(p => p.ID == id).FirstOrDefault();
         }
+        public int? GetClosestSoKmVao(Guid idPhieuTiepNhan)
+        {
+           
+            var selectedPhieu = _db.Gara_PhieuTiepNhan
+                .FirstOrDefault(p => p.ID == idPhieuTiepNhan);
+
+            if (selectedPhieu == null)
+            {
+                return null; 
+            }
+
+            var closestSoKmVao = _db.Gara_PhieuTiepNhan
+                .Where(p => p.ID_Xe == selectedPhieu.ID_Xe &&
+                             p.ID_KhachHang == selectedPhieu.ID_KhachHang &&
+                             p.ID_DonVi == selectedPhieu.ID_DonVi &&
+                             p.NgayVaoXuong < selectedPhieu.NgayVaoXuong)
+                .OrderByDescending(p => p.NgayVaoXuong)
+                .Select(p => p.SoKmVao)
+                .FirstOrDefault();
+
+            return closestSoKmVao;
+        }
+
+
         public bool CheckExist_MaPhieuTN(string maPhieuTN, Guid? id = null)
         {
             if (string.IsNullOrEmpty(maPhieuTN))

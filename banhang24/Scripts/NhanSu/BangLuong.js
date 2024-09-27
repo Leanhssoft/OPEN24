@@ -413,26 +413,17 @@
         },
 
         // export file excel
-        ExportChiTietNhanVien: function (item) {
+        ExportChiTietNhanVien: async function (item) {
             var self = this;
             $('#table-reponsive').gridLoader();
-            $.ajax({
-                data: item,
-                url: "/api/DanhMuc/NS_NhanSuAPI/ExportExcelBangLuongChiTiet",
-                type: 'POST',
-                dataType: 'json',
-                contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                success: function (data) {
-                    $('#table-reponsive').gridLoader({ show: false });
-                    if (data.res === true) {
-
-                        window.location.href = "/api/DanhMuc/NS_NhanSuAPI/DownloadFileExecl?fileSave=" + data.dataSoure;
-                    }
-                    else {
-                        commonStatisJs.ShowMessageDanger(data.mess);
-                    }
-                }
-            });
+            let fileName = "DanhSachBangLuong_" + item.MaBangLuong;
+            let exportOK = false;
+            exportOK = await commonStatisJs.DowloadFile_fromBrower("/api/DanhMuc/NS_NhanSuAPI/ExportExcelBangLuongChiTiet", 'POST', item, fileName);
+            if (exportOK) {
+                $('#table-reponsive').gridLoader({ show: false });
+            } else {
+                commonStatisJs.ShowMessageDanger(data.mess);
+            }
         },
 
         PheDuyetbangLuong: function (item) {

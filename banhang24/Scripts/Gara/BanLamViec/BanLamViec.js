@@ -591,7 +591,7 @@ var workTable = new Vue({
             }
             return covan_SDT;
         },
-        GetInfor_PhieuTiepNhan: function (item) {
+        GetInfor_PhieuTiepNhan: async function (item) {
             var self = this;
             self.isFirstLoad = false;
             self.ResetCurrentPage();
@@ -607,6 +607,7 @@ var workTable = new Vue({
             self.MauIn.ListData.HoaDon.LH_Ten = item.TenLienHe;
             self.MauIn.ListData.HoaDon.LH_SDT = item.SoDienThoaiLienHe;
             self.MauIn.ListData.HoaDon.PTN_GhiChu = item.GhiChu;
+            self.MauIn.ListData.HoaDon.SoKmCu_PTN = await Gara_GetSoKmPTN(self.ID_PhieuTiepNhan);
 
             self.MauIn.ListData.HoaDon.TenBaoHiem = item.TenBaoHiem;
             self.MauIn.ListData.HoaDon.BH_TenLienHe = item.NguoiLienHeBH;
@@ -1857,6 +1858,7 @@ var workTable = new Vue({
             cus_DebitOld = cus_DebitOld < 0 ? 0 : cus_DebitOld;
 
             objPrint.BienSo = hdChosing.BienSo;
+            objPrint.SoKmCu_PTN = await Gara_GetSoKmPTN(objPrint.ID);
             objPrint.MaPhieuTiepNhan = hdChosing.MaPhieuTiepNhan;
             objPrint.MaDoiTuong = hdChosing.MaDoiTuong;
             objPrint.TenDoiTuong = hdChosing.TenDoiTuong;

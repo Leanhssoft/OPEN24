@@ -12,8 +12,12 @@ using Open24.Hellper;
 using Open24.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Web;
 using System.Web.Configuration;
 using System.Web.Http;
 
@@ -1354,7 +1358,41 @@ namespace Open24.Areas.AdminPage.ApiControllers
                 return Exeption(ex);
             }
         }
+        [HttpGet]
+        public IHttpActionResult GenerateCaptcha()
+        {
+            var captcha = GenerateCaptchaCode();
+            HttpContext.Current.Session["Captcha"] = captcha;
+            var captchaImage = CreateCaptchaImage(captcha);
 
+            return Ok(Convert.ToBase64String(captchaImage));
+        }
+
+    
+        private string GenerateCaptchaCode()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890abcdefghijklmnopqrstuvwxyz";
+            var random = new Random();
+            return new string(Enumerable.Repeat(chars, 6)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+
+        private byte[] CreateCaptchaImage(string captchaCode)
+        {
+            using (var bitmap = new Bitmap(150, 50))
+            using (var graphics = Graphics.FromImage(bitmap))
+            {
+                graphics.Clear(Color.White);
+                var font = new Font("Comic Sans MS", 20, FontStyle.Bold, GraphicsUnit.Pixel);
+                var brush = new SolidBrush(Color.Black);
+                graphics.DrawString(captchaCode, font, brush, 10, 10);
+                using (var ms = new MemoryStream())
+                {
+                    bitmap.Save(ms, ImageFormat.Png);
+                    return ms.ToArray();
+                }
+            }
+        }
         [HttpPost]
         public IHttpActionResult FormDangKyTuVan([FromBody] JObject objIn)
         {
@@ -1362,6 +1400,13 @@ namespace Open24.Areas.AdminPage.ApiControllers
             {
                 if (objIn != null)
                 {
+                    string captchaInput = objIn["captcha"]?.ToObject<string>();
+                    string sessionCaptcha = HttpContext.Current.Session["Captcha"]?.ToString();
+
+                    if (captchaInput != sessionCaptcha)
+                    {
+                        return ActionFalseNotData("Sai mã xác thực. Vui lòng nhập lại!");
+                    }
                     string Software = "OTXMXDD";
                     if (objIn["Software"] != null)
                         Software = objIn["Software"].ToObject<string>();

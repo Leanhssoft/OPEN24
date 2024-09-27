@@ -611,6 +611,7 @@ function ReplaceString_toData(content1) {
     content1 = content1.replace("{TienChuyenKhoan}", "<span data-bind=\"text:  $root.InforHDprintf().TienGui\"></span>");
     content1 = content1.replace("{TienDoiDiem}", "<span data-bind=\"text:  $root.InforHDprintf().TienDoiDiem\"></span>");
     content1 = content1.replace("{TienTheGiaTri}", "<span data-bind=\"text:  $root.InforHDprintf().TienTheGiaTri\"></span>");
+    content1 = content1.replace("{TienTheGiaTri_TruocTT}", "<span data-bind=\"text:  $root.InforHDprintf().TienTheGiaTri_TruocTT\"></span>");
     content1 = content1.replace("{TongGiamGiaHang}", "<span data-bind=\"text:  $root.InforHDprintf().TongGiamGiaHang\"></span>");
     content1 = content1.replace("{TongTienHangChuaChietKhau}", "<span data-bind=\"text:  $root.InforHDprintf().TongTienHangChuaCK\"></span>");
     content1 = content1.replace("{TongGiamGiaHD_HH}", "<span data-bind=\"text:  $root.InforHDprintf().TongGiamGiaHD_HH\"></span>");
@@ -1192,4 +1193,13 @@ function getQRCode({ accountNo, accountName, acqId, addInfo, amount, template = 
             }
         });
     });
+}
+
+async function Gara_GetSoKmPTN (idPhieuTiepNhan) {
+    let self = this;
+    const response = await $.getJSON('/api/DanhMuc/GaraAPI/Gara_GetSoKmPTN?idPhieuTiepNhan=' + idPhieuTiepNhan);
+    if (response.success) {
+        return response.data;
+    }
+
 }

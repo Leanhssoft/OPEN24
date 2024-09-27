@@ -1388,7 +1388,7 @@
             } else {
                 commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
             }
-            
+
         }
         else {
             var hasPermission = false;
@@ -2120,7 +2120,7 @@
         //            name: 'Sheet 1' // sheetName
         //        }
         //    });
-       
+
 
         let exportOK = false;
         exportOK = await commonStatisJs.DowloadFile_fromBrower(BH_HoaDonUri + 'ExportExcel__ChiTietHoaDon?ID_HoaDon=' + item.ID + '&loaiHoaDon=' + loaiHoaDon + '&columHides=' + columnHide, 'GET', null, "GiaoDichHoaDon_ChiTiet.xlsx");
@@ -2137,14 +2137,14 @@
         } else {
             commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
         }
-       
+
     }
     // xuất excel phiếu trả hàng
     self.ExportExcel_PhieuTraHang = async function () {
-       await SearchHoaDon(true);
+        await SearchHoaDon(true);
     }
     self.ExportExcel_ChiTietPhieuTraHang = async function (item) {
-       
+
         let exportOK = false;
         exportOK = await commonStatisJs.DowloadFile_fromBrower(BH_HoaDonUri + 'ExportExcel__ChiTietPhieuTraHang?ID_HoaDon=' + item.ID, 'GET', null, "PhieuTraHang_ChiTiet.xlsx");
         if (exportOK) {
@@ -2173,13 +2173,13 @@
             NoiDung: "Xuất báo cáo phiếu đặt hàng chi tiết theo mã: " + item.MaHoaDon,
             LoaiNhatKy: 6 // 1: Thêm mới, 2: Cập nhật, 3: Xóa, 4: Hủy, 5: Import, 6: Export, 7: Đăng nhập
         };
-       
+
         let exportOK = false;
         exportOK = await commonStatisJs.DowloadFile_fromBrower(BH_HoaDonUri + 'ExportExcel_ChiTietPhieuDatHang?ID_HoaDon=' + item.ID, 'GET', null, "PhieuDatHang_ChiTiet.xlsx");
         if (exportOK) {
             commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
             Insert_NhatKyThaoTac_1Param(objDiary);
-            
+
         } else {
             commonStatisJs.ShowMessageDanger("Có lỗi xảy ra trong quá trình tải dữ liệu. Vui lòng kiểm tra lại.");
         }
@@ -3135,6 +3135,9 @@
         var objPrint = $.extend({}, hdDB);
         var phaiThanhToan = formatNumberToFloat(hdDB.PhaiThanhToan);
         var daThanhToan = RoundDecimal(hdDB.KhachDaTra, 0);
+        if (objPrint.ID_PhieuTiepNhan != null) {
+            objPrint.SoKmCu_PTN = await Gara_GetSoKmPTN(objPrint.ID_PhieuTiepNhan);
+        }       
         objPrint.MaHoaDonTraHang = objPrint.MaHoaDonGoc;
         objPrint.TenNhaCungCap = objPrint.TenDoiTuong;
         objPrint.DienThoaiKhachHang = objPrint.DienThoai;
@@ -3267,7 +3270,17 @@
             }
         }
         if (formatNumberToFloat(hdDB.ThuTuThe) > 0) {
+            debugger;
             pthuc += 'Thẻ giá trị, ';
+            let param = {
+                IDChiNhanhs: [hdDB.ID_DonVi],
+                IDCustomers: [hdDB.ID_DoiTuong],
+                DateFrom: '2016-01-01',
+                DateTo: moment(new Date()).format('YYYY-MM-DD'),
+                CurrentPage: 0,
+                PageSize: 1000,
+            }
+            objPrint.TienTheGiaTri_TruocTT = await getHisUsedValueCard(param, hdDB.MaHoaDon)
         }
         if (formatNumberToFloat(hdDB.TienDoiDiem) > 0) {
             pthuc += 'Điểm, ';
@@ -3400,6 +3413,23 @@
             }
         }
         return objPrint;
+    }
+
+    async function getHisUsedValueCard(param, maHoaDon) {
+
+        let response = await $.ajax({
+            url: '/api/DanhMuc/DM_DoiTuongAPI/GetListHisUsed_ValueCard',
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+            dataType: 'json',
+            data: param,              
+        });
+
+        const sanitizedMaHoaDon = maHoaDon.replace(/[, ]/g, "");    
+        const soDuTruoc = response.dataSoure.data.find(item =>
+            item.MaHoaDon.replace(/[, ]/g, "") === sanitizedMaHoaDon
+        )?.SoDuTruoc || 0; 
+        return soDuTruoc;
     }
     function GetInforCongTy() {
         ajaxHelper('/api/DanhMuc/HT_API/' + 'GetHT_CongTy', 'GET').done(function (data) {
