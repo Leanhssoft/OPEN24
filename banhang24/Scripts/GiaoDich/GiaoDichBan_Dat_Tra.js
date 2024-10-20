@@ -3224,7 +3224,8 @@
         var daThanhToan = RoundDecimal(hdDB.KhachDaTra, 0);
         if (objPrint.ID_PhieuTiepNhan != null) {
             objPrint.SoKmCu_PTN = await Gara_GetSoKmPTN(objPrint.ID_PhieuTiepNhan);
-        }
+        }       
+
         objPrint.MaHoaDonTraHang = objPrint.MaHoaDonGoc;
         objPrint.TenNhaCungCap = objPrint.TenDoiTuong;
         objPrint.DienThoaiKhachHang = objPrint.DienThoai;
@@ -3357,6 +3358,7 @@
             }
         }
         if (formatNumberToFloat(hdDB.ThuTuThe) > 0) {
+            debugger;
             pthuc += 'Thẻ giá trị, ';
             let param = {
                 IDChiNhanhs: [hdDB.ID_DonVi],
@@ -3508,13 +3510,13 @@
             type: 'POST',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: 'json',
-            data: param,
+            data: param,              
         });
 
-        const sanitizedMaHoaDon = maHoaDon.replace(/[, ]/g, "");
+        const sanitizedMaHoaDon = maHoaDon.replace(/[, ]/g, "");    
         const soDuTruoc = response.dataSoure.data.find(item =>
             item.MaHoaDon.replace(/[, ]/g, "") === sanitizedMaHoaDon
-        )?.SoDuTruoc || 0;
+        )?.SoDuTruoc || 0; 
         return soDuTruoc;
     }
     function GetInforCongTy() {
