@@ -8,6 +8,7 @@
     var id_donvi = $('#hd_IDdDonVi').val();// get from @Html.Hidden
     var userLogin = $('#txtUserLogin').val();
     var LoaiHoaDonMenu = $('#txtLoaiHoaDon').val();
+    console.log('loai hoa don menu ', LoaiHoaDonMenu);
     var _id_NhanVien = $('.idnhanvien').text();
     var _IDNguoiDung = $('.idnguoidung').text();
     var DiaryUri = '/api/DanhMuc/SaveDiary/';
@@ -54,6 +55,14 @@
     self.RoleDelete_Order = ko.observable(false);
     self.RoleExport_Order = ko.observable(false);
     self.RoleApprove_Order = ko.observable(false);
+    //lenh bao hanh
+    self.RoleView_LenhBH = ko.observable(false);
+    self.RoleRestore_LenhBH = ko.observable(false);
+    self.RoleInsert_LenhBH = ko.observable(false);
+    self.RoleUpdate_LenhBH = ko.observable(false);
+    self.RoleDelete_LenhBH = ko.observable(false);
+    self.RoleExport_LenhBH = ko.observable(false);
+    self.RoleApprove_LenhBH = ko.observable(false);
     // hd tra
     self.RoleView_Return = ko.observable(false);
     self.RoleInsert_Return = ko.observable(false);
@@ -248,6 +257,10 @@
                 sLoai = 'báo giá sửa chữa';
             }
             break;
+        case 32:
+            Key_Form = "KeyBGSuaChua";
+            sLoai = 'lệnh bảo hành';
+            break;
         case 6:
             sLoai = 'hóa đơn trả hàng';
             Key_Form = "KeyReturns";
@@ -287,6 +300,7 @@
                     'thanhtienchuack', 'giamgiact', 'giatrisudung', 'tienthue', 'pos', 'chuyenkhoan', 'tiendoidiem', 'thegiatri', 'trangthai'];
                 break;
             case 3:
+            case 32:
                 arrHideColumn = ['email', 'diachi', 'sodienthoai', 'khuvuc', 'phuongxa', 'tenchinhanh', 'nguoiban', 'nguoitao', 'tonggiamgia', 'trangthai'];
                 break;
             case 6:
@@ -311,7 +325,7 @@
                 self.NumberColum_Div2(Math.ceil(data.length / 3));
             }
             else {
-                if (loaiHoaDon === 3) {
+                if (loaiHoaDon === 3 || loaiHoaDon == 32) {
                     data = $.grep(data, function (x) {
                         return $.inArray(x.Key, ['tongchiphi']) === -1;
                     });
@@ -418,7 +432,7 @@
                     ShowMessage_Danger('Không có quyền xem danh sách ' + sLoai)
                 }
                 break;
-            case 3:
+            case 3:           
                 self.RoleView_Order(CheckQuyenExist('DatHang_XemDS'));
                 self.RoleRestore_Order(CheckQuyenExist('DatHang_Restore'));
                 self.RoleInsert_Order(CheckQuyenExist('DatHang_ThemMoi'));
@@ -434,6 +448,27 @@
                 self.ThayDoi_NVienBan(CheckQuyenExist('DatHang_ThayDoiNhanVien'));
 
                 if (self.RoleView_Order()) {
+                    SearchHoaDon();
+                }
+                else {
+                    ShowMessage_Danger('Không có quyền xem danh sách ' + sLoai)
+                }
+                break;
+            case 32:
+                self.RoleView_LenhBH(CheckQuyenExist('LenhBaoHanh_XemDS'));
+                self.RoleRestore_LenhBH(CheckQuyenExist('LenhBaoHanh_Restore'));
+                self.RoleInsert_LenhBH(CheckQuyenExist('LenhBaoHanh_ThemMoi'));
+                self.RoleUpdate_LenhBH(CheckQuyenExist('LenhBaoHanh_CapNhat'));
+                self.RoleDelete_LenhBH(CheckQuyenExist('LenhBaoHanh_Xoa'));
+                self.RoleExport_LenhBH(CheckQuyenExist('LenhBaoHanh_XuatFile'));
+                self.RoleApprove_LenhBH(CheckQuyenExist('LenhBaoHanh_DuyetLenh'));
+
+                self.Show_BtnCopy(CheckQuyenExist('LenhBaoHanh_SaoChep'));
+                self.Role_PrintHoaDon(CheckQuyenExist('LenhBaoHanh_In'));
+                self.Show_BtnExcelDetail(self.RoleExport_LenhBH());
+                self.ThayDoi_NgayLapHD(CheckQuyenExist('LenhBaoHanh_ThayDoiThoiGian'));
+
+                if (self.RoleView_LenhBH()) {
                     SearchHoaDon();
                 }
                 else {
@@ -556,6 +591,9 @@
             case 3:
                 msgBottom = "Phiếu đặt hàng đã có hóa đơn, không thể hủy";
                 break;
+            case 32:
+                msgBottom = "Lệnh bảo hành đã có hóa đơn, không thể hủy";
+                break;
             case 6:
                 msgBottom = "Phiếu trả hàng đã có hóa đơn, không thể hủy";
                 break;
@@ -572,7 +610,7 @@
                 return;
             }
             else {
-                if (item.LoaiHoaDon !== 3) {
+                if (item.LoaiHoaDon !== 3 && item.LoaiHoaDon !== 32) {
                     msgDialog = 'Có muốn hủy hóa đơn <b>' + item.MaHoaDon + '</b> cùng những phiếu liên quan không?'
                 }
                 else {
@@ -601,7 +639,7 @@
                                 NoiDungChiTiet: "Xóa ".concat(sLoai, ": ", item.MaHoaDon, ', Người xóa: ', userLogin),
                                 LoaiNhatKy: 3
                             };
-                            if (item.LoaiHoaDon !== 3) {
+                            if (item.LoaiHoaDon !== 3 && item.LoaiHoaDon !== 32) {
                                 // HuyHD : tru diem (cong diem am)
                                 // Huy TraHang: cong diem
                                 // HuyDatHang: khong thuc hien gi ca
@@ -702,11 +740,12 @@
         self.ID_NhanVieUpdateHD(item.ID_NhanVien); //--> get to do updateHoaDon
     }
     self.updateHoaDon = function (formElement) {
+        debugger;
         var id = formElement.ID;
         var maHoaDon = formElement.MaHoaDon;
         var idNhanVien = self.ID_NhanVieUpdateHD();
         var ngaylapHDOld = formElement.NgayLapHoaDon;
-        var loaiHoaDon = formElement.LoaiHoaDon;
+        const loaiHoaDon = formElement.LoaiHoaDon;
         if (idNhanVien === undefined) {
             // if not change ID_NhanVien --> get from DB
             idNhanVien = formElement.ID_NhanVien;
@@ -758,7 +797,7 @@
                         NoiDungChiTiet: "Cập nhật  " + sLoai + ": " + maHoaDon,
                         LoaiNhatKy: 2
                     };
-                    if (loaiHoaDon !== 3) {
+                    if (loaiHoaDon !== 3 && loaiHoaDon !== 32) {
                         objDiary.ID_HoaDon = id;
                         objDiary.LoaiHoaDon = loaiHoaDon;
                         objDiary.ThoiGianUpdateGV = ngaylapHDOld;
@@ -1088,6 +1127,7 @@
             case 1:
             case 2:
             case 3:
+            case 32:
             case 25:
             case 6:
                 for (let i = 0; i < lstColumn.length; i++) {
@@ -1105,6 +1145,7 @@
     var dayStart_Excel, dayEnd_Excel;// used to export many hoadon
 
     async function SearchHoaDon(isExport = false) {
+        debugger;
         var arrDV = [];
         $('.line-right').height(0).css("margin-top", "0px");
         var maHDFind = localStorage.getItem('FindHD');
@@ -1360,6 +1401,31 @@
                         columnHide = arrNew.join('_');
                     }
                     break;
+                case 32:
+                    GetColumHide(0);
+                    funcName = 'ExportExcel_BaoGiaSuaChua';
+                    txtLoaiHD = 'Lệnh bảo hành';
+                    noidungNhatKy = "Xuất excel danh sách lệnh bảo hành";
+                    fileNameExport = 'DanhSachBaoGiaSuaChua.xlsx';
+
+                    // remove column {TongChiPhi}
+                    let allHide = columnHide.split('_');
+                    let arrNew = [];
+                    for (let i = 0; i < allHide.length; i++) {
+                        if (allHide[i] !== '') {
+                            let col = formatNumberToFloat(allHide[i]);
+                            if (col > 14) {
+                                arrNew.push(col + 1);
+                            }
+                            else {
+                                arrNew.push(col);
+                            }
+                        }
+                    }
+                    arrNew.push(15);
+                    columnHide = arrNew.join('_');
+
+                    break;
                 case 6:
                     GetColumHide(0);
                     txtLoaiHD = 'Trả hàng';
@@ -1400,6 +1466,9 @@
                     break;
                 case 3:
                     hasPermission = self.RoleView_Order();
+                    break;
+                case 32:
+                    hasPermission = self.RoleView_LenhBH();
                     break;
                 case 6:
                     hasPermission = self.RoleView_Return();
@@ -2369,6 +2438,24 @@
                     }
                 }
                 break;
+            case 32:
+                GetLichSuThanhToan_ofDatHang(item.ID);
+
+                var roleXuLiLBH = $.grep(self.Quyen_NguoiDung(), function (x) {
+                    return x.MaQuyen.indexOf('LenhBaoHanh_TaoHoaDon') > -1;
+                });
+                var roleInsert_Invoice = $.grep(self.Quyen_NguoiDung(), function (x) {
+                    return x.MaQuyen.indexOf('HoaDon_ThemMoi') > -1;
+                });
+                if (roleInsert_Invoice.length > 0 && roleXuLiLBH.length > 0) {
+                    if (item.YeuCau === '1' || item.YeuCau === '2' || item.YeuCau === '') {
+                        self.Show_BtnXulyDH(true);
+                    }
+                    else {
+                        self.Show_BtnXulyDH(false);
+                    }
+                }
+                break;
             case 6:
                 self.MaHoaDonParent(item.MaHoaDon); // get MaHoaDon Parent --> go to gotoHoaDonTH (go to itself)
                 GetLichSuThanhToan(item.ID, null);
@@ -3137,7 +3224,7 @@
         var daThanhToan = RoundDecimal(hdDB.KhachDaTra, 0);
         if (objPrint.ID_PhieuTiepNhan != null) {
             objPrint.SoKmCu_PTN = await Gara_GetSoKmPTN(objPrint.ID_PhieuTiepNhan);
-        }       
+        }
         objPrint.MaHoaDonTraHang = objPrint.MaHoaDonGoc;
         objPrint.TenNhaCungCap = objPrint.TenDoiTuong;
         objPrint.DienThoaiKhachHang = objPrint.DienThoai;
@@ -3270,7 +3357,6 @@
             }
         }
         if (formatNumberToFloat(hdDB.ThuTuThe) > 0) {
-            debugger;
             pthuc += 'Thẻ giá trị, ';
             let param = {
                 IDChiNhanhs: [hdDB.ID_DonVi],
@@ -3422,13 +3508,13 @@
             type: 'POST',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: 'json',
-            data: param,              
+            data: param,
         });
 
-        const sanitizedMaHoaDon = maHoaDon.replace(/[, ]/g, "");    
+        const sanitizedMaHoaDon = maHoaDon.replace(/[, ]/g, "");
         const soDuTruoc = response.dataSoure.data.find(item =>
             item.MaHoaDon.replace(/[, ]/g, "") === sanitizedMaHoaDon
-        )?.SoDuTruoc || 0; 
+        )?.SoDuTruoc || 0;
         return soDuTruoc;
     }
     function GetInforCongTy() {
@@ -3524,6 +3610,7 @@
     }
 
     self.XuLiDonHang = async function (item) {
+        debugger;
         localStorage.setItem('createHDfrom', 2);
 
         const hdDB = await GetInforHD_fromDB(item.ID);
@@ -3630,6 +3717,7 @@
             TenBaoHiem: hdDB.TenBaoHiem,
             XuatKhoAll: false,
             DuyetBaoGia: !hdDB.ChoThanhToan,
+            DuyetBaoHanh: !hdDB.ChoThanhToan,
 
             PTChietKhauHH: objTax.PTChietKhauHH,
             TongGiamGiaHang: self.TongGiamGiaHang(),
@@ -3813,6 +3901,11 @@
     }
     self.DatHang = function () {
         localStorage.setItem('fromDatHang', true);
+        self.gotoGara();
+    }
+    self.AdđLenhBH = function () {
+        debugger;
+        localStorage.setItem('fromLenhBH', true);
         self.gotoGara();
     }
 
@@ -4147,6 +4240,7 @@
         hdNew.IsActive = '';
         hdNew.XuatKhoAll = false;
         hdNew.DuyetBaoGia = false;
+        hdNew.DuyetBaoHanh = false;
         hdNew.BangGiaWasChanged = false;
 
         hdNew.MaPhieuTiepNhan = '';
@@ -5311,6 +5405,7 @@
     }
 
     self.RestoreInvoice = async function (item) {
+        debugger;
         const maHoaDon = item.MaHoaDon;
         const loaiHoaDon = item.LoaiHoaDon;
         let sLoai = '', sLoaiLowercase = '';

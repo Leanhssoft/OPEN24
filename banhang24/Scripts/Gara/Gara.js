@@ -74,6 +74,7 @@
     self.MaHoaDonTH_NVien = ko.observable('');
     self.XuatKhoAll = ko.observable(false);
     self.DuyetBaoGia = ko.observable(false);
+    self.DuyetBaoHanh = ko.observable(false);
     self.TongTienPhuTung = ko.observable(0);
     self.TongTienDichVu = ko.observable(0);
     self.SoDuDatCoc = ko.observable(0);
@@ -97,6 +98,7 @@
     self.ID_DonVi = ko.observable($('#txtDonVi').val());
 
     self.SetData = function (item) {
+        debugger;
         self.ID(item.ID);
         self.ID_HoaDon(item.ID_HoaDon);
         self.IDRandom(item.IDRandom);
@@ -163,6 +165,7 @@
         self.TenBaoHiem(item.TenBaoHiem);
         self.XuatKhoAll(item.XuatKhoAll);
         self.DuyetBaoGia(item.DuyetBaoGia);
+        self.DuyetBaoHanh(item.DuyetBaoHanh);
         self.MaHoaDonTraHang(item.MaHoaDonTraHang);
 
         self.PTChietKhauHH(item.PTChietKhauHH);
@@ -382,6 +385,7 @@ var NewModel_BanHangLe = function () {
         { MaLoaiChungTu: 0, TenLoaiChungTu: 'Tất cả' },
         { MaLoaiChungTu: 1, TenLoaiChungTu: 'Hóa đơn' },
         { MaLoaiChungTu: 3, TenLoaiChungTu: 'Báo giá' },
+        { MaLoaiChungTu: 32, TenLoaiChungTu: 'Lệnh bảo hành' },
         { MaLoaiChungTu: 6, TenLoaiChungTu: 'Trả hàng' },
     ]);
     self.selectLoaiChungTu = ko.observable();
@@ -437,6 +441,7 @@ var NewModel_BanHangLe = function () {
     self.roleChangePriceProduct_Invoice = ko.observable(false); // change price of product at Invoice
     self.roleChangeSale_Invoice = ko.observable(false); // change sale of Invoice
     self.roleChangePriceProduct_Order = ko.observable(false);
+    self.roleChangePriceProduct_LenhBH = ko.observable(false);
     self.roleChangeSale_Order = ko.observable(false);
     self.roleChangePriceProduct_Return = ko.observable(false);
     self.roleChangeSale_Return = ko.observable(false);
@@ -449,6 +454,7 @@ var NewModel_BanHangLe = function () {
     self.roleCustomer_ThanhToanNo = ko.observable(false);
     self.RoleInsert_Invoice = ko.observable(false);
     self.RoleInsert_Order = ko.observable(false);
+    self.RoleInsert_LenhBH = ko.observable(false);
     self.RoleInsert_Service = ko.observable(false);
     self.RoleInsert_Return = ko.observable(false);
     self.RoleXuly_Order = ko.observable(false);
@@ -474,8 +480,10 @@ var NewModel_BanHangLe = function () {
     const nameHD_InsertDH = 'Báo giá ';
     const nameHD_InsertBH = 'Hóa đơn ';
     const nameHD_InsertHDSC = 'Hóa đơn SC';
+    const nameHD_InsertLBH = 'Bảo hành ';
 
     function CheckHDNull_andRemove() {
+        debugger;
         var lstHDFist = localStorage.getItem(lcListHD);
         if (lstHDFist === 'null') {
             localStorage.removeItem(lcListHD);
@@ -483,6 +491,7 @@ var NewModel_BanHangLe = function () {
         }
     }
     function CheckCreateHD_fromOtherForm() {
+        debugger;
         var addQuick = localStorage.getItem('InsertQuickly');
         if (addQuick !== null) {
             addQuick = parseInt(addQuick);
@@ -501,6 +510,9 @@ var NewModel_BanHangLe = function () {
             }
             if (localStorage.getItem('fromDatHang') === 'true') {
                 loaiHD = 3;
+            }
+            if (localStorage.getItem('fromLenhBH') === 'true') {
+                loaiHD = 32;
             }
             else {
                 if (localStorage.getItem('fromGoiDichVu') === 'true') {
@@ -521,6 +533,11 @@ var NewModel_BanHangLe = function () {
                     break;
                 case 3:
                     localStorage.removeItem('fromDatHang');
+                    localStorage.removeItem(lcCTDatHang_Const);
+                    localStorage.removeItem(lcXuLiDonHang_Const);
+                    break;
+                case 32:
+                    localStorage.removeItem('fromLenhBH');
                     localStorage.removeItem(lcCTDatHang_Const);
                     localStorage.removeItem(lcXuLiDonHang_Const);
                     break;
@@ -625,6 +642,7 @@ var NewModel_BanHangLe = function () {
     //AutoUpdate_StatusHD_AndDongBoHoa();
 
     async function Async_PageLoad(idDonVi = null) {
+        debugger;
         const idChiNhanh = idDonVi == null ? id_DonVi : idDonVi;
         await GetHT_Quyen_ByNguoiDung();
         await GetDMGiaBan_GBApDung(idChiNhanh);
@@ -660,6 +678,7 @@ var NewModel_BanHangLe = function () {
     }
 
     function CheckCache(funcName) {
+        debugger;
         funcName = funcName + ': ';
         var cthd = localStorage.getItem(lcListCTHD);
         if (cthd !== null) {
@@ -689,6 +708,7 @@ var NewModel_BanHangLe = function () {
 
     // use delete cache khong hop le
     function RemoveHD_undefinedTrangThai() {
+        debugger;
         var arrIDRandom = [];
         var hd = localStorage.getItem(lcListHD);
         if (hd === null) {
@@ -868,6 +888,7 @@ var NewModel_BanHangLe = function () {
     }
 
     function UpdateDonVi_inCacheOld() {
+        debugger;
         id_DonVi = id_DonVi.toLowerCase();
 
         var lstHD = localStorage.getItem(lcListHD);
@@ -888,6 +909,7 @@ var NewModel_BanHangLe = function () {
     }
 
     function ResetPhieuTiepNhan_ifOtherChiNhanh() {
+        debugger;
         var lstHD = localStorage.getItem(lcListHD);
         if (lstHD !== null) {
             lstHD = JSON.parse(lstHD);
@@ -918,6 +940,7 @@ var NewModel_BanHangLe = function () {
     }
 
     function UpdateTonKhoCTHD_FirstLoad(cacheName) {
+        debugger;
         var cthd = localStorage.getItem(cacheName);
         if (cthd != null) {
             cthd = JSON.parse(cthd);
@@ -943,6 +966,7 @@ var NewModel_BanHangLe = function () {
                     xuatAm = self.ThietLap().XuatAm;
                     break;
                 case 3:
+                case 32:
                     xuatAm = self.ThietLap().DatHangXuatAm;
                     break;
             }
@@ -1458,6 +1482,7 @@ var NewModel_BanHangLe = function () {
         self.NumberTableEmpty(totalTable - countUsed);
     }
     function Add_NewProperties_CTHD() {
+        debugger;
         var lstHDLe = localStorage.getItem(lcListHD);
         var cthdLe = localStorage.getItem(lcListCTHD);
         if (lstHDLe !== null) {
@@ -1493,6 +1518,7 @@ var NewModel_BanHangLe = function () {
     }
 
     async function getListHoaDonLe() {
+        debugger;
         var createHDfrom = localStorage.getItem('gara_CreateFrom');
         var lstHD = localStorage.getItem(lcListHD);
         var cthd = localStorage.getItem(lcListCTHD);
@@ -2594,6 +2620,7 @@ var NewModel_BanHangLe = function () {
     };
 
     function UpdateAgainBangGia_forHoaDon(idRandom) {
+        debugger;
         let idBangGia = const_GuidEmpty;
         let lstBG = self.GiaBans().filter(x => x.ID !== const_GuidEmpty);
 
@@ -2689,6 +2716,7 @@ var NewModel_BanHangLe = function () {
     }
 
     function BindLstBangGia_byNhanVien_andDoiTuong(hdCurrent) {
+        debugger;
         var objBGChung = {
             TenGiaBan: 'Bảng giá chuẩn',
             ID: const_GuidEmpty,
@@ -3007,6 +3035,7 @@ var NewModel_BanHangLe = function () {
     }
 
     self.saveHoaDonTraHang = async function (isTamLuu) {
+        debugger;
         $('#btnSave, #btnSaveDatHang, #btnTaoHD').attr('disabled', 'disabled');
         // check role LuuNhap
         if (isTamLuu) {
@@ -3478,6 +3507,7 @@ var NewModel_BanHangLe = function () {
                             self.saveHoaDonKhuyenMai(isTamLuu);
                             break;
                         case 3:
+                        case 32:
                             self.saveDatHang(false);
                             break;
                     }
@@ -3496,6 +3526,7 @@ var NewModel_BanHangLe = function () {
         }
     }
     function SaveHDOffline() {
+        debugger;
         $('.bgwhite').hide();
         // find itemHD with maHD
         var lstHD = localStorage.getItem(lcListHD);
@@ -3514,6 +3545,7 @@ var NewModel_BanHangLe = function () {
                             maHDon = 'HDO' + rd;
                             break;
                         case 3:
+                        case 32:
                             maHDon = 'DHO' + rd;
                             break;
                         case 6:
@@ -3996,6 +4028,7 @@ var NewModel_BanHangLe = function () {
                         xuatAm = self.ThietLap().XuatAm;
                         break;
                     case 3:
+                    case 32:
                         xuatAm = self.ThietLap().DatHangXuatAm;
                         break;
                 }
@@ -4023,12 +4056,17 @@ var NewModel_BanHangLe = function () {
     }
 
     function GetMaHoaDonNew_byRole() {
+        debugger;
         var maHDNew = nameHD_InsertBH + 1;
         var loaiHD = 1;
         if (!self.RoleInsert_Invoice()) {
             if (self.RoleInsert_Order()) {
                 maHDNew = nameHD_InsertDH + '1';
                 loaiHD = 3;
+            }
+            else if (self.RoleInsert_LenhBH()) {
+                maHDNew = nameHD_InsertLBH + '1';
+                loaiHD = 32;
             }
             else {
                 if (self.RoleInsert_Service()) {
@@ -4053,6 +4091,7 @@ var NewModel_BanHangLe = function () {
     }
 
     async function BindHD_CTHDafterSave() {
+        debugger;
         // bind list HD by permission
         var lstHD = localStorage.getItem(lcListHD);
         var objMaHD = GetMaHoaDonNew_byRole()
@@ -5654,6 +5693,7 @@ var NewModel_BanHangLe = function () {
     }
 
     self.addPhongBan = function () {
+        debugger;
         $('#txtSearchHH').focus();
         self.HH_KhuyenMai(undefined);
         self.HD_KhuyenMai(undefined);
@@ -5913,6 +5953,7 @@ var NewModel_BanHangLe = function () {
         ResetInput_KhachHang();
     }
     self.GetThongTinHoaDon = async function (item) {
+        debugger;
         if (self.IsClickCloseHD()) {
             return false;
         }
@@ -6001,6 +6042,7 @@ var NewModel_BanHangLe = function () {
     }
 
     function GetMax_MaHoaDon(loaiHD, lstHD) {
+        debugger;
         var max = 0;
         var lstHD_byUser = $.grep(lstHD, function (x) {
             return x.StatusOffline === false && x.NguoiTao === userLogin && x.TrangThaiHD === 1;
@@ -6102,6 +6144,9 @@ var NewModel_BanHangLe = function () {
                 break;
             case 3:
                 role = self.roleChangePriceProduct_Order();
+                break;
+            case 32:
+                role = self.roleChangePriceProduct_LenhBH();
                 break;
             case 6:
                 role = self.roleChangePriceProduct_Return();
@@ -7952,6 +7997,7 @@ var NewModel_BanHangLe = function () {
         switch (loaiHD) {
             case 1:
             case 3:
+            case 32:
                 if (loaiHD === 1) {
                     xuatAm = self.ThietLap().XuatAm;
                 }
@@ -8744,6 +8790,7 @@ var NewModel_BanHangLe = function () {
             }
             switch (objHD.LoaiHoaDon) {
                 case 3:
+                case 32:
                     if (objHD.ChoThanhToan === false) {
                         tbao.ID_QuyTrinhTruoc = 1;
                         tbao.ID_QuyTrinhSau = 2;// baogia --> coc
@@ -8821,6 +8868,7 @@ var NewModel_BanHangLe = function () {
     }
     // if change HD DatHang dang xuly (updateHDDatHang = true) --> not print
     async function PostHD_SoQuy_SaveHD(myData, updateHDDatHang) {
+        debugger;
         var objHDAdd = myData.objHoaDon;
         var idRandomHD = objHDAdd.IDRandom;
 
@@ -8854,6 +8902,11 @@ var NewModel_BanHangLe = function () {
                 if (objHDAdd.ID_PhieuTiepNhan !== null) {
                     // duyetbaogia = true --> chothanhtoan = fasle
                     objHDAdd.ChoThanhToan = !objHDAdd.DuyetBaoGia;
+                }
+                break;
+            case 32:
+                if (objHDAdd.ID_PhieuTiepNhan !== null) {            
+                    objHDAdd.ChoThanhToan = !objHDAdd.DuyetBaoHanh;
                 }
                 break;
         }
@@ -8912,13 +8965,13 @@ var NewModel_BanHangLe = function () {
                 await CreatePhieuXuatKho(itemDB.ID, itemDB.MaHoaDon);
             }
 
-            if (objHDAdd.LoaiHoaDon !== 3) {
+            if (objHDAdd.LoaiHoaDon !== 3 && objHDAdd.LoaiHoaDon !== 32) {
                 UpdateDiemKH_toDB();
             }
 
             // get maHDDatHang -> delete in cacheDatHang after save
             var maHDDatHang = myData.objHoaDon.MaHoaDonTraHang;
-            if (commonStatisJs.CheckNull(maHDDatHang) && objHDAdd.LoaiHoaDon === 3 && !isInsert) {
+            if (commonStatisJs.CheckNull(maHDDatHang) && (objHDAdd.LoaiHoaDon === 3 || objHDAdd.LoaiHoaDon === 32) && !isInsert) {
                 maHDDatHang = objHDAdd.MaHoaDon;// nếu xử lý báo giá, nhưng không lưu hóa đơn mà lại cập nhật báo giá
             }
             // if updateHDDatHang --> don't remove (HD DatHang  + HD new create)
@@ -8997,6 +9050,7 @@ var NewModel_BanHangLe = function () {
                         self.InHoaDon("HDBL", false);
                         break;
                     case 3:
+                    case 32:
                         self.InHoaDon("DH", false);
                         break;
                     case 6:
@@ -9385,6 +9439,7 @@ var NewModel_BanHangLe = function () {
     }
 
     function newHoaDon(loaiHoaDon, max) {
+        debugger;
         var maHD = '';
         switch (loaiHoaDon) {
             case 1:
@@ -9393,6 +9448,9 @@ var NewModel_BanHangLe = function () {
                 break;
             case 3:
                 maHD = nameHD_InsertDH.concat(max);
+                break;
+            case 32:
+                maHD = nameHD_InsertLBH.concat(max);
                 break;
             case 6:
                 maHD = nameHD_TraHang.concat(max);
@@ -9509,6 +9567,8 @@ var NewModel_BanHangLe = function () {
             TenBaoHiem: '',
             XuatKhoAll: self.setOnXuatKhoToanBo(),
             DuyetBaoGia: false,
+            DuyetBaoHanh: false,
+
 
             PTChietKhauHH: 0,
             TongGiamGiaHang: 0,
@@ -11864,6 +11924,7 @@ var NewModel_BanHangLe = function () {
     }
 
     self.DuyetBaoGia_Change = function (status) {
+        debugger;
         self.HoaDons().DuyetBaoGia(!self.HoaDons().DuyetBaoGia());
         var hd = localStorage.getItem(lcListHD);
         if (hd !== null) {
@@ -11871,6 +11932,21 @@ var NewModel_BanHangLe = function () {
             for (let i = 0; i < hd.length; i++) {
                 if (hd[i].IDRandom === self.HoaDons().IDRandom()) {
                     hd[i].DuyetBaoGia = status;
+                    break;
+                }
+            }
+            localStorage.setItem(lcListHD, JSON.stringify(hd));
+        }
+    }
+
+    self.DuyetBaoHanh_Change = function (status) {
+        self.HoaDons().DuyetBaoHanh(!self.HoaDons().DuyetBaoHanh());
+        var hd = localStorage.getItem(lcListHD);
+        if (hd !== null) {
+            hd = JSON.parse(hd);
+            for (let i = 0; i < hd.length; i++) {
+                if (hd[i].IDRandom === self.HoaDons().IDRandom()) {
+                    hd[i].DuyetBaoHanh = status;
                     break;
                 }
             }
@@ -12146,6 +12222,7 @@ var NewModel_BanHangLe = function () {
                             machungtu = 'HDBL';
                             break;
                         case 3:
+                        case 32:
                             machungtu = 'DH';
                             break;
                         case 6:
@@ -13878,6 +13955,7 @@ var NewModel_BanHangLe = function () {
         });
     }
     self.clickHoaDon = async function () {
+        debugger;
         $('#txtSearchHH').focus();
         if (self.HoaDons().StatusOffline()) {
             return false;
@@ -14113,6 +14191,7 @@ var NewModel_BanHangLe = function () {
     }
 
     async function ChangeLoaiHD_CheckHasKhuyenMai_orUsingService(loaiHD) {
+        debugger;
         if (_maHoaDon === '') {
             _maHoaDon = $('.gara-bill-label li.active font').text();
         }
@@ -14138,6 +14217,10 @@ var NewModel_BanHangLe = function () {
             case 3:
                 maHDNew = nameHD_InsertDH + countHD;
                 mes = 'báo giá';
+                break;
+            case 32:
+                maHDNew = nameHD_InsertLBH + countHD;
+                mes = 'lệnh bảo hành';
                 break;
             case 19:
                 maHDNew = nameHD_AddGoiDV + countHD;
@@ -14321,6 +14404,10 @@ var NewModel_BanHangLe = function () {
 
     self.clickDatHang = async function () {
         await ChangeLoaiHD_CheckHasKhuyenMai_orUsingService(3);
+    }
+
+    self.clickBaoHanh = async function () {
+        await ChangeLoaiHD_CheckHasKhuyenMai_orUsingService(32);
     }
     self.saveDatHang = async function (updateHDDatHang) {
         var lstHDTemp = localStorage.getItem(lcListHD);
@@ -14602,6 +14689,7 @@ var NewModel_BanHangLe = function () {
 
                         XuatKhoAll: self.setOnXuatKhoToanBo(),
                         DuyetBaoGia: false,
+                        DuyetBaoHanh: false,
 
                         PTChietKhauHH: itemHDGoc[0].PTChietKhauHH,
                         TongGiamGiaHang: itemHDGoc[0].TongGiamGiaHang,
@@ -15222,6 +15310,7 @@ var NewModel_BanHangLe = function () {
         }
     }
     self.TaoHDDatHang = async function () {
+        debugger;
         var lstHD = localStorage.getItem(lcListHD);
 
         if (lstHD !== null) {
@@ -18777,6 +18866,7 @@ var NewModel_BanHangLe = function () {
     }
 
     self.clickXuLiDonHang = function (item) {
+        debugger;
         $('#modalPopuplgDatHang').modal('hide');
         localStorage.setItem('gara_CreateFrom', 'TN_xulyBG');
         self.DateHDDefault(moment(serverTime).format('DD/MM/YYYY'));
@@ -20460,6 +20550,9 @@ var NewModel_BanHangLe = function () {
                 case 3:
                     maQuyen = 'DatHang_ThayDoiThoiGian';
                     break;
+                case 32:
+                    maQuyen = 'LenhBaoHanh_ThayDoiThoiGian';
+                    break;
                 case 6:
                     maQuyen = 'TraHang_ThayDoiThoiGian';
                     break;
@@ -20507,6 +20600,7 @@ var NewModel_BanHangLe = function () {
 
         self.RoleInsert_Invoice(CheckQuyenExist('HoaDon_ThemMoi'));
         self.RoleInsert_Order(CheckQuyenExist('DatHang_ThemMoi'));
+        self.RoleInsert_LenhBH(CheckQuyenExist('LenhBaoHanh_ThemMoi'));
         self.RoleInsert_Service(CheckQuyenExist('GoiDichVu_ThemMoi'));
         self.RoleXuly_Order(CheckQuyenExist('DatHang_TaoHoaDon'));
         self.RoleInsert_Return(CheckQuyenExist('TraHang_ThemMoi'));
@@ -20514,6 +20608,7 @@ var NewModel_BanHangLe = function () {
         self.roleChangePriceProduct_Invoice(CheckQuyenExist('HoaDon_ThayDoiGia'));
         self.roleChangeSale_Invoice(CheckQuyenExist('HoaDon_GiamGia'));
         self.roleChangePriceProduct_Order(CheckQuyenExist('DatHang_ThayDoiGia'));
+        self.roleChangePriceProduct_LenhBH(CheckQuyenExist('LenhBaoHanh_ThayDoiGia'));
         self.roleChangeSale_Order(CheckQuyenExist('DatHang_GiamGia'));
         self.roleChangePriceProduct_Return(CheckQuyenExist('TraHang_ThayDoiGia'));
         self.roleChangeSale_Return(CheckQuyenExist('TraHang_GiamGia'));
@@ -20579,6 +20674,13 @@ var NewModel_BanHangLe = function () {
                     return x.NguoiTao !== userLogin || (x.NguoiTao === userLogin && x.LoaiHoaDon !== 3);
                 });
             }
+            // remove lenh bao hanh
+            if (!self.RoleInsert_LenhBH()) {
+                hd = $.grep(hd, function (x) {
+                    return x.NguoiTao !== userLogin || (x.NguoiTao === userLogin && x.LoaiHoaDon !== 32);
+                });
+            }
+
 
             // remove goidv
             if (!self.RoleInsert_Service()) {
@@ -20629,6 +20731,7 @@ var NewModel_BanHangLe = function () {
     }
 
     function NhapThuong_HideShow_txtDonGia() {
+        debugger;
         if (!self.IsNhapNhanh()) {
             //chống nhảy dòng cho nhập nhanh
             $('#pressNormal').delay(400).fadeIn();
@@ -20649,6 +20752,9 @@ var NewModel_BanHangLe = function () {
             case 3:
                 roleChangePriceProduct = self.roleChangePriceProduct_Order();
                 break;
+            case 32:
+                roleChangePriceProduct = self.roleChangePriceProduct_LenhBH();
+                break;
             case 6:
                 roleChangePriceProduct = self.roleChangePriceProduct_Return();
                 break;
@@ -20659,6 +20765,7 @@ var NewModel_BanHangLe = function () {
         self.roleChangePriceProduct(roleChangePriceProduct);
     }
     function GetListHD_Opening() {
+        debugger;
         var lstHD = localStorage.getItem(lcListHD);
         var lstHDisOpening = [];
         if (lstHD !== null && lstHD !== 'null') {
@@ -20676,6 +20783,11 @@ var NewModel_BanHangLe = function () {
             if (!self.RoleInsert_Order()) {
                 lstHDisOpening = $.grep(lstHD_byUser, function (x) {
                     return x.LoaiHoaDon !== 3;
+                });
+            }
+            if (!self.RoleInsert_LenhBH()) {
+                lstHDisOpening = $.grep(lstHD_byUser, function (x) {
+                    return x.LoaiHoaDon !== 32;
                 });
             }
             if (!self.RoleInsert_Service()) {
@@ -21673,6 +21785,7 @@ var NewModel_BanHangLe = function () {
                         maChungTu = 'HDBL';
                         break;
                     case 3:
+                    case 32:
                         maChungTu = 'DH';
                         break;
                     case 19:
@@ -21825,6 +21938,7 @@ var NewModel_BanHangLe = function () {
                 maloaiChungTu = 'GDV';
                 break;
             case 3:
+            case 32:
                 maloaiChungTu = 'DH';
                 break;
             case 6:
@@ -22451,6 +22565,10 @@ var NewModel_BanHangLe = function () {
                     tenChucNang = 'Báo giá';
                     txtFirst = 'Tạo báo giá: ';
                     break;
+                case 32:
+                    tenChucNang = 'Bảo hành';
+                    txtFirst = 'Tạo lệnh bảo hành: ';
+                    break;
                 case 6:
                     tenChucNang = 'Trả hàng';
                     txtFirst = 'Tạo phiếu trả hàng: ';
@@ -22623,6 +22741,7 @@ var NewModel_BanHangLe = function () {
                     maQuyen = 'HoaDon_ThayDoiNhanVien';
                     break;
                 case 3:
+                case 32:
                     maQuyen = 'DatHang_ThayDoiNhanVien';
                     break;
                 case 6:
@@ -25453,6 +25572,7 @@ var NewModel_BanHangLe = function () {
     }
     // use first load, xulidonhang, chonTraHnag, clickTabDH, GoiDV
     function ActiveTab_SoDoPhong(isFistLoad) {
+        debugger;
         var isView = false;
         var loaiHoaDon = GetLoaiHoaDon_ofHDopening();
         $('#banhangsodo, #banhanghanghoa').removeClass('active');
@@ -25663,6 +25783,9 @@ var NewModel_BanHangLe = function () {
                 case 3:
                     roleChangeSale = self.roleChangePriceProduct_Order();
                     break;
+                case 32:
+                    roleChangeSale = self.roleChangePriceProduct_LenhBH();
+                    break;
                 case 6:
                     roleChangeSale = self.roleChangePriceProduct_Return();
                     break;
@@ -25731,6 +25854,9 @@ var NewModel_BanHangLe = function () {
                     break;
                 case 3:
                     roleChangeSale = self.roleChangePriceProduct_Order();
+                    break;
+                case 32:
+                    roleChangeSale = self.roleChangePriceProduct_LenhBH();
                     break;
                 case 6:
                     roleChangeSale = self.roleChangePriceProduct_Return();
@@ -26681,6 +26807,7 @@ var NewModel_BanHangLe = function () {
     })
 
     function checkIsShowbtnSave() {
+        debugger;
         var number = 0;
         $('#ListBtnGroupSave button').each(function () {
             if ($(this).css('display') !== 'none') {
@@ -26701,6 +26828,7 @@ var NewModel_BanHangLe = function () {
                         $('#btnSave').attr('style', 'width: auto !important');
                         break;
                     case 3:
+                    case 32:
                         if (self.HoaDons().ID() === const_GuidEmpty) {
                             $('#btnSave').attr('style', 'width: 75% !important');
                             $('#btnPrintDraft').attr('style', 'width: 25% !important');

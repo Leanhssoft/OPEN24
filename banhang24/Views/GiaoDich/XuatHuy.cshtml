@@ -8,6 +8,7 @@
 <script src="~/Content/js/jquery.dragtable.js"></script>
 <link rel="stylesheet" href="~/Content/Dathang.css" />
 @Html.Hidden("shopCookies", (string)ViewBag.ShopCookies, new { id = "shopCookies" })
+@Html.Hidden("txtLoaiHoaDon", (string)ViewBag.LoaiHoaDon, new { id = "txtLoaiHoaDon" })
 <div class="op-container">
     <div class="container-fluid  nopadding">
         <div class="col-left">
@@ -219,6 +220,7 @@
                                 @if ((string)ViewBag.ShopCookies == "C16EDDA0-F6D0-43E1-A469-844FAB143014")
                                 {
                                     // gara
+                                    <th>#</th>
                                     foreach (var item in commonEnum.ListColumnDamageItems)
                                     {
                                         <th class="@item.Key">
@@ -240,6 +242,20 @@
                         </thead>
                         <tbody data-bind="foreach: HoaDons">
                             <tr class="prev-tr-hide" id="table" data-bind="click: $parent.LoadHangHoaChiTiet,css:{bggray : $index()%2 == 1}">
+                              
+                                <td class="js_tdAction">
+                                    <!--ko if: $root.XuatHuy_XacNhan_Xuat() -->
+                                    <a href="javascript:void(0)" class="red"
+                                       data-bind="visible: ChoThanhToan == true, click: $root.XacNhan_Xuat">Xác nhận</a>
+                                    <span data-bind="visible: ChoThanhToan == false">Đã xuất kho</span>
+                                    <!--/ko-->
+                                    <!--ko if: !$root.XuatHuy_XacNhan_Xuat()-->
+                                    <span data-bind="visible: ChoThanhToan == false">Đã xuất kho</span>
+                                    <span data-bind="visible: ChoThanhToan == true">Chưa xuất kho</span>
+                                    <!--/ko-->
+                                    <span data-bind="visible: ChoThanhToan == null">Đã hủy</span>
+                                </td>
+                               
                                 <td class="@commonEnum.ColumnDamageItems.mahoadon" data-bind="text: MaHoaDon"></td>
                                 <!--ko if: $root.IsGara()-->
                                 <td class="@commonEnum.ColumnInvoices.maphieutiepnhan">
@@ -482,7 +498,8 @@
                         </tbody>
                         <tfoot data-bind="visible: $root.RowsHangHoas() > 0">
                             <tr class="bg12">
-                                <td class="@commonEnum.ColumnDamageItems.mahoadon text-left bold">Tổng cộng: </td>
+
+                                <td class="@commonEnum.ColumnDamageItems.mahoadon text-left bold" data-bind="attr:{colspan: 2}">Tổng cộng: </td>
                                 <!--ko if: $root.IsGara()-->
                                 <td class="@commonEnum.ColumnInvoices.maphieutiepnhan "></td>
                                 <td class="@commonEnum.ColumnDamageItems.mahoadonsuachua "></td>

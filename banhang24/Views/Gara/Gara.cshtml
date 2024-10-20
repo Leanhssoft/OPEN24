@@ -2585,10 +2585,10 @@ visible: LoaiHoaDon !== 3">
                     <div class="gara-bill-type">
                         <!--ko if: RoleInsert_Invoice () && $root.HoaDons().LoaiHoaDon() !== 6-->
                         <!--ko if: !(
-      $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-    && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 19)
-       ) -->
-                        <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 25},  click: clickHoaDon">
+          $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+        && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 19)
+           ) -->
+                        <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 25}, click: clickHoaDon">
                             <img hidden="" class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1">
                             Hóa đơn
                             <img hidden="" class="act-r" src="/Content/images/conner-white.png" alt="" tabindex="-1">
@@ -2597,9 +2597,14 @@ visible: LoaiHoaDon !== 3">
                         <!--/ko-->
                         <!--ko if: RoleInsert_Order() && $root.HoaDons().LoaiHoaDon() !== 6 -->
                         <!--ko if: !(
-        $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-    &&  ($root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 19 || $root.HoaDons().LoaiHoaDon() == 25)  ) -->
-                        <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 3}, click: clickDatHang">
+            $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+        &&  ($root.HoaDons().LoaiHoaDon() == 1 || $root.HoaDons().LoaiHoaDon() == 19 || $root.HoaDons().LoaiHoaDon() == 25)  ) -->
+                        <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 32}, visible: $root.HoaDons().LoaiHoaDon() == 32, click: clickBaoHanh">
+                            <img hidden="" class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1">
+                            Lệnh bảo hành
+                            <img hidden="" class="act-r" src="/Content/images/conner-white.png" alt="" tabindex="-1">
+                        </a>
+                        <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 3}, visible: $root.HoaDons().LoaiHoaDon() !== 32, click: clickDatHang">
                             <img hidden="" class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1">
                             Báo giá
                             <img hidden="" class="act-r" src="/Content/images/conner-white.png" alt="" tabindex="-1">
@@ -2612,12 +2617,13 @@ visible: LoaiHoaDon !== 3">
                             Trả hàng
                             <img hidden="" class="act-r" src="/Content/images/conner-white.png" alt="" tabindex="-1">
                         </a>
+
                         <!--/ko-->
                         <!--ko if: RoleInsert_Service() && $root.HoaDons().LoaiHoaDon() !== 6 -->
                         <!--ko if: !(
-      $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
-    && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 1|| $root.HoaDons().LoaiHoaDon() == 25)
-       ) -->
+          $root.HoaDons().ID()!=='00000000-0000-0000-0000-000000000000'
+        && ($root.HoaDons().LoaiHoaDon() == 3 || $root.HoaDons().LoaiHoaDon() == 1|| $root.HoaDons().LoaiHoaDon() == 25)
+           ) -->
                         <a data-bind="css:{'active': $root.HoaDons().LoaiHoaDon() == 19},
                            click: clickGoiDichVu">
                             <img hidden="" class="act-l" src="/Content/images/conner-white.png" alt="" tabindex="-1">
@@ -3145,13 +3151,21 @@ event:{change: ChangeNgayLapHD}" tabindex="0" title="Nhập giờ" />
                         </div>
                     </div>
                     <div class="gara-toggle-line"
-                         data-bind="visible: HoaDons().ID_PhieuTiepNhan()!==null
-&& HoaDons().LoaiHoaDon() === 3">
+                         data-bind="visible: HoaDons().ID_PhieuTiepNhan()!==null && HoaDons().LoaiHoaDon() === 3">
                         <span> Duyệt báo giá</span>
                         <div class="gara-togggle-xuatkho"
                              data-bind="css:{'unchecked': HoaDons().DuyetBaoGia()===false}">
                             <span data-bind="click: function() {DuyetBaoGia_Change(true)}">Có</span>
                             <span data-bind="click: function() {DuyetBaoGia_Change(false)}">Không</span>
+                        </div>
+                    </div>
+                    <div class="gara-toggle-line"
+                         data-bind="visible: HoaDons().ID_PhieuTiepNhan()!==null && HoaDons().LoaiHoaDon() === 32">
+                        <span> Duyệt lệnh bảo hành</span>
+                        <div class="gara-togggle-xuatkho"
+                             data-bind="css:{'unchecked': HoaDons().DuyetBaoHanh()===false}">
+                            <span data-bind="click: function() {DuyetBaoHanh_Change(true)}">Có</span>
+                            <span data-bind="click: function() {DuyetBaoHanh_Change(false)}">Không</span>
                         </div>
                     </div>
                 </div>
@@ -3166,7 +3180,7 @@ event:{change: ChangeNgayLapHD}" tabindex="0" title="Nhập giờ" />
                         Tạo hóa đơn
                     </button>
                     <!--/ko-->
-                    <!--ko if: HoaDons().LoaiHoaDon() !==3-->
+                    <!--ko if: HoaDons().LoaiHoaDon() !==3 && HoaDons().LoaiHoaDon() !==32-->
                     <button title="Thanh Toán" data-bind="click: $root.ShowModalThanhToan" style="width:50%" id="btnThanhToan">
                         <i class="material-icons">money</i>
                         Thanh toán

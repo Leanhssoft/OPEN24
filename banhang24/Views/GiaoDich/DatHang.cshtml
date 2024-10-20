@@ -128,7 +128,7 @@
                     <aside class="op-filter-container">
                         <div class="menuCheckbox">
                             <ul>
-                                <!--ko if: $root.LoaiHoaDonMenu() !== 1 -->
+                                <!--ko if: ($root.LoaiHoaDonMenu() !== 1 && $root.LoaiHoaDonMenu() !== 32) -->
                                 <li>
                                     <label><input type="checkbox" data-bind="checked: TT_TamLuu"> Phiếu tạm</label>
                                 </li>
@@ -145,7 +145,7 @@
                                     <label><input type="checkbox" data-bind="checked: TT_DaHuy"> Đã hủy</label>
                                 </li>
                                 <!--/ko-->
-                                <!--ko if: $root.LoaiHoaDonMenu() === 1-->
+                                <!--ko if: ($root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32)-->
                                 <li>
                                     <label><input type="checkbox" data-bind="checked: TT_TamLuu"> Chờ duyệt</label>
                                 </li>
@@ -188,6 +188,9 @@
                 <!-- ko if: $root.LoaiHoaDonMenu() == 1 -->
                 <h2 class="pull-left title">@banhang24.Resources.ResourceTexts.Exchange / Báo giá sửa chữa</h2>
                 <!-- /ko -->
+                <!-- ko if: $root.LoaiHoaDonMenu() == 32 -->
+                <h2 class="pull-left title">@banhang24.Resources.ResourceTexts.Exchange / Lệnh bảo hành</h2>
+                <!-- /ko -->
             </div>
             <div class="flex flex-between">
                 <div class=" header-button">
@@ -198,11 +201,18 @@
                         </div>
                     </div>
                     <!-- /ko -->
+                    <!--ko if: $root.RoleInsert_LenhBH() -->
+                    <div class="btn-group clickDH">
+                        <div type="button" class="btn btn-main " data-bind="click: AdđLenhBH">
+                            <i class="fa fa-plus"></i><font>Thêm mới</font>
+                        </div>
+                    </div>
+                    <!-- /ko -->
                     <button class="btn-link shownhapxuat " id="shownhapxuat" title="Chức năng nhập xuất" style="width:30px;">
                         <i class="material-icons"> more_vert</i>
                     </button>
-                    <!--ko if: $root.RoleExport_Order() -->
-                    <div class="btn-group" style="margin-right: 3px;" data-bind="visible: $root.RoleExport_Order()">
+                    <!--ko if: $root.RoleExport_Order() ||  $root.RoleExport_LenhBH() -->
+                    <div class="btn-group" style="margin-right: 3px;" data-bind="visible: $root.RoleExport_Order() || $root.RoleExport_LenhBH()">
                         <button type="button" class=" btn btn-main dropdown-toggle btnExport" data-toggle="dropdown" hidden
                                 data-bind="click: ExportExcel_DatHang" id="btnExport">
                             <i class="fa fa-file-excel-o"></i> Xuất file
@@ -276,7 +286,7 @@
                         <tr class="prev-tr-hide" id="table" data-bind="click: $parent.LoadChiTietHD,css:{bggray : $index()%2 == 1}">
                             <td class="@commonEnum.ColumnOrders.madathang" data-bind="text: MaHoaDon "></td>
                             <td class="@commonEnum.ColumnOrders.ngaylaphoadon "><span data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></span></td>
-                            <!--ko if: $root.LoaiHoaDonMenu() === 1 -->
+                            <!--ko if: $root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32  -->
                             <td class="@commonEnum.ColumnOrders.maphieutiepnhan ">
                                 <a href="=javascript:void(0)" data-bind="text: MaPhieuTiepNhan, click: function(){ $root.gotoKhachHang($data,2)}"></a>
                             </td>
@@ -319,8 +329,8 @@
                                 <span data-bind="text: formatNumber3Digit(TongGiamGia,2)"></span>
                             </td>
                             @*<td class="@commonEnum.ColumnInvoices.tongchiphi text-right">
-                                <span data-bind="text: formatNumber3Digit(TongChiPhi,2)"></span>
-                            </td>*@
+            <span data-bind="text: formatNumber3Digit(TongChiPhi,2)"></span>
+        </td>*@
                             <td class="@commonEnum.ColumnOrders.khachcantra text-right">
                                 <span data-bind="text: formatNumber3Digit(PhaiThanhToan,2)"></span>
                             </td>
@@ -330,12 +340,12 @@
                             <td class="@commonEnum.ColumnOrders.ghichu">
                                 <span data-bind="text: DienGiai"></span>
                             </td>
-                            <!--ko if: $root.LoaiHoaDonMenu() !== 1 -->
+                            <!--ko if: $root.LoaiHoaDonMenu() !== 1 && $root.LoaiHoaDonMenu() !== 32 -->
                             <td class="@commonEnum.ColumnOrders.trangthai">
                                 <span data-bind="text: TrangThai"></span>
                             </td>
                             <!--/ko-->
-                            <!--ko if: $root.LoaiHoaDonMenu() === 1 -->
+                            <!--ko if: $root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32 -->
                             <td class="@commonEnum.ColumnOrders.trangthai">
                                 <span data-bind="text: TrangThaiText"></span>
                             </td>
@@ -387,7 +397,7 @@
                                                             </span>
                                                         </div>
                                                     </div>
-                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1-->
+                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32-->
                                                     <div class="form-group floatleft">
                                                         <label class="css-form-label">Tên công ty BH:</label>
                                                         <div class="css-form-detail">
@@ -416,10 +426,10 @@
                                                     <div class="form-group floatleft">
                                                         <label class="css-form-label">Trạng thái:</label>
                                                         <div class="css-form-detail">
-                                                            <!--ko if: $root.LoaiHoaDonMenu() !== 1 -->
+                                                            <!--ko if: $root.LoaiHoaDonMenu() !== 1 && $root.LoaiHoaDonMenu() !== 32 -->
                                                             <span data-bind="text: TrangThai"></span>
                                                             <!--/ko-->
-                                                            <!--ko if: $root.LoaiHoaDonMenu() === 1 -->
+                                                            <!--ko if: $root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32 -->
                                                             <span data-bind="text: TrangThaiText"></span>
                                                             <!--/ko-->
                                                         </div>
@@ -474,11 +484,11 @@
                                                                     <th>Đơn giá</th>
                                                                     <th>Chiết khấu</th>
                                                                     <th class="text-right">Giá bán</th>
-                                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1-->
+                                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32-->
                                                                     <th>Thuế</th>
                                                                     <!--/ko-->
                                                                     <th class="text-right">Thành tiền</th>
-                                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1-->
+                                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32-->
                                                                     <th>Thanh toán</th>
                                                                     <!--/ko-->
                                                                 </tr>
@@ -503,11 +513,11 @@
                                                                     <td class="text-right" data-bind="text: formatNumber3Digit(DonGia) "></td>
                                                                     <td class="text-right" data-bind="text: formatNumber3Digit(GiamGia)"></td>
                                                                     <td class="text-right" data-bind="text: formatNumber3Digit(GiaBan)"></td>
-                                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1-->
+                                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32 -->
                                                                     <td class="text-right" data-bind="text: formatNumber3Digit(TienThue)"></td>
                                                                     <!--/ko-->
                                                                     <td class="text-right" data-bind="text: formatNumber3Digit(ThanhTien) "></td>
-                                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1 -->
+                                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32 -->
                                                                     <td class="text-right" data-bind="text: formatNumber3Digit(ThanhToan,2) "></td>
                                                                     <!--/ko-->
                                                                 </tr>
@@ -602,21 +612,21 @@
                                                     </div>
                                                 </div>
                                                 <div class="op-object-detail-function">
-                                                    <!-- ko if: $root.RoleRestore_Order() && ChoThanhToan === null && loaiHoaDon !== 6 -->
+                                                    <!-- ko if: ($root.RoleRestore_Order() || $root.RoleRestore_LenhBH()) && ChoThanhToan === null && loaiHoaDon !== 6 -->
                                                     <button href="javascript:void(0)" class="btn btn-main" style="background-color: #704242; color: white"
                                                             data-bind="click: function(){$root.RestoreInvoice($data)}">
                                                         <i class="fa fa-recycle"></i>Khôi phục
                                                     </button>
                                                     <!--/ko-->
-                                                    <!-- ko if: $root.RoleUpdate_Order() && $root.Enable_NgayLapHD() && ChoThanhToan != null -->
+                                                    <!-- ko if: ($root.RoleUpdate_Order() || $root.RoleUpdate_LenhBH()) && $root.Enable_NgayLapHD() && ChoThanhToan != null -->
                                                     <button href="javascript:void(0)" class="btn btn-main" data-bind="click: $parent.updateHoaDon">
                                                         <i class="fa fa-save"></i> Lưu
                                                     </button>
                                                     <!--/ko-->
-                                                    <!--ko if: $root.LoaiHoaDonMenu() === 1 && $root.RoleApprove_Order() && $root.Enable_NgayLapHD()-->
+                                                    <!--ko if: ($root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32) && ($root.RoleApprove_Order() || $root.RoleApprove_LenhBH()) && $root.Enable_NgayLapHD()-->
                                                     <button href="javascript:void(0)" class="btn btn-main btnXuLiDH"
                                                             data-bind="click: $root.DuyetBaoGia, visible: ChoThanhToan">
-                                                        <i class="fa fa-recycle"></i>Duyệt báo giá
+                                                        <i class="fa fa-recycle"></i> <span data-bind="text: $root.LoaiHoaDonMenu() === 32 ? 'Duyệt bảo hành' : 'Duyệt báo giá'"></span>
                                                     </button>
                                                     <!--/ko-->
                                                     <!-- ko if: $root.Show_BtnXulyDH() && $root.Enable_NgayLapHD()-->
@@ -640,7 +650,7 @@
                                                         </ul>
                                                     </div>
                                                     <!--/ko-->
-                                                    <!-- ko if: $root.RoleExport_Order()-->
+                                                    <!-- ko if: $root.RoleExport_Order() || $root.RoleExport_LenhBH()-->
                                                     <button href="javascript:void(0)" class="btn btn-main btnExportDetail" data-bind="click: $parent.ExportExcel_ChiTietPhieuDatHang">
                                                         <i class="fa fa-file-excel-o"></i> Xuất file
                                                     </button>
@@ -650,7 +660,7 @@
                                                         <i class="fa fa-cut"></i> Sao chép
                                                     </button>
                                                     <!--/ko-->
-                                                    <!-- ko if: $root.RoleDelete_Order() && $root.Enable_NgayLapHD()-->
+                                                    <!-- ko if: ($root.RoleDelete_Order() || $root.RoleDelete_LenhBH()) && $root.Enable_NgayLapHD()-->
                                                     <button href="javascript:void(0)" class="btn btn-cancel "
                                                             data-bind="click: $root.HuyHoaDon_updateChoThanhToan, visible: YeuCau !=='4'">
                                                         <i class="fa fa-close"></i> Hủy bỏ
@@ -747,7 +757,7 @@
                         <tr class="border-bottom">
                             <td class="bg12 bold @commonEnum.ColumnOrders.madathang">Tổng cộng</td>
                             <td class="bg12 @commonEnum.ColumnOrders.ngaylaphoadon"></td>
-                            <!--ko if: $root.LoaiHoaDonMenu() === 1 -->
+                            <!--ko if: $root.LoaiHoaDonMenu() === 1 || $root.LoaiHoaDonMenu() === 32 -->
                             <td class="bg12 @commonEnum.ColumnOrders.maphieutiepnhan"></td>
                             <td class="bg12 @commonEnum.ColumnOrders.bienso "></td>
                             <!--/ko-->
@@ -906,7 +916,14 @@
     jQuery.datetimepicker.setLocale('vi');
 </script>
 <script>
-    var loaiHoaDon = 3;
+    var loaiHoaDon;
+    var temp = $('#txtLoaiHoaDon').val();  
+    if (temp == '32') {
+        loaiHoaDon = 32;
+    } else {
+        loaiHoaDon = 3;
+    }
+    console.log('loaihddd', loaiHoaDon);
     $('#tb').on('click', '.icon-filter', function () {
         $(this).hide();
         $(this).closest('th').find('.icon-filter2').show();

@@ -295,7 +295,7 @@
         computed: {
             isVendor: function () {
                 let self = this;
-                return self.HoaDon.LoaiHoaDon === 4 || self.HoaDon.LoaiHoaDon === 7;
+                return self.HoaDon.LoaiHoaDon === 4 || self.HoaDon.LoaiHoaDon === 7 || self.HoaDon.LoaiHoaDon === 33;
             },
             hideBottom: function () {
                 let self = this;
@@ -364,6 +364,9 @@
                         break;
                     case 25:
                         txt = 'Hóa đơn sửa chữa';
+                        break;
+                    case 33:
+                        txt = 'Thu hồi phụ tùng';
                         break;
                 }
                 return txt;
@@ -594,6 +597,10 @@
                             url = '/#/Quotation';
                         }
                         break;
+                    case 32:
+                        if (!commonStatisJs.CheckNull(self.HoaDon.ID_PhieuTiepNhan)) {
+                            url = '/#/LenhBaoHanh';
+                        }
                     case 6:
                         url = '/#/Returns';
                         break;

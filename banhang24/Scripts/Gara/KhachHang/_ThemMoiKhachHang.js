@@ -613,8 +613,10 @@
         },
 
         CheckSave: function () {
+            debugger;
             let self = this;
             let cus = self.newCustomer;
+            let phoneRegex = /^(84|0[35789])([0-9]{8})$/;
             if (commonStatisJs.CheckNull(cus.TenDoiTuong)) {
                 ShowMessage_Danger('Vui lòng nhập tên khách hàng');
                 return false;
@@ -623,10 +625,28 @@
                 ShowMessage_Danger('Vui lòng nhập số điện thoại khách hàng');
                 return false;
             }
+            //if (!phoneRegex.test(cus.DienThoai.trim())) {
+            //    ShowMessage_Danger('Số điện thoại không đúng định dạng');
+            //    return false;
+            //}
+            if (commonStatisJs.CheckNull(cus.DiaChi)) {
+                ShowMessage_Danger('Vui lòng nhập địa chỉ');
+                return false;
+            }
+            if (commonStatisJs.CheckNull(cus.ID_TinhThanh)) {
+                ShowMessage_Danger('Vui lòng chọn tỉnh thành');
+                return false;
+            }
+            if (commonStatisJs.CheckNull(cus.ID_QuanHuyen)) {
+                ShowMessage_Danger('Vui lòng chọn quận huyện');
+                return false;
+            }
+
             return true;
         },
 
         SaveCustomer: function () {
+            debugger;
             var self = this;
             var id = self.newCustomer.ID;
             var ngaysinh = self.newCustomer.NgaySinh_NgayTLap;

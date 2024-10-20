@@ -87,6 +87,51 @@ namespace libGara
                         }).ToList();
             return data;
         }
+        public List<Xe> GetListGaraDanhMucXe_ofDoiTuong(Guid idDoiTuong, string idChiNhanh = null)
+        {
+            if (_db == null)
+            {
+                return null;
+            }
+            else
+            {
+                var data = (from xe in _db.Gara_DanhMucXe
+                            join mau in _db.Gara_MauXe on xe.ID_MauXe equals mau.ID into carAndmodel
+                            from car_model in carAndmodel.DefaultIfEmpty()
+                            join hang in _db.Gara_HangXe on car_model.ID_HangXe equals hang.ID into carAndManufact
+                            from car_manufact in carAndManufact.DefaultIfEmpty()
+                            join loaixe in _db.Gara_LoaiXe on car_model.ID_LoaiXe equals loaixe.ID into carType
+                            from car_type in carType.DefaultIfEmpty()
+                            join cx in _db.DM_DoiTuong on xe.ID_KhachHang equals cx.ID into cx_Xe
+                            from chuXe in cx_Xe.DefaultIfEmpty()
+                            join hh in _db.DM_HangHoa on xe.ID equals hh.ID_Xe into HH_Xe
+                            from hhxe in HH_Xe.DefaultIfEmpty()
+                            where xe.ID_KhachHang == idDoiTuong
+                            select new Xe
+                            {
+                                ID = xe.ID,
+                                ID_MauXe = xe.ID_MauXe,
+                                ID_KhachHang = xe.ID_KhachHang,
+                                ID_HangXe = car_model != null ? car_model.ID_HangXe : Guid.Empty,
+                                ID_LoaiXe = car_model != null ? car_model.ID_LoaiXe : Guid.Empty,
+                                BienSo = xe.BienSo,
+                                SoKhung = xe.SoKhung,
+                                SoMay = xe.SoMay,
+                                HopSo = xe.HopSo,
+                                DungTich = xe.DungTich,
+                                MauSon = xe.MauSon,
+                                NamSanXuat = xe.NamSanXuat,
+                                TenMauXe = car_model != null ? car_model.TenMauXe : "",
+                                TenHangXe = car_manufact != null ? car_manufact.TenHangXe : "",
+                                TenLoaiXe = car_type != null ? car_type.TenLoaiXe : "",
+                                TenDoiTuong = chuXe != null ? chuXe.TenDoiTuong : "",
+                                DienThoai = chuXe != null ? chuXe.DienThoai : "",
+                                MaDoiTuong = chuXe != null ? chuXe.MaDoiTuong : "",
+                                ID_HangHoa = hhxe != null ? hhxe.ID : Guid.Empty,
+                            }).ToList();
+                return data;
+            }
+        }
 
         public List<GetListGaraDanhMucXe_v1> GetListGaraDanhMucXe_v1(ParamGetListGaraDanhMucXe_v1 param)
         {

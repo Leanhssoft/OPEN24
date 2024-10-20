@@ -13,6 +13,7 @@ using System.Web.Http;
 using libReport;
 using AsposeCellsDocument;
 using System.IO;
+using libDM_DoiTuong;
 
 namespace banhang24.Areas.DanhMuc.Controllers
 {
@@ -243,7 +244,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 return ActionFalseNotData(ex.ToString());
             }
         }
-
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public IEnumerable<Object> GetAllXe_ofDoiTuong(Guid idDoiTuong, string idChiNhanh = null)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                ClassXe classxe = new ClassXe(db);
+                var data = classxe.GetListGaraDanhMucXe_ofDoiTuong(idDoiTuong, idChiNhanh);
+                 return data;
+            }
+        }
         [AcceptVerbs("GET", "POST")]
         public IHttpActionResult GetListPhieuTiepNhan_v2([FromBody] JObject objIn)
         {

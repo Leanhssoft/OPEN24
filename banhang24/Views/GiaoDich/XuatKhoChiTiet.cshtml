@@ -766,13 +766,16 @@
             </div>
         </div>
         <div class="bill-control floatleft btn-group">
+            <!--ko if: $root.XuatHuy_XacNhan_Xuat()-->
             <button id="btnaddHDCHHT" class="bg9"
                     data-bind="click: function(){SaveInvoice(false)}">
                 Lưu (F10)
             </button>
-            <button class="bg8" id="btnaddHDCHTL" data-bind="click:function(){SaveInvoice(true)}">
+            <!--/ko-->
+            <button class="bg8" id="btnaddHDCHTL" data-bind="click: function(){SaveInvoice(true)}, style: {width: $root.XuatHuy_XacNhan_Xuat() ? '32%' : '65%'}">
                 Lưu nháp
             </button>
+
             <button class="bg7" data-bind="click: clickBtnHuyHD " id="goback">Hủy</button>
         </div>
     </div>

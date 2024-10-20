@@ -87,6 +87,7 @@ var XuatKhoChiTiet = function () {
     self.TongSoLuongHH = ko.observable(0);
     self.Quyen_NguoiDung = ko.observableArray();
     self.XuatKho_ThayDoiThoiGian = ko.observable();
+    self.XuatHuy_XacNhan_Xuat = ko.observable(false);
     self.HangHoa_XemGiaVon = ko.observable();
     modelTypeSearchProduct.TypeSearch(1);// jqAutoProduct
 
@@ -302,6 +303,7 @@ var XuatKhoChiTiet = function () {
             if (data !== "" && data.length > 0) {
                 self.Quyen_NguoiDung(data);
                 self.XuatKho_ThayDoiThoiGian(CheckQuyenExist('XuatHuy_ThayDoiThoiGian'));
+                self.XuatHuy_XacNhan_Xuat(CheckQuyenExist('XuatHuy_XacNhan_Xuat'));
             }
             else {
                 ShowMessage_Danger('Không có quyền');
@@ -1764,9 +1766,13 @@ var XuatKhoChiTiet = function () {
             cthd = JSON.parse(cthd);
 
             if (cthd.length > 0) {
-                document.getElementById("btnaddHDCHHT").disabled = true;
-                document.getElementById("btnaddHDCHHT").lastChild.data = "Đang Lưu";
-
+                //document.getElementById("btnaddHDCHHT").disabled = true;
+                //document.getElementById("btnaddHDCHHT").lastChild.data = "Đang Lưu";
+                var btnLuuF10 = document.getElementById("btnaddHDCHHT");
+                if (btnLuuF10) {
+                    btnLuuF10.disabled = true;
+                    btnLuuF10.lastChild.data = "Đang Lưu";
+                }
                 var hd = localStorage.getItem(lcHDXuatKho);
                 if (hd === null) {
                     ShowMessage_Danger('cache hoa don null');

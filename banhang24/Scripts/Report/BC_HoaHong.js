@@ -567,6 +567,7 @@
 
     function Load_ReprotAll(array_Seach) {
         //HideShow_btnExportExcel('BCCKAll_XuatExcel');
+        HideShow_btnExportExcel('BCCK_XuatFile');
         $('.table-reponsive').gridLoader();
         ajaxHelper(ReportUri + "ReportDiscountAll", "POST", array_Seach).done(function (data) {
             $('.table-reponsive').gridLoader({ show: false });
@@ -1107,7 +1108,6 @@
             var fileNameExport = '';
             var txtFunc = '';
             var detail = '';
-
             var lenData = 0;
             switch (typeReport) {
                 case 1:

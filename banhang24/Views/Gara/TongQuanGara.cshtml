@@ -216,11 +216,11 @@
                                 </div>
                                 <div class="gara-panel-sub">
                                     <div class="col-md-6 col-xs-6">
-                                        <label>Sửa chữa</label>
+                                        <label>{{commonStatisJs.FormatNumber3Digit(TongQuanDoanhThuCongNo.DoanhThu.SuaChua.CountHoaDonSuaChua)}} Sửa chữa</label>
                                         <h4>{{commonStatisJs.FormatNumber3Digit(TongQuanDoanhThuCongNo.DoanhThu.SuaChua.DoanhThu)}}</h4>
                                     </div>
                                     <div class="col-md-6 col-xs-6">
-                                        <label>Bán hàng</label>
+                                        <label>{{commonStatisJs.FormatNumber3Digit(TongQuanDoanhThuCongNo.DoanhThu.BanHang.CountHoaDonBanHang)}} Bán hàng</label>
                                         <h4>{{commonStatisJs.FormatNumber3Digit(TongQuanDoanhThuCongNo.DoanhThu.BanHang.DoanhThu)}}</h4>
                                     </div>
                                 </div>
@@ -402,6 +402,107 @@
                             </div>
                         </div>
                     </div>
+
+                    @*//test*@
+                    @*<div class="gara-tongquan-graph">
+                        <div class="flex flex-between">
+                            <label class="font-14">Tồn kho</label>
+                            <div class="flex">
+                                <div class="gara-dropdown">
+                                    <a class="gara-dropwdown-toggle" aria-haspopup="true" aria-expanded="false" v-on:click="SelectTarget('CongNo')">
+                                        {{ ChiNhanhCongNo.filter(p=>p.Checked === true).length === 1 ? ChiNhanhCongNo.filter(p=>p.Checked === true)[0].Value2 : ChiNhanhCongNo.filter(p=>p.Checked === true).length === 0 ? 'Chi nhánh' : 'Chi nhánh (' + ChiNhanhCongNo.filter(p=>p.Checked === true).length + ')' }}
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                    <dropdown-picker placeholder="Tìm chi nhánh" v-bind:listdata="ChiNhanhCongNo"></dropdown-picker>
+                                </div>
+                                <div class="gara-dropdown">
+                                    <a class="gara-dropwdown-toggle" aria-haspopup="true" aria-expanded="false">
+                                        {{TongQuanDoanhThuCongNo.Text}}
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                    <div class="gara-dropdown-picker gara-timer">
+                                        <div class="gara-timer-panel flex " style="display:flex !important">
+                                            <div>
+                                                <label>
+                                                    Theo ngày và tuần
+                                                </label>
+                                                <ul class="gara-dropdown-picker-list">
+                                                    <li class="dropdown-item" v-on:click="SelectDate(1)">
+                                                        <a>Hôm nay</a>
+                                                    </li>
+                                                    <li class="dropdown-item" v-on:click="SelectDate(2)">
+                                                        <a>Hôm qua</a>
+                                                    </li>
+                                                    <li class="dropdown-item" v-on:click="SelectDate(3)">
+                                                        <a>Tuần này</a>
+                                                    </li>
+                                                    <li class="dropdown-item" v-on:click="SelectDate(4)">
+                                                        <a>Tuần trước</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    Theo tháng và quý
+                                                </label>
+                                                <ul class="gara-dropdown-picker-list">
+                                                    <li class="dropdown-item" v-on:click="SelectDate(5)">
+                                                        <a>Tháng này</a>
+                                                    </li>
+                                                    <li class="dropdown-item" v-on:click="SelectDate(6)">
+                                                        <a>Tháng trước</a>
+                                                    </li>
+                                                    <li class="dropdown-item" v-on:click="SelectDate(7)">
+                                                        <a>Quý này</a>
+                                                    </li>
+                                                    <li class="dropdown-item" v-on:click="SelectDate(8)">
+                                                        <a>Quý trước</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    Theo năm
+                                                </label>
+                                                <ul class="gara-dropdown-picker-list">
+                                                    <li class="dropdown-item" v-on:click="SelectDate(9)">
+                                                        <a>Năm này</a>
+                                                    </li>
+                                                    <li class="dropdown-item" v-on:click="SelectDate(10)">
+                                                        <a>Năm trước</a>
+                                                    </li>
+                                                    <li class="dropdown-item" v-on:click="SelectDate(0)">
+                                                        <a>Toàn thời gian</a>
+                                                    </li>
+                                                    <li class="dropdown-item" onclick="GaraShowCustomTimer()">
+                                                        <a>Tùy chọn</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="gara-timer-panel gara-timer-custom" style="display:none" hidden id="garaCustomeDatePicker">
+                                            <div style="width:unset;" class="flex flex-column">
+                                                <div class="flex flex-between align-items-center border-bottom-default">
+                                                    <a style=" display: inline-flex; align-items: center;" onclick="GaraHideCustomTimer()"><i class="material-icons">chevron_left</i>Quay lại</a>
+                                                    <label>Chọn ngày</label>
+                                                    <a style="width:auto" v-on:click="SelectDate(11)">Xong</a>
+                                                </div>
+                                                <div class="flex flex-between flex-row" style="width:600px">
+                                                    <table id="dateStart" data-rangeto="#dateEnd" style="width:50%"></table>
+                                                    <table id="dateEnd" data-rangefrom="#dateStart" style="width:50%"></table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="gara-panel col-md-6 col-sm-6 col-xs-12">
+                            <div class="gara-panel-container">
+                               
+                            </div>
+                        </div>
+                    </div>*@
                 </div>
             </div>
             <div class="col-md-3 col-xs-12 flex flex-column ">

@@ -45,6 +45,16 @@
         #BanLamViec #tblPTN .focusPTN {
             background: rgba(0, 0, 0, 0.05) !important;
         }
+
+        .highlight {
+            color: red;
+        }
+
+            .highlight:hover,
+            .highlight:focus,
+            .highlight.active {
+                color: red;
+            }
     </style>
 </head>
 <body>
@@ -140,35 +150,34 @@
                                        v-on:click="GetInfor_PhieuTiepNhan(item)"
                                        v-bind:class="[{focusPTN: ID_PhieuTiepNhan == item.ID},{expandPTN: !$root.isFirstLoad && ID_PhieuTiepNhan == item.ID}]">
                                     <tr>
-                                        <td class="text-center" v-if="CheckColShow('STT')"  style="max-width:5%">
+                                        <td class="text-center" v-if="CheckColShow('STT')" style="max-width:5%">
                                             <span class="gara-li-check" v-bind:class="{ garaDone: item.TrangThai !==1 }">
                                                 {{(index+ 1) + ((Paging_PhieuSuaChua.CurrentPage - 1) *  Paging_PhieuSuaChua.PageSize)}}
                                             </span>
                                         </td>
-                                        <td class="bold" v-if="CheckColShow('BienSoXe')"  >
+                                        <td class="bold" v-if="CheckColShow('BienSoXe')">
                                             <a href="javascript:void(0)">
                                                 <span href="javascript:void(0)" v-on:click="updateCar(item.ID_Xe)">
                                                     {{item.BienSo}}
                                                 </span>
                                             </a>
                                         </td>
-                                        <td v-if="CheckColShow('MaPhieuTiepNhan')"  >
+                                        <td v-if="CheckColShow('MaPhieuTiepNhan')">
                                             <a v-on:click="UpdatePhieuTiepNhan(item)"
                                                v-bind:title="item.MaPhieuTiepNhan">{{item.MaPhieuTiepNhan}}</a>
                                         </td>
-                                        <td class="text-center" v-if="CheckColShow('SoKMVao')"  >
+                                        <td class="text-center" v-if="CheckColShow('SoKMVao')">
                                             {{formatNumber(item.SoKmVao)}}
                                         </td>
-                                        <td v-if="CheckColShow('NgayTiepNhan')" >
+                                        <td v-if="CheckColShow('NgayTiepNhan')">
                                             {{moment(item.NgayVaoXuong).format('DD/MM/YYYY HH:mm')}}
                                         </td>
-                                        <td v-if="CheckColShow('MauHangXe')" v-bind:title="item.TenMauXe + '_'+ item.TenHangXe" >
+                                        <td v-if="CheckColShow('MauHangXe')" v-bind:title="item.TenMauXe + '_'+ item.TenHangXe">
                                             {{ commonStatisJs.SubStringContent(item.TenMauXe + '_'+ item.TenHangXe,15)}}
                                         </td>
                                         <td v-if="CheckColShow('TenKhachHang')"
                                             v-bind:title="item.TenDoiTuong"
-                                            style="max-width:15%; min-width:15%"
-                                            >
+                                            style="max-width:15%; min-width:15%">
                                             <a href="javascript:void(0)" v-on:click="updateCus(item.ID_KhachHang)">
                                                 {{commonStatisJs.SubStringContent(item.TenDoiTuong,30)}}
                                             </a>
@@ -194,6 +203,11 @@
                                                    v-if="$root.role.BaoGia.ThemMoi">
                                                     <i class="fa fa-plus"></i>
                                                     Lập báo giá
+                                                </a>
+                                                <a href="javascript:void(0)" v-on:click="AddLenhBaoHanh(item)"
+                                                   v-if="$root.role.LenhBaoHanh.ThemMoi">
+                                                    <i class="fa fa-plus"></i>
+                                                    Lập lệnh bảo hành
                                                 </a>
                                                 <a href="javascript:void(0)" v-on:click="AddHoaDon(item)"
                                                    v-if="$root.role.HoaDon.ThemMoi">
@@ -278,6 +292,12 @@
                                     <i class="fa fa-plus"></i>
                                     Báo giá
                                 </button>
+                                <button class="btn button-w150" style="  color:white; background:var(--color-main);"
+                                        v-if="$root.role.LenhBaoHanh.ThemMoi"
+                                        v-on:click="AddLenhBaoHanh(listData.ThongTinXe)">
+                                    <i class="fa fa-plus"></i>
+                                    Lệnh bảo hành
+                                </button>
                             </li>
                         </ul>
                     </div>
@@ -296,46 +316,59 @@
                                 <ul class="gara-section-list-body" v-if="listData.BaoGias.length != 0">
                                     <li v-for="(item, index) in listData.BaoGias">
                                         <ul class="gara-section-list-item with-index list-5-col"
-                                            v-on:click="ChoseItem_inList(item,3)">
+                                            v-on:click="ChoseItem_inList(item,item.LoaiHoaDon)">
                                             <li style="width:50px">
                                                 <input type="checkbox"
                                                        v-model="$root.isCheckPrint(item)"
-                                                       v-on:click="$root.ChangeCheck_Item(item,3)" />
+                                                       v-on:click="$root.ChangeCheck_Item(item,item.LoaiHoaDon)" />
                                             </li>
                                             <li onclick="expandbutton(this)">{{moment(item.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')}}</li>
-                                            <li onclick="expandbutton(this)"><a v-on:click="showModalChiTietHoaDon(item.ID)">{{item.MaHoaDon}}</a></li>
+                                            <li onclick="expandbutton(this)"><a v-on:click="showModalChiTietHoaDon(item.ID)" :class="{'highlight': item.LoaiHoaDon === 32}">{{item.MaHoaDon}}</a></li>
                                             <li onclick="expandbutton(this)">{{formatNumber3Digit(item.TongThanhToan,2)}}</li>
                                             <li onclick="expandbutton(this)">{{item.TrangThaiText}}</li>
                                         </ul>
                                         <div class="gara-section-list-functions">
+
                                             <a title="Duyệt báo giá" v-on:click="Duyet_HuyBaoGia(item,false)"
-                                               v-if="$root.role.BaoGia.Duyet && item.TrangThai==='1'">
+                                               v-if="$root.role.BaoGia.Duyet && item.TrangThai==='1' && (($root.role.BaoGia.Duyet && item.LoaiHoaDon !== 32) || ($root.role.LenhBaoHanh.Duyet && item.LoaiHoaDon === 32))">
                                                 <i class="material-icons" style="display:none">gavel</i>
                                                 <p>Duyệt</p>
                                             </a>
                                             @*<a title="Nhập hàng"
-                                               v-on:click="NhapHang(item)"
-                                               v-if="$root.role.HoaDon.NhapHang && item.YeuCau!=='3' && item.TrangThai ==='0'">
-                                                <i class="fal fa-cart-plus"></i> Nhập hàng
-                                            </a>*@
+           v-on:click="NhapHang(item)"
+           v-if="$root.role.HoaDon.NhapHang && item.YeuCau!=='3' && item.TrangThai ==='0'">
+            <i class="fal fa-cart-plus"></i> Nhập hàng
+        </a>*@
                                             <a title="Thanh toán"
                                                v-on:click="showModalThanhToan(item)"
-                                               v-if="$root.role.HoaDon.ThanhToan && item.YeuCau!=='3' && item.TrangThai ==='0'">
+                                               v-if="$root.role.HoaDon.ThanhToan && item.YeuCau!=='3' && item.TrangThai ==='0' && item.LoaiHoaDon !== 32">
                                                 <i class="fa fa-dollar"></i> Đặt cọc
                                             </a>
-                                            <a title="Xử lý báo giá" v-on:click="XuLyBaoGia(item)"
-                                               v-if="$root.role.BaoGia.XuLy && item.YeuCau!=='3' && item.TrangThai ==='0'">
-                                                <i class="fa  fa-plus"></i> Xử lý báo giá
+
+                                            <a v-on:click="XuLyBaoGia(item)"
+                                               v-if="(($root.role.BaoGia.XuLy && item.LoaiHoaDon !== 32) || ($root.role.LenhBaoHanh.XuLy && item.LoaiHoaDon === 32))
+                                                 && item.YeuCau !== '3' && item.TrangThai === '0'"
+                                               :title="item.LoaiHoaDon === 32 ? 'Xử lý lệnh' : 'Xử lý báo giá'">
+                                                <i class="fa fa-plus"></i>
+                                                {{ item.LoaiHoaDon === 32 ? 'Xử lý lệnh' : 'Xử lý báo giá' }}
                                             </a>
-                                            <a title="Chỉnh sửa báo giá" v-on:click="CapNhatHoaDon(item,3)"
-                                               v-if="$root.role.BaoGia.CapNhat && item.YeuCau !=='3'">
-                                                <p>  <i class="fa  fa-folder-open-o "></i>Sửa đổi</p>
+
+                                            <a v-on:click="CapNhatHoaDon(item, item.LoaiHoaDon)"
+                                               v-if="(($root.role.BaoGia.CapNhat && item.LoaiHoaDon !== 32) || ($root.role.LenhBaoHanh.CapNhat && item.LoaiHoaDon === 32))
+                                                && item.YeuCau !== '3'"
+                                               :title="item.LoaiHoaDon === 32 ? 'Chỉnh sửa lệnh bảo hành' : 'Chỉnh sửa báo giá'">
+                                                <p>
+                                                    <i class="fa fa-folder-open-o"></i>
+                                                    Sửa đổi
+                                                </p>
                                             </a>
+
                                             <a title="Bỏ duyệt" v-on:click="Duyet_HuyBaoGia(item,true)"
-                                               v-if="$root.role.BaoGia.Duyet &&  item.TrangThai==='0' && item.YeuCau ==='1'">
+                                               v-if="item.TrangThai==='0' && item.YeuCau ==='1' && (($root.role.BaoGia.Duyet && item.LoaiHoaDon !== 32) || ($root.role.LenhBaoHanh.Duyet && item.LoaiHoaDon === 32))">
                                                 <p><i class="fa fa-times"></i> Bỏ duyệt</p>
                                             </a>
-                                            <div class="btn-group dropdown-mauin" v-if="$root.role.BaoGia.In">
+
+                                            <div class="btn-group dropdown-mauin" v-if="$root.role.BaoGia.In || $root.role.LenhBaoHanh.In">
                                                 <button type="button" class="btn " v-on:click="InHoaDon(false,'DH')">
                                                     <i class="fa fa-print"></i>
                                                     In
@@ -343,13 +376,13 @@
                                                 <button type="button" class="btn dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                     <i class="fa fa-angle-down"></i>
                                                 </button>
-                                                <ul class="dropdown-menu" v-if="itemChosing.LoaiHoaDon === 3">
+                                                <ul class="dropdown-menu" v-if="itemChosing.LoaiHoaDon === 3 || itemChosing.LoaiHoaDon === 32 ">
                                                     <li v-for="(item, index) in MauIn.BaoGia">
                                                         <a v-on:click="InHoaDon(true,item.Key)"> {{item.Value}}</a>
                                                     </li>
                                                 </ul>
                                             </div>
-                                            <a title="Xóa báo giá" v-if="$root.role.BaoGia.Xoa" v-on:click="Huy_HoaDon(item, 3)">
+                                            <a title="Xóa báo giá" v-if="$root.role.BaoGia.Xoa || $root.role.LenhBaoHanh.Xoa" v-on:click="Huy_HoaDon(item,item.LoaiHoaDon)">
                                                 <p><i class="fa fa-trash"></i> Xóa</p>
                                             </a>
                                         </div>

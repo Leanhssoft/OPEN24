@@ -497,7 +497,9 @@ namespace libQuy_HoaDon
     public class TongQuanDoanhThuCongNo
     {
         public double DoanhThuSuaChua { get; set; }
+        public int SoLuongHoaDonSuaChua { get; set; }
         public double DoanhThuBanHang { get; set; }
+        public int SoLuongHoaDonBanHang { get; set; }
         public double TongDoanhThu { get; set; }
         public double CongNoPhaiThu { get; set; }
         public double CongNoPhaiTra { get; set; }

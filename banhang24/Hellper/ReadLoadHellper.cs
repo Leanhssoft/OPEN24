@@ -37,6 +37,8 @@ namespace banhang24.Hellper
         public const string DatHangNCCItem = "DatHangNCCItem";
         public const string NhapNoiBo = "NhapNoiBo";
         public const string NhapNoiBoItem = "NhapNoiBoItem";
+        public const string NhapThuHoiPT = "NhapThuHoiPT";
+        public const string NhapThuHoiPTItem = "NhapThuHoiPTItem";
         public const string TraHangNhap = "PurchaseReturns";
         public const string TraHangNhapChiTiet = "PurchaseReturnsCT";
         public const string TraHangNhapChiTiet2 = "PurchaseReturnsCT2";
@@ -116,6 +118,8 @@ namespace banhang24.Hellper
 
         //const Gara
         public const string BaoGia = "Quotation";
+        //INS 10.2024
+        public const string LenhBaoHanh = "LenhBaoHanh";
         public const string DanhMucXe = "DanhMucXe";
         public const string BanLamViec = "BanLamViec";
         public const string Gara = "Gara";
@@ -2821,6 +2825,23 @@ namespace banhang24.Hellper
               { ColumnPurchaseOrder.tongtienhang.ToString(),"Tổng tiền hàng" },
               { ColumnPurchaseOrder.tonggiamgia.ToString(),"Tổng giảm giá" },
               { ColumnInvoices.tongchiphi.ToString(),"Chi phí ship" },
+                 { ColumnPurchaseOrder.cantrakhach.ToString(),"Phải thanh toán" },
+                   { ColumnPurchaseOrder.datrakhach.ToString(),"Đã thanh toán" },
+                       { ColumnInvoices.conno.ToString(),"Còn nợ" },
+              { ColumnPurchaseOrder.ghichu.ToString(),"Ghi chú" },
+              { ColumnPurchaseOrder.trangthai.ToString(),"Trạng thái" },
+        };
+        public static Dictionary<string, string> ListColumnNhapThuHoiPT = new Dictionary<string, string>()
+        {
+              { ColumnPurchaseOrder.mahoadon.ToString(),"Mã hóa đơn" },
+              { ColumnPurchaseOrder.ngaylaphoadon.ToString(),"Ngày lập hóa đơn" },
+              { ColumnInvoices.nguoitao.ToString(),"User lập phiếu" },
+               { ColumnPurchaseOrder.makhachhang.ToString(),"Mã khách hàng" },
+              { ColumnPurchaseOrder.tenkhachhang.ToString(),"Tên khách hàng" },
+              { ColumnPurchaseOrder.tenchinhanh.ToString(),"Chi nhánh" },
+              { ColumnPurchaseOrder.tongtienhang.ToString(),"Tổng tiền hàng" },
+              { ColumnPurchaseOrder.tonggiamgia.ToString(),"Tổng giảm giá" },
+               { ColumnInvoices.tongchiphi.ToString(),"Chi phí ship" },
                  { ColumnPurchaseOrder.cantrakhach.ToString(),"Phải thanh toán" },
                    { ColumnPurchaseOrder.datrakhach.ToString(),"Đã thanh toán" },
                        { ColumnInvoices.conno.ToString(),"Còn nợ" },
