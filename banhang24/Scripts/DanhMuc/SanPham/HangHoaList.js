@@ -212,7 +212,9 @@ var ViewModel = function () {
     self.KiemGanDays = ko.observableArray();
     loaiHoaDon = $('#loaiHoaDon').val();
     self.TheKhos = ko.observableArray();
+    self.KhoPhuTungHongs = ko.observableArray();
     self.RowErrKho = ko.observable();
+    self.RowErrKhoPTHong = ko.observable();
     self.ListChooseHH = ko.observableArray();
     self.ListChooseHHInTemThuocTinh = ko.observableArray();
     self.error = ko.observable();
@@ -7937,6 +7939,25 @@ var ViewModel = function () {
             $('.table-js-tk').gridLoader({ show: false });
         });
     };
+    self.PageCountPT = ko.observable();
+    self.TotalRecordPT = ko.observable(0);
+    var isGoToNextPT = false;
+    function searchTheKhoPTHong(isGoToNextPT) {
+        $('.table-js-tk').gridLoader();
+        ajaxHelper(DMHangHoaUri + 'GetListKhoPTHong?currentPage=' + self.currentPageTK() + '&pageSize=' + self.pageSizeTK() + '&id=' + self.selectIDHH() + '&iddonvi=' + _IDchinhanh, 'GET').done(function (data) {
+            self.KhoPhuTungHongs(data.lst);
+            self.TotalRecordPT(data.Rowcount);
+            self.PageCountPT(data.pageCount);
+            if (data.RowErrKho !== null) {
+                self.RowErrKhoPTHong(data.RowErrKho);
+            }
+            else {
+                self.RowErrKhoPTHong();
+            }
+            $('.table-js-tk').gridLoader({ show: false });
+        });
+    };
+
 
     self.PageList_Display_TheKho = ko.computed(function () {
         var arrPage = [];

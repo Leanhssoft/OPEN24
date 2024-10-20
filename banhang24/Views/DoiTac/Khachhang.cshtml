@@ -866,6 +866,11 @@
                                                 <a data-toggle="tab"
                                                    data-bind=" attr: { href: '#tiencoc_'+ ID }, click: $root.LoadTabTienCoc">Nhật ký sử dụng tiền cọc</a>
                                             </li>
+
+                                            <li onclick="LoadGetHeight()">
+                                                <a data-toggle="tab"
+                                                   data-bind=" attr: { href: '#dsXe_'+ ID }, click: $root.LoadTabDSXe">Danh sách xe</a>
+                                            </li>
                                             <!--/ko-->
                                             <!-- ko if: !$root.IsGara() && $root.RoleUpdateImg_Invoice() -->
                                             <li onclick="LoadGetHeight()">
@@ -2035,6 +2040,60 @@
                                                             </a>
                                                             <div class="total-recos">
                                                                 <span data-bind="text: $root.Coc_PageView"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" data-bind="attr: { id: 'dsXe_'+ ID }">
+                                                <div class="flex flex-column ">
+                                                    <div class="table-res">
+                                                        <table class="table" data-bind="visible: $root.PageResult_ListDSXe().length > 0">
+                                                            <tr>
+                                                                <th>Biển số xe</th>
+                                                                <th>Hãng xe</th>
+                                                                <th>Loại xe</th>
+                                                                <th>Mẫu xe</th>
+                                                                <th>Màu sơn</th>
+                                                                <th>Năm sản xuất</th>
+                                                            </tr>
+                                                            <tbody data-bind="foreach: $root.PageResult_ListDSXe">
+                                                                <tr>
+                                                                    <td>
+                                                                        <a href="javascript:void(0)" data-bind="text: BienSo"></a>
+                                                                    </td>
+                                                                    <td data-bind="text: TenHangXe">
+                                                                    </td>
+                                                                    <td data-bind="text: TenLoaiXe">
+                                                                    </td>
+                                                                    <td data-bind="text: TenMauXe">
+                                                                    </td>
+                                                                    <td data-bind="text: MauSon">
+                                                                    </td>
+                                                                    <td data-bind="text: NamSanXuat">
+                                                                    </td>
+
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="text-center bg-warning padding-10" data-bind="visible: $root.PageResult_ListDSXe().length <= 0">
+                                                            <i>Không có xe nào</i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="page" data-bind="visible: $root.PageResult_ListDSXe().length > 0">
+                                                        <div class="flex flex-end">
+                                                            <a href="javascript:void(0)" data-bind="click: $root.StartPageDsXe, visible: $parent.VisibleStartPageDSXe "><i class="fa fa-step-backward" aria-hidden="true"></i></a>
+                                                            <a href="javascript:void(0)" data-bind="click: $root.BackPageDsXe, visible: $parent.VisibleStartPageDSXe "><i class="fa fa-caret-left" aria-hidden="true"></i></a>
+                                                            <ul data-bind="foreach: $parent.PageListDsXe">
+                                                                <li>
+                                                                    <a href="javascript:void(0)" data-bind="text: pageNumber, click: $root.GoToPageDsXe, css: $root.GetClassDsXe($data)"></a>
+                                                                </li>
+                                                            </ul>
+                                                            <a href="javascript:void(0)" data-bind="click: $root.GoToNextPageDsXe, visible: $parent.VisibleEndPageDSXe"><i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                            <a href="javascript:void(0)" data-bind="click: $root.EndPageDsXe, visible: $parent.VisibleEndPageDSXe"><i class="fa fa-step-forward" aria-hidden="true"></i></a>
+                                                            <div class="total-recos">
+                                                                Hiển thị <span data-bind="text: $parent.fromitemDsXe"></span> - <span data-bind="text: $parent.toitemDsXe"></span> trên tổng số
+                                                                <span data-bind="text: $parent.TotalRecordDsXe"></span> bản ghi
                                                             </div>
                                                         </div>
                                                     </div>

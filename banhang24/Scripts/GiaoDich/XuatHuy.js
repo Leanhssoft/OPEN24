@@ -14,6 +14,9 @@ function ViewModel() {
     //loaiHoaDon = 8; //  1.xuat sudung gdv, 2.xuat banle, 3. xuat suachua, 8.xuatkho
 
     self.TenChiNhanh = ko.observable();
+    self.LoaiHoaDonMenu = ko.observable(parseInt($('#txtLoaiHoaDon').val()));
+
+    console.log("xuat: ", self.LoaiHoaDonMenu)
     self.searchDonVi = ko.observableArray();
     self.MaHangHoa_Search = ko.observable();
     self.SumNumberPageReportHangHoa = ko.observableArray();
@@ -59,6 +62,7 @@ function ViewModel() {
     self.XuatHuy_ThayDoiThoiGian = ko.observable(false);
     self.HangHoa_XemGiaVon = ko.observable();
     self.XuatHuy_SuaDoi = ko.observable(false);
+    self.XuatHuy_XacNhan_Xuat = ko.observable(false);
 
     $('#txtSelectHT').attr('disabled', 'false');
     $('.modal-backdrop').remove();// used to when go to back this page at xuatkhochitiet
@@ -146,6 +150,7 @@ function ViewModel() {
         self.HangHoa_XemDS(CheckRole('HangHoa_XemDS'));
         self.XuatHuy_XemDS_HeThong(CheckRole('XuatHuy_XemDS_HeThong'));
         self.XuatHuy_XemDS_PhongBan(CheckRole('XuatHuy_XemDS_PhongBan'));
+        self.XuatHuy_XacNhan_Xuat(CheckRole('XuatHuy_XacNhan_Xuat'));
 
     };
 
@@ -1288,7 +1293,37 @@ function ViewModel() {
     self.XemThanhPhanDinhLuong = function (item) {
 
     }
-
+    self.XacNhan_Xuat = async function (item) {
+        const ngayXacNhan = await ajaxHelper(BH_HoaDonUri + 'XacNhan_NhapHangPTHong?idHoaDon=' + item.ID).done()
+            .then(function (x) {
+                if (x.res) {
+                    return x.dataSoure;
+                }
+                return null;
+            });
+        if (ngayXacNhan == null) {
+            ShowMessage_Danger('Lỗi xác nhận xuất kho');
+            return;
+        }
+       
+        let diary = {
+            ID_DonVi: item.ID_DonVi,
+            ID_NhanVien: _id_NhanVien,
+            LoaiNhatKy: 1,
+            ID_HoaDon: item.ID,
+            LoaiHoaDon: item.LoaiHoaDon,
+            ThoiGianUpdateGV: ngayXacNhan, // get date at server
+            ChucNang: 'Xác nhận xuất kho ',
+            NoiDung: 'Xác nhận xuất kho, Mã phiếu xuất '.concat(item.MaHoaDon),
+            NoiDungChiTiet: 'Thông tin chi tiết '.concat('<br /> Mã phiếu xuất: ', item.MaHoaDon,
+                '<br /> Ngày xác nhận: ', moment(ngayXacNhan).format('DD/MM/YYYY HH:mm'),
+                '<br /> User xác nhận: ', userLogin,
+                '<br /> Ghi chú: ', item.DienGiai
+            ),
+        }
+        Post_NhatKySuDung_UpdateGiaVon(diary);
+        SearchHoaDon();
+    }
     self.gotoPageOther = function (item, type) {
         switch (type) {
             case 1:

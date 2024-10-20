@@ -204,6 +204,10 @@ var NhapHangChiTiet = function () {
             lcCTNhapHang = 'ctDatNCC';
             lcHDNhapHang = 'hdDatNCC';
             break;
+        case 33:
+            lcCTNhapHang = 'ctNhapThuHoiPT';
+            lcHDNhapHang = 'hdNhapThuHoiPT';
+            break;
     }
 
     var _idDonVi = VHeader.IdDonVi;
@@ -272,6 +276,8 @@ var NhapHangChiTiet = function () {
     self.TraHangNhap_ThayDoiThoiGian = ko.observable();
     self.NhapHang_ThayDoiNhanVien = ko.observable();
     self.TraHangNhap_ThayDoiNhanVien = ko.observable();
+    self.role_XacNhan_NhapHangPTHong = ko.observable(false);
+    self.role_XacNhan_NhapHang = ko.observable(false);
     self.HangHoa_GiaBan = ko.observable();
     self.HangHoa_GiaNhap = ko.observable();
     self.HangHoa_XemGiaVon = ko.observable(true);
@@ -284,6 +290,7 @@ var NhapHangChiTiet = function () {
 
     self.role_NhapKhoNoiBo = ko.observable(VHeader.Quyen.indexOf('NhapKhoNoiBo') > -1);
     self.role_NhapHangKhachThua = ko.observable(VHeader.Quyen.indexOf('NhapHangKhachThua') > -1);
+    self.role_NhapHangPTHong = ko.observable(VHeader.Quyen.indexOf('NhapHangPTHong') > -1);
     self.role_InsertSoQuy = ko.observable(false);
 
     self.ListTypePurchase = ko.observableArray([
@@ -298,7 +305,9 @@ var NhapHangChiTiet = function () {
     if (self.role_NhapHangKhachThua()) {
         self.ListTypePurchase.push({ ID: 14, Text: 'Nhập hàng khách thừa' })
     }
-
+    if (self.role_NhapHangPTHong()) {
+        self.ListTypePurchase.push({ ID: 33, Text: 'Nhập hàng phụ tùng hỏng' })
+    }
     if (self.shopCookies() === 'c16edda0-f6d0-43e1-a469-844fab143014') {
         self.isGara(true);
     }
@@ -842,6 +851,7 @@ var NhapHangChiTiet = function () {
                     case 4:
                         self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapHang_ThayDoiThoiGian'));
                         self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapHang_ThayDoiNhanVien'));
+                        self.role_XacNhan_NhapHang(CheckQuyenExist('NhapHang_XacNhan_NhapKho'));
                         break;
                     case 31:
                         self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('DatHangNCC_ThayDoiThoiGian'));
@@ -850,6 +860,11 @@ var NhapHangChiTiet = function () {
                     case 13:
                         self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapNoiBo_ThayDoiThoiGian'));
                         self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapNoiBo_ThayDoiNhanVien'));
+                        break;
+                    case 33:
+                        self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapHangPTHong_ThayDoiThoiGian'));
+                        self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapHangPTHong_ThayDoiNhanVien'));
+                        self.role_XacNhan_NhapHangPTHong(CheckQuyenExist('NhapHangPTHong_XacNhan_NhapKho'));
                         break;
                 }
 
@@ -4143,6 +4158,8 @@ var NhapHangChiTiet = function () {
     self.showPopupNCC = function () {
         self.isNCCVanChuyen(false);
         vmThemMoiNCC.showModalAdd();
+    };
+    self.showPopupKH = function () {
     };
 
     self.showPopupEditNCC = function (item) {

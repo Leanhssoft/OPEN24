@@ -5336,6 +5336,28 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
 
+        public IHttpActionResult GetListKhoPTHong(int currentPage, int pageSize, Guid id, Guid iddonvi)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                var _classDMHH = new ClassDM_HangHoa(db);
+                List<DM_TheKhoDTO> lstreturn = _classDMHH.GetListKhoPTHong(id, iddonvi).ToList();
+
+                // find first row has TonLuyKe != TonKho (NgayLapHoaDon asc): used to update again TonLuyKe
+                var firstRow = lstreturn.Where(x => x.LuyKeTonKho != x.TonKho).OrderBy(x => x.NgayLapHoaDon).FirstOrDefault();
+
+                int totalRecords = lstreturn.Count();
+                lstreturn = lstreturn.Skip(currentPage * pageSize).Take(pageSize).ToList();
+                return Json(new
+                {
+                    lst = lstreturn,
+                    RowErrKho = firstRow,
+                    Rowcount = totalRecords,
+                    pageCount = System.Math.Ceiling(totalRecords * 1.0 / pageSize),
+                });
+            }
+        }
+
         public IHttpActionResult GetListTheKhoByMaLoHang(int currentPage, int pageSize, Guid idlohang, Guid iddonvi, Guid idhanghoa)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())

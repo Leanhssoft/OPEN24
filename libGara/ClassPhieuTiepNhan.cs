@@ -628,6 +628,7 @@ namespace libGara
         public Guid? ID_DonVi { get; set; }
         public Guid? ID_HoaDon { get; set; }
         public string MaHoaDon { get; set; }
+        public int LoaiHoaDon { get; set; }
         public string MaBaoGia { get; set; }
         public DateTime? NgayLapHoaDon { get; set; }
         public string TenDoiTuong { get; set; }

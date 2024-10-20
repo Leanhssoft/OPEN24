@@ -109,6 +109,14 @@
     self.toitemHisDH = ko.observable();
     self.TotalRecordHisDH = ko.observable(0);
     self.PageCountHisDH = ko.observable();
+
+    //paging His Danh sach Xe
+    self.pageSizeDsXe = ko.observable(5);
+    self.currentPageDsXe = ko.observable(0);
+    self.fromitemDsXe = ko.observable(1);
+    self.toitemDsXe = ko.observable();
+    self.TotalRecordDsXe = ko.observable(0);
+    self.PageCountDsXe = ko.observable();
     // paging His Tich Diem
     self.pageSizeHisTD = ko.observable(5);
     self.currentPageHisTD = ko.observable(0);
@@ -4669,6 +4677,157 @@
                 self.SoDuDatCoc(soduDatCoc);
             })
     }
+    self.ListDSXe = ko.observableArray([]);
+
+    self.PageResult_ListDSXe = ko.computed(function (x) {
+        var first = self.currentPageDsXe() * self.pageSizeDsXe();
+        if (self.ListDSXe() !== null) {
+            return self.ListDSXe().slice(first, first + self.pageSizeDsXe());
+        }
+        return null;
+    })
+    self.PageListDsXe = ko.computed(function () {
+        var arrPage = [];
+        var allPage = self.PageCountDsXe();
+        var currentPageDSXe = self.currentPageDsXe();
+        if (allPage > 4) {
+            var i = 0;
+            if (currentPageDSXe === 0) {
+                i = parseInt(self.currentPageDsXe()) + 1;
+            }
+            else {
+                i = self.currentPageDsXe();
+            }
+            if (allPage >= 5 && currentPageDSXe > allPage - 5) {
+                if (currentPageDSXe >= allPage - 2) {
+                    // get 5 trang cuoi cung
+                    for (var i = allPage - 5; i < allPage; i++) {
+                        var obj = {
+                            pageNumber: i + 1,
+                        };
+                        arrPage.push(obj);
+                    }
+                }
+                else {
+                    if (currentPageDSXe == 1) {
+                        for (var j = currentPageDSXe - 1; (j <= currentPageDSXe + 3) && j < allPage; j++) {
+                            var obj = {
+                                pageNumber: j + 1,
+                            };
+                            arrPage.push(obj);
+                        }
+                    }
+                    else {
+                        for (var j = currentPageDSXe - 2; (j <= currentPageDSXe + 2) && j < allPage; j++) {
+                            var obj = {
+                                pageNumber: j + 1,
+                            };
+                            arrPage.push(obj);
+                        }
+                    }
+                }
+            }
+            else {
+                // get 5 trang dau
+                if (i >= 2) {
+                    while (arrPage.length < 5) {
+                        var obj = {
+                            pageNumber: i - 1,
+                        };
+                        arrPage.push(obj);
+                        i = i + 1;
+                    }
+                }
+                else {
+                    while (arrPage.length < 5) {
+                        var obj = {
+                            pageNumber: i,
+                        };
+                        arrPage.push(obj);
+                        i = i + 1;
+                    }
+                }
+            }
+        }
+        else {
+            // neu chi co 1 trang --> khong hien thi DS trang
+            if (allPage > 1) {
+                for (var i = 0; i < allPage; i++) {
+                    var obj = {
+                        pageNumber: i + 1,
+                    };
+                    arrPage.push(obj);
+                }
+            }
+        }
+        if (self.ListDSXe() !== null) {
+            if (self.ListDSXe().length > 0) {
+                self.fromitemDsXe((self.currentPageDsXe() * self.pageSizeDsXe()) + 1);
+            }
+            else {
+                self.fromitemDsXe(0);
+            }
+            if (((self.currentPageDsXe() + 1) * self.pageSizeDsXe()) > self.ListDSXe().length) {
+                var fromItem = (self.currentPageDsXe() + 1) * self.pageSizeDsXe();
+                if (fromItem < self.TotalRecordDsXe()) {
+                    self.toitemDsXe((self.currentPageDsXe() + 1) * self.pageSizeDsXe());
+                }
+                else {
+                    self.toitemDsXe(self.TotalRecordDsXe());
+                }
+            } else {
+                self.toitemDsXe((self.currentPageDsXe() * self.pageSizeDsXe()) + self.pageSizeDsXe());
+            }
+        }
+        return arrPage;
+    });
+    self.VisibleStartPageDSXe = ko.computed(function () {
+        if (self.PageListDsXe().length > 0) {
+            return self.PageListDsXe()[0].pageNumber !== 1;
+        }
+    });
+    self.VisibleEndPageDSXe = ko.computed(function () {
+        if (self.PageListDsXe().length > 0) {
+            return self.PageListDsXe()[self.PageListDsXe().length - 1].pageNumber !== self.PageCountDsXe();
+        }
+    })
+    self.GoToPageDsXe = function (page) {
+        self.currentPageDsXe(page.pageNumber - 1);
+    };
+    self.GetClassDsXe = function (page) {
+        return ((page.pageNumber - 1) === self.currentPageDsXe()) ? "click" : "";
+    };
+    self.StartPageDsXe = function () {
+        self.currentPageDsXe(0);
+    }
+    self.BackPageDsXe = function () {
+        if (self.currentPageDsXe() > 1) {
+            self.currentPageDsXe(self.currentPageDsXe() - 1);
+        }
+    }
+    self.GoToNextPageDsXe = function () {
+        if (self.currentPageDsXe() < self.PageCountDsXe() - 1) {
+            self.currentPageDsXe(self.currentPageDsXe() + 1);
+        }
+    }
+    self.EndPageDsXe= function () {
+        if (self.currentPageDsXe() < self.PageCountDsXe() - 1) {
+            self.currentPageDsXe(self.PageCountDsXe() - 1);
+        }
+    }
+    self.LoadTabDSXe = function () {
+        self.typeTab = ''        
+        let ids = GetIDDonVis_Chosed();
+        ajaxHelper('/api/DanhMuc/GaraAPI/' + 'GetAllXe_ofDoiTuong?idDoiTuong=' + self.IDDT() + '&idChiNhanh=' + ids, 'GET').done(function (data) {
+                if (data !== null) {
+                    self.ListDSXe(data);
+                    var lenData = data.length;
+                    self.TotalRecordDsXe(lenData);
+                    self.PageCountDsXe(Math.ceil(lenData / self.pageSizeDsXe()));
+                }
+        });
+    }
+
     self.LoadTabTienCoc = function () {
         self.typeTab('tiencoc');
         var param = {

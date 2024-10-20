@@ -3571,6 +3571,16 @@ namespace libDM_DoiTuong
                          "@ID_NhanVienLogin, @NguoiTao, @TrangThai," +
                          "@ColumnSort, @SortBy, @CurrentPage, @PageSize, @LaHoaDonSuaChua ", sql.ToArray()).ToList();
                     break;
+                case 32:
+                    sql.Add(new SqlParameter("TrangThai", trangthais));
+                    sql.Add(new SqlParameter("ColumnSort", param.Cot_SapXep));
+                    sql.Add(new SqlParameter("SortBy", param.SortBy));
+                    sql.Add(new SqlParameter("CurrentPage", param.CurrentPage));
+                    sql.Add(new SqlParameter("PageSize", param.PageSize));
+                    data = db.Database.SqlQuery<BH_HoaDonDTO>(" exec GetList_LenhBaoHanh @timeStart, @timeEnd, @ID_ChiNhanh, @maHD," +
+                         "@ID_NhanVienLogin, @NguoiTao, @TrangThai," +
+                         "@ColumnSort, @SortBy, @CurrentPage, @PageSize ", sql.ToArray()).ToList();
+                    break;
                 case 6:
                     sql.Add(new SqlParameter("TrangThai", trangthais));
                     sql.Add(new SqlParameter("ColumnSort", param.Cot_SapXep));

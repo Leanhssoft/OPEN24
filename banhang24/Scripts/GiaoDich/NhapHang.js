@@ -111,6 +111,9 @@
     self.Role_KhongDuocXemPhieuNhap_CuaNVKhac = ko.observable(false);
     self.role_NhapKhoNoiBo = ko.observable(VHeader.Quyen.indexOf('NhapKhoNoiBo') > -1);
     self.role_NhapHangKhachThua = ko.observable(VHeader.Quyen.indexOf('NhapHangKhachThua') > -1);
+    self.role_NhapHangPTHong = ko.observable(VHeader.Quyen.indexOf('NhapHangPTHong') > -1);
+    self.role_XacNhan_NhapHang = ko.observable(false);
+    self.role_XacNhan_NhapHangPTHong = ko.observable(false);
 
     //phân trang
     self.PageCount = ko.observable();
@@ -138,19 +141,28 @@
     self.LoaiHoaDon_13 = ko.observable(true);
     self.LoaiHoaDon_14 = ko.observable(true);
     self.LoaiHoaDon_31 = ko.observable(true);
+    self.LoaiHoaDon_33 = ko.observable(true);
 
     switch (self.LoaiHoaDonMenu()) {
         case 4:
             self.LoaiHoaDon_31(false);
             self.LoaiHoaDon_13(false);
+            self.LoaiHoaDon_33(false);
             break;
         case 13:
             self.LoaiHoaDon_4(false);
             self.LoaiHoaDon_31(false);
+            self.LoaiHoaDon_33(false);
             break;
         case 31:
             self.LoaiHoaDon_4(false);
             self.LoaiHoaDon_13(false);
+            self.LoaiHoaDon_33(false);
+            break;
+        case 33: 
+            self.LoaiHoaDon_4(false);
+            self.LoaiHoaDon_13(false);
+            self.LoaiHoaDon_31(false);
             break;
     }
 
@@ -174,8 +186,11 @@
 
     function LoadColumnCheck() {
         let sLoai = 4;
-        if (self.LoaiHoaDonMenu() === 13) {
-            sLoai = self.LoaiHoaDonMenu();
+        switch (self.LoaiHoaDonMenu()) {
+            case 13:
+            case 33:
+                sLoai = self.LoaiHoaDonMenu();
+                break;
         }
         ajaxHelper('/api/DanhMuc/BaseAPI/' + "GetListColumnInvoices?loaiHD=" + sLoai, 'GET').done(function (data) {
             self.ListCheckBox(data);
@@ -256,6 +271,7 @@
                         self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapHang_ThayDoiNhanVien'));
                         self.roleNhapHang_Insert(CheckQuyenExist('NhapHang_ThemMoi'));
                         self.roleNhapHang_Export(CheckQuyenExist('NhapHang_XuatFile'));
+                        self.role_XacNhan_NhapHang(CheckQuyenExist('NhapHang_XacNhan_NhapKho'))
                         self.Show_BtnCopy(CheckQuyenExist('NhapHang_SaoChep'));
                         self.Show_BtnEdit(CheckQuyenExist('NhapHang_CapNhat'));
                         self.Show_BtnUpdate(CheckQuyenExist('NhapHang_CapNhat'));
@@ -283,6 +299,18 @@
                         self.Show_BtnUpdate(CheckQuyenExist('DatHangNCC_CapNhat'));
                         self.Show_BtnDelete(CheckQuyenExist('DatHangNCC_Xoa'));
                         self.Show_BtnExcelDetail(CheckQuyenExist('DatHangNCC_XuatFile'));
+                        break;
+                    case 33:
+                        self.NhapHang_ThayDoiThoiGian(CheckQuyenExist('NhapHangPTHong_ThayDoiThoiGian'));
+                        self.NhapHang_ThayDoiNhanVien(CheckQuyenExist('NhapHangPTHong_ThayDoiNhanVien'));
+                        self.roleNhapHang_Insert(CheckQuyenExist('NhapHangPTHong_ThemMoi'));
+                        self.roleNhapHang_Export(CheckQuyenExist('NhapHangPTHong_XuatFile'));
+                        self.role_XacNhan_NhapHangPTHong(CheckQuyenExist('NhapHangPTHong_XacNhan_NhapKho'))
+                        self.Show_BtnCopy(CheckQuyenExist('NhapHangPTHong_SaoChep'));
+                        self.Show_BtnEdit(CheckQuyenExist('NhapHangPTHong_CapNhat'));
+                        self.Show_BtnUpdate(CheckQuyenExist('NhapHangPTHong_CapNhat'));
+                        self.Show_BtnDelete(CheckQuyenExist('NhapHangPTHong_Xoa'));
+                        self.Show_BtnExcelDetail(CheckQuyenExist('NhapHangPTHong_XuatFile'));
                         break;
                 }
 
@@ -825,6 +853,9 @@
         if (self.LoaiHoaDon_31()) {
             arrLoaiHD.push(31);
         }
+        if (self.LoaiHoaDon_33()) {
+            arrLoaiHD.push(33);
+        }
 
         // NgayLapHoaDon
         var _now = new Date();  //current date of week
@@ -1059,6 +1090,11 @@
     });
 
     self.LoaiHoaDon_14.subscribe(function (newVal) {
+        ResetSearch();
+        SearchHoaDon();
+    });
+
+    self.LoaiHoaDon_33.subscribe(function (newVal) {
         ResetSearch();
         SearchHoaDon();
     });
@@ -1541,6 +1577,9 @@
                 break;
             case 13:
                 window.open('/#/NhapNoiBoItem', '_blank');
+                break;
+            case 33:
+                window.open('/#/NhapThuHoiPTItem', '_blank');
                 break;
         }
     }
@@ -2409,7 +2448,7 @@
 
         let url = 'ExportExcel_PhieuNhapHang';
         let fileNameExport = 'PhieuNhapHang.xlsx';
-        if (self.LoaiHoaDon_13()) {
+        if (self.LoaiHoaDon_13() || self.LoaiHoaDon_33()) {
             url = 'ExportExcel_PhieuNhapKhoNoiBo';
         }
         let exportOK = false;
@@ -2827,6 +2866,41 @@
                 mask: true,
                 timepicker: false,
             });
+    }
+    self.XacNhan_NhapHangPTHong = async function (item) {
+        const ngayXacNhan = await ajaxHelper(BH_HoaDonUri + 'XacNhan_NhapHangPTHong?idHoaDon=' + item.ID).done()
+            .then(function (x) {
+                if (x.res) {
+                    return x.dataSoure;
+                }
+                return null;
+            });
+        if (ngayXacNhan == null) {
+            ShowMessage_Danger('Lỗi xác nhận nhập kho');
+            return;
+        }
+
+        const cthd = await self.GetCTHD_fromDB(item.ID, item.ID_DonVi);
+        self.BH_HoaDonChiTietsThaoTac(cthd);
+        self.InHoaDon(item);
+
+        let diary = {
+            ID_DonVi: item.ID_DonVi,
+            ID_NhanVien: _id_NhanVien,
+            LoaiNhatKy: 1,
+            ID_HoaDon: item.ID,
+            LoaiHoaDon: item.LoaiHoaDon,
+            ThoiGianUpdateGV: ngayXacNhan, // get date at server
+            ChucNang: 'Xác nhận nhập hàng phụ tùng hỏng',
+            NoiDung: 'Xác nhận nhập hàng phụ tùng hỏng, Mã phiếu nhập '.concat(item.MaHoaDon),
+            NoiDungChiTiet: 'Thông tin chi tiết '.concat('<br /> Mã phiếu nhập: ', item.MaHoaDon,
+                '<br /> Ngày xác nhận: ', moment(ngayXacNhan).format('DD/MM/YYYY HH:mm'),
+                '<br /> User xác nhận: ', userLogin,
+                '<br /> Ghi chú: ', item.DienGiai
+            ),
+        }
+        Post_NhatKySuDung_UpdateGiaVon(diary);
+        SearchHoaDon();
     }
 };
 

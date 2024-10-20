@@ -258,7 +258,8 @@ namespace banhang24.Controllers
                 classHT_NguoiDung classHTNguoiDung = new classHT_NguoiDung(db);
                 userLogin objUser_Cookies = classHTNguoiDung.GetUserCookies(this);
                 ViewBag.ShopCookies = CookieStore.GetCookieAes("shop").ToUpper();
-                ViewBag.LoaiHoaDon = id.Substring(0, 1);
+                //ViewBag.LoaiHoaDon = id.Substring(0, 1);
+                ViewBag.LoaiHoaDon = id.Split('?')[0];
                 if (objUser_Cookies != null)
                 {
                     ViewBag.cookieUserLogin = objUser_Cookies.TaiKhoan;

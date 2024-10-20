@@ -299,6 +299,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     double DoanhThuPT = 0, DoanhThuSuaChuaPT = 0, DoanhThuBanHangPT = 0, CongNoPT = 0, CongNoPhaiThuPT = 0,
                         CongNoPhaiTraPT = 0, TienThuPT = 0, TienThuTienMatPT = 0, TienThuNganHangPT = 0,
                         TienChiPT = 0, TienChiTienMatPT = 0, TienChiNganHangPT = 0;
+                    int countHoaDonSuaChua = tongquan.SoLuongHoaDonSuaChua;
+                    int countHoaDonBanHang = tongquan.SoLuongHoaDonBanHang;
                     if (tongquanSoSanh != null)
                     {
                         //TongDoanhThu
@@ -515,12 +517,14 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             SuaChua = new
                             {
                                 DoanhThu = Math.Round(tongquan.DoanhThuSuaChua, 0),
-                                PhanTram = Math.Round(DoanhThuSuaChuaPT, 0)
+                                PhanTram = Math.Round(DoanhThuSuaChuaPT, 0),
+                                CountHoaDonSuaChua = countHoaDonSuaChua
                             },
                             BanHang = new
                             {
                                 DoanhThu = Math.Round(tongquan.DoanhThuBanHang, 0),
-                                PhanTram = Math.Round(DoanhThuBanHangPT, 0)
+                                PhanTram = Math.Round(DoanhThuBanHangPT, 0),
+                                CountHoaDonBanHang = countHoaDonBanHang
                             }
                         },
                         CongNo = new

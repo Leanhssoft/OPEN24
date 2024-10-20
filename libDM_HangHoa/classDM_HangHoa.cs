@@ -2743,6 +2743,20 @@ namespace libDM_HangHoa
             return lst;
         }
 
+        public List<DM_TheKhoDTO> GetListKhoPTHong(Guid id, Guid iddonvi)
+        {
+            List<DM_TheKhoDTO> lst = new List<DM_TheKhoDTO>();
+            if (db != null)
+            {
+
+                List<SqlParameter> paramlist = new List<SqlParameter>();
+                paramlist.Add(new SqlParameter("ID_HangHoa", id));
+                paramlist.Add(new SqlParameter("IDChiNhanh", iddonvi));
+                return db.Database.SqlQuery<DM_TheKhoDTO>("Exec NhapHang_PhuTung_Hong @ID_HangHoa, @IDChiNhanh", paramlist.ToArray()).ToList();
+            }
+            return lst;
+        }
+
         public List<DM_TheKhoDTO> GetListTheKhoByMaLoHang(Guid idlohang, Guid iddonvi, Guid idhanghoa)
         {
             List<DM_TheKhoDTO> lst = new List<DM_TheKhoDTO>();

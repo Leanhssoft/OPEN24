@@ -182,6 +182,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     data = commonEnum.ListColumnInvoicesSuaChua.ToList();
                     break;
                 case 3:
+                case 32:
                     data = commonEnum.ListColumnOrders.ToList();
                     break;
                 case 4:
@@ -189,6 +190,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     break;
                 case 13:
                     data = commonEnum.ListColumnNhapNoiBo.ToList();
+                    break;
+                case 33:
+                    data = commonEnum.ListColumnNhapThuHoiPT.ToList();
                     break;
                 case 6:
                     data = commonEnum.ListColumnReturns.ToList();

@@ -26,6 +26,7 @@ var workTable = new Vue({
                 XuatXuong: true
             },
             BaoGia: { ThemMoi: true, Duyet: true, XuLy: true, CapNhat: true, In: true },
+            LenhBaoHanh: { ThemMoi: true, Duyet: true, XuLy: true, CapNhat: true, In: true },
             HoaDon: { ThemMoi: true, SuaDoi: true, In: true, NhapHang: true },
             XuatKho: {},
         };
@@ -106,6 +107,7 @@ var workTable = new Vue({
                     self.role.PhieuTiepNhan.In = self.CheckRole('PhieuTiepNhan_In');
                     self.role.PhieuTiepNhan.BatBuocNhapKmVao = self.CheckRole('PhieuTiepNhan_BatBuocNhapKmVao');
                     self.role.BaoGia.ThemMoi = self.CheckRole('DatHang_ThemMoi');
+                    self.role.LenhBaoHanh.ThemMoi = self.CheckRole('DatHang_ThemMoi');
                     self.role.HoaDon.ThemMoi = self.CheckRole('HoaDon_ThemMoi');
 
                     self.role.BaoGia.CapNhat = self.CheckRole('DatHang_CapNhat');
@@ -113,6 +115,12 @@ var workTable = new Vue({
                     self.role.BaoGia.Xoa = self.CheckRole('DatHang_Xoa');
                     self.role.BaoGia.XuLy = self.CheckRole('DatHang_TaoHoaDon');
                     self.role.BaoGia.Duyet = self.CheckRole('DatHang_DuyetBaoGia');
+
+                    self.role.LenhBaoHanh.CapNhat = self.CheckRole('LenhBaoHanh_CapNhat');
+                    self.role.LenhBaoHanh.In = self.CheckRole('LenhBaoHanh_In');
+                    self.role.LenhBaoHanh.Xoa = self.CheckRole('LenhBaoHanh_Xoa');
+                    self.role.LenhBaoHanh.XuLy = self.CheckRole('LenhBaoHanh_TaoHoaDon');
+                    self.role.LenhBaoHanh.Duyet = self.CheckRole('LenhBaoHanh_DuyetLenh');
                 }
             });
         }
@@ -338,6 +346,13 @@ var workTable = new Vue({
             self.role.BaoGia.Xoa = self.CheckRole('DatHang_Xoa');
             self.role.BaoGia.XuLy = self.CheckRole('DatHang_TaoHoaDon');
             self.role.BaoGia.Duyet = self.CheckRole('DatHang_DuyetBaoGia');
+
+            self.role.LenhBaoHanh.ThemMoi = self.CheckRole('LenhBaoHanh_ThemMoi');
+            self.role.LenhBaoHanh.CapNhat = self.CheckRole('LenhBaoHanh_CapNhat');
+            self.role.LenhBaoHanh.In = self.CheckRole('LenhBaoHanh_In');
+            self.role.LenhBaoHanh.Xoa = self.CheckRole('LenhBaoHanh_Xoa');
+            self.role.LenhBaoHanh.XuLy = self.CheckRole('LenhBaoHanh_TaoHoaDon');
+            self.role.LenhBaoHanh.Duyet = self.CheckRole('LenhBaoHanh_DuyetLenh');
 
             self.role.HoaDon.ThemMoi = self.CheckRole('HoaDon_ThemMoi');
             self.role.HoaDon.SuaDoi = self.CheckRole('HoaDon_SuaDoi');
@@ -736,11 +751,14 @@ var workTable = new Vue({
             vmChiTietHoaDon.showModalChiTietHoaDon(id);
         },
         Duyet_HuyBaoGia: function (item, type) {
-            var self = this;
+            var self = this;      
             var title = '';
             var statusText = '';
             var status = '';
             var title = '';
+            var titleType = '';
+            debugger;
+            console.log('duyet, huy', item.LoaiHoaDon);
             switch (type) {
                 case false:// duyet
                     title = 'Duyệt';
@@ -759,23 +777,28 @@ var workTable = new Vue({
                     break;
 
             }
-            commonStatisJs.ConfirmDialog_OKCancel(title.concat(' báo giá'),
-                'Bạn có chắc chắn muốn '.concat(title.toLocaleLowerCase(), ' báo giá <b> ', item.MaHoaDon, ' </b> không ? '), function () {
+            if (item.LoaiHoaDon === 32) {
+                titleType = 'lệnh bảo hành';
+            } else {
+                titleType = 'báo giá';
+            }
+            commonStatisJs.ConfirmDialog_OKCancel(title.concat(' ', titleType),
+                'Bạn có chắc chắn muốn '.concat(title.toLocaleLowerCase(), ' ', titleType, ' <b> ', item.MaHoaDon, ' </b> không ? '), function () {
                     title = title.toLocaleLowerCase();
 
                     ajaxHelper(self.GaraAPI + 'Duyet_HuyBaoGia?id=' + item.ID + '&trangthai=' + type, 'GET').done(function (x) {
                         if (x.res) {
-                            commonStatisJs.ShowMessageSuccess('Đã ' + title + ' báo giá thành công');
+                            commonStatisJs.ShowMessageSuccess('Đã ' + title + ' ' + titleType + ' thành công');
                             item.TrangThai = 0;
                             item.TrangThaiText = 'Đã ' + title;
                             // savediary
                             var diary = {
                                 ID_DonVi: self.ID_DonVi,
                                 ID_NhanVien: self.ID_NhanVien,
-                                ChucNang: 'Bàn làm việc - Báo giá',
+                                ChucNang: 'Bàn làm việc - ' + titleType,
                                 LoaiNhatKy: 1,
-                                NoiDung: title.concat(' báo giá ', item.MaHoaDon),
-                                NoiDungChiTiet: title.concat(' báo giá ', item.MaHoaDon,
+                                NoiDung: title.concat(' ', titleType, ' ', item.MaHoaDon),
+                                NoiDungChiTiet: title.concat(' ', titleType, ' ', item.MaHoaDon,
                                     ', người ', title, ': ', self.UserLogin),
                             }
                             Insert_NhatKyThaoTac_1Param(diary);
@@ -816,13 +839,14 @@ var workTable = new Vue({
                             }
                         }
                         else {
-                            commonStatisJs.ShowMessageDanger(title + ' báo giá thất bại');
+                            commonStatisJs.ShowMessageDanger(title + ' ' + titleType + ' thất bại');
                         }
                     })
 
                 })
         },
         Huy_HoaDon: function (item, loaiHD) {
+            debugger;
             var self = this;
             //var msgBottom = '';
             var msgDialog = '';
@@ -843,6 +867,13 @@ var workTable = new Vue({
                     sLoai = 'báo giá';
                     msgBottom = "Báo giá đã tạo hóa đơn và xuất kho. Không thể hủy";
                     break;
+
+                case 32:
+                    urlCheck = 'CheckBaoGia_DaTaoHoaDonSuaChua_VaXuatKho?id=' + idHoaDon;
+                    idHoaDon = item.ID;
+                    sLoai = 'bảo hành';
+                    msgBottom = "Lệnh bảo hành đã tạo hóa đơn và xuất kho. Không thể hủy";
+                    break;
             }
             // khong duoc huy: hoadon da xuatkho, baogia: da co hoadon + xuatkho
             ajaxHelper(self.GaraAPI + urlCheck, 'GET').done(function (x) {
@@ -851,7 +882,7 @@ var workTable = new Vue({
                     return;
                 }
                 else {
-                    if (item.LoaiHoaDon !== 3) {
+                    if (item.LoaiHoaDon !== 3 && item.LoaiHoaDon !== 32) {
                         msgDialog = 'Có muốn hủy hóa đơn <b>' + mahoadon + '</b> cùng những phiếu liên quan không?'
                     }
                     else {
@@ -889,7 +920,7 @@ var workTable = new Vue({
                                 }
                                 Insert_NhatKyThaoTac_1Param(objDiary);
 
-                                if (loaiHD === 3) {
+                                if (loaiHD === 3 || loaiHD === 32) {
                                     for (let i = 0; i < self.listData.BaoGias.length; i++) {
                                         if (self.listData.BaoGias[i].ID === item.ID) {
                                             self.listData.BaoGias.splice(i, 1);
@@ -999,13 +1030,18 @@ var workTable = new Vue({
             localStorage.setItem('phieuTN', JSON.stringify(item));
             self.GotoGara('TN_taobaogia');
         },
+        AddLenhBaoHanh: function (item) {
+            var self = this;
+            item.LoaiHoaDon = 32;
+            localStorage.setItem('phieuTN', JSON.stringify(item));
+            self.GotoGara('TN_taobaogia');
+        },
         AddHoaDon: function (item) {
             var self = this;
             item.LoaiHoaDon = 25;
             localStorage.setItem('phieuTN', JSON.stringify(item));
             self.GotoGara('TN_taohoadon');
         },
-
         newHoaDon: function (item, trangthaiHD) {
             var obj = $.extend({}, item);
             obj.IDRandom = CreateIDRandom('HD_');
@@ -1274,6 +1310,7 @@ var workTable = new Vue({
         },
 
         XuLyBaoGia: async function (item) {
+            debugger;
             // chi get cthd chua duoc xuly
             var self = this;
             const hdDB = await self.GetInforHD_fromDB(item.ID);
@@ -1283,7 +1320,7 @@ var workTable = new Vue({
             newObj.NgayLapHoaDon = moment(hdDB.NgayLapHoaDon).format('YYYY-MM-DD HH:mm');
             newObj.DaThanhToan = 0;
             newObj.KhachDaTra = hdDB.KhachDaTra;
-            newObj.LoaiHoaDon = 3;
+            newObj.LoaiHoaDon = hdDB.LoaiHoaDon;
             newObj.TongGiamGiaDB = hdDB.TongGiamGia;// used to check if xulyhoadon lan 2
             newObj.BienSo = self.listData.ThongTinXe.BienSo;
             newObj.TongThueKhachHang = hdDB.TongTienThue;
@@ -1323,7 +1360,7 @@ var workTable = new Vue({
                         ctNew.NgayHetHan = dateLot.NgayHetHan;
 
                         ctNew.MaHoaDon = hdDB.MaHoaDon;
-                        ctNew.LoaiHoaDon = 3;
+                        ctNew.LoaiHoaDon = hdDB.LoaiHoaDon; //3
                         ctNew.SoLuongDaMua = 0;
                         ctNew.DVTinhGiam = 'VND';
                         ctNew.GiaBan = ctNew.DonGia;
@@ -1495,8 +1532,9 @@ var workTable = new Vue({
             return {};
         },
         CapNhatHoaDon: async function (item, loaiHD) {
+            debugger;
             let self = this;
-            let loaiCheck = loaiHD == 3 ? 25 : 8;
+            let loaiCheck = (loaiHD == 3 || loaiHD == 32) ? 25 : 8;
             let check = await self.CheckHoaDon_DaXuLy(item.ID, loaiCheck);
             let mes = '';
             if (check) {
@@ -1506,6 +1544,9 @@ var workTable = new Vue({
                         break;
                     case 25:
                         mes = 'Hóa đơn đã xuất kho. Không thể sửa đổi';
+                        break;
+                    case 32:
+                        mes = 'Lệnh bảo hành đã tạo hóa đơn. Không thể sửa đổi';
                         break;
                 }
             }
@@ -1528,14 +1569,14 @@ var workTable = new Vue({
             // if empty: return
             // else: always get HD from DB
 
-            let newObj = self.newHoaDon(hdDB, loaiHD === 3 ? 3 : 8);
+            let newObj = self.newHoaDon(hdDB, (loaiHD === 3 || loaiHD == 32) ? 3 : 8);
             newObj.DaThanhToan = 0;
             newObj.SoDuDatCoc = 0;
             newObj.DuyetBaoGia = (parseInt(hdDB.TrangThai) === 0);
             newObj.LoaiHoaDon = loaiHD;
             newObj.BienSo = self.listData.ThongTinXe.BienSo;
             newObj.ID_Xe = self.listData.ThongTinXe.ID_Xe;
-            newObj.KhachDaTra = loaiHD === 3 ? 0 : hdDB.KhachDaTra;
+            newObj.KhachDaTra = (loaiHD === 3 || loaiHD === 32) ? 0 : hdDB.KhachDaTra;
 
             let thueKH = hdDB.TongThueKhachHang;
             if (commonStatisJs.CheckNull(thueKH)) {
@@ -1552,7 +1593,8 @@ var workTable = new Vue({
             }
 
             var tonggiamgiahang = 0, tongtienhangchuaCK = 0;
-            var updatePrice = loaiHD == 3 ? self.CheckRole('DatHang_ThayDoiGia') : self.CheckRole('HoaDon_ThayDoiGia');
+            //thay doi gia tien
+            var updatePrice = loaiHD == 3 ? self.CheckRole('DatHang_ThayDoiGia') : (loaiHD == 32 ? self.CheckRole('LenhBaoHanh_ThayDoiGia') : self.CheckRole('HoaDon_ThayDoiGia'));
             var chitiets = [];
 
             const cthdDB = await self.GetChiTietHD_fromDB(item.ID);
@@ -1596,7 +1638,7 @@ var workTable = new Vue({
                 ctNew.CssWarning = false;
                 ctNew = self.SetDefaultPropertierCTHD(ctNew);
 
-                if (loaiHD !== 3) {
+                if (loaiHD !== 3 && loaiHD !== 32) {
                     ctNew.TongPhiDichVu = ctNew.SoLuong * ctNew.PhiDichVu;
                     if (ctNew.LaPTPhiDichVu) {
                         ctNew.TongPhiDichVu
@@ -1729,6 +1771,7 @@ var workTable = new Vue({
         },
 
         GotoGara: function (cacheValue, typePage = 0) {
+            debugger;
             var target = '_blank';
             if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator.standalone) || document.referrer.includes('android-app://')) {
                 target = '_self'

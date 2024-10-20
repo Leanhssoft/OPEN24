@@ -175,6 +175,9 @@
                         <!--ko if:$root.LoaiHoaDonMenu() === 31 -->
                         <span>Đặt hàng nhà cung cấp</span>
                         <!--/ko-->
+                        <!--ko if:$root.LoaiHoaDonMenu() === 33 -->
+                        <span>Thu hồi phụ tùng</span>
+                        <!--/ko-->
                     </h2>
                 </div>
                 <div class="flex flex-between">
@@ -248,8 +251,11 @@
                 <div class="table-reponsive bangchung table-frame">
                     <table class="table-hover table-new" id="tb">
                         <thead class="thead-boder">
-                            <!--ko if: $root.LoaiHoaDonMenu() !==13 -->
+                            <!--ko if: $root.LoaiHoaDonMenu() !==13 && $root.LoaiHoaDonMenu() !==33 -->
                             <tr>
+                                <!--ko if: $root.LoaiHoaDonMenu() ==4 -->
+                                <th>#</th>
+                                <!--/ko-->
                                 @foreach (var item in commonEnum.ListColumnPurchaseOrder)
                                 {
                                     <th class="@item.Key">
@@ -268,10 +274,35 @@
                                 }
                             </tr>
                             <!--/ko-->
+                            <!--ko if: $root.LoaiHoaDonMenu() === 33 -->
+                            <tr>
+                                <th>#</th>
+                                @foreach (var item in commonEnum.ListColumnNhapThuHoiPT)
+                                {
+                                    <th class="@item.Key">
+                                        <a href="javascript:void(0)">@item.Value</a>
+                                    </th>
+                                }
+                            </tr>
+                            <!--/ko-->
                         </thead>
-                        <!--ko if: $root.LoaiHoaDonMenu() !==13 -->
+                        <!--ko if: $root.LoaiHoaDonMenu() !==13 && $root.LoaiHoaDonMenu() !==33 -->
                         <tbody data-bind="foreach: HoaDons">
                             <tr class="prev-tr-hide" id="table" data-bind="click: $parent.LoadChiTietHD,css:{bggray : $index()%2 == 1}">
+                                <!--ko if: $root.LoaiHoaDonMenu() == 4 -->
+                                <td class="js_tdAction">
+                                    <!--ko if: $root.role_XacNhan_NhapHang()  -->
+                                    <a href="javascript:void(0)" class="red"
+                                       data-bind="visible: ChoThanhToan == true, click: $root.XacNhan_NhapHangPTHong">Xác nhận</a>
+                                    <span data-bind="visible: ChoThanhToan == false">Đã nhập</span>
+                                    <!--/ko-->
+                                    <!--ko if: !$root.role_XacNhan_NhapHang()-->
+                                    <span data-bind="visible: ChoThanhToan == false">Đã nhập</span>
+                                    <span data-bind="visible: ChoThanhToan == true">Chưa nhập</span>
+                                    <!--/ko-->
+                                    <span data-bind="visible: ChoThanhToan == null">Đã hủy</span>
+                                </td>
+                                <!--/ko-->
                                 <td class="@commonEnum.ColumnPurchaseOrder.mahoadon" data-bind="text: MaHoaDon"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.ngaylaphoadon"><span data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></span></td>
                                 <td class="@commonEnum.ColumnPurchaseReturns.makhachhang ">
@@ -553,7 +584,7 @@
                                                             <i class="fa fa-share"></i> Nhập mua
                                                         </button>
                                                         <!--/ko-->
-                                                        <!--ko if: $root.LoaiHoaDonMenu() !==31 -->
+                                                        <!--ko if: $root.LoaiHoaDonMenu() !==31 && $root.LoaiHoaDonMenu() !==33-->
                                                         <div class="dropdown-mauin " style="margin-right:5px" data-bind="visible: ChoThanhToan == false  && $root.Enable_NgayLapHD()">
                                                             <button class="btn btn-main btn-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 <i class="fa fa-bars"></i>Hoạt động <span class="caret"></span>
@@ -650,7 +681,7 @@
                         </tbody>
                         <tfoot data-bind="visible: HoaDons().length > 0">
                             <tr class="border-bottom bg12 bold">
-                                <td class="@commonEnum.ColumnPurchaseOrder.mahoadon">Tổng cộng</td>
+                                <td class="@commonEnum.ColumnPurchaseOrder.mahoadon" data-bind="attr:{colspan: $root.LoaiHoaDonMenu() == 4 ? 2 : 1}">Tổng cộng</td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.ngaylaphoadon"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.makhachhang"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.tenkhachhang"></td>
@@ -680,9 +711,23 @@
                             </tr>
                         </tfoot>
                         <!--/ko-->
-                        <!--ko if: $root.LoaiHoaDonMenu() ==13 -->
+                        <!--ko if: $root.LoaiHoaDonMenu() ==13 || $root.LoaiHoaDonMenu() ==33-->
                         <tbody data-bind="foreach: HoaDons">
                             <tr class="prev-tr-hide" id="table" data-bind="click: $parent.LoadChiTietHD,css:{bggray : $index()%2 == 1}">
+                                <!--ko if: $root.LoaiHoaDonMenu() == 33 -->
+                                <td class="js_tdAction">
+                                    <!--ko if: $root.role_XacNhan_NhapHangPTHong()-->
+                                    <a href="javascript:void(0)" class="red"
+                                       data-bind="visible: ChoThanhToan == true, click: $root.XacNhan_NhapHangPTHong">Xác nhận</a>
+                                    <span data-bind="visible: ChoThanhToan == false">Đã nhập</span>
+                                    <!--/ko-->
+                                    <!--ko if: !$root.role_XacNhan_NhapHangPTHong()-->
+                                    <span data-bind="visible: ChoThanhToan == false">Đã nhập</span>
+                                    <span data-bind="visible: ChoThanhToan == true">Chưa nhập</span>
+                                    <!--/ko-->
+                                    <span data-bind="visible: ChoThanhToan == null">Đã hủy</span>
+                                </td>
+                                <!--/ko-->
                                 <td class="@commonEnum.ColumnPurchaseOrder.mahoadon" data-bind="text: MaHoaDon"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.ngaylaphoadon">
                                     <span data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></span>
@@ -973,7 +1018,7 @@
                                                             <i class="fa fa-cut"></i> Sao chép
                                                         </button>
                                                         <!--/ko-->
-                                                        <!--ko if: $root.Show_BtnDelete() && $root.Enable_NgayLapHD()-->
+                                                        <!--ko if: $root.Show_BtnDelete() && $root.Enable_NgayLapHD() && ChoThanhToan !==null-->
                                                         <button class="btn btn-cancel" data-bind="click: $parent.modalDelete">
                                                             <i class="fa fa-close"></i>Hủy bỏ
                                                         </button>
@@ -1022,7 +1067,7 @@
                         </tbody>
                         <tfoot data-bind="visible: HoaDons().length > 0">
                             <tr class="border-bottom bg12 bold">
-                                <td class="@commonEnum.ColumnPurchaseOrder.mahoadon">Tổng cộng</td>
+                                <td class="@commonEnum.ColumnPurchaseOrder.mahoadon" data-bind="attr:{colspan: $root.LoaiHoaDonMenu() == 33 ? 2 : 1}">Tổng cộng</td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.ngaylaphoadon"></td>
                                 <td class="@commonEnum.ColumnInvoices.nguoitao"></td>
                                 <td class="@commonEnum.ColumnPurchaseOrder.makhachhang"></td>
