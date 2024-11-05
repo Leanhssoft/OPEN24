@@ -796,28 +796,6 @@ function SetConvertDataTest(strInput) {
                     result = result.replace(temptable1, temptable);
 
                     result = Replace_TheoNhom(result);
-
-                    //result = result.replace('{TheoNhomHang}', '');
-                    //result = result.replace("{TenNhomHangHoa}",
-                    //    " <span data-bind=\"text: TenNhomHangHoa\"> </span>");
-                    //result = result.replace('{SoThuTuNhom}', ' <span data-bind="text: SoThuTuNhom"> </span>');
-                    //result = result.replace('{SoThuTuNhom_LaMa}', ' <span data-bind="text: SoThuTuNhom_LaMa"> </span>');
-
-                    //result = result.replace('{TongTienTheoNhom}',
-                    //    '<span data-bind="text: TongTienTheoNhom" > </span>');
-                    //result = result.replace('{TongTienTheoNhom_TruocVAT}',
-                    //    '<span data-bind="text: TongTienTheoNhom_TruocVAT" > </span>');
-                    //result = result.replace("{TongTienTheoNhom_TruocCK}",
-                    //    "<span data-bind=\"text: TongTienTheoNhom_TruocCK\" > </span>");
-                    //result = result.replace("{TongTienTheoNhom_TruocCK_SauVAT}",
-                    //    "<span data-bind=\"text: TongTienTheoNhom_TruocCK_SauVAT\" > </span>");
-
-                    //result = result.replace("{TongSLTheoNhom}",
-                    //    "<span data-bind=\"text: TongSLTheoNhom\" > </span>");
-                    //result = result.replace("{TongThueTheoNhom}",
-                    //    "<span data-bind=\"text: TongThueTheoNhom\" > </span>");
-                    //result = result.replace("{TongCKTheoNhom}",
-                    //    "<span data-bind=\"text: TongCKTheoNhom\" > </span>");
                 }
                 else {
                     if (strInput.indexOf('{Combo}') > -1) {
