@@ -432,7 +432,7 @@
                     ShowMessage_Danger('Không có quyền xem danh sách ' + sLoai)
                 }
                 break;
-            case 3:           
+            case 3:
                 self.RoleView_Order(CheckQuyenExist('DatHang_XemDS'));
                 self.RoleRestore_Order(CheckQuyenExist('DatHang_Restore'));
                 self.RoleInsert_Order(CheckQuyenExist('DatHang_ThemMoi'));
@@ -740,7 +740,6 @@
         self.ID_NhanVieUpdateHD(item.ID_NhanVien); //--> get to do updateHoaDon
     }
     self.updateHoaDon = function (formElement) {
-        debugger;
         var id = formElement.ID;
         var maHoaDon = formElement.MaHoaDon;
         var idNhanVien = self.ID_NhanVieUpdateHD();
@@ -1145,7 +1144,6 @@
     var dayStart_Excel, dayEnd_Excel;// used to export many hoadon
 
     async function SearchHoaDon(isExport = false) {
-        debugger;
         var arrDV = [];
         $('.line-right').height(0).css("margin-top", "0px");
         var maHDFind = localStorage.getItem('FindHD');
@@ -2644,7 +2642,456 @@
         return yy;
     }
 
+    async function GetContent_MauInMacDinh(maLoaiChungTu) {
+        let yy = ajaxHelper('/api/DanhMuc/ThietLapApi/GetContent_MauInMacDinh?maChungTu=' + maLoaiChungTu
+            + '&idDonVi=' + VHeader.IdDonVi, 'GET').done(function (x) {
+        }).then(function (x) {
+            return x;
+        })
+        return yy;
+    }
+
+    function ConvertNumber_toRoman(num) {
+        if (!+num)
+            return false;
+        var digits = String(+num).split(""),
+            key = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM",
+                "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC",
+                "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"],
+            roman = "",
+            i = 3;
+        while (i--)
+            roman = (key[+digits.pop() + (i * 10)] || "") + roman;
+        return Array(+digits.join("") + 1).join("M") + roman;
+    }
+
+    function GroupCTHD_byNhomHang(cthd) {
+        let arrNhom = [], arrID = [];
+        for (let i = 0; i < cthd.length; i++) {
+            let itfor = cthd[i];
+            if (!arrID.includes(itfor.ID_NhomHangHoa)) {
+                arrID.push(itfor.ID_NhomHangHoa);
+                let arrHH = cthd.filter(x => x.ID_NhomHangHoa === itfor.ID_NhomHangHoa);
+                // assign again STT
+                arrHH.map(function (x, i) {
+                    x["SoThuTu"] = i + 1;
+                })
+
+                let sum = 0, sum_truocVAT = 0, sum_truocCK = 0;
+                let sumSL = 0, sumCK = 0, sumVAT = 0;
+                for (let k = 0; k < arrHH.length; k++) {
+                    let for2 = arrHH[k];
+                    sumSL += formatNumberToFloat(for2.SoLuong);
+                    sumCK += formatNumberToFloat(for2.TongChietKhau);
+                    sumVAT += formatNumberToFloat(for2.TienThue) * formatNumberToFloat(for2.SoLuong);
+                    sum += formatNumberToFloat(for2.ThanhToan);
+                    sum_truocVAT += formatNumberToFloat(for2.ThanhTien);
+                    sum_truocCK += formatNumberToFloat(for2.ThanhTienTruocCK);
+                }
+
+                arrNhom.push({
+                    SoThuTuNhom: arrNhom.length + 1,
+                    SoThuTuNhom_LaMa: ConvertNumber_toRoman(arrNhom.length + 1),
+                    ID_NhomHangHoa: itfor.ID_NhomHangHoa,
+                    TenNhomHangHoa: itfor.TenNhomHangHoa,
+                    TongTienTheoNhom: sum,
+                    TongSLTheoNhom: sumSL,
+                    TongThueTheoNhom: sumVAT,
+                    TongCKTheoNhom: sumCK,
+                    TongTienTheoNhom_TruocVAT: sum_truocVAT,
+                    TongTienTheoNhom_TruocCK: sum_truocCK,
+                    TongTienTheoNhom_TruocCK_SauVAT: sum_truocCK + sumVAT,
+                    HangHoas: arrHH
+                })
+            }
+        }
+        return arrNhom;
+    }
+
+    function Replace_CTHD(newRow, forCTHD) {
+        newRow = newRow.replaceAll('{STT}', forCTHD.SoThuTu);
+        newRow = newRow.replaceAll("{MaHangHoa}", forCTHD.MaHangHoa);
+        newRow = newRow.replaceAll("{TenHangHoa}", forCTHD.TenHangHoa);
+        newRow = newRow.replaceAll("{TenHangHoaThayThe}", forCTHD.TenHangHoaThayThe);
+        newRow = newRow.replaceAll("{DonGiaBaoHiem}", formatNumber(forCTHD.DonGiaBaoHiem));
+        newRow = newRow.replaceAll("{DonViTinh}", forCTHD.TenDonViTinh);
+        newRow = newRow.replaceAll("{DonGia}", formatNumber(forCTHD.DonGia));
+        newRow = newRow.replaceAll("{GiaBan}", formatNumber(forCTHD.GiaBan));
+        newRow = newRow.replaceAll("{GiaBanSauVAT}", formatNumber(forCTHD.GiaBanSauVAT));
+        newRow = newRow.replaceAll("{DonGiaSauVAT}", formatNumber(forCTHD.DonGiaSauVAT));
+        newRow = newRow.replaceAll("{GiamGia}", formatNumber(forCTHD.TienChietKhau));
+        newRow = newRow.replaceAll("{SoLuong}", formatNumber(forCTHD.SoLuong));
+        newRow = newRow.replaceAll("{ThanhTien}", formatNumber(forCTHD.ThanhTien));
+        newRow = newRow.replaceAll("{ThanhTienTruocCK}", formatNumber(forCTHD.ThanhTienTruocCK));
+        newRow = newRow.replaceAll("{TienThue}", formatNumber(forCTHD.TienThue));
+        newRow = newRow.replaceAll("{HH_ThueTong}", formatNumber(forCTHD.HH_ThueTong));
+        newRow = newRow.replaceAll("{ThanhToan}", formatNumber(forCTHD.ThanhToan));
+        newRow = newRow.replaceAll("{MaLoHang}", forCTHD.MaLoHang);
+        newRow = newRow.replaceAll("{GhiChu}", forCTHD.GhiChu);
+        newRow = newRow.replaceAll("{ThuocTinh_GiaTri}", forCTHD.ThuocTinh_GiaTri);
+        newRow = newRow.replaceAll("{PTChietKhauHH}", formatNumber(forCTHD.PTChietKhau));
+        newRow = newRow.replaceAll("{PTThue}", formatNumber(forCTHD.PTThue));
+        newRow = newRow.replaceAll("{GhiChuHH}", forCTHD.GhiChuHH);
+        newRow = newRow.replaceAll("{BH_ThanhTien}", formatNumber(forCTHD.BH_ThanhTien));
+        newRow = newRow.replaceAll("{PTChiPhi}", formatNumber(forCTHD.PTChiPhi));
+        newRow = newRow.replaceAll("{TienChiPhi}", formatNumber(forCTHD.TienChiPhi));
+        newRow = newRow.replaceAll("{TongChietKhau}", formatNumber(forCTHD.TongChietKhau));
+        newRow = newRow.replaceAll("{TonKho}", formatNumber(forCTHD.TonKho));
+        newRow = newRow.replaceAll("{TonLuyKe}", formatNumber(forCTHD.TonLuyKe));
+        newRow = newRow.replaceAll("{NgaySanXuat}", forCTHD.NgaySanXuat);
+        newRow = newRow.replaceAll("{NgayHetHan}", forCTHD.NgayHetHan);
+        newRow = newRow.replaceAll("{BaoHanh}", forCTHD.BaoHanh);// 6 tháng, 1 năm...
+        newRow = newRow.replaceAll("{TenNhomHangHoa}", forCTHD.TenNhomHangHoa);
+
+        // sudung dv
+        newRow = newRow.replaceAll("{SLDVDaSuDung}", formatNumber(forCTHD.SoLuongDVDaSuDung));
+        newRow = newRow.replaceAll("{SLDVConLai}", formatNumber(forCTHD.SoLuongDVConLai));
+        newRow = newRow.replaceAll("{SoLuongMua}", formatNumber(forCTHD.SoLuongMua));
+        //newRow = newRow.replaceAll("{SoPhutThucHien}", DichVuTheoGio==1? ConvertMinutes_ToHourMinutes(ThoiGianThucHien): ThoiGianThucHien);
+        newRow = newRow.replaceAll("{ThoiGianBatDau}", forCTHD.TimeStart);
+        newRow = newRow.replaceAll("{QuaThoiGian}", forCTHD.QuaThoiGian);
+        newRow = newRow.replaceAll("{TenViTri}", forCTHD.TenViTri);
+
+        // chi tiet chuyen hang
+        newRow = newRow.replaceAll("{SoLuongChuyen}", formatNumber(forCTHD.SoLuongChuyen));
+        newRow = newRow.replaceAll("{SoLuongNhan}", formatNumber(forCTHD.SoLuongNhan));
+        newRow = newRow.replaceAll("{GiaChuyen}", formatNumber(forCTHD.GiaChuyen));
+        return newRow;
+    }
+
+    function Replace_TheoNhom(content, item) {
+        content = content.replaceAll("{TenNhomHangHoa}", item.TenNhomHangHoa);
+        content = content.replace("{SoThuTuNhom}", item.SoThuTuNhom);
+        content = content.replace("{SoThuTuNhom_LaMa}", item.SoThuTuNhom_LaMa);
+
+        content = content.replace("{TongTienTheoNhom}", formatNumber(item.TongTienTheoNhom, 0));
+        content = content.replace("{TongTienTheoNhom_TruocVAT}", formatNumber(item.TongTienTheoNhom_TruocVAT, 0));
+        content = content.replace("{TongTienTheoNhom_TruocCK}", formatNumber(item.TongTienTheoNhom_TruocCK, 0));
+        content = content.replace("{TongTienTheoNhom_TruocCK_SauVAT}", formatNumber(item.TongTienTheoNhom_TruocCK_SauVAT, 0));
+
+        content = content.replace("{TongSLTheoNhom}", formatNumber(item.TongSLTheoNhom));
+        content = content.replace("{TongThueTheoNhom}", formatNumber(item.TongThueTheoNhom, 0));
+        content = content.replace("{TongCKTheoNhom}", formatNumber(item.TongCKTheoNhom));
+        content = content.replace("{TheoNhomHang}", "");
+        return content;
+    }
+
+    function Replace_ThongTinChung(content, hd) {
+        let cty = self.CongTy()[0];
+        content = content.replace("{TenCuaHang}", cty.TenCongTy);
+        content = content.replace("{DiaChiCuaHang}", cty.DiaChi);
+        content = content.replace("{DienThoaiCuaHang}", cty.SoDienThoai);
+        content = content.replace("{Logo}", '<img style="width:100%" attr="' + Open24FileManager.hostUrl + cty.DiaChiNganHang + '" />');
+
+        content = content.replace("{TenChiNhanh}", hd.TenChiNhanh);
+        content = content.replace("{DienThoaiChiNhanh}", hd.DienThoaiChiNhanh);
+        content = content.replace("{DiaChiChiNhanh}", hd.DiaChiChiNhanh);
+        return content;
+    }
+
+    function Replace_ThongTinKhachHang(content, hd) {
+        content = content.replace("{MaKhachHang}", hd.MaDoiTuong);
+        content = content.replace("{TenKhachHang}", hd.TenDoiTuong);
+        content = content.replace("{DiaChi}", hd.DiaChiKhachHang);
+        content = content.replace("{DienThoai}", hd.DienThoaiKhachHang);
+        content = content.replace("{TongDiemKhachHang}", hd.TongTichDiem);
+        return content;
+    }
+    function Replace_ThongTinChuXe(content, hd) {
+        content = content.replace("{ChuXe}",hd.ChuXe);
+        content = content.replace("{ChuXe_SDT}",hd.ChuXe_SDT);
+        content = content.replace("{ChuXe_DiaChi}",hd.ChuXe_DiaChi);
+        content = content.replace("{ChuXe_Email}",hd.ChuXe_Email);
+        return content;
+    }
+    async function Replace_ThongTinPTN(content, hd) {
+        let ptn = await GetThongTinPTN(hd.ID_PhieuTiepNhan);
+         if (!$.isEmptyObject(ptn)) {
+            content = content.replace("{CoVanDichVu}",ptn.CoVanDichVu);
+            content = content.replace("{NhanVienTiepNhan}",ptn.NhanVienTiepNhan);
+            content = content.replace("{MaPhieuTiepNhan}",ptn.MaPhieuTiepNhan);
+            content = content.replace("{NgayVaoXuong}",ptn.NgayVaoXuong);
+            content = content.replace("{NgayHoanThanhDuKien}",ptn.NgayXuatXuongDuKien);
+            content = content.replace("{SoKmVao}",ptn.SoKmVao);
+            content = content.replace("{SoKmRa}",ptn.SoKmRa);
+            content = content.replace("{SoKmCu_PTN}",ptn.SoKmCu_PTN);
+            content = content.replace("{SoKmCu}", formatNumber(ptn.SoKmCu, 2));
+            content = content.replace("{NgayXuatXuong}",ptn.NgayXuatXuong);
+            content = content.replace("{CoVan_SDT}",ptn.CoVan_SDT);
+            content = content.replace("{PTN_GhiChu}", '<span style="white-space:pre-wrap">' +ptn.PTN_GhiChu + '</span>');
+
+           content = Replace_ThongTinXe (content,ptn);
+           content = Replace_ThongTinChuXe (content,ptn);
+             }
+       
+        return content;
+    }
+
+    function Replace_ThongTinXe(content, hd) {
+        content = content.replace("{BienSo}", hd.BienSo);
+        content = content.replace("{TenMauXe}", hd.TenMauXe);
+        content = content.replace("{TenLoaiXe}", hd.TenLoaiXe);
+        content = content.replace("{TenHangXe}", hd.TenHangXe);
+        content = content.replace("{MauSon}", hd.MauSon);
+        content = content.replace("{DungTich}", hd.DungTich);
+        content = content.replace("{NamSanXuat}", hd.NamSanXuat);
+        content = content.replace("{HopSo}", hd.HopSo);
+        content = content.replace("{SoMay}", hd.SoMay);
+        content = content.replace("{SoKhung}", hd.SoKhung);
+        return content;
+    }
+
+    function Replace_ThongTinBaoHiem(content, hd) {
+        content = content.replace("{TenBaoHiem}", hd.TenBaoHiem);
+        content = content.replace("{BH_SDT}", hd.BH_SDT);
+        content = content.replace("{BH_Email}", hd.BH_Email);
+        content = content.replace("{BH_DiaChi}", hd.BH_DiaChi);
+        content = content.replace("{BH_TenLienHe}", hd.BH_TenLienHe);
+        content = content.replace("{BH_SDTLienHe}", hd.BH_SDTLienHe);
+        return content;
+    }
+
+    function Replace_ThongTinHoaDon(content, hd) {
+        content = content.replace("{MaHoaDon}", hd.MaHoaDon);
+        content = content.replace("{NgayLapHoaDon}", hd.NgayLapHoaDon);
+        content = content.replace("{NgayTao}", hd.NgayTao);
+        content = content.replace("{NgayBan}", hd.NgayLapHoaDon);
+        content = content.replace("{NgayApDungGoiDV}", hd.NgayApDungGoiDV);
+        content = content.replace("{HanSuDungGoiDV}", hd.HanSuDungGoiDV);
+
+        content = content.replace("{DienGiai}", hd.DienGiai);
+        content = content.replace("{TongTienHang}", formatNumber(hd.TongTienHang, 2));
+        content = content.replace("{TongTienHDSauGiamGia}", formatNumber(hd.TongTienHDSauGiamGia));
+        content = content.replace("{DaThanhToan}", formatNumber(hd.DaThanhToan));
+        content = content.replace("{ChietKhauHoaDon}", formatNumber(hd.TongGiamGia, 2));
+        content = content.replace("{PhiTraHang}", formatNumber(hd.TongChiPhiHangTra));
+
+        content = content.replace("{TongTienHoaDonMua}", formatNumber(hd.TongTienHoaDonMua, 2));
+        content = content.replace("{TienTraKhach}", formatNumber(hd.PhaiTraKhach, 0));
+        content = content.replace("{KhachCanTra}", formatNumber(hd.PhaiThanhToan, 0));
+        content = content.replace("{TongTienTraHang}", formatNumber(hd.TongTienTraHang));
+        content = content.replace("{TongTienTra}", formatNumber(hd.TongTienTra, 0));
+        content = content.replace("{TongCong}", formatNumber(hd.TongCong, 0));
+        content = content.replace("{TongSoLuongHang}", formatNumber(hd.TongSoLuongHang, 2));
+        content = content.replace("{ChiPhiNhap}", formatNumber(hd.ChiPhiNhap));
+        content = content.replace("{NoTruoc}", formatNumber(hd.NoTruoc, 2));
+        content = content.replace("{NoSau}", formatNumber(hd.NoSau, 2));
+        content = content.replace("{TienThuaTraKhach}", formatNumber(hd.TienThua, 0));
+        content = content.replace("{TienKhachThieu}", formatNumber(hd.TienKhachThieu, 0));
+        content = content.replace("{DiemGiaoDich}", hd.DiemGiaoDich);
+        content = content.replace("{TongTienThue}", formatNumber(hd.TongTienThue, 0));
+        content = content.replace("{TongThueKhachHang}", formatNumber(hd.TongThueKhachHang, 0));
+        content = content.replace("{TongGiamGiaHang}", formatNumber(hd.TongGiamGiaHang, 2));
+        content = content.replace("{TongTienHangChuaChietKhau}", formatNumber(hd.TongTienHangChuaCK, 2));
+        content = content.replace("{PTChietKhauHD}", hd.TongChietKhau);
+        content = content.replace("{TienBangChu}", hd.TienBangChu);
+        content = content.replace("{KH_TienBangChu}", hd.KH_TienBangChu);
+
+        content = content.replace("{TienPOS}", formatNumber(hd.TienATM));
+        content = content.replace("{TienMat}", formatNumber(hd.TienMat, 0));
+        content = content.replace("{TienChuyenKhoan}", formatNumber(hd.ChuyenKhoan, 0));
+        content = content.replace("{TraLaiTienDatCoc}", formatNumber(hd.TraLaiTienDatCoc));
+        content = content.replace("{TTBangTienCoc}", formatNumber(hd.TTBangTienCoc));
+        content = content.replace("{TienDoiDiem}", formatNumber(hd.TienDoiDiem));
+        content = content.replace("{TienTheGiaTri}", formatNumber(hd.TienTheGiaTri));
+        content = content.replace("{TienTheGiaTri_TruocTT}", formatNumber(hd.TienTheGiaTri_TruocTT));
+
+        content = content.replace("{TenNganHangPOS}", hd.TenNganHangPOS);
+        content = content.replace("{TenChuThePOS}", hd.TenChuThePOS);
+        content = content.replace("{SoTaiKhoanPOS}", hd.SoTaiKhoanPOS);
+        content = content.replace("{TenNganHangChuyenKhoan}", hd.TenNganHangChuyenKhoan);
+        content = content.replace("{TenChuTheChuyenKhoan}", hd.TenChuTheChuyenKhoan);
+        content = content.replace("{SoTaiKhoanChuyenKhoan}", hd.SoTaiKhoanChuyenKhoan);
+
+        content = content.replace("{TongGiamGiaHD_HH}", formatNumber(hd.TongGiamGiaHD_HH));
+        content = content.replace("{ChietKhauNVHoaDon}", hd.ChietKhauNVHoaDon);
+        content = content.replace("{ChietKhauNVHoaDon_InGtriCK}", hd.ChietKhauNVHoaDon_InGtriCK);
+
+        content = content.replace("{BH_TienThua}", formatNumber(hd.BH_TienThua));
+        content = content.replace("{BH_ConThieu}", formatNumber(hd.BH_ConThieu, 0));
+        content = content.replace("{HD_TienThua}", hd.HD_TienThua);
+        content = content.replace("{HD_ConThieu}", formatNumber(hd.HD_ConThieu, 0));
+        content = content.replace("{BH_TienBangChu}", hd.BH_TienBangChu);
+        content = content.replace("{BaoHiemDaTra}", formatNumber(hd.BaoHiemDaTra, 0));
+
+        content = content.replace("{SoVuBaoHiem}", hd.SoVuBaoHiem);
+        content = content.replace("{KhauTruTheoVu}", hd.KhauTruTheoVu);
+        content = content.replace("{PTGiamTruBoiThuong}", hd.PTGiamTruBoiThuong);
+        content = content.replace("{GiamTruBoiThuong}", hd.GiamTruBoiThuong);
+        content = content.replace("{TongTienThueBaoHiem}", formatNumber(hd.TongTienThueBaoHiem, 0));
+        content = content.replace("{PTThueBaoHiem}", hd.PTThueBaoHiem);
+        content = content.replace("{BHThanhToanTruocThue}", formatNumber(hd.BHThanhToanTruocThue, 0));
+        content = content.replace("{TongTienBHDuyet}", formatNumber(hd.TongTienBHDuyet));
+        return content;
+    }
+
     self.PrintMany = async function () {
+        let content = await GetContent_MauInMacDinh('HDBL');
+        let contentGoc = content;
+
+        if (content.indexOf('TheoHangHoa_Nhom') > -1 || content.indexOf('TheoDichVu_Nhom') > -1) {
+            // tblhanghoa
+           
+            let startHH = content.indexOf("{TheoHangHoa_Nhom}");
+            let opentblHH = content.indexOf("tbody", startHH) - 1;
+            let closeblHH = content.indexOf("tbody", opentblHH + 6);
+            let sTblHH = content.substr(opentblHH, closeblHH - opentblHH + 6);
+            let sTblHH_goc = sTblHH;
+
+            // tennhomhang
+            let hh_row1From = sTblHH.indexOf("<tr");
+            let hh_row1To = sTblHH.indexOf("/tr>", hh_row1From + 3) + 4;
+
+            // chitiethang
+            let hh_row2From = sTblHH.indexOf("<tr", hh_row1To);
+            let hh_row2To = sTblHH.indexOf("/tr>", hh_row2From);
+            let hh_row2Str = sTblHH.substr(hh_row2From, hh_row2To - hh_row2From + 5);
+            let hh_row2Goc = hh_row2Str;
+
+            // tblDichVu
+            let startDV = content.indexOf("{TheoDichVu_Nhom}");
+            let opentblDV = content.indexOf("tbody", startDV) - 1;
+            let closeblDV = content.indexOf("tbody", opentblDV + 6);
+            let sTblDV = content.substr(opentblDV, closeblDV - opentblDV + 6);
+            let sTblDV_goc = sTblDV;
+
+            let dv_row1From = sTblDV.indexOf("<tr");
+            let dv_row1To = sTblDV.indexOf("/tr>", hh_row1From + 3) + 4;
+
+            let dv_row2From = sTblDV.indexOf("<tr", dv_row1To);
+            let dv_row2To = sTblDV.indexOf("/tr>", dv_row2From) + 5;
+            let dv_row2Str = sTblDV.substr(dv_row2From, dv_row2To - dv_row2From);
+            let dv_row2Goc = dv_row2Str;
+
+            // nếu có dòng Tổng vật tư: cắt ra và đưa xuống cuối (todo)
+
+            for (let k = 0; k < arrIDCheck.length; k++) {
+                let idHoaDon = arrIDCheck[k];
+                 let newHD = contentGoc;
+                 let sTblHHNew = sTblHH;
+                 let sTblDVNew = sTblDV;
+
+                let hdDB = await GetInforHD_fromDB(idHoaDon);
+                let cthd = await GetChiTietHD_fromDB(idHoaDon);
+
+                let cthd_HangHoa = cthd.filter(x => x.LaHangHoa);
+                let cthd_DichVu = cthd.filter(x => !x.LaHangHoa);
+
+                let nhomHH = GroupCTHD_byNhomHang(cthd_HangHoa);
+                let nhomDV = GroupCTHD_byNhomHang(cthd_DichVu);
+
+                console.log('nhomHH ', nhomHH,nhomDV)
+
+                if (startHH > -1) {
+                    let ctTheoNhomHH = '';
+                    for (let i = 0; i < nhomHH.length; i++) {
+                        let forOut = nhomHH[i];
+                        for (let j = 0; j < forOut.HangHoas.length; j++) {
+                            let newRow = hh_row2Goc;
+                            let forCTHD = forOut.HangHoas[j];
+                            newRow = Replace_CTHD(newRow, forCTHD);
+                            ctTheoNhomHH = ctTheoNhomHH.concat(newRow);
+                        }
+                        let newNhom = sTblHH_goc;
+                        newNhom = Replace_TheoNhom(newNhom, forOut);
+                        if (i === 0) {
+                            sTblHHNew = sTblHHNew.replace(sTblHH_goc, newNhom);
+                            sTblHHNew = sTblHHNew.replace(hh_row2Goc, ctTheoNhomHH);
+                        }
+                        else {
+                            newNhom = newNhom.replace(hh_row2Goc, ctTheoNhomHH);
+                            sTblHHNew = sTblHHNew.concat(newNhom);
+                        }
+                    }
+                }
+
+                if (startDV > -1) {
+                    let ctTheoNhomDV = '';
+                    for (let i = 0; i < nhomDV.length; i++) {
+                        let forOut = nhomDV[i];
+                        for (let j = 0; j < forOut.HangHoas.length; j++) {
+                            let newRow = dv_row2Goc;
+                            let forCTHD = forOut.HangHoas[j];
+                            newRow = Replace_CTHD(newRow, forCTHD);
+                            ctTheoNhomDV = ctTheoNhomDV.concat(newRow);
+                        }
+                        let newNhom = sTblDV_goc;
+                        newNhom = Replace_TheoNhom(newNhom, forOut);
+                        if (i === 0) {
+                            sTblDVNew = sTblDVNew.replace(sTblDV_goc, newNhom);
+                            sTblDVNew = sTblDVNew.replace(dv_row2Goc, ctTheoNhomDV);
+                        }
+                        else {
+                            newNhom = newNhom.replace(dv_row2Goc, ctTheoNhomDV);
+                            sTblDVNew = sTblDVNew.concat(newNhom);
+                        }
+                    }
+                }
+
+                
+                
+                  newHD = newHD.replace(sTblHH_goc, sTblHHNew);
+                    newHD = newHD.replace(sTblDV_goc, sTblDVNew);
+                     newHD = Replace_ThongTinChung(newHD, hdDB);
+                    newHD = Replace_ThongTinHoaDon(newHD, hdDB);
+                    newHD = Replace_ThongTinKhachHang(newHD, hdDB);
+                    newHD = await Replace_ThongTinPTN (newHD, hdDB);
+                   
+
+                if(k===0){
+                   content = newHD;
+                }
+                else{
+                    content = content.concat(newHD);
+                }
+
+                if (k < arrIDCheck.length - 1) {
+                    content = content.concat('<p style="page-break-before:always;"></p>')
+                }
+            }
+
+            content = content.replaceAll("{TheoHangHoa_Nhom}", '');
+            content = content.replaceAll("{TheoDichVu_Nhom}", '');
+        }
+        else {
+            if (content.indexOf('TheoNhomHang') > -1) {
+                let open = result.lastIndexOf("tbody", result.indexOf("{TenNhomHangHoa}")) - 1;
+                let close = result.indexOf("tbody", result.indexOf("{TenNhomHangHoa")) + 6;
+                let temptable = result.substr(open, close - open);
+                let temptable1 = temptable;
+                debugger
+
+                let row1From = temptable.indexOf("<tr");
+                let row1To = temptable.indexOf("/tr>") - 3;
+                let row1Str = temptable.substr(row1From, row1To);
+                let row1 = row1Str;
+
+                let row2From = temptable.indexOf("<tr", temptable.indexOf("<tr") + 1);
+                let row2To = temptable.indexOf("<tr", row2From + 1);
+                let row2Str = '';
+                let row2 = '';
+            }
+            else {
+                if (content.indexOf('TheoHangHoa') > -1 || content.indexOf('TheoDichVu') > -1) {
+
+                }
+                else {
+                    if (content.indexOf('TenHangHoa') > -1 || content.indexOf('MaHangHoa') > -1) {
+
+                    }
+                    else {
+
+                    }
+                }
+            }
+        }
+
+       
+
+        PrintExtraReport(content);
+    }
+
+    self.PrintMany1 = async function () {
         let arHD = [];
         let obj = await GetListHDbyIDs();
 
@@ -3224,7 +3671,7 @@
         var daThanhToan = RoundDecimal(hdDB.KhachDaTra, 0);
         if (objPrint.ID_PhieuTiepNhan != null) {
             objPrint.SoKmCu_PTN = await Gara_GetSoKmPTN(objPrint.ID_PhieuTiepNhan);
-        }       
+        }
 
         objPrint.MaHoaDonTraHang = objPrint.MaHoaDonGoc;
         objPrint.TenNhaCungCap = objPrint.TenDoiTuong;
@@ -3358,7 +3805,6 @@
             }
         }
         if (formatNumberToFloat(hdDB.ThuTuThe) > 0) {
-            debugger;
             pthuc += 'Thẻ giá trị, ';
             let param = {
                 IDChiNhanhs: [hdDB.ID_DonVi],
@@ -3510,13 +3956,13 @@
             type: 'POST',
             contentType: "application/x-www-form-urlencoded; charset=UTF-8",
             dataType: 'json',
-            data: param,              
+            data: param,
         });
 
-        const sanitizedMaHoaDon = maHoaDon.replace(/[, ]/g, "");    
+        const sanitizedMaHoaDon = maHoaDon.replace(/[, ]/g, "");
         const soDuTruoc = response.dataSoure.data.find(item =>
             item.MaHoaDon.replace(/[, ]/g, "") === sanitizedMaHoaDon
-        )?.SoDuTruoc || 0; 
+        )?.SoDuTruoc || 0;
         return soDuTruoc;
     }
     function GetInforCongTy() {
@@ -3612,7 +4058,6 @@
     }
 
     self.XuLiDonHang = async function (item) {
-        debugger;
         localStorage.setItem('createHDfrom', 2);
 
         const hdDB = await GetInforHD_fromDB(item.ID);
@@ -3906,7 +4351,6 @@
         self.gotoGara();
     }
     self.AdđLenhBH = function () {
-        debugger;
         localStorage.setItem('fromLenhBH', true);
         self.gotoGara();
     }
@@ -5407,7 +5851,6 @@
     }
 
     self.RestoreInvoice = async function (item) {
-        debugger;
         const maHoaDon = item.MaHoaDon;
         const loaiHoaDon = item.LoaiHoaDon;
         let sLoai = '', sLoaiLowercase = '';
@@ -5589,6 +6032,20 @@
             return xx;
         }
         return [];
+    }
+
+    async function GetThongTinPTN (id){
+        if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
+            let xx = $.getJSON('/api/DanhMuc/GaraAPI/' + 'PhieuTiepNhan_GetThongTinChiTiet?id=' + id).done()
+                .then(function (x) {
+                    if (x.res && x.dataSoure.length > 0) {
+                         return x.dataSoure[0];
+                  }
+                    return {};
+                });
+            return xx;
+        }
+        return {};
     }
 
     self.SaoChepHD_KhuyenMai = async function (item, type) {
