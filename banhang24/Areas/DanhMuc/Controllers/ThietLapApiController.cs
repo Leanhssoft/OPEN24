@@ -234,6 +234,41 @@ namespace banhang24.Areas.DanhMuc.Controllers
             return Json(ReaplaceMauIn_TheGiaTri(content1));
 
         }
+        [HttpGet]
+        public IHttpActionResult GetContent_MauInMacDinh(string maChungTu, Guid idDonVi)
+        {
+            var sReturn = string.Empty;
+            var content1 = from mauin in db.DM_MauIn
+                           join ctu in db.DM_LoaiChungTu
+                           on mauin.ID_LoaiChungTu equals ctu.ID
+                           where ctu.MaLoaiChungTu.Equals(maChungTu) && mauin.ID_DonVi == idDonVi
+                           select mauin;
+
+            var content2 = content1.Where(x => x.LaMacDinh);
+
+            if (content2 != null && content2.Count() > 0)
+            {
+                sReturn = content2.FirstOrDefault().DuLieuMauIn;
+            }
+            else
+            {
+                if (commonEnum.DanhSachMauInK80.Any(o => o.Key.Equals(maChungTu)))
+                {
+
+                    sReturn = GetFileMauIn(commonEnum.DanhSachMauInK80.FirstOrDefault(o => o.Key.Equals(maChungTu)).Value);
+                }
+                else
+                {
+                    if (commonEnum.DanhSachMauInA4.Any(o => o.Key.Equals(maChungTu)))
+                    {
+
+                        sReturn = GetFileMauIn(commonEnum.DanhSachMauInA4.FirstOrDefault(o => o.Key.Equals(maChungTu)).Value);
+                    }
+                }
+            }
+            return Json(sReturn);
+        }
+
 
         /// <summary>
         /// Lây mẫu in mạc định theo mã chứng từ
