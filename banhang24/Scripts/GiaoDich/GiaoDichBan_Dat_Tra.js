@@ -2938,6 +2938,11 @@
             let sTblHH = content.substr(opentblHH, closeblHH - opentblHH + 6);
             let sTblHH_goc = sTblHH;
 
+            let hh_headerFrom = content.indexOf("thead", startHH) - 1;
+            let hh_headerTo = content.indexOf("thead", hh_headerFrom + 5);
+            let hh_sHeader = content.substr(hh_headerFrom, hh_headerTo - hh_headerFrom + 6);
+            let hh_sHeaderGoc = hh_sHeader;
+
             // tennhomhang
             let hh_row1From = sTblHH.indexOf("<tr");
             let hh_row1To = sTblHH.indexOf("/tr>", hh_row1From + 3) + 4;
@@ -2954,6 +2959,11 @@
             let closeblDV = content.indexOf("tbody", opentblDV + 6);
             let sTblDV = content.substr(opentblDV, closeblDV - opentblDV + 6);
             let sTblDV_goc = sTblDV;
+
+            let dv_headerFrom = content.indexOf("thead", startDV) - 1;
+            let dv_headerTo = content.indexOf("thead", dv_headerFrom + 5);
+            let dv_sHeader = content.substr(dv_headerFrom, dv_headerTo - dv_headerFrom + 6);
+            let dv_sHeaderGoc = dv_sHeader;
 
             let dv_row1From = sTblDV.indexOf("<tr");
             let dv_row1To = sTblDV.indexOf("/tr>", hh_row1From + 3) + 4;
@@ -2983,7 +2993,13 @@
                 console.log('nhomHH ', nhomHH,nhomDV)
 
                 if (startHH > -1) {
-                    let ctTheoNhomHH = '';
+                    if(nhomHH.length === 0 ){
+                        // remove tblHangHoa
+                        sTblHHNew ='';
+                        newHD = newHD.replace(hh_sHeaderGoc, '');
+                    }
+                    else{
+                        let ctTheoNhomHH = '';
                     for (let i = 0; i < nhomHH.length; i++) {
                         let forOut = nhomHH[i];
                         for (let j = 0; j < forOut.HangHoas.length; j++) {
@@ -3003,10 +3019,17 @@
                             sTblHHNew = sTblHHNew.concat(newNhom);
                         }
                     }
+                    }
                 }
 
                 if (startDV > -1) {
-                    let ctTheoNhomDV = '';
+                    if(nhomDV.length === 0 ){
+                        // remove tblDV
+                        sTblDVNew= '';
+                         newHD = newHD.replace(dv_sHeaderGoc, '');
+                    }
+                    else{
+                       let ctTheoNhomDV = '';
                     for (let i = 0; i < nhomDV.length; i++) {
                         let forOut = nhomDV[i];
                         for (let j = 0; j < forOut.HangHoas.length; j++) {
@@ -3025,6 +3048,7 @@
                             newNhom = newNhom.replace(dv_row2Goc, ctTheoNhomDV);
                             sTblDVNew = sTblDVNew.concat(newNhom);
                         }
+                    }
                     }
                 }
 
