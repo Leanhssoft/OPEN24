@@ -869,7 +869,7 @@
 
                                             <li onclick="LoadGetHeight()">
                                                 <a data-toggle="tab"
-                                                   data-bind=" attr: { href: '#dsXe_'+ ID }, click: $root.LoadTabDSXe">Danh sách xe</a>
+                                                   data-bind=" attr: { href: '#dsXe_'+ ID }, click: $root.LoadTabDSXe, visible:$root.isHoangHuyDongFeng">Danh sách xe</a>
                                             </li>
                                             <!--/ko-->
                                             <!-- ko if: !$root.IsGara() && $root.RoleUpdateImg_Invoice() -->
@@ -2047,6 +2047,24 @@
                                             </div>
                                             <div class="tab-pane" data-bind="attr: { id: 'dsXe_'+ ID }">
                                                 <div class="flex flex-column ">
+                                                    <div class="flex flex-between">
+                                                        <div class="list-title" style="float:left">
+                                                            <div class=" form-group">
+                                                                <p>Số lượng: <strong data-bind="text: $parent.TotalRecordDsXe"></strong> xe </p>
+                                                            </div>
+                                                        </div>
+                                                        <div style="display: inline-block;float: right; margin-right:5px">
+                                                            <!--ko if: $root.RoleAddNewCar()-->
+                                                            <button type="button" class="btn btn-main btnAddcar"
+                                                                    v-if="vmThemMoiXe.role.ThemMoi"
+                                                                    aria-haspopup="true" title="Thêm mới xe" data-bind="click: $root.showPopupAddCar">
+                                                                <i class="fa fa-plus"></i><font>Thêm mới</font>
+                                                            </button>
+                                                            <!--/ko-->
+
+                                                        </div>
+                                                    </div>
+
                                                     <div class="table-res">
                                                         <table class="table" data-bind="visible: $root.PageResult_ListDSXe().length > 0">
                                                             <tr>
@@ -2056,6 +2074,9 @@
                                                                 <th>Mẫu xe</th>
                                                                 <th>Màu sơn</th>
                                                                 <th>Năm sản xuất</th>
+                                                                <!--ko if: $root.RoleUpdateCar()-->
+                                                                <th>Cập nhật</th>
+                                                                <!--/ko-->
                                                             </tr>
                                                             <tbody data-bind="foreach: $root.PageResult_ListDSXe">
                                                                 <tr>
@@ -2072,6 +2093,14 @@
                                                                     </td>
                                                                     <td data-bind="text: NamSanXuat">
                                                                     </td>
+                                                                    <!--ko if: $root.RoleUpdateCar()-->
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-main btnUpdateCar"
+                                                                               aria-haspopup="true" title="Cập nhật xe" data-bind="click: function() { $root.showPopupUpdateCar(ID); }">
+                                                                            <i class="fa fa-pencil"></i> 
+                                                                        </button>
+                                                                    </td>
+                                                                    <!--/ko-->
 
                                                                 </tr>
                                                             </tbody>
@@ -2485,6 +2514,11 @@
 </div>
 <script src="~/Scripts/Components/Input.js"></script>
 <script src="~/Scripts/Components/NhanVien_KhachHang.js"></script>
+
+@Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiXe.cshtml")
+@Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiHangXe.cshtml")
+@Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiLoaiXe.cshtml")
+@Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiMauXe.cshtml")
 @Html.Partial("~/Views/Gara/HoaDon/_ThuTienHoaDon.cshtml")
 @Html.Partial("~/Views/Gara/HoaDon/_ThongTinHoaDon.cshtml")
 @Html.Partial("~/Views/Gara/HoaDon/_EditHoaHongHD.cshtml")

@@ -740,7 +740,6 @@
         self.ID_NhanVieUpdateHD(item.ID_NhanVien); //--> get to do updateHoaDon
     }
     self.updateHoaDon = function (formElement) {
-        debugger;
         var id = formElement.ID;
         var maHoaDon = formElement.MaHoaDon;
         var idNhanVien = self.ID_NhanVieUpdateHD();
@@ -1145,7 +1144,6 @@
     var dayStart_Excel, dayEnd_Excel;// used to export many hoadon
 
     async function SearchHoaDon(isExport = false) {
-        debugger;
         var arrDV = [];
         $('.line-right').height(0).css("margin-top", "0px");
         var maHDFind = localStorage.getItem('FindHD');
@@ -2646,7 +2644,7 @@
 
     self.PrintMany = async function () {
         let arHD = [];
-        let obj = await GetListHDbyIDs();
+        let obj = await GetListHDbyIDs();   
 
         if (!$.isEmptyObject(obj)) {
             let lstHD = obj.lstHD;
@@ -3610,7 +3608,6 @@
     }
 
     self.XuLiDonHang = async function (item) {
-        debugger;
         localStorage.setItem('createHDfrom', 2);
 
         const hdDB = await GetInforHD_fromDB(item.ID);
@@ -3904,7 +3901,6 @@
         self.gotoGara();
     }
     self.AdđLenhBH = function () {
-        debugger;
         localStorage.setItem('fromLenhBH', true);
         self.gotoGara();
     }
@@ -5405,7 +5401,6 @@
     }
 
     self.RestoreInvoice = async function (item) {
-        debugger;
         const maHoaDon = item.MaHoaDon;
         const loaiHoaDon = item.LoaiHoaDon;
         let sLoai = '', sLoaiLowercase = '';

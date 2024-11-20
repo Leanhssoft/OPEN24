@@ -54,6 +54,8 @@
     self.pageNumber_TQNH = ko.observable(1);
     self.pageNumber_THNHH = ko.observable(1);
     self.pageNumber_THNGD = ko.observable(1);
+    self.pageNumber_THNPTH = ko.observable(1);
+    self.pageNumber_THNPTHGD = ko.observable(1);
     self.pageNumber_THXHH = ko.observable(1);
     self.pageNumber_THXGD = ko.observable(1);
     self.pageNumber_XDVDL = ko.observable(1);
@@ -63,7 +65,12 @@
     self.Loc_TinhTrangKD = ko.observable('2');
     self.Loc_TrangThai = ko.observable('1');
     self.Loc_TonKho = ko.observable('0');
+    const arrSubDomain_2 = ["hoanghuydongfeng", "0973474985"];
+    self.isHoangHuyDongFeng = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain_2) > -1;
+    const arrSubDomain = ["hoanghuydongfeng", "haiaugara", "0973474985"];
+    self.isHoangHuyDongFengnd = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1;
 
+    console.log("bc pt", self.isHoangHuyDongFengnd);
     var tk = null;
     // TuanDL Cache Show Hide Column Grid
     self.listCheckbox = ko.observableArray();
@@ -89,6 +96,10 @@
         self.columnCheckType($(this).data('id'));
         GetListCheckBox();
     });
+    $('#tonghophangnhappthong  .nav-tabs ').on('click', 'li', function () {
+        self.columnCheckType($(this).data('id'));
+        GetListCheckBox();
+    });
     $('#tonghophangxuatkho  .nav-tabs ').on('click', 'li', function () {
         self.columnCheckType($(this).data('id'));
         GetListCheckBox();
@@ -106,6 +117,12 @@
         }
         else if (type === parseInt($('#ID_thhangnhapkho').val())) {
             $('#tonghophangnhapkho .tab-content .tab-pane').each(function (i) {
+                if ($(this).hasClass('active'))
+                    self.columnCheckType($(this).data('id'));
+            });
+        }
+        else if (type === parseInt($('#ID_thhangnhappthong').val())) {
+            $('#tonghophangnhappthong .tab-content .tab-pane').each(function (i) {
                 if ($(this).hasClass('active'))
                     self.columnCheckType($(this).data('id'));
             });
@@ -411,6 +428,7 @@
     self.BCK_NhapXuatTonChiTiet = ko.observable();
     self.BCK_DieuChuyenHangHoa = ko.observable();
     self.BCK_TH_HangNhapKho = ko.observable();
+    self.BCK_TH_PTHong = ko.observable();
     self.BCK_TH_HangXuatKho = ko.observable();
     self.BCK_XuatFile = ko.observable();
     self.shouldTrangThai = ko.observable(false);
@@ -420,6 +438,7 @@
     self.DonVis = ko.observableArray();
     self.searchDonVi = ko.observableArray();
     self.MangChiNhanh = ko.observableArray();
+    self.role_ViewGroups = ko.observableArray([]);
     function getQuyen_NguoiDung() {
         //ajaxHelper(ReportUri + "getQuyen_NguoiDung?ID_NguoiDung=" + _IDDoiTuong + "&ID_DonVi=" + _id_DonVi + "&MaQuyen=" + "BCK_TonKho", "GET").done(function (data) {
         //    self.BCK_TonKho(data);
@@ -478,6 +497,12 @@
         }
         else {
             self.BCK_TH_HangNhapKho('false');
+        }
+        if (VHeader.Quyen.indexOf('BCK_TH_PTHong') > -1) {
+            self.BCK_TH_PTHong('BCK_TH_PTHong');
+        }
+        else {
+            self.BCK_TH_PTHong('false');
         }
 
         if (VHeader.Quyen.indexOf('BCK_TH_HangXuatKho') > -1) {
@@ -788,6 +813,7 @@
                     var objParent = {
                         ID: data[i].ID,
                         TenNhomHangHoa: data[i].TenNhomHang,
+                        TenNhomHangHoa_KhongDau: data[i].TenNhomHangHoa_KhongDau,
                         Childs: []
                     };
                     for (var j = 0; j < data.length; j++) {
@@ -796,6 +822,7 @@
                             {
                                 ID: data[j].ID,
                                 TenNhomHangHoa: data[j].TenNhomHang,
+                                TenNhomHangHoa_KhongDau: data[i].TenNhomHangHoa_KhongDau,
                                 ID_Parent: data[i].ID,
                                 Child2s: []
                             };
@@ -805,6 +832,7 @@
                                     {
                                         ID: data[k].ID,
                                         TenNhomHangHoa: data[k].TenNhomHang,
+                                        TenNhomHangHoa_KhongDau: data[i].TenNhomHangHoa_KhongDau,
                                         ID_Parent: data[j].ID
                                     };
                                     objChild.Child2s.push(objChild2);
@@ -825,6 +853,19 @@
             if (self.NhomHangHoas().length > 10) {
                 $('.close-goods').css('display', 'block');
             }
+            if (self.isHoangHuyDongFeng) {
+                self.NhomHangHoas().forEach(nhom => {
+                    const maQuyen = `NhomHangHoa_XemNhom_${nhom.TenNhomHangHoa_KhongDau}`;
+                    const quyenTonTai = VHeader.Quyen.indexOf(maQuyen) > -1 ? true : false;
+                    self.role_ViewGroups.push({
+                        maNhom: nhom.ID,
+                        tenQuyen: maQuyen,
+                        quyenTonTai: quyenTonTai
+                    });
+                });
+
+                localStorage.setItem('role_ViewGroups', JSON.stringify(self.role_ViewGroups()));
+            }
         });
     }
     GetAllNhomHH();
@@ -842,6 +883,7 @@
                                 var objParent = {
                                     ID: data[i].ID,
                                     TenNhomHangHoa: data[i].TenNhomHang,
+                                    TenNhomHangHoa_KhongDau: data[i].TenNhomHangHoa_KhongDau,
                                     Childs: []
                                 };
                                 for (var j = 0; j < data.length; j++) {
@@ -850,6 +892,7 @@
                                         {
                                             ID: data[j].ID,
                                             TenNhomHangHoa: data[j].TenNhomHang,
+                                            TenNhomHangHoa_KhongDau: data[i].TenNhomHangHoa_KhongDau,
                                             ID_Parent: data[i].ID,
                                             Child2s: []
                                         };
@@ -859,6 +902,7 @@
                                                 {
                                                     ID: data[k].ID,
                                                     TenNhomHangHoa: data[k].TenNhomHang,
+                                                    TenNhomHangHoa_KhongDau: data[i].TenNhomHangHoa_KhongDau,
                                                     ID_Parent: data[j].ID
                                                 };
                                                 objChild.Child2s.push(objChild2);
@@ -898,7 +942,7 @@
         self.LoadReport();
     };
     $('.SelectALLNhomHang').on('click', function () {
-        _ID_NhomHang = null;
+        _ID_NhomHang = null;      
         _pageNumber = 1;
         self.LoadReport();
     });
@@ -1018,6 +1062,13 @@
                 self.LoaiBaoCao('nhóm hàng hóa');
                 self.MoiQuanTam('Báo cáo tổng hợp hàng xuất kho');
                 self.getListDM_LoaiChungTuXuatKho("1,7,8,9,10");
+                break;
+                //sai sai INS
+            case 7:
+                $(".showChungTu").show();
+                $("#txt_search").attr("placeholder", "Theo mã, tên hàng, tên nhóm hàng").blur();
+                self.LoaiBaoCao('nhóm hàng hóa');
+                self.MoiQuanTam('Báo cáo tổng hợp phụ tùng hỏng nhập kho');
                 break;
         }
 
@@ -1437,6 +1488,18 @@
         $("#txt_search").attr("placeholder", "Theo mã, tên hàng, tên nhóm hàng, mã hóa đơn").blur();
         self.LoadReport();
     };
+    self.selectHangHoaNhapKhoPTHong = function () {
+        dk_tabtk = 1;
+        self.LoaiBaoCao('phụ tùng hỏng');
+        $("#txt_search").attr("placeholder", "Theo mã, tên hàng, tên nhóm hàng").blur();
+        self.LoadReport();
+    };
+    self.selectGiaoDichNhapKhoPTHong = function () {
+        dk_tabtk = 2;
+        self.LoaiBaoCao('phụ tùng hỏng chi tiết');
+        $("#txt_search").attr("placeholder", "Theo mã, tên hàng, tên nhóm hàng, mã hóa đơn").blur();
+        self.LoadReport();
+    };
     self.selectHangHoaXuatKho = function () {
         dk_tabxk = 1;
         self.LoaiBaoCao('hàng hóa');
@@ -1473,7 +1536,7 @@
             self.selectNhapChuyenHang();
     });
     self.RefreshPrint = function () {
-        self.BaoCaoKho_TonKho([]);
+         self.BaoCaoKho_TonKho([]);
         self.BaoCaoKho_NhapXuatTon([]);
         self.BaoCaoKho_NhapXuatTonChiTiet([]);
         self.BaoCaoKho_XuatDieuChuyen([]);
@@ -1482,7 +1545,9 @@
         self.BaoCaoKho_TongHopHangXuat([]);
         self.BaoCaoKho_ChiTietHangXuat([]);
         self.BaoCaoKho_TongHopHangNhap([]);
+        self.BaoCaoKho_TongHopPTHongNhap([]);
         self.BaoCaoKho_ChiTietHangNhap([]);
+        self.BaoCaoKho_ChiTietHangNhapPTHong([]);
     };
 
     var Text_search = "";
@@ -1490,8 +1555,11 @@
     var TinhTrangHH = 2;
     let _trangThai = 1;
     let _tonKho = 0;
+    //var _ID_NhomHang = [];
     var _ID_NhomHang = null;
-    self.BaoCaoKho_TonKho = ko.observableArray();
+
+
+    self.BaoCaoKho_TonKho = ko.observableArray([]);;
     self.BaoCaoKho_TongKho_TongHop = ko.observableArray();
     self.BaoCaoKho_NhapXuatTon = ko.observableArray();
     self.BaoCaoKho_NhapXuatTonChiTiet = ko.observableArray();
@@ -1502,6 +1570,8 @@
     self.BaoCaoKho_XuatDichVuDinhLuong = ko.observableArray();
     self.BaoCaoKho_ChiTietHangXuat = ko.observableArray();
     self.BaoCaoKho_TongHopHangNhap = ko.observableArray();
+    self.BaoCaoKho_TongHopPTHongNhap = ko.observableArray();
+    self.BaoCaoKho_ChiTietHangNhapPTHong = ko.observableArray();
     self.BaoCaoKho_ChiTietHangNhap = ko.observableArray();
     self.TK_SoLuongTon = ko.observable();
     self.TKTH_SoLuongTon = ko.observable();
@@ -1550,6 +1620,10 @@
     self.NCC_GiamGiaHD = ko.observable();
     self.THHN_SoLuong = ko.observable();
     self.THHN_ThanhTien = ko.observable();
+    self.THHNPTH_SoLuong = ko.observable();
+    self.THHNPTH_ThanhTien = ko.observable();
+    self.CTHNPTH_SoLuong = ko.observable();
+    self.CTHNPTH_ThanhTien = ko.observable();
     self.CTHN_SoLuong = ko.observable();
     self.CTHN_ThanhTien = ko.observable();
     self.THHX_SoLuong = ko.observable();
@@ -1614,6 +1688,11 @@
             case 6:
                 if (dk_tabxk === 1) {
                     self.BaoCaoKho_TongHopHangXuat(array);
+                }
+                break;
+            case 7:
+                if (dk_tabtk === 1) {
+                    self.BaoCaoKho_TongHopPTHongNhap(array);
                 }
                 break;
         }
@@ -1731,6 +1810,7 @@
                 case 5:// bc tonghop xuatkho
                 case 4:// bc dieuchuyen tonghop
                 case 6:// bc tonghop nhapkho
+                case 7:
                     switch (id) {
                         case "Warehouse_nhomhang":
                             self.ColumnSort("TenNhomHang");
@@ -1773,6 +1853,9 @@
                         case 6:
                             self.sortTable(self.BaoCaoKho_TongHopHangXuat());
                             break;
+                        case 7:
+                            self.sortTable(self.BaoCaoKho_TongHopPTHongNhap());
+                            break;
                     }
                     break;
             }
@@ -1794,6 +1877,8 @@
         self.pageNumber_CTDC(1);
         self.pageNumber_THNHH(1);
         self.pageNumber_THNGD(1);
+        self.pageNumber_THNPTH(1);
+        self.pageNumber_THNPTHGD(1);
         self.pageNumber_THXHH(1);
         self.pageNumber_THXGD(1);
         self.pageNumber_XDVDL(1);
@@ -1811,7 +1896,7 @@
             ID_ChiNhanh: _idDonViSeach,
             LaHangHoa: _laHangHoa,
             TinhTrang: TinhTrangHH,
-            ID_NhomHang: _ID_NhomHang,
+            ID_NhomHang: _ID_NhomHang,         
             LoaiChungTu: _idChungTuSeach,
             ID_NguoiDung: _IDDoiTuong,
             columnsHide: null,
@@ -1833,14 +1918,23 @@
             self.TodayBC_TK(moment(array_Seach.timeStart, 'YYYY-MM-DD').format('DD/MM/YYYY')
                 .concat(' - ', moment(toDate, 'YYYY-MM-DD').format('DD/MM/YYYY')))
         }
-
+        var isAdmin = JSON.parse(localStorage.getItem('aid'));
+       
         switch (self.check_MoiQuanTam()) {
             case 1:
                 if (self.BCK_TonKho() === "BCK_TonKho") {
                     $(".PhanQuyen").hide();
-                    if (tab_TonKho === 1) {
+                    if (tab_TonKho === 1) {                    
+                        if (self.isHoangHuyDongFeng && VHeader.Quyen.indexOf('NhomHangHoa_QuyenXemNhom') > -1 && !isAdmin) {
+                            if (array_Seach.ID_NhomHang && array_Seach.ID_NhomHang.length > 0) {
+                                array_Seach.ID_NhomHang = array_Seach.ID_NhomHang;
+                            } else {
+                                var groups = JSON.parse(localStorage.getItem('role_ViewGroups')).filter(q => q.quyenTonTai).map(q => q.maNhom);
+                                array_Seach.ID_NhomHang = groups.join(',');
+                            }
+                        }
                         ajaxHelper(ReportUri + "BaoCaoKho_TonKho", "POST", array_Seach).done(function (data) {
-                            self.BaoCaoKho_TonKho(data.LstData);
+                            self.BaoCaoKho_TonKho(data.LstData || []);
                             AllPage = data.numberPage;
                             self.selecPage();
                             self.ReserPage();
@@ -1853,6 +1947,14 @@
                         });
                     }
                     else {
+                        if (self.isHoangHuyDongFeng && VHeader.Quyen.indexOf('NhomHangHoa_QuyenXemNhom') > -1 && !isAdmin) {
+                            if (array_Seach.ID_NhomHang && array_Seach.ID_NhomHang.length > 0) {
+                                array_Seach.ID_NhomHang = array_Seach.ID_NhomHang;
+                            } else {
+                                var groups = JSON.parse(localStorage.getItem('role_ViewGroups')).filter(q => q.quyenTonTai).map(q => q.maNhom);
+                                array_Seach.ID_NhomHang = groups.join(',');
+                            }
+                        }
                         ajaxHelper(ReportUri + "BaoCaoKho_TonKho_TongHop", "POST", array_Seach).done(function (data) {
                             self.BaoCaoKho_TongKho_TongHop(data.LstData);
                             AllPage = data.numberPage;
@@ -2090,18 +2192,55 @@
                     LoadingForm(false);
                 }
                 break;
+
+
+
+            case 7:
+                if (self.BCK_TH_PTHong() === "BCK_TH_PTHong") {
+                    $(".PhanQuyen").hide();
+                    array_Seach.XuatKho = false;
+                    if (dk_tabtk === 1) {
+                        ajaxHelper(ReportUri + "BaoCaoKho_TongHopHangPTHong", "POST", array_Seach).done(function (data) {
+                            self.BaoCaoKho_TongHopPTHongNhap(data.LstData);
+                            AllPage = data.numberPage;
+                            self.selecPage();
+                            self.ReserPage();
+                            self.SumRowsHangHoa(data.Rowcount);
+                            self.THHNPTH_SoLuong(data.a1);
+                            self.THHNPTH_ThanhTien(data.a2);
+                            LoadingForm(false);
+                            $('#table_PTHongNhapKho .table-reponsive').css('display', 'block');
+                        });
+                    } else
+                        ajaxHelper(ReportUri + "BaoCaoKho_ChiTietHangNhapKhoPTHong", "POST", array_Seach).done(function (data) {
+                            self.BaoCaoKho_ChiTietHangNhapPTHong(data.LstData);
+                            AllPage = data.numberPage;
+                            self.selecPage();
+                            self.ReserPage();
+                            self.SumRowsHangHoa(data.Rowcount);
+                            self.CTHNPTH_SoLuong(data.a1);
+                            self.CTHNPTH_ThanhTien(data.a2);
+                            LoadingForm(false);
+                            $('#table_GiaoDichPTHongNhapKho .table-reponsive').css('display', 'block');
+                        });
+                }
+                else {
+                    $(".PhanQuyen").show();
+                    LoadingForm(false);
+                }
+                break;
         }
     };
     self.BaoCaoKho_TonKho_Page = ko.computed(function (x) {
-        var first = (self.pageNumber_TK() - 1) * self.pageSize();
-        if (self.BaoCaoKho_TonKho() !== null) {
+        var first = (self.pageNumber_TK() - 1) * self.pageSize();        
+        if (self.BaoCaoKho_TonKho() && Array.isArray(self.BaoCaoKho_TonKho())) {
             if (self.BaoCaoKho_TonKho().length !== 0) {
                 self.RowsStart((self.pageNumber_TK() - 1) * self.pageSize() + 1);
                 self.RowsEnd((self.pageNumber_TK() - 1) * self.pageSize() + self.BaoCaoKho_TonKho().slice(first, first + self.pageSize()).length);
             }
             else {
                 self.RowsStart('0');
-                self.RowsEnd('0');
+                self.RowsEnd('0');              
             }
             return self.BaoCaoKho_TonKho().slice(first, first + self.pageSize());
         }
@@ -2229,6 +2368,38 @@
         }
         return null;
     });
+    self.BaoCaoKho_TongHopPTHongNhap_Page = ko.computed(function (x) {
+        var first = (self.pageNumber_THNPTH() - 1) * self.pageSize();
+        if (self.BaoCaoKho_TongHopPTHongNhap() !== null) {
+            if (self.BaoCaoKho_TongHopPTHongNhap().length !== 0) {
+                self.RowsStart((self.pageNumber_THNPTH() - 1) * self.pageSize() + 1);
+                self.RowsEnd((self.pageNumber_THNPTH() - 1) * self.pageSize() + self.BaoCaoKho_TongHopPTHongNhap().slice(first, first + self.pageSize()).length);
+            }
+            else {
+                self.RowsStart('0');
+                self.RowsEnd('0');
+            }
+            return self.BaoCaoKho_TongHopPTHongNhap().slice(first, first + self.pageSize());
+        }
+        return null;
+    });
+ 
+
+    self.BaoCaoKho_ChiTietHangNhapPTHong_Page = ko.computed(function (x) {
+        var first = (self.pageNumber_THNPTHGD() - 1) * self.pageSize();
+        if (self.BaoCaoKho_ChiTietHangNhapPTHong() !== null) {
+            if (self.BaoCaoKho_ChiTietHangNhapPTHong().length !== 0) {
+                self.RowsStart((self.pageNumber_THNPTHGD() - 1) * self.pageSize() + 1);
+                self.RowsEnd((self.pageNumber_THNPTHGD() - 1) * self.pageSize() + self.BaoCaoKho_ChiTietHangNhapPTHong().slice(first, first + self.pageSize()).length);
+            }
+            else {
+                self.RowsStart('0');
+                self.RowsEnd('0');
+            }
+            return self.BaoCaoKho_ChiTietHangNhapPTHong().slice(first, first + self.pageSize());
+        }
+        return null;
+    });
 
     self.BaoCaoKho_TongHopHangXuat_Page = ko.computed(function (x) {
         var first = (self.pageNumber_THXHH() - 1) * self.pageSize();
@@ -2322,6 +2493,14 @@
                 arrayColumn = lisstcolumn[0].detail;
                 arrayColumnCT = lisstcolumn[1].detail;
                 break;
+            case parseInt($('#ID_thhangnhappthong').val()):
+                $('#tonghophangnhappthong .tab-content .tab-pane').each(function (i) {
+                    console.log('xxx ', $(this).data('id'))
+                    lisstcolumn.push({ main: i, detail: LocalCaches.LoadColumnGrid(Key_Form + $(this).data('id')).map(x => x.Value) });
+                });
+                arrayColumn = lisstcolumn[0].detail;
+                arrayColumnCT = lisstcolumn[1].detail;
+                break;
             case parseInt($('#ID_thhangxuatkho').val()):
                 if (self.columnCheckType() === 42) {
                     // bc dichvu dinhluong
@@ -2396,7 +2575,7 @@
             lstIDChiNhanh: self.LstIDDonVi(),
             XuatKho: true,// true: la bc xuatkho
         };
-
+        var isAdmin = JSON.parse(localStorage.getItem('aid'));
         if (self.BCK_XuatFile() !== "BCK_XuatFile") {
             ShowMessage_Danger('Bạn không có quyền xuất file báo cáo này');
             LoadingForm(false);
@@ -2405,8 +2584,16 @@
         LoadingForm(true);
         let exportOK = false;
         switch (parseInt(self.check_MoiQuanTam())) {
-            case 1:
+            case 1:            
                 if (self.BaoCaoKho_TonKho().length > 0) {
+                    if (self.isHoangHuyDongFeng && VHeader.Quyen.indexOf('NhomHangHoa_QuyenXemNhom') > -1 && !isAdmin) {
+                        if (array_Seach.ID_NhomHang && array_Seach.ID_NhomHang.length > 0) {
+                            array_Seach.ID_NhomHang = array_Seach.ID_NhomHang;
+                        } else {
+                            var groups = JSON.parse(localStorage.getItem('role_ViewGroups')).filter(q => q.quyenTonTai).map(q => q.maNhom);
+                            array_Seach.ID_NhomHang = groups.join(',');
+                        }
+                    }
                     exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCK_TonKho", 'POST', { objExcel: array_Seach }, "BaoCaoHangHoaTonKho.xlsx");
                 }
                 break;
@@ -2574,6 +2761,9 @@
                 if (maHD.indexOf('HD') > -1) {
                     url = "/#/Invoices";
                 }
+                else if (maHD.indexOf('THPT') > -1) {
+                    url = "/#/NhapThuHoiPT";
+                }
                 else if (maHD.indexOf('GDV') > -1) {
                     url = "/#/ServicePackage";
                 }
@@ -2714,6 +2904,12 @@
                 else
                     self.pageNumber_XDVDL(_pageNumber);
             }
+            else if (self.check_MoiQuanTam() === 7) {
+                if (dk_tabtk === 1)
+                    self.pageNumber_THNPTH(_pageNumber);
+                else
+                    self.pageNumber_THNPTHGD(_pageNumber);
+            }
             self.ReserPage();
         }
     };
@@ -2753,6 +2949,12 @@
                 else
                     self.pageNumber_XDVDL(_pageNumber);
             }
+            else if (self.check_MoiQuanTam() === 7) {
+                if (dk_tabxk === 1)
+                    self.pageNumber_THNPTH(_pageNumber);
+                else
+                    self.pageNumber_THNPTHGD(_pageNumber);
+            }
             self.ReserPage();
         }
     };
@@ -2791,6 +2993,12 @@
             else
                 self.pageNumber_XDVDL(_pageNumber);
         }
+        else if (self.check_MoiQuanTam() === 7) {
+            if (dk_tabtk === 1)
+                self.pageNumber_THNPTH(_pageNumber);
+            else
+                self.pageNumber_THNPTHGD(_pageNumber);
+        }
         self.ReserPage();
     };
     self.StartPage = function (item) {
@@ -2828,6 +3036,12 @@
             else
                 self.pageNumber_XDVDL(_pageNumber);
         }
+        else if (self.check_MoiQuanTam() === 7) {
+            if (dk_tabtk === 1)
+                self.pageNumber_THNPTH(_pageNumber);
+            else
+                self.pageNumber_THNPTHGD(_pageNumber);
+        }
         self.ReserPage();
     };
     self.gotoNextPage = function (item) {
@@ -2864,6 +3078,12 @@
                 self.pageNumber_THXGD(_pageNumber);
             else
                 self.pageNumber_XDVDL(_pageNumber);
+        }
+        else if (self.check_MoiQuanTam() === 7) {
+            if (dk_tabtk === 1)
+                self.pageNumber_THNPTH(_pageNumber);
+            else
+                self.pageNumber_THNPTHGD(_pageNumber);
         }
         self.ReserPage();
     };
@@ -2935,6 +3155,15 @@
                         self.pageNumber_XDVDL(1);
                         AllPage = Math.ceil(self.BaoCaoKho_XuatDichVuDinhLuong().length / self.pageSize());
                         break;
+                }
+                break;
+            case 7:
+                if (dk_tabtk === 1) {
+                    self.pageNumber_THNPTH(1);
+                    AllPage = Math.ceil(self.BaoCaoKho_TongHopPTHongNhap().length / self.pageSize());
+                } else {
+                    self.pageNumber_THNPTHGD(1);
+                    AllPage = Math.ceil(self.BaoCaoKho_ChiTietHangNhapPTHong().length / self.pageSize());
                 }
                 break;
         }

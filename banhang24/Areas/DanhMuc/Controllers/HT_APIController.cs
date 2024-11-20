@@ -682,16 +682,25 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     "MANDACONS",
                     "0973474985"
                 };
+                List<string> lstSubdomainv2 = new List<string>()
+                {
+                    "haiaugara",
+                    "hoanghuydongfeng",
+                     "0973474985"
+                };
                 if (lstSubdomain.Contains(SubDomain) )
                 {
                     lstSubMenuSuaChuaXe.Add(new HeaderMenu(7, "Phiếu bàn giao xe", "Phiếu bàn giao xe", UrlPage.PhieuBanGiaoXe, "x/PhieuBanGiaoXe", false, "fa fa-book", new List<HeaderMenu>()));
                 }
-                //INS 10.2024
-                if (lstQuyen.Where(p => p == "LenhBaoHanh_XemDS").FirstOrDefault() != null)
+                if (lstSubdomainv2.Contains(SubDomain))
                 {
-                    lstSubMenuSuaChuaXe.Add(new HeaderMenu(8, "Lệnh bảo hành", "Lệnh bảo hành", UrlPage.LenhBaoHanh, "e/dathang", false, "fas fa-shield-alt", new List<HeaderMenu>()));
+                    //INS 10.2024
+                    if (lstQuyen.Where(p => p == "LenhBaoHanh_XemDS").FirstOrDefault() != null)
+                    {
+                        lstSubMenuSuaChuaXe.Add(new HeaderMenu(8, "Lệnh bảo hành", "Lệnh bảo hành", UrlPage.LenhBaoHanh, "e/dathang", false, "fas fa-shield-alt", new List<HeaderMenu>()));
+                    }
                 }
-
+               
                 List<HeaderMenu> lstSubMenuKhachHang = new List<HeaderMenu>();
                 bool lstSubMenuKhachHangCheck = false;
                 if (lstQuyen.Where(p => p == "KhachHang_XemDS").FirstOrDefault() != null)
@@ -772,11 +781,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     lstSubMenuMuaHangCheck = true;
                 }
                 //INS
-                if (lstQuyen.Where(p => p == "NhapHangPTHong").FirstOrDefault() != null)
+                if (lstSubdomainv2.Contains(SubDomain))
                 {
-                    lstSubMenuMuaHang.Add(new HeaderMenu(3, "Thu hồi phụ tùng", "Thu hồi phụ tùng", UrlPage.NhapThuHoiPT, "e/nhaphang/33", false, "fa fa-plus", new List<HeaderMenu>()));
-                    lstSubMenuMuaHangCheck = true;
+                    if (lstQuyen.Where(p => p == "NhapHangPTHong").FirstOrDefault() != null)
+                    {
+                        lstSubMenuMuaHang.Add(new HeaderMenu(3, "Thu hồi phụ tùng", "Thu hồi phụ tùng", UrlPage.NhapThuHoiPT, "e/nhaphang/33", false, "fa fa-plus", new List<HeaderMenu>()));
+                        lstSubMenuMuaHangCheck = true;
+                    }
                 }
+               
                 if (lstQuyen.Where(p => p == "TraHangNhap_XemDS").FirstOrDefault() != null)
                 {
                     lstSubMenuMuaHang.Add(new HeaderMenu(2, "Trả hàng nhà cung cấp", "Trả hàng nhà cung cấp", UrlPage.TraHangNhap, "e/trahangnhap", false, "fa fa-reply-all", new List<HeaderMenu>()));

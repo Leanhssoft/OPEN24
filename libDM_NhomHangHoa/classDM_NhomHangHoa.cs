@@ -381,6 +381,7 @@ namespace libDM_NhomHangHoa
         public Guid? ID_Parent { get; set; }
         public string TenNhomCon { get; set; }
         public string TenNhomHangHoa { get; set; }
+        public string TenNhomHangHoa_KhongDau { get; set; }
         public DateTime? NgayTao { get; set; }
         public bool LaNhomHangHoa { get; set; }
         public bool? TrangThai { get; set; }

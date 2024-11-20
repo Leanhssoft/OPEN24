@@ -171,6 +171,15 @@
     }
     getDonVi()
     //lọc đơn vị
+
+    function checkIsAdmin() {
+        let self = this;
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/CheckRole', 'GET')
+            .done(function (data) {
+                localStorage.setItem('aid', JSON.stringify(data));
+            });
+    }
+    checkIsAdmin()
     self.NoteNameDonViDoanhThu = function () {
         var arrDonVi = [];
         var itemSearch = locdau($('#NoteNameDonVi').val().toLowerCase());

@@ -1640,6 +1640,10 @@ namespace libDM_DoiTuong
                         {
                             ct.ThanhPhanComBo = GetListComBo_ofCTHD(ct.ID_HoaDon ?? Guid.Empty, ct.ID.ToString());
                         }
+                        if (CookieStore.GetCookieAes("cid") == "False" && CookieStore.GetCookieAes("clo") == "True")
+                        {
+                            ct.MaLoHang = null; ct.TenHangHoaFull = null;
+                        }
                     }
                     return itemHD;
                 }
@@ -2084,6 +2088,10 @@ namespace libDM_DoiTuong
                                 Xoa = false,
                                 TyLeChuyenDoi = x.TyLeChuyenDoi
                             }).ToList();
+                if (CookieStore.GetCookieAes("cid") == "False" && CookieStore.GetCookieAes("clo") == "True")
+                {
+                    item.MaLoHang = null; item.TenHangHoaFull = null;
+                }
             }
             //data = data.Select(p => new BH_HoaDon_ChiTietDTO()
             //{

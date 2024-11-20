@@ -41,6 +41,8 @@ namespace Model
         public List<string> ListThuocTinh { get; set; }
         public List<string> ListViTri { get; set; }
         public List<ColumSearch> ListSearchColumn { get; set; }
+        public bool hasGroupPermission { get; set; }
+        public List<Guid?> AllowedGroupIds { get; set; }
     }
 
     public class DMHangHoaDTO
@@ -88,6 +90,7 @@ namespace Model
         public string TenNhomHoTro { get; set; }
         public List<DonViTinh> DonViTinh { get; set; }
         public double? SumTonKho { get; set; }
+        public double? SumTonKhoNhomHang { get; set; }
         public int? TotalRow { get; set; }
         public double? TotalPage { get; set; }
     }

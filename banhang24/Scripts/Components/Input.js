@@ -253,6 +253,7 @@ var cmpPrint = {
             ajaxHelper(url, 'GET').done(function (result) {
                 var data = result;
                 data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                data = data.concat("<style> @media print {body {-webkit-print-color-adjust: exact;}} </style>");
                 data = data.concat("<script > var item1= ", JSON.stringify(item1), ';',
                     " var item2= ", JSON.stringify(item2), ' ;',
                     " var item3= ", JSON.stringify(item3), ' ;',
