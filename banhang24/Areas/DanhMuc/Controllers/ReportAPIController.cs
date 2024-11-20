@@ -1,6 +1,7 @@
 ﻿using banhang24.Hellper;
 using banhang24.Models;
 using libDM_DoiTuong;
+using libDM_HangHoa;
 using libHT;
 using libHT_NguoiDung;
 using libQuy_HoaDon;
@@ -16,6 +17,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Results;
 using static banhang24.Hellper.commonEnum;
 
 
@@ -4028,7 +4030,29 @@ namespace banhang24.Areas.DanhMuc.Controllers
             {
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
+                ClassDM_HangHoa classDMHangHoa = new ClassDM_HangHoa(db);
                 List<BaoCaoKho_TonKhoPRC> lst = reportKho.GetBaoCaoKho_TonKhoPRC(param);
+                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+                string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
+
+                if (arrSubDomain.Contains(subDomain)
+                    && CheckUserPermission("NhomHangHoa_QuyenXemNhom", param.ID_DonVi)
+                    && !CheckRoleIsAdmin()
+                    && (string.IsNullOrEmpty(param.ID_NhomHang.ToString()) || !CheckUserHasAccessToGroup(param.ID_NhomHang.ToString(), param.ID_DonVi)))
+                {
+                    return Json(new
+                    {
+                        data = new JsonResultExampleTr<BaoCaoKho_TonKhoPRC>
+                        {
+                            LstData = new List<BaoCaoKho_TonKhoPRC>(),
+                            Rowcount = 0,
+                            numberPage = 0,
+                            a1 = 0,
+                            a2 = 0,
+                            a3 = 0
+                        }
+                    });
+                }
                 int Rown = lst.Count();
                 double SoLuongTon = lst.Sum(x => x.TonCuoiKy);
                 double SoLuongTonQuyCach = lst.Sum(x => x.TonQuyCach);
@@ -4055,7 +4079,16 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 List<BaoCaoKho_TonKho_TongHopPRC> lst = reportKho.GetBaoCaoKho_TonKho_TongHopPRC(param);
+                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+                string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
 
+                if (arrSubDomain.Contains(subDomain)
+                    && CheckUserPermission("NhomHangHoa_QuyenXemNhom", param.ID_DonVi)
+                    && !CheckRoleIsAdmin()
+                    && (string.IsNullOrEmpty(param.ID_NhomHang.ToString()) || !CheckUserHasAccessToGroup(param.ID_NhomHang.ToString(), param.ID_DonVi)))
+                {
+                    return null;
+                }
                 int Rown = lst.Count();
                 double SoLuongTon = lst.Sum(x => x.SoLuong);
                 double GiaTriTon = lst.Sum(x => x.GiaTri);
@@ -4083,9 +4116,19 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 Class_officeDocument classOffice = new Class_officeDocument(db);
                 ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 List<BaoCaoKho_TonKhoPRC> lst = reportKho.GetBaoCaoKho_TonKhoPRC(param);
+                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+                string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
+                if (arrSubDomain.Contains(subDomain)
+                   && CheckUserPermission("NhomHangHoa_QuyenXemNhom", param.ID_DonVi)
+                   && !CheckRoleIsAdmin()
+                   && (string.IsNullOrEmpty(param.ID_NhomHang.ToString()) || !CheckUserHasAccessToGroup(param.ID_NhomHang.ToString(), param.ID_DonVi)))
+                {
+                    return null;
+                }
 
                 DataTable excel = classOffice.ToDataTable<BaoCaoKho_TonKhoPRC>(lst);
                 excel.Columns.Remove("TenHangHoa");
+                excel.Columns.Remove("ID_NhomHangHoa");
                 excel.Columns.Remove("ThuocTinh_GiaTri");
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Report/BaoCaoKho/Teamplate_BaoCaoHangHoaTonKho.xlsx");
                 var lstDataCell = classAposeCell.GetData_ForDefaultCell(param.TenChiNhanh, param.TodayBC);
@@ -4451,6 +4494,29 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
         }
         [AcceptVerbs("GET", "POST")]
+        public IHttpActionResult BaoCaoKho_TongHopHangPTHong(array_BaoCaoKhoHang param)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                db.Database.CommandTimeout = 60 * 60;
+                ClassReportKho reportKho = new ClassReportKho(db);
+                List<BaoCaoKho_XuatChuyenHangPRC> lst = reportKho.GetBaoCaoKho_TongHopHangNhapPTHong(param);
+                int Rown = lst.Count();
+                double SoLuong = lst.Sum(x => x.SoLuong);
+                double GiaTri = lst.Sum(x => x.ThanhTien);
+                int lstPages = getNumber_Page(Rown, param.PageSize ?? 10);
+                JsonResultExampleTr<BaoCaoKho_XuatChuyenHangPRC> json = new JsonResultExampleTr<BaoCaoKho_XuatChuyenHangPRC>
+                {
+                    LstData = lst,
+                    Rowcount = Rown,
+                    numberPage = lstPages,
+                    a1 = Math.Round(SoLuong, 3, MidpointRounding.ToEven),
+                    a2 = Math.Round(GiaTri, 0, MidpointRounding.ToEven),
+                };
+                return Json(json);
+            }
+        }
+        [AcceptVerbs("GET", "POST")]
         public IHttpActionResult BaoCaoKho_ChiTietHangNhapKho(array_BaoCaoKhoHang param)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
@@ -4458,6 +4524,30 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 List<BaoCaoKho_ChiTietHangNhapKhoPRC> lst = reportKho.GetBaoCaoKho_ChiTietHangNhapXuatKho(param);
+                int Rown = lst.Count();
+                double SoLuong = lst.Sum(x => x.SoLuong);
+                double GiaTri = lst.Sum(x => x.ThanhTien);
+                int lstPages = getNumber_Page(Rown, param.PageSize ?? 10);
+                JsonResultExampleTr<BaoCaoKho_ChiTietHangNhapKhoPRC> json = new JsonResultExampleTr<BaoCaoKho_ChiTietHangNhapKhoPRC>
+                {
+                    LstData = lst,
+                    Rowcount = Rown,
+                    numberPage = lstPages,
+                    a1 = Math.Round(SoLuong, 3, MidpointRounding.ToEven),
+                    a2 = Math.Round(GiaTri, 0, MidpointRounding.ToEven),
+                };
+                return Json(json);
+            }
+        }
+
+        [AcceptVerbs("GET", "POST")]
+        public IHttpActionResult BaoCaoKho_ChiTietHangNhapKhoPTHong(array_BaoCaoKhoHang param)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                db.Database.CommandTimeout = 60 * 60;
+                ClassReportKho reportKho = new ClassReportKho(db);
+                List<BaoCaoKho_ChiTietHangNhapKhoPRC> lst = reportKho.GetBaoCaoKho_ChiTietHangNhapKhoPTHong(param);
                 int Rown = lst.Count();
                 double SoLuong = lst.Sum(x => x.SoLuong);
                 double GiaTri = lst.Sum(x => x.ThanhTien);
@@ -8060,7 +8150,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 CookieStore.WriteLog("ExportExcel_ValueCard_Balance " + ex.InnerException + ex.Message);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
             }
-            
+
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
@@ -8109,7 +8199,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 CookieStore.WriteLog("ExportExcel_ValueCard_HisUsed " + ex.InnerException + ex.Message);
                 return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
             }
-            
+
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
@@ -9003,7 +9093,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         ChiPhi = p.ChiPhi,
                         LoiNhuan = p.LoiNhuan,
                         GhiChu = p.GhiChu,
-                        TenDonVi = p.TenDonVi
+                        TenDonVi = p.TenDonVi,
+                        TenHangHoaThayThe = p.TenHangHoaThayThe
                     }).ToList();
                     DataTable excel = classOffice.ToDataTable<BaoCaoDoanhThuSuaChuaChiTiet_Export>(lst);
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/Template_BaoCaoDoanhThuSuaChuaChiTiet.xlsx");
@@ -9899,9 +9990,11 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             data = commonEnum.ReportWarehouseTransportDetail.ToList();
                             break;
                         case (int)commonEnum.TypeReport.thnhapkhoHH:
+                        case (int)commonEnum.TypeReport.thnhapkhopthong:
                             data = commonEnum.ReportWarehouseImportStoreHH.ToList();
                             break;
                         case (int)commonEnum.TypeReport.thnhapkhoGD:
+                        case (int)commonEnum.TypeReport.thnhapkhopthongGD:
                             data = commonEnum.BaoCaoNhapKhoChiTiet.ToList();
                             break;
                         case (int)commonEnum.TypeReport.thxuatkhoHH:

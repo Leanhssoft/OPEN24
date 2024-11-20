@@ -927,14 +927,14 @@
                                                                 <li onclick="loadHeightParent()"><a data-toggle="tab" data-bind="attr:{href:'#tp'  + $parent.ID +  ID},text: LaHangHoa === true ? 'Định mức': 'Thành phần'"></a></li>
                                                                 <li onclick="loadHeightParent()" data-bind="visible: QuanLyTheoLoHang === false"><a data-toggle="tab" data-bind="attr:{href:'#tk' + $parent.ID +  ID}">Thẻ kho</a></li>
                                                                 <li onclick="loadHeightParent()"><a data-toggle="tab" data-bind="attr:{href:'#to'  + $parent.ID +  ID}">Tồn kho</a></li>
-                                                                <li onclick="loadHeightParent()" data-bind="visible: QuanLyTheoLoHang === true"><a data-toggle="tab" data-bind="attr:{href:'#lohangcl'  + $parent.ID +  ID}">Số lô</a></li>
+                                                                <li onclick="loadHeightParent()" data-bind="visible: QuanLyTheoLoHang === true && ($root.role_XemLoHang() === false || $root.isAdmin)"><a data-toggle="tab" data-bind="attr:{href:'#lohangcl'  + $parent.ID +  ID}">Số lô</a></li>
                                                                 <li><a data-toggle="tab" data-bind="attr:{href:'#hoahongcl'  + $parent.ID +  ID}, click: $root.ClickTab_HoaHongNVien">Hoa hồng nhân viên</a></li>
                                                                 <li data-bind="visible: QuanLyBaoDuong == 1,
                                                                         css: $root.Tab_Active() ===3?'active':'',
                                                                         click: function(){$root.ChangeTab_HangHoa(5)}">
                                                                     <a data-toggle="tab" data-bind="attr:{href:'#baoduong_' + $parent.ID +  ID}">Quản lý bảo dưỡng</a>
                                                                 </li>
-                                                                <li onclick="loadHeightParent()" data-bind="visible: QuanLyTheoLoHang === false"><a data-toggle="tab" data-bind="attr:{href:'#thpt' + $parent.ID +  ID}">Thu hồi phụ tùng hỏng</a></li>
+                                                                <li onclick="loadHeightParent()" data-bind="visible: QuanLyTheoLoHang === false && $root.isHoangHuyDongFengnd"><a data-toggle="tab" data-bind="attr:{href:'#thpt' + $parent.ID +  ID}">Thu hồi phụ tùng hỏng</a></li>
                                                             </ul>
                                                             <div class="tab-content ">
                                                                 <div class="tab-pane active" data-bind="attr:{id:'tt'  + $parent.ID +  ID}">
@@ -1512,7 +1512,7 @@
                                                                                                 <div class="group-p1">
                                                                                                     <a data-bind="text: Text"></a>
                                                                                                     @*<span class="pull-right"
-                                            data-bind="visible: LoaiBaoDuong ==  $parent.LoaiBaoDuong"></span>*@
+                                                                                data-bind="visible: LoaiBaoDuong ==  $parent.LoaiBaoDuong"></span>*@
                                                                                                 </div>
                                                                                             </li>
                                                                                         </ul>
@@ -1561,66 +1561,6 @@
 
                                                                     </div>
                                                                 </div>
-
-
-
-                                                                @*//INS*@
-                                                                @*<div class="tab-pane" data-bind="attr:{id:'thpt'  + $parent.ID +  ID}">
-                                                                    <div class="padding-10">
-
-                                                                        <p data-bind="visible: DonViTinhChuan!= null && DonViTinhChuan != '' "> Lưu ý: Thẻ kho được tính trên đơn vị cơ bản, tồn cuối tương ứng với đơn vị (<b data-bind="text: DonViTinhChuan"></b>) là : <span data-bind="text: formatNumber3Digit(TonKho)"></span></p>
-                                                                        <table class="table table-js-tk">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th>Chứng từ</th>
-                                                                                    <th>Phương thức</th>
-                                                                                    <th>Thời gian</th>
-                                                                                    <th>Giá vốn</th>
-                                                                                    <th>Nhập</th>
-                                                                                    <th>Xuất</th>
-                                                                                    <th data-bind="visible: LaHangHoa === true">Tồn lũy kế</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody data-bind="foreach: $root.TheKhos">
-                                                                                <tr>
-                                                                                    <td>
-                                                                                        <a href="javascipt:void(0)" data-bind="text: MaHoaDon , event:{click: $root.showpopupTK}"></a>
-                                                                                    </td>
-                                                                                    <td data-bind="text: LoaiChungTu"></td>
-                                                                                    <td data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></td>
-                                                                                    <td data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === true ? 'Theo Lô Hàng' : formatNumber3Digit(GiaVon,2)): 0"></td>
-                                                                                    <td data-bind="text: SoLuong > 0 ? formatNumber3Digit(SoLuong) : 0"></td>
-                                                                                    <td data-bind="text: SoLuong > 0 ? 0 :formatNumber3Digit(SoLuong)"></td>
-                                                                                    <td data-bind="visible: $parent.LaHangHoa === true">
-                                                                                        <span data-bind="text: formatNumber3Digit(TonKho)">
-                                                                                        </span>
-                                                                                        &nbsp; &nbsp;
-                                                                                        <span data-bind="visible: $index()===0 && $root.currentPageTK() == 0 && (LuyKeTonKho !== TonKho || TonKho.toFixed(2) !== $parent.TonKho.toFixed(2))">
-                                                                                            <button class="btn btn-main" data-bind="click: function(){$root.CapNhatTonKho($parent)}">Cập nhật tồn kho</button>
-                                                                                        </span>
-                                                                                    </td>
-                                                                                </tr>
-                                                                            </tbody>
-                                                                        </table>
-                                                                        <div class="bg-warning padding-10 text-center" data-bind="visible: $root.TheKhos().length<=0">
-                                                                            <i class="">Không có dữ liệu</i>
-                                                                        </div>
-                                                                        <div class="page">
-                                                                            <div class="flex flex-end">
-                                                                                <a href="#" data-bind="click: $root.StartPageTheKho, visible: $root.VisibleStartPageTheKho"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
-                                                                                <a href="#" data-bind="click: $root.BackPageTheKho, visible: $root.VisibleStartPageTheKho "><i class="fa fa-caret-left" aria-hidden="true"></i></a>
-                                                                                <ul data-bind="foreach: $root.PageList_Display_TheKho">
-                                                                                    <li>
-                                                                                        <a href="javascript:void(0)" data-bind="text: pageNumberTK, click: $root.GoToPage, css: $root.GetClass($data)"></a>
-                                                                                    </li>
-                                                                                </ul>
-                                                                                <a href="#" data-bind="click: $root.GoToNextPageTheKho, visible: $root.VisibleEndPageTheKho "><i class="fa fa-caret-right" aria-hidden="true"></i></a>
-                                                                                <a href="#" data-bind="click: $root.EndPageTheKho, visible: $root.VisibleEndPageTheKho "><i class="fa fa-step-forward" aria-hidden="true"></i></a>
-                                                                                <div class="total-recos">Hiển thị <span data-bind="text: $root.fromitemtk"></span> - <span data-bind="text: $root.toitemtk"></span> trên tổng số <span data-bind="text: $root.TotalRecordTK"></span> phiếu kho.</div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>*@
                                                             </div>
                                                         </div>
                                                     </td>
@@ -1650,7 +1590,7 @@
                                                 <li onclick="LoadGetHeight()">
                                                     <a data-toggle="tab" data-bind="attr:{href:'#contact' + ID}">Tồn kho</a>
                                                 </li>
-                                                <li data-bind="visible: QuanLyTheoLoHang === true,
+                                                <li data-bind="visible: QuanLyTheoLoHang === true && ($root.role_XemLoHang() === false || $root.isAdmin),
                                                     click: function(){$root.ChangeTab_HangHoa(3)}">
                                                     <a data-toggle="tab" data-bind="attr:{href:'#solo' + ID}">Số lô</a>
                                                 </li>
@@ -1664,14 +1604,15 @@
                                                 </li>
                                                 @*//INS*@
                                                 <li onclick="LoadGetHeight()"
-                                                    data-bind="visible: QuanLyTheoLoHang === false,
+                                                    data-bind="visible: QuanLyTheoLoHang === false && $root.isHoangHuyDongFengnd,
                                                      click: function(){$root.ChangeTab_HangHoa(6)}">
-                                                <a data-toggle="tab" data-bind="attr:{href:'#phutunghong' + ID}">Thu hồi phụ tùng hỏng</a></li>
-                                              
-                                                @*<li data-bind="visible: QuanLyTheoLoHang === true,
-                                                    click: function(){$root.ChangeTab_HangHoa(3)}">
-                                                    <a data-toggle="tab" data-bind="attr:{href:'#solo' + ID}">Số lô</a>
-                                                </li>*@
+                                                    <a data-toggle="tab" data-bind="attr:{href:'#phutunghong' + ID}">Thu hồi phụ tùng hỏng</a>
+                                                </li>
+
+                                                <li data-bind="visible: QuanLyTheoLoHang === true && $root.isHoangHuyDongFengnd && $root.role_XemLoHang() === false,
+                                                    click: function(){$root.ChangeTab_HangHoa(7)}">
+                                                    <a data-toggle="tab" data-bind="attr:{href:'#phutunghongtheolo' + ID}">Thu hồi phụ tùng hỏng</a>
+                                                </li>
                                             </ul>
                                             <div class="tab-content ">
                                                 <div class="tab-pane active" data-bind="attr:{id:'home' + ID}">
@@ -2266,7 +2207,7 @@
                                                                                 <div class="group-p1">
                                                                                     <a data-bind="text: Text"></a>
                                                                                     @*<span class="pull-right"
-                                                                                        data-bind="visible: LoaiBaoDuong ==  $parent.LoaiBaoDuong"></span>*@
+                                                                data-bind="visible: LoaiBaoDuong ==  $parent.LoaiBaoDuong"></span>*@
                                                                                 </div>
                                                                             </li>
                                                                         </ul>
@@ -2315,13 +2256,179 @@
 
                                                     </div>
                                                 </div>
+                                                @*//INS tab pthong*@
+                                                <div class="tab-pane" data-bind="attr:{id:'phutunghong' + ID}">
+                                                    <div class=" ">
+                                                        <p data-bind="visible: DonViTinhChuan!= null && DonViTinhChuan != '' ">
+                                                            Lưu ý: Kho phụ tùng hỏng được tính trên đơn vị cơ bản, tồn cuối tương ứng với đơn vị (<b data-bind="text: DonViTinhChuan"></b>) là :
+                                                            <span data-bind="text: formatNumber3Digit($root.TonKhoPhuTungHong())"></span>
+                                                        </p>
+                                                        <div class="" data-bind="visible: $root.KhoPhuTungHongs().length>0">
+                                                            <table class="table table-js-tk ">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>Chứng từ</th>
+                                                                        <th>Loại chứng từ</th>
+                                                                        <th>Thời gian</th>
+                                                                        <th>Giá vốn</th>
+                                                                        <th>Giá nhập</th>
+                                                                        <th>Nhập</th>
+                                                                        <th data-bind="visible: LaHangHoa === true">Tồn lũy kế</th>
+                                                                    </tr>
+                                                                <tbody data-bind="foreach: $root.KhoPhuTungHongs">
+                                                                    <tr>
+                                                                        <td>
+                                                                            <a href="javascipt:void(0)" data-bind="text: MaHoaDon , event:{click: $root.showpopupTK}"></a>
+                                                                        </td>
+                                                                        <td data-bind="text: LoaiChungTu"></td>
+                                                                        <td data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></td>
+                                                                        <td data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === true ? 'Theo Lô Hàng' : formatNumber3Digit(GiaVon,2)): 0"></td>
+                                                                        <td data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? (QuanLyTheoLoHang === true ? 'Theo Lô Hàng' : formatNumber3Digit(GiaNhap,2)): 0"></td>
+                                                                        <td data-bind="text: SoLuong > 0 ? formatNumber3Digit(SoLuong) : 0"></td>
 
+                                                                        <td data-bind="visible: $parent.LaHangHoa === true">
+                                                                            <span data-bind="text: formatNumber3Digit(LuyKeTonKho)">
+                                                                            </span>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="page " data-bind="style: { 'justify-content': $root.TotalRecordPTH() > 10? 'space-between': 'end'}">
+                                                                <div class="flex flex-row" data-bind="visible: $root.TotalRecordPTH() > 10">
+                                                                    <label>Số bản ghi:</label>
+                                                                    <select class="form-control  seleted-page"
+                                                                            data-bind="value: $root.pageSizePTH,
+                      options: $root.pageSizesPTH(), event: {change: $root.ResetCurrentPageTheKhoPTH}"></select>
+                                                                </div>
+                                                                <div class="flex flex-end">
+                                                                    <a href="#" data-bind="click: $root.StartPageTheKhoPTH, visible: $root.VisibleStartPageTheKhoPTH"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
+                                                                    <a href="#" data-bind="click: $root.BackPageTheKhoPTH, visible: $root.VisibleStartPageTheKhoPTH"><i class="fa fa-caret-left" aria-hidden="true"></i></a>
+                                                                    <ul data-bind="foreach: $root.PageList_Display_TheKho_PTH">
+                                                                        <li>
+                                                                            <a href="javascript:void(0)" data-bind="text: pageNumberPTH, click: $root.GoToPagePTH, css: $root.GetClassPTH($data)"></a>
+                                                                        </li>
+                                                                    </ul>
+                                                                    <a href="#" data-bind="click: $root.GoToNextPageTheKhoPTH, visible: $root.VisibleEndPageTheKhoPTH "><i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                                    <a href="#" data-bind="click: $root.EndPageTheKho, visible: $root.VisibleEndPageTheKhoPTH "><i class="fa fa-step-forward" aria-hidden="true"></i></a>
+                                                                    <div class="total-recos">Hiển thị <span data-bind="text: $root.fromitempth"></span> - <span data-bind="text: $root.toitempth"></span> trên tổng số <span data-bind="text: $root.TotalRecordPTH"></span> phiếu kho.</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="bg-warning padding-10 text-center" data-bind="visible: $root.KhoPhuTungHongs().length<=0">
+                                                            <i class="">Không có dữ liệu</i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*//ins lo*@
+                                                <div class="tab-pane" data-bind="attr:{id:'phutunghongtheolo' + ID}">
+                                                    <div class="">
+                                                        <div class="table-responsive solo ">
+                                                            <div class="flex flex-row padding-15" style="justify-content:flex-end">
+                                                                <div class="op-search">
+                                                                    <input type="text" class="form-control" placeholder="Tìm kiếm lô" data-bind="event: {keyup: $root.SearchLoHang}, " />
+                                                                    <i class="fa fa-search op-search-icon" aria-hidden="true"></i>
+                                                                </div>
+                                                                <div class="select-lot">
+                                                                    <select class="form-control ddlNhomNN" data-bind="options: $root.ListCheckLo ? $root.ListCheckLo : [],
+                     optionsText: 'name', optionsValue: 'value',
+                     value:  $root.CheckConHang "></select>
+                                                                </div>
+                                                            </div>
+                                                            <table class='table'>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>
+                                                                            Mã lô hàng
+                                                                        </th>
+                                                                        <th>
+                                                                            Ngày sản xuất
+                                                                        </th>
+                                                                        <th>
+                                                                            Hạn sử dụng
+                                                                        </th>
+                                                                        <th class="text-right">Số lượng phụ tùng hỏng</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody data-bind="foreach: $root.ListTonTheoLo">
+                                                                    <tr class="solo-show" data-bind="click: $root.ClickTheKhoByLoHangPTHong">
+                                                                        <td data-bind="text:MaLoHang"></td>
+                                                                        <td data-bind="text: moment(NgaySanXuat).format('DD/MM/YYYY')!='Invalid date'? moment(NgaySanXuat).format('DD/MM/YYYY'):''"></td>
+                                                                        <td data-bind="text: moment(NgayHetHan).format('DD/MM/YYYY')!='Invalid date'? moment(NgayHetHan).format('DD/MM/YYYY'):''"></td>
+                                                                        <td class="text-right" data-bind="text: formatNumber3Digit(TonKhoPhuTungHong)"></td>
+                                                                    </tr>
+                                                                    <tr class="tr-hide-detailsolo" hidden>
+                                                                        <td colspan="4">
+                                                                            <div class="col-md-12 ">
+                                                                                <h4>Thông tin chi tiết</h4>
+                                                                            </div>
+                                                                            <div class="col-md-12 table-res ">
+                                                                                <table class='table'>
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>Chứng từ</th>
+                                                                                            <th>Loại chứng từ</th>
+                                                                                            <th>Thời gian</th>
+                                                                                            <th>Giá vốn</th>
+                                                                                            <th>Giá nhập</th>
+                                                                                            <th>Nhập</th>
+                                                                                            <th>Tồn lũy kế</th>
+                                                                                        </tr>
+                                                                                    <tbody data-bind="foreach: $root.ListTheKhoByLoHangPTH">
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <a href="javascipt:void(0)" data-bind="text: MaHoaDon , event:{click: $root.showpopupTK}"></a>
+                                                                                            </td>
+                                                                                            <td data-bind="text: LoaiChungTu"></td>
+                                                                                            <td data-bind="text: moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm')!='Invalid date'? moment(NgayLapHoaDon).format('DD/MM/YYYY HH:mm'):''"></td>
+                                                                                            <td data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? formatNumber3Digit(GiaVon,2): 0"></td>
+                                                                                            <td data-bind="text: $root.HangHoa_XemGiaVon() === 'HangHoa_XemGiaVon' ? formatNumber3Digit(GiaNhap,2): 0"></td>
+                                                                                            <td data-bind="text: SoLuong > 0 ? formatNumber3Digit(SoLuong) : 0"></td>
+                                                                                            <td>
+                                                                                                <span data-bind="text: formatNumber3Digit(LuyKeTonKho,3)"></span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div class="page" data-bind="style: { 'justify-content': $root.TotalRecordLoPTH() > 10? 'space-between': 'end'}">
+                                                                                <div class="flex flex-row" data-bind="visible: $root.TotalRecordLoPTH() > 10">
+                                                                                    <label>Số bản ghi:</label>
+                                                                                    <select class="form-control  seleted-page"
+                                                                                            data-bind="value: $root.pageSizeLoPTHong,
+                                          options: $root.pageSizesLoPTH(), event: {change: $root.ResetCurrentPageLoPTHong}"></select>
+                                                                                </div>
+                                                                                <div class="flex flex-end">
+                                                                                    <a href="#" data-bind="click: $root.StartPageLoPTHong, visible: $root.VisibleStartPageLoPTHong"><i class="fa fa-step-backward" aria-hidden="true"></i></a>
+                                                                                    <a href="#" data-bind="click: $root.BackPageLoPTHong, visible: $root.VisibleStartPageLoPTHong "><i class="fa fa-caret-left" aria-hidden="true"></i></a>
+                                                                                    <ul data-bind="foreach: $root.PageList_Display_TheKhoLoHang_PTHong">
+                                                                                        <li>
+                                                                                            <a href="javascript:void(0)" data-bind="text: pageNumberLoPTHong, click: $root.GoToPageLoPTHong, css: $root.GetClassLoPTH($data)"></a>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                    <a href="#" data-bind="click: $root.GoToNextPageLoPTHong, visible: $root.VisibleEndPageLoPTHong "><i class="fa fa-caret-right" aria-hidden="true"></i></a>
+                                                                                    <a href="#" data-bind="click: $root.EndPageLoPTHong, visible: $root.VisibleEndPageLoPTHong "><i class="fa fa-step-forward" aria-hidden="true"></i></a>
+                                                                                    <div class="total-recos">Hiển thị <span data-bind="text: $root.fromitemlpth"></span> - <span data-bind="text: $root.toitemlpth"></span> trên tổng số <span data-bind="text: $root.TotalRecordLoPTH"></span> phiếu kho.</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 <!--/ko-->
                             </tbody>
+                            <tfoot class="PhanQuyen" hidden>
+                                <tr>
+                                    <td class="bg12 bhma text-center" colspan="13"><i>Bạn không có quyền xem nhóm hàng này!</i></td>
+                                </tr>
+                            </tfoot>
                             <tfoot id="tongton">
                                 <tr class="border-bottom bg12 bold">
                                     <td class=""></td>

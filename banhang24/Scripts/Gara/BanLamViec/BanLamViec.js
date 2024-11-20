@@ -30,7 +30,8 @@ var workTable = new Vue({
             HoaDon: { ThemMoi: true, SuaDoi: true, In: true, NhapHang: true },
             XuatKho: {},
         };
-
+        const arrSubDomain_2 = ["hoanghuydongfeng", "haiaugara", "0973474985"];
+        self.isHoangHuyDongFeng = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain_2) > -1;
         self.PageLoad();
 
         console.log('blv');
@@ -107,7 +108,7 @@ var workTable = new Vue({
                     self.role.PhieuTiepNhan.In = self.CheckRole('PhieuTiepNhan_In');
                     self.role.PhieuTiepNhan.BatBuocNhapKmVao = self.CheckRole('PhieuTiepNhan_BatBuocNhapKmVao');
                     self.role.BaoGia.ThemMoi = self.CheckRole('DatHang_ThemMoi');
-                    self.role.LenhBaoHanh.ThemMoi = self.CheckRole('DatHang_ThemMoi');
+                    self.role.LenhBaoHanh.ThemMoi = self.CheckRole('LenhBaoHanh_ThemMoi');
                     self.role.HoaDon.ThemMoi = self.CheckRole('HoaDon_ThemMoi');
 
                     self.role.BaoGia.CapNhat = self.CheckRole('DatHang_CapNhat');
@@ -481,7 +482,7 @@ var workTable = new Vue({
                             return x.ID === self.itemChosing.ID;
                         });
                         if (hdChosing.length > 0) {
-                            self.ChoseItem_inList(hdChosing[0], 3);
+                            self.ChoseItem_inList(hdChosing[0], hdChosing.LoaiHoaDon === 32 ? 32 : 3);
                         }
                     }
                 }
@@ -751,13 +752,12 @@ var workTable = new Vue({
             vmChiTietHoaDon.showModalChiTietHoaDon(id);
         },
         Duyet_HuyBaoGia: function (item, type) {
-            var self = this;      
+            var self = this;
             var title = '';
             var statusText = '';
             var status = '';
             var title = '';
             var titleType = '';
-            debugger;
             console.log('duyet, huy', item.LoaiHoaDon);
             switch (type) {
                 case false:// duyet
@@ -846,7 +846,6 @@ var workTable = new Vue({
                 })
         },
         Huy_HoaDon: function (item, loaiHD) {
-            debugger;
             var self = this;
             //var msgBottom = '';
             var msgDialog = '';
@@ -905,7 +904,7 @@ var workTable = new Vue({
                                     NoiDung: "Xóa " + sLoai + ": " + mahoadon,
                                     LoaiNhatKy: 3
                                 };
-                                if (item.LoaiHoaDon !== 3) {
+                                if (item.LoaiHoaDon !== 3 && item.LoaiHoaDon !== 32) {
                                     // HuyHD : tru diem (cong diem am)
                                     // Huy TraHang: cong diem
                                     // HuyDatHang: khong thuc hien gi ca
@@ -1273,7 +1272,7 @@ var workTable = new Vue({
                 combo.LotParent = false;
                 combo.DM_LoHang = [];
 
-                if (itemCT.LoaiHoaDon !== 3) {
+                if (itemCT.LoaiHoaDon !== 3 && itemCT.LoaiHoaDon !== 32) {
                     combo.TongPhiDichVu = combo.PhiDichVu * combo.SoLuong;
                     if (combo.LaPTPhiDichVu) {
                         combo.TongPhiDichVu = RoundDecimal(combo.PhiDichVu * combo.ThanhTien / 100, 3);
@@ -1310,7 +1309,6 @@ var workTable = new Vue({
         },
 
         XuLyBaoGia: async function (item) {
-            debugger;
             // chi get cthd chua duoc xuly
             var self = this;
             const hdDB = await self.GetInforHD_fromDB(item.ID);
@@ -1532,7 +1530,6 @@ var workTable = new Vue({
             return {};
         },
         CapNhatHoaDon: async function (item, loaiHD) {
-            debugger;
             let self = this;
             let loaiCheck = (loaiHD == 3 || loaiHD == 32) ? 25 : 8;
             let check = await self.CheckHoaDon_DaXuLy(item.ID, loaiCheck);
@@ -1771,7 +1768,6 @@ var workTable = new Vue({
         },
 
         GotoGara: function (cacheValue, typePage = 0) {
-            debugger;
             var target = '_blank';
             if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator.standalone) || document.referrer.includes('android-app://')) {
                 target = '_self'
@@ -1869,7 +1865,7 @@ var workTable = new Vue({
         },
         ChoseItem_inList: function (item, loai) {
             var self = this;
-            item.LoaiHoaDon = loai;
+           /* item.LoaiHoaDon = loai;*/
             self.itemChosing = item;
 
             self.wasChotSo = false;
@@ -2093,6 +2089,7 @@ var workTable = new Vue({
             }
 
             dataMauIn = dataMauIn.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+            dataMauIn = dataMauIn.concat("<style> @media print {body {-webkit-print-color-adjust: exact;}} </style>");
             dataMauIn = dataMauIn.concat("<script > var item1=" + JSON.stringify(lstCT)
                 + "; var item2=[]"
                 + "; var item3=" + JSON.stringify(hdPrint)
@@ -2127,7 +2124,7 @@ var workTable = new Vue({
                 });
             return xx;
         },
-        
+
         InHoaDon: async function (isPrintID, val) {
             var self = this;
             var hd = await self.GetInforHDPrint();
@@ -2274,6 +2271,7 @@ var workTable = new Vue({
             if (val) {
                 switch (loaiHD) {
                     case 3:
+                    case 32:
                         self.arrID_HDPrint = self.listData.BaoGias.map(function (x) {
                             return x.ID;
                         });
@@ -2310,7 +2308,7 @@ var workTable = new Vue({
             });
 
             if (val) {
-                if (loaiHD === 3) {
+                if (loaiHD === 3 || loaiHD === 32) {
                     self.arrID_HDPrint = $.grep(self.arrID_HDPrint, function (x) {
                         return $.inArray(x, arrIDHD) == -1;
                     })
@@ -2331,7 +2329,7 @@ var workTable = new Vue({
                 })
             }
 
-            if (loaiHD === 3) {
+            if (loaiHD === 3 || loaiHD === 32) {
                 $('.baogiaxe .gara-section-list-header input[type=checkbox]').prop('checked', self.arrID_HDPrint.length === self.listData.BaoGias.length);
             }
             else {
@@ -2628,7 +2626,7 @@ var workTable = new Vue({
 
                     console.log('cthdPrint', cthdPrint)
                     let maChungTu = 'HDBL';
-                    if (loaiHD === 3) {
+                    if (loaiHD === 3 || loaiHD === 32) {
                         maChungTu = 'DH';
                     }
                     $.ajax({
@@ -2639,6 +2637,7 @@ var workTable = new Vue({
                         success: function (result) {
                             let data = result;
                             data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                            data = data.concat("<style> @media print {body {-webkit-print-color-adjust: exact;}} </style>");
                             data = data.concat("<script > var item1=", JSON.stringify(cthdPrint)
                                 , "; var item2= [] "
                                 , "; var item3=", JSON.stringify(objHD)

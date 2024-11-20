@@ -13,6 +13,7 @@ using Model;
 using libDM_NhomHangHoa;
 using System.Data.SqlClient;
 using libDM_HangHoa;
+using libHT_NguoiDung;
 
 namespace banhang24.Areas.DanhMuc.Controllers
 {
@@ -32,6 +33,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         DM_NhomHangHoaSelect temp = new DM_NhomHangHoaSelect();
                         temp.ID = item.ID;
                         temp.TenNhomHangHoa = item.TenNhomHangHoa;
+                        temp.TenNhomHangHoa_KhongDau = item.TenNhomHangHoa_KhongDau;
                         temp.ID_Parent = item.ID_Parent;
                         temp.NgayTao = item.NgayTao;
                         temp.LaNhomHangHoa = item.LaNhomHangHoa;
@@ -229,17 +231,19 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
         // PUT: api/DM_NhomHangHoaAPI/5
         [ResponseType(typeof(string))]
-        public IHttpActionResult PutDM_NhomHangHoa([FromBody]JObject data)
+        public IHttpActionResult PutDM_NhomHangHoa([FromBody] JObject data)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 classDM_NhomHangHoa _classDMNHH = new classDM_NhomHangHoa(db);
+                //classHT_Quyen _classHTQuyen = new classHT_Quyen(db);
                 Guid id = data["id"].ToObject<Guid>();
                 DM_NhomHangHoa dM_NhomHangHoa = data["dM_NhomHangHoa"].ToObject<DM_NhomHangHoa>();
                 if (id != dM_NhomHangHoa.ID)
                 {
                     return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, "ID nhóm hàng hóa cần cập nhật không trùng khớp với ID dữ liệu"));
                 }
+                //var maQuyenHienTai = string.Concat("NhomHangHoa_XemNhom_", dM_NhomHangHoa.TenNhomHangHoa_KhongDau);
                 dM_NhomHangHoa.HienThi_BanThe = true;
                 dM_NhomHangHoa.HienThi_Chinh = true;
                 dM_NhomHangHoa.HienThi_Phu = true;
@@ -252,6 +256,23 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 string strUpd = _classDMNHH.Update_NhomHangHoa(dM_NhomHangHoa);
                 if (strUpd != null && strUpd != string.Empty && strUpd.Trim() != "")
                     return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, strUpd));
+                //// Cập nhật quyền
+                //if (dM_NhomHangHoa.ID_Parent == null && dM_NhomHangHoa.LaNhomHangHoa) 
+                //{
+                //    var maQuyen = string.Concat("NhomHangHoa_XemNhom_", dM_NhomHangHoa.TenNhomHangHoa_KhongDau); 
+                //    var tenQuyen = string.Concat("Xem hàng hóa nhóm ", dM_NhomHangHoa.TenNhomHangHoa); 
+
+                //    var quyenToUpdate = db.HT_Quyen
+                //        .Where(q => q.MaQuyen == maQuyenHienTai)
+                //        .FirstOrDefault();
+
+                //    if (quyenToUpdate != null)
+                //    {
+                //        quyenToUpdate.MaQuyen = maQuyen;
+                //        quyenToUpdate.TenQuyen = tenQuyen;
+                //        db.SaveChanges();
+                //    }
+                //}
                 else
                     return StatusCode(HttpStatusCode.NoContent);
             }
@@ -265,6 +286,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
                 classDM_NhomHangHoa _classDMNHH = new classDM_NhomHangHoa(db);
+                classHT_Quyen _classHTQuyen = new classHT_Quyen(db); // Khởi tạo lớp classHT_Quyen
+
                 dM_NhomHangHoa.ID = Guid.NewGuid();
                 dM_NhomHangHoa.MaNhomHangHoa = DateTime.Now.ToString("yyyyMMddHHmmss");
                 dM_NhomHangHoa.HienThi_BanThe = true;
@@ -282,12 +305,36 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     ID_Parent = dM_NhomHangHoa.ID_Parent
                 };
 
+                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+                string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
+
+                if (arrSubDomain.Contains(subDomain) && dM_NhomHangHoa.ID_Parent == null && dM_NhomHangHoa.LaNhomHangHoa)
+                {
+                    var maQuyen = $"NhomHangHoa_XemNhom_{dM_NhomHangHoa.TenNhomHangHoa_KhongDau}";
+                    var tenQuyen = $"Xem hàng hóa nhóm {dM_NhomHangHoa.TenNhomHangHoa}";
+                    var quyenCha = "NhomHangHoa";
+                    var newQuyen = new HT_Quyen
+                    {
+                        MaQuyen = maQuyen,
+                        TenQuyen = tenQuyen,
+                        QuyenCha = quyenCha,
+                        DuocSuDung = true,
+                    };
+
+                    string insertResult = _classHTQuyen.Insert(newQuyen);
+                    if (insertResult != "Thêm quyền thành công")
+                    {
+                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, insertResult));
+                    }
+                }
+
                 if (strIns != null && strIns != string.Empty && strIns.Trim() != "")
                     return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, strIns));
                 else
                     return CreatedAtRoute("DefaultApi", new { id = objReturn.ID }, objReturn);
             }
         }
+
 
         // DELETE: api/DM_NhomHangHoaAPI/5
         [ResponseType(typeof(string))]
@@ -313,6 +360,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             {
                 classDM_NhomHangHoa _classDMNHH = new classDM_NhomHangHoa(db);
                 ClassDM_HangHoa _classDMHH = new ClassDM_HangHoa(db);
+                classHT_Quyen _classHTQuyen = new classHT_Quyen(db);
                 if (db == null)
                 {
                     return "Chưa kết nối DB";
@@ -321,8 +369,25 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     DM_NhomHangHoa nhh = db.DM_NhomHangHoa.Where(p => p.ID == id).FirstOrDefault();
                     List<DM_NhomHangHoa> lst = db.DM_NhomHangHoa.Where(p => p.ID_Parent == id).ToList();
+                    var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+                    string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
+
                     if (nhh != null)
                     {
+                        if (arrSubDomain.Contains(subDomain))
+                        {
+                            var maQuyen = $"NhomHangHoa_XemNhom_{nhh.TenNhomHangHoa_KhongDau}";
+                            var quyenToDelete = db.HT_Quyen.Where(q => q.MaQuyen == maQuyen).FirstOrDefault();
+                            if (quyenToDelete != null)
+                            {
+                                string deleteResult = _classHTQuyen.Delete(maQuyen);
+                                if (deleteResult != "Xóa quyền thành công")
+                                {
+                                    return deleteResult;
+                                }
+                            }
+                        }
+
                         nhh.TrangThai = true;
                         _classDMNHH.Update_NhomHangHoa(nhh);
                         _classDMHH.UpdateHHKhiXoaNhomHH(id, nhh.LaNhomHangHoa);
@@ -334,7 +399,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 _classDMNHH.Update_NhomHangHoa(item);
                             }
                         }
-                        return "";
+                        db.SaveChanges();
+                        return "Xóa thành công";
                     }
                     else
                     {

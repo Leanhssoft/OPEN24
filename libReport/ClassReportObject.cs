@@ -482,6 +482,7 @@ namespace libReport
 
     public class BaoCaoKho_TonKhoPRC
     {
+        public Guid? ID_NhomHangHoa { get; set; }
         public string TenNhomHang { get; set; }
         public string MaHangHoa { get; set; }
         public string TenHangHoaFull { get; set; }
@@ -1497,6 +1498,7 @@ namespace libReport
     {
         public Guid ID { get; set; }
         public string TenNhomHang { get; set; }
+        public string TenNhomHangHoa_KhongDau { get; set; }
         public Guid? ID_Parent { get; set; }
     }
 
@@ -1615,6 +1617,7 @@ namespace libReport
         public DateTime? NgayLapHoaDon { get; set; }
         public string MaHangHoa { get; set; }
         public string TenHangHoa { get; set; }
+        public string TenHangHoaThayThe { get; set; }
         public string TenDonViTinh { get; set; }
         public double SoLuong { get; set; }
         public double DonGia { get; set; }
@@ -1668,6 +1671,7 @@ namespace libReport
         public double LoiNhuan { get; set; }
         public string GhiChu { get; set; }
         public string TenDonVi { get; set; }
+        public string TenHangHoaThayThe { get; set; }
     }
 
     public class BaoCaoDoanhThuSuaChuaTheoXe

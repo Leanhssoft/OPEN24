@@ -1,5 +1,6 @@
 ﻿using banhang24.Compress;
 using banhang24.Hellper;
+using iTextSharp.text;
 using libBH_NhanVienThucHien;
 using libDM_DoiTuong;
 using libDM_DonVi;
@@ -38,6 +39,7 @@ using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.Results;
+using System.Web.UI.WebControls;
 using static banhang24.Hellper.commonEnum;
 using static libDM_DoiTuong.ClassBH_HoaDon;
 
@@ -442,7 +444,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 List<SqlParameter> paramlist = new List<SqlParameter>();
                 paramlist.Add(new SqlParameter("ID_HoaDon", ID_HoaDon));
                 List<BH_KiemKhoChiTiet_Excel> lst = db.Database.SqlQuery<BH_KiemKhoChiTiet_Excel>("EXEC GetListChiTietHoaDonKiemKhoXuatFile @ID_HoaDon", paramlist.ToArray()).ToList();
-
+                if (CookieStore.GetCookieAes("cid") == "False" && CookieStore.GetCookieAes("clo") == "True")
+                {
+                    lst.ForEach(item => { item.MaLoHang = null;});
+                }
                 DataTable excel = _classOFDCM.ToDataTable<BH_KiemKhoChiTiet_Excel>(lst);
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Teamplate_KiemKhoHangHoa _ChiTiet.xlsx");
                 HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 3, 27, false, columnsHide);
@@ -606,7 +611,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     DM.MaHangHoa = item.MaHangHoa;
                     DM.TenHangHoa = item.TenHangHoa;
                     DM.TenDonViTinh = item.TenDonViTinh;
-                    DM.MaLoHang = item.MaLoHang;
+                    DM.MaLoHang = (CookieStore.GetCookieAes("cid") == "False" && CookieStore.GetCookieAes("clo") == "True")?null: item.MaLoHang;
                     DM.SoLuong = item.SoLuong;
                     if (roleXemGiaVon)
                     {
@@ -1183,6 +1188,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 List<BH_ChiTietHoaDon_Excel> lst = db.Database.SqlQuery<BH_ChiTietHoaDon_Excel>("EXEC GetChiTietHoaDon_ByIDHoaDon @ID_HoaDon", param).ToList();
                 if (lst != null && lst.Count() > 0)
                 {
+                    if (!CheckRoleIsAdmin() && CookieStore.GetCookieAes("clo") == "True")
+                    {
+                        lst.ForEach(item => { item.MaLoHang = null; item.TenHangHoaFull = null; });
+                    }
                     DataTable excel = _classOFDCM.ToDataTable<BH_ChiTietHoaDon_Excel>(lst);
                     excel.Columns.Remove("TenHangHoaFull");
                     excel.Columns.Remove("TenHangHoa");// get TenHangHoaThayThe
@@ -1285,6 +1294,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 List<BH_ChiTietHoaDon_Excel> lstHDCT = db.Database.SqlQuery<BH_ChiTietHoaDon_Excel>("EXEC GetChiTietHoaDon_ByIDHoaDon @ID_HoaDon", param).ToList();
                 if (lstHDCT != null && lstHDCT.Count() > 0)
                 {
+                    if (CookieStore.GetCookieAes("cid") == "False" && CookieStore.GetCookieAes("clo") == "True")
+                    {
+                        lstHDCT.ForEach(item => { item.MaLoHang = null; item.TenHangHoaFull = null; });
+                    }
                     DataTable excel = _classOFDCM.ToDataTable<BH_ChiTietHoaDon_Excel>(lstHDCT);
                     excel.Columns.Remove("TenHangHoa");
                     excel.Columns.Remove("TenHangHoaThayThe");
@@ -1442,7 +1455,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 List<SqlParameter> paramlist = new List<SqlParameter>();
                 paramlist.Add(new SqlParameter("ID_HoaDon", ID_HoaDon));
                 List<BH_ChiTietHoaDon_Excel> lst = db.Database.SqlQuery<BH_ChiTietHoaDon_Excel>("EXEC GetListChiTietHoaDonXuatFile @ID_HoaDon", paramlist.ToArray()).ToList();
-
+                if (!CheckRoleIsAdmin() && CookieStore.GetCookieAes("clo") == "True")
+                {
+                    lst.ForEach(item => { item.MaLoHang = null; item.TenHangHoaFull = null; });
+                }
                 DataTable excel = _classOFDCM.ToDataTable<BH_ChiTietHoaDon_Excel>(lst);
                 excel.Columns.Remove("TenHangHoaFull");
                 excel.Columns.Remove("ThanhTien");
@@ -1532,7 +1548,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 List<SqlParameter> paramlist = new List<SqlParameter>();
                 paramlist.Add(new SqlParameter("ID_HoaDon", ID_HoaDon));
                 List<BH_ChiTietHoaDon_Excel> lst = db.Database.SqlQuery<BH_ChiTietHoaDon_Excel>("EXEC GetListChiTietHoaDonXuatFile @ID_HoaDon", paramlist.ToArray()).ToList();
-
+                if (CookieStore.GetCookieAes("cid") == "False" && CookieStore.GetCookieAes("clo") == "True")
+                {
+                    lst.ForEach(item => { item.MaLoHang = null; item.TenHangHoaFull = null; });
+                }
                 DataTable excel = _classOFDCM.ToDataTable<BH_ChiTietHoaDon_Excel>(lst);
                 excel.Columns.Remove("TenHangHoaFull");
                 excel.Columns.Remove("ThanhTien");
@@ -1679,6 +1698,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 List<BH_ChiTietHoaDon_Excel> lst = db.Database.SqlQuery<BH_ChiTietHoaDon_Excel>("EXEC GetChiTietHoaDon_ByIDHoaDon @ID_HoaDon", param).ToList();
                 if (lst != null && lst.Count() > 0)
                 {
+                    if (!CheckRoleIsAdmin() && CookieStore.GetCookieAes("clo") == "True")
+                    {
+                        lst.ForEach(item => { item.MaLoHang = null; item.TenHangHoaFull = null; });
+                    }
                     DataTable excel = _classOFDCM.ToDataTable<BH_ChiTietHoaDon_Excel>(lst);
                     excel.Columns.Remove("TenHangHoa");
                     excel.Columns.Remove("TenHangHoaThayThe");
@@ -1703,6 +1726,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
             {
                 ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
                 var lst = classhoadon.GetChiTietHD_byIDHoaDonLT(idHoaDon, iddonvi);
+                string checkLo = CookieStore.GetCookieAes("clo");
+                if (!CheckRoleIsAdmin() && checkLo == "True")
+                {
+                    foreach (var item in lst)
+                    {
+                        item.MaLoHang = null;
+                        item.TenHangHoaFull = null;
+                    }
+                }
                 return lst;
             }
         }
@@ -1733,6 +1765,15 @@ namespace banhang24.Areas.DanhMuc.Controllers
             {
                 ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
                 List<BH_HoaDon_ChiTietDTO> lst = classhoadon.SP_GetChiTietHD_byIDHoaDon_ChietKhauNV(idHoaDon);
+                string checkLo = CookieStore.GetCookieAes("clo");
+                if(!CheckRoleIsAdmin() && checkLo == "True")
+                {
+                    foreach (var item in lst)
+                    {
+                        item.MaLoHang = null;
+                        item.TenHangHoaFull = null;
+                    }
+                }
                 return lst;
             }
         }

@@ -22,6 +22,9 @@
             self.role.KhachHang.ThemMoi = VHeader.Quyen.indexOf('KhachHang_ThemMoi') > -1;
             self.role.KhachHang.CapNhat = VHeader.Quyen.indexOf('KhachHang_CapNhat') > -1;
             self.role.KhachHang.BatBuocNhapSDT = VHeader.Quyen.indexOf('KhachHang_BatBuocNhapSDT') > -1;
+            self.role.KhachHang.BatBuocNhapDiaChi = VHeader.Quyen.indexOf('KhachHang_BatBuocNhapDiaChi') > -1;
+            self.role.KhachHang.BatBuocNhapHuyen = VHeader.Quyen.indexOf('KhachHang_BatBuocNhapHuyen') > -1;
+            self.role.KhachHang.BatBuocNhapTinhThanh = VHeader.Quyen.indexOf('KhachHang_BatBuocNhapTinhThanh') > -1;
         }
         self.PageLoad();
     },
@@ -33,9 +36,15 @@
         error: '',
         role: {
             // role nhom + nguon + trangthai = role customer
-            KhachHang: {BatBuocNhapSDT:false},
+            KhachHang: {
+                BatBuocNhapSDT: false,
+                BatBuocNhapDiaChi: false,
+                BatBuocNhapHuyen: false,
+                BatBuocNhapTinhThanh: false,
+            },
             NhomKhach: {},
         },
+        idNguoidung:  $('.idnguoidung').text(),     
         customerDoing: {},
         customerOld: {},
         NhomKhachChosed: [],
@@ -92,7 +101,8 @@
         },
         FileSelects: [],
         HaveImage: false,
-        ImgHost: ""
+        ImgHost: "",
+        
     },
     methods: {
         PageLoad: function () {
@@ -613,7 +623,6 @@
         },
 
         CheckSave: function () {
-            debugger;
             let self = this;
             let cus = self.newCustomer;
             let phoneRegex = /^(84|0[35789])([0-9]{8})$/;
@@ -621,23 +630,28 @@
                 ShowMessage_Danger('Vui lòng nhập tên khách hàng');
                 return false;
             }
+            let isAdmin = JSON.parse(localStorage.getItem('aid'));        
+            if (isAdmin) {
+                return true;
+            }
+                  
             if (self.role.KhachHang.BatBuocNhapSDT && commonStatisJs.CheckNull(cus.DienThoai)) {
                 ShowMessage_Danger('Vui lòng nhập số điện thoại khách hàng');
                 return false;
             }
-            //if (!phoneRegex.test(cus.DienThoai.trim())) {
-            //    ShowMessage_Danger('Số điện thoại không đúng định dạng');
-            //    return false;
-            //}
-            if (commonStatisJs.CheckNull(cus.DiaChi)) {
+            if (self.role.KhachHang.BatBuocNhapSDT && !phoneRegex.test(cus.DienThoai.trim())) {
+                ShowMessage_Danger('Số điện thoại không đúng định dạng');
+                return false;
+            }
+            if (self.role.KhachHang.BatBuocNhapDiaChi && commonStatisJs.CheckNull(cus.DiaChi)) {
                 ShowMessage_Danger('Vui lòng nhập địa chỉ');
                 return false;
             }
-            if (commonStatisJs.CheckNull(cus.ID_TinhThanh)) {
+            if (self.role.KhachHang.BatBuocNhapTinhThanh && commonStatisJs.CheckNull(cus.ID_TinhThanh)) {
                 ShowMessage_Danger('Vui lòng chọn tỉnh thành');
                 return false;
             }
-            if (commonStatisJs.CheckNull(cus.ID_QuanHuyen)) {
+            if (self.role.KhachHang.BatBuocNhapHuyen && commonStatisJs.CheckNull(cus.ID_QuanHuyen)) {
                 ShowMessage_Danger('Vui lòng chọn quận huyện');
                 return false;
             }
@@ -646,7 +660,6 @@
         },
 
         SaveCustomer: function () {
-            debugger;
             var self = this;
             var id = self.newCustomer.ID;
             var ngaysinh = self.newCustomer.NgaySinh_NgayTLap;

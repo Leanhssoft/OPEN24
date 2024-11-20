@@ -113,6 +113,33 @@ namespace banhang24.Controllers
             }
             return View();
         }
+        public bool CheckUserPermission(string permissionCode, Guid iddonvi)
+        {
+            using (SsoftvnContext db = SystemDBContext.GetDBContext())
+            {
+                var nv_nd = banhang24.Hellper.contant.GetUserCookies();
+                var idUser = new Guid(nv_nd.ID.ToString());
+                HT_NguoiDung nguoiDung = db.HT_NguoiDung.Find(idUser);
+
+                if (nguoiDung != null && nguoiDung.LaAdmin)
+                {
+                    return true;
+                }
+                HT_NguoiDung_Nhom nguoiDungNhom = db.HT_NguoiDung_Nhom
+                    .FirstOrDefault(ndn => ndn.IDNguoiDung == idUser && ndn.ID_DonVi == iddonvi);
+
+                if (nguoiDungNhom != null)
+                {
+                    var danhSachQuyen = db.HT_Quyen_Nhom
+                        .Where(qn => qn.ID_NhomNguoiDung == nguoiDungNhom.IDNhomNguoiDung)
+                        .Select(q => q.MaQuyen)
+                        .ToList();
+                    return danhSachQuyen.Contains(permissionCode);
+                }
+
+                return false;
+            }
+        }
         public ActionResult KeepSession(string subdomain, string id, string checkremember)
         {
             //Guid id = data["iddonvi"].ToObject<Guid>();
@@ -614,6 +641,9 @@ namespace banhang24.Controllers
                                             CookieStore.SetCookieAes(Hellper.SystemConsts.UserVersion, Guid.NewGuid().ToString(), new TimeSpan(30, 0, 0, 0, 0), subdomain);
 
                                             CookieStore.SetCookieAes(SystemConsts.NGUOIDUNGID, objUser.ID.ToString(), new TimeSpan(30, 0, 0, 0, 0), subdomain);
+                                            CookieStore.SetCookieAes("cid", objUser.LaAdmin.ToString(), new TimeSpan(30, 0, 0, 0, 0), subdomain);
+                                            bool hasPermission = CheckUserPermission("ThaoTac_XemLoHang", objUser.ID_DonVi.Value);
+                                            CookieStore.SetCookieAes("clo", hasPermission.ToString(), new TimeSpan(30, 0, 0, 0, 0), subdomain);
                                             if (model.Ipaddress != "123.24.206.173")
                                             {
                                                 HT_NhatKySuDung hT_NhatKySuDung = new HT_NhatKySuDung();

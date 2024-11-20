@@ -507,6 +507,9 @@
                                         <td v-if="BaoCaoChiTietHeader.find(p => p.colName === 'colTenChiNhanh').colShow">
                                             {{itemBCChiTiet.TenDonVi}}
                                         </td>
+                                        <td v-if="$root.isHaiAuGara && BaoCaoChiTietHeader.find(p => p.colName === 'colTenHangHoaThayThe').colShow">
+                                            {{itemBCChiTiet.TenHangHoaThayThe}}
+                                        </td>
                                     </tr>
                                 </tbody>
                                 <tfoot v-if="BaoCaoChiTiet.dataAll.length > 0" style="background-color: #d1d2d9;">
@@ -827,7 +830,8 @@
                 onRefresh: true,
                 NhomHangHoa: [],
                 NhomHangHoaSearch: '',
-                IdNhomHangHoaSelected: ''
+                IdNhomHangHoaSelected: '',
+                isHaiAuGara: false
             },
             methods: {
                 LoadChiNhanh: function () {
@@ -1161,18 +1165,18 @@
                     { colName: 'colNgayLapHoaDon', colText: 'Ngày lập hóa đơn', colShow: true, index: 7 },
                     { colName: 'colTongTienHang', colText: 'Tổng tiền hàng', colShow: true, index: 8 },
                     { colName: 'colChietKhau', colText: 'Chiết khấu', colShow: true, index: 9 },
-                        { colName: 'colGiamGia', colText: 'Giảm giá', colShow: true, index: 10 },
-                        { colName: 'colGiamTruBH', colText: 'Giảm trừ BH', colShow: true, index: 11 },
-                        { colName: 'colDoanhThu', colText: 'Doanh thu', colShow: true, index: 12 },
-                        { colName: 'colThue', colText: 'Thuế', colShow: true, index: 13 },
-                        { colName: 'colTongTienVon', colText: 'Tổng tiền vốn', colShow: true, index: 14 },
-                        { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 15 },
+                    { colName: 'colGiamGia', colText: 'Giảm giá', colShow: true, index: 10 },
+                    { colName: 'colGiamTruBH', colText: 'Giảm trừ BH', colShow: true, index: 11 },
+                    { colName: 'colDoanhThu', colText: 'Doanh thu', colShow: true, index: 12 },
+                    { colName: 'colThue', colText: 'Thuế', colShow: true, index: 13 },
+                    { colName: 'colTongTienVon', colText: 'Tổng tiền vốn', colShow: true, index: 14 },
+                    { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 15 },
                     { colName: 'colLoiNhuan', colText: 'Lợi nhuận', colShow: true, index: 16 },
                     { colName: 'colGhiChu', colText: 'Ghi chú', colShow: true, index: 17 },
                     { colName: 'colTenChiNhanh', colText: 'Chi nhánh', colShow: true, index: 18 }];
                 },
                 InitBaoCaoChiTietHeader: function () {
-                    return [{ colName: 'colMaTiepNhan', colText: 'Mã tiếp nhận', colShow: true, index: 0 },
+                    let columns = [{ colName: 'colMaTiepNhan', colText: 'Mã tiếp nhận', colShow: true, index: 0 },
                     { colName: 'colNgayTiepNhan', colText: 'Ngày tiếp nhận', colShow: true, index: 1 },
                     { colName: 'colBienSo', colText: 'Biển số xe', colShow: true, index: 2 },
                     { colName: 'colMaKhachHang', colText: 'Mã khách hàng', colShow: true, index: 3 },
@@ -1195,7 +1199,13 @@
                         { colName: 'colChiPhi', colText: 'Chi phí', colShow: true, index: 20 },
                     { colName: 'colLoiNhuan', colText: 'Lợi nhuận', colShow: true, index: 21 },
                     { colName: 'colGhiChu', colText: 'Ghi chú', colShow: true, index: 22 },
-                    { colName: 'colTenChiNhanh', colText: 'Tên chi nhánh', colShow: true, index: 23 }];
+                        { colName: 'colTenChiNhanh', colText: 'Tên chi nhánh', colShow: true, index: 23 }];
+                    if (this.isHaiAuGara) {
+                        columns.push({
+                            colName: 'colTenHangHoaThayThe', colText: 'Tên hàng hóa thay thế', colShow: true, index: 24
+                        });
+                    }
+                    return columns;
                 },
                 InitBaoCaoTheoXeHeader: function () {
                     return [{ colName: 'colBienSo', colText: 'Biển số', colShow: true, index: 0 },
@@ -1438,6 +1448,8 @@
             },
             created: function () {
                 var self = this;
+                const arrSubDomain_2 = ["haiaugara", "0973474985"];
+                this.isHaiAuGara = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain_2) > -1;
                 self.LoadChiNhanh();
                 self.LoadNhomHangHoa();
                 if (localStorage.getItem('BaoCaoTongHopHeader') === null) {

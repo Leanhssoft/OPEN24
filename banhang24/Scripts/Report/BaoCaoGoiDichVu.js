@@ -1796,7 +1796,7 @@
                             }
                             array_Seach.columnsHide = columnAfter;
                         }
-                        exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCGDV_NhatKySuDungTongHop", 'POST', { objExcel: array_Seach }, 'ChiTietNhatKySuDungGoiDichVu.xlsx');
+                        exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCGDV_NhatKySuDungChiTiet", 'POST', { objExcel: array_Seach }, 'ChiTietNhatKySuDungGoiDichVu.xlsx');
                     }
                 }
                 break;

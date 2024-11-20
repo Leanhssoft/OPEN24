@@ -4,6 +4,9 @@
         <!-- ko if: newHoaDon().LoaiHoaDon() === 4-->
         <h4 class="modal-title">Nhập hàng</h4>
         <!--/ko-->
+        <!-- ko if: newHoaDon().LoaiHoaDon() === 33-->
+        <h4 class="modal-title">Nhập hàng phụ tùng hỏng</h4>
+        <!--/ko-->
         <!-- ko if: newHoaDon().LoaiHoaDon() === 13 -->
         <h4 class="modal-title">Nhập nội bộ</h4>
         <!--/ko-->
@@ -21,7 +24,13 @@
                         <div class="css-form-detail" data-bind="text: NgayLapHoaDon"></div>
                     </div>
                     <div class="form-group floatleft" data-bind="with :newHoaDon">
-                        <label class="css-form-label ">Nhà cung cấp:</label>
+                        <!-- ko if: LoaiHoaDon() !== 33 -->
+                        <label class="css-form-label">Nhà cung cấp:</label>
+                        <!-- /ko -->
+                        <!-- ko if: LoaiHoaDon() === 33 -->
+                        <label class="css-form-label">Khách hàng:</label>
+                        <!-- /ko -->
+
                         <div class="css-form-detail">
                             <div>
                                 <span data-bind="text: TenDoiTuong">

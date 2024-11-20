@@ -59,13 +59,9 @@
         , { url: '@UrlPage.HoaDon', path: "e/hoadon/1", title: TitleFirst + '@Html.Raw(UrlPage.Title_GiaoDich)' + " - Hóa đơn" }
         , { url: '@UrlPage.DatHang', path: "e/dathang/0", title: TitleFirst + '@Html.Raw(UrlPage.Title_GiaoDich)' + " - Đặt hàng" }
         , { url: '@UrlPage.BaoGia', path: "e/dathang/1", title: TitleFirst + '@Html.Raw(UrlPage.Title_GiaoDich)' + " - Đặt hàng" }
-        //INS 10.2024
-        , { url: '@UrlPage.LenhBaoHanh', path: "e/dathang/32", title: TitleFirst + '@Html.Raw(UrlPage.Title_GiaoDich)' + " - Đặt hàng" }
         , { url: '@UrlPage.NhapHang', path: "e/nhaphang/4", title: TitleFirst + '@Html.Raw(UrlPage.Title_GiaoDich)' + " - Nhập hàng" }
         , { url: '@UrlPage.DatHangNCC', path: "e/nhaphang/31", title: TitleFirst + "Đặt hàng nhà cung cấp" }
         , { url: '@UrlPage.NhapNoiBo', path: "e/nhaphang/13", title: TitleFirst + "Nhập kho nội bộ" }
-        //INS 10.2024
-         , { url: '@UrlPage.NhapThuHoiPT', path: "e/nhaphang/33", title: TitleFirst + "Nhập thu hồi phụ tùng" }
         , { url: '@UrlPage.NhapThuHoiPTItem', path: "e/NhapHangItem1_2/33", title: TitleFirst + "Chi tiết nhập thu hồi phụ tùng" }
         , { url: '@UrlPage.NhapHangSanXuat', path: "e/NhapHangSanXuat", title: TitleFirst + '@Html.Raw(UrlPage.Title_GiaoDich)' + " - Nhập hàng sản xuất" }
         , { url: '@UrlPage.NhapHangItem2', path: "e/NhapHangItem1_2/4", title: TitleFirst + '@Html.Raw(UrlPage.Title_GiaoDich)' + " - Nhập hàng chi tiết" }
@@ -150,6 +146,12 @@
         , { url: '@UrlPage.BaoCaoHoatDongXe', path: "x/BaoCaoPhuTungTheoDoi_v1", title: TitleFirst + " Nhật ký hoạt động xe" }
         , { url: '@UrlPage.PhieuBanGiaoXe', path: "g/PhieuBanGiaoXe", title: TitleFirst + " Danh sách phiếu bàn giao xe" }
     ];
+    if (self.isHoangHuyDongFeng) {
+    listmenu.push(
+        { url: '@UrlPage.LenhBaoHanh', path: "e/dathang/32", title: TitleFirst + '@Html.Raw(UrlPage.Title_GiaoDich)' + " - Lệnh bảo hành" },
+        { url: '@UrlPage.NhapThuHoiPT', path: "e/nhaphang/33", title: TitleFirst + "Nhập thu hồi phụ tùng" }
+    );
+}
     //p - hanghoa
     //e - giaodich
     //c - doitac
@@ -725,6 +727,7 @@ var VHeader = new Vue({
         Registered: false,
         roleXemGiaVon: false,
         isLeeAuto: false,
+        isHoangHuyDongFeng: false,
         urlApi: {
             HTApi: '/api/DanhMuc/HT_API/',
             NguoiDungApi: '/api/DanhMuc/HT_NguoiDungAPI/',
@@ -1202,6 +1205,7 @@ var VHeader = new Vue({
     created: function () {
         let self = this;
         const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
+        const arrSubDomain_v2 = ["hoanghuydongfeng", "haiaugara", "0973474985"];
         self.IdDonVi = '@ViewBag.ID_DonVi';
         self.TenDonVi = "@Html.Raw(ViewBag.TenDonVi)";
         self.IdNguoiDung = '@ViewBag.ID';
@@ -1214,6 +1218,7 @@ var VHeader = new Vue({
         self.UserLogin = '@ViewBag.TenTaiKhoan';
         self.SubDomain = '@ViewBag.SubDomain';
         self.isLeeAuto = $.inArray(self.SubDomain.toLowerCase(), arrSubDomain) > -1;
+        self.isHoangHuyDongFeng = $.inArray(self.SubDomain.toLowerCase(), arrSubDomain_v2) > -1;
         self.TenCongTy = '@ViewBag.TenCongTy';
         self.Registered = '@ViewBag.Registered';
         self.UserAvata = Open24FileManager.hostUrl + '@ViewBag.Avatar';

@@ -21,6 +21,9 @@
             MauXe: {},
             KhachHang: {},
             BatBuocNhapSoKhung: false,
+            BatBuocNhapSoMay: false,
+            BatBuocNhapNamSX: false,
+            BatBuocNhapKH: false,
         },
         inforLogin: {
             ID_NhanVien: null,
@@ -80,6 +83,9 @@
         self.role.KhachHang.CapNhat = self.CheckRole('KhachHang_CapNhat');
         self.role.NhatKyHoatDongXe = self.CheckRole('HoatDongXe');
         self.role.BatBuocNhapSoKhung = self.CheckRole('DanhMucXe_BatBuocNhapSoKhung');
+        self.role.BatBuocNhapSoMay = self.CheckRole('DanhMucXe_BatBuocNhapSoMay');
+        self.role.BatBuocNhapNamSX = self.CheckRole('DanhMucXe_BatBuocNhapNamSX');
+        self.role.BatBuocNhapKH = self.CheckRole('DanhMucXe_BatBuocNhapKH');
 
         self.GetAllModelCar();
         self.GetAllHangXes();
@@ -407,14 +413,35 @@
         },
         CheckSave: function () {
             let self = this;
-            if (self.role.BatBuocNhapSoKhung && commonStatisJs.CheckNull(self.newCar.SoKhung)) {
-                commonStatisJs.ShowMessageDanger('Vui lòng nhập số khung');
-                return;
-            }
-            if (commonStatisJs.CheckNull(self.newCar.BienSo)) {
-                commonStatisJs.ShowMessageDanger('Vui lòng nhập biển số xe');
-                return;
-            }
+            var isAdmin = JSON.parse(localStorage.getItem('aid'));
+            if (isAdmin) {
+                if (commonStatisJs.CheckNull(self.newCar.BienSo)) {
+                    commonStatisJs.ShowMessageDanger('Vui lòng nhập biển số xe');
+                    return;
+                }
+            } else {
+                if (commonStatisJs.CheckNull(self.newCar.BienSo)) {
+                    commonStatisJs.ShowMessageDanger('Vui lòng nhập biển số xe');
+                    return;
+                }
+                if (self.role.BatBuocNhapSoKhung && commonStatisJs.CheckNull(self.newCar.SoKhung)) {
+                    commonStatisJs.ShowMessageDanger('Vui lòng nhập số khung');
+                    return;
+                }
+                if (self.role.BatBuocNhapSoMay && commonStatisJs.CheckNull(self.newCar.SoMay)) {
+                    commonStatisJs.ShowMessageDanger('Vui lòng nhập số máy');
+                    return;
+                }
+                if (self.role.BatBuocNhapNamSX && commonStatisJs.CheckNull(self.newCar.NamSanXuat)) {
+                    commonStatisJs.ShowMessageDanger('Vui lòng nhập năm sản xuất');
+                    return;
+                }
+                if (self.role.BatBuocNhapKH && commonStatisJs.CheckNull(self.newCar.ID_KhachHang)) {
+                    commonStatisJs.ShowMessageDanger('Vui lòng chọn khách hàng');
+                    return;
+                }
+               
+            }          
             self.isLoading = true;
 
             let datacheck = {};

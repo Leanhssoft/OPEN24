@@ -4617,7 +4617,8 @@ namespace libQuy_HoaDon
             options.ExportAsString = true;
             DataTable dt = worksheet.Cells.ExportDataTable(2, 0, trows, tcool);
             List<string> lst = new List<string>();
-            for (int i = 19; i < dt.Columns.Count; i++)
+            //for (int i = 19; i < dt.Columns.Count; i++)
+            for (int i = 19; i < 21; i++)
             {
                 if (dt.Rows[0][i].ToString().Trim() != "…" & dt.Rows[0][i].ToString().Trim() != "")
                     lst.Add(dt.Rows[0][i].ToString().Trim());
@@ -4676,6 +4677,7 @@ namespace libQuy_HoaDon
                     var ladvchuan = madvtcoban != "" ? false : true;
                     var gtriquydoi = dtRow[17].ToString().Trim();
                     var macungloai = dtRow[18].ToString().Trim();
+                    var vitri = dtRow[21].ToString().Trim();
 
                     var tenhang_KhongDau = CommonStatic.ConvertToUnSign(tenhanghoa).ToLower();
                     var tenhang_KyTuDau = CommonStatic.GetCharsStart(tenhanghoa).ToLower();
@@ -6888,6 +6890,7 @@ namespace libQuy_HoaDon
                             var ladvchuan = madvcoban != "" ? false : true;
                             var gtriquydoi = dtRow[17].ToString().Trim();
                             var macungloai = dtRow[18].ToString().Trim();
+                            var vitri = dtRow[21].ToString().Trim();
 
                             var tenhang_KhongDau = CommonStatic.ConvertToUnSign(tenhanghoa).ToLower();
                             var tenhang_KyTuDau = CommonStatic.GetCharsStart(tenhanghoa).ToLower();
@@ -7171,19 +7174,21 @@ namespace libQuy_HoaDon
                             prmSQL.Add(new SqlParameter("MaLoHang", malohang));
                             prmSQL.Add(new SqlParameter("NgaySanXuat", ngaysxNew ?? (object)DBNull.Value));
                             prmSQL.Add(new SqlParameter("NgayHetHan", hansdNew ?? (object)DBNull.Value));
+                            prmSQL.Add(new SqlParameter("TenViTri", vitri));
 
-                            db.Database.ExecuteSqlCommand("Exec import_DanhMucHangHoaLoHang @isUpdateHang, @isUpdateTonKho, @ID_DonVi, @ID_HangHoa, @ID_DonViQuiDoi, " +
+                            db.Database.ExecuteSqlCommand("Exec import_DanhMucHangHoaLoHang_v2 @isUpdateHang, @isUpdateTonKho, @ID_DonVi, @ID_HangHoa, @ID_DonViQuiDoi, " +
                                 "@ID_LoHang, @TenNhomHangHoaCha,@TenNhomHangHoaCha_KhongDau,@TenNhomHangHoaCha_KyTuDau, @MaNhomHangHoaCha, " +
                                 "@TenNhomHangHoa, @TenNhomHangHoa_KhongDau, @TenNhomHangHoa_KyTuDau," +
                                  "@MaNhomHangHoa, @LoaiHangHoa, @TenHangHoa, @TenHangHoa_KhongDau, @TenHangHoa_KyTuDau," +
                                  "@GhiChu, @QuyCach, @DuocBanTrucTiep, @MaDonViCoBan, @MaHangHoa, @TenDonViTinh, @GiaVon, @GiaBan,@TonKho, @LaDonViChuan, " +
-                                 "@TyLeChuyenDoi, @MaHangHoaChaCungLoai,@DVTQuyCach, @MaLoHang, @NgaySanXuat, @NgayHetHan", prmSQL.ToArray());
+                                 "@TyLeChuyenDoi, @MaHangHoaChaCungLoai,@DVTQuyCach, @MaLoHang, @NgaySanXuat, @NgayHetHan, @TenViTri", prmSQL.ToArray());
 
                             if (loaihang == 1)
                             {
                                 #region ThuocTinh HangHoa -- insert after insert hang
                                 int m = 0;
-                                for (int j = 19; j < dataTable.Columns.Count; j++)
+                                //for (int j = 19; j < dataTable.Columns.Count; j++)
+                                for (int j = 19; j < 21; j++)
                                 {
                                     if (dtRow[j].ToString().Trim() != "")
                                     {

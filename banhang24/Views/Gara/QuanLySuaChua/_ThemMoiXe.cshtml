@@ -11,7 +11,7 @@
                 <div class="container-fluid row">
                     <div class="col-lg-6 col-sm-12 col-xs-12 nopadding">
                         <div class="gara-detail-information">
-                            <label>Biển số</label>
+                            <label>Biển số <span class="red"> (*) </span></label>
                             <input type="text" class="form-control search-line" maxlength="30"
                                    autocomplete="off" autofocus
                                    v-model="newCar.BienSo" />
@@ -52,12 +52,18 @@
                                 </car-type>*@
                         </div>
                         <div class="gara-detail-information">
-                            <label>Năm SX</label>
+                            <label>
+                                Năm SX
+                                <span class="red" v-if="$root.role.BatBuocNhapNamSX"> (*) </span>
+                            </label>
                             <input type="number" maxlength="4" value="2020" class="form-control search-line" autocomplete="off"
                                    v-model="newCar.NamSanXuat" />
                         </div>
                         <div class="gara-detail-information">
-                            <label>Chủ xe</label>
+                            <label>
+                                Chủ xe
+                                <span class="red" v-if="$root.role.BatBuocNhapKH"> (*) </span>
+                            </label>                          
                             <customers :text-search="customerChosing.TenDoiTuong"
                                        :showbutton="role.KhachHang.ThemMoi && newCar.ID_KhachHang ==null"
                                        :showbutton-update="role.KhachHang.CapNhat && newCar.ID_KhachHang!==null"
@@ -82,7 +88,7 @@
                         </div>
                         <div>
                             <div class="gara-detail-information">
-                                <label>Số máy</label>
+                                <label>Số máy <span class="red" v-if="$root.role.BatBuocNhapSoMay"> (*) </span></label>
                                 <input type="text" class="form-control search-line" autocomplete="off"
                                        v-model="newCar.SoMay" />
                             </div>

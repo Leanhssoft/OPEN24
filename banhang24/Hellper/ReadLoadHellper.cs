@@ -563,6 +563,8 @@ namespace banhang24.Hellper
             dieuchuyenhhCT,
             thnhapkhoHH,
             thnhapkhoGD,
+            thnhapkhopthong,
+            thnhapkhopthongGD,
             thxuatkhoHH,
             thxuatkhoGD,
             duchitiet,
