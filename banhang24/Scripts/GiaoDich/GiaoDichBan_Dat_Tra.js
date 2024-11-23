@@ -2645,9 +2645,9 @@
     async function GetContent_MauInMacDinh(maLoaiChungTu) {
         let yy = ajaxHelper('/api/DanhMuc/ThietLapApi/GetContent_MauInMacDinh?maChungTu=' + maLoaiChungTu
             + '&idDonVi=' + VHeader.IdDonVi, 'GET').done(function (x) {
-        }).then(function (x) {
-            return x;
-        })
+            }).then(function (x) {
+                return x;
+            })
         return yy;
     }
 
@@ -2781,7 +2781,7 @@
         content = content.replace("{TenCuaHang}", cty.TenCongTy);
         content = content.replace("{DiaChiCuaHang}", cty.DiaChi);
         content = content.replace("{DienThoaiCuaHang}", cty.SoDienThoai);
-        content = content.replace("{Logo}", '<img style="width:100%" attr="' + Open24FileManager.hostUrl + cty.DiaChiNganHang + '" />');
+        content = content.replace("{Logo}", '<img style="width:100%" src="' + Open24FileManager.hostUrl + cty.DiaChiNganHang + '" />');
 
         content = content.replace("{TenChiNhanh}", hd.TenChiNhanh);
         content = content.replace("{DienThoaiChiNhanh}", hd.DienThoaiChiNhanh);
@@ -2798,32 +2798,33 @@
         return content;
     }
     function Replace_ThongTinChuXe(content, hd) {
-        content = content.replace("{ChuXe}",hd.ChuXe);
-        content = content.replace("{ChuXe_SDT}",hd.ChuXe_SDT);
-        content = content.replace("{ChuXe_DiaChi}",hd.ChuXe_DiaChi);
-        content = content.replace("{ChuXe_Email}",hd.ChuXe_Email);
+        content = content.replace("{ChuXe}", hd.ChuXe);
+        content = content.replace("{ChuXe_SDT}", hd.ChuXe_SDT);
+        content = content.replace("{ChuXe_DiaChi}", hd.ChuXe_DiaChi);
+        content = content.replace("{ChuXe_Email}", hd.ChuXe_Email);
         return content;
     }
     async function Replace_ThongTinPTN(content, hd) {
         let ptn = await GetThongTinPTN(hd.ID_PhieuTiepNhan);
-         if (!$.isEmptyObject(ptn)) {
-            content = content.replace("{CoVanDichVu}",ptn.CoVanDichVu);
-            content = content.replace("{NhanVienTiepNhan}",ptn.NhanVienTiepNhan);
-            content = content.replace("{MaPhieuTiepNhan}",ptn.MaPhieuTiepNhan);
-            content = content.replace("{NgayVaoXuong}",ptn.NgayVaoXuong);
-            content = content.replace("{NgayHoanThanhDuKien}",ptn.NgayXuatXuongDuKien);
-            content = content.replace("{SoKmVao}",ptn.SoKmVao);
-            content = content.replace("{SoKmRa}",ptn.SoKmRa);
-            content = content.replace("{SoKmCu_PTN}",ptn.SoKmCu_PTN);
+        if (!$.isEmptyObject(ptn)) {
+            content = content.replace("{CoVanDichVu}", ptn.CoVanDichVu);
+            content = content.replace("{NhanVienTiepNhan}", ptn.NhanVienTiepNhan);
+            content = content.replace("{MaPhieuTiepNhan}", ptn.MaPhieuTiepNhan);
+            content = content.replace("{NgayVaoXuong}", ptn.NgayVaoXuong);
+            content = content.replace("{NgayHoanThanhDuKien}", ptn.NgayXuatXuongDuKien);
+            content = content.replace("{SoKmVao}", ptn.SoKmVao);
+            content = content.replace("{SoKmRa}", ptn.SoKmRa);
+            content = content.replace("{SoKmCu_PTN}", ptn.SoKmCu_PTN);
             content = content.replace("{SoKmCu}", formatNumber(ptn.SoKmCu, 2));
-            content = content.replace("{NgayXuatXuong}",ptn.NgayXuatXuong);
-            content = content.replace("{CoVan_SDT}",ptn.CoVan_SDT);
-            content = content.replace("{PTN_GhiChu}", '<span style="white-space:pre-wrap">' +ptn.PTN_GhiChu + '</span>');
+            content = content.replace("{NgayXuatXuong}", ptn.NgayXuatXuong);
+            content = content.replace("{CoVan_SDT}", ptn.CoVan_SDT);
+            content = content.replace("{LH_Ten}", ptn.TenLienHe);
+            content = content.replace("{PTN_GhiChu}", '<span style="white-space:pre-wrap">' + ptn.PTN_GhiChu + '</span>');
 
-           content = Replace_ThongTinXe (content,ptn);
-           content = Replace_ThongTinChuXe (content,ptn);
-             }
-       
+            content = Replace_ThongTinXe(content, ptn);
+            content = Replace_ThongTinChuXe(content, ptn);
+        }
+
         return content;
     }
 
@@ -2861,6 +2862,7 @@
 
         content = content.replace("{DienGiai}", hd.DienGiai);
         content = content.replace("{TongTienHang}", formatNumber(hd.TongTienHang, 2));
+        content = content.replace("{TongThanhToan}", formatNumber(hd.TongThanhToan, 2));
         content = content.replace("{TongTienHDSauGiamGia}", formatNumber(hd.TongTienHDSauGiamGia));
         content = content.replace("{DaThanhToan}", formatNumber(hd.DaThanhToan));
         content = content.replace("{ChietKhauHoaDon}", formatNumber(hd.TongGiamGia, 2));
@@ -2914,15 +2916,20 @@
         content = content.replace("{BH_TienBangChu}", hd.BH_TienBangChu);
         content = content.replace("{BaoHiemDaTra}", formatNumber(hd.BaoHiemDaTra, 0));
 
+        content = content.replace("{PhaiThanhToanBaoHiem}", formatNumber(hd.PhaiThanhToanBaoHiem, 0) );
         content = content.replace("{SoVuBaoHiem}", hd.SoVuBaoHiem);
-        content = content.replace("{KhauTruTheoVu}", hd.KhauTruTheoVu);
+        content = content.replace("{KhauTruTheoVu}", formatNumber(hd.KhauTruTheoVu, 0) );
         content = content.replace("{PTGiamTruBoiThuong}", hd.PTGiamTruBoiThuong);
-        content = content.replace("{GiamTruBoiThuong}", hd.GiamTruBoiThuong);
+        content = content.replace("{GiamTruBoiThuong}", formatNumber(hd.GiamTruBoiThuong, 0) );
         content = content.replace("{TongTienThueBaoHiem}", formatNumber(hd.TongTienThueBaoHiem, 0));
         content = content.replace("{PTThueBaoHiem}", hd.PTThueBaoHiem);
         content = content.replace("{BHThanhToanTruocThue}", formatNumber(hd.BHThanhToanTruocThue, 0));
         content = content.replace("{TongTienBHDuyet}", formatNumber(hd.TongTienBHDuyet));
         return content;
+    }
+
+    function CommonReplace(content, hd) {
+
     }
 
     self.PrintMany = async function () {
@@ -2931,7 +2938,6 @@
 
         if (content.indexOf('TheoHangHoa_Nhom') > -1 || content.indexOf('TheoDichVu_Nhom') > -1) {
             // tblhanghoa
-           
             let startHH = content.indexOf("{TheoHangHoa_Nhom}");
             let opentblHH = content.indexOf("tbody", startHH) - 1;
             let closeblHH = content.indexOf("tbody", opentblHH + 6);
@@ -2977,9 +2983,9 @@
 
             for (let k = 0; k < arrIDCheck.length; k++) {
                 let idHoaDon = arrIDCheck[k];
-                 let newHD = contentGoc;
-                 let sTblHHNew = sTblHH;
-                 let sTblDVNew = sTblDV;
+                let newHD = contentGoc;
+                let sTblHHNew = sTblHH;
+                let sTblDVNew = sTblDV;
 
                 let hdDB = await GetInforHD_fromDB(idHoaDon);
                 let cthd = await GetChiTietHD_fromDB(idHoaDon);
@@ -2990,82 +2996,78 @@
                 let nhomHH = GroupCTHD_byNhomHang(cthd_HangHoa);
                 let nhomDV = GroupCTHD_byNhomHang(cthd_DichVu);
 
-                console.log('nhomHH ', nhomHH,nhomDV)
-
                 if (startHH > -1) {
-                    if(nhomHH.length === 0 ){
+                    if (nhomHH.length === 0) {
                         // remove tblHangHoa
-                        sTblHHNew ='';
+                        sTblHHNew = '';
                         newHD = newHD.replace(hh_sHeaderGoc, '');
                     }
-                    else{
+                    else {
                         let ctTheoNhomHH = '';
-                    for (let i = 0; i < nhomHH.length; i++) {
-                        let forOut = nhomHH[i];
-                        for (let j = 0; j < forOut.HangHoas.length; j++) {
-                            let newRow = hh_row2Goc;
-                            let forCTHD = forOut.HangHoas[j];
-                            newRow = Replace_CTHD(newRow, forCTHD);
-                            ctTheoNhomHH = ctTheoNhomHH.concat(newRow);
+                        for (let i = 0; i < nhomHH.length; i++) {
+                            let forOut = nhomHH[i];
+                            for (let j = 0; j < forOut.HangHoas.length; j++) {
+                                let newRow = hh_row2Goc;
+                                let forCTHD = forOut.HangHoas[j];
+                                newRow = Replace_CTHD(newRow, forCTHD);
+                                ctTheoNhomHH = ctTheoNhomHH.concat(newRow);
+                            }
+                            let newNhom = sTblHH_goc;
+                            newNhom = Replace_TheoNhom(newNhom, forOut);
+                            if (i === 0) {
+                                sTblHHNew = sTblHHNew.replace(sTblHH_goc, newNhom);
+                                sTblHHNew = sTblHHNew.replace(hh_row2Goc, ctTheoNhomHH);
+                            }
+                            else {
+                                newNhom = newNhom.replace(hh_row2Goc, ctTheoNhomHH);
+                                sTblHHNew = sTblHHNew.concat(newNhom);
+                            }
                         }
-                        let newNhom = sTblHH_goc;
-                        newNhom = Replace_TheoNhom(newNhom, forOut);
-                        if (i === 0) {
-                            sTblHHNew = sTblHHNew.replace(sTblHH_goc, newNhom);
-                            sTblHHNew = sTblHHNew.replace(hh_row2Goc, ctTheoNhomHH);
-                        }
-                        else {
-                            newNhom = newNhom.replace(hh_row2Goc, ctTheoNhomHH);
-                            sTblHHNew = sTblHHNew.concat(newNhom);
-                        }
-                    }
                     }
                 }
 
                 if (startDV > -1) {
-                    if(nhomDV.length === 0 ){
+                    if (nhomDV.length === 0) {
                         // remove tblDV
-                        sTblDVNew= '';
-                         newHD = newHD.replace(dv_sHeaderGoc, '');
+                        sTblDVNew = '';
+                        newHD = newHD.replace(dv_sHeaderGoc, '');
                     }
-                    else{
-                       let ctTheoNhomDV = '';
-                    for (let i = 0; i < nhomDV.length; i++) {
-                        let forOut = nhomDV[i];
-                        for (let j = 0; j < forOut.HangHoas.length; j++) {
-                            let newRow = dv_row2Goc;
-                            let forCTHD = forOut.HangHoas[j];
-                            newRow = Replace_CTHD(newRow, forCTHD);
-                            ctTheoNhomDV = ctTheoNhomDV.concat(newRow);
+                    else {
+                        let ctTheoNhomDV = '';
+                        for (let i = 0; i < nhomDV.length; i++) {
+                            let forOut = nhomDV[i];
+                            for (let j = 0; j < forOut.HangHoas.length; j++) {
+                                let newRow = dv_row2Goc;
+                                let forCTHD = forOut.HangHoas[j];
+                                newRow = Replace_CTHD(newRow, forCTHD);
+                                ctTheoNhomDV = ctTheoNhomDV.concat(newRow);
+                            }
+                            let newNhom = sTblDV_goc;
+                            newNhom = Replace_TheoNhom(newNhom, forOut);
+                            if (i === 0) {
+                                sTblDVNew = sTblDVNew.replace(sTblDV_goc, newNhom);
+                                sTblDVNew = sTblDVNew.replace(dv_row2Goc, ctTheoNhomDV);
+                            }
+                            else {
+                                newNhom = newNhom.replace(dv_row2Goc, ctTheoNhomDV);
+                                sTblDVNew = sTblDVNew.concat(newNhom);
+                            }
                         }
-                        let newNhom = sTblDV_goc;
-                        newNhom = Replace_TheoNhom(newNhom, forOut);
-                        if (i === 0) {
-                            sTblDVNew = sTblDVNew.replace(sTblDV_goc, newNhom);
-                            sTblDVNew = sTblDVNew.replace(dv_row2Goc, ctTheoNhomDV);
-                        }
-                        else {
-                            newNhom = newNhom.replace(dv_row2Goc, ctTheoNhomDV);
-                            sTblDVNew = sTblDVNew.concat(newNhom);
-                        }
-                    }
                     }
                 }
 
-                
-                
-                  newHD = newHD.replace(sTblHH_goc, sTblHHNew);
-                    newHD = newHD.replace(sTblDV_goc, sTblDVNew);
-                     newHD = Replace_ThongTinChung(newHD, hdDB);
-                    newHD = Replace_ThongTinHoaDon(newHD, hdDB);
-                    newHD = Replace_ThongTinKhachHang(newHD, hdDB);
-                    newHD = await Replace_ThongTinPTN (newHD, hdDB);
-                   
+                newHD = newHD.replace(sTblHH_goc, sTblHHNew);
+                newHD = newHD.replace(sTblDV_goc, sTblDVNew);
 
-                if(k===0){
-                   content = newHD;
+                newHD = Replace_ThongTinChung(newHD, hdDB);
+                newHD = Replace_ThongTinHoaDon(newHD, hdDB);
+                newHD = Replace_ThongTinKhachHang(newHD, hdDB);
+                newHD = await Replace_ThongTinPTN(newHD, hdDB);
+
+                if (k === 0) {
+                    content = newHD;
                 }
-                else{
+                else {
                     content = content.concat(newHD);
                 }
 
@@ -3079,21 +3081,71 @@
         }
         else {
             if (content.indexOf('TheoNhomHang') > -1) {
-                let open = result.lastIndexOf("tbody", result.indexOf("{TenNhomHangHoa}")) - 1;
-                let close = result.indexOf("tbody", result.indexOf("{TenNhomHangHoa")) + 6;
-                let temptable = result.substr(open, close - open);
-                let temptable1 = temptable;
-                debugger
+                let open = content.lastIndexOf("tbody", content.indexOf("{TenNhomHangHoa}")) - 1;
+                let close = content.indexOf("tbody", content.indexOf("{TenNhomHangHoa")) + 6;
+                let temptable = content.substr(open, close - open);
+                let temptableGoc = temptable;
 
                 let row1From = temptable.indexOf("<tr");
                 let row1To = temptable.indexOf("/tr>") - 3;
                 let row1Str = temptable.substr(row1From, row1To);
-                let row1 = row1Str;
+                let row1Goc = row1Str;
 
                 let row2From = temptable.indexOf("<tr", temptable.indexOf("<tr") + 1);
                 let row2To = temptable.indexOf("<tr", row2From + 1);
-                let row2Str = '';
-                let row2 = '';
+                let row2Str = temptable.substr(row2From, row2To - row2From);
+                let row2Goc = row2Str;
+
+                for (let k = 0; k < arrIDCheck.length; k++) {
+                    let idHoaDon = arrIDCheck[k];
+                    let newHD = contentGoc;
+                    let tblNhomNew = temptableGoc;
+
+                    let hdDB = await GetInforHD_fromDB(idHoaDon);
+                    let cthd = await GetChiTietHD_fromDB(idHoaDon);
+                    let nhomCTHD = GroupCTHD_byNhomHang(cthd);
+
+                    for (let i = 0; i < nhomCTHD.length; i++) {
+                        let forOut = nhomCTHD[i];
+                        let ctTheoNhom = '';
+                        for (let j = 0; j < forOut.HangHoas.length; j++) {
+                            let newRow = row2Goc;
+                            let forCTHD = forOut.HangHoas[j];
+                            newRow = Replace_CTHD(newRow, forCTHD);
+                            ctTheoNhom = ctTheoNhom.concat(newRow);
+                        }
+
+                        let sNhomReplace = Replace_TheoNhom(temptableGoc, forOut);
+                        if (i === 0) {
+                            tblNhomNew = tblNhomNew.replace(temptableGoc, sNhomReplace);
+                            tblNhomNew = tblNhomNew.replace(row2Goc, ctTheoNhom);
+                        }
+                        else {
+                            sNhomReplace = sNhomReplace.replace(row2Goc, ctTheoNhom);
+                            tblNhomNew = tblNhomNew.concat(sNhomReplace);
+                        }
+                    }
+
+                    newHD = newHD.replace(temptableGoc, tblNhomNew);
+
+                    newHD = Replace_ThongTinChung(newHD, hdDB);
+                    newHD = Replace_ThongTinHoaDon(newHD, hdDB);
+                    newHD = Replace_ThongTinKhachHang(newHD, hdDB);
+                    newHD = await Replace_ThongTinPTN(newHD, hdDB);
+
+                    if (k === 0) {
+                        content = newHD;
+                    }
+                    else {
+                        content = content.concat(newHD);
+                    }
+
+                    if (k < arrIDCheck.length - 1) {
+                        content = content.concat('<p style="page-break-before:always;"></p>')
+                    }
+                }
+
+                content = content.replaceAll("{TheoNhomHang}", '');
             }
             else {
                 if (content.indexOf('TheoHangHoa') > -1 || content.indexOf('TheoDichVu') > -1) {
@@ -3110,7 +3162,7 @@
             }
         }
 
-       
+
 
         PrintExtraReport(content);
     }
@@ -6058,13 +6110,13 @@
         return [];
     }
 
-    async function GetThongTinPTN (id){
+    async function GetThongTinPTN(id) {
         if (!commonStatisJs.CheckNull(id) && id !== const_GuidEmpty) {
             let xx = $.getJSON('/api/DanhMuc/GaraAPI/' + 'PhieuTiepNhan_GetThongTinChiTiet?id=' + id).done()
                 .then(function (x) {
                     if (x.res && x.dataSoure.length > 0) {
-                         return x.dataSoure[0];
-                  }
+                        return x.dataSoure[0];
+                    }
                     return {};
                 });
             return xx;
