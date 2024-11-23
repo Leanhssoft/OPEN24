@@ -3169,7 +3169,7 @@
 
     self.PrintMany1 = async function () {
         let arHD = [];
-        let obj = await GetListHDbyIDs();
+        let obj = await GetListHDbyIDs();   
 
         if (!$.isEmptyObject(obj)) {
             let lstHD = obj.lstHD;

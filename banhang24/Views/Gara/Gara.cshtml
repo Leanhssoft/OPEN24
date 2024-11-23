@@ -3151,21 +3151,12 @@ event:{change: ChangeNgayLapHD}" tabindex="0" title="Nhập giờ" />
                         </div>
                     </div>
                     <div class="gara-toggle-line"
-                         data-bind="visible: HoaDons().ID_PhieuTiepNhan()!==null && HoaDons().LoaiHoaDon() === 3">
-                        <span> Duyệt báo giá</span>
+                         data-bind="visible: HoaDons().ID_PhieuTiepNhan() !== null && (HoaDons().LoaiHoaDon() === 3 || HoaDons().LoaiHoaDon() === 32)">
+                        <span data-bind="text: HoaDons().LoaiHoaDon() === 3 ? 'Duyệt báo giá' : 'Duyệt lệnh bảo hành'"></span>
                         <div class="gara-togggle-xuatkho"
-                             data-bind="css:{'unchecked': HoaDons().DuyetBaoGia()===false}">
-                            <span data-bind="click: function() {DuyetBaoGia_Change(true)}">Có</span>
-                            <span data-bind="click: function() {DuyetBaoGia_Change(false)}">Không</span>
-                        </div>
-                    </div>
-                    <div class="gara-toggle-line"
-                         data-bind="visible: HoaDons().ID_PhieuTiepNhan()!==null && HoaDons().LoaiHoaDon() === 32">
-                        <span> Duyệt lệnh bảo hành</span>
-                        <div class="gara-togggle-xuatkho"
-                             data-bind="css:{'unchecked': HoaDons().DuyetBaoHanh()===false}">
-                            <span data-bind="click: function() {DuyetBaoHanh_Change(true)}">Có</span>
-                            <span data-bind="click: function() {DuyetBaoHanh_Change(false)}">Không</span>
+                             data-bind="css: {'unchecked': HoaDons().DuyetBaoGia() === false}">
+                            <span data-bind="click: function() { DuyetBaoGia_Change(true) }">Có</span>
+                            <span data-bind="click: function() { DuyetBaoGia_Change(false) }">Không</span>
                         </div>
                     </div>
                 </div>

@@ -27,7 +27,7 @@ using System.Globalization;
 
 namespace banhang24.Areas.DanhMuc.Controllers
 {
-    public class BH_XuatHuyAPIController : ApiController
+    public class BH_XuatHuyAPIController : BaseApiController
     {
         [HttpPost, HttpPut]
         public IHttpActionResult PutBH_XuatKho([FromBody] JObject data, Guid ID_NhanVien)
@@ -940,6 +940,10 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 prm.Add(new SqlParameter("ID_HoaDon", ID_HoaDon));
                 prm.Add(new SqlParameter("ID_ChiNhanh", new Guid(ChiNhanh)));
                 List<XH_HoaDon_ChiTietPRC> lst = db.Database.SqlQuery<XH_HoaDon_ChiTietPRC>("exec getList_HangHoaXuatHuybyID @ID_HoaDon, @ID_ChiNhanh", prm.ToArray()).ToList();
+                if (!CheckRoleIsAdmin() && CookieStore.GetCookieAes("clo") == "True")
+                {
+                    lst.ForEach(item => { item.TenLoHang = null; item.TenHangHoaFull = null; });
+                }
                 DataTable excel = classOffice.ToDataTable<XH_HoaDon_ChiTietPRC>(lst);
                 excel.Columns.Remove("ID");
                 excel.Columns.Remove("ID_HoaDon");
@@ -1970,9 +1974,18 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
                 ClassBH_HoaDon_ChiTiet classHDCT = new ClassBH_HoaDon_ChiTiet(db);
                 var _ClassDVQD = new classDonViQuiDoi(db);
+                string checkLo = CookieStore.GetCookieAes("clo");
                 foreach (var item in lst)
                 {
                     item.ThanhPhan_DinhLuong = classHDCT.SP_GetThanhPhanDinhLuong_CTHD(item.ID, 8);
+                    if (!CheckRoleIsAdmin() && checkLo == "True")
+                    {
+                        item.TenLoHang = null;
+                        foreach (var tp in item.ThanhPhan_DinhLuong)
+                        {
+                            tp.MaLoHang = null;
+                        }
+                    }
                     item.DonViTinh = _ClassDVQD.Gets(ct => ct.ID_HangHoa == item.ID_HangHoa && ct.Xoa != true).Select(x => new DonViTinh
                     {
                         ID_HangHoa = x.ID_HangHoa,

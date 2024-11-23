@@ -204,6 +204,19 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 }
             }
         }
+        [HttpGet]
+        public bool CheckRole()
+        {
+            try
+            {
+                return CheckRoleIsAdmin();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
 
         [ResponseType(typeof(HT_NguoiDungDTO))]
         public IHttpActionResult GetHT_NguoiDung(Guid idnguoidung)

@@ -198,14 +198,14 @@
                                     <tr v-if="!$root.isFirstLoad && ID_PhieuTiepNhan == item.ID">
                                         <td colspan="11" style="border-bottom:none">
                                             <div class="gara-section-list-functions"
-                                                 v-bind:style="        [!$root.isFirstLoad && ID_PhieuTiepNhan == item.ID?{'display':'flex !important'} : 'none']">
+                                                 v-bind:style="[!$root.isFirstLoad && ID_PhieuTiepNhan == item.ID?{'display':'flex !important'} : 'none']">
                                                 <a href="javascript:void(0)" v-on:click="AddBaoGia(item)"
                                                    v-if="$root.role.BaoGia.ThemMoi">
                                                     <i class="fa fa-plus"></i>
                                                     Lập báo giá
                                                 </a>
-                                                <a href="javascript:void(0)" v-on:click="AddLenhBaoHanh(item)"
-                                                   v-if="$root.role.LenhBaoHanh.ThemMoi">
+                                                <a  href="javascript:void(0)" v-on:click="AddLenhBaoHanh(item)"
+                                                   v-if="$root.role.LenhBaoHanh.ThemMoi && $root.isHoangHuyDongFeng">
                                                     <i class="fa fa-plus"></i>
                                                     Lập lệnh bảo hành
                                                 </a>
@@ -293,7 +293,7 @@
                                     Báo giá
                                 </button>
                                 <button class="btn button-w150" style="  color:white; background:var(--color-main);"
-                                        v-if="$root.role.LenhBaoHanh.ThemMoi"
+                                        v-if="$root.role.LenhBaoHanh.ThemMoi && $root.isHoangHuyDongFeng"
                                         v-on:click="AddLenhBaoHanh(listData.ThongTinXe)">
                                     <i class="fa fa-plus"></i>
                                     Lệnh bảo hành

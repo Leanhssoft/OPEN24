@@ -1425,7 +1425,7 @@
 
     async function GetInforHDPrint(objHD) {
         var hd = $.extend({}, objHD);
-        const taiKhoanCK = await fetchBankAccountData(objHD.ID);
+        var taiKhoanCK = await fetchBankAccountData(objHD.ID);
         hd.NgayLapHoaDon = moment(hd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm:ss');;
         hd.TenChiNhanh = hd.TenDonVi;
         hd.DienThoaiKhachHang = hd.SoDienThoai;
@@ -1473,11 +1473,11 @@
                 amount: taiKhoanCK.TienThu
             });
 
-            objPrint.TenNganHangChuyenKhoan = taiKhoanCK.TenNganHang;
-            objPrint.TenChuTheChuyenKhoan = taiKhoanCK.TenChuThe;
-            objPrint.SoTaiKhoanChuyenKhoan = taiKhoanCK.SoTaiKhoan;
+            hd.TenNganHangChuyenKhoan = taiKhoanCK.TenNganHang;
+            hd.TenChuTheChuyenKhoan = taiKhoanCK.TenChuThe;
+            hd.SoTaiKhoanChuyenKhoan = taiKhoanCK.SoTaiKhoan;
             if (qrCode != '') {
-                objPrint.LinkQR = qrCode;
+                hd.LinkQR = qrCode;
             }
         }
         hd.PhuongThucTT = Remove_LastComma(pthuc);

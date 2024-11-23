@@ -10,6 +10,7 @@ using libDM_DoiTuong;
 using System.Data.SqlClient;
 using libDonViQuiDoi;
 using Model.Service.common;
+using libHT_NguoiDung;
 
 namespace libDM_HangHoa
 {
@@ -1558,7 +1559,7 @@ namespace libDM_HangHoa
                 return null;
             }
         }
-
+       
         public List<BCDM_LoHangDTO> GetlistDM_LoHang(int currentPage, int pageSize, string maHoaDon, int tonkho, string idnhomhang, Guid iddonvi, string listthuoctinh, DateTime? dayStart, DateTime? dayEnd, ref int total, ref int pagecount, int check)
         {
             if (db != null)
@@ -1788,6 +1789,13 @@ namespace libDM_HangHoa
             lstParam.Add(new SqlParameter("ID_HangCungLoai", idCungLoai));
             lstParam.Add(new SqlParameter("IDChiNhanh", idChiNhanh));
             return db.Database.SqlQuery<DMHangHoaDTO>("exec dbo.GetHangCungLoai_byID @ID_HangCungLoai, @IDChiNhanh", lstParam.ToArray()).ToList();
+        }
+        public List<Guid> GetChildGroupIds(Guid? parentGroupIds)
+        {
+            return db.DM_NhomHangHoa
+                .Where(n => parentGroupIds ==n.ID_Parent)
+                .Select(n => n.ID)
+                .ToList();
         }
 
         public List<DMHangHoaDTO> LoadDanhMucHangHoa(ParamSearch_DMHangHoa param)
@@ -2770,6 +2778,19 @@ namespace libDM_HangHoa
             }
             return lst;
         }
+        public List<DM_TheKhoDTO> GetListTheKhoByMaLoHangPTHong(Guid idlohang, Guid iddonvi, Guid idhanghoa)
+        {
+            List<DM_TheKhoDTO> lst = new List<DM_TheKhoDTO>();
+            if (db != null)
+            {
+                List<SqlParameter> paramlist = new List<SqlParameter>();
+                paramlist.Add(new SqlParameter("ID_HangHoa", idhanghoa));
+                paramlist.Add(new SqlParameter("IDChiNhanh", iddonvi));
+                paramlist.Add(new SqlParameter("ID_LoHang", idlohang));
+                return db.Database.SqlQuery<DM_TheKhoDTO>("Exec ListHangHoaTheKhoTheoLoHang_PTHong @ID_HangHoa, @IDChiNhanh, @ID_LoHang", paramlist.ToArray()).ToList();
+            }
+            return lst;
+        }
 
         public List<DM_HangHoaDTO> GetListHangHoas_QuyDoiTH(Guid iddonvi)
         {
@@ -3627,8 +3648,10 @@ namespace libDM_HangHoa
         public double TienChietKhau { get; set; }
         public double TyLeChuyenDoi { get; set; }
         public double? GiaVon { get; set; }
+        public double? GiaNhap { get; set; }
         public double? GiaVon_NhanChuyenHang { get; set; }
         public double? TonKho { get; set; }
+        public double? TonKhoPhuTung { get; set; }
         public double? TonCuoi { get; set; }
         public bool LaDonViChuan { get; set; }
         public double? TonLuyKe { get; set; }

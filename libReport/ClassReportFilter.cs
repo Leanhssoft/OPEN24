@@ -26,6 +26,7 @@ namespace libReport
                       {
                           ID = nh.ID,
                           TenNhomHang = nh.TenNhomHangHoa,
+                          TenNhomHangHoa_KhongDau = nh.TenNhomHangHoa_KhongDau,
                           ID_Parent = nh.ID_Parent,
                       };
             var tbl1 = tbl.AsEnumerable().Select(t => new
@@ -33,6 +34,7 @@ namespace libReport
                 ID = t.ID,
                 ID_Parent = t.ID_Parent,
                 TenNhomHangHoa = t.TenNhomHang,
+                TenNhomHangHoa_KhongDau = t.TenNhomHangHoa_KhongDau,
                 //NgayTao = t.NgayTao,
                 TenNhomHangHoa_CV = CommonStatic.ConvertToUnSign(t.TenNhomHang).ToLower(),
                 TenNhomHangHoa_GC = CommonStatic.GetCharsStart(t.TenNhomHang).ToLower(),
@@ -43,7 +45,7 @@ namespace libReport
                 tbl1 = tbl1.Where(x => x.TenNhomHangHoa_CV.Contains(@TenNhomHang) || x.TenNhomHangHoa_GC.Contains(@TenNhomHang));
                 foreach (var item in tbl1)
                 {
-                    lst = getList_NhomHangHoa(lst, item.ID, item.TenNhomHangHoa, null);
+                    lst = getList_NhomHangHoa(lst, item.ID, item.TenNhomHangHoa, null, item.TenNhomHangHoa_KhongDau);
                 }
             }
             else
@@ -53,7 +55,7 @@ namespace libReport
             return lst;
         }
 
-        public List<Report_NhomHangHoa_byName> getList_NhomHangHoa(List<Report_NhomHangHoa_byName> lst, Guid ID_NhomHang, string TenNhomHang, Guid? ID_Parent)
+        public List<Report_NhomHangHoa_byName> getList_NhomHangHoa(List<Report_NhomHangHoa_byName> lst, Guid ID_NhomHang, string TenNhomHang, Guid? ID_Parent, string tenNhomHang_KhongDau)
         {
             Report_NhomHangHoa_byName DM = new Report_NhomHangHoa_byName();
             if (lst.Count() > 0)
@@ -66,6 +68,7 @@ namespace libReport
                     {
                         DM.ID = ID_NhomHang;
                         DM.TenNhomHang = TenNhomHang;
+                        DM.TenNhomHangHoa_KhongDau = tenNhomHang_KhongDau;
                         DM.ID_Parent = ID_Parent;
                         lst.Add(DM);
                     }
@@ -75,6 +78,7 @@ namespace libReport
             {
                 DM.ID = ID_NhomHang;
                 DM.TenNhomHang = TenNhomHang;
+                DM.TenNhomHangHoa_KhongDau = tenNhomHang_KhongDau;
                 DM.ID_Parent = ID_Parent;
                 lst.Add(DM);
             }
@@ -84,11 +88,12 @@ namespace libReport
                       {
                           ID = nh1.ID,
                           ID_Parent = nh1.ID_Parent,
-                          TenNhomHang = nh1.TenNhomHangHoa
+                          TenNhomHang = nh1.TenNhomHangHoa,
+                          TenNhomHangHoa_KhongDau = nh1.TenNhomHangHoa_KhongDau
                       };
             foreach (var item in tb1)
             {
-                lst = getList_NhomHangHoa(lst, item.ID, item.TenNhomHang, item.ID_Parent);
+                lst = getList_NhomHangHoa(lst, item.ID, item.TenNhomHang, item.ID_Parent, item.TenNhomHangHoa_KhongDau);
             }
             return lst;
         }
