@@ -79,6 +79,7 @@ namespace Model
         public virtual DbSet<HT_Quyen> HT_Quyen { get; set; }
         public virtual DbSet<HT_Quyen_Nhom> HT_Quyen_Nhom { get; set; }
         public virtual DbSet<HT_QuyenMacDinh> HT_QuyenMacDinh { get; set; }
+        public virtual DbSet<HTQuyen_NguoiDung_NhomHangHoa> HTQuyen_NguoiDung_NhomHangHoa { get; set; }
         public virtual DbSet<Kho_DonVi> Kho_DonVi { get; set; }
         public virtual DbSet<Kho_HoaDon> Kho_HoaDon { get; set; }
         public virtual DbSet<Kho_HoaDon_ChiTiet> Kho_HoaDon_ChiTiet { get; set; }
