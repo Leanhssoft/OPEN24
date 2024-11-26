@@ -2852,7 +2852,7 @@
         content = content.replace("{MaKhachHang}", hd.MaDoiTuong);
         content = content.replace("{TenKhachHang}", hd.TenDoiTuong);
         content = content.replace("{DiaChi}", hd.DiaChiKhachHang);
-        content = content.replace("{DienThoai}", hd.DienThoaiKhachHang);
+        content = content.replace("{DienThoai}", hd.DienThoai);
         content = content.replace("{TongDiemKhachHang}", hd.TongTichDiem);
         return content;
     }
@@ -2915,10 +2915,11 @@
         content = content.replace("{MaHoaDon}", hd.MaHoaDon);
         content = content.replace("{MaHoaDonTraHang}", hd.MaHoaDonGoc);
         content = content.replace("{NgayLapHoaDon}", moment(hd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm'));
-        content = content.replace("{NgayTao}", hd.NgayTao);
+        content = content.replace("{NgayTao}", moment(hd.NgayTao).format('DD/MM/YYYY HH:mm') );
         content = content.replace("{NgayBan}", moment(hd.NgayLapHoaDon).format('DD/MM/YYYY HH:mm'));
         content = content.replace("{NgayApDungGoiDV}", hd.NgayApDungGoiDV);
         content = content.replace("{HanSuDungGoiDV}", hd.HanSuDungGoiDV);
+        content = content.replace("{NhanVienBanHang}", hd.TenNhanVien);
 
         content = content.replace("{DienGiai}", hd.DienGiai);
         content = content.replace("{TongTienHang}", formatNumber(hd.TongTienHang, 2));
@@ -3004,8 +3005,8 @@
             || content.indexOf('NVThucHien') > -1 || content.indexOf('NVTuVan') > -1;
     }
 
-    self.PrintMany = async function (idMauIn) {
-        let content = await GetNoiDungMauIn_ById(idMauIn);
+    self.PrintMany = async function () {
+        let content = await GetContent_MauInMacDinh('HDBL');
         let contentGoc = content;
 
         if (content.indexOf('TheoHangHoa_Nhom') > -1 || content.indexOf('TheoDichVu_Nhom') > -1) {
@@ -3425,11 +3426,80 @@
 
                 }
                 else {
-                    if (content.indexOf('TenHangHoa') > -1 || content.indexOf('MaHangHoa') > -1) {
-
+                    if (content.indexOf("{Combo}") > -1) {
+                        // todo: mẫu combo
                     }
                     else {
+                        if (content.indexOf('TenHangHoa') > -1 || content.indexOf('MaHangHoa') > -1) {
+                            // mẫu cơ bản nhất
+                            let open = content.lastIndexOf("tbody", content.indexOf("{TenHangHoa")) - 1;
+                            let close = content.indexOf("tbody", content.indexOf("{TenHangHoa")) + 6;
+                            let temptable = content.substr(open, close - open);
+                            let tblGoc = temptable;
 
+                            let row1From = temptable.indexOf("<tr");
+                            let row1To = temptable.indexOf("/tr>") - 3;
+                            let row1Str = temptable.substr(row1From, row1To);
+                            let row1Goc = row1Str;
+
+                            // dong2: cthd
+                            let row2From = temptable.indexOf("<tr", row1From + 1);
+                            let row2To = temptable.indexOf("/tr>", row2From) + 5;
+                            let row2Str = '';
+
+                            let sChiTietHD = '';
+                            if (CheckRowContent_HasChiTiet(row1Str)) {
+                                sChiTietHD = row1Str;
+                            }
+
+                            if (row2To > -1) {
+                                row2Str = temptable.substr(row2From, row2To - row2From);
+                                if (CheckRowContent_HasChiTiet(row2Str)) {
+                                    sChiTietHD = sChiTietHD.concat(row2Str);
+                                }
+                            }
+
+                            let row3To = temptable.indexOf("/tr>", row2To) + 5;
+
+                            if (row3To > -1) {
+                                row3Str = temptable.substr(row2To, row3To - row2To);
+                                if (CheckRowContent_HasChiTiet(row3Str)) {
+                                    sChiTietHD = sChiTietHD.concat(row3Str);
+                                }
+                            }
+
+                            for (let k = 0; k < arrIDCheck.length; k++) {
+                                let idHoaDon = arrIDCheck[k];
+                                let newHD = contentGoc;
+
+                                let hdDB = await GetInforHD_fromDB(idHoaDon);
+                                let cthd = await GetChiTietHD_fromDB(idHoaDon);
+
+                                let ctHangHoa = '';
+                                for (let i = 0; i < cthd.length; i++) {
+                                    let newRow = sChiTietHD;
+                                    let forCTHD = cthd[i];
+                                    forCTHD = AssignNVThucHien_toCTHD(forCTHD);
+                                    newRow = Replace_CTHD(newRow, forCTHD);
+                                    ctHangHoa = ctHangHoa.concat(newRow);
+                                }
+                                newHD = newHD.replace(sChiTietHD, ctHangHoa);
+
+                                Caculator_ChiTietHD(cthd);
+                                newHD = await ReplaceFull_ThongTinHoaDon(newHD, hdDB);
+
+                                if (k === 0) {
+                                    content = newHD;
+                                }
+                                else {
+                                    content = content.concat(newHD);
+                                }
+
+                                if (k < arrIDCheck.length - 1) {
+                                    content = content.concat('<p style="page-break-before:always;"></p>')
+                                }
+                            }
+                        }
                     }
                 }
             }
