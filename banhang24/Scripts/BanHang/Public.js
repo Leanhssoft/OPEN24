@@ -603,6 +603,7 @@ function ReplaceString_toData(content1) {
     content1 = content1.replace("{ChiPhiNhap}", "<span data-bind=\"text: InforHDprintf().ChiPhiNhap\"></span>");
     content1 = content1.replace("{NoTruoc}", "<span data-bind=\"text:  $root.InforHDprintf().NoTruoc\"></span>");
     content1 = content1.replace("{NoSau}", "<span data-bind=\"text:  $root.InforHDprintf().NoSau\"></span>");
+    content1 = content1.replace("{NoSau_BangChu}", "<span data-bind=\"text:  $root.InforHDprintf().NoSau_BangChu\"></span>");
     content1 = content1.replace("{TienThuaTraKhach}", "<span data-bind=\"text:  $root.InforHDprintf().TienThua\"></span>");
     content1 = content1.replace("{TienKhachThieu}", "<span data-bind=\"text:  $root.InforHDprintf().TienKhachThieu\"></span>");
     content1 = content1.replace("{DiemGiaoDich}", "<span data-bind=\"text:  $root.InforHDprintf().DiemGiaoDich\"></span>");

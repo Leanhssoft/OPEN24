@@ -3523,7 +3523,7 @@
 
                 if (arrCT.length > 0) {
                     let objHD = await GetInforHDPrint(forHD.ID, false, arrCT);
-                    let cthdPrint = await GetCTHDPrint_Format(forHD.ID);
+                    let cthdPrint = await GetCTHDPrint_Format(forHD.ID);                  
                     objHD.BH_HoaDon_ChiTiet = cthdPrint;
                     objHD.CTHoaDonPrintMH = [];
                     arHD.push(objHD);
@@ -3538,7 +3538,7 @@
                 contentType: "application/x-www-form-urlencoded; charset=UTF-8",
                 success: function (result) {
                     let data = result;
-                    data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');
+                    data = data.concat('<script src="/Scripts/knockout-3.4.2.js"></script>');                 
                     data = data.concat(' <script src="/Content/Framework/Moment/moment.min.js"></script>');
                     data = data.concat(`<script> function formatNumber(number, decimalDot = 2) {
                                             if (number === undefined || number === null) {
@@ -3785,6 +3785,7 @@
                         }
                         objPrint.NoTruoc = formatNumber(notruoc);
                         objPrint.NoSau = formatNumber(nosau);
+                        objPrint.NoSau_BangChu = DocSo(nosau);
 
                         let pthuc = '';
                         if (itFirstHD.SumTienMat > 0) {
@@ -4167,6 +4168,7 @@
         objPrint.DiaChiKhachHang = diachiKH;
         objPrint.NoTruoc = formatNumber(notruoc);
         objPrint.NoSau = formatNumber(nosau);
+        objPrint.NoSau_BangChu = DocSo(nosau);
         objPrint.ChiPhiNhap = objPrint.TongChiPhi;
         objPrint.GhiChu = objPrint.DienGiai;
         let tc = RoundDecimal(formatNumberToFloat(objPrint.TongCong), 0);

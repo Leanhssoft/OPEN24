@@ -2622,6 +2622,7 @@
         var conno = formatNumberToInt(objPrint.PhaiThanhToan) - daThanhToan;
         objPrint.NoTruoc = 0;
         objPrint.NoSau = formatNumber(conno);
+        objPrint.NoSau_BangChu = DocSo(conno);
         objPrint.TienKhachThieu = formatNumber(conno);
         objPrint.ChiPhiNhap = objPrint.TongChiPhi;
         objPrint.GhiChu = objPrint.DienGiai;

@@ -1975,6 +1975,7 @@ var workTable = new Vue({
             let conno = formatNumberToInt(hdChosing.TongThanhToan) - daThanhToan - hdChosing.BaoHiemDaTra;
             objPrint.NoTruoc = formatNumber3Digit(cus_DebitOld);
             objPrint.NoSau = formatNumber(cus_NoHienTai);
+            objPrint.NoSau_BangChu = DocSo(cus_NoHienTai);
             objPrint.TienBangChu = DocSo(tongcong);
             objPrint.TienKhachThieu = formatNumber(hdChosing.PhaiThanhToan - daThanhToan);
             objPrint.HD_ConThieu = conno;

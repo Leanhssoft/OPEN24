@@ -1542,6 +1542,7 @@
         hd.DaThanhToan = formatNumber3Digit(daTT, 2);
         hd.TongCong = formatNumber3Digit(phaiTT, 2);
         hd.NoSau = formatNumber3Digit(phaiTT - daTT, 2);
+        hd.NoSau_BangChu = DocSo(phaiTT - daTT);
         hd.TienBangChu = DocSo(phaiTT);
         hd.GhiChu = hd.DienGiai;
         hd.NoTruoc = 0;
