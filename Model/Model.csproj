@@ -176,6 +176,7 @@
     <Compile Include="HeThong_SMS.cs" />
     <Compile Include="HeThong_SMS_TaiKhoan.cs" />
     <Compile Include="HeThong_SMS_TinMau.cs" />
+    <Compile Include="HTQuyen_NguoiDung_NhomHangHoa.cs" />
     <Compile Include="HT_CauHinhPhanMem.cs" />
     <Compile Include="HT_CauHinh_GioiHanTraHang.cs" />
     <Compile Include="HT_CauHinh_TichDiemApDung.cs" />
