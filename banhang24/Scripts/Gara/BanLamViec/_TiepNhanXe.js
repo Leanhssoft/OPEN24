@@ -35,7 +35,7 @@
         },
         role: {
             Xe: {},
-            PhieuTiepNhan: { BatBuocNhapKmVao: false },
+            PhieuTiepNhan: { BatBuocNhapKmVao: false, CapNhat: false },
             KhachHang: {},
             BaoHiem: {},
         },
@@ -251,7 +251,7 @@
                 ID: thongtin.ID,
                 MaPhieuTiepNhan: thongtin.MaPhieuTiepNhan,
                 ID_Xe: thongtin.ID_Xe,
-                ID_DonVi: self.inforLogin.ID_DonVi,
+                ID_DonVi: self.inforLogin.ID_DonVi ? self.inforLogin.ID_DonVi : thongtin.ID_DonVi,
                 ID_NhanVien: thongtin.ID_NhanVien,
                 ID_CoVanDichVu: thongtin.ID_CoVanDichVu,
                 NgayVaoXuong: moment(thongtin.NgayVaoXuong).format('YYYY-MM-DD HH:mm'),
@@ -762,7 +762,7 @@
 
             //vật dụng đính kèm
             let myDataVatDung = {};
-            myDataVatDung.Subdomain = VHeader.SubDomain;
+            myDataVatDung.Subdomain = $('#subDomain').val();
             myDataVatDung.Function = "5";
             myDataVatDung.Id = self.newPhieuTiepNhan.ID;
             let vatdung = self.listData.GiayToDinhKems.filter(x => x.TieuDe !== '');
@@ -783,7 +783,7 @@
             self.Put_GiayToKemTheoUpload(vatdung);
             //Hạng mục sửa chữa
             let myDataHangMuc = {};
-            myDataHangMuc.Subdomain = VHeader.SubDomain;
+            myDataHangMuc.Subdomain = $('#subDomain').val();
             myDataHangMuc.Function = "5";
             myDataHangMuc.Id = self.newPhieuTiepNhan.ID;
             let hangmuc = self.listData.HangMucSuaChuas.filter(x => x.TenHangMuc !== '' || x.TinhTrang !== '');
@@ -850,8 +850,8 @@
                 ' <br /> - Cố vấn: ', self.adviserName);
 
             var diary = {
-                ID_DonVi: self.inforLogin.ID_DonVi,
-                ID_NhanVien: self.inforLogin.ID_NhanVien,
+                ID_DonVi: self.inforLogin.ID_DonVi ? self.inforLogin.ID_DonVi : $('#txtDonVi').val(),
+                ID_NhanVien: self.inforLogin.ID_NhanVien ? self.inforLogin.ID_NhanVien : $('#txtIDNhanVien').val(),
                 ChucNang: 'Tiếp nhận xe',
                 NoiDung: noidung,
                 NoiDungChiTiet: noidung.concat(noidungct),
@@ -875,7 +875,7 @@
 
                         let diaryDevice = {
                             LoaiNhatKy: 1,
-                            ID_DonVi: self.inforLogin.ID_DonVi,
+                            ID_DonVi: $('#txtDonVi').val(),
                             ID_NhanVien: self.inforLogin.ID_NhanVien,
                             ChucNang: 'Phiếu tiếp nhận',
                             NoiDung: 'Check DeviceId',
@@ -900,7 +900,7 @@
                 });
             }
             else {
-                self.newPhieuTiepNhan.NguoiSua = self.inforLogin.UserLogin;
+                self.newPhieuTiepNhan.NguoiSua = self.inforLogin.UserLogin ? self.inforLogin.UserLogin : $('#txtIDNhanVien').val();
 
                 let checkUpdate = false;
                 if (self.phieuTiepNhanOld.ID_BaoHiem !== self.newPhieuTiepNhan.ID_BaoHiem) {
@@ -1001,6 +1001,7 @@
                     self.DeleteImageOld_ByPhieuTiepNhan();
                     self.UploadFile();
                     self.LichBaoDuong_Update();
+                    
                     $('#TiepNhanXeModal').modal('hide');
 
                     if (self.phieuTiepNhanOld.ID_Xe !== self.newPhieuTiepNhan.ID_Xe) {
@@ -1068,7 +1069,7 @@
                 if (x.res === true) {
                     self.saveOK = true;
                     self.newPhieuTiepNhan.MaPhieuTiepNhan = x.dataSoure.MaPhieuTiepNhan;
-
+                    $(document).trigger('updateSoKmVao', [soKmVao]);
                     let noidung = 'Cập nhật phiếu tiếp nhận xe ';
                     let noidungct = ' <br /> - Biển số: '.concat(self.carChosing.BienSo,
                         ' <br /> - Số km vào: ', self.newPhieuTiepNhan.SoKmVao,

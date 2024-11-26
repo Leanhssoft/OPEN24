@@ -2888,8 +2888,9 @@ var NhapHangChiTiet = function () {
         var malo = $('#AddNewLo' + idRandom).val();
         var nsx = $('#nsx' + idRandom).val();
         var hsd = $('#hd' + idRandom).val();
-
-        if (CheckChar_Special(malo)) {
+        const arrSubDomain_2 = ["hoanghuydongfeng", "0973474985"];
+        var isHoangHuyDongFeng = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain_2) > -1;
+        if (CheckChar_Special(malo) && !isHoangHuyDongFeng) {
             ShowMessage_Danger('Mã lô hàng không được chứa kí tự đặc biệt');
 
             return false;
@@ -4813,6 +4814,7 @@ var NhapHangChiTiet = function () {
         hdPrint.TienBangChu = DocSo(phaiThanhToan);
         hdPrint.NoTruoc = 0;
         hdPrint.NoSau = formatNumber3Digit(conno, 2);
+        hdPrint.NoSau_BangChu = DocSo(conno);
         hdPrint.TongCong = formatNumber3Digit(phaiThanhToan, 2);
         hdPrint.ChiPhiNhap = hdPrint.TongChiPhi;
         hdPrint.KhuyeMai_GiamGia = 0;

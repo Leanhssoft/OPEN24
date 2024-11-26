@@ -4685,9 +4685,11 @@ namespace libQuy_HoaDon
                     var nhomcha_KyTuDau = CommonStatic.GetCharsStart(nhomcha).ToLower();
                     var nhomcon_KhongDau = CommonStatic.ConvertToUnSign(nhomcon).ToLower();
                     var nhomcon_KyTuDau = CommonStatic.GetCharsStart(nhomcon).ToLower();
+                    var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+                    string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
 
                     bool MaLodacbiet = kiemtrakitu(malohang);
-                    if (MaLodacbiet == false)
+                    if (MaLodacbiet == false && !arrSubDomain.Contains(subDomain))
                     {
                         ErrorDMHangHoa DM = new ErrorDMHangHoa();
                         DM.TenTruongDuLieu = "Mã lô hàng";

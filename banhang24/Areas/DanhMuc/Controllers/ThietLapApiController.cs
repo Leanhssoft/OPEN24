@@ -1647,6 +1647,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{ChiPhiNhap}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().ChiPhiNhap)\"></span>");
             content1 = content1.Replace("{NoTruoc}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().NoTruoc)\"></span>");
             content1 = content1.Replace("{NoSau}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().NoSau)\"></span>");
+            content1 = content1.Replace("{NoSau_BangChu}", "<span data-bind=\"text:$root.InforHDprintf().NoSau_BangChu\"></span>");
 
             content1 = content1.Replace("{DiemGiaoDich}", "<span data-bind=\"text: $root.InforHDprintf().DiemGiaoDich\"></span>");
             content1 = content1.Replace("{TongGiamGiaHang}", "<span data-bind=\"text: formatNumber($root.InforHDprintf().TongGiamGiaHang,2)\"></span>");
@@ -1871,7 +1872,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{DiaChiChiNhanh}", "<span data-bind=\"text: DiaChiChiNhanh\"></span>");
             content1 = content1.Replace("{Logo}", "<img data-bind=\"attr: {src: LogoCuaHang}\" style=\"width:100%\" />");
 
-            //INS 08.08.2024
             content1 = content1.Replace("{ImageQR}", "<img data-bind=\"attr: {src: LinkQR}\" style=\"width:100%\" />");
             content1 = content1.Replace("{NgayBan}", "<span data-bind=\"text: NgayLapHoaDon\"></span>");
             content1 = content1.Replace("{NgayLapHoaDon}", "<span data-bind=\"text: NgayLapHoaDon\"></span>");
@@ -1914,6 +1914,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{ChiPhiNhap}", "<span data-bind=\"text: formatNumber(ChiPhiNhap)\"></span>");
             content1 = content1.Replace("{NoTruoc}", "<span data-bind=\"text: formatNumber(NoTruoc,2)\"></span>");
             content1 = content1.Replace("{NoSau}", "<span data-bind=\"text: formatNumber(NoSau,2)\"></span>");
+            content1 = content1.Replace("{NoSau_BangChu}", "<span data-bind=\"text: NoSau_BangChu\"></span>");
             content1 = content1.Replace("{TienThuaTraKhach}", "<span data-bind=\"text: formatNumber(TienThua,0)\"></span>");
             content1 = content1.Replace("{TienKhachThieu}", "<span data-bind=\"text: formatNumber(TienKhachThieu,0)\"></span>");
             content1 = content1.Replace("{DiemGiaoDich}", "<span data-bind=\"text: DiemGiaoDich\"></span>");
@@ -2034,6 +2035,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             content1 = content1.Replace("{TienPOS}", "<span data-bind=\"text: InforHDprintf().TienATM\"></span>");
             content1 = content1.Replace("{TienChuyenKhoan}", "<span data-bind=\"text: formatNumber(InforHDprintf().ChuyenKhoan)\"></span>");
             content1 = content1.Replace("{NoSau}", "<span data-bind=\"text: formatNumber(InforHDprintf().NoSau)\"></span>");
+            content1 = content1.Replace("{NoSau_BangChu}", "<span data-bind=\"text: InforHDprintf().NoSau_BangChu\"></span>");
             content1 = content1.Replace("{TienKhachThieu}", "<span data-bind=\"text: formatNumber(InforHDprintf().TienKhachThieu)\"></span>");
             content1 = content1.Replace("{PhuongThucTT}", "<span data-bind=\"text: InforHDprintf().PhuongThucTT\"></span>");
 

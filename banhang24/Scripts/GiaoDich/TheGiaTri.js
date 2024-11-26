@@ -1437,6 +1437,7 @@
         hd.ChietKhauNVHoaDon = hd.NhanVienThucHien;
         let conno = formatNumberToFloat(hd.PhaiThanhToan) - formatNumberToFloat(hd.KhachDaTra);
         hd.NoSau = formatNumber(conno);
+        hd.NoSau_BangChu = DocSo(conno);
         hd.PhaiThanhToan = formatNumber(hd.PhaiThanhToan);
         hd.DaThanhToan = formatNumber(hd.KhachDaTra);
         hd.DienGiai = hd.GhiChu;

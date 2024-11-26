@@ -2630,6 +2630,7 @@ var TraHangNhapChiTiet = function () {
         hdPrint.TienBangChu = DocSo(daThanhToan);
         hdPrint.NoTruoc = 0;
         hdPrint.NoSau = formatNumber3Digit(conno);
+        hdPrint.NoSau_BangChu = DocSo(conno);
         hdPrint.TongCong = formatNumber3Digit(objHD.TongThanhToan);
         hdPrint.ChiPhiNhap = 0;
         hdPrint.KhuyeMai_GiamGia = 0;

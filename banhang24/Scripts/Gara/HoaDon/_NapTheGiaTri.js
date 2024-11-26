@@ -496,6 +496,7 @@
                 khachthieu = Math.abs(hd.TienThua);
             }
             hd.NoSau = khachthieu;
+            hd.NoSau_BangChu = DocSo(khachthieu);
             hd.PhaiThanhToan = formatNumber(hd.PhaiThanhToan);
             hd.DaThanhToan = hd.DaThanhToan;
             hd.TienBangChu = DocSo(formatNumberToFloat(hd.DaThanhToan));

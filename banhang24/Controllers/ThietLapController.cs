@@ -1011,6 +1011,7 @@ namespace banhang24.Controllers
             content1 = content1.Replace("{GhiChu}", "<span data-bind=\"text: InforHDprintf().GhiChu\"></span>");
             content1 = content1.Replace("{NoTruoc}", "<span data-bind=\"text: InforHDprintf().NoTruoc\"></span>");
             content1 = content1.Replace("{NoSau}", "<span data-bind=\"text: InforHDprintf().NoSau\"></span>");
+            content1 = content1.Replace("{NoSau_BangChu}", "<span data-bind=\"text: InforHDprintf().NoSau_BangChu\"></span>");
 
             // thong tin TK ngan hang cua cua hang
             //content1 = content1.Replace("{TenNganHangPOS}", "<span data-bind=\"text: InforHDprintf().TenNganHangPOS\"></span>");
@@ -1161,6 +1162,7 @@ namespace banhang24.Controllers
             content1 = content1.Replace("{GhiChu}", "<span data-bind=\"text: InforHDprintf().GhiChu\"></span>");
             content1 = content1.Replace("{NoTruoc}", "<span data-bind=\"text: InforHDprintf().NoTruoc\"></span>");
             content1 = content1.Replace("{NoSau}", "<span data-bind=\"text: InforHDprintf().NoSau\"></span>");
+            content1 = content1.Replace("{NoSau_BangChu}", "<span data-bind=\"text: InforHDprintf().NoSau_BangChu\"></span>");
 
             content1 = content1.Replace("{TongGiamGiaHang}", "<span data-bind=\"text: InforHDprintf().TongGiamGiaHang\"></span>");
             content1 = content1.Replace("{TongTienHangChuaChietKhau}", "<span data-bind=\"text: InforHDprintf().TongTienHangChuaCK\"></span>");

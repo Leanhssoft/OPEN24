@@ -2756,7 +2756,7 @@ visible: LoaiHoaDon !== 3">
                                     <ul>
                                         <li v-for="(item, index) of searchList"
                                             v-on:click="click(item)"
-                                            v-bind:style="   [$root.indexFocus === index ? {'background':'#d9d9d9'} : {'background':'none'}]">
+                                            v-bind:style="[$root.indexFocus === index ? {'background':'#d9d9d9'} : {'background':'none'}]">
                                             <div>
                                                 <span style="color:var(--color-main)">Biển số: {{item.BienSo}}</span>
                                             </div>
@@ -2765,6 +2765,9 @@ visible: LoaiHoaDon !== 3">
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div v-if="$root.isHuyTu" class="gara-bill-content" style="display:flex; justify-content:flex-start; padding:7px 15px 0 15px;" data-bind="visible: textSearchPhieuTN">
+                        Số Km:  <span data-bind="text: textSoKmVao"></span>
                     </div>
                     <div class="gara-bill-content" style="display:flex; justify-content:space-between; padding:7px 15px 0 15px;">
                         <div class="gara-bangia">

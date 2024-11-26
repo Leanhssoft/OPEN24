@@ -214,8 +214,9 @@ var NewModel_BanHangLe = function () {
     var tree = '';// use at treeview NhomHangHoa
     var tree2 = '';// use at treeview NhomHangHoa --> check KhuyenMai
     self.SubDomain = ko.observable(_subDomain.toLowerCase());
-    const arrSubDomain = ["leeauto", "0973474985", "autosonly"];
+    const arrSubDomain = ["leeauto", "0973474985", "autosonly"]; 
     self.isLeeAuto = ko.observable($.inArray(self.SubDomain(), arrSubDomain) > -1);
+    self.isHuyTu = ko.observable($.inArray(self.SubDomain(), ["0973474985", "xuongsuachuaotohuytu"]) > -1);
 
     self.ShopCookies = ko.observable(shopCookies);
     self.selectedGiaBan = ko.observable();
@@ -2146,6 +2147,7 @@ var NewModel_BanHangLe = function () {
 
     self.ListPhieuTiepNhan = ko.observableArray();
     self.textSearchPhieuTN = ko.observable();
+    self.textSoKmVao = ko.observable();
     self.indexFocus_phieuTN = ko.observable(0);
     self.searchPhieuTiepNhan = function () {
         var self = this;
@@ -4413,6 +4415,7 @@ var NewModel_BanHangLe = function () {
         objPrint.DiemGiaoDich = formatNumber3Digit(objHD.DiemGiaoDich);
         objPrint.NoTruoc = formatNumber3Digit(notruoc);
         objPrint.NoSau = formatNumber3Digit(nosau);
+        objPrint.NoSau_BangChu = DocSo(nosau);
         objPrint.BH_TenLienHe = objHD.LienHeBaoHiem;
         objPrint.BH_SDTLienHe = objHD.SoDienThoaiLienHeBaoHiem;
 
@@ -7110,7 +7113,7 @@ var NewModel_BanHangLe = function () {
             $.getJSON(GaraAPI + 'PhieuTiepNhan_GetThongTinChiTiet?id=' + id).done(function (x) {
                 if (x.res && x.dataSoure.length > 0) {
                     self.ThongTinPhieuTiepNhan(x.dataSoure[0]);
-
+                    self.textSoKmVao(x.dataSoure[0].SoKmVao)
                     ResetPhieuTiepNhan_ifOtherChiNhanh();
                 }
 
@@ -7139,13 +7142,13 @@ var NewModel_BanHangLe = function () {
                     }
                     if (isView) {
                         vmTiepNhanXe.UpdatePhieuTiepNhan(self.ThongTinPhieuTiepNhan(),
-                            self.HangMucSuaChuas(), self.VatDungKemTheos());
+                            self.HangMucSuaChuas(), self.VatDungKemTheos());                     
                     }
                 });
                 if (!isView) {
                     vmNhatKyBaoDuong.GetListPhuTungBaoDuong_byCar(x.dataSoure[0].ID_Xe, x.dataSoure[0].ID);
                     vmNKGoiBaoDuong.GetGoiDichVu_ofKhachHang(x.dataSoure[0].ID_KhachHang, x.dataSoure[0].ID_Xe);
-                }
+                }               
             })
         }
         else {
@@ -7165,7 +7168,11 @@ var NewModel_BanHangLe = function () {
             self.VatDungKemTheos([]);
         }
     }
-
+    $(document).on('updateSoKmVao', function (event, soKmVao) {
+        if (ko.isObservable(self.textSoKmVao)) {
+            self.textSoKmVao(soKmVao);
+        }
+    });
     self.XemThongTinPhieuTiepNhan = function () {
         GetInfor_PhieuTiepNhan(true);
     }
@@ -10165,7 +10172,6 @@ var NewModel_BanHangLe = function () {
         ArrowLeft_CTHD(item, event);
     }
     self.editSale = function (item, e) {
-        debugger;
         var sumTemp = 0;
         var rowID = item.ID_DonViQuiDoi;
         var idRandom = item.IDRandom;
@@ -20541,7 +20547,7 @@ var NewModel_BanHangLe = function () {
         });
         vmNKGoiBaoDuong.roleXemHoaHong = roleCKHangHoa.length > 0;
         vmNKGoiBaoDuong.roleGDV_DuocSuDungKhiHetHan = CheckQuyenExist('GoiDichVu_DuocSuDungKhiHetHan');
-
+        vmTiepNhanXe.role.PhieuTiepNhan.CapNhat = CheckQuyenExist('PhieuTiepNhan_CapNhat');
         vmTiepNhanXe.role.PhieuTiepNhan.BatBuocNhapKmVao = CheckQuyenExist('PhieuTiepNhan_BatBuocNhapKmVao');
         vmThemMoiXe.role.BatBuocNhapSoKhung = CheckQuyenExist('DanhMucXe_BatBuocNhapSoKhung');
         vmThanhToanGara.RoleChange_ChietKhauNV = CheckQuyenExist('HoaHong_ThayDoi');

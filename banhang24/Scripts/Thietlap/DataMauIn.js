@@ -361,6 +361,7 @@ var dataMauIn = function () {
     self.TongSoLuongHang = ko.observable('40,000');
     self.ChiPhiNhap = ko.observable('40,000');
     self.NoSau = ko.observable('100,000');
+    self.NoSau_BangChu = ko.observable('Một trăm nghìn đồng');
     self.NoTruoc = ko.observable('100,000');
     self.BH_NoSau = ko.observable('5,000,000');
     self.BH_NoTruoc = ko.observable('3,000,000');

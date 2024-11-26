@@ -1359,6 +1359,7 @@ function SetConvertDataTest(strInput) {
                 '{DienGiai}': '<span data-bind=\"text: $root.DienGiai\"></span>',
                 '{NoTruoc}': '<span data-bind=\"text: NoTruoc\"></span>',
                 '{NoSau}': '<span data-bind=\"text: $root.NoSau\"></span>',
+                '{NoSau_BangChu}': '<span data-bind=\"text: $root.NoSau_BangChu\"></span>',
                 '{TienKhachThieu}': '<span data-bind=\"text: $root.TienKhachThieu\"></span>',
                 '{BH_NoTruoc}': '<span data-bind=\"text: $root.BH_NoTruoc\"></span>',
                 '{BH_NoSau}': '<span data-bind=\"text: $root.BH_NoSau\"></span>',
