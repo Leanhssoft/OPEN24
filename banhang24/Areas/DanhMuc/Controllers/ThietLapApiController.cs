@@ -233,7 +233,18 @@ namespace banhang24.Areas.DanhMuc.Controllers
             }
             return Json(ReaplaceMauIn_TheGiaTri(content1));
 
+        } 
+        public IHttpActionResult GetNoiDungMauIn_ById(Guid? idMauIn)
+        {
+            string content1 = "";
+            if (idMauIn != null)
+            {
+                content1 = db.DM_MauIn.Where(o => o.ID == idMauIn).Select(o => o.DuLieuMauIn).FirstOrDefault();
+            }
+            return Json(content1);
+
         }
+
         [HttpGet]
         public IHttpActionResult GetContent_MauInMacDinh(string maChungTu, Guid idDonVi)
         {
