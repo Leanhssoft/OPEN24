@@ -377,6 +377,21 @@ function DocSo(so) {
     return chuoi.trim().substr(0, 1).toUpperCase() + chuoi.substr(2) + ' đồng'; /*; chuoi + ' đồng';*/
 }
 
+function formatDateTime(date) {
+    const daysOfWeek = ["Chủ Nhật", "Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy"];
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const formattedTime = `${hours}:${minutes < 10 ? '0' + minutes : minutes}`;
+
+    return `${dayOfWeek}, ngày ${day} tháng ${month} năm ${year} lúc ${formattedTime}`;
+}
+
+
+
 function GetChartStart(input) {
     if (input === '' || input === null || input.replace(/\s+/g, '') === '') {
         return null;
@@ -604,6 +619,7 @@ function ReplaceString_toData(content1) {
     content1 = content1.replace("{NoTruoc}", "<span data-bind=\"text:  $root.InforHDprintf().NoTruoc\"></span>");
     content1 = content1.replace("{NoSau}", "<span data-bind=\"text:  $root.InforHDprintf().NoSau\"></span>");
     content1 = content1.replace("{NoSau_BangChu}", "<span data-bind=\"text:  $root.InforHDprintf().NoSau_BangChu\"></span>");
+    content1 = content1.replace("{NgayIn}", "<span data-bind=\"text:  $root.InforHDprintf().NgayIn\"></span>");
     content1 = content1.replace("{TienThuaTraKhach}", "<span data-bind=\"text:  $root.InforHDprintf().TienThua\"></span>");
     content1 = content1.replace("{TienKhachThieu}", "<span data-bind=\"text:  $root.InforHDprintf().TienKhachThieu\"></span>");
     content1 = content1.replace("{DiemGiaoDich}", "<span data-bind=\"text:  $root.InforHDprintf().DiemGiaoDich\"></span>");

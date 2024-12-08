@@ -1548,6 +1548,7 @@
         hd.NoTruoc = 0;
         hd.PhiTraHang = 0;
         hd.TongSoLuongHang = formatNumber3Digit(self.TongSLuong());
+        hd.NgayIn = formatDateTime(new Date());
 
         let pthuc = '';
         if (formatNumberToFloat(objHD.TienMat) > 0) {

@@ -497,6 +497,7 @@
             }
             hd.NoSau = khachthieu;
             hd.NoSau_BangChu = DocSo(khachthieu);
+            hd.NgayIn = formatDateTime(new Date());
             hd.PhaiThanhToan = formatNumber(hd.PhaiThanhToan);
             hd.DaThanhToan = hd.DaThanhToan;
             hd.TienBangChu = DocSo(formatNumberToFloat(hd.DaThanhToan));

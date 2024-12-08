@@ -1560,7 +1560,7 @@ namespace libDM_HangHoa
             }
         }
        
-        public List<BCDM_LoHangDTO> GetlistDM_LoHang(int currentPage, int pageSize, string maHoaDon, int tonkho, string idnhomhang, Guid iddonvi, string listthuoctinh, DateTime? dayStart, DateTime? dayEnd, ref int total, ref int pagecount, int check)
+        public List<BCDM_LoHangDTO> GetlistDM_LoHang(int currentPage, int pageSize, string maHoaDon, int tonkho, string idnhomhang, Guid iddonvi, string listthuoctinh, DateTime? dayStart, DateTime? dayEnd, ref int total, ref int pagecount, int check, Guid id_nguoidung)
         {
             if (db != null)
             {
@@ -1602,8 +1602,14 @@ namespace libDM_HangHoa
                 paramlist.Add(new SqlParameter("ListID_NhomHang", lstIDNHH.Replace("%", "")));
                 paramlist.Add(new SqlParameter("ID_ChiNhanh", ID_ChiNhanh));
                 paramlist.Add(new SqlParameter("List_ThuocTinh", listthuoctinh));
-                List<BCDM_LoHangDTO> listTon = db.Database.SqlQuery<BCDM_LoHangDTO>("exec LoadDanhMucLoHangBaoCao @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh", paramlist.ToArray()).ToList();
-
+                paramlist.Add(new SqlParameter("ID_NguoiDung", id_nguoidung));
+                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+                string[] allowedSubDomains = { "hoanghuydongfeng", "0973474985" };
+                string query = allowedSubDomains.Contains(subDomain)
+                   ? "exec LoadDanhMucLoHangBaoCao @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh, @ID_NguoiDung"
+                   : "exec LoadDanhMucLoHangBaoCao @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh";
+                List<BCDM_LoHangDTO> listTon = db.Database.SqlQuery<BCDM_LoHangDTO>(query, paramlist.ToArray()).ToList();
+              
                 // NgayLapHoaDon
                 if (dayStart != null && dayEnd != null)
                 {
@@ -1676,7 +1682,7 @@ namespace libDM_HangHoa
             }
         }
 
-        public List<BCDM_LoHangDTO> XuatFileDMLoHang(string maHoaDon, int tonkho, string idnhomhang, Guid iddonvi, string listthuoctinh, DateTime? dayStart, DateTime? dayEnd)
+        public List<BCDM_LoHangDTO> XuatFileDMLoHang(string maHoaDon, int tonkho, string idnhomhang, Guid iddonvi, string listthuoctinh, DateTime? dayStart, DateTime? dayEnd, Guid id_nguoidung)
         {
             if (db != null)
             {
@@ -1718,8 +1724,14 @@ namespace libDM_HangHoa
                 paramlist.Add(new SqlParameter("ListID_NhomHang", lstIDNHH.Replace("%", "")));
                 paramlist.Add(new SqlParameter("ID_ChiNhanh", ID_ChiNhanh));
                 paramlist.Add(new SqlParameter("List_ThuocTinh", listthuoctinh));
-                List<BCDM_LoHangDTO> listTon = db.Database.SqlQuery<BCDM_LoHangDTO>("exec LoadDanhMucLoHangBaoCao @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh", paramlist.ToArray()).ToList();
-
+                paramlist.Add(new SqlParameter("ID_NguoiDung", id_nguoidung));
+                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+                string[] allowedSubDomains = { "hoanghuydongfeng", "0973474985" };
+                string query = allowedSubDomains.Contains(subDomain)
+                   ? "exec LoadDanhMucLoHangBaoCao @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh, @ID_NguoiDung"
+                   : "exec LoadDanhMucLoHangBaoCao @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh";
+                List<BCDM_LoHangDTO> listTon = db.Database.SqlQuery<BCDM_LoHangDTO>(query, paramlist.ToArray()).ToList();
+                
                 // NgayLapHoaDon
                 if (dayStart != null && dayEnd != null)
                 {
@@ -1824,9 +1836,17 @@ namespace libDM_HangHoa
             lstParam.Add(new SqlParameter("PageSize", param.PageSize ?? 50));
             lstParam.Add(new SqlParameter("ColumnSort", param.ColumnSort ?? (object)DBNull.Value));
             lstParam.Add(new SqlParameter("SortBy", param.SortBy ?? (object)DBNull.Value));
-            return db.Database.SqlQuery<DMHangHoaDTO>("exec LoadDanhMucHangHoa @IDChiNhanh, @TextSearch, @IDThuocTinhHangs, @IDViTriKhos, " +
+            lstParam.Add(new SqlParameter("ID_NguoiDung", param.ID_NguoiDung != Guid.Empty ? (object)param.ID_NguoiDung : DBNull.Value));
+            var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
+            string[] allowedSubDomains = { "hoanghuydongfeng", "0973474985" };
+            string query = allowedSubDomains.Contains(subDomain)
+               ? "exec LoadDanhMucHangHoa @IDChiNhanh, @TextSearch, @IDThuocTinhHangs, @IDViTriKhos, " +
                 "@TrangThaiKho, @Where ,@CurrentPage, @PageSize," +
-                      "@ColumnSort, @SortBy", lstParam.ToArray()).ToList();
+                      "@ColumnSort, @SortBy"
+               : "exec LoadDanhMucHangHoa @IDChiNhanh, @TextSearch, @IDThuocTinhHangs, @IDViTriKhos, " +
+                "@TrangThaiKho, @Where ,@CurrentPage, @PageSize," +
+                      "@ColumnSort, @SortBy, @ID_NguoiDung";        
+            return db.Database.SqlQuery<DMHangHoaDTO>(query, lstParam.ToArray()).ToList();
         }
 
         public List<DM_HangHoaDTO> GetListHangHoas_WhereNew(int currentPage, int pageSize, string maHoaDon, int tonkho, int kinhdoanh,

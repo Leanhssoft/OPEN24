@@ -3786,6 +3786,7 @@
                         objPrint.NoTruoc = formatNumber(notruoc);
                         objPrint.NoSau = formatNumber(nosau);
                         objPrint.NoSau_BangChu = DocSo(nosau);
+                        objPrint.NgayIn = formatDateTime(new Date());
 
                         let pthuc = '';
                         if (itFirstHD.SumTienMat > 0) {
@@ -4155,7 +4156,7 @@
                 diachiKH = customer.DiaChi;
                 ngaysinhKH = customer.NgaySinh_NgayTLap;
             }
-
+          /*  nosau = customer.NoHienTai;*/
             notruoc = notruoc < 0 ? 0 : notruoc;
         }
         else {
@@ -4169,6 +4170,7 @@
         objPrint.NoTruoc = formatNumber(notruoc);
         objPrint.NoSau = formatNumber(nosau);
         objPrint.NoSau_BangChu = DocSo(nosau);
+        objPrint.NgayIn = formatDateTime(new Date());
         objPrint.ChiPhiNhap = objPrint.TongChiPhi;
         objPrint.GhiChu = objPrint.DienGiai;
         let tc = RoundDecimal(formatNumberToFloat(objPrint.TongCong), 0);

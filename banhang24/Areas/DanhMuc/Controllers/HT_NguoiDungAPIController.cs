@@ -679,6 +679,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         {
                             NoiDungThongBao = item.NoiDungThongBao.ToString(),
                             NgayTao = date,
+                            NgayTaoDT = item.NgayTao,
                             LoaiThongBao = item.LoaiThongBao,
                             DaDoc = item.NguoiDungDaDoc != "" && (item.NguoiDungDaDoc.Contains(param.ID_NguoiDung.ToString()) ? true : false),
                             Image = item.LoaiThongBao == 3 ? "<img src=\"/Content/images/anhhh/gato.png\" height=\"30\"/>" : (item.LoaiThongBao == 1 ? "<img src=\"/Content/images/anhhh/trao.png\" height=\"30\"/>" : "<img src=\"/Content/images/anhhh/hetkho.png\" height=\"30\"/>"),

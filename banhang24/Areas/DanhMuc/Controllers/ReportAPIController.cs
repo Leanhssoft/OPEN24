@@ -4032,27 +4032,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 ClassReportKho reportKho = new ClassReportKho(db);
                 ClassDM_HangHoa classDMHangHoa = new ClassDM_HangHoa(db);
                 List<BaoCaoKho_TonKhoPRC> lst = reportKho.GetBaoCaoKho_TonKhoPRC(param);
-                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
-                string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
-
-                if (arrSubDomain.Contains(subDomain)
-                    && CheckUserPermission("NhomHangHoa_QuyenXemNhom", param.ID_DonVi)
-                    && !CheckRoleIsAdmin()
-                    && (string.IsNullOrEmpty(param.ID_NhomHang.ToString()) || !CheckUserHasAccessToGroup(param.ID_NhomHang.ToString(), param.ID_DonVi)))
-                {
-                    return Json(new
-                    {
-                        data = new JsonResultExampleTr<BaoCaoKho_TonKhoPRC>
-                        {
-                            LstData = new List<BaoCaoKho_TonKhoPRC>(),
-                            Rowcount = 0,
-                            numberPage = 0,
-                            a1 = 0,
-                            a2 = 0,
-                            a3 = 0
-                        }
-                    });
-                }
                 int Rown = lst.Count();
                 double SoLuongTon = lst.Sum(x => x.TonCuoiKy);
                 double SoLuongTonQuyCach = lst.Sum(x => x.TonQuyCach);
@@ -4079,16 +4058,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 db.Database.CommandTimeout = 60 * 60;
                 ClassReportKho reportKho = new ClassReportKho(db);
                 List<BaoCaoKho_TonKho_TongHopPRC> lst = reportKho.GetBaoCaoKho_TonKho_TongHopPRC(param);
-                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
-                string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
-
-                if (arrSubDomain.Contains(subDomain)
-                    && CheckUserPermission("NhomHangHoa_QuyenXemNhom", param.ID_DonVi)
-                    && !CheckRoleIsAdmin()
-                    && (string.IsNullOrEmpty(param.ID_NhomHang.ToString()) || !CheckUserHasAccessToGroup(param.ID_NhomHang.ToString(), param.ID_DonVi)))
-                {
-                    return null;
-                }
                 int Rown = lst.Count();
                 double SoLuongTon = lst.Sum(x => x.SoLuong);
                 double GiaTriTon = lst.Sum(x => x.GiaTri);
@@ -4116,15 +4085,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 Class_officeDocument classOffice = new Class_officeDocument(db);
                 ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
                 List<BaoCaoKho_TonKhoPRC> lst = reportKho.GetBaoCaoKho_TonKhoPRC(param);
-                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
-                string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
-                if (arrSubDomain.Contains(subDomain)
-                   && CheckUserPermission("NhomHangHoa_QuyenXemNhom", param.ID_DonVi)
-                   && !CheckRoleIsAdmin()
-                   && (string.IsNullOrEmpty(param.ID_NhomHang.ToString()) || !CheckUserHasAccessToGroup(param.ID_NhomHang.ToString(), param.ID_DonVi)))
-                {
-                    return null;
-                }
 
                 DataTable excel = classOffice.ToDataTable<BaoCaoKho_TonKhoPRC>(lst);
                 excel.Columns.Remove("TenHangHoa");
@@ -8994,7 +8954,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         TongChiPhi = p.TongChiPhi,
                         LoiNhuan = p.LoiNhuan,
                         GhiChu = p.GhiChu,
-                        TenDonVi = p.TenDonVi
+                        TenDonVi = p.TenDonVi,
+                        SoKhung = p.SoKhung
                     }).ToList();
                     DataTable excel = classOffice.ToDataTable<BaoCaoDoanhThuSuaChuaTongHop_Export>(lst);
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/Template_BaoCaoDoanhThuSuaChuaTongHop.xlsx");
@@ -9094,7 +9055,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         LoiNhuan = p.LoiNhuan,
                         GhiChu = p.GhiChu,
                         TenDonVi = p.TenDonVi,
-                        TenHangHoaThayThe = p.TenHangHoaThayThe
+                        TenHangHoaThayThe = p.TenHangHoaThayThe,
+                        SoKhung = p.SoKhung
                     }).ToList();
                     DataTable excel = classOffice.ToDataTable<BaoCaoDoanhThuSuaChuaChiTiet_Export>(lst);
                     string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Gara/Template_BaoCaoDoanhThuSuaChuaChiTiet.xlsx");

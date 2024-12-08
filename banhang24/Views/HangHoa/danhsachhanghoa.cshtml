@@ -217,6 +217,29 @@
 
                         </aside>
                     </article>
+                    <article class="boxLeft sortTime">
+                        <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
+                            <img src="~/Content/images/icon/nhomkhachhang.png" height="15" /> Nhóm hàng người dùng
+                        </h3>
+
+                        <a class="op-filter-add" data-bind="click: ShowModalAddNhomHHNguoidung"
+                           title="Thêm nhóm khách">
+                            <i class="fa fa-plus" style="font-size:15px; color: black"></i>
+                        </a>
+
+                        <aside class="op-filter-container">
+    
+                            <div class="input-group">
+                                <select class="form-control" id="ddlNhom" data-bind="options: GroupsHH,
+     optionsText: 'TenNhomHangHoa', optionsValue: 'ID_NhomHangHoa', optionsCaption: 'Chọn', value: selectNhomHH"></select>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default" data-bind="click: editNhomHHND, enable: selectNhomHH">
+                                        <span class="fa fa-pencil-square-o"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </aside>
+                    </article>
                     <article class="boxLeft">
                         <h3 class="op-filter-title" onclick="toggleSubFilter(this)">
                             <i class="fas fa-project-diagram"></i> Loại hàng
@@ -583,7 +606,7 @@
                                 <a href="javascript:void(0)" data-bind="click: showChuyenNhomhang" data-toggle="modal">
                                     <i class="fa fa-external-link-square"></i> Chuyển nhóm hàng
                                 </a>
-                            </li> 
+                            </li>
                             <li data-bind="visible: $root.role_UpdateProduct(), click: $root.ChuyenHangHoa_ToDichVu">
                                 <a href="javascript:void(0)" data-toggle="modal">
                                     <i class="fa fa-external-link-square"></i> Chuyển hàng hóa --> dịch vụ
@@ -1512,7 +1535,7 @@
                                                                                                 <div class="group-p1">
                                                                                                     <a data-bind="text: Text"></a>
                                                                                                     @*<span class="pull-right"
-                                                                                data-bind="visible: LoaiBaoDuong ==  $parent.LoaiBaoDuong"></span>*@
+                                                                                                        data-bind="visible: LoaiBaoDuong ==  $parent.LoaiBaoDuong"></span>*@
                                                                                                 </div>
                                                                                             </li>
                                                                                         </ul>
@@ -2207,7 +2230,7 @@
                                                                                 <div class="group-p1">
                                                                                     <a data-bind="text: Text"></a>
                                                                                     @*<span class="pull-right"
-                                                                data-bind="visible: LoaiBaoDuong ==  $parent.LoaiBaoDuong"></span>*@
+                                                                                        data-bind="visible: LoaiBaoDuong ==  $parent.LoaiBaoDuong"></span>*@
                                                                                 </div>
                                                                             </li>
                                                                         </ul>
@@ -3469,6 +3492,7 @@
 @Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiHangXe.cshtml")
 @Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiLoaiXe.cshtml")
 @Html.Partial("~/Views/Gara/QuanLySuaChua/_ThemMoiMauXe.cshtml")
+@Html.Partial("~/Views/HangHoa/_themnhomHHNguoidung.cshtml")
 
 <script src="~/Scripts/Components/NhanVien_KhachHang.js"></script>
 <script src="~/Scripts/Components/Input.js"></script>

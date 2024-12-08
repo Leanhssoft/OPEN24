@@ -362,6 +362,7 @@ var dataMauIn = function () {
     self.ChiPhiNhap = ko.observable('40,000');
     self.NoSau = ko.observable('100,000');
     self.NoSau_BangChu = ko.observable('Một trăm nghìn đồng');
+    self.NgayIn = ko.observable('Thứ sáu, ngày 13 tháng 11 năm 2024 lúc 13:50');
     self.NoTruoc = ko.observable('100,000');
     self.BH_NoSau = ko.observable('5,000,000');
     self.BH_NoTruoc = ko.observable('3,000,000');

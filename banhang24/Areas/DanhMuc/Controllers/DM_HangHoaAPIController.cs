@@ -4260,18 +4260,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     var whereColumn = classDMHangHoa.SearchColumn(param.ListSearchColumn, string.Empty, ref param);
                     param.WhereSql = whereColumn;
                     List<DMHangHoaDTO> data = classDMHangHoa.LoadDanhMucHangHoa(param);
-                    var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
-                    if (new[] { "hoanghuydongfeng", "0973474985" }.Contains(subDomain) && param.hasGroupPermission && !CheckRoleIsAdmin() && param.AllowedGroupIds != null)
-                    {
-                        var allAllowedGroupIds = new List<Guid?>(param.AllowedGroupIds);
-                        foreach (var groupId in param.AllowedGroupIds)
-                        {
-                            var childGroupIds = classDMHangHoa.GetChildGroupIds(groupId);
-                            allAllowedGroupIds.AddRange(childGroupIds.Select(id => (Guid?)id));
-                        }
-                        data = data.Where(x => allAllowedGroupIds.Contains(x.ID_NhomHangHoa)).ToList();
-                    }
-
                     List<DM_HangHoa_Excel> lst = data.Select(x => new DM_HangHoa_Excel
                     {
                         MaHangHoa = x.MaHangHoa,
@@ -4369,7 +4357,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
         }
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public HttpResponseMessage ExportExel_DMLoHang(string maHoaDon, int tonkho, string idnhomhang, string columnsHide, Guid iddonvi, string listthuoctinh, DateTime? dayStart, DateTime? dayEnd, string time)
+        public HttpResponseMessage ExportExel_DMLoHang(string maHoaDon, int tonkho, string idnhomhang, string columnsHide, Guid iddonvi, string listthuoctinh, DateTime? dayStart, DateTime? dayEnd, string time, Guid id_nguoidung)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
@@ -4378,16 +4366,8 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 Class_officeDocument _classOFDCM = new Class_officeDocument(db);
                 ClassAsposeExportExcel classAposeCell = new ClassAsposeExportExcel();
 
-                List<BCDM_LoHangDTO> lstAllHHs = _classDMHH.XuatFileDMLoHang(maHoaDon, tonkho, idnhomhang, iddonvi, listthuoctinh, dayStart, dayEnd);
+                List<BCDM_LoHangDTO> lstAllHHs = _classDMHH.XuatFileDMLoHang(maHoaDon, tonkho, idnhomhang, iddonvi, listthuoctinh, dayStart, dayEnd, id_nguoidung);
                 List<DM_LoHang_Excel> lst = new List<DM_LoHang_Excel>();
-                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
-                string[] allowedSubDomains = { "hoanghuydongfeng", "0973474985" };
-
-                if (allowedSubDomains.Contains(subDomain) && !CheckRoleIsAdmin() && CheckUserPermission("NhomHangHoa_QuyenXemNhom", iddonvi))
-                {
-                    if (string.IsNullOrEmpty(idnhomhang) || !CheckUserHasAccessToGroup(idnhomhang, iddonvi))
-                        return null;
-                }
 
                 foreach (var item in lstAllHHs)
                 {
@@ -4473,7 +4453,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
             return Json(new { keycolumn = ListComlumnSearchHangHoa.ToList(), compareFile = commonEnumHellper.ListCompare.ToList() });
         }
 
-        public IHttpActionResult GetListDMLoHang(int currentPage, int pageSize, string maHoaDon, int tonkho, string idnhomhang, Guid iddonvi, string listthuoctinh, DateTime? dayStart, DateTime? dayEnd, int checkngay)
+        public IHttpActionResult GetListDMLoHang(int currentPage, int pageSize, string maHoaDon, int tonkho, string idnhomhang, Guid iddonvi, string listthuoctinh, DateTime? dayStart, DateTime? dayEnd, int checkngay, Guid id_nguoidung)
         {
             using (SsoftvnContext db = SystemDBContext.GetDBContext())
             {
@@ -4481,19 +4461,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 int total = 0;
                 int pagecount = 0;
                 List<BCDM_LoHangDTO> lsrReturns = new List<BCDM_LoHangDTO>();
-                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
-                bool hasViewLoHang = CheckUserPermission("ThaoTac_XemLoHang", iddonvi);
-                var isAdmin = CheckRoleIsAdmin();
-                bool hasGroupPermission = CheckUserPermission("NhomHangHoa_QuyenXemNhom", iddonvi);
-                string[] allowedSubDomains = { "hoanghuydongfeng", "0973474985" };
-                if (allowedSubDomains.Contains(subDomain) && !isAdmin && hasGroupPermission)
-                {
-                    if (string.IsNullOrEmpty(idnhomhang) || !CheckUserHasAccessToGroup(idnhomhang, iddonvi))
-                    {
-                        return Json(new { data = new JsonResultExampleDM_Lo { lstHH = null }, TotalRecord = 0, PageCount = 0 });
-                    }
-                }
-                List<BCDM_LoHangDTO> lstAllHHs = _classDMHH.GetlistDM_LoHang(currentPage, pageSize, maHoaDon, tonkho, idnhomhang, iddonvi, listthuoctinh, dayStart, dayEnd, ref total, ref pagecount, checkngay);
+                List<BCDM_LoHangDTO> lstAllHHs = _classDMHH.GetlistDM_LoHang(currentPage, pageSize, maHoaDon, tonkho, idnhomhang, iddonvi, listthuoctinh, dayStart, dayEnd, ref total, ref pagecount, checkngay, id_nguoidung);
 
                 foreach (BCDM_LoHangDTO item in lstAllHHs)
                 {
@@ -4507,7 +4475,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             ID_LoHang = item.ID_LoHang,
                             TenHangHoa = item.TenHangHoa,
                             MaHangHoa = item.MaHangHoa,
-                            MaLoHang = (hasViewLoHang && !isAdmin) ? "" : item.MaLoHang,
+                            MaLoHang =  item.MaLoHang,
                             NhomHangHoa = item.NhomHangHoa,
                             GiaBan = item.GiaBan,
                             GiaVon = item.GiaVon,
@@ -4586,19 +4554,9 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     ClassDM_HangHoa classDMHangHoa = new ClassDM_HangHoa(db);
                     classDonViQuiDoi _classDVQD = new classDonViQuiDoi(db);
-                    var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
-                    string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
                     var whereColumn = classDMHangHoa.SearchColumn(param.ListSearchColumn, string.Empty, ref param);
                     param.WhereSql = whereColumn;
-                    //param.PageSize = (arrSubDomain.Contains(subDomain)) ? 0 : 10;
-                    List<DMHangHoaDTO> data = classDMHangHoa.LoadDanhMucHangHoa(param);
-                    double? totalStockAllowedGroups = data.Sum(x => x.TonKho);
-                    if (arrSubDomain.Contains(subDomain) && param.hasGroupPermission && !CheckRoleIsAdmin() && param.AllowedGroupIds != null)
-                    {
-                        var allAllowedGroupIds = param.AllowedGroupIds.Concat(param.AllowedGroupIds.SelectMany(groupId => classDMHangHoa.GetChildGroupIds(groupId).Select(id => (Guid?)id))).ToList();
-                        data = data.Where(x => allAllowedGroupIds.Contains(x.ID_NhomHangHoa)).ToList();
-                        totalStockAllowedGroups = data.Sum(x => x.TonKho);
-                    }
+                    List<DMHangHoaDTO> data = classDMHangHoa.LoadDanhMucHangHoa(param);                   
 
                     List<DMHangHoaDTO> lst = data.Select(x => new DMHangHoaDTO
                     {
@@ -4645,7 +4603,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         TotalRow = x.TotalRow,
                         TotalPage = x.TotalPage,
                         SumTonKho = x.SumTonKho,
-                        SumTonKhoNhomHang = totalStockAllowedGroups,
                         DonViTinh = _classDVQD.Gets(ct => ct.ID_HangHoa == x.ID && ct.Xoa != true).Select(o => new DonViTinh
                         {
                             ID_DonViQuiDoi = o.ID,

@@ -41,8 +41,7 @@ namespace Model
         public List<string> ListThuocTinh { get; set; }
         public List<string> ListViTri { get; set; }
         public List<ColumSearch> ListSearchColumn { get; set; }
-        public bool hasGroupPermission { get; set; }
-        public List<Guid?> AllowedGroupIds { get; set; }
+        public Guid ID_NguoiDung { get; set; }
     }
 
     public class DMHangHoaDTO

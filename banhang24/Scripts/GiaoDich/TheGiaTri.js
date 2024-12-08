@@ -1441,6 +1441,7 @@
         hd.PhaiThanhToan = formatNumber(hd.PhaiThanhToan);
         hd.DaThanhToan = formatNumber(hd.KhachDaTra);
         hd.DienGiai = hd.GhiChu;
+        hd.NgayIn = formatDateTime(new Date());
         hd.TenCuaHang = $('#hd_TenDonVi').val();
         hd.TienBangChu = DocSo(hd.KhachDaTra);
         if (self.CongTy().length > 0) {

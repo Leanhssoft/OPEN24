@@ -78,8 +78,6 @@ var LoHangViewModel = function () {
     self.filter = ko.observable();
     self.filterNgayLapHD = ko.observable("0");
     self.filterNgayLapHD_Input = ko.observable(); // ngày cụ thể
-    const arrSubDomain_2 = ["hoanghuydongfeng", "0973474985"];
-    self.isHoangHuyDongFeng = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain_2) > -1;
 
     self.HangHoa_XemGiaVon = ko.observable();
     self.HangHoa_GiaBan = ko.observable();
@@ -458,26 +456,10 @@ var LoHangViewModel = function () {
                 columnHide = self.ColumnsExcel()[i] + "_" + columnHide;
             }
         }
-        var nhomhang = self.arrIDNhomHang();
-        if (self.isHoangHuyDongFeng) {
-            var lc_CTQuyen = JSON.parse(localStorage.getItem('lc_CTQuyen'));
-            var hasGroupPermission = $.inArray('NhomHangHoa_QuyenXemNhom', lc_CTQuyen) > -1;
-            const savedRoleGroups = JSON.parse(localStorage.getItem('role_ViewGroups'));
-            var isAdmin = JSON.parse(localStorage.getItem('aid'));
-
-            if (!isAdmin && hasGroupPermission) {
-                if (nhomhang && nhomhang.length > 0) {
-                    nhomhang = nhomhang.join(',');
-                } else {
-                    // dùng danh sách nhóm hàng được phép
-                    const allowedGroupIDs = savedRoleGroups.filter(q => q.quyenTonTai).map(q => q.maNhom);
-                    nhomhang = allowedGroupIDs.join(',');
-                }
-            }
-        }     
+       
         let exportOK = false;
-        exportOK = await commonStatisJs.DowloadFile_fromBrower(DMHangHoaUri + 'ExportExel_DMLoHang?idnhomhang=' + nhomhang +
-            '&maHoaDon=' + txtmMaHDon_Excel + '&tonkho=' + txtTonKho_Excel + '&columnsHide=' + columnHide + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart_Excel + '&dayEnd=' + dayEnd_Excel + '&time=' + self.TodayBC(), 'GET', null, "DanhMucLoHang.xlsx");
+        exportOK = await commonStatisJs.DowloadFile_fromBrower(DMHangHoaUri + 'ExportExel_DMLoHang?idnhomhang=' + self.arrIDNhomHang() +
+            '&maHoaDon=' + txtmMaHDon_Excel + '&tonkho=' + txtTonKho_Excel + '&columnsHide=' + columnHide + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart_Excel + '&dayEnd=' + dayEnd_Excel + '&time=' + self.TodayBC() + '&id_nguoidung=' + _IDDoiTuong, 'GET', null, "DanhMucLoHang.xlsx");
         if (exportOK) {
             commonStatisJs.ShowMessageSuccess("Xuất file thành công.");
             let objDiary = {
@@ -535,22 +517,7 @@ var LoHangViewModel = function () {
         $('.prev-tr-hide .check-group input').each(function () {
             $(this).prop('checked', false);
         });
-        var lc_CTQuyen = JSON.parse(localStorage.getItem('lc_CTQuyen'));
-        var nhomhang = self.arrIDNhomHang();
-        if (self.isHoangHuyDongFeng) {
-            var hasGroupPermission = $.inArray('NhomHangHoa_QuyenXemNhom', lc_CTQuyen) > -1;
-            const savedRoleGroups = JSON.parse(localStorage.getItem('role_ViewGroups'));        
-            var isAdmin = JSON.parse(localStorage.getItem('aid'));
-            if (!isAdmin && hasGroupPermission) {
-                if (nhomhang && nhomhang.length > 0) {
-                    nhomhang = nhomhang.join(',');
-                } else {
-                    // dùng danh sách nhóm hàng được phép
-                    const allowedGroupIDs = savedRoleGroups.filter(q => q.quyenTonTai).map(q => q.maNhom);
-                    nhomhang = allowedGroupIDs.join(',');
-                }
-            }
-        }      
+        var lc_CTQuyen = JSON.parse(localStorage.getItem('lc_CTQuyen'));     
         if ($.inArray('LoHang_XuatFile', lc_CTQuyen) > -1) {
             $('.xuatfilelohang').show();
         }
@@ -612,8 +579,8 @@ var LoHangViewModel = function () {
                     dayEnd_Excel = dayEnd;
                     //check
                     $('.table-HH').gridLoader();                  
-                    var requestUrl = DMHangHoaUri + 'GetListDMLoHang?currentPage=' + self.currentPage() + '&pageSize=' + self.pageSize() + '&idnhomhang=' + nhomhang +
-                        '&maHoaDon=' + txtMaHDon + '&tonkho=' + tonkho + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart + '&dayEnd=' + dayEnd + '&checkngay=' + check;
+                    var requestUrl = DMHangHoaUri + 'GetListDMLoHang?currentPage=' + self.currentPage() + '&pageSize=' + self.pageSize() + '&idnhomhang=' + self.arrIDNhomHang() +
+                        '&maHoaDon=' + txtMaHDon + '&tonkho=' + tonkho + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart + '&dayEnd=' + dayEnd + '&checkngay=' + check + '&id_nguoidung=' + _IDDoiTuong;
 
                     ajaxHelper(requestUrl,
                         'GET').done(function (data1) {
@@ -652,8 +619,8 @@ var LoHangViewModel = function () {
                     });
 
                     $('.table-HH').gridLoader();
-                    ajaxHelper(DMHangHoaUri + 'GetListDMLoHang?currentPage=' + self.currentPage() + '&pageSize=' + self.pageSize() + '&idnhomhang=' + nhomhang +
-                        '&maHoaDon=' + txtMaHDon + '&tonkho=' + tonkho + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart + '&dayEnd=' + dayEnd + '&checkngay=' + check,
+                    ajaxHelper(DMHangHoaUri + 'GetListDMLoHang?currentPage=' + self.currentPage() + '&pageSize=' + self.pageSize() + '&idnhomhang=' + self.arrIDNhomHang() +
+                        '&maHoaDon=' + txtMaHDon + '&tonkho=' + tonkho + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart + '&dayEnd=' + dayEnd + '&checkngay=' + check + '&id_nguoidung=' + _IDDoiTuong,
                         'GET').done(function (data1) {
                             $('.table-HH').gridLoader({ show: false });
 
@@ -697,8 +664,8 @@ var LoHangViewModel = function () {
                         dayStart = moment(dayStart).add('days', 1).format('YYYY-MM-DD');
                         dayEnd = moment(dayEnd).add('days', 1).format('YYYY-MM-DD');
 
-                        ajaxHelper(DMHangHoaUri + 'GetListDMLoHang?currentPage=' + self.currentPage() + '&pageSize=' + self.pageSize() + '&idnhomhang=' + nhomhang +
-                            '&maHoaDon=' + txtMaHDon + '&tonkho=' + tonkho + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart + '&dayEnd=' + dayEnd + '&checkngay=' + check,
+                        ajaxHelper(DMHangHoaUri + 'GetListDMLoHang?currentPage=' + self.currentPage() + '&pageSize=' + self.pageSize() + '&idnhomhang=' + self.arrIDNhomHang() +
+                            '&maHoaDon=' + txtMaHDon + '&tonkho=' + tonkho + '&iddonvi=' + _IDchinhanh + '&listthuoctinh=' + self.ListThuocTinh() + '&dayStart=' + dayStart + '&dayEnd=' + dayEnd + '&checkngay=' + check + '&id_nguoidung=' + _IDDoiTuong,
                             'GET').done(function (data1) {
                                 $('.table-HH').gridLoader({ show: false });
                                 self.DMLoHangs(data1.data.lstHH);
