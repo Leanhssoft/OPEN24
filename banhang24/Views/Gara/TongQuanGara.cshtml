@@ -59,6 +59,10 @@
         .calendar-wrapper[data-theme='blue'] .calendar-date-holder .calendar-dates .date.current a {
             color: var(--color-primary);
         }
+
+        .col-lg-10 p {
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -568,22 +572,59 @@
                         </div>
                     </div>
                     <div class="gara-tongquan-daily">
-                        <label class="font-14">Hoạt động gần đây</label>
                         <div>
-                            <ul>
-                                <li v-for="itemNhatKy in NhatKyHoatDong" class="gara-tongquan-daily__item">
-                                    <div style=" flex-direction:row; align-items:center; " class="flex flex-between">
-                                        <span style=" margin:5px 0" class="bold font-14">{{commonStatisJs.FormatNumber3Digit(itemNhatKy.ThanhTien)}} VNĐ</span>
-                                        <div class="font-10 flex  flex-center font-main-color" style="align-items:center">
-                                            <i class="material-icons font-14" style="margin-right:5px">timer</i>
-                                            {{moment(itemNhatKy.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')}}
+                            <div class="flex flex-between" id="toggleTitle" style="cursor: pointer; align-items: center;">
+                                <label class="font-14">Hoạt động gần đây</label>
+                                <i class="material-icons font-20"
+                                   style="margin-left: 8px;"
+                                   v-on:click="toggleContent">
+                                    {{ isExpanded ? 'expand_less' : 'expand_more' }}
+                                </i>
+
+                            </div>
+                            <div id="content" v-if="isExpanded">
+                                <ul>
+                                    <li v-for="itemNhatKy in NhatKyHoatDong" class="gara-tongquan-daily__item">
+                                        <div style=" flex-direction:row; align-items:center; " class="flex flex-between">
+                                            <span style=" margin:5px 0" class="bold font-14">{{commonStatisJs.FormatNumber3Digit(itemNhatKy.ThanhTien)}} VNĐ</span>
+                                            <div class="font-10 flex  flex-center font-main-color" style="align-items:center">
+                                                <i class="material-icons font-14" style="margin-right:5px">timer</i>
+                                                {{moment(itemNhatKy.NgayLapHoaDon).format('DD/MM/YYYY HH:mm')}}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div>
-                                        <span>{{itemNhatKy.TenNhanVien}} vừa {{itemNhatKy.TenLoaiChungTu}}  </span>
-                                    </div>
-                                </li>
-                            </ul>
+                                        <div>
+                                            <span>{{itemNhatKy.TenNhanVien}} vừa {{itemNhatKy.TenLoaiChungTu}}  </span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <hr style="margin-top: 0px; margin-bottom: 5px; border-top: 1px solid #cccccc;" />
+                        <div v-if="$root.is097">
+                            <div class="flex flex-between" id="toggleTitle" style="cursor: pointer; align-items: center;">
+                                <label class="font-14">Thông báo gần đây</label>
+                                <i class="material-icons font-20"
+                                   style="margin-left: 8px;"
+                                   v-on:click="toggleContentTB">
+                                    {{ isExpandedTB ? 'expand_less' : 'expand_more' }}
+                                </i>
+
+                            </div>
+                            <div id="contentTB" v-if="isExpandedTB">
+                                <ul>
+                                    <li v-for="(thongBao, index) in thongBaoList" :key="index" class="gara-tongquan-daily__item">
+                                        <div style="flex-direction:row; align-items:center; " class="flex flex-between">
+                                            <div class="col-lg-2" style="display: flex; align-items: center; justify-content: center;">
+                                                <i class="fal fa-cart-plus fa-2x"></i>
+                                            </div>
+                                            <div class="col-lg-10">
+                                                <div v-html="getSanitizedHtml(thongBao.NoiDungThongBao)"></div>
+                                                <span style="line-height:18px" class="date-notifi">{{ thongBao.NgayTao }}</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -627,6 +668,10 @@
                     XeXuatXuong3Ngay: 0,
                 },
                 NhatKyHoatDong: [],
+                isExpanded: true,
+                isExpandedTB: true,
+                thongBaoList: VHeader.ListThongBao.data.filter(thongBaoTb => thongBaoTb.LoaiThongBao === 0 &&
+                    thongBaoTb.NgayTaoDT.startsWith(new Date().toISOString().split('T')[0])),//INS.120624
                 TongQuanTonKho:
                 {
                     DateFrom: moment(new Date()).format('YYYY-MM-DD'),
@@ -720,6 +765,17 @@
                 MinYear: 2017
             },
             methods: {
+                //INS.120624
+                toggleContent() {
+                    this.isExpanded = !this.isExpanded; // Đổi trạng thái ẩn/hiện hoạt động
+                },
+                toggleContentTB() {
+                    this.isExpandedTB = !this.isExpandedTB; // Đổi trạng thái ẩn/hiện thông báo
+                },
+                getSanitizedHtml(html) {
+                    return html; // Hoặc sử dụng DOMPurify nếu cần làm sạch HTML
+                },
+                //INS.120624
                 Gara_GetListPhieuTiepNhan: function () {
                     let self = this;
                     let myData = {};
@@ -936,6 +992,7 @@
                         SortBy: 'DESC',
                         ListThuocTinh: '',
                         ListViTri: '',
+                        ID_NguoiDung: $('.idnguoidung').text(),
 
                     };
                     ajaxHelper(self.urlApi.DMHangHoaUri + 'LoadDanhMuchangHoa',
@@ -1194,6 +1251,7 @@
                 self.isLeeAuto = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1;
                 const arrSubDomain_v2 = ["hoanghuydongfeng", "0973474985"];
                 self.isHoangHuyDongFeng = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain_v2) > -1;
+                self.is097 = $.inArray(VHeader.SubDomain.toLowerCase(),["0973474986"]) > -1;
                 self.LoadChiNhanh();
                 self.GetListSuKien();
                 self.getDiary();
@@ -1201,6 +1259,7 @@
                 self.InitListYear();
                 self.ListMonth.find(p => p.Value === self.BieuDo.Thang).Checked = true;
                 self.ListYear.find(p => p.Value === self.BieuDo.Nam).Checked = true;
+
             },
             watch: {
                 dateSelected: function () {
@@ -1282,6 +1341,9 @@
         var item2 = [3, 17, 12, 13, 19, 43, 26, 50, 18, 36, 29, 23, 5, 44, 21,];
         var bieudodoanhthuthuan = document.getElementById('ChartMixed1');
         var bieudothucthu = document.getElementById('ChartMixed2');
+        var duoiDinhMucTon = document.getElementById('myChartHHMucTon');
+        var tongquanTonKho = document.getElementById('myChartTongQuanTonKho');
+
         var dangSua = vGaraTongQuan.dataTrangThaiXuong.DangSua;
         var choXuatXuong = vGaraTongQuan.dataTrangThaiXuong.ChoXuatXuong;
         var data = {
@@ -1488,7 +1550,7 @@
             }
         });
 
-        let duoiDinhMucTon = document.getElementById('myChartHHMucTon').getContext('2d');
+
         var myChartDuoiDM = new Chart(duoiDinhMucTon, {
             type: 'doughnut',
             data: {
@@ -1513,7 +1575,6 @@
                 tooltips: {
                     callbacks: {
                         label: function (tooltipItem, data) {
-                            console.log('Tooltip context:', tooltipItem);
                             var label = data.labels[tooltipItem.index] || '';
                             var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
                             return label + ': ' + commonStatisJs.FormatNumber3Digit(value);
@@ -1526,7 +1587,6 @@
             }
         });
 
-        let tongquanTonKho = document.getElementById('myChartTongQuanTonKho').getContext('2d');
         var myChartTongQuanTonKho = new Chart(tongquanTonKho, {
             type: 'bar',
             data: {

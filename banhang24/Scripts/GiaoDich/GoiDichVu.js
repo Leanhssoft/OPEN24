@@ -2627,6 +2627,7 @@
         objPrint.ChiPhiNhap = objPrint.TongChiPhi;
         objPrint.GhiChu = objPrint.DienGiai;
         objPrint.TienBangChu = DocSo(formatNumberToInt(objPrint.TongCong));
+        objPrint.NgayIn = formatDateTime(new Date());
 
         if (self.CongTy().length > 0) {
             objPrint.LogoCuaHang = Open24FileManager.hostUrl + self.CongTy()[0].DiaChiNganHang;

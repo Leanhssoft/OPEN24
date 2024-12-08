@@ -2593,6 +2593,7 @@
         hd.TongSoLuongHang = self.TongSLuong();
         hd.TienMat = formatNumber3Digit(hd.TienMat, 2);
         hd.TienKhachThieu = formatNumber3Digit(hd.ConNo, 2);
+        hd.NgayIn = formatDateTime(new Date());
 
         let cphiVC_benKhac = 0;
         if (!commonStatisJs.CheckNull(hdDB.ID_NhaCungCap) && hdDB.ID_NhaCungCap !== hdDB.ID_DoiTuong) {

@@ -335,14 +335,10 @@ var ViewModel = function () {
     self.KiemKho_Export = ko.observable(false);
     self.KiemKho_Copy = ko.observable(false);
     //nhomhanghoa
-    self.role_PermisViewGroups = ko.observable(false);
-    self.role_ViewGroups = ko.observableArray([]);
     self.role_XemLoHang = ko.observable(false);
     self.isAdmin = JSON.parse(localStorage.getItem('aid'));
     const arrSubDomain = ["hoanghuydongfeng", "haiaugara", "0973474985"];
     self.isHoangHuyDongFengnd = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain) > -1;
-    const arrSubDomain_2 = ["hoanghuydongfeng", "0973474985"];
-    self.isHoangHuyDongFeng = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain_2) > -1;
 
     self.Role_AddCar = ko.observable(false);
     self.Role_UpdateCar = ko.observable(false);
@@ -388,19 +384,6 @@ var ViewModel = function () {
             }
             localStorage.setItem('lc_CTQuyen', JSON.stringify(arrQuyen));
 
-            if (self.isHoangHuyDongFeng) {
-                self.role_PermisViewGroups(CheckQuyenExist('NhomHangHoa_QuyenXemNhom'));
-                self.NhomHangHoas().forEach(nhom => {
-                    const maQuyen = `NhomHangHoa_XemNhom_${nhom.TenNhomHangHoa_KhongDau}`;
-                    const quyenTonTai = CheckQuyenExist(maQuyen);
-                    self.role_ViewGroups.push({
-                        maNhom: nhom.ID,
-                        tenQuyen: maQuyen,
-                        quyenTonTai: quyenTonTai
-                    });
-                });
-                localStorage.setItem('role_ViewGroups', JSON.stringify(self.role_ViewGroups()));
-            }
         });
         ajaxHelper('/api/DanhMuc/HT_ThietLapAPI/' + 'GetCauHinhHeThong/' + _IDchinhanh, 'GET').done(function (data) {
             localStorage.setItem('lc_CTThietLap', JSON.stringify(data));
@@ -430,6 +413,47 @@ var ViewModel = function () {
         });
     };
 
+    self.GroupsHH = ko.observableArray();
+    self.selectNhomHH = ko.observable();
+
+    function GetAllGroupsOfProduct() {
+        ajaxHelper('/api/DanhMuc/DM_NhomHangHoaAPI/GetHTQuyenNguoiDungNhomHangHoa', 'GET')
+            .done(function (data) {
+                self.GroupsHH(data);
+            });
+    }
+    self.editNhomHHND = function () {
+        var nhom = $.grep(self.GroupsHH(), function (x) {
+            return x.ID_NhomHangHoa === self.selectNhomHH();
+        });
+        if (nhom.length > 0) {
+            vmThemMoiNhomHHNguoiDung.showModalUpdate(nhom[0]);    
+        }
+    }
+    function getAllUser() {
+        ajaxHelper('/api/DanhMuc/HT_NguoiDungAPI/' + 'GetListNguoiDung_where?currentPage=0'
+            + '&pageSize=10' + '&idnhomnguoidung=undefined' +
+            '&maHoaDon=' + '&trangthai=1',
+            'GET').done(function (data) {
+                vmThemMoiNhomHHNguoiDung.listData.NhomNguoiDungs = data;
+            });
+    }
+    $('#ThemNhomHHNguoidung').on('hidden.bs.modal', function () {
+        var saveOK = vmThemMoiNhomHHNguoiDung.saveOK;
+        var typeUpdate = vmThemMoiNhomHHNguoiDung.typeUpdate;
+        var nhom = vmThemMoiNhomHHNguoiDung.newGroupProduct;
+        if (saveOK) {
+            for (let i = 0; i < self.GroupsHH().length; i++) {
+                if (self.GroupsHH()[i].ID_NhomHangHoa === nhom.ID_NhomHangHoa) {
+                    self.GroupsHH.remove(self.GroupsHH()[i]);
+                    break;
+                }
+            };
+            if (typeUpdate !== 0) {
+                self.GroupsHH.unshift(nhom);
+            }
+        }
+    })
     function getallViTri() {
         ajaxHelper(DMHangHoaUri + "getAllViTri", "GET").done(function (data) {
             self.ArrViTriHH(data);
@@ -7748,7 +7772,7 @@ var ViewModel = function () {
             self.selectIDHH(item.ID);
             if (item.QuanLyTheoLoHang === false) {
                 searchTheKho();
-                if (self.isHoangHuyDongFeng) {
+                if (self.isHoangHuyDongFengnd) {
                     searchTheKhoPTHong();
                 }
             }
@@ -9799,7 +9823,9 @@ var ViewModel = function () {
         self.newHangHoa().HangHoaCungLoaiArr(arrCL);
         self.newHangHoa().HangHoaCungLoaiArr.refresh();
     }
-
+    self.ShowModalAddNhomHHNguoidung = function () {
+        vmThemMoiNhomHHNguoiDung.showModalAdd();
+    }
     function DeQuy(arr) {
         if (arr.length === 0) {
             return [];
@@ -11557,7 +11583,7 @@ var ViewModel = function () {
         };
     }
 
-    function GetParamSearch1() {      
+    function GetParamSearch1() {
         var MaHangLoad = localStorage.getItem('loadMaHang');
         if (MaHangLoad !== null) {
             self.filter(MaHangLoad);
@@ -11690,6 +11716,7 @@ var ViewModel = function () {
             ListThuocTinh: arrThuocTinh,
             ListViTri: arrViTri,
             ListSearchColumn: arrFilter,
+            ID_NguoiDung: _IDNguoiDung,
         };
     }
 
@@ -11702,26 +11729,16 @@ var ViewModel = function () {
 
             $('.table-reponsive').gridLoader();
 
-            var model = GetParamSearch1();          
-            if (self.isHoangHuyDongFeng) {
-                var hasGroupPermission = $.inArray('NhomHangHoa_QuyenXemNhom', lc_CTQuyen) > -1;
-                const savedRoleGroups = JSON.parse(localStorage.getItem('role_ViewGroups'));
-                model.hasGroupPermission = hasGroupPermission;
-                if (model.hasGroupPermission && !self.isAdmin) {
-                    model.allowedGroupIds = savedRoleGroups.filter(q => q.quyenTonTai).map(q => q.maNhom);
-                } else {
-                    model.allowedGroupIds = null;
-                }  
-            }                 
+            var model = GetParamSearch1();
             ajaxHelper(DMHangHoaUri + 'LoadDanhMuchangHoa',
                 'POST', model).done(function (x) {
                     console.log('LoadDanhMuchangHoa', x)
-                    if (x.res && x.dataSoure.length > 0) {                      
+                    if (x.res && x.dataSoure.length > 0) {
                         let first = x.dataSoure[0];
                         self.TotalRecord(first.TotalRow);
                         self.PageCount(first.TotalPage);
-                        self.TongTon(self.isAdmin ? first.SumTonKho : first.SumTonKhoNhomHang);
-                        self.HangHoas( x.dataSoure);
+                        self.TongTon(first.SumTonKho);
+                        self.HangHoas(x.dataSoure);
                     }
                     else {
                         self.TotalRecord(0);
@@ -12060,16 +12077,6 @@ var ViewModel = function () {
     self.ExportDMHHtoExcel = async function () {
         let param = GetParamSearch1();
         var lc_CTQuyen = JSON.parse(localStorage.getItem('lc_CTQuyen'));
-        if (self.isHoangHuyDongFeng) {
-            var hasGroupPermission = $.inArray('NhomHangHoa_QuyenXemNhom', lc_CTQuyen) > -1;
-            const savedRoleGroups = JSON.parse(localStorage.getItem('role_ViewGroups'));
-            param.hasGroupPermission = hasGroupPermission;
-            if (param.hasGroupPermission && !self.isAdmin) {
-                param.allowedGroupIds = savedRoleGroups.filter(q => q.quyenTonTai).map(q => q.maNhom);
-            } else {
-                param.allowedGroupIds = null;
-            }
-        }
         let columnHide = [];
         for (let i = 0; i < self.ColumnsExcel().length; i++) {
             if ($.inArray(self.ColumnsExcel()[i], columnHide) === -1) {
@@ -14594,10 +14601,12 @@ var ViewModel = function () {
         getallThietLap();
         getallThuocTinh();
         getallViTri();
+        GetAllGroupsOfProduct();
         getQuyen_NguoiDung();
         loadQuyenIndex();
         loadMauIn();
         GetListNVien_ByChiNhanh();
+        getAllUser();
     }
     PageLoad();
 

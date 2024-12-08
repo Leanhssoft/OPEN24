@@ -243,7 +243,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, "ID nhóm hàng hóa cần cập nhật không trùng khớp với ID dữ liệu"));
                 }
-                //var maQuyenHienTai = string.Concat("NhomHangHoa_XemNhom_", dM_NhomHangHoa.TenNhomHangHoa_KhongDau);
                 dM_NhomHangHoa.HienThi_BanThe = true;
                 dM_NhomHangHoa.HienThi_Chinh = true;
                 dM_NhomHangHoa.HienThi_Phu = true;
@@ -255,28 +254,135 @@ namespace banhang24.Areas.DanhMuc.Controllers
 
                 string strUpd = _classDMNHH.Update_NhomHangHoa(dM_NhomHangHoa);
                 if (strUpd != null && strUpd != string.Empty && strUpd.Trim() != "")
-                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, strUpd));
-                //// Cập nhật quyền
-                //if (dM_NhomHangHoa.ID_Parent == null && dM_NhomHangHoa.LaNhomHangHoa) 
-                //{
-                //    var maQuyen = string.Concat("NhomHangHoa_XemNhom_", dM_NhomHangHoa.TenNhomHangHoa_KhongDau); 
-                //    var tenQuyen = string.Concat("Xem hàng hóa nhóm ", dM_NhomHangHoa.TenNhomHangHoa); 
-
-                //    var quyenToUpdate = db.HT_Quyen
-                //        .Where(q => q.MaQuyen == maQuyenHienTai)
-                //        .FirstOrDefault();
-
-                //    if (quyenToUpdate != null)
-                //    {
-                //        quyenToUpdate.MaQuyen = maQuyen;
-                //        quyenToUpdate.TenQuyen = tenQuyen;
-                //        db.SaveChanges();
-                //    }
-                //}
+                    return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, strUpd));              
                 else
                     return StatusCode(HttpStatusCode.NoContent);
             }
         }
+
+        [HttpPost, HttpGet]
+        public IHttpActionResult PostHTQuyenNguoiDungNhomHangHoa(HTQuyenNguoiDungNhomHangHoaModel model)
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    var existingUsersInGroup = db.HTQuyen_NguoiDung_NhomHangHoa
+                        .Where(x => x.ID_NhomHang == model.ID_NhomHangHoa)
+                        .ToList();
+
+                    var usersToKeep = existingUsersInGroup
+                        .Where(x => model.lstIDNguoiDung.Contains(x.ID_NguoiDung))
+                        .ToList();
+
+                    var usersToRemove = existingUsersInGroup
+                        .Except(usersToKeep)
+                        .ToList();
+
+
+                    var newUserIds = model.lstIDNguoiDung
+                        .Where(id => !existingUsersInGroup.Any(x => x.ID_NguoiDung == id))
+                        .ToList();
+
+                    db.HTQuyen_NguoiDung_NhomHangHoa.RemoveRange(usersToRemove);
+
+                    foreach (var nguoiDungID in newUserIds)
+                    {
+                        HTQuyen_NguoiDung_NhomHangHoa record = new HTQuyen_NguoiDung_NhomHangHoa
+                        {
+                            ID = Guid.NewGuid(),
+                            ID_NhomHang = model.ID_NhomHangHoa,
+                            ID_NguoiDung = nguoiDungID
+                        };
+
+                        db.HTQuyen_NguoiDung_NhomHangHoa.Add(record);
+                    }
+
+                    db.SaveChanges();
+                }
+
+                return Ok("Cập nhật nhóm hàng hóa thành công.");
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
+
+
+
+        [HttpGet]
+        [Route("GetHTQuyenNguoiDungNhomHangHoa")]
+        public IHttpActionResult GetHTQuyenNguoiDungNhomHangHoa()
+        {
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    var result = db.HTQuyen_NguoiDung_NhomHangHoa
+                        .GroupBy(q => q.ID_NhomHang)
+                        .Select(group => new
+                        {
+                            ID_NhomHangHoa = group.Key,
+                            TenNhomHangHoa = db.DM_NhomHangHoa
+                                .Where(n => n.ID == group.Key)
+                                .Select(n => n.TenNhomHangHoa)
+                                .FirstOrDefault(),
+                            ID_NhanVien = group.Select(q => new
+                            {
+                                ID = q.ID_NguoiDung,
+                                TaiKhoan = db.HT_NguoiDung
+                                    .Where(u => u.ID == q.ID_NguoiDung)
+                                    .Select(u => u.TaiKhoan)
+                                    .FirstOrDefault()
+                            }).ToList()
+                        }).ToList();
+
+                    return Ok(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [System.Web.Http.HttpDelete, HttpGet]
+        [ResponseType(typeof(string))]    
+        public string DeleteNhomHangHoaById(Guid idNhomHang)
+        {
+            if (idNhomHang == Guid.Empty)
+            {
+                return "ID nhóm hàng hóa không hợp lệ.";
+            }
+
+            try
+            {
+                using (SsoftvnContext db = SystemDBContext.GetDBContext())
+                {
+                    var recordsToDelete = db.HTQuyen_NguoiDung_NhomHangHoa
+                        .Where(x => x.ID_NhomHang == idNhomHang)
+                        .ToList();
+
+                    if (!recordsToDelete.Any())
+                    {
+                        return "Not Found";
+                    }
+
+                    db.HTQuyen_NguoiDung_NhomHangHoa.RemoveRange(recordsToDelete);
+                    db.SaveChanges();
+                }
+
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return string.Concat(ex);
+            }
+        }
+
 
         // POST: api/DM_NhomHangHoaAPI
         [ResponseType(typeof(DM_NhomHangHoa))]
@@ -304,29 +410,6 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     TenNhomHangHoa = dM_NhomHangHoa.TenNhomHangHoa,
                     ID_Parent = dM_NhomHangHoa.ID_Parent
                 };
-
-                var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
-                string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
-
-                if (arrSubDomain.Contains(subDomain) && dM_NhomHangHoa.ID_Parent == null && dM_NhomHangHoa.LaNhomHangHoa)
-                {
-                    var maQuyen = $"NhomHangHoa_XemNhom_{dM_NhomHangHoa.TenNhomHangHoa_KhongDau}";
-                    var tenQuyen = $"Xem hàng hóa nhóm {dM_NhomHangHoa.TenNhomHangHoa}";
-                    var quyenCha = "NhomHangHoa";
-                    var newQuyen = new HT_Quyen
-                    {
-                        MaQuyen = maQuyen,
-                        TenQuyen = tenQuyen,
-                        QuyenCha = quyenCha,
-                        DuocSuDung = true,
-                    };
-
-                    string insertResult = _classHTQuyen.Insert(newQuyen);
-                    if (insertResult != "Thêm quyền thành công")
-                    {
-                        return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, insertResult));
-                    }
-                }
 
                 if (strIns != null && strIns != string.Empty && strIns.Trim() != "")
                     return ResponseMessage(Request.CreateResponse(HttpStatusCode.InternalServerError, strIns));
@@ -373,21 +456,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     string[] arrSubDomain = { "hoanghuydongfeng", "0973474985" };
 
                     if (nhh != null)
-                    {
-                        if (arrSubDomain.Contains(subDomain))
-                        {
-                            var maQuyen = $"NhomHangHoa_XemNhom_{nhh.TenNhomHangHoa_KhongDau}";
-                            var quyenToDelete = db.HT_Quyen.Where(q => q.MaQuyen == maQuyen).FirstOrDefault();
-                            if (quyenToDelete != null)
-                            {
-                                string deleteResult = _classHTQuyen.Delete(maQuyen);
-                                if (deleteResult != "Xóa quyền thành công")
-                                {
-                                    return deleteResult;
-                                }
-                            }
-                        }
-
+                    {                      
                         nhh.TrangThai = true;
                         _classDMNHH.Update_NhomHangHoa(nhh);
                         _classDMHH.UpdateHHKhiXoaNhomHH(id, nhh.LaNhomHangHoa);
@@ -399,8 +468,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                                 _classDMNHH.Update_NhomHangHoa(item);
                             }
                         }
-                        db.SaveChanges();
-                        return "Xóa thành công";
+                        return "";
                     }
                     else
                     {
@@ -439,6 +507,11 @@ namespace banhang24.Areas.DanhMuc.Controllers
         public Guid? ID_Parent { get; set; }
         public Guid? ID { get; set; }
         public bool LaNhomHangHoa { get; set; }
+    }
+    public class HTQuyenNguoiDungNhomHangHoaModel
+    {
+        public Guid ID_NhomHangHoa { get; set; }
+        public List<Guid> lstIDNguoiDung { get; set; }
     }
 
     //public class DM_NhomHangHoaSelect

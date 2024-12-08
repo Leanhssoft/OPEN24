@@ -439,6 +439,8 @@ var NewModel_BanHangLe = function () {
     self.roleChangePriceProduct_Invoice = ko.observable(false); // change price of product at Invoice
     self.roleChangeSale_Invoice = ko.observable(false); // change sale of Invoice
     self.roleChangePriceProduct_Order = ko.observable(false);
+    self.roleChangeCKProduct_Order = ko.observable(false);
+    self.roleChangeDiscountProduct = ko.observable(false);
     self.roleChangePriceProduct_LenhBH = ko.observable(false);
     self.roleChangeSale_Order = ko.observable(false);
     self.roleChangePriceProduct_Return = ko.observable(false);
@@ -4413,9 +4415,10 @@ var NewModel_BanHangLe = function () {
         objPrint.PhaiThanhToanBaoHiem = formatNumber3Digit(objHD.PhaiThanhToanBaoHiem, 0);
         objPrint.TongTienHang = formatNumber3Digit(objPrint.TongTienHoaDonMua);
         objPrint.DiemGiaoDich = formatNumber3Digit(objHD.DiemGiaoDich);
-        objPrint.NoTruoc = formatNumber3Digit(notruoc);
-        objPrint.NoSau = formatNumber3Digit(nosau);
-        objPrint.NoSau_BangChu = DocSo(nosau);
+        objPrint.NoTruoc = formatNumber3Digit(nosau);
+        objPrint.NoSau = formatNumber3Digit(nosau + khachthieu);
+        objPrint.NoSau_BangChu = DocSo(nosau + khachthieu);
+        objPrint.NgayIn = formatDateTime(new Date());
         objPrint.BH_TenLienHe = objHD.LienHeBaoHiem;
         objPrint.BH_SDTLienHe = objHD.SoDienThoaiLienHeBaoHiem;
 
@@ -6138,7 +6141,27 @@ var NewModel_BanHangLe = function () {
         }
         return role;
     }
-
+    function GetRoleChangeDiscountProduct(itemCT) {
+        var role = false;
+        let maquyen = '';
+        switch (itemCT) {
+            case 1:
+            case 25:
+                maquyen = 'HoaDon_ThayDoiChietKhau_HangHoa';
+                break;
+            case 3:
+                maquyen = 'DatHang_ThayDoiChietKhau_HangHoa';
+                break;
+            case 19:
+                maquyen = 'GoiDichVu_ThayDoiChietKhau_HangHoa';
+                break;
+        }
+        var role = $.grep(self.Quyen_NguoiDung(), function (x) {
+            return x.MaQuyen === maquyen;
+        });
+        self.roleChangeDiscountProduct(role.length > 0);
+        return role.length > 0;
+    }
     function GetNgaySX_NgayHH(ctDoing) {
         var ngaysx = ctDoing.NgaySanXuat;
         if (!commonStatisJs.CheckNull(ngaysx)) {
@@ -11231,7 +11254,7 @@ var NewModel_BanHangLe = function () {
         }
     }
     self.showDivSale_CTHD = function (item) {
-        var role = GetRoleChangePrice(item.LoaiHoaDon);
+        var role = GetRoleChangeDiscountProduct(item.LoaiHoaDon);
         if (role === false) {
             return false;
         }
@@ -11315,7 +11338,7 @@ var NewModel_BanHangLe = function () {
 
     // chiet khau hanghoa 
     self.ShowDiv_ChietKhauHangHoa = function () {
-        var role = GetRoleChangePrice(self.HoaDons().LoaiHoaDon());
+        var role = GetRoleChangeDiscountProduct(self.HoaDons().LoaiHoaDon());
         if (role === false) {
             return false;
         }
@@ -12100,7 +12123,7 @@ var NewModel_BanHangLe = function () {
             self.InforHDprintf().NhanVienTiepNhan = tn.NhanVienTiepNhan;
             self.InforHDprintf().SoKhung = tn.SoKhung;
             self.InforHDprintf().SoKmRa = tn.SoKmRa;
-            self.InforHDprintf().SoKmVao = tn.SoKmVao;
+            self.InforHDprintf().SoKmVao = self.textSoKmVao();
             self.InforHDprintf().SoMay = tn.SoMay;
             self.InforHDprintf().TenHangXe = tn.TenHangXe;
             self.InforHDprintf().TenMauXe = tn.TenMauXe;
@@ -13610,7 +13633,7 @@ var NewModel_BanHangLe = function () {
         }
     }
     self.showDivSale_CTHD_DoiTra = function (item) {
-        var role = GetRoleChangePrice(item.LoaiHoaDon);
+        var role = GetRoleChangeDiscountProduct(item.LoaiHoaDon);
         if (role === false) {
             return false;
         }
@@ -20565,6 +20588,7 @@ var NewModel_BanHangLe = function () {
         self.roleChangePriceProduct_Invoice(CheckQuyenExist('HoaDon_ThayDoiGia'));
         self.roleChangeSale_Invoice(CheckQuyenExist('HoaDon_GiamGia'));
         self.roleChangePriceProduct_Order(CheckQuyenExist('DatHang_ThayDoiGia'));
+        self.roleChangeCKProduct_Order(CheckQuyenExist('DatHang_ThayDoiChietKhau_HangHoa'));
         self.roleChangePriceProduct_LenhBH(CheckQuyenExist('LenhBaoHanh_ThayDoiGia'));
         self.roleChangeSale_Order(CheckQuyenExist('DatHang_GiamGia'));
         self.roleChangePriceProduct_Return(CheckQuyenExist('TraHang_ThayDoiGia'));

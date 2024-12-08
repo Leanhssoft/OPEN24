@@ -29,6 +29,7 @@ namespace libHT
         public string NgayTao { get; set; }
         public string Image { get; set; }
         public int? LoaiThongBao { get; set; }
+        public DateTime NgayTaoDT { get;set; }
     }
 
     public class GetListThongBao

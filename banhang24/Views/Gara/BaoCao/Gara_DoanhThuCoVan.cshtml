@@ -510,6 +510,9 @@
                                         <td v-if="$root.isHaiAuGara && BaoCaoChiTietHeader.find(p => p.colName === 'colTenHangHoaThayThe').colShow">
                                             {{itemBCChiTiet.TenHangHoaThayThe}}
                                         </td>
+                                        <td v-if="$root.isHoangHuyDongFeng && BaoCaoChiTietHeader.find(p => p.colName === 'colSoKhung').colShow">
+                                            {{itemBCChiTiet.SoKhung}}
+                                        </td>
                                     </tr>
                                 </tbody>
                                 <tfoot v-if="BaoCaoChiTiet.dataAll.length > 0" style="background-color: #d1d2d9;">
@@ -831,7 +834,8 @@
                 NhomHangHoa: [],
                 NhomHangHoaSearch: '',
                 IdNhomHangHoaSelected: '',
-                isHaiAuGara: false
+                isHaiAuGara: false,
+                isHoangHuyDongFeng: false
             },
             methods: {
                 LoadChiNhanh: function () {
@@ -1205,6 +1209,11 @@
                             colName: 'colTenHangHoaThayThe', colText: 'Tên hàng hóa thay thế', colShow: true, index: 24
                         });
                     }
+                    if (this.isHoangHuyDongFeng) {
+                        columns.push({
+                            colName: 'colSoKhung', colText: 'Số Khung', colShow: true, index: 25
+                        });
+                    }
                     return columns;
                 },
                 InitBaoCaoTheoXeHeader: function () {
@@ -1450,6 +1459,7 @@
                 var self = this;
                 const arrSubDomain_2 = ["haiaugara", "0973474985"];
                 this.isHaiAuGara = $.inArray(VHeader.SubDomain.toLowerCase(), arrSubDomain_2) > -1;
+                this.isHoangHuyDongFeng = $.inArray(VHeader.SubDomain.toLowerCase(), ["0973474985", "hoanghuydongfeng"]) > -1;
                 self.LoadChiNhanh();
                 self.LoadNhomHangHoa();
                 if (localStorage.getItem('BaoCaoTongHopHeader') === null) {

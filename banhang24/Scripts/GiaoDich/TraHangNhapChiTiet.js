@@ -2634,7 +2634,7 @@ var TraHangNhapChiTiet = function () {
         hdPrint.TongCong = formatNumber3Digit(objHD.TongThanhToan);
         hdPrint.ChiPhiNhap = 0;
         hdPrint.KhuyeMai_GiamGia = 0;
-
+        hdPrint.NgayIn = formatDateTime(new Date());
         hdPrint.NguoiTaoHD = _userLogin;
         hdPrint.NhanVienBanHang = $('#selectedNV :selected').text();
 

@@ -984,7 +984,7 @@
                     self.saveOK = true;
                     self.newPhieuTiepNhan.MaPhieuTiepNhan = x.dataSoure.MaPhieuTiepNhan;
                     commonStatisJs.ShowMessageSuccess('Cập nhật phiếu tiếp nhận thành công');
-
+                    $(document).trigger('updateSoKmVao', [x.dataSoure.SoKmVao]);
                     diary.LoaiNhatKy = 2;
                     diary.NoiDung = diary.NoiDung.concat(x.dataSoure.MaPhieuTiepNhan);
                     diary.NoiDungChiTiet = diary.NoiDungChiTiet.concat(' <br /> - <b> Thông tin cũ : </b>',
@@ -1069,7 +1069,6 @@
                 if (x.res === true) {
                     self.saveOK = true;
                     self.newPhieuTiepNhan.MaPhieuTiepNhan = x.dataSoure.MaPhieuTiepNhan;
-                    $(document).trigger('updateSoKmVao', [soKmVao]);
                     let noidung = 'Cập nhật phiếu tiếp nhận xe ';
                     let noidungct = ' <br /> - Biển số: '.concat(self.carChosing.BienSo,
                         ' <br /> - Số km vào: ', self.newPhieuTiepNhan.SoKmVao,

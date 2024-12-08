@@ -4825,6 +4825,7 @@ var NhapHangChiTiet = function () {
         hdPrint.TienKhachThieu_BangChu = DocSo(ncc_tienthieu);
         hdPrint.PhaiThanhToan_TruCoc = hdPrint.PhaiThanhToan_SauPhiVC - tiencoc;
         hdPrint.KH_TienBangChu = DocSo(hdPrint.PhaiThanhToan_TruCoc);
+        hdPrint.NgayIn = formatDateTime(new Date());
 
         // benVC
         hdPrint.MaNccVanChuyen = maNCCVC;

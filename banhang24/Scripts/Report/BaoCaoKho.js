@@ -1925,14 +1925,6 @@
                 if (self.BCK_TonKho() === "BCK_TonKho") {
                     $(".PhanQuyen").hide();
                     if (tab_TonKho === 1) {                    
-                        if (self.isHoangHuyDongFeng && VHeader.Quyen.indexOf('NhomHangHoa_QuyenXemNhom') > -1 && !isAdmin) {
-                            if (array_Seach.ID_NhomHang && array_Seach.ID_NhomHang.length > 0) {
-                                array_Seach.ID_NhomHang = array_Seach.ID_NhomHang;
-                            } else {
-                                var groups = JSON.parse(localStorage.getItem('role_ViewGroups')).filter(q => q.quyenTonTai).map(q => q.maNhom);
-                                array_Seach.ID_NhomHang = groups.join(',');
-                            }
-                        }
                         ajaxHelper(ReportUri + "BaoCaoKho_TonKho", "POST", array_Seach).done(function (data) {
                             self.BaoCaoKho_TonKho(data.LstData || []);
                             AllPage = data.numberPage;
@@ -1947,14 +1939,6 @@
                         });
                     }
                     else {
-                        if (self.isHoangHuyDongFeng && VHeader.Quyen.indexOf('NhomHangHoa_QuyenXemNhom') > -1 && !isAdmin) {
-                            if (array_Seach.ID_NhomHang && array_Seach.ID_NhomHang.length > 0) {
-                                array_Seach.ID_NhomHang = array_Seach.ID_NhomHang;
-                            } else {
-                                var groups = JSON.parse(localStorage.getItem('role_ViewGroups')).filter(q => q.quyenTonTai).map(q => q.maNhom);
-                                array_Seach.ID_NhomHang = groups.join(',');
-                            }
-                        }
                         ajaxHelper(ReportUri + "BaoCaoKho_TonKho_TongHop", "POST", array_Seach).done(function (data) {
                             self.BaoCaoKho_TongKho_TongHop(data.LstData);
                             AllPage = data.numberPage;
@@ -2586,14 +2570,6 @@
         switch (parseInt(self.check_MoiQuanTam())) {
             case 1:            
                 if (self.BaoCaoKho_TonKho().length > 0) {
-                    if (self.isHoangHuyDongFeng && VHeader.Quyen.indexOf('NhomHangHoa_QuyenXemNhom') > -1 && !isAdmin) {
-                        if (array_Seach.ID_NhomHang && array_Seach.ID_NhomHang.length > 0) {
-                            array_Seach.ID_NhomHang = array_Seach.ID_NhomHang;
-                        } else {
-                            var groups = JSON.parse(localStorage.getItem('role_ViewGroups')).filter(q => q.quyenTonTai).map(q => q.maNhom);
-                            array_Seach.ID_NhomHang = groups.join(',');
-                        }
-                    }
                     exportOK = await commonStatisJs.DowloadFile_fromBrower(ReportUri + "Export_BCK_TonKho", 'POST', { objExcel: array_Seach }, "BaoCaoHangHoaTonKho.xlsx");
                 }
                 break;

@@ -1,0 +1,168 @@
+﻿@using banhang24.Hellper
+<style>
+    .toogle {
+        float: right;
+        height: 26px;
+        background: #cacaca;
+        border-radius: 15px;
+        position: relative;
+    }
+
+    .gara-popup-chietkhau span.transverse {
+        right: 7px;
+    }
+
+    .transverse {
+        right: -46px;
+        line-height: 28px;
+        color: #fff;
+    }
+
+    .toogle-report.Ptram > .poison {
+        color: #686868;
+    }
+
+    .gara-popup-chietkhau span.poison {
+        left: 5px;
+        font-size: 8px;
+    }
+
+    .poison {
+        position: absolute;
+        left: 05px;
+        line-height: 27px;
+        color: #747474;
+        font-size: 8px;
+    }
+
+    .transverse {
+        right: 8px;
+        line-height: 28px;
+        color: #fff;
+    }
+
+    .toogle:before {
+        content: "";
+        width: 22px;
+        height: 22px;
+        background: var(--color-main);
+        border-radius: 15px;
+        top: 1px;
+        position: absolute;
+        margin-top: 1px;
+        transition: left 0.4s ease;
+    }
+
+    .active-re:before {
+        left: 37px;
+    }
+
+    .gara-popup-chietkhau .toogle-report:before {
+        transition: left 0.4s ease;
+        background: var(--color-main);
+    }
+
+    .gara-popup-chietkhau .toogle-report.active-re:before {
+        left: 28px;
+        background: var(--color-main);
+    }
+
+    .gara-popup-chietkhau .toogle-report:before {
+        transition: left 0.4s ease;
+        background: var(--color-main);
+    }
+
+    div#thongtin > div {
+        margin: 5px 0;
+    }
+</style>
+<div class="modal fade in" id="ThemNhomHHNguoidung">
+    <div class="modal-dialog draggable modal-md">
+        <div class="modal-content ">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="material-icons">close</i></button>
+
+                <h4 class="modal-title">{{isNew?'Thêm mới nhóm hàng người dùng':'Cập nhật nhóm hàng người dùng'}}</h4>
+            </div>
+            <div class="modal-body cus">
+                <div class="tab-content">
+                    <div id="thongtinnhomKH" class="tab-pane fade active in thongtin">
+                        <div class="flex flex-row flex-start form-group">
+                            <label class="form-label control-label">Tên nhóm hàng <span style="color:red">(*)</span> :</label>
+                            <div class="form-news">
+                                <nhomhhs :text-search="newGroupProduct.TenNhomHangHoa"
+                                           :groups="listData.NhomHangHoas"
+                                           :id-chosing="newGroupProduct.ID"
+                                           :search-list="listData.NhomHangHoas"
+                                           v-on:change-group-parent="ChoseNhomHH">
+                                </nhomhhs>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Nhóm người dùng:</label>
+                            <div class="form-news">
+                                <div class="outselect outselectDV ">
+                                    <div class="choose-person floatleft " data-toggle="dropdown"
+                                         aria-expanded="true">
+                                        <ul>
+                                            <li class="li-input-span fl-left"
+                                                v-for=" (item, index) in NguoiDungChosed">
+                                                <span>
+                                                    {{item.TaiKhoan}}
+                                                </span>&nbsp;
+                                                <span v-on:click="RemoveUser(item, index)">
+                                                    <i class="fa fa-times"></i>
+                                                </span>
+                                            </li>
+                                        </ul>
+                                        <input style="width:100%" type="text" readonly class="dropdown" placeholder="--- Tất cả ---"
+                                               v-show="NguoiDungChosed.length === 0">
+                                    </div>
+                                    <div class="selec-person dropdown-menu floatleft">
+                                        <ul>
+                                            <li v-on:click="ChoseNguoiDung(null)">
+                                                <span>--- Tất cả ---</span>
+                                            </li>
+                                        </ul>
+                                        <ul v-for="(item, index) in listData.NhomNguoiDungs">
+                                            <li v-on:click="ChoseNguoiDung(item)" style="position:relative">
+                                                <span> {{item.TaiKhoan}}</span>
+                                                <span v-if="$.inArray(item.ID, ListIDNguoiDung) > -1" style="position:absolute; top:8px; right:5px">
+                        <i class="fa fa-check" style="display:block"></i>
+                    </span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                 
+                    <div class="form-group  floatleft">
+                        <label class="form-label control-label">&nbsp;</label>
+                        <div class="footer-right pull-right">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <div class="container-fluid">
+                    <button type="button" class="btn btn-delete " v-on:click="DeleteNhomHHNguoiDung" v-if="!isNew">
+                        <i class="fa fa-trash"></i> Xóa
+                    </button>
+                    <button type="button" class="btn btn-cancel " data-dismiss="modal"><i class="fa fa-ban"></i>Bỏ qua</button>
+                    <button type="button" class="btn btn-save " v-if="!isLoading"
+                            v-on:click="SaveNhomHHNguoiDung">
+                        <i class="fa fa-save"></i> Lưu
+                    </button>
+                    <button type="button" class="btn btn-save " v-if="isLoading"
+                            v-on:click="SaveNhomHHNguoiDung">
+                        <i class="fa fa-save"></i> Đang lưu
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.ContentVersioned("~/Scripts/DanhMuc/SanPham/_ThemNhomHHNguoidung.js")"></script>

@@ -1579,6 +1579,7 @@ namespace libReport
         public double SDoanhThu { get; set; }
         public double STongTienVon { get; set; }
 	    public double SLoiNhuan { get; set; }
+        public string SoKhung { get; set; }
     }
 
     public class BaoCaoDoanhThuSuaChuaTongHop_Export
@@ -1602,6 +1603,7 @@ namespace libReport
         public double LoiNhuan { get; set; }
         public string GhiChu { get; set; }
         public string TenDonVi { get; set; }
+        public string SoKhung { get; set; }
     }
 
     public class BaoCaoDoanhThuSuaChuaChiTiet
@@ -1609,6 +1611,7 @@ namespace libReport
         public string MaPhieuTiepNhan { get; set; }
         public DateTime NgayVaoXuong { get; set; }
         public string BienSo { get; set; }
+        public string SoKhung { get; set; }
         public string MaDoiTuong { get; set; }
         public string TenDoiTuong { get; set; }
         public string CoVanDichVu { get; set; }
@@ -1672,6 +1675,7 @@ namespace libReport
         public string GhiChu { get; set; }
         public string TenDonVi { get; set; }
         public string TenHangHoaThayThe { get; set; }
+        public string SoKhung { get; set; }
     }
 
     public class BaoCaoDoanhThuSuaChuaTheoXe
