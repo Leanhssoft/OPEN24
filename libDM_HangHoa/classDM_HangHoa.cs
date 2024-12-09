@@ -1606,7 +1606,7 @@ namespace libDM_HangHoa
                 var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
                 string[] allowedSubDomains = { "hoanghuydongfeng", "0973474985" };
                 string query = allowedSubDomains.Contains(subDomain)
-                   ? "exec LoadDanhMucLoHangBaoCao @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh, @ID_NguoiDung"
+                   ? "exec LoadDanhMucLoHangBaoCao_hoanghuydf @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh, @ID_NguoiDung"
                    : "exec LoadDanhMucLoHangBaoCao @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh";
                 List<BCDM_LoHangDTO> listTon = db.Database.SqlQuery<BCDM_LoHangDTO>(query, paramlist.ToArray()).ToList();
               
@@ -1728,7 +1728,7 @@ namespace libDM_HangHoa
                 var subDomain = CookieStore.GetCookieAes("SubDomain").ToLower();
                 string[] allowedSubDomains = { "hoanghuydongfeng", "0973474985" };
                 string query = allowedSubDomains.Contains(subDomain)
-                   ? "exec LoadDanhMucLoHangBaoCao @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh, @ID_NguoiDung"
+                   ? "exec LoadDanhMucLoHangBaoCao_hoanghuydf @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh, @ID_NguoiDung"
                    : "exec LoadDanhMucLoHangBaoCao @MaHH,@MaHHCoDau,@ListID_NhomHang, @ID_ChiNhanh, @List_ThuocTinh";
                 List<BCDM_LoHangDTO> listTon = db.Database.SqlQuery<BCDM_LoHangDTO>(query, paramlist.ToArray()).ToList();
                 
@@ -1843,7 +1843,7 @@ namespace libDM_HangHoa
                ? "exec LoadDanhMucHangHoa @IDChiNhanh, @TextSearch, @IDThuocTinhHangs, @IDViTriKhos, " +
                 "@TrangThaiKho, @Where ,@CurrentPage, @PageSize," +
                       "@ColumnSort, @SortBy"
-               : "exec LoadDanhMucHangHoa @IDChiNhanh, @TextSearch, @IDThuocTinhHangs, @IDViTriKhos, " +
+               : "exec LoadDanhMucHangHoa_hoanghuydf @IDChiNhanh, @TextSearch, @IDThuocTinhHangs, @IDViTriKhos, " +
                 "@TrangThaiKho, @Where ,@CurrentPage, @PageSize," +
                       "@ColumnSort, @SortBy, @ID_NguoiDung";        
             return db.Database.SqlQuery<DMHangHoaDTO>(query, lstParam.ToArray()).ToList();
