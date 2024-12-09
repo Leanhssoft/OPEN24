@@ -951,6 +951,10 @@
     <Compile Include="Migrations\202408230844472_UpdateStoreSql_20240823.designer.cs">
       <DependentUpon>202408230844472_UpdateStoreSql_20240823.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202411261109410_AddTbl_HTQuyen_NguoiDung_NhomHangHoa.cs" />
+    <Compile Include="Migrations\202411261109410_AddTbl_HTQuyen_NguoiDung_NhomHangHoa.designer.cs">
+      <DependentUpon>202411261109410_AddTbl_HTQuyen_NguoiDung_NhomHangHoa.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="NhomDoiTuong_DonVi.cs" />
     <Compile Include="NhomHangHoa_DonVi.cs" />
@@ -1584,6 +1588,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202408230844472_UpdateStoreSql_20240823.resx">
       <DependentUpon>202408230844472_UpdateStoreSql_20240823.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202411261109410_AddTbl_HTQuyen_NguoiDung_NhomHangHoa.resx">
+      <DependentUpon>202411261109410_AddTbl_HTQuyen_NguoiDung_NhomHangHoa.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
