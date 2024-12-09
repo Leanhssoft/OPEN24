@@ -2766,7 +2766,7 @@ visible: LoaiHoaDon !== 3">
                             </div>
                         </div>
                     </div>
-                    <div v-if="$root.isHuyTu" class="gara-bill-content" style="display:flex; justify-content:flex-start; padding:7px 15px 0 15px;" data-bind="visible: textSearchPhieuTN">
+                    <div class="gara-bill-content" style="display:flex; justify-content:flex-start; padding:7px 15px 0 15px;" data-bind="visible: textSearchPhieuTN && $root.isHuyTu">
                         Số Km:  <span data-bind="text: textSoKmVao"></span>
                     </div>
                     <div class="gara-bill-content" style="display:flex; justify-content:space-between; padding:7px 15px 0 15px;">

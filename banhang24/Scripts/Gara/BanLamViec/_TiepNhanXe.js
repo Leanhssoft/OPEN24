@@ -526,13 +526,13 @@
         AddNew_ItemFix: function (index) {
             var self = this;
             var $this = $(event.currentTarget);
-            if (self.listData.HangMucSuaChuas[index].TenHangMuc !== '') {
+           /* if (self.listData.HangMucSuaChuas[index].TenHangMuc !== '') {*/
                 var obj = self.CreateNew_ItemFix();
                 self.listData.HangMucSuaChuas.insert(index + 1, obj);
                 $(function () {
                     $this.closest('tr').next().find('td').eq(1).find('input').focus();
                 })
-            }
+            /*}*/
         },
         Remove_ItemFix: function (index) {
             var self = this;
