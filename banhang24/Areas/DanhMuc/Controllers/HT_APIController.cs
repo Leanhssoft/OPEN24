@@ -688,18 +688,18 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     "hoanghuydongfeng",
                      "0973474985"
                 };
-                if (lstSubdomain.Contains(SubDomain) )
-                {
-                    lstSubMenuSuaChuaXe.Add(new HeaderMenu(7, "Phiếu bàn giao xe", "Phiếu bàn giao xe", UrlPage.PhieuBanGiaoXe, "x/PhieuBanGiaoXe", false, "fa fa-book", new List<HeaderMenu>()));
-                }
-                if (lstSubdomainv2.Contains(SubDomain))
-                {
-                    //INS 10.2024
-                    if (lstQuyen.Where(p => p == "LenhBaoHanh_XemDS").FirstOrDefault() != null)
-                    {
-                        lstSubMenuSuaChuaXe.Add(new HeaderMenu(8, "Lệnh bảo hành", "Lệnh bảo hành", UrlPage.LenhBaoHanh, "e/dathang", false, "fas fa-shield-alt", new List<HeaderMenu>()));
-                    }
-                }
+                //if (lstSubdomain.Contains(SubDomain) )
+                //{
+                //    lstSubMenuSuaChuaXe.Add(new HeaderMenu(7, "Phiếu bàn giao xe", "Phiếu bàn giao xe", UrlPage.PhieuBanGiaoXe, "x/PhieuBanGiaoXe", false, "fa fa-book", new List<HeaderMenu>()));
+                //}
+                //if (lstSubdomainv2.Contains(SubDomain))
+                //{
+                //    //INS 10.2024
+                //    if (lstQuyen.Where(p => p == "LenhBaoHanh_XemDS").FirstOrDefault() != null)
+                //    {
+                //        lstSubMenuSuaChuaXe.Add(new HeaderMenu(8, "Lệnh bảo hành", "Lệnh bảo hành", UrlPage.LenhBaoHanh, "e/dathang", false, "fas fa-shield-alt", new List<HeaderMenu>()));
+                //    }
+                //}
                
                 List<HeaderMenu> lstSubMenuKhachHang = new List<HeaderMenu>();
                 bool lstSubMenuKhachHangCheck = false;
