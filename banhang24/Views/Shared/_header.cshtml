@@ -146,12 +146,12 @@
         , { url: '@UrlPage.BaoCaoHoatDongXe', path: "x/BaoCaoPhuTungTheoDoi_v1", title: TitleFirst + " Nhật ký hoạt động xe" }
         , { url: '@UrlPage.PhieuBanGiaoXe', path: "g/PhieuBanGiaoXe", title: TitleFirst + " Danh sách phiếu bàn giao xe" }
     ];
-    if (self.isHoangHuyDongFeng) {
-    listmenu.push(
-        { url: '@UrlPage.LenhBaoHanh', path: "e/dathang/32", title: TitleFirst + '@Html.Raw(UrlPage.Title_GiaoDich)' + " - Lệnh bảo hành" },
-        { url: '@UrlPage.NhapThuHoiPT', path: "e/nhaphang/33", title: TitleFirst + "Nhập thu hồi phụ tùng" }
-    );
-}
+    @*if (self.isHoangHuyDongFeng) {
+        listmenu.push(
+            { url: '@UrlPage.LenhBaoHanh', path: "e/dathang/32", title: TitleFirst + '@Html.Raw(UrlPage.Title_GiaoDich)' + " - Lệnh bảo hành" },
+            { url: '@UrlPage.NhapThuHoiPT', path: "e/nhaphang/33", title: TitleFirst + "Nhập thu hồi phụ tùng" }
+        );
+    }*@
     //p - hanghoa
     //e - giaodich
     //c - doitac
