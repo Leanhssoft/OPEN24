@@ -446,7 +446,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 List<BH_KiemKhoChiTiet_Excel> lst = db.Database.SqlQuery<BH_KiemKhoChiTiet_Excel>("EXEC GetListChiTietHoaDonKiemKhoXuatFile @ID_HoaDon", paramlist.ToArray()).ToList();
                 if (CookieStore.GetCookieAes("cid") == "False" && CookieStore.GetCookieAes("clo") == "True")
                 {
-                    lst.ForEach(item => { item.MaLoHang = null;});
+                    lst.ForEach(item => { item.MaLoHang = null; });
                 }
                 DataTable excel = _classOFDCM.ToDataTable<BH_KiemKhoChiTiet_Excel>(lst);
                 string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/Teamplate_KiemKhoHangHoa _ChiTiet.xlsx");
@@ -611,7 +611,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     DM.MaHangHoa = item.MaHangHoa;
                     DM.TenHangHoa = item.TenHangHoa;
                     DM.TenDonViTinh = item.TenDonViTinh;
-                    DM.MaLoHang = (CookieStore.GetCookieAes("cid") == "False" && CookieStore.GetCookieAes("clo") == "True")?null: item.MaLoHang;
+                    DM.MaLoHang = (CookieStore.GetCookieAes("cid") == "False" && CookieStore.GetCookieAes("clo") == "True") ? null : item.MaLoHang;
                     DM.SoLuong = item.SoLuong;
                     if (roleXemGiaVon)
                     {
@@ -1081,7 +1081,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     CookieStore.WriteLog("ExportExcel_GoiDichVu " + ex.InnerException + ex.Message);
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
                 }
-                
+
             }
         }
 
@@ -1167,13 +1167,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     // xuất excel hoadon: không ẩn cột (assign columnhide = null)
                     var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(listParams.ValueText, valExcel1);
                     HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, listParams.ColumnsHide, lstDataCell);
-                    return response;     
+                    return response;
                 }
                 catch (Exception ex)
                 {
                     CookieStore.WriteLog("ExportExcel_HoaDons listParams " + ex.InnerException + ex.Message);
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
-                }                
+                }
             }
         }
 
@@ -1211,7 +1211,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                             break;
                     }
                     excel.Columns.Remove("GhiChu");
-                    string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/" + tempFile);                   
+                    string fileTeamplate = HttpContext.Current.Server.MapPath("~/Template/ExportExcel/" + tempFile);
                     HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 3, 27, true, null);
                     return response;
                 }
@@ -1279,7 +1279,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 {
                     CookieStore.WriteLog("ExportExcel_PhieuTraHang passObject" + ex.InnerException + ex.Message);
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
-                }              
+                }
             }
         }
 
@@ -1622,7 +1622,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     CookieStore.WriteLog("ExportExcel_DatHang listParams " + ex.InnerException + ex.Message);
                     return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.InnerException + ex.Message);
                 }
-               
+
             }
         }
 
@@ -1674,7 +1674,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                     {
                         valExcel1 = listParams.NgayTaoHD_TuNgay + " - " + listParams.NgayTaoHD_DenNgay;
                     }
-                    
+
                     var lstDataCell = classAposeCell.GetData_ForDefaultCellv2(listParams.ValueText, valExcel1);
                     HttpResponseMessage response = classAposeCell.ExportData_ToOneSheet(fileTeamplate, excel, 6, 30, true, listParams.ColumnsHide, lstDataCell);
                     return response;
@@ -1766,7 +1766,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 ClassBH_HoaDon classhoadon = new ClassBH_HoaDon(db);
                 List<BH_HoaDon_ChiTietDTO> lst = classhoadon.SP_GetChiTietHD_byIDHoaDon_ChietKhauNV(idHoaDon);
                 string checkLo = CookieStore.GetCookieAes("clo");
-                if(!CheckRoleIsAdmin() && checkLo == "True")
+                if (!CheckRoleIsAdmin() && checkLo == "True")
                 {
                     foreach (var item in lst)
                     {
@@ -2442,7 +2442,7 @@ namespace banhang24.Areas.DanhMuc.Controllers
                 }
                 catch (Exception e)
                 {
-                   return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e.InnerException + e.Message);
+                    return Request.CreateErrorResponse(HttpStatusCode.InternalServerError, e.InnerException + e.Message);
                 }
             }
         }
@@ -6451,14 +6451,13 @@ namespace banhang24.Areas.DanhMuc.Controllers
                         var lstSQ = (from qhd in db.Quy_HoaDon
                                      join qct in db.Quy_HoaDon_ChiTiet on qhd.ID equals qct.ID_HoaDon
                                      join hd in db.BH_HoaDon on qct.ID_HoaDonLienQuan equals hd.ID
-                                     where hd.ID == idHoaDon && qhd.TrangThai != false
-                                     && qct.ID_HoaDonLienQuan == idHoaDon
-                                     group new { qhd, qct } by new { qhd.ID, } into g
+                                     where qct.ID_HoaDonLienQuan == idHoaDon && qhd.TrangThai != false
+                                     group qct by qhd.ID into g
                                      select new
                                      {
-                                         ID = g.Key.ID,
-                                         TongTienThu = g.Where(x => x.qct.HinhThucThanhToan != 4 && x.qct.HinhThucThanhToan != 5)
-                                         .Sum(x => x.qct.TienThu)
+                                         ID = g.Key,
+                                         TongTienThu = (double?)g.Where(x => x.HinhThucThanhToan != 4 && x.HinhThucThanhToan != 5)
+                                         .Sum(x => x.TienThu) ?? 0
                                      }).ToList();
 
                         Guid? idSQFirst = Guid.Empty;
